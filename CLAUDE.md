@@ -33,6 +33,15 @@ they import.
   and event services share is `internal/booking`, a library. A file that needs both -- a test, the
   server's assembly -- takes the repositories from a helper in a file of its
   own (`test/live/<domain>.go`, `internal/server/repositories_<domain>.go`).
+- What summaries, reports and agents read is a read model, as freebusy's
+  availability is: a `(store.v1.projection)` message (e.g.
+  `stay.v1.StayNight`) whose rows the generated layer writes in the same
+  transaction as its sources, from a hand-written writer in the owning
+  service (`nights.go`). Services read it through `internal/search` --
+  Postgres, or its generated OpenSearch copy with Postgres behind it
+  (`[search] provider`) -- never by scanning the source tables. Register a
+  new one's projector in `internal/server/assembly.go` and `test/live`, and
+  its rebuild and copy in `internal/server/prime.go` and `search.go`.
 - Every hand-written file stays under 200 lines and is documented.
 
 ## Go imports

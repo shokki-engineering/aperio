@@ -39,6 +39,15 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   with the menus priced and the halls free that day; RequestService sends a
   guest's ask -- two black coffees to room 204 -- to the department that
   does it.
+- Read models, as freebusy's: `stay.v1.StayNight`, one row per night of
+  every live stay, written in the same transaction as the reservation, with
+  an optional OpenSearch copy (`[search] provider = "opensearch"`) kept by a
+  change-feed indexer and read with Postgres behind it; rebuilt and
+  reindexed at startup when empty (`rebuild_on_start`, `reindex_on_start`).
+- `StayService.SummarizeDay`: a venue's day -- arrivals, departures, who
+  stays the night, rooms taken -- for the front desk and agents, from the
+  read model in four indexed reads. `Reservation.spaces`, the room types
+  booked, so stays filter as `spaces:"venues/sbr/spaces/villa"`.
 - Elicitation from the concierge: a method missing the guest's name or phone
   asks for just those, and ConfirmStay and CancelBooking ask for consent with
   the real amount and dates (`confirmed`) before they book or cancel. The

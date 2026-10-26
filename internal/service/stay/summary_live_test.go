@@ -5,7 +5,9 @@ package stay_test
 
 // A live test of the front desk's day, read from the stay read model: who
 // arrives, leaves and stays, rooms taken, a cancelled stay dropping out, and
-// a stay found by the room type it booked. Run as stay_live_test.go says.
+// a stay found by the room type it booked. Run as stay_live_test.go says;
+// with APERIO_TEST_OPENSEARCH_URL set (a single node, as in freebusy's
+// compose), the same days are read from the read model's OpenSearch copy.
 
 import (
 	"context"
@@ -17,7 +19,12 @@ import (
 )
 
 func TestLiveSummarizeDay(t *testing.T) {
-	f, ctx := setup(t), context.Background()
+	checkDays(t, setup(t))
+}
+
+// checkDays books two stays with f and checks the days they make.
+func checkDays(t *testing.T, f *fixture) {
+	ctx := context.Background()
 	book := func(id string, from, to int32) *staypbv1.Reservation {
 		t.Helper()
 		req := f.stay(id, 1)

@@ -20,6 +20,7 @@ import (
 	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
+	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/service/stay"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
@@ -39,6 +40,7 @@ type fixture struct {
 	rooms   string // a space of two rooms
 	contact string
 	run     string
+	conn    repox.Conn // keeps the read models current
 }
 
 func setup(t *testing.T) *fixture {
@@ -70,7 +72,7 @@ func setup(t *testing.T) *fixture {
 	fb := live.NewFreebusy()
 	base := booking.NewBase(fb, venues, guest.New(conn).Contacts)
 	base.Search = conn
-	return &fixture{svc: stay.New(live.StayRepositories(conn), base), fb: fb, venue: v.GetName(), rooms: sp.GetName(), contact: c.GetName(), run: run}
+	return &fixture{svc: stay.New(live.StayRepositories(conn), base), fb: fb, venue: v.GetName(), rooms: sp.GetName(), contact: c.GetName(), run: run, conn: conn}
 }
 
 // stay asks for lines of rooms in the space, 1-3 Dec 2026.

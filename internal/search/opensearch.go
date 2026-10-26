@@ -10,6 +10,7 @@ package search
 // OpenSearch errs or takes longer than [search.opensearch] timeout_ms.
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"fmt"
@@ -46,7 +47,7 @@ func Connect(cfg config.OpenSearchConfig, m telemetry.Meter, warn func(msg strin
 	if m == nil {
 		m = telemetry.NoopMeter
 	}
-	return &Cluster{client: c, timeout: cfg.Timeout(), queue: cfg.IndexQueue, warn: warn,
+	return &Cluster{client: c, timeout: cfg.Timeout(), queue: cmp.Or(cfg.IndexQueue, 1024), warn: warn,
 		fallbacks: m.Counter("aperio.search.fallbacks", telemetry.WithUnit("1"),
 			telemetry.WithDescription("Read-model reads served from Postgres because OpenSearch failed, by read model and reason (error, timeout)."))}, nil
 }
@@ -78,8 +79,14 @@ func Open[T proto.Message](ctx context.Context, c *Cluster, index *osx.Index[T],
 // repox.Projections.Feed. A change it fails to index goes to onError; Reindex
 // repairs what it missed.
 func (o *Copy[T]) Feed(onError func(ctx context.Context, err error)) repox.ProjectionFeed {
+	return o.FeedWith(osx.IndexerOptions{Queue: o.cluster.queue, OnError: onError})
+}
+
+// FeedWith is Feed with the indexer's options given: Queue 0 and Refresh
+// "wait_for" index each commit before the write returns, for a test.
+func (o *Copy[T]) FeedWith(opts osx.IndexerOptions) repox.ProjectionFeed {
 	if o.indexer == nil {
-		o.indexer = o.index.Indexer(o.cluster.client, osx.IndexerOptions{Queue: o.cluster.queue, OnError: onError})
+		o.indexer = o.index.Indexer(o.cluster.client, opts)
 	}
 	return o.indexer
 }

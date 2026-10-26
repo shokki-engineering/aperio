@@ -91,7 +91,7 @@ operations (7), document (5) and concierge (7) -- 101 methods.
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
 | Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking, EnquireEvent (a lead, a draft quote, menus priced, halls free), RequestService (to the right department) over REST, gRPC and MCP; missing details and consent asked by elicitation; live tests | event bookings beyond the enquiry; the elicitation release (runtime-go, protoc-gen-mcp); payment link; a LiveKit demo (M9) |
-| Agents (MCP) | Served | 108 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone): shared messages and enums under `$defs`, code lists over 64 values as patterns, short nested descriptions, no output schemas | reservation tools still ~250 KB (the OpenTravel RoomStay vocabulary); task-level tools ("today's arrivals") |
+| Agents (MCP) | In progress | 102 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone). Task tools on read models, service by service: stay done (`SummarizeDay` on `StayNight`, `Reservation.spaces`); read models in Postgres with an optional OpenSearch copy, as freebusy's | guest, event, sales, finance, operations task tools; documents last; reservation tools still ~250 KB |
 
 ## Milestones
 
@@ -208,6 +208,16 @@ before channels, a running server before anyone outside can use any of it.
   (room_stays, res_guests) loosely for agents, or task tools that do not
   take them. Add task tools -- today's arrivals, the week's events, quote a
   wedding for 300 in December.
+- Task tools on read models, one service at a time (documents last). Stay,
+  done: `StayNight` (a row per night of every live stay, kept in the
+  reservation's transaction) and `SummarizeDay` (arrivals, departures, who
+  stays, rooms taken: four indexed reads, an 890-byte tool). Next: a guest's
+  history, the kitchen's coming sessions, the sales pipeline, money owed,
+  open requests by department.
+- Read models as freebusy's: Postgres tables under the generated projection
+  runtime, with an optional OpenSearch copy (`[search] provider`), a
+  change-feed indexer, alias-swap reindex, and every read falling back to
+  Postgres on an error or after 500 ms.
 - Reports over Hasura: occupancy, revenue by season, GST returns (GSTR-1
   data), lead conversion.
 - Proposals and invoices as PDFs.
