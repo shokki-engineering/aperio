@@ -13,6 +13,8 @@
 //     takes to decide, and seals what was held in a token (token.go).
 //   - ConfirmStay (confirm.go) books the hold for the guest the token names:
 //     the booking takes its rooms from that very hold.
+//   - FindBooking and CancelBooking (bookings.go) find and cancel a guest's
+//     stay by their phone and its reference -- never by a phone alone.
 //
 // Every reply carries a sentence to say (spoken.go).
 package concierge
@@ -42,10 +44,12 @@ type Guests interface {
 	CreateContact(context.Context, *guestpbv1.CreateContactRequest) (*guestpbv1.Contact, error)
 }
 
-// Booker books a stay: the stay service.
+// Booker books, finds and cancels stays: the stay service.
 type Booker interface {
 	CreateReservation(context.Context, *staypbv1.CreateReservationRequest) (*staypbv1.Reservation, error)
 	GetReservation(context.Context, *staypbv1.GetReservationRequest) (*staypbv1.Reservation, error)
+	ListReservations(context.Context, *staypbv1.ListReservationsRequest) (*staypbv1.ListReservationsResponse, error)
+	CancelReservation(context.Context, *staypbv1.CancelReservationRequest) (*staypbv1.Reservation, error)
 }
 
 // Server serves aperio.concierge.v1.ConciergeService.

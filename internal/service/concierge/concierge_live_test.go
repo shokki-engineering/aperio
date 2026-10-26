@@ -9,59 +9,30 @@ package concierge_test
 
 import (
 	"context"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/shokki-engineering/aperio/internal/booking"
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
-	"github.com/shokki-engineering/aperio/internal/service/concierge"
-	"github.com/shokki-engineering/aperio/internal/service/guest"
-	"github.com/shokki-engineering/aperio/internal/service/pricing"
-	"github.com/shokki-engineering/aperio/internal/service/stay"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
-	"github.com/shokki-engineering/aperio/test/live"
 	"google.golang.org/genproto/googleapis/type/date"
-	"google.golang.org/genproto/googleapis/type/money"
-	"google.golang.org/genproto/googleapis/type/postaladdress"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 func TestLiveFindHoldConfirm(t *testing.T) {
-	ctx, conn := context.Background(), live.Conn(t)
+	ctx := context.Background()
 	must := func(err error, what string) {
 		t.Helper()
 		if err != nil {
 			t.Fatalf("%s: %v", what, err)
 		}
 	}
-	venues, fb := venue.New(conn), live.NewFreebusy()
-	guests := guest.New(live.GuestRepositories(conn))
-	bookings := stay.New(live.StayRepositories(conn), booking.NewBase(fb, venues, live.GuestRepositories(conn).Contacts))
-	pricer := pricing.New(live.PricingRepositories(conn), live.CatalogRepositories(conn), venues.Venues)
-	svc := concierge.New(venues, fb, pricer, guests, bookings, []byte(strings.Repeat("k", 32)))
-
-	run := strconv.FormatInt(time.Now().UnixNano(), 10)
-	v, err := venues.Venues.Create(ctx, &venuepbv1.Venue{DisplayName: "Concierge Resort " + run, Kind: venuepbv1.VenueKind_VENUE_KIND_STAYS,
-		TimeZone: "Asia/Kolkata", CurrencyCode: "INR", Address: &postaladdress.PostalAddress{RegionCode: "IN"},
-		Gst: &typepbv1.Gst{Gstin: "29ABCDE1234F1Z5", LegalDisplayName: "Test", GstStateCode: "29"}})
-	must(err, "create venue")
-	sp, err := venues.Spaces.Create(ctx, v.GetName(), &venuepbv1.Space{DisplayName: "Sea View Deluxe", Kind: venuepbv1.SpaceKind_SPACE_KIND_ROOM_TYPE,
-		Resources: []string{"resources/sv1-" + run, "resources/sv2-" + run}, Capacity: &venuepbv1.Capacity{MaxAdults: 2}})
-	must(err, "create space")
-	_, err = pricer.CreatePriceRule(ctx, &pricingpbv1.CreatePriceRuleRequest{Parent: v.GetName(), PriceRule: &pricingpbv1.PriceRule{
-		DisplayName: "Sea View rate", Target: pricingpbv1.PriceTarget_PRICE_TARGET_SPACE, Items: []string{sp.GetName()}, Active: true,
-		Adjustment: &pricingpbv1.PriceRule_FixedPrice{FixedPrice: &money.Money{CurrencyCode: "INR", Units: 14000}},
-	}})
-	must(err, "create rate")
+	res := newResort(t)
+	svc, fb, bookings, guests, v, sp, run := res.svc, res.fb, res.stays, res.guests, res.venue, res.space, res.run
 
 	arrive := &date.Date{Year: int32(time.Now().Year()) + 1, Month: 12, Day: 12}
 	found, err := svc.FindStay(ctx, &conciergepbv1.FindStayRequest{Venue: v.GetName(), ArrivalDate: arrive, Nights: 2, Adults: 2})

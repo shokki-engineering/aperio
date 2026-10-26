@@ -32,7 +32,9 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
 - The concierge (`aperio.concierge.v1`): FindStay, HoldStay and ConfirmStay,
   the guest's side for the website and voice agents; a hold is a freebusy
   hold the booking then takes, sealed in a token. Contacts carry
-  `phone_numbers`, by which a returning guest is found.
+  `phone_numbers`, by which a returning guest is found. FindBooking and
+  CancelBooking find and cancel a guest's stay by their phone and its
+  reference (ConfirmStay's), never by a phone alone.
 
 ### Changed
 

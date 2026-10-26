@@ -60,4 +60,24 @@ service ConciergeService {
     };
     option (google.api.method_signature) = "venue,hold_token";
   }
+
+  // Finds a guest's stays by their phone and the booking's reference, or its
+  // day of arrival. Takes nothing.
+  rpc FindBooking(FindBookingRequest) returns (FindBookingResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:findBooking"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,phone";
+  }
+
+  // Cancels a guest's stay, found by their phone and its reference, giving
+  // its rooms back. Call it only once the guest has agreed.
+  rpc CancelBooking(CancelBookingRequest) returns (CancelBookingResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:cancelBooking"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,phone,reference";
+  }
 }

@@ -550,7 +550,10 @@ type ConfirmStayResponse struct {
 	// The stay before tax.
 	Total *money.Money `protobuf:"bytes,2,opt,name=total,proto3" json:"total,omitempty"`
 	// The booking as a sentence to say.
-	Spoken        string `protobuf:"bytes,3,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	Spoken string `protobuf:"bytes,3,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	// The booking's short reference, e.g. "7F3A9C": what the guest quotes to
+	// find or cancel it with FindBooking and CancelBooking.
+	Reference     string `protobuf:"bytes,4,opt,name=reference,proto3" json:"reference,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -600,6 +603,366 @@ func (x *ConfirmStayResponse) GetTotal() *money.Money {
 }
 
 func (x *ConfirmStayResponse) GetSpoken() string {
+	if x != nil {
+		return x.Spoken
+	}
+	return ""
+}
+
+func (x *ConfirmStayResponse) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
+// Request message for FindBooking.
+type FindBookingRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue booked at.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// The guest's phone, as the booking was made with.
+	Phone string `protobuf:"bytes,2,opt,name=phone,proto3" json:"phone,omitempty"`
+	// The booking's reference, from ConfirmStay. This or arrival_date is
+	// needed: a phone number alone shows nothing, as anyone can say one.
+	Reference string `protobuf:"bytes,3,opt,name=reference,proto3" json:"reference,omitempty"`
+	// The day of arrival, when the guest does not have the reference.
+	ArrivalDate   *date.Date `protobuf:"bytes,4,opt,name=arrival_date,json=arrivalDate,proto3" json:"arrival_date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindBookingRequest) Reset() {
+	*x = FindBookingRequest{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindBookingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindBookingRequest) ProtoMessage() {}
+
+func (x *FindBookingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindBookingRequest.ProtoReflect.Descriptor instead.
+func (*FindBookingRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *FindBookingRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *FindBookingRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *FindBookingRequest) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
+func (x *FindBookingRequest) GetArrivalDate() *date.Date {
+	if x != nil {
+		return x.ArrivalDate
+	}
+	return nil
+}
+
+// Response message for FindBooking.
+type FindBookingResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The guest's bookings that match.
+	Bookings []*BookingSummary `protobuf:"bytes,1,rep,name=bookings,proto3" json:"bookings,omitempty"`
+	// The bookings as a sentence to say.
+	Spoken        string `protobuf:"bytes,2,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindBookingResponse) Reset() {
+	*x = FindBookingResponse{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindBookingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindBookingResponse) ProtoMessage() {}
+
+func (x *FindBookingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindBookingResponse.ProtoReflect.Descriptor instead.
+func (*FindBookingResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *FindBookingResponse) GetBookings() []*BookingSummary {
+	if x != nil {
+		return x.Bookings
+	}
+	return nil
+}
+
+func (x *FindBookingResponse) GetSpoken() string {
+	if x != nil {
+		return x.Spoken
+	}
+	return ""
+}
+
+// BookingSummary is a guest's stay, as the guest is told it.
+type BookingSummary struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stay.
+	// Format: venues/{venue}/reservations/{reservation}
+	Reservation string `protobuf:"bytes,1,opt,name=reservation,proto3" json:"reservation,omitempty"`
+	// Its short reference.
+	Reference string `protobuf:"bytes,2,opt,name=reference,proto3" json:"reference,omitempty"`
+	// The day of arrival.
+	ArrivalDate *date.Date `protobuf:"bytes,3,opt,name=arrival_date,json=arrivalDate,proto3" json:"arrival_date,omitempty"`
+	// The day of departure.
+	DepartureDate *date.Date `protobuf:"bytes,4,opt,name=departure_date,json=departureDate,proto3" json:"departure_date,omitempty"`
+	// Where it is in its life, as the stay service names it: "PENDING",
+	// "CONFIRMED", "CHECKED_IN", "CHECKED_OUT", "CANCELLED".
+	State string `protobuf:"bytes,5,opt,name=state,proto3" json:"state,omitempty"`
+	// The stay as a sentence to say.
+	Spoken        string `protobuf:"bytes,6,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BookingSummary) Reset() {
+	*x = BookingSummary{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BookingSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BookingSummary) ProtoMessage() {}
+
+func (x *BookingSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BookingSummary.ProtoReflect.Descriptor instead.
+func (*BookingSummary) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *BookingSummary) GetReservation() string {
+	if x != nil {
+		return x.Reservation
+	}
+	return ""
+}
+
+func (x *BookingSummary) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
+func (x *BookingSummary) GetArrivalDate() *date.Date {
+	if x != nil {
+		return x.ArrivalDate
+	}
+	return nil
+}
+
+func (x *BookingSummary) GetDepartureDate() *date.Date {
+	if x != nil {
+		return x.DepartureDate
+	}
+	return nil
+}
+
+func (x *BookingSummary) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+func (x *BookingSummary) GetSpoken() string {
+	if x != nil {
+		return x.Spoken
+	}
+	return ""
+}
+
+// Request message for CancelBooking.
+type CancelBookingRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue booked at.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// The guest's phone, as the booking was made with.
+	Phone string `protobuf:"bytes,2,opt,name=phone,proto3" json:"phone,omitempty"`
+	// The booking's reference.
+	Reference string `protobuf:"bytes,3,opt,name=reference,proto3" json:"reference,omitempty"`
+	// Why, in the guest's words; kept on the booking.
+	Reason        string `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelBookingRequest) Reset() {
+	*x = CancelBookingRequest{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelBookingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelBookingRequest) ProtoMessage() {}
+
+func (x *CancelBookingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelBookingRequest.ProtoReflect.Descriptor instead.
+func (*CancelBookingRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CancelBookingRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *CancelBookingRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *CancelBookingRequest) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
+func (x *CancelBookingRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+// Response message for CancelBooking.
+type CancelBookingResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stay cancelled.
+	// Format: venues/{venue}/reservations/{reservation}
+	Reservation string `protobuf:"bytes,1,opt,name=reservation,proto3" json:"reservation,omitempty"`
+	// The cancellation as a sentence to say.
+	Spoken        string `protobuf:"bytes,2,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelBookingResponse) Reset() {
+	*x = CancelBookingResponse{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelBookingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelBookingResponse) ProtoMessage() {}
+
+func (x *CancelBookingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelBookingResponse.ProtoReflect.Descriptor instead.
+func (*CancelBookingResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CancelBookingResponse) GetReservation() string {
+	if x != nil {
+		return x.Reservation
+	}
+	return ""
+}
+
+func (x *CancelBookingResponse) GetSpoken() string {
 	if x != nil {
 		return x.Spoken
 	}
@@ -659,12 +1022,40 @@ const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12*\n" +
 	"\n" +
-	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\"\x9a\x01\n" +
+	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\"\xb8\x01\n" +
 	"\x13ConfirmStayResponse\x12A\n" +
 	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\vreservation\x12(\n" +
 	"\x05total\x18\x02 \x01(\v2\x12.google.type.MoneyR\x05total\x12\x16\n" +
-	"\x06spoken\x18\x03 \x01(\tR\x06spokenB\x84\x02\n" +
+	"\x06spoken\x18\x03 \x01(\tR\x06spoken\x12\x1c\n" +
+	"\treference\x18\x04 \x01(\tR\treference\"\xd6\x01\n" +
+	"\x12FindBookingRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12#\n" +
+	"\x05phone\x18\x02 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\x10\x06\x18 R\x05phone\x12)\n" +
+	"\treference\x18\x03 \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x18\x10R\treference\x12:\n" +
+	"\farrival_date\x18\x04 \x01(\v2\x11.google.type.DateB\x04\xe2A\x01\x01R\varrivalDate\"n\n" +
+	"\x13FindBookingResponse\x12?\n" +
+	"\bbookings\x18\x01 \x03(\v2#.aperio.concierge.v1.BookingSummaryR\bbookings\x12\x16\n" +
+	"\x06spoken\x18\x02 \x01(\tR\x06spoken\"\x95\x02\n" +
+	"\x0eBookingSummary\x12A\n" +
+	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
+	"\x1aaperio.stay.v1/ReservationR\vreservation\x12\x1c\n" +
+	"\treference\x18\x02 \x01(\tR\treference\x124\n" +
+	"\farrival_date\x18\x03 \x01(\v2\x11.google.type.DateR\varrivalDate\x128\n" +
+	"\x0edeparture_date\x18\x04 \x01(\v2\x11.google.type.DateR\rdepartureDate\x12\x1a\n" +
+	"\x05state\x18\x05 \x01(\tB\x04\xe2A\x01\x03R\x05state\x12\x16\n" +
+	"\x06spoken\x18\x06 \x01(\tR\x06spoken\"\xc4\x01\n" +
+	"\x14CancelBookingRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12#\n" +
+	"\x05phone\x18\x02 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\x10\x06\x18 R\x05phone\x12+\n" +
+	"\treference\x18\x03 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\x10\x04\x18\x10R\treference\x12$\n" +
+	"\x06reason\x18\x04 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xf4\x03R\x06reason\"r\n" +
+	"\x15CancelBookingResponse\x12A\n" +
+	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
+	"\x1aaperio.stay.v1/ReservationR\vreservation\x12\x16\n" +
+	"\x06spoken\x18\x02 \x01(\tR\x06spokenB\x84\x02\n" +
 	"\x17com.aperio.concierge.v1B\x16ConciergeMessagesProtoP\x01Zcgithub.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1\xa2\x02\x03ACX\xaa\x02\x13Aperio.Concierge.V1\xca\x02\x13Aperio\\Concierge\\V1\xe2\x02\x1fAperio\\Concierge\\V1\\GPBMetadata\xea\x02\x15Aperio::Concierge::V1b\x06proto3"
 
 var (
@@ -679,7 +1070,7 @@ func file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_concierge_v1_concierge_messages_proto_rawDescData
 }
 
-var file_aperio_concierge_v1_concierge_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_aperio_concierge_v1_concierge_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_aperio_concierge_v1_concierge_messages_proto_goTypes = []any{
 	(*FindStayRequest)(nil),       // 0: aperio.concierge.v1.FindStayRequest
 	(*FindStayResponse)(nil),      // 1: aperio.concierge.v1.FindStayResponse
@@ -688,25 +1079,34 @@ var file_aperio_concierge_v1_concierge_messages_proto_goTypes = []any{
 	(*HoldStayResponse)(nil),      // 4: aperio.concierge.v1.HoldStayResponse
 	(*ConfirmStayRequest)(nil),    // 5: aperio.concierge.v1.ConfirmStayRequest
 	(*ConfirmStayResponse)(nil),   // 6: aperio.concierge.v1.ConfirmStayResponse
-	(*date.Date)(nil),             // 7: google.type.Date
-	(*money.Money)(nil),           // 8: google.type.Money
-	(typepbv1.Channel)(0),         // 9: aperio.type.v1.Channel
-	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*FindBookingRequest)(nil),    // 7: aperio.concierge.v1.FindBookingRequest
+	(*FindBookingResponse)(nil),   // 8: aperio.concierge.v1.FindBookingResponse
+	(*BookingSummary)(nil),        // 9: aperio.concierge.v1.BookingSummary
+	(*CancelBookingRequest)(nil),  // 10: aperio.concierge.v1.CancelBookingRequest
+	(*CancelBookingResponse)(nil), // 11: aperio.concierge.v1.CancelBookingResponse
+	(*date.Date)(nil),             // 12: google.type.Date
+	(*money.Money)(nil),           // 13: google.type.Money
+	(typepbv1.Channel)(0),         // 14: aperio.type.v1.Channel
+	(*timestamppb.Timestamp)(nil), // 15: google.protobuf.Timestamp
 }
 var file_aperio_concierge_v1_concierge_messages_proto_depIdxs = []int32{
-	7,  // 0: aperio.concierge.v1.FindStayRequest.arrival_date:type_name -> google.type.Date
+	12, // 0: aperio.concierge.v1.FindStayRequest.arrival_date:type_name -> google.type.Date
 	2,  // 1: aperio.concierge.v1.FindStayResponse.options:type_name -> aperio.concierge.v1.StayOption
-	8,  // 2: aperio.concierge.v1.StayOption.total:type_name -> google.type.Money
-	7,  // 3: aperio.concierge.v1.HoldStayRequest.arrival_date:type_name -> google.type.Date
-	9,  // 4: aperio.concierge.v1.HoldStayRequest.channel:type_name -> aperio.type.v1.Channel
-	10, // 5: aperio.concierge.v1.HoldStayResponse.expire_time:type_name -> google.protobuf.Timestamp
-	8,  // 6: aperio.concierge.v1.HoldStayResponse.total:type_name -> google.type.Money
-	8,  // 7: aperio.concierge.v1.ConfirmStayResponse.total:type_name -> google.type.Money
-	8,  // [8:8] is the sub-list for method output_type
-	8,  // [8:8] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	13, // 2: aperio.concierge.v1.StayOption.total:type_name -> google.type.Money
+	12, // 3: aperio.concierge.v1.HoldStayRequest.arrival_date:type_name -> google.type.Date
+	14, // 4: aperio.concierge.v1.HoldStayRequest.channel:type_name -> aperio.type.v1.Channel
+	15, // 5: aperio.concierge.v1.HoldStayResponse.expire_time:type_name -> google.protobuf.Timestamp
+	13, // 6: aperio.concierge.v1.HoldStayResponse.total:type_name -> google.type.Money
+	13, // 7: aperio.concierge.v1.ConfirmStayResponse.total:type_name -> google.type.Money
+	12, // 8: aperio.concierge.v1.FindBookingRequest.arrival_date:type_name -> google.type.Date
+	9,  // 9: aperio.concierge.v1.FindBookingResponse.bookings:type_name -> aperio.concierge.v1.BookingSummary
+	12, // 10: aperio.concierge.v1.BookingSummary.arrival_date:type_name -> google.type.Date
+	12, // 11: aperio.concierge.v1.BookingSummary.departure_date:type_name -> google.type.Date
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_aperio_concierge_v1_concierge_messages_proto_init() }
@@ -720,7 +1120,7 @@ func file_aperio_concierge_v1_concierge_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_concierge_v1_concierge_messages_proto_rawDesc), len(file_aperio_concierge_v1_concierge_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

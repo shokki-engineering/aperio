@@ -63,23 +63,19 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 	}
 	total := &money.Money{CurrencyCode: h.Currency, Units: h.Total, Nanos: h.TotalNanos}
 	return &conciergepbv1.ConfirmStayResponse{
-		Reservation: out.GetName(), Total: total,
-		Spoken: fmt.Sprintf("Done, %s: %s from %s is booked, %s plus taxes. We'll send the payment details to %s; "+
-			"the booking is confirmed once the advance is paid.", h.Guest, count(h.Nights, "night"), day(arrive), amount(total), h.Phone),
+		Reservation: out.GetName(), Total: total, Reference: reference(out.GetName()),
+		Spoken: fmt.Sprintf("Done, %s: %s from %s is booked, %s plus taxes; your reference is %s. We'll send the payment "+
+			"details to %s; the booking is confirmed once the advance is paid.",
+			h.Guest, count(h.Nights, "night"), day(arrive), amount(total), spell(reference(out.GetName())), h.Phone),
 	}, nil
 }
 
 // guest is the contact the stay is for: the one whose phone numbers hold the
-// hold's phone, else one added with the hold's name, phone and email.
+// hold's phone (findGuest), else one added with the hold's name, phone and
+// email.
 func (s *Server) guest(ctx context.Context, h held) (string, error) {
-	found, err := s.guests.ListContacts(ctx, &guestpbv1.ListContactsRequest{
-		PageSize: 1, Filter: fmt.Sprintf("phone_numbers:%q", h.Phone),
-	})
-	if err != nil {
-		return "", err
-	}
-	if c := found.GetContacts(); len(c) > 0 {
-		return c[0].GetName(), nil
+	if name, err := s.findGuest(ctx, h.Phone); err != nil || name != "" {
+		return name, err
 	}
 	c := &guestpbv1.Contact{
 		Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: h.Guest,

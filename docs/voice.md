@@ -6,7 +6,8 @@ agentic voice call: a caller rings the resort or the hall, a voice agent
 through MCP -- asking the caller, through MCP elicitation, for what it does
 not know and for consent before anything is taken or charged.
 
-Status, 27 October 2026: `FindStay`, `HoldStay` and `ConfirmStay` are built
+Status, 27 October 2026: `FindStay`, `HoldStay`, `ConfirmStay`, `FindBooking`
+and `CancelBooking` are built
 (`internal/service/concierge`) and served on REST, gRPC and MCP -- for the
 website first, a LiveKit voice agent later. A guest's missing details come
 back as a structured error naming the field, which a frontend shows as a form
@@ -240,5 +241,5 @@ Outside aperio, and to choose:
   language) or the voice model's (it rephrases structured fields).
 - How long a voice hold lasts (15 minutes proposed) and whether an unpaid
   confirmed stay lapses.
-- Whether a returning caller is matched by number alone, or also asked a
-  booking reference before anything is changed or cancelled.
+- Decided: a booking is found or cancelled by the guest's phone and its
+  reference (or, to find it, its day of arrival) -- never by a number alone.

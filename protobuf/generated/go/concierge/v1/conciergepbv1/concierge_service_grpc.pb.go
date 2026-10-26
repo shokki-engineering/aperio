@@ -22,9 +22,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ConciergeService_FindStay_FullMethodName    = "/aperio.concierge.v1.ConciergeService/FindStay"
-	ConciergeService_HoldStay_FullMethodName    = "/aperio.concierge.v1.ConciergeService/HoldStay"
-	ConciergeService_ConfirmStay_FullMethodName = "/aperio.concierge.v1.ConciergeService/ConfirmStay"
+	ConciergeService_FindStay_FullMethodName      = "/aperio.concierge.v1.ConciergeService/FindStay"
+	ConciergeService_HoldStay_FullMethodName      = "/aperio.concierge.v1.ConciergeService/HoldStay"
+	ConciergeService_ConfirmStay_FullMethodName   = "/aperio.concierge.v1.ConciergeService/ConfirmStay"
+	ConciergeService_FindBooking_FullMethodName   = "/aperio.concierge.v1.ConciergeService/FindBooking"
+	ConciergeService_CancelBooking_FullMethodName = "/aperio.concierge.v1.ConciergeService/CancelBooking"
 )
 
 // ConciergeServiceClient is the client API for ConciergeService service.
@@ -47,6 +49,12 @@ type ConciergeServiceClient interface {
 	// Books a held stay for the guest the hold names. Call it only once the
 	// guest has agreed to the dates, rooms and amount the hold gave.
 	ConfirmStay(ctx context.Context, in *ConfirmStayRequest, opts ...grpc.CallOption) (*ConfirmStayResponse, error)
+	// Finds a guest's stays by their phone and the booking's reference, or its
+	// day of arrival. Takes nothing.
+	FindBooking(ctx context.Context, in *FindBookingRequest, opts ...grpc.CallOption) (*FindBookingResponse, error)
+	// Cancels a guest's stay, found by their phone and its reference, giving
+	// its rooms back. Call it only once the guest has agreed.
+	CancelBooking(ctx context.Context, in *CancelBookingRequest, opts ...grpc.CallOption) (*CancelBookingResponse, error)
 }
 
 type conciergeServiceClient struct {
@@ -87,6 +95,26 @@ func (c *conciergeServiceClient) ConfirmStay(ctx context.Context, in *ConfirmSta
 	return out, nil
 }
 
+func (c *conciergeServiceClient) FindBooking(ctx context.Context, in *FindBookingRequest, opts ...grpc.CallOption) (*FindBookingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FindBookingResponse)
+	err := c.cc.Invoke(ctx, ConciergeService_FindBooking_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *conciergeServiceClient) CancelBooking(ctx context.Context, in *CancelBookingRequest, opts ...grpc.CallOption) (*CancelBookingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CancelBookingResponse)
+	err := c.cc.Invoke(ctx, ConciergeService_CancelBooking_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConciergeServiceServer is the server API for ConciergeService service.
 // All implementations must embed UnimplementedConciergeServiceServer
 // for forward compatibility.
@@ -107,6 +135,12 @@ type ConciergeServiceServer interface {
 	// Books a held stay for the guest the hold names. Call it only once the
 	// guest has agreed to the dates, rooms and amount the hold gave.
 	ConfirmStay(context.Context, *ConfirmStayRequest) (*ConfirmStayResponse, error)
+	// Finds a guest's stays by their phone and the booking's reference, or its
+	// day of arrival. Takes nothing.
+	FindBooking(context.Context, *FindBookingRequest) (*FindBookingResponse, error)
+	// Cancels a guest's stay, found by their phone and its reference, giving
+	// its rooms back. Call it only once the guest has agreed.
+	CancelBooking(context.Context, *CancelBookingRequest) (*CancelBookingResponse, error)
 	mustEmbedUnimplementedConciergeServiceServer()
 }
 
@@ -125,6 +159,12 @@ func (UnimplementedConciergeServiceServer) HoldStay(context.Context, *HoldStayRe
 }
 func (UnimplementedConciergeServiceServer) ConfirmStay(context.Context, *ConfirmStayRequest) (*ConfirmStayResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ConfirmStay not implemented")
+}
+func (UnimplementedConciergeServiceServer) FindBooking(context.Context, *FindBookingRequest) (*FindBookingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FindBooking not implemented")
+}
+func (UnimplementedConciergeServiceServer) CancelBooking(context.Context, *CancelBookingRequest) (*CancelBookingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelBooking not implemented")
 }
 func (UnimplementedConciergeServiceServer) mustEmbedUnimplementedConciergeServiceServer() {}
 func (UnimplementedConciergeServiceServer) testEmbeddedByValue()                          {}
@@ -201,6 +241,42 @@ func _ConciergeService_ConfirmStay_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConciergeService_FindBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindBookingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConciergeServiceServer).FindBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConciergeService_FindBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConciergeServiceServer).FindBooking(ctx, req.(*FindBookingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConciergeService_CancelBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelBookingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConciergeServiceServer).CancelBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConciergeService_CancelBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConciergeServiceServer).CancelBooking(ctx, req.(*CancelBookingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConciergeService_ServiceDesc is the grpc.ServiceDesc for ConciergeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -219,6 +295,14 @@ var ConciergeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ConfirmStay",
 			Handler:    _ConciergeService_ConfirmStay_Handler,
+		},
+		{
+			MethodName: "FindBooking",
+			Handler:    _ConciergeService_FindBooking_Handler,
+		},
+		{
+			MethodName: "CancelBooking",
+			Handler:    _ConciergeService_CancelBooking_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

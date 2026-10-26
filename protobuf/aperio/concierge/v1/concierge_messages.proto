@@ -234,4 +234,113 @@ message ConfirmStayResponse {
 
   // The booking as a sentence to say.
   string spoken = 3;
+
+  // The booking's short reference, e.g. "7F3A9C": what the guest quotes to
+  // find or cancel it with FindBooking and CancelBooking.
+  string reference = 4;
+}
+
+// Request message for FindBooking.
+message FindBookingRequest {
+  // The venue booked at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The guest's phone, as the booking was made with.
+  string phone = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 6
+      max_len: 32
+    }
+  ];
+
+  // The booking's reference, from ConfirmStay. This or arrival_date is
+  // needed: a phone number alone shows nothing, as anyone can say one.
+  string reference = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 16
+  ];
+
+  // The day of arrival, when the guest does not have the reference.
+  google.type.Date arrival_date = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for FindBooking.
+message FindBookingResponse {
+  // The guest's bookings that match.
+  repeated BookingSummary bookings = 1;
+
+  // The bookings as a sentence to say.
+  string spoken = 2;
+}
+
+// BookingSummary is a guest's stay, as the guest is told it.
+message BookingSummary {
+  // The stay.
+  // Format: venues/{venue}/reservations/{reservation}
+  string reservation = 1 [(google.api.resource_reference).type = "aperio.stay.v1/Reservation"];
+
+  // Its short reference.
+  string reference = 2;
+
+  // The day of arrival.
+  google.type.Date arrival_date = 3;
+
+  // The day of departure.
+  google.type.Date departure_date = 4;
+
+  // Where it is in its life, as the stay service names it: "PENDING",
+  // "CONFIRMED", "CHECKED_IN", "CHECKED_OUT", "CANCELLED".
+  string state = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // The stay as a sentence to say.
+  string spoken = 6;
+}
+
+// Request message for CancelBooking.
+message CancelBookingRequest {
+  // The venue booked at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The guest's phone, as the booking was made with.
+  string phone = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 6
+      max_len: 32
+    }
+  ];
+
+  // The booking's reference.
+  string reference = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 4
+      max_len: 16
+    }
+  ];
+
+  // Why, in the guest's words; kept on the booking.
+  string reason = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 500
+  ];
+}
+
+// Response message for CancelBooking.
+message CancelBookingResponse {
+  // The stay cancelled.
+  // Format: venues/{venue}/reservations/{reservation}
+  string reservation = 1 [(google.api.resource_reference).type = "aperio.stay.v1/Reservation"];
+
+  // The cancellation as a sentence to say.
+  string spoken = 2;
 }

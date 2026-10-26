@@ -16,22 +16,28 @@ import (
 )
 
 // JSON schemas for each RPC method, used as the inputSchema for MCP tools.
+var ConciergeService_CancelBookingSchemaJSON = `{"description":"Cancels a guest's stay, found by their phone and its reference, giving its rooms back. Call it only once the guest has agreed.","properties":{"phone":{"description":"The guest's phone, as the booking was made with.","maxLength":32,"minLength":6,"type":"string"},"reason":{"description":"Why, in the guest's words; kept on the booking.","maxLength":500,"type":"string"},"reference":{"description":"The booking's reference.","maxLength":16,"minLength":4,"type":"string"},"venue":{"description":"The venue booked at. Format: venues/{venue}","type":"string"}},"required":["venue","phone","reference"],"type":"object"}`
 var ConciergeService_ConfirmStaySchemaJSON = `{"description":"Books a held stay for the guest the hold names. Call it only once the guest has agreed to the dates, rooms and amount the hold gave.","properties":{"hold_token":{"description":"The token HoldStay returned.","minLength":1,"type":"string"},"venue":{"description":"The venue the hold is at. Format: venues/{venue}","type":"string"}},"required":["venue","hold_token"],"type":"object"}`
+var ConciergeService_FindBookingSchemaJSON = `{"description":"Finds a guest's stays by their phone and the booking's reference, or its day of arrival. Takes nothing.","properties":{"arrival_date":{"description":"The day of arrival, when the guest does not have the reference.","properties":{"day":{"description":"Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.","type":"integer"},"month":{"description":"Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.","type":"integer"},"year":{"description":"Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.","type":"integer"}},"required":[],"type":"object"},"phone":{"description":"The guest's phone, as the booking was made with.","maxLength":32,"minLength":6,"type":"string"},"reference":{"description":"The booking's reference, from ConfirmStay. This or arrival_date is needed: a phone number alone shows nothing, as anyone can say one.","maxLength":16,"type":"string"},"venue":{"description":"The venue booked at. Format: venues/{venue}","type":"string"}},"required":["venue","phone"],"type":"object"}`
 var ConciergeService_FindStaySchemaJSON = `{"description":"Finds the room types free for the dates and guests, priced, cheapest first. Takes nothing.","properties":{"adults":{"description":"How many adults.","maximum":60,"minimum":1,"type":"integer"},"arrival_date":{"description":"The day of arrival.","properties":{"day":{"description":"Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.","type":"integer"},"month":{"description":"Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.","type":"integer"},"year":{"description":"Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.","type":"integer"}},"required":[],"type":"object"},"children":{"description":"How many children.","maximum":60,"minimum":0,"type":"integer"},"nights":{"description":"How many nights.","maximum":30,"minimum":1,"type":"integer"},"rooms":{"description":"How many rooms; one when empty.","maximum":20,"minimum":0,"type":"integer"},"venue":{"description":"The venue to stay at. Format: venues/{venue}","type":"string"}},"required":["venue","arrival_date","nights","adults"],"type":"object"}`
 var ConciergeService_HoldStaySchemaJSON = `{"description":"Holds rooms of a room type for the dates for a few minutes, and prices them. Returns a token ConfirmStay books with.","properties":{"adults":{"description":"How many adults.","maximum":60,"minimum":1,"type":"integer"},"arrival_date":{"description":"The day of arrival.","properties":{"day":{"description":"Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.","type":"integer"},"month":{"description":"Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.","type":"integer"},"year":{"description":"Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.","type":"integer"}},"required":[],"type":"object"},"channel":{"description":"Where the guest is asking from: WEBSITE, PHONE, WHATSAPP.","enum":["CHANNEL_UNSPECIFIED","CHANNEL_WEBSITE","CHANNEL_PHONE","CHANNEL_WALK_IN","CHANNEL_EMAIL","CHANNEL_WHATSAPP","CHANNEL_INSTAGRAM","CHANNEL_FACEBOOK","CHANNEL_REFERRAL","CHANNEL_BOOKING_COM","CHANNEL_AIRBNB","CHANNEL_MAKEMYTRIP","CHANNEL_GOIBIBO","CHANNEL_AGODA","CHANNEL_EXPEDIA","CHANNEL_CHANNEL_MANAGER","CHANNEL_RFP","CHANNEL_OTHER"],"type":"string"},"children":{"description":"How many children.","maximum":60,"minimum":0,"type":"integer"},"email":{"anyOf":[{"const":""},{"format":"email"}],"description":"The guest's email, for the confirmation; optional.","type":"string"},"guest_display_name":{"description":"The guest's name, as the booking is to be under. Asked for when empty.","maxLength":200,"type":"string"},"nights":{"description":"How many nights.","maximum":30,"minimum":1,"type":"integer"},"phone":{"description":"The guest's phone, which finds a returning guest. Asked for when empty; on a call, the number calling.","maxLength":32,"type":"string"},"request_id":{"description":"A UUID for this attempt: the same one holds the same rooms again rather than more of them, so a retried request is safe (AIP-155).","format":"uuid","type":"string"},"rooms":{"description":"How many rooms; one when empty.","maximum":20,"minimum":0,"type":"integer"},"space":{"description":"The room type, from FindStay. Format: venues/{venue}/spaces/{space}","type":"string"},"special_requests":{"description":"Anything the guest asks for: an early check-in, a cot.","maxLength":1000,"type":"string"},"venue":{"description":"The venue to stay at. Format: venues/{venue}","type":"string"}},"required":["venue","space","arrival_date","nights","adults","request_id"],"type":"object"}`
 
 // JSON schemas for each RPC method's response, advertised as the tool's
 // outputSchema and satisfied by the structuredContent each handler returns.
+var ConciergeService_CancelBookingOutputSchemaJSON = ``
 var ConciergeService_ConfirmStayOutputSchemaJSON = ``
+var ConciergeService_FindBookingOutputSchemaJSON = ``
 var ConciergeService_FindStayOutputSchemaJSON = ``
 var ConciergeService_HoldStayOutputSchemaJSON = ``
 
 // MCP tool descriptors. Each pairs a schema with a tool name and description
 // so that LLM clients can discover and invoke the underlying RPCs.
 var (
-	ConciergeService_ConfirmStayTool = newTool("concierge_service-confirm_stay_v1", `Books a held stay for the guest the hold names. Call it only once the guest has agreed to the dates, rooms and amount the hold gave.`, ConciergeService_ConfirmStaySchemaJSON, ConciergeService_ConfirmStayOutputSchemaJSON, nil, "", nil)
-	ConciergeService_FindStayTool    = newTool("concierge_service-find_stay_v1", `Finds the room types free for the dates and guests, priced, cheapest first. Takes nothing.`, ConciergeService_FindStaySchemaJSON, ConciergeService_FindStayOutputSchemaJSON, nil, "", nil)
-	ConciergeService_HoldStayTool    = newTool("concierge_service-hold_stay_v1", `Holds rooms of a room type for the dates for a few minutes, and prices them. Returns a token ConfirmStay books with.`, ConciergeService_HoldStaySchemaJSON, ConciergeService_HoldStayOutputSchemaJSON, nil, "", nil)
+	ConciergeService_CancelBookingTool = newTool("concierge_service-cancel_booking_v1", `Cancels a guest's stay, found by their phone and its reference, giving its rooms back. Call it only once the guest has agreed.`, ConciergeService_CancelBookingSchemaJSON, ConciergeService_CancelBookingOutputSchemaJSON, nil, "", nil)
+	ConciergeService_ConfirmStayTool   = newTool("concierge_service-confirm_stay_v1", `Books a held stay for the guest the hold names. Call it only once the guest has agreed to the dates, rooms and amount the hold gave.`, ConciergeService_ConfirmStaySchemaJSON, ConciergeService_ConfirmStayOutputSchemaJSON, nil, "", nil)
+	ConciergeService_FindBookingTool   = newTool("concierge_service-find_booking_v1", `Finds a guest's stays by their phone and the booking's reference, or its day of arrival. Takes nothing.`, ConciergeService_FindBookingSchemaJSON, ConciergeService_FindBookingOutputSchemaJSON, nil, "", nil)
+	ConciergeService_FindStayTool      = newTool("concierge_service-find_stay_v1", `Finds the room types free for the dates and guests, priced, cheapest first. Takes nothing.`, ConciergeService_FindStaySchemaJSON, ConciergeService_FindStayOutputSchemaJSON, nil, "", nil)
+	ConciergeService_HoldStayTool      = newTool("concierge_service-hold_stay_v1", `Holds rooms of a room type for the dates for a few minutes, and prices them. Returns a token ConfirmStay books with.`, ConciergeService_HoldStaySchemaJSON, ConciergeService_HoldStayOutputSchemaJSON, nil, "", nil)
 )
 
 // ConciergeServiceMCPServer is the interface that users implement to handle MCP
@@ -40,7 +46,9 @@ var (
 // stream) matching the gRPC server interface — any type implementing
 // ConciergeServiceServer automatically satisfies this interface.
 type ConciergeServiceMCPServer interface {
+	CancelBooking(ctx context.Context, req *CancelBookingRequest) (*CancelBookingResponse, error)
 	ConfirmStay(ctx context.Context, req *ConfirmStayRequest) (*ConfirmStayResponse, error)
+	FindBooking(ctx context.Context, req *FindBookingRequest) (*FindBookingResponse, error)
 	FindStay(ctx context.Context, req *FindStayRequest) (*FindStayResponse, error)
 	HoldStay(ctx context.Context, req *HoldStayRequest) (*HoldStayResponse, error)
 }
@@ -48,7 +56,9 @@ type ConciergeServiceMCPServer interface {
 // ConciergeServiceMCPClient is the gRPC client interface used when forwarding MCP
 // tool calls to a remote gRPC server. It matches the generated gRPC client stub.
 type ConciergeServiceMCPClient interface {
+	CancelBooking(ctx context.Context, req *CancelBookingRequest, opts ...grpc.CallOption) (*CancelBookingResponse, error)
 	ConfirmStay(ctx context.Context, req *ConfirmStayRequest, opts ...grpc.CallOption) (*ConfirmStayResponse, error)
+	FindBooking(ctx context.Context, req *FindBookingRequest, opts ...grpc.CallOption) (*FindBookingResponse, error)
 	FindStay(ctx context.Context, req *FindStayRequest, opts ...grpc.CallOption) (*FindStayResponse, error)
 	HoldStay(ctx context.Context, req *HoldStayRequest, opts ...grpc.CallOption) (*HoldStayResponse, error)
 }
@@ -59,6 +69,31 @@ func RegisterConciergeServiceMCPHandler(s *mcp.Server, srv ConciergeServiceMCPSe
 	cfg := mcp.ApplyOptions(opts...)
 	_ = cfg
 	appResourceURI := mcp.AppResourceURI("ConciergeService")
+	{
+		tool := mcp.PrepareToolWithExtras(ConciergeService_CancelBookingTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq CancelBookingRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			// Dispatch through the unary interceptor chain (when configured) so
+			// middleware sees this call exactly as it would the wire RPC.
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.concierge.v1.ConciergeService/CancelBooking", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.CancelBooking(ctx, req.(*CancelBookingRequest))
+			})
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			resp := rawResp.(*CancelBookingResponse)
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
 	{
 		tool := mcp.PrepareToolWithExtras(ConciergeService_ConfirmStayTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
@@ -77,6 +112,31 @@ func RegisterConciergeServiceMCPHandler(s *mcp.Server, srv ConciergeServiceMCPSe
 				return mcp.HandleError(err)
 			}
 			resp := rawResp.(*ConfirmStayResponse)
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
+		tool := mcp.PrepareToolWithExtras(ConciergeService_FindBookingTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq FindBookingRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			// Dispatch through the unary interceptor chain (when configured) so
+			// middleware sees this call exactly as it would the wire RPC.
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.concierge.v1.ConciergeService/FindBooking", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.FindBooking(ctx, req.(*FindBookingRequest))
+			})
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			resp := rawResp.(*FindBookingResponse)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -188,6 +248,27 @@ func ForwardToConciergeServiceMCPClient(s *mcp.Server, client ConciergeServiceMC
 	_ = cfg
 	appResourceURI := mcp.AppResourceURI("ConciergeService")
 	{
+		tool := mcp.PrepareToolWithExtras(ConciergeService_CancelBookingTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq CancelBookingRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			ctx = mcp.ForwardMetadata(ctx)
+			resp, err := client.CancelBooking(ctx, &pbReq)
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
 		tool := mcp.PrepareToolWithExtras(ConciergeService_ConfirmStayTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -198,6 +279,27 @@ func ForwardToConciergeServiceMCPClient(s *mcp.Server, client ConciergeServiceMC
 			}
 			ctx = mcp.ForwardMetadata(ctx)
 			resp, err := client.ConfirmStay(ctx, &pbReq)
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
+		tool := mcp.PrepareToolWithExtras(ConciergeService_FindBookingTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq FindBookingRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			ctx = mcp.ForwardMetadata(ctx)
+			resp, err := client.FindBooking(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}

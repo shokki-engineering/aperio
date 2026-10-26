@@ -68,7 +68,7 @@ flowchart TB
 The API is one service per part of the business, each with only the methods
 its resources' lifecycles allow (27 October 2026): venue (8), catalog (12),
 pricing (11), guest (4), sales (15), stay (8), event (11), finance (13),
-operations (7), document (5) and concierge (3) -- 97 methods.
+operations (7), document (5) and concierge (5) -- 99 methods.
 
 | Area | Status | What exists | What is missing |
 |---|---|---|---|
@@ -90,7 +90,7 @@ operations (7), document (5) and concierge (3) -- 97 methods.
 | Server | Done | `main.go` on the HybridServer, every service on gRPC :50061, REST :8090 and MCP :8091 (108 tools); `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | the cache wired, query tracing, background jobs |
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
-| Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay over REST, gRPC and MCP (a freebusy hold the booking takes; a sealed token; guests found by phone); live test | more tasks (events, lookup, cancel, service requests); elicitation in the plugin; payment link; a LiveKit demo (M9) |
+| Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking over REST, gRPC and MCP (a freebusy hold the booking takes; a sealed token; guests found by phone, bookings by phone and reference); live tests | more tasks (event enquiries, service requests); elicitation in the plugin; payment link; a LiveKit demo (M9) |
 | Agents (MCP) | Served | 108 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone): shared messages and enums under `$defs`, code lists over 64 values as patterns, short nested descriptions, no output schemas | reservation tools still ~250 KB (the OpenTravel RoomStay vocabulary); task-level tools ("today's arrivals") |
 
 ## Milestones
