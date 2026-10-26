@@ -24,173 +24,98 @@ import (
 	"gorm.io/gorm"
 )
 
-// DishRepository is the provider-agnostic persistence surface for
-// Dish (venues/{venue}/dishes/{dish}): full-message writes, AIP-160/AIP-132 lists with
+// ActivityRepository is the provider-agnostic persistence surface for
+// Activity (leads/{lead}/activities/{activity}): full-message writes, AIP-160/AIP-132 lists with
 // opaque page tokens, field-mask updates, and etag optimistic concurrency.
-type DishRepository interface {
+type ActivityRepository interface {
 	// Create persists m under parent and returns the stored record.
-	Create(ctx context.Context, parent string, m *salespbv1.Dish) (*salespbv1.Dish, error)
+	Create(ctx context.Context, parent string, m *salespbv1.Activity) (*salespbv1.Activity, error)
 	// Get returns the record addressed by its resource name, or
 	// repox.ErrNotFound.
-	Get(ctx context.Context, name string) (*salespbv1.Dish, error)
+	Get(ctx context.Context, name string) (*salespbv1.Activity, error)
 	// List returns one page of records under parent.
-	List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Dish, string, error)
+	List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Activity, string, error)
 	// ListByKeys reads every record whose filter field field is one of keys
 	// -- a batched read by name, by parent, by any text, enum or reference
 	// field -- in statements of at most repox.KeysPerRead keys, at most
 	// repox.ReadParallelism at once, across every parent. in narrows
 	// each read; its page fields are ignored. See repox.ListByKeys for the
 	// order records come back in.
-	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Dish, error)
+	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Activity, error)
 	// Update persists the masked fields of m; an empty mask replaces every
 	// mutable field. m.Etag, when set, guards against concurrent writes
 	// (repox.ErrConflict).
-	Update(ctx context.Context, m *salespbv1.Dish, paths []string) (*salespbv1.Dish, error)
+	Update(ctx context.Context, m *salespbv1.Activity, paths []string) (*salespbv1.Activity, error)
 	// Delete removes the record addressed by its resource name.
 	Delete(ctx context.Context, name string) error
 }
 
-// DishHooks lets custom logic run inside the generated Dish
+// ActivityHooks lets custom logic run inside the generated Activity
 // adapters without editing them: normalization/derivation before writes,
 // derived fields after reads, and guards before deletes. Nil funcs are skipped.
-type DishHooks struct {
+type ActivityHooks struct {
 	// BeforeCreate runs after name/id resolution, before the row is written.
-	BeforeCreate func(ctx context.Context, m *salespbv1.Dish) error
+	BeforeCreate func(ctx context.Context, m *salespbv1.Activity) error
 	// AfterRead runs on every record a read returns (Get, List, and the
 	// re-reads writes return).
-	AfterRead func(ctx context.Context, m *salespbv1.Dish) error
+	AfterRead func(ctx context.Context, m *salespbv1.Activity) error
 	// BeforeUpdate runs after the mask is applied to the merged record,
 	// before it is written.
-	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.Dish, paths []string) error
+	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.Activity, paths []string) error
 	// BeforeDelete runs before the row is removed (or, with soft delete,
 	// marked deleted); returning an error vetoes.
 	BeforeDelete func(ctx context.Context, name string) error
 }
 
-// FixedPackageRepository is the provider-agnostic persistence surface for
-// FixedPackage (venues/{venue}/fixedPackages/{fixed_package}): full-message writes, AIP-160/AIP-132 lists with
+// LeadRepository is the provider-agnostic persistence surface for
+// Lead (leads/{lead}): full-message writes, AIP-160/AIP-132 lists with
 // opaque page tokens, field-mask updates, and etag optimistic concurrency.
-type FixedPackageRepository interface {
-	// Create persists m under parent and returns the stored record.
-	Create(ctx context.Context, parent string, m *salespbv1.FixedPackage) (*salespbv1.FixedPackage, error)
+type LeadRepository interface {
+	// Create persists m and returns the stored record.
+	Create(ctx context.Context, m *salespbv1.Lead) (*salespbv1.Lead, error)
 	// Get returns the record addressed by its resource name, or
 	// repox.ErrNotFound.
-	Get(ctx context.Context, name string) (*salespbv1.FixedPackage, error)
-	// List returns one page of records under parent.
-	List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.FixedPackage, string, error)
+	Get(ctx context.Context, name string) (*salespbv1.Lead, error)
+	// List returns one page of records.
+	List(ctx context.Context, in repox.ListInput) ([]*salespbv1.Lead, string, error)
 	// ListByKeys reads every record whose filter field field is one of keys
 	// -- a batched read by name, by parent, by any text, enum or reference
 	// field -- in statements of at most repox.KeysPerRead keys, at most
-	// repox.ReadParallelism at once, across every parent. in narrows
+	// repox.ReadParallelism at once. in narrows
 	// each read; its page fields are ignored. See repox.ListByKeys for the
 	// order records come back in.
-	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.FixedPackage, error)
+	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Lead, error)
 	// Update persists the masked fields of m; an empty mask replaces every
 	// mutable field. m.Etag, when set, guards against concurrent writes
 	// (repox.ErrConflict).
-	Update(ctx context.Context, m *salespbv1.FixedPackage, paths []string) (*salespbv1.FixedPackage, error)
+	Update(ctx context.Context, m *salespbv1.Lead, paths []string) (*salespbv1.Lead, error)
+	// UpdateOutputOnly persists the server-owned (OUTPUT_ONLY) fields of m that
+	// paths names -- a state, an expiry, a computed list. Update refuses them,
+	// since a client may never set them; this is for the service that owns
+	// them. paths must name at least one; m.Etag guards as in Update.
+	UpdateOutputOnly(ctx context.Context, m *salespbv1.Lead, paths []string) (*salespbv1.Lead, error)
+	// UpdateWithOutputOnly is Update plus the server-owned (OUTPUT_ONLY)
+	// fields of m that outputPaths names, in the same write under the same
+	// etag guard. paths keeps Update's meaning (an OUTPUT_ONLY path in it is
+	// still ignored, AIP-203). A BeforeUpdate hook that sets one of the
+	// outputPaths fields on the merged record has it written too.
+	UpdateWithOutputOnly(ctx context.Context, m *salespbv1.Lead, paths, outputPaths []string) (*salespbv1.Lead, error)
 	// Delete removes the record addressed by its resource name.
 	Delete(ctx context.Context, name string) error
 }
 
-// FixedPackageHooks lets custom logic run inside the generated FixedPackage
+// LeadHooks lets custom logic run inside the generated Lead
 // adapters without editing them: normalization/derivation before writes,
 // derived fields after reads, and guards before deletes. Nil funcs are skipped.
-type FixedPackageHooks struct {
+type LeadHooks struct {
 	// BeforeCreate runs after name/id resolution, before the row is written.
-	BeforeCreate func(ctx context.Context, m *salespbv1.FixedPackage) error
+	BeforeCreate func(ctx context.Context, m *salespbv1.Lead) error
 	// AfterRead runs on every record a read returns (Get, List, and the
 	// re-reads writes return).
-	AfterRead func(ctx context.Context, m *salespbv1.FixedPackage) error
+	AfterRead func(ctx context.Context, m *salespbv1.Lead) error
 	// BeforeUpdate runs after the mask is applied to the merged record,
 	// before it is written.
-	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.FixedPackage, paths []string) error
-	// BeforeDelete runs before the row is removed (or, with soft delete,
-	// marked deleted); returning an error vetoes.
-	BeforeDelete func(ctx context.Context, name string) error
-}
-
-// MenuRepository is the provider-agnostic persistence surface for
-// Menu (venues/{venue}/menus/{menu}): full-message writes, AIP-160/AIP-132 lists with
-// opaque page tokens, field-mask updates, and etag optimistic concurrency.
-type MenuRepository interface {
-	// Create persists m under parent and returns the stored record.
-	Create(ctx context.Context, parent string, m *salespbv1.Menu) (*salespbv1.Menu, error)
-	// Get returns the record addressed by its resource name, or
-	// repox.ErrNotFound.
-	Get(ctx context.Context, name string) (*salespbv1.Menu, error)
-	// List returns one page of records under parent.
-	List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Menu, string, error)
-	// ListByKeys reads every record whose filter field field is one of keys
-	// -- a batched read by name, by parent, by any text, enum or reference
-	// field -- in statements of at most repox.KeysPerRead keys, at most
-	// repox.ReadParallelism at once, across every parent. in narrows
-	// each read; its page fields are ignored. See repox.ListByKeys for the
-	// order records come back in.
-	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Menu, error)
-	// Update persists the masked fields of m; an empty mask replaces every
-	// mutable field. m.Etag, when set, guards against concurrent writes
-	// (repox.ErrConflict).
-	Update(ctx context.Context, m *salespbv1.Menu, paths []string) (*salespbv1.Menu, error)
-	// Delete removes the record addressed by its resource name.
-	Delete(ctx context.Context, name string) error
-}
-
-// MenuHooks lets custom logic run inside the generated Menu
-// adapters without editing them: normalization/derivation before writes,
-// derived fields after reads, and guards before deletes. Nil funcs are skipped.
-type MenuHooks struct {
-	// BeforeCreate runs after name/id resolution, before the row is written.
-	BeforeCreate func(ctx context.Context, m *salespbv1.Menu) error
-	// AfterRead runs on every record a read returns (Get, List, and the
-	// re-reads writes return).
-	AfterRead func(ctx context.Context, m *salespbv1.Menu) error
-	// BeforeUpdate runs after the mask is applied to the merged record,
-	// before it is written.
-	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.Menu, paths []string) error
-	// BeforeDelete runs before the row is removed (or, with soft delete,
-	// marked deleted); returning an error vetoes.
-	BeforeDelete func(ctx context.Context, name string) error
-}
-
-// PriceRuleRepository is the provider-agnostic persistence surface for
-// PriceRule (venues/{venue}/priceRules/{price_rule}): full-message writes, AIP-160/AIP-132 lists with
-// opaque page tokens, field-mask updates, and etag optimistic concurrency.
-type PriceRuleRepository interface {
-	// Create persists m under parent and returns the stored record.
-	Create(ctx context.Context, parent string, m *salespbv1.PriceRule) (*salespbv1.PriceRule, error)
-	// Get returns the record addressed by its resource name, or
-	// repox.ErrNotFound.
-	Get(ctx context.Context, name string) (*salespbv1.PriceRule, error)
-	// List returns one page of records under parent.
-	List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.PriceRule, string, error)
-	// ListByKeys reads every record whose filter field field is one of keys
-	// -- a batched read by name, by parent, by any text, enum or reference
-	// field -- in statements of at most repox.KeysPerRead keys, at most
-	// repox.ReadParallelism at once, across every parent. in narrows
-	// each read; its page fields are ignored. See repox.ListByKeys for the
-	// order records come back in.
-	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.PriceRule, error)
-	// Update persists the masked fields of m; an empty mask replaces every
-	// mutable field. m.Etag, when set, guards against concurrent writes
-	// (repox.ErrConflict).
-	Update(ctx context.Context, m *salespbv1.PriceRule, paths []string) (*salespbv1.PriceRule, error)
-	// Delete removes the record addressed by its resource name.
-	Delete(ctx context.Context, name string) error
-}
-
-// PriceRuleHooks lets custom logic run inside the generated PriceRule
-// adapters without editing them: normalization/derivation before writes,
-// derived fields after reads, and guards before deletes. Nil funcs are skipped.
-type PriceRuleHooks struct {
-	// BeforeCreate runs after name/id resolution, before the row is written.
-	BeforeCreate func(ctx context.Context, m *salespbv1.PriceRule) error
-	// AfterRead runs on every record a read returns (Get, List, and the
-	// re-reads writes return).
-	AfterRead func(ctx context.Context, m *salespbv1.PriceRule) error
-	// BeforeUpdate runs after the mask is applied to the merged record,
-	// before it is written.
-	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.PriceRule, paths []string) error
+	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.Lead, paths []string) error
 	// BeforeDelete runs before the row is removed (or, with soft delete,
 	// marked deleted); returning an error vetoes.
 	BeforeDelete func(ctx context.Context, name string) error
@@ -250,57 +175,11 @@ type QuoteHooks struct {
 	BeforeDelete func(ctx context.Context, name string) error
 }
 
-// SeasonRepository is the provider-agnostic persistence surface for
-// Season (venues/{venue}/seasons/{season}): full-message writes, AIP-160/AIP-132 lists with
-// opaque page tokens, field-mask updates, and etag optimistic concurrency.
-type SeasonRepository interface {
-	// Create persists m under parent and returns the stored record.
-	Create(ctx context.Context, parent string, m *salespbv1.Season) (*salespbv1.Season, error)
-	// Get returns the record addressed by its resource name, or
-	// repox.ErrNotFound.
-	Get(ctx context.Context, name string) (*salespbv1.Season, error)
-	// List returns one page of records under parent.
-	List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Season, string, error)
-	// ListByKeys reads every record whose filter field field is one of keys
-	// -- a batched read by name, by parent, by any text, enum or reference
-	// field -- in statements of at most repox.KeysPerRead keys, at most
-	// repox.ReadParallelism at once, across every parent. in narrows
-	// each read; its page fields are ignored. See repox.ListByKeys for the
-	// order records come back in.
-	ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Season, error)
-	// Update persists the masked fields of m; an empty mask replaces every
-	// mutable field. m.Etag, when set, guards against concurrent writes
-	// (repox.ErrConflict).
-	Update(ctx context.Context, m *salespbv1.Season, paths []string) (*salespbv1.Season, error)
-	// Delete removes the record addressed by its resource name.
-	Delete(ctx context.Context, name string) error
-}
-
-// SeasonHooks lets custom logic run inside the generated Season
-// adapters without editing them: normalization/derivation before writes,
-// derived fields after reads, and guards before deletes. Nil funcs are skipped.
-type SeasonHooks struct {
-	// BeforeCreate runs after name/id resolution, before the row is written.
-	BeforeCreate func(ctx context.Context, m *salespbv1.Season) error
-	// AfterRead runs on every record a read returns (Get, List, and the
-	// re-reads writes return).
-	AfterRead func(ctx context.Context, m *salespbv1.Season) error
-	// BeforeUpdate runs after the mask is applied to the merged record,
-	// before it is written.
-	BeforeUpdate func(ctx context.Context, existing, merged *salespbv1.Season, paths []string) error
-	// BeforeDelete runs before the row is removed (or, with soft delete,
-	// marked deleted); returning an error vetoes.
-	BeforeDelete func(ctx context.Context, name string) error
-}
-
 // Repositories bundles this schema's repository surfaces behind one factory.
 type Repositories struct {
-	Dishes        DishRepository
-	FixedPackages FixedPackageRepository
-	Menus         MenuRepository
-	PriceRules    PriceRuleRepository
-	Quotes        QuoteRepository
-	Seasons       SeasonRepository
+	Activities ActivityRepository
+	Leads      LeadRepository
+	Quotes     QuoteRepository
 }
 
 // Batch queues writes across this schema's resources -- the value-object rows
@@ -309,42 +188,30 @@ type Repositories struct {
 // repox.Unit (NewBatchIn), it commits with the writes of other schemas too.
 // Hooks do not run for queued writes.
 type Batch interface {
-	// CreateDish queues a create and returns the name the record will have.
-	CreateDish(parent string, m *salespbv1.Dish) (string, error)
-	// UpdateDish queues Update: the masked fields of m, every mutable
+	// CreateActivity queues a create and returns the name the record will have.
+	CreateActivity(parent string, m *salespbv1.Activity) (string, error)
+	// UpdateActivity queues Update: the masked fields of m, every mutable
 	// field when paths is empty. m.Etag, when set, guards it; a guard that
 	// fails fails the whole Commit with repox.ErrConflict.
-	UpdateDish(m *salespbv1.Dish, paths []string)
-	// DeleteDish queues the record's removal for good; a record already
+	UpdateActivity(m *salespbv1.Activity, paths []string)
+	// DeleteActivity queues the record's removal for good; a record already
 	// gone is not an error.
-	DeleteDish(name string)
-	// CreateFixedPackage queues a create and returns the name the record will have.
-	CreateFixedPackage(parent string, m *salespbv1.FixedPackage) (string, error)
-	// UpdateFixedPackage queues Update: the masked fields of m, every mutable
+	DeleteActivity(name string)
+	// CreateLead queues a create and returns the name the record will have.
+	CreateLead(m *salespbv1.Lead) (string, error)
+	// UpdateLead queues Update: the masked fields of m, every mutable
 	// field when paths is empty. m.Etag, when set, guards it; a guard that
 	// fails fails the whole Commit with repox.ErrConflict.
-	UpdateFixedPackage(m *salespbv1.FixedPackage, paths []string)
-	// DeleteFixedPackage queues the record's removal for good; a record already
+	UpdateLead(m *salespbv1.Lead, paths []string)
+	// UpdateLeadOutputOnly queues UpdateOutputOnly; m.Etag, when set,
+	// guards it.
+	UpdateLeadOutputOnly(m *salespbv1.Lead, paths []string)
+	// UpdateLeadWithOutputOnly queues UpdateWithOutputOnly: Update plus
+	// the server-owned fields outputPaths names, under one guard.
+	UpdateLeadWithOutputOnly(m *salespbv1.Lead, paths, outputPaths []string)
+	// DeleteLead queues the record's removal for good; a record already
 	// gone is not an error.
-	DeleteFixedPackage(name string)
-	// CreateMenu queues a create and returns the name the record will have.
-	CreateMenu(parent string, m *salespbv1.Menu) (string, error)
-	// UpdateMenu queues Update: the masked fields of m, every mutable
-	// field when paths is empty. m.Etag, when set, guards it; a guard that
-	// fails fails the whole Commit with repox.ErrConflict.
-	UpdateMenu(m *salespbv1.Menu, paths []string)
-	// DeleteMenu queues the record's removal for good; a record already
-	// gone is not an error.
-	DeleteMenu(name string)
-	// CreatePriceRule queues a create and returns the name the record will have.
-	CreatePriceRule(parent string, m *salespbv1.PriceRule) (string, error)
-	// UpdatePriceRule queues Update: the masked fields of m, every mutable
-	// field when paths is empty. m.Etag, when set, guards it; a guard that
-	// fails fails the whole Commit with repox.ErrConflict.
-	UpdatePriceRule(m *salespbv1.PriceRule, paths []string)
-	// DeletePriceRule queues the record's removal for good; a record already
-	// gone is not an error.
-	DeletePriceRule(name string)
+	DeleteLead(name string)
 	// CreateQuote queues a create and returns the name the record will have.
 	CreateQuote(parent string, m *salespbv1.Quote) (string, error)
 	// UpdateQuote queues Update: the masked fields of m, every mutable
@@ -360,15 +227,6 @@ type Batch interface {
 	// DeleteQuote queues the record's removal for good; a record already
 	// gone is not an error.
 	DeleteQuote(name string)
-	// CreateSeason queues a create and returns the name the record will have.
-	CreateSeason(parent string, m *salespbv1.Season) (string, error)
-	// UpdateSeason queues Update: the masked fields of m, every mutable
-	// field when paths is empty. m.Etag, when set, guards it; a guard that
-	// fails fails the whole Commit with repox.ErrConflict.
-	UpdateSeason(m *salespbv1.Season, paths []string)
-	// DeleteSeason queues the record's removal for good; a record already
-	// gone is not an error.
-	DeleteSeason(name string)
 	// Commit applies every write queued in the batch's Unit, by this Batch or
 	// any other built over it; see repox.Unit.Commit. GORM runs them in one
 	// transaction. GraphQL sends a guarded Update<Model>OutputOnly ahead, one
@@ -402,26 +260,17 @@ func NewBatchIn(u *repox.Unit, opts ...Option) Batch {
 // options collects the per-resource customizations the factories thread into
 // the adapters they build.
 type options struct {
-	references               *repox.References
-	projections              *repox.Projections
-	dishHooks                DishHooks
-	dishOverrides            map[string]filterx.SQLHandler
-	fixedPackageHooks        FixedPackageHooks
-	fixedPackageOverrides    map[string]filterx.SQLHandler
-	menuHooks                MenuHooks
-	menuOverrides            map[string]filterx.SQLHandler
-	priceRuleHooks           PriceRuleHooks
-	priceRuleOverrides       map[string]filterx.SQLHandler
-	quoteHooks               QuoteHooks
-	quoteOverrides           map[string]filterx.SQLHandler
-	seasonHooks              SeasonHooks
-	seasonOverrides          map[string]filterx.SQLHandler
-	dishGQLOverrides         map[string]filterx.GraphQLHandler
-	fixedPackageGQLOverrides map[string]filterx.GraphQLHandler
-	menuGQLOverrides         map[string]filterx.GraphQLHandler
-	priceRuleGQLOverrides    map[string]filterx.GraphQLHandler
-	quoteGQLOverrides        map[string]filterx.GraphQLHandler
-	seasonGQLOverrides       map[string]filterx.GraphQLHandler
+	references           *repox.References
+	projections          *repox.Projections
+	activityHooks        ActivityHooks
+	activityOverrides    map[string]filterx.SQLHandler
+	leadHooks            LeadHooks
+	leadOverrides        map[string]filterx.SQLHandler
+	quoteHooks           QuoteHooks
+	quoteOverrides       map[string]filterx.SQLHandler
+	activityGQLOverrides map[string]filterx.GraphQLHandler
+	leadGQLOverrides     map[string]filterx.GraphQLHandler
+	quoteGQLOverrides    map[string]filterx.GraphQLHandler
 }
 
 // Option customizes the adapters a factory builds.
@@ -443,67 +292,35 @@ func WithReferences(refs *repox.References) Option {
 	return func(o *options) { o.references = refs }
 }
 
-// WithDishHooks installs h on the Dish adapters.
-func WithDishHooks(h DishHooks) Option {
-	return func(o *options) { o.dishHooks = h }
+// WithActivityHooks installs h on the Activity adapters.
+func WithActivityHooks(h ActivityHooks) Option {
+	return func(o *options) { o.activityHooks = h }
 }
 
-// WithDishListOverride substitutes the generated filter dispatch for one
-// Dish filter field (e.g. a derived state computed via subqueries).
-func WithDishListOverride(field string, h filterx.SQLHandler) Option {
+// WithActivityListOverride substitutes the generated filter dispatch for one
+// Activity filter field (e.g. a derived state computed via subqueries).
+func WithActivityListOverride(field string, h filterx.SQLHandler) Option {
 	return func(o *options) {
-		if o.dishOverrides == nil {
-			o.dishOverrides = map[string]filterx.SQLHandler{}
+		if o.activityOverrides == nil {
+			o.activityOverrides = map[string]filterx.SQLHandler{}
 		}
-		o.dishOverrides[field] = h
+		o.activityOverrides[field] = h
 	}
 }
 
-// WithFixedPackageHooks installs h on the FixedPackage adapters.
-func WithFixedPackageHooks(h FixedPackageHooks) Option {
-	return func(o *options) { o.fixedPackageHooks = h }
+// WithLeadHooks installs h on the Lead adapters.
+func WithLeadHooks(h LeadHooks) Option {
+	return func(o *options) { o.leadHooks = h }
 }
 
-// WithFixedPackageListOverride substitutes the generated filter dispatch for one
-// FixedPackage filter field (e.g. a derived state computed via subqueries).
-func WithFixedPackageListOverride(field string, h filterx.SQLHandler) Option {
+// WithLeadListOverride substitutes the generated filter dispatch for one
+// Lead filter field (e.g. a derived state computed via subqueries).
+func WithLeadListOverride(field string, h filterx.SQLHandler) Option {
 	return func(o *options) {
-		if o.fixedPackageOverrides == nil {
-			o.fixedPackageOverrides = map[string]filterx.SQLHandler{}
+		if o.leadOverrides == nil {
+			o.leadOverrides = map[string]filterx.SQLHandler{}
 		}
-		o.fixedPackageOverrides[field] = h
-	}
-}
-
-// WithMenuHooks installs h on the Menu adapters.
-func WithMenuHooks(h MenuHooks) Option {
-	return func(o *options) { o.menuHooks = h }
-}
-
-// WithMenuListOverride substitutes the generated filter dispatch for one
-// Menu filter field (e.g. a derived state computed via subqueries).
-func WithMenuListOverride(field string, h filterx.SQLHandler) Option {
-	return func(o *options) {
-		if o.menuOverrides == nil {
-			o.menuOverrides = map[string]filterx.SQLHandler{}
-		}
-		o.menuOverrides[field] = h
-	}
-}
-
-// WithPriceRuleHooks installs h on the PriceRule adapters.
-func WithPriceRuleHooks(h PriceRuleHooks) Option {
-	return func(o *options) { o.priceRuleHooks = h }
-}
-
-// WithPriceRuleListOverride substitutes the generated filter dispatch for one
-// PriceRule filter field (e.g. a derived state computed via subqueries).
-func WithPriceRuleListOverride(field string, h filterx.SQLHandler) Option {
-	return func(o *options) {
-		if o.priceRuleOverrides == nil {
-			o.priceRuleOverrides = map[string]filterx.SQLHandler{}
-		}
-		o.priceRuleOverrides[field] = h
+		o.leadOverrides[field] = h
 	}
 }
 
@@ -523,63 +340,25 @@ func WithQuoteListOverride(field string, h filterx.SQLHandler) Option {
 	}
 }
 
-// WithSeasonHooks installs h on the Season adapters.
-func WithSeasonHooks(h SeasonHooks) Option {
-	return func(o *options) { o.seasonHooks = h }
-}
-
-// WithSeasonListOverride substitutes the generated filter dispatch for one
-// Season filter field (e.g. a derived state computed via subqueries).
-func WithSeasonListOverride(field string, h filterx.SQLHandler) Option {
+// WithActivityGraphQLListOverride substitutes the generated filter dispatch
+// for one Activity filter field on the GraphQL adapters.
+func WithActivityGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
 	return func(o *options) {
-		if o.seasonOverrides == nil {
-			o.seasonOverrides = map[string]filterx.SQLHandler{}
+		if o.activityGQLOverrides == nil {
+			o.activityGQLOverrides = map[string]filterx.GraphQLHandler{}
 		}
-		o.seasonOverrides[field] = h
+		o.activityGQLOverrides[field] = h
 	}
 }
 
-// WithDishGraphQLListOverride substitutes the generated filter dispatch
-// for one Dish filter field on the GraphQL adapters.
-func WithDishGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
+// WithLeadGraphQLListOverride substitutes the generated filter dispatch
+// for one Lead filter field on the GraphQL adapters.
+func WithLeadGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
 	return func(o *options) {
-		if o.dishGQLOverrides == nil {
-			o.dishGQLOverrides = map[string]filterx.GraphQLHandler{}
+		if o.leadGQLOverrides == nil {
+			o.leadGQLOverrides = map[string]filterx.GraphQLHandler{}
 		}
-		o.dishGQLOverrides[field] = h
-	}
-}
-
-// WithFixedPackageGraphQLListOverride substitutes the generated filter dispatch
-// for one FixedPackage filter field on the GraphQL adapters.
-func WithFixedPackageGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
-	return func(o *options) {
-		if o.fixedPackageGQLOverrides == nil {
-			o.fixedPackageGQLOverrides = map[string]filterx.GraphQLHandler{}
-		}
-		o.fixedPackageGQLOverrides[field] = h
-	}
-}
-
-// WithMenuGraphQLListOverride substitutes the generated filter dispatch
-// for one Menu filter field on the GraphQL adapters.
-func WithMenuGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
-	return func(o *options) {
-		if o.menuGQLOverrides == nil {
-			o.menuGQLOverrides = map[string]filterx.GraphQLHandler{}
-		}
-		o.menuGQLOverrides[field] = h
-	}
-}
-
-// WithPriceRuleGraphQLListOverride substitutes the generated filter dispatch
-// for one PriceRule filter field on the GraphQL adapters.
-func WithPriceRuleGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
-	return func(o *options) {
-		if o.priceRuleGQLOverrides == nil {
-			o.priceRuleGQLOverrides = map[string]filterx.GraphQLHandler{}
-		}
-		o.priceRuleGQLOverrides[field] = h
+		o.leadGQLOverrides[field] = h
 	}
 }
 
@@ -591,17 +370,6 @@ func WithQuoteGraphQLListOverride(field string, h filterx.GraphQLHandler) Option
 			o.quoteGQLOverrides = map[string]filterx.GraphQLHandler{}
 		}
 		o.quoteGQLOverrides[field] = h
-	}
-}
-
-// WithSeasonGraphQLListOverride substitutes the generated filter dispatch
-// for one Season filter field on the GraphQL adapters.
-func WithSeasonGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
-	return func(o *options) {
-		if o.seasonGQLOverrides == nil {
-			o.seasonGQLOverrides = map[string]filterx.GraphQLHandler{}
-		}
-		o.seasonGQLOverrides[field] = h
 	}
 }
 
@@ -625,17 +393,14 @@ func NewGraphQL(svc *aperioql.Service, opts ...Option) Repositories {
 		opt(&o)
 	}
 	repos := Repositories{
-		Dishes:        &GraphQLDishRepository{Svc: svc, Hooks: o.dishHooks, Refs: o.references, ListOverrides: o.dishGQLOverrides},
-		FixedPackages: &GraphQLFixedPackageRepository{Svc: svc, Hooks: o.fixedPackageHooks, Refs: o.references, ListOverrides: o.fixedPackageGQLOverrides},
-		Menus:         &GraphQLMenuRepository{Svc: svc, Hooks: o.menuHooks, Refs: o.references, ListOverrides: o.menuGQLOverrides},
-		PriceRules:    &GraphQLPriceRuleRepository{Svc: svc, Hooks: o.priceRuleHooks, Refs: o.references, ListOverrides: o.priceRuleGQLOverrides},
-		Quotes:        &GraphQLQuoteRepository{Svc: svc, Hooks: o.quoteHooks, Refs: o.references, ListOverrides: o.quoteGQLOverrides},
-		Seasons:       &GraphQLSeasonRepository{Svc: svc, Hooks: o.seasonHooks, Refs: o.references, ListOverrides: o.seasonGQLOverrides},
+		Activities: &GraphQLActivityRepository{Svc: svc, Hooks: o.activityHooks, Refs: o.references, ListOverrides: o.activityGQLOverrides},
+		Leads:      &GraphQLLeadRepository{Svc: svc, Hooks: o.leadHooks, Refs: o.references, ListOverrides: o.leadGQLOverrides},
+		Quotes:     &GraphQLQuoteRepository{Svc: svc, Hooks: o.quoteHooks, Refs: o.references, ListOverrides: o.quoteGQLOverrides},
 	}
 	if p := o.projections; p != nil {
-		if p.Watches("aperio.sales.v1/Dish") {
-			r := repos.Dishes
-			repos.Dishes = &projectedDishRepository{DishRepository: r, run: func(ctx context.Context, f func(DishRepository) ([]repox.Change, error)) error {
+		if p.Watches("aperio.sales.v1/Activity") {
+			r := repos.Activities
+			repos.Activities = &projectedActivityRepository{ActivityRepository: r, run: func(ctx context.Context, f func(ActivityRepository) ([]repox.Change, error)) error {
 				changes, err := f(r)
 				if err != nil {
 					return err
@@ -643,29 +408,9 @@ func NewGraphQL(svc *aperioql.Service, opts ...Option) Repositories {
 				return p.ProjectGraphQLAfter(ctx, repox.Conn{GraphQL: svc}, changes)
 			}}
 		}
-		if p.Watches("aperio.sales.v1/FixedPackage") {
-			r := repos.FixedPackages
-			repos.FixedPackages = &projectedFixedPackageRepository{FixedPackageRepository: r, run: func(ctx context.Context, f func(FixedPackageRepository) ([]repox.Change, error)) error {
-				changes, err := f(r)
-				if err != nil {
-					return err
-				}
-				return p.ProjectGraphQLAfter(ctx, repox.Conn{GraphQL: svc}, changes)
-			}}
-		}
-		if p.Watches("aperio.sales.v1/Menu") {
-			r := repos.Menus
-			repos.Menus = &projectedMenuRepository{MenuRepository: r, run: func(ctx context.Context, f func(MenuRepository) ([]repox.Change, error)) error {
-				changes, err := f(r)
-				if err != nil {
-					return err
-				}
-				return p.ProjectGraphQLAfter(ctx, repox.Conn{GraphQL: svc}, changes)
-			}}
-		}
-		if p.Watches("aperio.sales.v1/PriceRule") {
-			r := repos.PriceRules
-			repos.PriceRules = &projectedPriceRuleRepository{PriceRuleRepository: r, run: func(ctx context.Context, f func(PriceRuleRepository) ([]repox.Change, error)) error {
+		if p.Watches("aperio.sales.v1/Lead") {
+			r := repos.Leads
+			repos.Leads = &projectedLeadRepository{LeadRepository: r, run: func(ctx context.Context, f func(LeadRepository) ([]repox.Change, error)) error {
 				changes, err := f(r)
 				if err != nil {
 					return err
@@ -676,16 +421,6 @@ func NewGraphQL(svc *aperioql.Service, opts ...Option) Repositories {
 		if p.Watches("aperio.sales.v1/Quote") {
 			r := repos.Quotes
 			repos.Quotes = &projectedQuoteRepository{QuoteRepository: r, run: func(ctx context.Context, f func(QuoteRepository) ([]repox.Change, error)) error {
-				changes, err := f(r)
-				if err != nil {
-					return err
-				}
-				return p.ProjectGraphQLAfter(ctx, repox.Conn{GraphQL: svc}, changes)
-			}}
-		}
-		if p.Watches("aperio.sales.v1/Season") {
-			r := repos.Seasons
-			repos.Seasons = &projectedSeasonRepository{SeasonRepository: r, run: func(ctx context.Context, f func(SeasonRepository) ([]repox.Change, error)) error {
 				changes, err := f(r)
 				if err != nil {
 					return err
@@ -704,17 +439,14 @@ func NewGorm(db *gorm.DB, opts ...Option) Repositories {
 		opt(&o)
 	}
 	repos := Repositories{
-		Dishes:        &GormDishRepository{DB: db, Hooks: o.dishHooks, Refs: o.references, ListOverrides: o.dishOverrides},
-		FixedPackages: &GormFixedPackageRepository{DB: db, Hooks: o.fixedPackageHooks, Refs: o.references, ListOverrides: o.fixedPackageOverrides},
-		Menus:         &GormMenuRepository{DB: db, Hooks: o.menuHooks, Refs: o.references, ListOverrides: o.menuOverrides},
-		PriceRules:    &GormPriceRuleRepository{DB: db, Hooks: o.priceRuleHooks, Refs: o.references, ListOverrides: o.priceRuleOverrides},
-		Quotes:        &GormQuoteRepository{DB: db, Hooks: o.quoteHooks, Refs: o.references, ListOverrides: o.quoteOverrides},
-		Seasons:       &GormSeasonRepository{DB: db, Hooks: o.seasonHooks, Refs: o.references, ListOverrides: o.seasonOverrides},
+		Activities: &GormActivityRepository{DB: db, Hooks: o.activityHooks, Refs: o.references, ListOverrides: o.activityOverrides},
+		Leads:      &GormLeadRepository{DB: db, Hooks: o.leadHooks, Refs: o.references, ListOverrides: o.leadOverrides},
+		Quotes:     &GormQuoteRepository{DB: db, Hooks: o.quoteHooks, Refs: o.references, ListOverrides: o.quoteOverrides},
 	}
 	if p := o.projections; p != nil {
-		if p.Watches("aperio.sales.v1/Dish") {
-			g := repos.Dishes.(*GormDishRepository)
-			repos.Dishes = &projectedDishRepository{DishRepository: g, run: func(ctx context.Context, f func(DishRepository) ([]repox.Change, error)) error {
+		if p.Watches("aperio.sales.v1/Activity") {
+			g := repos.Activities.(*GormActivityRepository)
+			repos.Activities = &projectedActivityRepository{ActivityRepository: g, run: func(ctx context.Context, f func(ActivityRepository) ([]repox.Change, error)) error {
 				// The write and its projections in one transaction: the
 				// adapter is rebound to it, so its own transactions nest as
 				// savepoints and its re-reads see the write. The feed hears
@@ -736,57 +468,9 @@ func NewGorm(db *gorm.DB, opts ...Option) Repositories {
 				return err
 			}}
 		}
-		if p.Watches("aperio.sales.v1/FixedPackage") {
-			g := repos.FixedPackages.(*GormFixedPackageRepository)
-			repos.FixedPackages = &projectedFixedPackageRepository{FixedPackageRepository: g, run: func(ctx context.Context, f func(FixedPackageRepository) ([]repox.Change, error)) error {
-				// The write and its projections in one transaction: the
-				// adapter is rebound to it, so its own transactions nest as
-				// savepoints and its re-reads see the write. The feed hears
-				// of it once it commits.
-				var committed []repox.Committed
-				err := repox.MapGormErr(db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-					bound := *g
-					bound.DB = tx
-					changes, err := f(&bound)
-					if err != nil {
-						return err
-					}
-					committed, err = p.Gorm(ctx, tx, changes)
-					return err
-				}))
-				if err == nil {
-					p.Publish(ctx, committed)
-				}
-				return err
-			}}
-		}
-		if p.Watches("aperio.sales.v1/Menu") {
-			g := repos.Menus.(*GormMenuRepository)
-			repos.Menus = &projectedMenuRepository{MenuRepository: g, run: func(ctx context.Context, f func(MenuRepository) ([]repox.Change, error)) error {
-				// The write and its projections in one transaction: the
-				// adapter is rebound to it, so its own transactions nest as
-				// savepoints and its re-reads see the write. The feed hears
-				// of it once it commits.
-				var committed []repox.Committed
-				err := repox.MapGormErr(db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-					bound := *g
-					bound.DB = tx
-					changes, err := f(&bound)
-					if err != nil {
-						return err
-					}
-					committed, err = p.Gorm(ctx, tx, changes)
-					return err
-				}))
-				if err == nil {
-					p.Publish(ctx, committed)
-				}
-				return err
-			}}
-		}
-		if p.Watches("aperio.sales.v1/PriceRule") {
-			g := repos.PriceRules.(*GormPriceRuleRepository)
-			repos.PriceRules = &projectedPriceRuleRepository{PriceRuleRepository: g, run: func(ctx context.Context, f func(PriceRuleRepository) ([]repox.Change, error)) error {
+		if p.Watches("aperio.sales.v1/Lead") {
+			g := repos.Leads.(*GormLeadRepository)
+			repos.Leads = &projectedLeadRepository{LeadRepository: g, run: func(ctx context.Context, f func(LeadRepository) ([]repox.Change, error)) error {
 				// The write and its projections in one transaction: the
 				// adapter is rebound to it, so its own transactions nest as
 				// savepoints and its re-reads see the write. The feed hears
@@ -832,30 +516,6 @@ func NewGorm(db *gorm.DB, opts ...Option) Repositories {
 				return err
 			}}
 		}
-		if p.Watches("aperio.sales.v1/Season") {
-			g := repos.Seasons.(*GormSeasonRepository)
-			repos.Seasons = &projectedSeasonRepository{SeasonRepository: g, run: func(ctx context.Context, f func(SeasonRepository) ([]repox.Change, error)) error {
-				// The write and its projections in one transaction: the
-				// adapter is rebound to it, so its own transactions nest as
-				// savepoints and its re-reads see the write. The feed hears
-				// of it once it commits.
-				var committed []repox.Committed
-				err := repox.MapGormErr(db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-					bound := *g
-					bound.DB = tx
-					changes, err := f(&bound)
-					if err != nil {
-						return err
-					}
-					committed, err = p.Gorm(ctx, tx, changes)
-					return err
-				}))
-				if err == nil {
-					p.Publish(ctx, committed)
-				}
-				return err
-			}}
-		}
 	}
 	return guard(repos, o.references)
 }
@@ -875,12 +535,9 @@ func guard(repos Repositories, refs *repox.References) Repositories {
 		return repos
 	}
 	return Repositories{
-		Dishes:        &guardedDishRepository{DishRepository: repos.Dishes, refs: refs},
-		FixedPackages: &guardedFixedPackageRepository{FixedPackageRepository: repos.FixedPackages, refs: refs},
-		Menus:         &guardedMenuRepository{MenuRepository: repos.Menus, refs: refs},
-		PriceRules:    &guardedPriceRuleRepository{PriceRuleRepository: repos.PriceRules, refs: refs},
-		Quotes:        &guardedQuoteRepository{QuoteRepository: repos.Quotes, refs: refs},
-		Seasons:       &guardedSeasonRepository{SeasonRepository: repos.Seasons, refs: refs},
+		Activities: &guardedActivityRepository{ActivityRepository: repos.Activities, refs: refs},
+		Leads:      &guardedLeadRepository{LeadRepository: repos.Leads, refs: refs},
+		Quotes:     &guardedQuoteRepository{QuoteRepository: repos.Quotes, refs: refs},
 	}
 }
 
@@ -896,29 +553,26 @@ func observe(repos Repositories, changes repox.ChangeObserver) Repositories {
 		return repos
 	}
 	return Repositories{
-		Dishes:        &observedDishRepository{DishRepository: repos.Dishes, changes: changes},
-		FixedPackages: &observedFixedPackageRepository{FixedPackageRepository: repos.FixedPackages, changes: changes},
-		Menus:         &observedMenuRepository{MenuRepository: repos.Menus, changes: changes},
-		PriceRules:    &observedPriceRuleRepository{PriceRuleRepository: repos.PriceRules, changes: changes},
-		Quotes:        &observedQuoteRepository{QuoteRepository: repos.Quotes, changes: changes},
-		Seasons:       &observedSeasonRepository{SeasonRepository: repos.Seasons, changes: changes},
+		Activities: &observedActivityRepository{ActivityRepository: repos.Activities, changes: changes},
+		Leads:      &observedLeadRepository{LeadRepository: repos.Leads, changes: changes},
+		Quotes:     &observedQuoteRepository{QuoteRepository: repos.Quotes, changes: changes},
 	}
 }
 
-// observedDishRepository reports every Dish write to a ChangeObserver.
+// observedActivityRepository reports every Activity write to a ChangeObserver.
 //
 // It reports a write that returned an error too, whenever the name is known.
 // An error does not prove nothing was written -- the adapters re-read after
 // writing, and that re-read can fail -- and an observer told about a write
 // that did not happen only drops something it did not need to, while one not
 // told about a write that did keeps serving what the write replaced.
-type observedDishRepository struct {
-	DishRepository
+type observedActivityRepository struct {
+	ActivityRepository
 	changes repox.ChangeObserver
 }
 
-func (o *observedDishRepository) Create(ctx context.Context, parent string, m *salespbv1.Dish) (*salespbv1.Dish, error) {
-	out, err := o.DishRepository.Create(ctx, parent, m)
+func (o *observedActivityRepository) Create(ctx context.Context, parent string, m *salespbv1.Activity) (*salespbv1.Activity, error) {
+	out, err := o.ActivityRepository.Create(ctx, parent, m)
 	o.created(ctx, m, out)
 	return out, err
 }
@@ -926,7 +580,7 @@ func (o *observedDishRepository) Create(ctx context.Context, parent string, m *s
 // created reports a Create: by the stored record's name, or failing that by
 // the name the caller asked for. A Create that failed before naming anything
 // wrote nothing.
-func (o *observedDishRepository) created(ctx context.Context, m, out *salespbv1.Dish) {
+func (o *observedActivityRepository) created(ctx context.Context, m, out *salespbv1.Activity) {
 	switch {
 	case out.GetName() != "":
 		o.changes.Changed(ctx, out.GetName())
@@ -935,32 +589,32 @@ func (o *observedDishRepository) created(ctx context.Context, m, out *salespbv1.
 	}
 }
 
-func (o *observedDishRepository) Update(ctx context.Context, m *salespbv1.Dish, paths []string) (*salespbv1.Dish, error) {
-	out, err := o.DishRepository.Update(ctx, m, paths)
+func (o *observedActivityRepository) Update(ctx context.Context, m *salespbv1.Activity, paths []string) (*salespbv1.Activity, error) {
+	out, err := o.ActivityRepository.Update(ctx, m, paths)
 	o.changes.Changed(ctx, m.GetName())
 	return out, err
 }
 
-func (o *observedDishRepository) Delete(ctx context.Context, name string) error {
-	err := o.DishRepository.Delete(ctx, name)
+func (o *observedActivityRepository) Delete(ctx context.Context, name string) error {
+	err := o.ActivityRepository.Delete(ctx, name)
 	o.changes.Changed(ctx, name)
 	return err
 }
 
-// observedFixedPackageRepository reports every FixedPackage write to a ChangeObserver.
+// observedLeadRepository reports every Lead write to a ChangeObserver.
 //
 // It reports a write that returned an error too, whenever the name is known.
 // An error does not prove nothing was written -- the adapters re-read after
 // writing, and that re-read can fail -- and an observer told about a write
 // that did not happen only drops something it did not need to, while one not
 // told about a write that did keeps serving what the write replaced.
-type observedFixedPackageRepository struct {
-	FixedPackageRepository
+type observedLeadRepository struct {
+	LeadRepository
 	changes repox.ChangeObserver
 }
 
-func (o *observedFixedPackageRepository) Create(ctx context.Context, parent string, m *salespbv1.FixedPackage) (*salespbv1.FixedPackage, error) {
-	out, err := o.FixedPackageRepository.Create(ctx, parent, m)
+func (o *observedLeadRepository) Create(ctx context.Context, m *salespbv1.Lead) (*salespbv1.Lead, error) {
+	out, err := o.LeadRepository.Create(ctx, m)
 	o.created(ctx, m, out)
 	return out, err
 }
@@ -968,7 +622,7 @@ func (o *observedFixedPackageRepository) Create(ctx context.Context, parent stri
 // created reports a Create: by the stored record's name, or failing that by
 // the name the caller asked for. A Create that failed before naming anything
 // wrote nothing.
-func (o *observedFixedPackageRepository) created(ctx context.Context, m, out *salespbv1.FixedPackage) {
+func (o *observedLeadRepository) created(ctx context.Context, m, out *salespbv1.Lead) {
 	switch {
 	case out.GetName() != "":
 		o.changes.Changed(ctx, out.GetName())
@@ -977,98 +631,26 @@ func (o *observedFixedPackageRepository) created(ctx context.Context, m, out *sa
 	}
 }
 
-func (o *observedFixedPackageRepository) Update(ctx context.Context, m *salespbv1.FixedPackage, paths []string) (*salespbv1.FixedPackage, error) {
-	out, err := o.FixedPackageRepository.Update(ctx, m, paths)
+func (o *observedLeadRepository) Update(ctx context.Context, m *salespbv1.Lead, paths []string) (*salespbv1.Lead, error) {
+	out, err := o.LeadRepository.Update(ctx, m, paths)
 	o.changes.Changed(ctx, m.GetName())
 	return out, err
 }
 
-func (o *observedFixedPackageRepository) Delete(ctx context.Context, name string) error {
-	err := o.FixedPackageRepository.Delete(ctx, name)
-	o.changes.Changed(ctx, name)
-	return err
-}
-
-// observedMenuRepository reports every Menu write to a ChangeObserver.
-//
-// It reports a write that returned an error too, whenever the name is known.
-// An error does not prove nothing was written -- the adapters re-read after
-// writing, and that re-read can fail -- and an observer told about a write
-// that did not happen only drops something it did not need to, while one not
-// told about a write that did keeps serving what the write replaced.
-type observedMenuRepository struct {
-	MenuRepository
-	changes repox.ChangeObserver
-}
-
-func (o *observedMenuRepository) Create(ctx context.Context, parent string, m *salespbv1.Menu) (*salespbv1.Menu, error) {
-	out, err := o.MenuRepository.Create(ctx, parent, m)
-	o.created(ctx, m, out)
-	return out, err
-}
-
-// created reports a Create: by the stored record's name, or failing that by
-// the name the caller asked for. A Create that failed before naming anything
-// wrote nothing.
-func (o *observedMenuRepository) created(ctx context.Context, m, out *salespbv1.Menu) {
-	switch {
-	case out.GetName() != "":
-		o.changes.Changed(ctx, out.GetName())
-	case m.GetName() != "":
-		o.changes.Changed(ctx, m.GetName())
-	}
-}
-
-func (o *observedMenuRepository) Update(ctx context.Context, m *salespbv1.Menu, paths []string) (*salespbv1.Menu, error) {
-	out, err := o.MenuRepository.Update(ctx, m, paths)
+func (o *observedLeadRepository) UpdateOutputOnly(ctx context.Context, m *salespbv1.Lead, paths []string) (*salespbv1.Lead, error) {
+	out, err := o.LeadRepository.UpdateOutputOnly(ctx, m, paths)
 	o.changes.Changed(ctx, m.GetName())
 	return out, err
 }
 
-func (o *observedMenuRepository) Delete(ctx context.Context, name string) error {
-	err := o.MenuRepository.Delete(ctx, name)
-	o.changes.Changed(ctx, name)
-	return err
-}
-
-// observedPriceRuleRepository reports every PriceRule write to a ChangeObserver.
-//
-// It reports a write that returned an error too, whenever the name is known.
-// An error does not prove nothing was written -- the adapters re-read after
-// writing, and that re-read can fail -- and an observer told about a write
-// that did not happen only drops something it did not need to, while one not
-// told about a write that did keeps serving what the write replaced.
-type observedPriceRuleRepository struct {
-	PriceRuleRepository
-	changes repox.ChangeObserver
-}
-
-func (o *observedPriceRuleRepository) Create(ctx context.Context, parent string, m *salespbv1.PriceRule) (*salespbv1.PriceRule, error) {
-	out, err := o.PriceRuleRepository.Create(ctx, parent, m)
-	o.created(ctx, m, out)
-	return out, err
-}
-
-// created reports a Create: by the stored record's name, or failing that by
-// the name the caller asked for. A Create that failed before naming anything
-// wrote nothing.
-func (o *observedPriceRuleRepository) created(ctx context.Context, m, out *salespbv1.PriceRule) {
-	switch {
-	case out.GetName() != "":
-		o.changes.Changed(ctx, out.GetName())
-	case m.GetName() != "":
-		o.changes.Changed(ctx, m.GetName())
-	}
-}
-
-func (o *observedPriceRuleRepository) Update(ctx context.Context, m *salespbv1.PriceRule, paths []string) (*salespbv1.PriceRule, error) {
-	out, err := o.PriceRuleRepository.Update(ctx, m, paths)
+func (o *observedLeadRepository) UpdateWithOutputOnly(ctx context.Context, m *salespbv1.Lead, paths, outputPaths []string) (*salespbv1.Lead, error) {
+	out, err := o.LeadRepository.UpdateWithOutputOnly(ctx, m, paths, outputPaths)
 	o.changes.Changed(ctx, m.GetName())
 	return out, err
 }
 
-func (o *observedPriceRuleRepository) Delete(ctx context.Context, name string) error {
-	err := o.PriceRuleRepository.Delete(ctx, name)
+func (o *observedLeadRepository) Delete(ctx context.Context, name string) error {
+	err := o.LeadRepository.Delete(ctx, name)
 	o.changes.Changed(ctx, name)
 	return err
 }
@@ -1127,261 +709,135 @@ func (o *observedQuoteRepository) Delete(ctx context.Context, name string) error
 	return err
 }
 
-// observedSeasonRepository reports every Season write to a ChangeObserver.
-//
-// It reports a write that returned an error too, whenever the name is known.
-// An error does not prove nothing was written -- the adapters re-read after
-// writing, and that re-read can fail -- and an observer told about a write
-// that did not happen only drops something it did not need to, while one not
-// told about a write that did keeps serving what the write replaced.
-type observedSeasonRepository struct {
-	SeasonRepository
-	changes repox.ChangeObserver
-}
-
-func (o *observedSeasonRepository) Create(ctx context.Context, parent string, m *salespbv1.Season) (*salespbv1.Season, error) {
-	out, err := o.SeasonRepository.Create(ctx, parent, m)
-	o.created(ctx, m, out)
-	return out, err
-}
-
-// created reports a Create: by the stored record's name, or failing that by
-// the name the caller asked for. A Create that failed before naming anything
-// wrote nothing.
-func (o *observedSeasonRepository) created(ctx context.Context, m, out *salespbv1.Season) {
-	switch {
-	case out.GetName() != "":
-		o.changes.Changed(ctx, out.GetName())
-	case m.GetName() != "":
-		o.changes.Changed(ctx, m.GetName())
-	}
-}
-
-func (o *observedSeasonRepository) Update(ctx context.Context, m *salespbv1.Season, paths []string) (*salespbv1.Season, error) {
-	out, err := o.SeasonRepository.Update(ctx, m, paths)
-	o.changes.Changed(ctx, m.GetName())
-	return out, err
-}
-
-func (o *observedSeasonRepository) Delete(ctx context.Context, name string) error {
-	err := o.SeasonRepository.Delete(ctx, name)
-	o.changes.Changed(ctx, name)
-	return err
-}
-
-// projectedDishRepository runs the connection's projections over every
-// Dish write; see WithProjections. run performs a write through the
+// projectedActivityRepository runs the connection's projections over every
+// Activity write; see WithProjections. run performs a write through the
 // repository it hands f and projects the changes f reports.
-type projectedDishRepository struct {
-	DishRepository
-	run func(ctx context.Context, f func(DishRepository) ([]repox.Change, error)) error
+type projectedActivityRepository struct {
+	ActivityRepository
+	run func(ctx context.Context, f func(ActivityRepository) ([]repox.Change, error)) error
 }
 
-// getDish reads name through read, for a queued write's
+// getActivity reads name through read, for a queued write's
 // Change.LoadPrior (repox.PriorOf).
-func getDish(ctx context.Context, read repox.Conn, name string) (*salespbv1.Dish, error) {
-	return New(read).Dishes.Get(ctx, name)
+func getActivity(ctx context.Context, read repox.Conn, name string) (*salespbv1.Activity, error) {
+	return New(read).Activities.Get(ctx, name)
 }
 
-// changedDish is the change one write of a Dish makes.
-func changedDish(name string, op repox.ChangeOp, rec *salespbv1.Dish) []repox.Change {
-	c := repox.Change{Type: "aperio.sales.v1/Dish", Name: name, Op: op}
+// changedActivity is the change one write of a Activity makes.
+func changedActivity(name string, op repox.ChangeOp, rec *salespbv1.Activity) []repox.Change {
+	c := repox.Change{Type: "aperio.sales.v1/Activity", Name: name, Op: op}
 	if rec != nil {
 		c.Record = rec
 	}
 	return []repox.Change{c}
 }
 
-func (p *projectedDishRepository) Create(ctx context.Context, parent string, m *salespbv1.Dish) (out *salespbv1.Dish, err error) {
-	err = p.run(ctx, func(r DishRepository) ([]repox.Change, error) {
+func (p *projectedActivityRepository) Create(ctx context.Context, parent string, m *salespbv1.Activity) (out *salespbv1.Activity, err error) {
+	err = p.run(ctx, func(r ActivityRepository) ([]repox.Change, error) {
 		var err error
 		out, err = r.Create(ctx, parent, m)
-		return changedDish(out.GetName(), repox.ChangeCreate, out), err
+		return changedActivity(out.GetName(), repox.ChangeCreate, out), err
 	})
 	return out, err
 }
 
-func (p *projectedDishRepository) Update(ctx context.Context, m *salespbv1.Dish, paths []string) (out *salespbv1.Dish, err error) {
-	err = p.run(ctx, func(r DishRepository) ([]repox.Change, error) {
+func (p *projectedActivityRepository) Update(ctx context.Context, m *salespbv1.Activity, paths []string) (out *salespbv1.Activity, err error) {
+	err = p.run(ctx, func(r ActivityRepository) ([]repox.Change, error) {
 		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
 		if err != nil {
 			return nil, err
 		}
 		out, err = r.Update(ctx, m, paths)
-		return repox.WithPrior(changedDish(m.GetName(), repox.ChangeUpdate, out), prior), err
+		return repox.WithPrior(changedActivity(m.GetName(), repox.ChangeUpdate, out), prior), err
 	})
 	return out, err
 }
 
-func (p *projectedDishRepository) Delete(ctx context.Context, name string) error {
-	return p.run(ctx, func(r DishRepository) ([]repox.Change, error) {
+func (p *projectedActivityRepository) Delete(ctx context.Context, name string) error {
+	return p.run(ctx, func(r ActivityRepository) ([]repox.Change, error) {
 		prior, err := repox.Prior(r.Get(ctx, name))
 		if err != nil {
 			return nil, err
 		}
-		return repox.WithPrior(changedDish(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
+		return repox.WithPrior(changedActivity(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
 	})
 }
 
-// projectedFixedPackageRepository runs the connection's projections over every
-// FixedPackage write; see WithProjections. run performs a write through the
+// projectedLeadRepository runs the connection's projections over every
+// Lead write; see WithProjections. run performs a write through the
 // repository it hands f and projects the changes f reports.
-type projectedFixedPackageRepository struct {
-	FixedPackageRepository
-	run func(ctx context.Context, f func(FixedPackageRepository) ([]repox.Change, error)) error
+type projectedLeadRepository struct {
+	LeadRepository
+	run func(ctx context.Context, f func(LeadRepository) ([]repox.Change, error)) error
 }
 
-// getFixedPackage reads name through read, for a queued write's
+// getLead reads name through read, for a queued write's
 // Change.LoadPrior (repox.PriorOf).
-func getFixedPackage(ctx context.Context, read repox.Conn, name string) (*salespbv1.FixedPackage, error) {
-	return New(read).FixedPackages.Get(ctx, name)
+func getLead(ctx context.Context, read repox.Conn, name string) (*salespbv1.Lead, error) {
+	return New(read).Leads.Get(ctx, name)
 }
 
-// changedFixedPackage is the change one write of a FixedPackage makes.
-func changedFixedPackage(name string, op repox.ChangeOp, rec *salespbv1.FixedPackage) []repox.Change {
-	c := repox.Change{Type: "aperio.sales.v1/FixedPackage", Name: name, Op: op}
+// changedLead is the change one write of a Lead makes.
+func changedLead(name string, op repox.ChangeOp, rec *salespbv1.Lead) []repox.Change {
+	c := repox.Change{Type: "aperio.sales.v1/Lead", Name: name, Op: op}
 	if rec != nil {
 		c.Record = rec
 	}
 	return []repox.Change{c}
 }
 
-func (p *projectedFixedPackageRepository) Create(ctx context.Context, parent string, m *salespbv1.FixedPackage) (out *salespbv1.FixedPackage, err error) {
-	err = p.run(ctx, func(r FixedPackageRepository) ([]repox.Change, error) {
+func (p *projectedLeadRepository) Create(ctx context.Context, m *salespbv1.Lead) (out *salespbv1.Lead, err error) {
+	err = p.run(ctx, func(r LeadRepository) ([]repox.Change, error) {
 		var err error
-		out, err = r.Create(ctx, parent, m)
-		return changedFixedPackage(out.GetName(), repox.ChangeCreate, out), err
+		out, err = r.Create(ctx, m)
+		return changedLead(out.GetName(), repox.ChangeCreate, out), err
 	})
 	return out, err
 }
 
-func (p *projectedFixedPackageRepository) Update(ctx context.Context, m *salespbv1.FixedPackage, paths []string) (out *salespbv1.FixedPackage, err error) {
-	err = p.run(ctx, func(r FixedPackageRepository) ([]repox.Change, error) {
+func (p *projectedLeadRepository) Update(ctx context.Context, m *salespbv1.Lead, paths []string) (out *salespbv1.Lead, err error) {
+	err = p.run(ctx, func(r LeadRepository) ([]repox.Change, error) {
 		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
 		if err != nil {
 			return nil, err
 		}
 		out, err = r.Update(ctx, m, paths)
-		return repox.WithPrior(changedFixedPackage(m.GetName(), repox.ChangeUpdate, out), prior), err
+		return repox.WithPrior(changedLead(m.GetName(), repox.ChangeUpdate, out), prior), err
 	})
 	return out, err
 }
 
-func (p *projectedFixedPackageRepository) Delete(ctx context.Context, name string) error {
-	return p.run(ctx, func(r FixedPackageRepository) ([]repox.Change, error) {
-		prior, err := repox.Prior(r.Get(ctx, name))
-		if err != nil {
-			return nil, err
-		}
-		return repox.WithPrior(changedFixedPackage(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
-	})
-}
-
-// projectedMenuRepository runs the connection's projections over every
-// Menu write; see WithProjections. run performs a write through the
-// repository it hands f and projects the changes f reports.
-type projectedMenuRepository struct {
-	MenuRepository
-	run func(ctx context.Context, f func(MenuRepository) ([]repox.Change, error)) error
-}
-
-// getMenu reads name through read, for a queued write's
-// Change.LoadPrior (repox.PriorOf).
-func getMenu(ctx context.Context, read repox.Conn, name string) (*salespbv1.Menu, error) {
-	return New(read).Menus.Get(ctx, name)
-}
-
-// changedMenu is the change one write of a Menu makes.
-func changedMenu(name string, op repox.ChangeOp, rec *salespbv1.Menu) []repox.Change {
-	c := repox.Change{Type: "aperio.sales.v1/Menu", Name: name, Op: op}
-	if rec != nil {
-		c.Record = rec
-	}
-	return []repox.Change{c}
-}
-
-func (p *projectedMenuRepository) Create(ctx context.Context, parent string, m *salespbv1.Menu) (out *salespbv1.Menu, err error) {
-	err = p.run(ctx, func(r MenuRepository) ([]repox.Change, error) {
-		var err error
-		out, err = r.Create(ctx, parent, m)
-		return changedMenu(out.GetName(), repox.ChangeCreate, out), err
-	})
-	return out, err
-}
-
-func (p *projectedMenuRepository) Update(ctx context.Context, m *salespbv1.Menu, paths []string) (out *salespbv1.Menu, err error) {
-	err = p.run(ctx, func(r MenuRepository) ([]repox.Change, error) {
+func (p *projectedLeadRepository) UpdateOutputOnly(ctx context.Context, m *salespbv1.Lead, paths []string) (out *salespbv1.Lead, err error) {
+	err = p.run(ctx, func(r LeadRepository) ([]repox.Change, error) {
 		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
 		if err != nil {
 			return nil, err
 		}
-		out, err = r.Update(ctx, m, paths)
-		return repox.WithPrior(changedMenu(m.GetName(), repox.ChangeUpdate, out), prior), err
+		out, err = r.UpdateOutputOnly(ctx, m, paths)
+		return repox.WithPrior(changedLead(m.GetName(), repox.ChangeUpdate, out), prior), err
 	})
 	return out, err
 }
 
-func (p *projectedMenuRepository) Delete(ctx context.Context, name string) error {
-	return p.run(ctx, func(r MenuRepository) ([]repox.Change, error) {
-		prior, err := repox.Prior(r.Get(ctx, name))
-		if err != nil {
-			return nil, err
-		}
-		return repox.WithPrior(changedMenu(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
-	})
-}
-
-// projectedPriceRuleRepository runs the connection's projections over every
-// PriceRule write; see WithProjections. run performs a write through the
-// repository it hands f and projects the changes f reports.
-type projectedPriceRuleRepository struct {
-	PriceRuleRepository
-	run func(ctx context.Context, f func(PriceRuleRepository) ([]repox.Change, error)) error
-}
-
-// getPriceRule reads name through read, for a queued write's
-// Change.LoadPrior (repox.PriorOf).
-func getPriceRule(ctx context.Context, read repox.Conn, name string) (*salespbv1.PriceRule, error) {
-	return New(read).PriceRules.Get(ctx, name)
-}
-
-// changedPriceRule is the change one write of a PriceRule makes.
-func changedPriceRule(name string, op repox.ChangeOp, rec *salespbv1.PriceRule) []repox.Change {
-	c := repox.Change{Type: "aperio.sales.v1/PriceRule", Name: name, Op: op}
-	if rec != nil {
-		c.Record = rec
-	}
-	return []repox.Change{c}
-}
-
-func (p *projectedPriceRuleRepository) Create(ctx context.Context, parent string, m *salespbv1.PriceRule) (out *salespbv1.PriceRule, err error) {
-	err = p.run(ctx, func(r PriceRuleRepository) ([]repox.Change, error) {
-		var err error
-		out, err = r.Create(ctx, parent, m)
-		return changedPriceRule(out.GetName(), repox.ChangeCreate, out), err
-	})
-	return out, err
-}
-
-func (p *projectedPriceRuleRepository) Update(ctx context.Context, m *salespbv1.PriceRule, paths []string) (out *salespbv1.PriceRule, err error) {
-	err = p.run(ctx, func(r PriceRuleRepository) ([]repox.Change, error) {
+func (p *projectedLeadRepository) UpdateWithOutputOnly(ctx context.Context, m *salespbv1.Lead, paths, outputPaths []string) (out *salespbv1.Lead, err error) {
+	err = p.run(ctx, func(r LeadRepository) ([]repox.Change, error) {
 		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
 		if err != nil {
 			return nil, err
 		}
-		out, err = r.Update(ctx, m, paths)
-		return repox.WithPrior(changedPriceRule(m.GetName(), repox.ChangeUpdate, out), prior), err
+		out, err = r.UpdateWithOutputOnly(ctx, m, paths, outputPaths)
+		return repox.WithPrior(changedLead(m.GetName(), repox.ChangeUpdate, out), prior), err
 	})
 	return out, err
 }
 
-func (p *projectedPriceRuleRepository) Delete(ctx context.Context, name string) error {
-	return p.run(ctx, func(r PriceRuleRepository) ([]repox.Change, error) {
+func (p *projectedLeadRepository) Delete(ctx context.Context, name string) error {
+	return p.run(ctx, func(r LeadRepository) ([]repox.Change, error) {
 		prior, err := repox.Prior(r.Get(ctx, name))
 		if err != nil {
 			return nil, err
 		}
-		return repox.WithPrior(changedPriceRule(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
+		return repox.WithPrior(changedLead(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
 	})
 }
 
@@ -1463,235 +919,153 @@ func (p *projectedQuoteRepository) Delete(ctx context.Context, name string) erro
 	})
 }
 
-// projectedSeasonRepository runs the connection's projections over every
-// Season write; see WithProjections. run performs a write through the
-// repository it hands f and projects the changes f reports.
-type projectedSeasonRepository struct {
-	SeasonRepository
-	run func(ctx context.Context, f func(SeasonRepository) ([]repox.Change, error)) error
+// guardedActivityRepository keeps Activity's references whole; see guard.
+type guardedActivityRepository struct {
+	ActivityRepository
+	refs *repox.References
 }
 
-// getSeason reads name through read, for a queued write's
-// Change.LoadPrior (repox.PriorOf).
-func getSeason(ctx context.Context, read repox.Conn, name string) (*salespbv1.Season, error) {
-	return New(read).Seasons.Get(ctx, name)
-}
-
-// changedSeason is the change one write of a Season makes.
-func changedSeason(name string, op repox.ChangeOp, rec *salespbv1.Season) []repox.Change {
-	c := repox.Change{Type: "aperio.sales.v1/Season", Name: name, Op: op}
-	if rec != nil {
-		c.Record = rec
+func (g *guardedActivityRepository) Create(ctx context.Context, parent string, m *salespbv1.Activity) (*salespbv1.Activity, error) {
+	if err := resolveActivityReferences(ctx, g.refs, m, nil); err != nil {
+		return nil, err
 	}
-	return []repox.Change{c}
+	return g.ActivityRepository.Create(ctx, parent, m)
 }
 
-func (p *projectedSeasonRepository) Create(ctx context.Context, parent string, m *salespbv1.Season) (out *salespbv1.Season, err error) {
-	err = p.run(ctx, func(r SeasonRepository) ([]repox.Change, error) {
-		var err error
-		out, err = r.Create(ctx, parent, m)
-		return changedSeason(out.GetName(), repox.ChangeCreate, out), err
-	})
-	return out, err
+func (g *guardedActivityRepository) Update(ctx context.Context, m *salespbv1.Activity, paths []string) (*salespbv1.Activity, error) {
+	if err := resolveActivityReferences(ctx, g.refs, m, paths); err != nil {
+		return nil, err
+	}
+	return g.ActivityRepository.Update(ctx, m, paths)
 }
 
-func (p *projectedSeasonRepository) Update(ctx context.Context, m *salespbv1.Season, paths []string) (out *salespbv1.Season, err error) {
-	err = p.run(ctx, func(r SeasonRepository) ([]repox.Change, error) {
-		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
-		if err != nil {
-			return nil, err
+func (g *guardedActivityRepository) Delete(ctx context.Context, name string) error {
+	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/Activity", name)
+	if err != nil {
+		return err
+	}
+	if err := g.ActivityRepository.Delete(ctx, name); err != nil {
+		return err
+	}
+	check.Done(ctx, true)
+	return nil
+}
+
+// resolveActivityReferences proves, through refs, that every external
+// reference m sets within paths (all of them for an empty mask) names a
+// resource that exists.
+func resolveActivityReferences(ctx context.Context, refs *repox.References, m *salespbv1.Activity, paths []string) error {
+	if refs == nil {
+		return nil
+	}
+	if repox.InMask(paths, "author") {
+		if err := refs.Resolve(ctx, "author", "users.shokki.engineering/User", m.GetAuthor()); err != nil {
+			return err
 		}
-		out, err = r.Update(ctx, m, paths)
-		return repox.WithPrior(changedSeason(m.GetName(), repox.ChangeUpdate, out), prior), err
-	})
-	return out, err
+	}
+	return nil
 }
 
-func (p *projectedSeasonRepository) Delete(ctx context.Context, name string) error {
-	return p.run(ctx, func(r SeasonRepository) ([]repox.Change, error) {
-		prior, err := repox.Prior(r.Get(ctx, name))
-		if err != nil {
-			return nil, err
+// queueActivityReferences makes u resolve m's external references within
+// paths before it commits, as guard does for the repositories.
+func queueActivityReferences(u *repox.Unit, m *salespbv1.Activity, paths []string) {
+	if refs := u.Conn().References; refs != nil {
+		u.Before(func(ctx context.Context) error { return resolveActivityReferences(ctx, refs, m, paths) })
+	}
+}
+
+// queueActivityDelete makes u consult name's referrers before it commits
+// and publish the NOTIFY event after, as guard does for Delete.
+func queueActivityDelete(u *repox.Unit, name string, purged bool) {
+	refs := u.Conn().References
+	if refs == nil {
+		return
+	}
+	var check *repox.DeleteCheck
+	u.Before(func(ctx context.Context) (err error) {
+		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/Activity", name)
+		return err
+	})
+	u.After(func(ctx context.Context) { check.Done(ctx, purged) })
+}
+
+// guardedLeadRepository keeps Lead's references whole; see guard.
+type guardedLeadRepository struct {
+	LeadRepository
+	refs *repox.References
+}
+
+func (g *guardedLeadRepository) Create(ctx context.Context, m *salespbv1.Lead) (*salespbv1.Lead, error) {
+	if err := resolveLeadReferences(ctx, g.refs, m, nil); err != nil {
+		return nil, err
+	}
+	return g.LeadRepository.Create(ctx, m)
+}
+
+func (g *guardedLeadRepository) Update(ctx context.Context, m *salespbv1.Lead, paths []string) (*salespbv1.Lead, error) {
+	if err := resolveLeadReferences(ctx, g.refs, m, paths); err != nil {
+		return nil, err
+	}
+	return g.LeadRepository.Update(ctx, m, paths)
+}
+
+func (g *guardedLeadRepository) UpdateWithOutputOnly(ctx context.Context, m *salespbv1.Lead, paths, outputPaths []string) (*salespbv1.Lead, error) {
+	if err := resolveLeadReferences(ctx, g.refs, m, paths); err != nil {
+		return nil, err
+	}
+	return g.LeadRepository.UpdateWithOutputOnly(ctx, m, paths, outputPaths)
+}
+
+func (g *guardedLeadRepository) Delete(ctx context.Context, name string) error {
+	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/Lead", name)
+	if err != nil {
+		return err
+	}
+	if err := g.LeadRepository.Delete(ctx, name); err != nil {
+		return err
+	}
+	check.Done(ctx, true)
+	return nil
+}
+
+// resolveLeadReferences proves, through refs, that every external
+// reference m sets within paths (all of them for an empty mask) names a
+// resource that exists.
+func resolveLeadReferences(ctx context.Context, refs *repox.References, m *salespbv1.Lead, paths []string) error {
+	if refs == nil {
+		return nil
+	}
+	if repox.InMask(paths, "owner") {
+		if err := refs.Resolve(ctx, "owner", "users.shokki.engineering/User", m.GetOwner()); err != nil {
+			return err
 		}
-		return repox.WithPrior(changedSeason(name, repox.ChangeDelete, nil), prior), r.Delete(ctx, name)
-	})
-}
-
-// guardedDishRepository keeps Dish's references whole; see guard.
-type guardedDishRepository struct {
-	DishRepository
-	refs *repox.References
-}
-
-func (g *guardedDishRepository) Delete(ctx context.Context, name string) error {
-	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/Dish", name)
-	if err != nil {
-		return err
 	}
-	if err := g.DishRepository.Delete(ctx, name); err != nil {
-		return err
+	if repox.InMask(paths, "hold") {
+		if err := refs.Resolve(ctx, "hold", "freebusy.allocation.v1/Hold", m.GetHold()); err != nil {
+			return err
+		}
 	}
-	check.Done(ctx, true)
 	return nil
 }
 
-// resolveDishReferences proves, through refs, that every external
-// reference m sets within paths (all of them for an empty mask) names a
-// resource that exists.
-func resolveDishReferences(ctx context.Context, refs *repox.References, m *salespbv1.Dish, paths []string) error {
-	return nil
-}
-
-// queueDishReferences makes u resolve m's external references within
+// queueLeadReferences makes u resolve m's external references within
 // paths before it commits, as guard does for the repositories.
-func queueDishReferences(u *repox.Unit, m *salespbv1.Dish, paths []string) {
+func queueLeadReferences(u *repox.Unit, m *salespbv1.Lead, paths []string) {
+	if refs := u.Conn().References; refs != nil {
+		u.Before(func(ctx context.Context) error { return resolveLeadReferences(ctx, refs, m, paths) })
+	}
 }
 
-// queueDishDelete makes u consult name's referrers before it commits
+// queueLeadDelete makes u consult name's referrers before it commits
 // and publish the NOTIFY event after, as guard does for Delete.
-func queueDishDelete(u *repox.Unit, name string, purged bool) {
+func queueLeadDelete(u *repox.Unit, name string, purged bool) {
 	refs := u.Conn().References
 	if refs == nil {
 		return
 	}
 	var check *repox.DeleteCheck
 	u.Before(func(ctx context.Context) (err error) {
-		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/Dish", name)
-		return err
-	})
-	u.After(func(ctx context.Context) { check.Done(ctx, purged) })
-}
-
-// guardedFixedPackageRepository keeps FixedPackage's references whole; see guard.
-type guardedFixedPackageRepository struct {
-	FixedPackageRepository
-	refs *repox.References
-}
-
-func (g *guardedFixedPackageRepository) Delete(ctx context.Context, name string) error {
-	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/FixedPackage", name)
-	if err != nil {
-		return err
-	}
-	if err := g.FixedPackageRepository.Delete(ctx, name); err != nil {
-		return err
-	}
-	check.Done(ctx, true)
-	return nil
-}
-
-// resolveFixedPackageReferences proves, through refs, that every external
-// reference m sets within paths (all of them for an empty mask) names a
-// resource that exists.
-func resolveFixedPackageReferences(ctx context.Context, refs *repox.References, m *salespbv1.FixedPackage, paths []string) error {
-	return nil
-}
-
-// queueFixedPackageReferences makes u resolve m's external references within
-// paths before it commits, as guard does for the repositories.
-func queueFixedPackageReferences(u *repox.Unit, m *salespbv1.FixedPackage, paths []string) {
-}
-
-// queueFixedPackageDelete makes u consult name's referrers before it commits
-// and publish the NOTIFY event after, as guard does for Delete.
-func queueFixedPackageDelete(u *repox.Unit, name string, purged bool) {
-	refs := u.Conn().References
-	if refs == nil {
-		return
-	}
-	var check *repox.DeleteCheck
-	u.Before(func(ctx context.Context) (err error) {
-		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/FixedPackage", name)
-		return err
-	})
-	u.After(func(ctx context.Context) { check.Done(ctx, purged) })
-}
-
-// guardedMenuRepository keeps Menu's references whole; see guard.
-type guardedMenuRepository struct {
-	MenuRepository
-	refs *repox.References
-}
-
-func (g *guardedMenuRepository) Delete(ctx context.Context, name string) error {
-	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/Menu", name)
-	if err != nil {
-		return err
-	}
-	if err := g.MenuRepository.Delete(ctx, name); err != nil {
-		return err
-	}
-	check.Done(ctx, true)
-	return nil
-}
-
-// resolveMenuReferences proves, through refs, that every external
-// reference m sets within paths (all of them for an empty mask) names a
-// resource that exists.
-func resolveMenuReferences(ctx context.Context, refs *repox.References, m *salespbv1.Menu, paths []string) error {
-	return nil
-}
-
-// queueMenuReferences makes u resolve m's external references within
-// paths before it commits, as guard does for the repositories.
-func queueMenuReferences(u *repox.Unit, m *salespbv1.Menu, paths []string) {
-}
-
-// queueMenuDelete makes u consult name's referrers before it commits
-// and publish the NOTIFY event after, as guard does for Delete.
-func queueMenuDelete(u *repox.Unit, name string, purged bool) {
-	refs := u.Conn().References
-	if refs == nil {
-		return
-	}
-	var check *repox.DeleteCheck
-	u.Before(func(ctx context.Context) (err error) {
-		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/Menu", name)
-		return err
-	})
-	u.After(func(ctx context.Context) { check.Done(ctx, purged) })
-}
-
-// guardedPriceRuleRepository keeps PriceRule's references whole; see guard.
-type guardedPriceRuleRepository struct {
-	PriceRuleRepository
-	refs *repox.References
-}
-
-func (g *guardedPriceRuleRepository) Delete(ctx context.Context, name string) error {
-	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/PriceRule", name)
-	if err != nil {
-		return err
-	}
-	if err := g.PriceRuleRepository.Delete(ctx, name); err != nil {
-		return err
-	}
-	check.Done(ctx, true)
-	return nil
-}
-
-// resolvePriceRuleReferences proves, through refs, that every external
-// reference m sets within paths (all of them for an empty mask) names a
-// resource that exists.
-func resolvePriceRuleReferences(ctx context.Context, refs *repox.References, m *salespbv1.PriceRule, paths []string) error {
-	return nil
-}
-
-// queuePriceRuleReferences makes u resolve m's external references within
-// paths before it commits, as guard does for the repositories.
-func queuePriceRuleReferences(u *repox.Unit, m *salespbv1.PriceRule, paths []string) {
-}
-
-// queuePriceRuleDelete makes u consult name's referrers before it commits
-// and publish the NOTIFY event after, as guard does for Delete.
-func queuePriceRuleDelete(u *repox.Unit, name string, purged bool) {
-	refs := u.Conn().References
-	if refs == nil {
-		return
-	}
-	var check *repox.DeleteCheck
-	u.Before(func(ctx context.Context) (err error) {
-		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/PriceRule", name)
+		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/Lead", name)
 		return err
 	})
 	u.After(func(ctx context.Context) { check.Done(ctx, purged) })
@@ -1737,51 +1111,6 @@ func queueQuoteDelete(u *repox.Unit, name string, purged bool) {
 	var check *repox.DeleteCheck
 	u.Before(func(ctx context.Context) (err error) {
 		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/Quote", name)
-		return err
-	})
-	u.After(func(ctx context.Context) { check.Done(ctx, purged) })
-}
-
-// guardedSeasonRepository keeps Season's references whole; see guard.
-type guardedSeasonRepository struct {
-	SeasonRepository
-	refs *repox.References
-}
-
-func (g *guardedSeasonRepository) Delete(ctx context.Context, name string) error {
-	check, err := g.refs.CheckDelete(ctx, "aperio.sales.v1/Season", name)
-	if err != nil {
-		return err
-	}
-	if err := g.SeasonRepository.Delete(ctx, name); err != nil {
-		return err
-	}
-	check.Done(ctx, true)
-	return nil
-}
-
-// resolveSeasonReferences proves, through refs, that every external
-// reference m sets within paths (all of them for an empty mask) names a
-// resource that exists.
-func resolveSeasonReferences(ctx context.Context, refs *repox.References, m *salespbv1.Season, paths []string) error {
-	return nil
-}
-
-// queueSeasonReferences makes u resolve m's external references within
-// paths before it commits, as guard does for the repositories.
-func queueSeasonReferences(u *repox.Unit, m *salespbv1.Season, paths []string) {
-}
-
-// queueSeasonDelete makes u consult name's referrers before it commits
-// and publish the NOTIFY event after, as guard does for Delete.
-func queueSeasonDelete(u *repox.Unit, name string, purged bool) {
-	refs := u.Conn().References
-	if refs == nil {
-		return
-	}
-	var check *repox.DeleteCheck
-	u.Before(func(ctx context.Context) (err error) {
-		check, err = refs.CheckDelete(ctx, "aperio.sales.v1/Season", name)
 		return err
 	})
 	u.After(func(ctx context.Context) { check.Done(ctx, purged) })

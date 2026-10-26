@@ -1,0 +1,210 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventResourceObject
+  fields:
+    - name: cancelReason
+      type: String_1
+    - name: cancelTime
+      type: Timestamptz
+    - name: contact
+      type: String_1!
+    - name: coordinator
+      type: String_1
+    - name: createTime
+      type: Timestamptz
+    - name: dates
+      type: Json!
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: eventType
+      type: Enum
+    - name: guests
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: lead
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: quote
+      type: String_1
+    - name: specialRequests
+      type: Json
+    - name: state
+      type: Enum
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertEventResourceObject
+    inputTypeName: InsertEventResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_resource_object
+      fieldMapping:
+        cancelReason:
+          column:
+            name: cancel_reason
+        cancelTime:
+          column:
+            name: cancel_time
+        contact:
+          column:
+            name: contact
+        coordinator:
+          column:
+            name: coordinator
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        eventType:
+          column:
+            name: event_type
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        lead:
+          column:
+            name: lead
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        quote:
+          column:
+            name: quote
+        specialRequests:
+          column:
+            name: special_requests
+        state:
+          column:
+            name: state
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelReason
+          - cancelTime
+          - contact
+          - coordinator
+          - createTime
+          - dates
+          - displayName
+          - etag
+          - eventType
+          - guests
+          - id
+          - lead
+          - name
+          - notes
+          - quote
+          - specialRequests
+          - state
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventResourceResponse
+  description: Responses from the 'insert_event_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventResourceResponse
+    inputTypeName: InsertEventResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventResource
+  outputType: InsertEventResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventResourceObject!]!"
+    - name: postCheck
+      type: EventResourceBoolExp
+      description: Insert permission predicate over the 'event_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventResource
+    rootFieldKind: Mutation
+  description: Insert into the event_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

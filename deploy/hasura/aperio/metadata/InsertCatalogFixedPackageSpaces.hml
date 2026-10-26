@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCatalogFixedPackageSpacesObject
+  fields:
+    - name: fixedPackageId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: spaceId
+      type: String_1!
+    - name: spaceName
+      type: String_1!
+  graphql:
+    typeName: InsertCatalogFixedPackageSpacesObject
+    inputTypeName: InsertCatalogFixedPackageSpacesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_catalog_fixed_package_spaces_object
+      fieldMapping:
+        fixedPackageId:
+          column:
+            name: fixed_package_id
+        id:
+          column:
+            name: id
+        spaceId:
+          column:
+            name: space_id
+        spaceName:
+          column:
+            name: space_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCatalogFixedPackageSpacesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fixedPackageId
+          - id
+          - spaceId
+          - spaceName
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCatalogFixedPackageSpacesResponse
+  description: Responses from the 'insert_catalog_fixed_package_spaces' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CatalogFixedPackageSpaces!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCatalogFixedPackageSpacesResponse
+    inputTypeName: InsertCatalogFixedPackageSpacesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_catalog_fixed_package_spaces_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCatalogFixedPackageSpacesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCatalogFixedPackageSpaces
+  outputType: InsertCatalogFixedPackageSpacesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCatalogFixedPackageSpacesObject!]!"
+    - name: postCheck
+      type: CatalogFixedPackageSpacesBoolExp
+      description: Insert permission predicate over the 'catalog_fixed_package_spaces'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_catalog_fixed_package_spaces
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCatalogFixedPackageSpaces
+    rootFieldKind: Mutation
+  description: Insert into the catalog_fixed_package_spaces table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCatalogFixedPackageSpaces
+  permissions:
+    - role: admin
+      allowExecution: true
+

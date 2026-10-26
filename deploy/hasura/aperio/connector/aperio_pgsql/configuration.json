@@ -95,40 +95,33 @@
         "foreignRelations": {},
         "description": null
       },
-      "booking_events": {
-        "schemaName": "booking",
-        "tableName": "events",
+      "catalog_dishes": {
+        "schemaName": "catalog",
+        "tableName": "dishes",
         "columns": {
-          "cancel_reason": {
-            "name": "cancel_reason",
+          "allergens": {
+            "name": "allergens",
             "type": {
               "scalarType": "text"
             },
             "nullable": "nullable",
             "description": null
           },
-          "cancel_time": {
-            "name": "cancel_time",
+          "available": {
+            "name": "available",
             "type": {
-              "scalarType": "timestamptz"
+              "scalarType": "bool"
             },
             "nullable": "nullable",
             "description": null
           },
-          "contact": {
-            "name": "contact",
+          "course": {
+            "name": "course",
             "type": {
-              "scalarType": "text"
+              "scalarType": "catalog_course"
             },
             "nullable": "nonNullable",
-            "description": null
-          },
-          "coordinator": {
-            "name": "coordinator",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "create_time": {
@@ -140,12 +133,28 @@
             "hasDefault": "hasDefault",
             "description": null
           },
-          "dates": {
-            "name": "dates",
+          "cuisine": {
+            "name": "cuisine",
             "type": {
-              "scalarType": "jsonb"
+              "scalarType": "text"
             },
-            "nullable": "nonNullable",
+            "nullable": "nullable",
+            "description": null
+          },
+          "description": {
+            "name": "description",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "diets": {
+            "name": "diets",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
             "description": null
           },
           "display_name": {
@@ -164,23 +173,6 @@
             "nullable": "nullable",
             "description": null
           },
-          "event_type": {
-            "name": "event_type",
-            "type": {
-              "scalarType": "booking_event_type"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "guests": {
-            "name": "guests",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
           "id": {
             "name": "id",
             "type": {
@@ -189,8 +181,8 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "lead": {
-            "name": "lead",
+          "image_uri": {
+            "name": "image_uri",
             "type": {
               "scalarType": "text"
             },
@@ -205,312 +197,16 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "notes": {
-            "name": "notes",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "quote": {
-            "name": "quote",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "special_requests": {
-            "name": "special_requests",
+          "price": {
+            "name": "price",
             "type": {
               "scalarType": "jsonb"
             },
             "nullable": "nullable",
             "description": null
           },
-          "state": {
-            "name": "state",
-            "type": {
-              "scalarType": "booking_event_state"
-            },
-            "nullable": "nullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "update_time": {
-            "name": "update_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "venue_id": {
-            "name": "venue_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "events_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {
-          "events_contact_fkey": {
-            "foreignSchema": "crm",
-            "foreignTable": "contacts",
-            "columnMapping": {
-              "contact": "id"
-            }
-          },
-          "events_lead_fkey": {
-            "foreignSchema": "crm",
-            "foreignTable": "leads",
-            "columnMapping": {
-              "lead": "id"
-            }
-          },
-          "events_quote_fkey": {
-            "foreignSchema": "sales",
-            "foreignTable": "quotes",
-            "columnMapping": {
-              "quote": "name"
-            }
-          },
-          "events_venue_id_fkey": {
-            "foreignSchema": "venue",
-            "foreignTable": "resource",
-            "columnMapping": {
-              "venue_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "booking_reservations": {
-        "schemaName": "booking",
-        "tableName": "reservations",
-        "columns": {
-          "adults": {
-            "name": "adults",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "arrival_date": {
-            "name": "arrival_date",
-            "type": {
-              "scalarType": "date"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "arrive_time": {
-            "name": "arrive_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "cancel_reason": {
-            "name": "cancel_reason",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "cancel_time": {
-            "name": "cancel_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "channel": {
-            "name": "channel",
-            "type": {
-              "scalarType": "booking_channel"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "channel_reference": {
-            "name": "channel_reference",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "children": {
-            "name": "children",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "contact": {
-            "name": "contact",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "depart_time": {
-            "name": "depart_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "departure_date": {
-            "name": "departure_date",
-            "type": {
-              "scalarType": "date"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "dietary_requirements": {
-            "name": "dietary_requirements",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "event": {
-            "name": "event",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "freebusy_reservations": {
-            "name": "freebusy_reservations",
-            "type": {
-              "arrayType": {
-                "scalarType": "text"
-              }
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "lead": {
-            "name": "lead",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "notes": {
-            "name": "notes",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "quote": {
-            "name": "quote",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "res_guests": {
-            "name": "res_guests",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "room_stays": {
-            "name": "room_stays",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "rooms": {
-            "name": "rooms",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "special_requests": {
-            "name": "special_requests",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "state": {
-            "name": "state",
-            "type": {
-              "scalarType": "booking_reservation_state"
-            },
-            "nullable": "nullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "total": {
-            "name": "total",
+          "tax": {
+            "name": "tax",
             "type": {
               "scalarType": "jsonb"
             },
@@ -535,40 +231,12 @@
           }
         },
         "uniquenessConstraints": {
-          "reservations_pkey": [
+          "dishes_pkey": [
             "id"
           ]
         },
         "foreignRelations": {
-          "reservations_contact_fkey": {
-            "foreignSchema": "crm",
-            "foreignTable": "contacts",
-            "columnMapping": {
-              "contact": "id"
-            }
-          },
-          "reservations_event_fkey": {
-            "foreignSchema": "booking",
-            "foreignTable": "events",
-            "columnMapping": {
-              "event": "name"
-            }
-          },
-          "reservations_lead_fkey": {
-            "foreignSchema": "crm",
-            "foreignTable": "leads",
-            "columnMapping": {
-              "lead": "id"
-            }
-          },
-          "reservations_quote_fkey": {
-            "foreignSchema": "sales",
-            "foreignTable": "quotes",
-            "columnMapping": {
-              "quote": "name"
-            }
-          },
-          "reservations_venue_id_fkey": {
+          "dishes_venue_id_fkey": {
             "foreignSchema": "venue",
             "foreignTable": "resource",
             "columnMapping": {
@@ -578,87 +246,14 @@
         },
         "description": null
       },
-      "booking_sessions": {
-        "schemaName": "booking",
-        "tableName": "sessions",
+      "catalog_fixed_package_spaces": {
+        "schemaName": "catalog",
+        "tableName": "fixed_package_spaces",
         "columns": {
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "dietary_requirements": {
-            "name": "dietary_requirements",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "display_name": {
-            "name": "display_name",
+          "fixed_package_id": {
+            "name": "fixed_package_id",
             "type": {
               "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "end_time": {
-            "name": "end_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "event_id": {
-            "name": "event_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "event_type": {
-            "name": "event_type",
-            "type": {
-              "scalarType": "booking_event_type"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "freebusy_reservation": {
-            "name": "freebusy_reservation",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "guaranteed_guests": {
-            "name": "guaranteed_guests",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "guests": {
-            "name": "guests",
-            "type": {
-              "scalarType": "int4"
             },
             "nullable": "nonNullable",
             "description": null
@@ -671,10 +266,127 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "layout": {
-            "name": "layout",
+          "space_id": {
+            "name": "space_id",
             "type": {
-              "scalarType": "booking_layout"
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "space_name": {
+            "name": "space_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "fixed_package_spaces_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {
+          "fixed_package_spaces_fixed_package_id_fkey": {
+            "foreignSchema": "catalog",
+            "foreignTable": "fixed_packages",
+            "columnMapping": {
+              "fixed_package_id": "id"
+            }
+          },
+          "fixed_package_spaces_space_id_fkey": {
+            "foreignSchema": "venue",
+            "foreignTable": "spaces",
+            "columnMapping": {
+              "space_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "catalog_fixed_packages": {
+        "schemaName": "catalog",
+        "tableName": "fixed_packages",
+        "columns": {
+          "active": {
+            "name": "active",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "description": {
+            "name": "description",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "display_name": {
+            "name": "display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "duration": {
+            "name": "duration",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "extra_guest_price": {
+            "name": "extra_guest_price",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "included_guests": {
+            "name": "included_guests",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "inclusions": {
+            "name": "inclusions",
+            "type": {
+              "scalarType": "jsonb"
             },
             "nullable": "nullable",
             "description": null
@@ -695,52 +407,20 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "notes": {
-            "name": "notes",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "setup_time": {
-            "name": "setup_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "space": {
-            "name": "space",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "special_requests": {
-            "name": "special_requests",
+          "price": {
+            "name": "price",
             "type": {
               "scalarType": "jsonb"
             },
-            "nullable": "nullable",
-            "description": null
-          },
-          "start_time": {
-            "name": "start_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
             "nullable": "nonNullable",
             "description": null
           },
-          "teardown_time": {
-            "name": "teardown_time",
+          "tax": {
+            "name": "tax",
             "type": {
-              "scalarType": "timestamptz"
+              "scalarType": "jsonb"
             },
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "description": null
           },
           "update_time": {
@@ -761,33 +441,19 @@
           }
         },
         "uniquenessConstraints": {
-          "sessions_pkey": [
+          "fixed_packages_pkey": [
             "id"
           ]
         },
         "foreignRelations": {
-          "sessions_event_id_fkey": {
-            "foreignSchema": "booking",
-            "foreignTable": "events",
-            "columnMapping": {
-              "event_id": "id"
-            }
-          },
-          "sessions_menu_fkey": {
-            "foreignSchema": "sales",
+          "fixed_packages_menu_fkey": {
+            "foreignSchema": "catalog",
             "foreignTable": "menus",
             "columnMapping": {
               "menu": "name"
             }
           },
-          "sessions_space_fkey": {
-            "foreignSchema": "venue",
-            "foreignTable": "spaces",
-            "columnMapping": {
-              "space": "name"
-            }
-          },
-          "sessions_venue_id_fkey": {
+          "fixed_packages_venue_id_fkey": {
             "foreignSchema": "venue",
             "foreignTable": "resource",
             "columnMapping": {
@@ -797,316 +463,30 @@
         },
         "description": null
       },
-      "crm_activities": {
-        "schemaName": "crm",
-        "tableName": "activities",
+      "catalog_menus": {
+        "schemaName": "catalog",
+        "tableName": "menus",
         "columns": {
-          "author": {
-            "name": "author",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "details": {
-            "name": "details",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "kind": {
-            "name": "kind",
-            "type": {
-              "scalarType": "crm_activity_kind"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "lead_id": {
-            "name": "lead_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "occur_time": {
-            "name": "occur_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "summary": {
-            "name": "summary",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "update_time": {
-            "name": "update_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "activities_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {
-          "activities_lead_id_fkey": {
-            "foreignSchema": "crm",
-            "foreignTable": "leads",
-            "columnMapping": {
-              "lead_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "crm_contacts": {
-        "schemaName": "crm",
-        "tableName": "contacts",
-        "columns": {
-          "addresses": {
-            "name": "addresses",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "company_display_name": {
-            "name": "company_display_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "dietary_requirements": {
-            "name": "dietary_requirements",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "display_name": {
-            "name": "display_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "emails": {
-            "name": "emails",
-            "type": {
-              "arrayType": {
-                "scalarType": "text"
-              }
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "gst": {
-            "name": "gst",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "kind": {
-            "name": "kind",
-            "type": {
-              "scalarType": "crm_contact_kind"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "marketing_consent": {
-            "name": "marketing_consent",
+          "active": {
+            "name": "active",
             "type": {
               "scalarType": "bool"
             },
             "nullable": "nullable",
             "description": null
           },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "name_parts": {
-            "name": "name_parts",
+          "add_ons": {
+            "name": "add_ons",
             "type": {
               "scalarType": "jsonb"
             },
             "nullable": "nullable",
             "description": null
           },
-          "notes": {
-            "name": "notes",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "phone_numbers": {
-            "name": "phone_numbers",
-            "type": {
-              "arrayType": {
-                "scalarType": "text"
-              }
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "phones": {
-            "name": "phones",
+          "courses": {
+            "name": "courses",
             "type": {
               "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "tags": {
-            "name": "tags",
-            "type": {
-              "arrayType": {
-                "scalarType": "text"
-              }
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "update_time": {
-            "name": "update_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "contacts_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "crm_leads": {
-        "schemaName": "crm",
-        "tableName": "leads",
-        "columns": {
-          "bookings": {
-            "name": "bookings",
-            "type": {
-              "arrayType": {
-                "scalarType": "text"
-              }
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "budget": {
-            "name": "budget",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "close_time": {
-            "name": "close_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "contact": {
-            "name": "contact",
-            "type": {
-              "scalarType": "text"
             },
             "nullable": "nonNullable",
             "description": null
@@ -1120,18 +500,18 @@
             "hasDefault": "hasDefault",
             "description": null
           },
-          "dates": {
-            "name": "dates",
+          "description": {
+            "name": "description",
             "type": {
-              "scalarType": "jsonb"
+              "scalarType": "text"
             },
             "nullable": "nullable",
             "description": null
           },
-          "dates_flexible": {
-            "name": "dates_flexible",
+          "diets": {
+            "name": "diets",
             "type": {
-              "scalarType": "bool"
+              "scalarType": "text"
             },
             "nullable": "nullable",
             "description": null
@@ -1152,30 +532,6 @@
             "nullable": "nullable",
             "description": null
           },
-          "event_type": {
-            "name": "event_type",
-            "type": {
-              "scalarType": "booking_event_type"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "guests": {
-            "name": "guests",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "hold": {
-            "name": "hold",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
           "id": {
             "name": "id",
             "type": {
@@ -1184,27 +540,10 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "kind": {
-            "name": "kind",
+          "min_plates": {
+            "name": "min_plates",
             "type": {
-              "scalarType": "crm_lead_kind"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "lost_detail": {
-            "name": "lost_detail",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "lost_reason": {
-            "name": "lost_reason",
-            "type": {
-              "scalarType": "crm_lost_reason"
+              "scalarType": "int4"
             },
             "nullable": "nullable",
             "description": null
@@ -1217,61 +556,20 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "next_follow_up_time": {
-            "name": "next_follow_up_time",
+          "plate_price": {
+            "name": "plate_price",
             "type": {
-              "scalarType": "timestamptz"
+              "scalarType": "jsonb"
             },
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "description": null
           },
-          "owner": {
-            "name": "owner",
+          "tax": {
+            "name": "tax",
             "type": {
-              "scalarType": "text"
+              "scalarType": "jsonb"
             },
-            "nullable": "nullable",
-            "description": null
-          },
-          "requirements": {
-            "name": "requirements",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "rooms": {
-            "name": "rooms",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "source": {
-            "name": "source",
-            "type": {
-              "scalarType": "booking_channel"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "source_detail": {
-            "name": "source_detail",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "stage": {
-            "name": "stage",
-            "type": {
-              "scalarType": "crm_stage"
-            },
-            "nullable": "nullable",
-            "hasDefault": "hasDefault",
+            "nullable": "nonNullable",
             "description": null
           },
           "update_time": {
@@ -1282,33 +580,26 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "venue": {
-            "name": "venue",
+          "venue_id": {
+            "name": "venue_id",
             "type": {
               "scalarType": "text"
             },
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "description": null
           }
         },
         "uniquenessConstraints": {
-          "leads_pkey": [
+          "menus_pkey": [
             "id"
           ]
         },
         "foreignRelations": {
-          "leads_contact_fkey": {
-            "foreignSchema": "crm",
-            "foreignTable": "contacts",
-            "columnMapping": {
-              "contact": "id"
-            }
-          },
-          "leads_venue_fkey": {
+          "menus_venue_id_fkey": {
             "foreignSchema": "venue",
             "foreignTable": "resource",
             "columnMapping": {
-              "venue": "id"
+              "venue_id": "id"
             }
           }
         },
@@ -1466,6 +757,422 @@
         },
         "foreignRelations": {
           "document_resource_venue_id_fkey": {
+            "foreignSchema": "venue",
+            "foreignTable": "resource",
+            "columnMapping": {
+              "venue_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "event_resource": {
+        "schemaName": "event",
+        "tableName": "resource",
+        "columns": {
+          "cancel_reason": {
+            "name": "cancel_reason",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "cancel_time": {
+            "name": "cancel_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "contact": {
+            "name": "contact",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "coordinator": {
+            "name": "coordinator",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "dates": {
+            "name": "dates",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "display_name": {
+            "name": "display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "event_type": {
+            "name": "event_type",
+            "type": {
+              "scalarType": "event_event_type"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "guests": {
+            "name": "guests",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "lead": {
+            "name": "lead",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "notes": {
+            "name": "notes",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "quote": {
+            "name": "quote",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "special_requests": {
+            "name": "special_requests",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "state": {
+            "name": "state",
+            "type": {
+              "scalarType": "event_event_state"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "update_time": {
+            "name": "update_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "venue_id": {
+            "name": "venue_id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "event_resource_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {
+          "event_resource_contact_fkey": {
+            "foreignSchema": "guest",
+            "foreignTable": "contacts",
+            "columnMapping": {
+              "contact": "id"
+            }
+          },
+          "event_resource_lead_fkey": {
+            "foreignSchema": "sales",
+            "foreignTable": "leads",
+            "columnMapping": {
+              "lead": "id"
+            }
+          },
+          "event_resource_quote_fkey": {
+            "foreignSchema": "sales",
+            "foreignTable": "quotes",
+            "columnMapping": {
+              "quote": "name"
+            }
+          },
+          "event_resource_venue_id_fkey": {
+            "foreignSchema": "venue",
+            "foreignTable": "resource",
+            "columnMapping": {
+              "venue_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "event_sessions": {
+        "schemaName": "event",
+        "tableName": "sessions",
+        "columns": {
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "dietary_requirements": {
+            "name": "dietary_requirements",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "display_name": {
+            "name": "display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "end_time": {
+            "name": "end_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "event_id": {
+            "name": "event_id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "event_type": {
+            "name": "event_type",
+            "type": {
+              "scalarType": "event_event_type"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "freebusy_reservation": {
+            "name": "freebusy_reservation",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "guaranteed_guests": {
+            "name": "guaranteed_guests",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "guests": {
+            "name": "guests",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "layout": {
+            "name": "layout",
+            "type": {
+              "scalarType": "event_layout"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "menu": {
+            "name": "menu",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "notes": {
+            "name": "notes",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "setup_time": {
+            "name": "setup_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "space": {
+            "name": "space",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "special_requests": {
+            "name": "special_requests",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "start_time": {
+            "name": "start_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "teardown_time": {
+            "name": "teardown_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "update_time": {
+            "name": "update_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "venue_id": {
+            "name": "venue_id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "sessions_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {
+          "sessions_event_id_fkey": {
+            "foreignSchema": "event",
+            "foreignTable": "resource",
+            "columnMapping": {
+              "event_id": "id"
+            }
+          },
+          "sessions_menu_fkey": {
+            "foreignSchema": "catalog",
+            "foreignTable": "menus",
+            "columnMapping": {
+              "menu": "name"
+            }
+          },
+          "sessions_space_fkey": {
+            "foreignSchema": "venue",
+            "foreignTable": "spaces",
+            "columnMapping": {
+              "space": "name"
+            }
+          },
+          "sessions_venue_id_fkey": {
             "foreignSchema": "venue",
             "foreignTable": "resource",
             "columnMapping": {
@@ -1722,7 +1429,7 @@
         },
         "foreignRelations": {
           "invoices_contact_fkey": {
-            "foreignSchema": "crm",
+            "foreignSchema": "guest",
             "foreignTable": "contacts",
             "columnMapping": {
               "contact": "id"
@@ -1776,7 +1483,7 @@
           "channel": {
             "name": "channel",
             "type": {
-              "scalarType": "booking_channel"
+              "scalarType": "finance_channel"
             },
             "nullable": "nullable",
             "description": null
@@ -1945,7 +1652,7 @@
         },
         "foreignRelations": {
           "payments_contact_fkey": {
-            "foreignSchema": "crm",
+            "foreignSchema": "guest",
             "foreignTable": "contacts",
             "columnMapping": {
               "contact": "id"
@@ -1966,6 +1673,171 @@
             }
           }
         },
+        "description": null
+      },
+      "guest_contacts": {
+        "schemaName": "guest",
+        "tableName": "contacts",
+        "columns": {
+          "addresses": {
+            "name": "addresses",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "company_display_name": {
+            "name": "company_display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "dietary_requirements": {
+            "name": "dietary_requirements",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "display_name": {
+            "name": "display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "emails": {
+            "name": "emails",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "gst": {
+            "name": "gst",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "kind": {
+            "name": "kind",
+            "type": {
+              "scalarType": "guest_contact_kind"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "marketing_consent": {
+            "name": "marketing_consent",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name_parts": {
+            "name": "name_parts",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "notes": {
+            "name": "notes",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "phone_numbers": {
+            "name": "phone_numbers",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "phones": {
+            "name": "phones",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "tags": {
+            "name": "tags",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "update_time": {
+            "name": "update_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "contacts_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {},
         "description": null
       },
       "operations_service_requests": {
@@ -2167,518 +2039,8 @@
         },
         "description": null
       },
-      "sales_dishes": {
-        "schemaName": "sales",
-        "tableName": "dishes",
-        "columns": {
-          "allergens": {
-            "name": "allergens",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "available": {
-            "name": "available",
-            "type": {
-              "scalarType": "bool"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "course": {
-            "name": "course",
-            "type": {
-              "scalarType": "sales_course"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "cuisine": {
-            "name": "cuisine",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "description": {
-            "name": "description",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "diets": {
-            "name": "diets",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "display_name": {
-            "name": "display_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "image_uri": {
-            "name": "image_uri",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "price": {
-            "name": "price",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "tax": {
-            "name": "tax",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "update_time": {
-            "name": "update_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "venue_id": {
-            "name": "venue_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "dishes_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {
-          "dishes_venue_id_fkey": {
-            "foreignSchema": "venue",
-            "foreignTable": "resource",
-            "columnMapping": {
-              "venue_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "sales_fixed_package_spaces": {
-        "schemaName": "sales",
-        "tableName": "fixed_package_spaces",
-        "columns": {
-          "fixed_package_id": {
-            "name": "fixed_package_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "space_id": {
-            "name": "space_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "space_name": {
-            "name": "space_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "fixed_package_spaces_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {
-          "fixed_package_spaces_fixed_package_id_fkey": {
-            "foreignSchema": "sales",
-            "foreignTable": "fixed_packages",
-            "columnMapping": {
-              "fixed_package_id": "id"
-            }
-          },
-          "fixed_package_spaces_space_id_fkey": {
-            "foreignSchema": "venue",
-            "foreignTable": "spaces",
-            "columnMapping": {
-              "space_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "sales_fixed_packages": {
-        "schemaName": "sales",
-        "tableName": "fixed_packages",
-        "columns": {
-          "active": {
-            "name": "active",
-            "type": {
-              "scalarType": "bool"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "description": {
-            "name": "description",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "display_name": {
-            "name": "display_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "duration": {
-            "name": "duration",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "extra_guest_price": {
-            "name": "extra_guest_price",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "included_guests": {
-            "name": "included_guests",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "inclusions": {
-            "name": "inclusions",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "menu": {
-            "name": "menu",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "price": {
-            "name": "price",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "tax": {
-            "name": "tax",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "update_time": {
-            "name": "update_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "venue_id": {
-            "name": "venue_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "fixed_packages_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {
-          "fixed_packages_menu_fkey": {
-            "foreignSchema": "sales",
-            "foreignTable": "menus",
-            "columnMapping": {
-              "menu": "name"
-            }
-          },
-          "fixed_packages_venue_id_fkey": {
-            "foreignSchema": "venue",
-            "foreignTable": "resource",
-            "columnMapping": {
-              "venue_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "sales_menus": {
-        "schemaName": "sales",
-        "tableName": "menus",
-        "columns": {
-          "active": {
-            "name": "active",
-            "type": {
-              "scalarType": "bool"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "add_ons": {
-            "name": "add_ons",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "courses": {
-            "name": "courses",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "create_time": {
-            "name": "create_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "description": {
-            "name": "description",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "diets": {
-            "name": "diets",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "display_name": {
-            "name": "display_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "etag": {
-            "name": "etag",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "min_plates": {
-            "name": "min_plates",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "plate_price": {
-            "name": "plate_price",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "tax": {
-            "name": "tax",
-            "type": {
-              "scalarType": "jsonb"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "update_time": {
-            "name": "update_time",
-            "type": {
-              "scalarType": "timestamptz"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "venue_id": {
-            "name": "venue_id",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "menus_pkey": [
-            "id"
-          ]
-        },
-        "foreignRelations": {
-          "menus_venue_id_fkey": {
-            "foreignSchema": "venue",
-            "foreignTable": "resource",
-            "columnMapping": {
-              "venue_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "sales_price_rules": {
-        "schemaName": "sales",
+      "pricing_price_rules": {
+        "schemaName": "pricing",
         "tableName": "price_rules",
         "columns": {
           "active": {
@@ -2692,7 +2054,7 @@
           "adjustment_case": {
             "name": "adjustment_case",
             "type": {
-              "scalarType": "sales_price_rule_adjustment_case"
+              "scalarType": "pricing_price_rule_adjustment_case"
             },
             "nullable": "nullable",
             "description": null
@@ -2799,7 +2161,7 @@
           "target": {
             "name": "target",
             "type": {
-              "scalarType": "sales_price_target"
+              "scalarType": "pricing_price_target"
             },
             "nullable": "nonNullable",
             "hasDefault": "hasDefault",
@@ -2829,7 +2191,7 @@
         },
         "foreignRelations": {
           "price_rules_season_fkey": {
-            "foreignSchema": "sales",
+            "foreignSchema": "pricing",
             "foreignTable": "seasons",
             "columnMapping": {
               "season": "name"
@@ -2840,6 +2202,460 @@
             "foreignTable": "resource",
             "columnMapping": {
               "venue_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "pricing_seasons": {
+        "schemaName": "pricing",
+        "tableName": "seasons",
+        "columns": {
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "dates": {
+            "name": "dates",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "display_name": {
+            "name": "display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "recurs_yearly": {
+            "name": "recurs_yearly",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "update_time": {
+            "name": "update_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "venue_id": {
+            "name": "venue_id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "weekdays": {
+            "name": "weekdays",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "seasons_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {
+          "seasons_venue_id_fkey": {
+            "foreignSchema": "venue",
+            "foreignTable": "resource",
+            "columnMapping": {
+              "venue_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "sales_activities": {
+        "schemaName": "sales",
+        "tableName": "activities",
+        "columns": {
+          "author": {
+            "name": "author",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "details": {
+            "name": "details",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "kind": {
+            "name": "kind",
+            "type": {
+              "scalarType": "sales_activity_kind"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "lead_id": {
+            "name": "lead_id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "occur_time": {
+            "name": "occur_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "summary": {
+            "name": "summary",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "update_time": {
+            "name": "update_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "activities_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {
+          "activities_lead_id_fkey": {
+            "foreignSchema": "sales",
+            "foreignTable": "leads",
+            "columnMapping": {
+              "lead_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "sales_leads": {
+        "schemaName": "sales",
+        "tableName": "leads",
+        "columns": {
+          "bookings": {
+            "name": "bookings",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "budget": {
+            "name": "budget",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "close_time": {
+            "name": "close_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "contact": {
+            "name": "contact",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "create_time": {
+            "name": "create_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "dates": {
+            "name": "dates",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "dates_flexible": {
+            "name": "dates_flexible",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "display_name": {
+            "name": "display_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "etag": {
+            "name": "etag",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "event_type": {
+            "name": "event_type",
+            "type": {
+              "scalarType": "event_event_type"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "guests": {
+            "name": "guests",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "hold": {
+            "name": "hold",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "kind": {
+            "name": "kind",
+            "type": {
+              "scalarType": "sales_lead_kind"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "lost_detail": {
+            "name": "lost_detail",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "lost_reason": {
+            "name": "lost_reason",
+            "type": {
+              "scalarType": "sales_lost_reason"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "next_follow_up_time": {
+            "name": "next_follow_up_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "owner": {
+            "name": "owner",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "requirements": {
+            "name": "requirements",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "rooms": {
+            "name": "rooms",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "source": {
+            "name": "source",
+            "type": {
+              "scalarType": "finance_channel"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "source_detail": {
+            "name": "source_detail",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "stage": {
+            "name": "stage",
+            "type": {
+              "scalarType": "sales_stage"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "update_time": {
+            "name": "update_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "venue": {
+            "name": "venue",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "leads_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {
+          "leads_contact_fkey": {
+            "foreignSchema": "guest",
+            "foreignTable": "contacts",
+            "columnMapping": {
+              "contact": "id"
+            }
+          },
+          "leads_venue_fkey": {
+            "foreignSchema": "venue",
+            "foreignTable": "resource",
+            "columnMapping": {
+              "venue": "id"
             }
           }
         },
@@ -2925,7 +2741,7 @@
           "event_type": {
             "name": "event_type",
             "type": {
-              "scalarType": "booking_event_type"
+              "scalarType": "event_event_type"
             },
             "nullable": "nullable",
             "description": null
@@ -3075,14 +2891,14 @@
         },
         "foreignRelations": {
           "quotes_contact_fkey": {
-            "foreignSchema": "crm",
+            "foreignSchema": "guest",
             "foreignTable": "contacts",
             "columnMapping": {
               "contact": "id"
             }
           },
           "quotes_lead_fkey": {
-            "foreignSchema": "crm",
+            "foreignSchema": "sales",
             "foreignTable": "leads",
             "columnMapping": {
               "lead": "id"
@@ -3098,10 +2914,83 @@
         },
         "description": null
       },
-      "sales_seasons": {
-        "schemaName": "sales",
-        "tableName": "seasons",
+      "stay_reservations": {
+        "schemaName": "stay",
+        "tableName": "reservations",
         "columns": {
+          "adults": {
+            "name": "adults",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "arrival_date": {
+            "name": "arrival_date",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "arrive_time": {
+            "name": "arrive_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "cancel_reason": {
+            "name": "cancel_reason",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "cancel_time": {
+            "name": "cancel_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "channel": {
+            "name": "channel",
+            "type": {
+              "scalarType": "finance_channel"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "channel_reference": {
+            "name": "channel_reference",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "children": {
+            "name": "children",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "contact": {
+            "name": "contact",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
           "create_time": {
             "name": "create_time",
             "type": {
@@ -3111,26 +3000,52 @@
             "hasDefault": "hasDefault",
             "description": null
           },
-          "dates": {
-            "name": "dates",
+          "depart_time": {
+            "name": "depart_time",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "departure_date": {
+            "name": "departure_date",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "dietary_requirements": {
+            "name": "dietary_requirements",
             "type": {
               "scalarType": "jsonb"
             },
             "nullable": "nullable",
             "description": null
           },
-          "display_name": {
-            "name": "display_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
           "etag": {
             "name": "etag",
             "type": {
               "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "event": {
+            "name": "event",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "freebusy_reservations": {
+            "name": "freebusy_reservations",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
             },
             "nullable": "nullable",
             "description": null
@@ -3143,6 +3058,14 @@
             "nullable": "nonNullable",
             "description": null
           },
+          "lead": {
+            "name": "lead",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
           "name": {
             "name": "name",
             "type": {
@@ -3151,10 +3074,67 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "recurs_yearly": {
-            "name": "recurs_yearly",
+          "notes": {
+            "name": "notes",
             "type": {
-              "scalarType": "bool"
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "quote": {
+            "name": "quote",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "res_guests": {
+            "name": "res_guests",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "room_stays": {
+            "name": "room_stays",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "rooms": {
+            "name": "rooms",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "special_requests": {
+            "name": "special_requests",
+            "type": {
+              "scalarType": "jsonb"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "state": {
+            "name": "state",
+            "type": {
+              "scalarType": "stay_stay_state"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "total": {
+            "name": "total",
+            "type": {
+              "scalarType": "jsonb"
             },
             "nullable": "nullable",
             "description": null
@@ -3174,23 +3154,43 @@
             },
             "nullable": "nonNullable",
             "description": null
-          },
-          "weekdays": {
-            "name": "weekdays",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
           }
         },
         "uniquenessConstraints": {
-          "seasons_pkey": [
+          "reservations_pkey": [
             "id"
           ]
         },
         "foreignRelations": {
-          "seasons_venue_id_fkey": {
+          "reservations_contact_fkey": {
+            "foreignSchema": "guest",
+            "foreignTable": "contacts",
+            "columnMapping": {
+              "contact": "id"
+            }
+          },
+          "reservations_event_fkey": {
+            "foreignSchema": "event",
+            "foreignTable": "resource",
+            "columnMapping": {
+              "event": "name"
+            }
+          },
+          "reservations_lead_fkey": {
+            "foreignSchema": "sales",
+            "foreignTable": "leads",
+            "columnMapping": {
+              "lead": "id"
+            }
+          },
+          "reservations_quote_fkey": {
+            "foreignSchema": "sales",
+            "foreignTable": "quotes",
+            "columnMapping": {
+              "quote": "name"
+            }
+          },
+          "reservations_venue_id_fkey": {
             "foreignSchema": "venue",
             "foreignTable": "resource",
             "columnMapping": {
@@ -3435,359 +3435,6 @@
     },
     "types": {
       "scalar": {
-        "booking_channel": {
-          "typeName": "channel",
-          "schemaName": "booking",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "booking_channel"
-            },
-            "min": {
-              "returnType": "booking_channel"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "booking_channel",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "WEBSITE",
-              "PHONE",
-              "WALK_IN",
-              "EMAIL",
-              "WHATSAPP",
-              "INSTAGRAM",
-              "FACEBOOK",
-              "REFERRAL",
-              "BOOKING_COM",
-              "AIRBNB",
-              "MAKEMYTRIP",
-              "GOIBIBO",
-              "AGODA",
-              "EXPEDIA",
-              "CHANNEL_MANAGER",
-              "RFP",
-              "OTHER"
-            ]
-          }
-        },
-        "booking_event_state": {
-          "typeName": "event_state",
-          "schemaName": "booking",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "booking_event_state"
-            },
-            "min": {
-              "returnType": "booking_event_state"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "booking_event_state",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "TENTATIVE",
-              "CONFIRMED",
-              "COMPLETED",
-              "CANCELLED"
-            ]
-          }
-        },
-        "booking_event_type": {
-          "typeName": "event_type",
-          "schemaName": "booking",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "booking_event_type"
-            },
-            "min": {
-              "returnType": "booking_event_type"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "booking_event_type",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "WEDDING",
-              "RECEPTION",
-              "ENGAGEMENT",
-              "PRE_WEDDING",
-              "BIRTHDAY",
-              "ANNIVERSARY",
-              "SOCIAL",
-              "RELIGIOUS",
-              "MEETING",
-              "CONFERENCE",
-              "OFFSITE",
-              "LAUNCH",
-              "OTHER"
-            ]
-          }
-        },
-        "booking_layout": {
-          "typeName": "layout",
-          "schemaName": "booking",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "booking_layout"
-            },
-            "min": {
-              "returnType": "booking_layout"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "booking_layout",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "THEATRE",
-              "BANQUET",
-              "CLASSROOM",
-              "U_SHAPE",
-              "BOARDROOM",
-              "COCKTAIL",
-              "CABARET",
-              "FLOOR"
-            ]
-          }
-        },
-        "booking_reservation_state": {
-          "typeName": "reservation_state",
-          "schemaName": "booking",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "booking_reservation_state"
-            },
-            "min": {
-              "returnType": "booking_reservation_state"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "booking_reservation_state",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "PENDING",
-              "CONFIRMED",
-              "CHECKED_IN",
-              "CHECKED_OUT",
-              "CANCELLED",
-              "NO_SHOW"
-            ]
-          }
-        },
         "bool": {
           "typeName": "bool",
           "schemaName": "pg_catalog",
@@ -3849,334 +3496,76 @@
           },
           "typeRepresentation": "boolean"
         },
-        "crm_activity_kind": {
-          "typeName": "activity_kind",
-          "schemaName": "crm",
+        "catalog_course": {
+          "typeName": "course",
+          "schemaName": "catalog",
           "description": null,
           "aggregateFunctions": {
             "max": {
-              "returnType": "crm_activity_kind"
+              "returnType": "catalog_course"
             },
             "min": {
-              "returnType": "crm_activity_kind"
+              "returnType": "catalog_course"
             }
           },
           "comparisonOperators": {
             "_eq": {
               "operatorName": "=",
               "operatorKind": "equal",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             },
             "_gt": {
               "operatorName": ">",
               "operatorKind": "greaterThan",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             },
             "_gte": {
               "operatorName": ">=",
               "operatorKind": "greaterThanOrEqual",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             },
             "_in": {
               "operatorName": "IN",
               "operatorKind": "in",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             },
             "_lt": {
               "operatorName": "<",
               "operatorKind": "lessThan",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             },
             "_lte": {
               "operatorName": "<=",
               "operatorKind": "lessThanOrEqual",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             },
             "_neq": {
               "operatorName": "!=",
               "operatorKind": "custom",
-              "argumentType": "crm_activity_kind",
+              "argumentType": "catalog_course",
               "isInfix": true
             }
           },
           "typeRepresentation": {
             "enum": [
-              "CALL",
-              "EMAIL",
-              "WHATSAPP",
-              "MEETING",
-              "SITE_VISIT",
-              "QUOTE_SENT",
-              "NOTE"
-            ]
-          }
-        },
-        "crm_contact_kind": {
-          "typeName": "contact_kind",
-          "schemaName": "crm",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "crm_contact_kind"
-            },
-            "min": {
-              "returnType": "crm_contact_kind"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "crm_contact_kind",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "PERSON",
-              "COMPANY"
-            ]
-          }
-        },
-        "crm_lead_kind": {
-          "typeName": "lead_kind",
-          "schemaName": "crm",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "crm_lead_kind"
-            },
-            "min": {
-              "returnType": "crm_lead_kind"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "crm_lead_kind",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "STAY",
-              "EVENT",
-              "EVENT_WITH_STAY"
-            ]
-          }
-        },
-        "crm_lost_reason": {
-          "typeName": "lost_reason",
-          "schemaName": "crm",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "crm_lost_reason"
-            },
-            "min": {
-              "returnType": "crm_lost_reason"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "crm_lost_reason",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "PRICE",
-              "DATES",
-              "COMPETITOR",
-              "CAPACITY",
-              "CANCELLED_PLANS",
-              "NO_RESPONSE",
+              "WELCOME_DRINK",
+              "STARTER",
+              "SOUP",
+              "SALAD",
+              "MAIN",
+              "BREAD",
+              "RICE",
+              "SIDE",
+              "DESSERT",
+              "BEVERAGE",
+              "LIVE_COUNTER",
               "OTHER"
-            ]
-          }
-        },
-        "crm_stage": {
-          "typeName": "stage",
-          "schemaName": "crm",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "crm_stage"
-            },
-            "min": {
-              "returnType": "crm_stage"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "crm_stage",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "NEW",
-              "CONTACTED",
-              "SITE_VISIT",
-              "PROPOSAL",
-              "NEGOTIATION",
-              "WON",
-              "LOST"
             ]
           }
         },
@@ -4372,6 +3761,292 @@
               "STAFF",
               "GUEST",
               "PUBLIC"
+            ]
+          }
+        },
+        "event_event_state": {
+          "typeName": "event_state",
+          "schemaName": "event",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "event_event_state"
+            },
+            "min": {
+              "returnType": "event_event_state"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "event_event_state",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "TENTATIVE",
+              "CONFIRMED",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "event_event_type": {
+          "typeName": "event_type",
+          "schemaName": "event",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "event_event_type"
+            },
+            "min": {
+              "returnType": "event_event_type"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "event_event_type",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "WEDDING",
+              "RECEPTION",
+              "ENGAGEMENT",
+              "PRE_WEDDING",
+              "BIRTHDAY",
+              "ANNIVERSARY",
+              "SOCIAL",
+              "RELIGIOUS",
+              "MEETING",
+              "CONFERENCE",
+              "OFFSITE",
+              "LAUNCH",
+              "OTHER"
+            ]
+          }
+        },
+        "event_layout": {
+          "typeName": "layout",
+          "schemaName": "event",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "event_layout"
+            },
+            "min": {
+              "returnType": "event_layout"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "event_layout",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "event_layout",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "event_layout",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "event_layout",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "event_layout",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "event_layout",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "event_layout",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "THEATRE",
+              "BANQUET",
+              "CLASSROOM",
+              "U_SHAPE",
+              "BOARDROOM",
+              "COCKTAIL",
+              "CABARET",
+              "FLOOR"
+            ]
+          }
+        },
+        "finance_channel": {
+          "typeName": "channel",
+          "schemaName": "finance",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "finance_channel"
+            },
+            "min": {
+              "returnType": "finance_channel"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "finance_channel",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "WEBSITE",
+              "PHONE",
+              "WALK_IN",
+              "EMAIL",
+              "WHATSAPP",
+              "INSTAGRAM",
+              "FACEBOOK",
+              "REFERRAL",
+              "BOOKING_COM",
+              "AIRBNB",
+              "MAKEMYTRIP",
+              "GOIBIBO",
+              "AGODA",
+              "EXPEDIA",
+              "CHANNEL_MANAGER",
+              "RFP",
+              "OTHER"
             ]
           }
         },
@@ -4699,6 +4374,69 @@
               "SUCCEEDED",
               "FAILED",
               "VOIDED"
+            ]
+          }
+        },
+        "guest_contact_kind": {
+          "typeName": "contact_kind",
+          "schemaName": "guest",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "guest_contact_kind"
+            },
+            "min": {
+              "returnType": "guest_contact_kind"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "guest_contact_kind",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "PERSON",
+              "COMPANY"
             ]
           }
         },
@@ -5234,132 +4972,59 @@
             ]
           }
         },
-        "sales_course": {
-          "typeName": "course",
-          "schemaName": "sales",
-          "description": null,
-          "aggregateFunctions": {
-            "max": {
-              "returnType": "sales_course"
-            },
-            "min": {
-              "returnType": "sales_course"
-            }
-          },
-          "comparisonOperators": {
-            "_eq": {
-              "operatorName": "=",
-              "operatorKind": "equal",
-              "argumentType": "sales_course",
-              "isInfix": true
-            },
-            "_gt": {
-              "operatorName": ">",
-              "operatorKind": "greaterThan",
-              "argumentType": "sales_course",
-              "isInfix": true
-            },
-            "_gte": {
-              "operatorName": ">=",
-              "operatorKind": "greaterThanOrEqual",
-              "argumentType": "sales_course",
-              "isInfix": true
-            },
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "sales_course",
-              "isInfix": true
-            },
-            "_lt": {
-              "operatorName": "<",
-              "operatorKind": "lessThan",
-              "argumentType": "sales_course",
-              "isInfix": true
-            },
-            "_lte": {
-              "operatorName": "<=",
-              "operatorKind": "lessThanOrEqual",
-              "argumentType": "sales_course",
-              "isInfix": true
-            },
-            "_neq": {
-              "operatorName": "!=",
-              "operatorKind": "custom",
-              "argumentType": "sales_course",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": {
-            "enum": [
-              "WELCOME_DRINK",
-              "STARTER",
-              "SOUP",
-              "SALAD",
-              "MAIN",
-              "BREAD",
-              "RICE",
-              "SIDE",
-              "DESSERT",
-              "BEVERAGE",
-              "LIVE_COUNTER",
-              "OTHER"
-            ]
-          }
-        },
-        "sales_price_rule_adjustment_case": {
+        "pricing_price_rule_adjustment_case": {
           "typeName": "price_rule_adjustment_case",
-          "schemaName": "sales",
+          "schemaName": "pricing",
           "description": null,
           "aggregateFunctions": {
             "max": {
-              "returnType": "sales_price_rule_adjustment_case"
+              "returnType": "pricing_price_rule_adjustment_case"
             },
             "min": {
-              "returnType": "sales_price_rule_adjustment_case"
+              "returnType": "pricing_price_rule_adjustment_case"
             }
           },
           "comparisonOperators": {
             "_eq": {
               "operatorName": "=",
               "operatorKind": "equal",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             },
             "_gt": {
               "operatorName": ">",
               "operatorKind": "greaterThan",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             },
             "_gte": {
               "operatorName": ">=",
               "operatorKind": "greaterThanOrEqual",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             },
             "_in": {
               "operatorName": "IN",
               "operatorKind": "in",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             },
             "_lt": {
               "operatorName": "<",
               "operatorKind": "lessThan",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             },
             "_lte": {
               "operatorName": "<=",
               "operatorKind": "lessThanOrEqual",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             },
             "_neq": {
               "operatorName": "!=",
               "operatorKind": "custom",
-              "argumentType": "sales_price_rule_adjustment_case",
+              "argumentType": "pricing_price_rule_adjustment_case",
               "isInfix": true
             }
           },
@@ -5371,59 +5036,59 @@
             ]
           }
         },
-        "sales_price_target": {
+        "pricing_price_target": {
           "typeName": "price_target",
-          "schemaName": "sales",
+          "schemaName": "pricing",
           "description": null,
           "aggregateFunctions": {
             "max": {
-              "returnType": "sales_price_target"
+              "returnType": "pricing_price_target"
             },
             "min": {
-              "returnType": "sales_price_target"
+              "returnType": "pricing_price_target"
             }
           },
           "comparisonOperators": {
             "_eq": {
               "operatorName": "=",
               "operatorKind": "equal",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             },
             "_gt": {
               "operatorName": ">",
               "operatorKind": "greaterThan",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             },
             "_gte": {
               "operatorName": ">=",
               "operatorKind": "greaterThanOrEqual",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             },
             "_in": {
               "operatorName": "IN",
               "operatorKind": "in",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             },
             "_lt": {
               "operatorName": "<",
               "operatorKind": "lessThan",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             },
             "_lte": {
               "operatorName": "<=",
               "operatorKind": "lessThanOrEqual",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             },
             "_neq": {
               "operatorName": "!=",
               "operatorKind": "custom",
-              "argumentType": "sales_price_target",
+              "argumentType": "pricing_price_target",
               "isInfix": true
             }
           },
@@ -5433,6 +5098,206 @@
               "FIXED_PACKAGE",
               "SPACE",
               "DISH"
+            ]
+          }
+        },
+        "sales_activity_kind": {
+          "typeName": "activity_kind",
+          "schemaName": "sales",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "sales_activity_kind"
+            },
+            "min": {
+              "returnType": "sales_activity_kind"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "sales_activity_kind",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "CALL",
+              "EMAIL",
+              "WHATSAPP",
+              "MEETING",
+              "SITE_VISIT",
+              "QUOTE_SENT",
+              "NOTE"
+            ]
+          }
+        },
+        "sales_lead_kind": {
+          "typeName": "lead_kind",
+          "schemaName": "sales",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "sales_lead_kind"
+            },
+            "min": {
+              "returnType": "sales_lead_kind"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "sales_lead_kind",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "STAY",
+              "EVENT",
+              "EVENT_WITH_STAY"
+            ]
+          }
+        },
+        "sales_lost_reason": {
+          "typeName": "lost_reason",
+          "schemaName": "sales",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "sales_lost_reason"
+            },
+            "min": {
+              "returnType": "sales_lost_reason"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "sales_lost_reason",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "PRICE",
+              "DATES",
+              "COMPETITOR",
+              "CAPACITY",
+              "CANCELLED_PLANS",
+              "NO_RESPONSE",
+              "OTHER"
             ]
           }
         },
@@ -5500,6 +5365,141 @@
               "DECLINED",
               "EXPIRED",
               "SUPERSEDED"
+            ]
+          }
+        },
+        "sales_stage": {
+          "typeName": "stage",
+          "schemaName": "sales",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "sales_stage"
+            },
+            "min": {
+              "returnType": "sales_stage"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "sales_stage",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "NEW",
+              "CONTACTED",
+              "SITE_VISIT",
+              "PROPOSAL",
+              "NEGOTIATION",
+              "WON",
+              "LOST"
+            ]
+          }
+        },
+        "stay_stay_state": {
+          "typeName": "stay_state",
+          "schemaName": "stay",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "stay_stay_state"
+            },
+            "min": {
+              "returnType": "stay_stay_state"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "greaterThan",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "greaterThanOrEqual",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "lessThan",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "lessThanOrEqual",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "!=",
+              "operatorKind": "custom",
+              "argumentType": "stay_stay_state",
+              "isInfix": true
+            }
+          },
+          "typeRepresentation": {
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CHECKED_IN",
+              "CHECKED_OUT",
+              "CANCELLED",
+              "NO_SHOW"
             ]
           }
         },

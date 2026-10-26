@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CatalogFixedPackages
+  fields:
+    - name: active
+      type: Boolean_1
+    - name: createTime
+      type: Timestamptz!
+    - name: description
+      type: String_1
+    - name: displayName
+      type: String_1!
+    - name: duration
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: extraGuestPrice
+      type: Json
+    - name: id
+      type: String_1!
+    - name: includedGuests
+      type: Int32!
+    - name: inclusions
+      type: Json
+    - name: menu
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: price
+      type: Json!
+    - name: tax
+      type: Json!
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: CatalogFixedPackages
+    inputTypeName: CatalogFixedPackagesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: catalog_fixed_packages
+      fieldMapping:
+        active:
+          column:
+            name: active
+        createTime:
+          column:
+            name: create_time
+        description:
+          column:
+            name: description
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        etag:
+          column:
+            name: etag
+        extraGuestPrice:
+          column:
+            name: extra_guest_price
+        id:
+          column:
+            name: id
+        includedGuests:
+          column:
+            name: included_guests
+        inclusions:
+          column:
+            name: inclusions
+        menu:
+          column:
+            name: menu
+        name:
+          column:
+            name: name
+        price:
+          column:
+            name: price
+        tax:
+          column:
+            name: tax
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CatalogFixedPackages
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - active
+          - createTime
+          - description
+          - displayName
+          - duration
+          - etag
+          - extraGuestPrice
+          - id
+          - includedGuests
+          - inclusions
+          - menu
+          - name
+          - price
+          - tax
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CatalogFixedPackagesBoolExp
+  operand:
+    object:
+      type: CatalogFixedPackages
+      comparableFields:
+        - fieldName: active
+          booleanExpressionType: BoolBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: extraGuestPrice
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: includedGuests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: inclusions
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: menu
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: price
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: tax
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CatalogFixedPackagesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CatalogFixedPackagesAggExp
+  operand:
+    object:
+      aggregatedType: CatalogFixedPackages
+      aggregatableFields:
+        - fieldName: active
+          aggregateExpression: BoolAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: extraGuestPrice
+          aggregateExpression: JsonbAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: includedGuests
+          aggregateExpression: Int4AggExp
+        - fieldName: inclusions
+          aggregateExpression: JsonbAggExp
+        - fieldName: menu
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: price
+          aggregateExpression: JsonbAggExp
+        - fieldName: tax
+          aggregateExpression: JsonbAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CatalogFixedPackagesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CatalogFixedPackagesOrderByExp
+  operand:
+    object:
+      orderedType: CatalogFixedPackages
+      orderableFields:
+        - fieldName: active
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: extraGuestPrice
+          orderByExpression: JsonOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: includedGuests
+          orderByExpression: Int32OrderByExp
+        - fieldName: inclusions
+          orderByExpression: JsonOrderByExp
+        - fieldName: menu
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: price
+          orderByExpression: JsonOrderByExp
+        - fieldName: tax
+          orderByExpression: JsonOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CatalogFixedPackagesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CatalogFixedPackages
+  objectType: CatalogFixedPackages
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: catalog_fixed_packages
+  filterExpressionType: CatalogFixedPackagesBoolExp
+  aggregateExpression: CatalogFixedPackagesAggExp
+  orderByExpression: CatalogFixedPackagesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: catalogFixedPackages
+      subscription:
+        rootField: catalogFixedPackages
+    selectUniques:
+      - queryRootField: catalogFixedPackagesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: catalogFixedPackagesById
+    filterInputTypeName: CatalogFixedPackagesFilterInput
+    aggregate:
+      queryRootField: catalogFixedPackagesAggregate
+      subscription:
+        rootField: catalogFixedPackagesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CatalogFixedPackages
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

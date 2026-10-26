@@ -21,63 +21,80 @@ import (
 	"github.com/lib/pq"
 )
 
-// Course is the course a dish is served in.
-type Course string
+// LeadKind is what a lead wants to book.
+type LeadKind string
 
-// Course values as stored in the database.
+// LeadKind values as stored in the database.
 const (
-	// A welcome drink.
-	CourseWelcomeDrink Course = "WELCOME_DRINK"
-	// A starter or snack, passed or plated.
-	CourseStarter Course = "STARTER"
-	// A soup.
-	CourseSoup Course = "SOUP"
-	// A salad.
-	CourseSalad Course = "SALAD"
-	// A main course.
-	CourseMain Course = "MAIN"
-	// A bread.
-	CourseBread Course = "BREAD"
-	// A rice or biryani.
-	CourseRice Course = "RICE"
-	// A dal, raita or side.
-	CourseSide Course = "SIDE"
-	// A dessert.
-	CourseDessert Course = "DESSERT"
-	// A beverage.
-	CourseBeverage Course = "BEVERAGE"
-	// A live counter: chaat, pasta, dosa, tandoor.
-	CourseLiveCounter Course = "LIVE_COUNTER"
-	// Another course.
-	CourseOther Course = "OTHER"
+	// Rooms at the resort.
+	LeadKindStay LeadKind = "STAY"
+	// An event in a hall or space.
+	LeadKindEvent LeadKind = "EVENT"
+	// An event and rooms for its guests, as a destination wedding or an offsite.
+	LeadKindEventWithStay LeadKind = "EVENT_WITH_STAY"
 )
 
-// PriceTarget is the kind of thing a price rule prices.
-type PriceTarget string
+// Stage is where a lead is in the sales pipeline.
+type Stage string
 
-// PriceTarget values as stored in the database.
+// Stage values as stored in the database.
 const (
-	// Plate menus and their add-ons.
-	PriceTargetMenu PriceTarget = "MENU"
-	// Fixed packages.
-	PriceTargetFixedPackage PriceTarget = "FIXED_PACKAGE"
-	// Spaces: a hall's hire, a room type's nightly rate.
-	PriceTargetSpace PriceTarget = "SPACE"
-	// Dishes sold on their own.
-	PriceTargetDish PriceTarget = "DISH"
+	// Just in; nobody has spoken to the guest.
+	StageNew Stage = "NEW"
+	// Spoken to; requirements gathered.
+	StageContacted Stage = "CONTACTED"
+	// A site visit is booked or done.
+	StageSiteVisit Stage = "SITE_VISIT"
+	// A quote has been sent.
+	StageProposal Stage = "PROPOSAL"
+	// Price, dates or inclusions are being negotiated.
+	StageNegotiation Stage = "NEGOTIATION"
+	// Won: a quote was accepted and the booking made.
+	StageWon Stage = "WON"
+	// Lost.
+	StageLost Stage = "LOST"
 )
 
-// Discriminator for the adjustment oneof of PriceRule.
-type PriceRuleAdjustmentCase string
+// LostReason is why a lead was lost.
+type LostReason string
 
-// PriceRuleAdjustmentCase values as stored in the database.
+// LostReason values as stored in the database.
 const (
-	// The fixed_price member is set.
-	PriceRuleAdjustmentCaseFixedPrice PriceRuleAdjustmentCase = "FIXED_PRICE"
-	// The percent member is set.
-	PriceRuleAdjustmentCasePercent PriceRuleAdjustmentCase = "PERCENT"
-	// The amount member is set.
-	PriceRuleAdjustmentCaseAmount PriceRuleAdjustmentCase = "AMOUNT"
+	// The guest found the price too high.
+	LostReasonPrice LostReason = "PRICE"
+	// The dates were not available.
+	LostReasonDates LostReason = "DATES"
+	// The guest booked another venue.
+	LostReasonCompetitor LostReason = "COMPETITOR"
+	// The space or the rooms were too small or too few.
+	LostReasonCapacity LostReason = "CAPACITY"
+	// The guest called off or postponed their plans.
+	LostReasonCancelledPlans LostReason = "CANCELLED_PLANS"
+	// The guest stopped responding.
+	LostReasonNoResponse LostReason = "NO_RESPONSE"
+	// Another reason, described in the lead's lost_detail.
+	LostReasonOther LostReason = "OTHER"
+)
+
+// ActivityKind is what kind of touch an activity was.
+type ActivityKind string
+
+// ActivityKind values as stored in the database.
+const (
+	// A phone call.
+	ActivityKindCall ActivityKind = "CALL"
+	// An email.
+	ActivityKindEmail ActivityKind = "EMAIL"
+	// A WhatsApp message.
+	ActivityKindWhatsapp ActivityKind = "WHATSAPP"
+	// A meeting.
+	ActivityKindMeeting ActivityKind = "MEETING"
+	// A visit to the venue.
+	ActivityKindSiteVisit ActivityKind = "SITE_VISIT"
+	// A quote was sent.
+	ActivityKindQuoteSent ActivityKind = "QUOTE_SENT"
+	// A note to the file.
+	ActivityKindNote ActivityKind = "NOTE"
 )
 
 // Where a quote is in its life.
@@ -132,191 +149,137 @@ const (
 	EventTypeOther EventType = "OTHER"
 )
 
-// A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a live chaat counter, a mocktail. It is the catalogue menus are made from, so a dish is described once -- its course, the diets it suits, its allergens -- and every menu that offers it says the same. A dish has its own price only when it is sold on its own: à la carte, room service, an add-on to a menu.
-type Dish struct {
+// Channel is where a lead or a booking came from.
+type Channel string
+
+// Channel values as stored in the database.
+const (
+	// The venue's own website.
+	ChannelWebsite Channel = "WEBSITE"
+	// A phone call.
+	ChannelPhone Channel = "PHONE"
+	// In person, at the venue.
+	ChannelWalkIn Channel = "WALK_IN"
+	// Email.
+	ChannelEmail Channel = "EMAIL"
+	// WhatsApp.
+	ChannelWhatsapp Channel = "WHATSAPP"
+	// Instagram.
+	ChannelInstagram Channel = "INSTAGRAM"
+	// Facebook.
+	ChannelFacebook Channel = "FACEBOOK"
+	// A referral from a guest, a planner or an agent.
+	ChannelReferral Channel = "REFERRAL"
+	// Booking.com.
+	ChannelBookingCom Channel = "BOOKING_COM"
+	// Airbnb.
+	ChannelAirbnb Channel = "AIRBNB"
+	// MakeMyTrip.
+	ChannelMakemytrip Channel = "MAKEMYTRIP"
+	// Goibibo.
+	ChannelGoibibo Channel = "GOIBIBO"
+	// Agoda.
+	ChannelAgoda Channel = "AGODA"
+	// Expedia.
+	ChannelExpedia Channel = "EXPEDIA"
+	// A channel manager, for a channel aperio is not connected to directly.
+	ChannelChannelManager Channel = "CHANNEL_MANAGER"
+	// A corporate request for proposal.
+	ChannelRfp Channel = "RFP"
+	// Another source, described where it is recorded.
+	ChannelOther Channel = "OTHER"
+)
+
+// A Lead is an enquiry that may become a booking: a couple asking about a December wedding, a company asking for an offsite with forty rooms, a family asking about a week at the resort. It covers both venues and every kind of booking -- a stay, an event, or both, as a wedding with rooms for its guests is. A lead moves through a sales pipeline, from NEW to WON or LOST, owned by one salesperson with a follow-up date. While it is negotiated its dates can be held in freebusy (`hold`), so they are not sold under it; winning it turns the accepted quote into the booking.
+type Lead struct {
 	// Unique identifier for the record.
-	ID string `gorm:"column:id;primaryKey;not null;index:idx_dishes_venue_id_id,priority:2" json:"id"`
-	// The dish name. Format: venues/{venue}/dishes/{dish}
+	ID string `gorm:"column:id;primaryKey;not null" json:"id"`
+	// The lead name. Format: leads/{lead}
 	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The dish as the menu card names it.
-	DisplayName string `gorm:"column:display_name;not null;index:idx_dishes_display_name_trgm,type:gin,expression:display_name gin_trgm_ops" json:"display_name" validate:"required"`
-	// A line about it for the menu card.
-	Description *string `gorm:"column:description" json:"description,omitempty"`
-	// The course it is served in.
-	Course Course `gorm:"column:course;not null;default:'WELCOME_DRINK';check:chk_dishes_course,course IN ('WELCOME_DRINK','STARTER','SOUP','SALAD','MAIN','BREAD','RICE','SIDE','DESSERT','BEVERAGE','LIVE_COUNTER','OTHER')" json:"course" validate:"required"`
-	// The cuisine, e.g. "North Indian", "Chettinad", "Continental".
-	Cuisine *string `gorm:"column:cuisine;index:idx_dishes_cuisine_trgm,type:gin,expression:cuisine gin_trgm_ops" json:"cuisine,omitempty"`
-	// The diets it suits: a paneer tikka is vegetarian and eggetarian, not Jain.
-	Diets *string `gorm:"column:diets" json:"diets,omitempty"`
-	// What it contains that some guests must not eat.
-	Allergens *string `gorm:"column:allergens" json:"allergens,omitempty"`
-	// Its price on its own, before any season's rule: à la carte, room service, or as an add-on. Empty for a dish only served within a menu.
-	Price json.RawMessage `gorm:"column:price;type:jsonb" json:"price,omitempty"`
-	// How GST applies to it on its own.
-	Tax json.RawMessage `gorm:"column:tax;type:jsonb" json:"tax,omitempty"`
-	// A photo of it.
-	ImageURI *string `gorm:"column:image_uri" json:"image_uri,omitempty"`
-	// Whether the kitchen offers it now; an unavailable dish stays on old menus and quotes but is not offered on new ones.
-	Available *bool `gorm:"column:available" json:"available,omitempty"`
-	// Creation timestamp.
-	CreateTime time.Time `gorm:"column:create_time;type:timestamptz;not null;autoCreateTime" json:"create_time"`
-	// Last-modification timestamp.
-	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_dishes_update_time" json:"update_time"`
-	// Opaque version for optimistic concurrency (AIP-154).
-	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
-	// Parent reference to Venue (from the AIP resource pattern).
-	VenueID string `gorm:"column:venue_id;not null;index:idx_dishes_venue_id_id,priority:1" json:"venue_id" validate:"required"`
-}
-
-func (*Dish) TableName() string { return "sales.dishes" }
-
-// A Menu is a plate menu sold for events at a price per plate: "Silver Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice, 2 desserts". It is a set of courses, each a choice among dishes, with add-ons priced per plate on top. Its plate_price is the base price. What a plate costs on a given date is the base price with the venue's price rules applied (PriceRule), so a wedding-season surcharge needs no edit to the menu.
-type Menu struct {
-	// Unique identifier for the record.
-	ID string `gorm:"column:id;primaryKey;not null;index:idx_menus_venue_id_id,priority:2" json:"id"`
-	// The menu name. Format: venues/{venue}/menus/{menu}
-	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The menu as it is sold, e.g. "Silver Vegetarian".
-	DisplayName string `gorm:"column:display_name;not null;index:idx_menus_display_name_trgm,type:gin,expression:display_name gin_trgm_ops" json:"display_name" validate:"required"`
-	// A line about it for the proposal.
-	Description *string `gorm:"column:description" json:"description,omitempty"`
-	// The diets the whole menu suits: a vegetarian menu, a Jain menu.
-	Diets *string `gorm:"column:diets" json:"diets,omitempty"`
-	// The courses, in serving order.
-	Courses json.RawMessage `gorm:"column:courses;type:jsonb;not null" json:"courses" validate:"required"`
-	// What can be added, priced per plate on top of the menu.
-	AddOns json.RawMessage `gorm:"column:add_ons;type:jsonb" json:"add_ons,omitempty"`
-	// The base price of a plate, before any price rule.
-	PlatePrice json.RawMessage `gorm:"column:plate_price;type:jsonb;not null" json:"plate_price" validate:"required"`
-	// The fewest plates the menu is sold for.
-	MinPlates *int32 `gorm:"column:min_plates" json:"min_plates,omitempty"`
-	// How GST applies to it.
-	Tax json.RawMessage `gorm:"column:tax;type:jsonb;not null" json:"tax" validate:"required"`
-	// Whether it is offered on new quotes.
-	Active *bool `gorm:"column:active" json:"active,omitempty"`
-	// Creation timestamp.
-	CreateTime time.Time `gorm:"column:create_time;type:timestamptz;not null;autoCreateTime" json:"create_time"`
-	// Last-modification timestamp.
-	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_menus_update_time" json:"update_time"`
-	// Opaque version for optimistic concurrency (AIP-154).
-	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
-	// Parent reference to Venue (from the AIP resource pattern).
-	VenueID string `gorm:"column:venue_id;not null;index:idx_menus_venue_id_id,priority:1" json:"venue_id" validate:"required"`
-	// Back-relation: FixedPackage records that reference this via menu.
-	FixedPackages []FixedPackage `gorm:"foreignKey:MenuID;references:Name" json:"fixedpackages,omitempty"`
-}
-
-func (*Menu) TableName() string { return "sales.menus" }
-
-// A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8 hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It includes so many guests, and charges each guest beyond them. Its price is the base price; what it costs on a date is the base price with the venue's price rules applied, as a menu's is.
-type FixedPackage struct {
-	// Unique identifier for the record.
-	ID string `gorm:"column:id;primaryKey;not null;index:idx_fixed_packages_venue_id_id,priority:2" json:"id"`
-	// The fixed package name. Format: venues/{venue}/fixedPackages/{fixed_package}
-	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The package as it is sold, e.g. "Wedding Gold".
-	DisplayName string `gorm:"column:display_name;not null;index:idx_fixed_packages_display_name_trgm,type:gin,expression:display_name gin_trgm_ops" json:"display_name" validate:"required"`
-	// A line about it for the proposal.
-	Description *string `gorm:"column:description" json:"description,omitempty"`
-	// How long the space is had for.
-	Duration *string `gorm:"column:duration" json:"duration,omitempty"`
-	// The menu included, when food is. Format: venues/{venue}/menus/{menu}
-	MenuID *string `gorm:"column:menu;index:idx_fixed_packages_menu" json:"menu,omitempty"`
-	Menu   *Menu   `gorm:"foreignKey:MenuID;references:Name" json:"menu_rel,omitempty"`
-	// What else is included: decor, a DJ, a bridal suite for the night.
-	Inclusions json.RawMessage `gorm:"column:inclusions;type:jsonb" json:"inclusions,omitempty"`
-	// How many guests the price includes.
-	IncludedGuests int32 `gorm:"column:included_guests;not null" json:"included_guests" validate:"required"`
-	// The base price of the package, before any price rule.
-	Price json.RawMessage `gorm:"column:price;type:jsonb;not null" json:"price" validate:"required"`
-	// The base price of each guest beyond included_guests.
-	ExtraGuestPrice json.RawMessage `gorm:"column:extra_guest_price;type:jsonb" json:"extra_guest_price,omitempty"`
-	// How GST applies to it.
-	Tax json.RawMessage `gorm:"column:tax;type:jsonb;not null" json:"tax" validate:"required"`
-	// Whether it is offered on new quotes.
-	Active *bool `gorm:"column:active" json:"active,omitempty"`
-	// Creation timestamp.
-	CreateTime time.Time `gorm:"column:create_time;type:timestamptz;not null;autoCreateTime" json:"create_time"`
-	// Last-modification timestamp.
-	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_fixed_packages_update_time" json:"update_time"`
-	// Opaque version for optimistic concurrency (AIP-154).
-	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
-	// Parent reference to Venue (from the AIP resource pattern).
-	VenueID string `gorm:"column:venue_id;not null;index:idx_fixed_packages_venue_id_id,priority:1" json:"venue_id" validate:"required"`
-	// Back-relation: FixedPackageSpaces records that reference this via fixed_package_id.
-	FixedPackageSpaces []FixedPackageSpaces `gorm:"foreignKey:FixedPackageID" json:"fixedpackagespaces,omitempty"`
-}
-
-func (*FixedPackage) TableName() string { return "sales.fixed_packages" }
-
-// A Season is a named set of dates prices change on: "Wedding season" (November to February), "Diwali week", "Monsoon", "Weekends". Seasons say when; price rules say how much. A season that recurs yearly is matched on month and day, so "Wedding season, 1 Nov -- 28 Feb" is next year's too without anyone editing it.
-type Season struct {
-	// Unique identifier for the record.
-	ID string `gorm:"column:id;primaryKey;not null;index:idx_seasons_venue_id_id,priority:2" json:"id"`
-	// The season name. Format: venues/{venue}/seasons/{season}
-	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The season as staff know it, e.g. "Wedding season".
-	DisplayName string `gorm:"column:display_name;not null" json:"display_name" validate:"required"`
-	// The dates it covers. Empty for a season of weekdays only ("Weekends").
+	// A short title for the pipeline, e.g. "Sharma–Iyer wedding, Dec 2026".
+	DisplayName string `gorm:"column:display_name;not null;index:idx_leads_display_name_trgm,type:gin,expression:display_name gin_trgm_ops" json:"display_name" validate:"required"`
+	// Who is asking. Format: contacts/{contact}
+	ContactID string `gorm:"column:contact;not null;index:idx_leads_contact" json:"contact" validate:"required"`
+	// The venue asked about; empty while the guest is still choosing. Format: venues/{venue}
+	VenueID *string `gorm:"column:venue;index:idx_leads_venue" json:"venue,omitempty"`
+	// What the guest wants to book.
+	Kind LeadKind `gorm:"column:kind;not null;default:'STAY';check:chk_leads_kind,kind IN ('STAY','EVENT','EVENT_WITH_STAY')" json:"kind" validate:"required"`
+	// The occasion, for an event.
+	EventType *EventType `gorm:"column:event_type;check:chk_leads_event_type,event_type IN ('WEDDING','RECEPTION','ENGAGEMENT','PRE_WEDDING','BIRTHDAY','ANNIVERSARY','SOCIAL','RELIGIOUS','MEETING','CONFERENCE','OFFSITE','LAUNCH','OTHER')" json:"event_type,omitempty"`
+	// Where the lead came from.
+	Source *Channel `gorm:"column:source;check:chk_leads_source,source IN ('WEBSITE','PHONE','WALK_IN','EMAIL','WHATSAPP','INSTAGRAM','FACEBOOK','REFERRAL','BOOKING_COM','AIRBNB','MAKEMYTRIP','GOIBIBO','AGODA','EXPEDIA','CHANNEL_MANAGER','RFP','OTHER')" json:"source,omitempty"`
+	// More on the source: the campaign, the referrer, the agent.
+	SourceDetail *string `gorm:"column:source_detail" json:"source_detail,omitempty"`
+	// Where the lead is in the pipeline.
+	Stage *Stage `gorm:"column:stage;default:'NEW';index:idx_leads_stage_next_follow_up_time,priority:1;index:idx_leads_owner_stage,priority:2;check:chk_leads_stage,stage IN ('NEW','CONTACTED','SITE_VISIT','PROPOSAL','NEGOTIATION','WON','LOST')" json:"stage,omitempty"`
+	// The dates asked for, in order of preference.
 	Dates json.RawMessage `gorm:"column:dates;type:jsonb" json:"dates,omitempty"`
-	// Whether the dates recur every year, matched on month and day.
-	RecursYearly *bool `gorm:"column:recurs_yearly" json:"recurs_yearly,omitempty"`
-	// The days of the week it covers; every day when empty. With dates, only those days within them: "Fridays to Sundays of wedding season".
-	Weekdays *string `gorm:"column:weekdays" json:"weekdays,omitempty"`
+	// Whether the guest would take other dates.
+	DatesFlexible *bool `gorm:"column:dates_flexible" json:"dates_flexible,omitempty"`
+	// How many guests are expected.
+	Guests *int32 `gorm:"column:guests" json:"guests,omitempty"`
+	// How many rooms are wanted, for a stay or an event's guests.
+	Rooms *int32 `gorm:"column:rooms" json:"rooms,omitempty"`
+	// What the guest means to spend, in all.
+	Budget json.RawMessage `gorm:"column:budget;type:jsonb" json:"budget,omitempty"`
+	// What the guest needs that the rest does not say: decor, a mandap, a band, a vegetarian-only kitchen.
+	Requirements *string `gorm:"column:requirements" json:"requirements,omitempty"`
+	// The salesperson who owns the lead. Format: users/{user} TODO: unresolved reference to User (not in this generation set); kept as a plain indexed column.
+	Owner *string `gorm:"column:owner;index:idx_leads_owner_stage,priority:1;index:idx_leads_owner" json:"owner,omitempty"`
+	// When the owner is next to get in touch.
+	NextFollowUpTime *time.Time `gorm:"column:next_follow_up_time;type:timestamptz;index:idx_leads_stage_next_follow_up_time,priority:2" json:"next_follow_up_time,omitempty"`
+	// Why the lead was lost, once it is.
+	LostReason *LostReason `gorm:"column:lost_reason;check:chk_leads_lost_reason,lost_reason IN ('PRICE','DATES','COMPETITOR','CAPACITY','CANCELLED_PLANS','NO_RESPONSE','OTHER')" json:"lost_reason,omitempty"`
+	// More on why it was lost: the competitor, the price asked for.
+	LostDetail *string `gorm:"column:lost_detail" json:"lost_detail,omitempty"`
+	// The freebusy hold keeping the lead's first dates while it is negotiated. Format: holds/{hold} TODO: unresolved reference to Hold (not in this generation set); kept as a plain indexed column.
+	Hold *string `gorm:"column:hold;index:idx_leads_hold" json:"hold,omitempty"`
+	// The bookings the lead became, once won.
+	Bookings pq.StringArray `gorm:"column:bookings;type:text[];index:idx_leads_bookings_gin,type:gin" json:"bookings,omitempty"`
+	// When the lead was won or lost.
+	CloseTime *time.Time `gorm:"column:close_time;type:timestamptz" json:"close_time,omitempty"`
 	// Creation timestamp.
 	CreateTime time.Time `gorm:"column:create_time;type:timestamptz;not null;autoCreateTime" json:"create_time"`
 	// Last-modification timestamp.
-	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_seasons_update_time" json:"update_time"`
+	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_leads_update_time" json:"update_time"`
 	// Opaque version for optimistic concurrency (AIP-154).
 	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
-	// Parent reference to Venue (from the AIP resource pattern).
-	VenueID string `gorm:"column:venue_id;not null;index:idx_seasons_venue_id_id,priority:1" json:"venue_id" validate:"required"`
-	// Back-relation: PriceRule records that reference this via season.
-	PriceRules []PriceRule `gorm:"foreignKey:SeasonID;references:Name" json:"pricerules,omitempty"`
+	// Back-relation: Activity records that reference this via lead_id.
+	Activities []Activity `gorm:"foreignKey:LeadID" json:"activities,omitempty"`
+	// Back-relation: Quote records that reference this via lead.
+	Quotes []Quote `gorm:"foreignKey:LeadID" json:"quotes,omitempty"`
 }
 
-func (*Season) TableName() string { return "sales.seasons" }
+func (*Lead) TableName() string { return "sales.leads" }
 
-// A PriceRule changes the price of what a venue sells in a season: "plate menus +15% in wedding season", "the ballroom ₹2,50,000 on weekends", "Deluxe rooms -20% in monsoon", "₹100 off a plate above 500 guests". Prices are never stored per date. The price of anything on a date is its base price with the one matching rule of the highest priority applied -- matching its target, its season and its guest count -- so prices change on their own as the seasons turn, and changing a rule changes every price it covers at once. A quote fixes its prices when it is sent, so a later rule does not change what a guest was offered.
-type PriceRule struct {
+// An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a quote sent. The activities of a lead are its history, newest first.
+type Activity struct {
 	// Unique identifier for the record.
-	ID string `gorm:"column:id;primaryKey;not null;index:idx_price_rules_venue_id_id,priority:2" json:"id"`
-	// The price rule name. Format: venues/{venue}/priceRules/{price_rule}
+	ID string `gorm:"column:id;primaryKey;not null;index:idx_activities_lead_id_id,priority:2" json:"id"`
+	// The activity name. Format: leads/{lead}/activities/{activity}
 	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The rule as staff know it, e.g. "Wedding season menus".
-	DisplayName string `gorm:"column:display_name;not null" json:"display_name" validate:"required"`
-	// The season the rule applies in; every date when empty. Format: venues/{venue}/seasons/{season}
-	SeasonID *string `gorm:"column:season;index:idx_price_rules_season" json:"season,omitempty"`
-	Season   *Season `gorm:"foreignKey:SeasonID;references:Name" json:"season_rel,omitempty"`
-	// What kind of thing the rule prices.
-	Target PriceTarget `gorm:"column:target;not null;default:'MENU';check:chk_price_rules_target,target IN ('MENU','FIXED_PACKAGE','SPACE','DISH')" json:"target" validate:"required"`
-	// The fewest guests the rule applies to: a volume discount.
-	MinGuests *int32 `gorm:"column:min_guests" json:"min_guests,omitempty"`
-	// The price, replacing the base price.
-	FixedPrice json.RawMessage `gorm:"column:fixed_price;type:jsonb" json:"fixed_price,omitempty"`
-	// A percentage added to the base price; negative for a discount.
-	Percent *string `gorm:"column:percent" json:"percent,omitempty"`
-	// An amount added to the base price; negative for a discount.
-	Amount json.RawMessage `gorm:"column:amount;type:jsonb" json:"amount,omitempty"`
-	// Which rule wins when several match: the highest priority.
-	Priority *int32 `gorm:"column:priority" json:"priority,omitempty"`
-	// Whether the rule is applied.
-	Active *bool `gorm:"column:active" json:"active,omitempty"`
+	// What happened.
+	Kind ActivityKind `gorm:"column:kind;not null;default:'CALL';check:chk_activities_kind,kind IN ('CALL','EMAIL','WHATSAPP','MEETING','SITE_VISIT','QUOTE_SENT','NOTE')" json:"kind" validate:"required"`
+	// When it happened.
+	OccurTime time.Time `gorm:"column:occur_time;type:timestamptz;not null" json:"occur_time" validate:"required"`
+	// What was said or done, in a line.
+	Summary string `gorm:"column:summary;not null" json:"summary" validate:"required"`
+	// The rest of it.
+	Details *string `gorm:"column:details" json:"details,omitempty"`
+	// Who did it. Format: users/{user} TODO: unresolved reference to User (not in this generation set); kept as a plain indexed column.
+	Author *string `gorm:"column:author;index:idx_activities_author" json:"author,omitempty"`
 	// Creation timestamp.
 	CreateTime time.Time `gorm:"column:create_time;type:timestamptz;not null;autoCreateTime" json:"create_time"`
 	// Last-modification timestamp.
-	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_price_rules_update_time" json:"update_time"`
+	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_activities_update_time" json:"update_time"`
 	// Opaque version for optimistic concurrency (AIP-154).
 	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
-	// Discriminator: which adjustment oneof member is set (null = none).
-	AdjustmentCase *PriceRuleAdjustmentCase `gorm:"column:adjustment_case;check:chk_price_rules_adjustment_case,adjustment_case IN ('FIXED_PRICE','PERCENT','AMOUNT')" json:"adjustment_case,omitempty"`
-	// Parent reference to Venue (from the AIP resource pattern).
-	VenueID string `gorm:"column:venue_id;not null;index:idx_price_rules_venue_id_id,priority:1" json:"venue_id" validate:"required"`
-	// The items it prices: menus, fixed packages, spaces or dishes of the target's kind. Every item of the kind when empty.
-	Items pq.StringArray `gorm:"column:items;type:text[];index:idx_price_rules_items_gin,type:gin" json:"items,omitempty"`
+	// Parent reference to Lead (from the AIP resource pattern).
+	LeadID string `gorm:"column:lead_id;not null;index:idx_activities_lead_id_id,priority:1" json:"lead_id" validate:"required"`
+	Lead   *Lead  `gorm:"foreignKey:LeadID;constraint:OnDelete:CASCADE" json:"lead,omitempty"`
 }
 
-func (*PriceRule) TableName() string { return "sales.price_rules" }
+func (*Activity) TableName() string { return "sales.activities" }
 
 // A Quote is a priced proposal to a guest: the spaces, rooms, menus and packages they asked for, at the prices of their dates, with GST. A lead usually has several, one superseding the next as the negotiation goes; accepting one makes the booking. A draft's line prices follow the price rules as they change. Sending the quote fixes them, so the guest is held to what they were offered and no rule changed after can change it.
 type Quote struct {
@@ -330,6 +293,7 @@ type Quote struct {
 	ContactID string `gorm:"column:contact;not null;index:idx_quotes_contact" json:"contact" validate:"required"`
 	// The lead it answers. Format: leads/{lead}
 	LeadID *string `gorm:"column:lead;index:idx_quotes_lead_create_time,priority:1" json:"lead,omitempty"`
+	Lead   *Lead   `gorm:"foreignKey:LeadID" json:"lead_rel,omitempty"`
 	// The quote this one revises. Set by ReviseQuote, which makes the revision. Format: venues/{venue}/quotes/{quote}
 	Supersedes *string `gorm:"column:supersedes" json:"supersedes,omitempty"`
 	// Lifecycle state, moved by the custom methods.
@@ -377,18 +341,3 @@ type Quote struct {
 }
 
 func (*Quote) TableName() string { return "sales.quotes" }
-
-// Join table for the many-to-many relation FixedPackage.spaces ↔ Space.
-type FixedPackageSpaces struct {
-	// Unique identifier for the record.
-	ID string `gorm:"column:id;primaryKey;not null" json:"id"`
-	// Foreign key to FixedPackage.
-	FixedPackageID string        `gorm:"column:fixed_package_id;not null;uniqueIndex:idx_fixed_package_spaces_fixed_package_id_space_id,priority:1" json:"fixed_package_id" validate:"required"`
-	FixedPackage   *FixedPackage `gorm:"foreignKey:FixedPackageID;constraint:OnDelete:CASCADE" json:"fixedpackage,omitempty"`
-	// Foreign key to Space.
-	SpaceID string `gorm:"column:space_id;not null;uniqueIndex:idx_fixed_package_spaces_fixed_package_id_space_id,priority:2;index:idx_fixed_package_spaces_space_id" json:"space_id" validate:"required"`
-	// Full resource name of the referenced Space, capturing the parent hierarchy the space_id id alone omits.
-	SpaceName string `gorm:"column:space_name;not null" json:"space_name" validate:"required"`
-}
-
-func (*FixedPackageSpaces) TableName() string { return "sales.fixed_package_spaces" }

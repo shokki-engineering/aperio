@@ -1,0 +1,252 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesLeadsObject
+  fields:
+    - name: bookings
+      type: "[String_1]"
+    - name: budget
+      type: Json
+    - name: closeTime
+      type: Timestamptz
+    - name: contact
+      type: String_1!
+    - name: createTime
+      type: Timestamptz
+    - name: dates
+      type: Json
+    - name: datesFlexible
+      type: Boolean_1
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: eventType
+      type: Enum
+    - name: guests
+      type: Int32
+    - name: hold
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: kind
+      type: Enum
+    - name: lostDetail
+      type: String_1
+    - name: lostReason
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: nextFollowUpTime
+      type: Timestamptz
+    - name: owner
+      type: String_1
+    - name: requirements
+      type: String_1
+    - name: rooms
+      type: Int32
+    - name: source
+      type: Enum
+    - name: sourceDetail
+      type: String_1
+    - name: stage
+      type: Enum
+    - name: updateTime
+      type: Timestamptz!
+    - name: venue
+      type: String_1
+  graphql:
+    typeName: InsertSalesLeadsObject
+    inputTypeName: InsertSalesLeadsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_leads_object
+      fieldMapping:
+        bookings:
+          column:
+            name: bookings
+        budget:
+          column:
+            name: budget
+        closeTime:
+          column:
+            name: close_time
+        contact:
+          column:
+            name: contact
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        datesFlexible:
+          column:
+            name: dates_flexible
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        eventType:
+          column:
+            name: event_type
+        guests:
+          column:
+            name: guests
+        hold:
+          column:
+            name: hold
+        id:
+          column:
+            name: id
+        kind:
+          column:
+            name: kind
+        lostDetail:
+          column:
+            name: lost_detail
+        lostReason:
+          column:
+            name: lost_reason
+        name:
+          column:
+            name: name
+        nextFollowUpTime:
+          column:
+            name: next_follow_up_time
+        owner:
+          column:
+            name: owner
+        requirements:
+          column:
+            name: requirements
+        rooms:
+          column:
+            name: rooms
+        source:
+          column:
+            name: source
+        sourceDetail:
+          column:
+            name: source_detail
+        stage:
+          column:
+            name: stage
+        updateTime:
+          column:
+            name: update_time
+        venue:
+          column:
+            name: venue
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesLeadsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookings
+          - budget
+          - closeTime
+          - contact
+          - createTime
+          - dates
+          - datesFlexible
+          - displayName
+          - etag
+          - eventType
+          - guests
+          - hold
+          - id
+          - kind
+          - lostDetail
+          - lostReason
+          - name
+          - nextFollowUpTime
+          - owner
+          - requirements
+          - rooms
+          - source
+          - sourceDetail
+          - stage
+          - updateTime
+          - venue
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesLeadsResponse
+  description: Responses from the 'insert_sales_leads' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[SalesLeads!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertSalesLeadsResponse
+    inputTypeName: InsertSalesLeadsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_leads_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesLeadsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertSalesLeads
+  outputType: InsertSalesLeadsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertSalesLeadsObject!]!"
+    - name: postCheck
+      type: SalesLeadsBoolExp
+      description: Insert permission predicate over the 'sales_leads' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_sales_leads
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertSalesLeads
+    rootFieldKind: Mutation
+  description: Insert into the sales_leads table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertSalesLeads
+  permissions:
+    - role: admin
+      allowExecution: true
+

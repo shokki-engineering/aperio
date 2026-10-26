@@ -20,7 +20,6 @@ import (
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // VenueServiceRepositories are the generated repositories VenueServiceServer
@@ -46,10 +45,6 @@ type VenueServiceHooks interface {
 	BeforeUpdateVenue(ctx context.Context, m *venuepbv1.Venue, paths []string) error
 	// AfterUpdateVenue runs after an update is written.
 	AfterUpdateVenue(ctx context.Context, m *venuepbv1.Venue) error
-	// BeforeDeleteVenue runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteVenue(ctx context.Context, name string, force bool) error
-	// AfterDeleteVenue runs after a delete.
-	AfterDeleteVenue(ctx context.Context, name string) error
 	// ValidateSpace checks the space about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
 	ValidateSpace(ctx context.Context, op servicex.Op, m *venuepbv1.Space, paths []string) error
 	// ParentCheckSpace checks the parent the space is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
@@ -62,10 +57,6 @@ type VenueServiceHooks interface {
 	BeforeUpdateSpace(ctx context.Context, m *venuepbv1.Space, paths []string) error
 	// AfterUpdateSpace runs after an update is written.
 	AfterUpdateSpace(ctx context.Context, m *venuepbv1.Space) error
-	// BeforeDeleteSpace runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteSpace(ctx context.Context, name string, force bool) error
-	// AfterDeleteSpace runs after a delete.
-	AfterDeleteSpace(ctx context.Context, name string) error
 }
 
 // NopVenueServiceHooks implements every hook as doing nothing.
@@ -98,14 +89,6 @@ func (NopVenueServiceHooks) AfterUpdateVenue(ctx context.Context, m *venuepbv1.V
 	return nil
 }
 
-// BeforeDeleteVenue does nothing.
-func (NopVenueServiceHooks) BeforeDeleteVenue(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteVenue does nothing.
-func (NopVenueServiceHooks) AfterDeleteVenue(ctx context.Context, name string) error { return nil }
-
 // ValidateSpace does nothing.
 func (NopVenueServiceHooks) ValidateSpace(ctx context.Context, op servicex.Op, m *venuepbv1.Space, paths []string) error {
 	return nil
@@ -135,14 +118,6 @@ func (NopVenueServiceHooks) BeforeUpdateSpace(ctx context.Context, m *venuepbv1.
 func (NopVenueServiceHooks) AfterUpdateSpace(ctx context.Context, m *venuepbv1.Space) error {
 	return nil
 }
-
-// BeforeDeleteSpace does nothing.
-func (NopVenueServiceHooks) BeforeDeleteSpace(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteSpace does nothing.
-func (NopVenueServiceHooks) AfterDeleteSpace(ctx context.Context, name string) error { return nil }
 
 // VenueServiceServer serves aperio.venue.v1.VenueService's AIP standard methods over the
 // generated repositories.
@@ -377,45 +352,6 @@ func (s *VenueServiceServer) UpdateVenue(ctx context.Context, req *venuepbv1.Upd
 	return out, nil
 }
 
-// DeleteVenue is AIP-135's Delete: a soft delete
-// (AIP-164) when the venue has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *VenueServiceServer) DeleteVenue(ctx context.Context, req *venuepbv1.DeleteVenueRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "VenueService", "DeleteVenue", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, venueServiceVenueCollections...); err != nil {
-			return err
-		}
-		var existing *venuepbv1.Venue
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.Venues.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, venueServiceVenueType, name)
-			}
-			if err := servicex.CheckEtag(venueServiceVenueType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteVenue(ctx, name, req.GetForce()); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.Venues.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, venueServiceVenueType, name)
-		}
-		return s.hooks.AfterDeleteVenue(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
-}
-
 // GetSpace is AIP-131's Get: the space by name, deleted or not.
 func (s *VenueServiceServer) GetSpace(ctx context.Context, req *venuepbv1.GetSpaceRequest) (*venuepbv1.Space, error) {
 	var out *venuepbv1.Space
@@ -549,43 +485,4 @@ func (s *VenueServiceServer) UpdateSpace(ctx context.Context, req *venuepbv1.Upd
 		return nil, err
 	}
 	return out, nil
-}
-
-// DeleteSpace is AIP-135's Delete: a soft delete
-// (AIP-164) when the space has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *VenueServiceServer) DeleteSpace(ctx context.Context, req *venuepbv1.DeleteSpaceRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "VenueService", "DeleteSpace", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, venueServiceSpaceCollections...); err != nil {
-			return err
-		}
-		var existing *venuepbv1.Space
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.Spaces.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, venueServiceSpaceType, name)
-			}
-			if err := servicex.CheckEtag(venueServiceSpaceType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteSpace(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.Spaces.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, venueServiceSpaceType, name)
-		}
-		return s.hooks.AfterDeleteSpace(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
 }

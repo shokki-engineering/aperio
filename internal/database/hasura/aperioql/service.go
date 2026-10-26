@@ -16,13 +16,16 @@ package aperioql
 import (
 	"context"
 	"fmt"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/bookingql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/crmql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/catalogql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/documentql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/eventql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/financeql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/guestql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/operationsql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/pricingql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/prismaql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/stayql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/venueql"
 	"github.com/the-protobuf-project/runtime-go/network/runtime"
 	"net/url"
@@ -39,13 +42,16 @@ type Service struct {
 // QueryHandler groups every domain's query handlers.
 type QueryHandler struct {
 	gql        *runtime.GraphQLClient
-	Booking    bookingql.QueryHandler
-	Crm        crmql.QueryHandler
+	Catalog    catalogql.QueryHandler
 	Document   documentql.QueryHandler
+	Event      eventql.QueryHandler
 	Finance    financeql.QueryHandler
+	Guest      guestql.QueryHandler
 	Operations operationsql.QueryHandler
+	Pricing    pricingql.QueryHandler
 	Prisma     prismaql.QueryHandler
 	Sales      salesql.QueryHandler
+	Stay       stayql.QueryHandler
 	Venue      venueql.QueryHandler
 }
 
@@ -66,13 +72,16 @@ func (h QueryHandler) QueryRaw(ctx context.Context, query string, variables map[
 // MutationHandler groups every domain's mutation handlers.
 type MutationHandler struct {
 	gql        *runtime.GraphQLClient
-	Booking    bookingql.MutationHandler
-	Crm        crmql.MutationHandler
+	Catalog    catalogql.MutationHandler
 	Document   documentql.MutationHandler
+	Event      eventql.MutationHandler
 	Finance    financeql.MutationHandler
+	Guest      guestql.MutationHandler
 	Operations operationsql.MutationHandler
+	Pricing    pricingql.MutationHandler
 	Prisma     prismaql.MutationHandler
 	Sales      salesql.MutationHandler
+	Stay       stayql.MutationHandler
 	Venue      venueql.MutationHandler
 }
 
@@ -97,13 +106,16 @@ func (h MutationHandler) Tx() *runtime.Tx { return runtime.NewTx(h.gql) }
 
 // SubscriptionHandler groups every domain's subscription handlers.
 type SubscriptionHandler struct {
-	Booking    bookingql.SubscriptionHandler
-	Crm        crmql.SubscriptionHandler
+	Catalog    catalogql.SubscriptionHandler
 	Document   documentql.SubscriptionHandler
+	Event      eventql.SubscriptionHandler
 	Finance    financeql.SubscriptionHandler
+	Guest      guestql.SubscriptionHandler
 	Operations operationsql.SubscriptionHandler
+	Pricing    pricingql.SubscriptionHandler
 	Prisma     prismaql.SubscriptionHandler
 	Sales      salesql.SubscriptionHandler
+	Stay       stayql.SubscriptionHandler
 	Venue      venueql.SubscriptionHandler
 }
 
@@ -123,34 +135,43 @@ func New(opts runtime.ConnectionOptions) (*Service, error) {
 	return &Service{
 		Query: QueryHandler{
 			gql:        gql,
-			Booking:    bookingql.NewQuery(gql),
-			Crm:        crmql.NewQuery(gql),
+			Catalog:    catalogql.NewQuery(gql),
 			Document:   documentql.NewQuery(gql),
+			Event:      eventql.NewQuery(gql),
 			Finance:    financeql.NewQuery(gql),
+			Guest:      guestql.NewQuery(gql),
 			Operations: operationsql.NewQuery(gql),
+			Pricing:    pricingql.NewQuery(gql),
 			Prisma:     prismaql.NewQuery(gql),
 			Sales:      salesql.NewQuery(gql),
+			Stay:       stayql.NewQuery(gql),
 			Venue:      venueql.NewQuery(gql),
 		},
 		Mutation: MutationHandler{
 			gql:        gql,
-			Booking:    bookingql.NewMutation(gql),
-			Crm:        crmql.NewMutation(gql),
+			Catalog:    catalogql.NewMutation(gql),
 			Document:   documentql.NewMutation(gql),
+			Event:      eventql.NewMutation(gql),
 			Finance:    financeql.NewMutation(gql),
+			Guest:      guestql.NewMutation(gql),
 			Operations: operationsql.NewMutation(gql),
+			Pricing:    pricingql.NewMutation(gql),
 			Prisma:     prismaql.NewMutation(gql),
 			Sales:      salesql.NewMutation(gql),
+			Stay:       stayql.NewMutation(gql),
 			Venue:      venueql.NewMutation(gql),
 		},
 		Subscription: SubscriptionHandler{
-			Booking:    bookingql.NewSubscription(gql),
-			Crm:        crmql.NewSubscription(gql),
+			Catalog:    catalogql.NewSubscription(gql),
 			Document:   documentql.NewSubscription(gql),
+			Event:      eventql.NewSubscription(gql),
 			Finance:    financeql.NewSubscription(gql),
+			Guest:      guestql.NewSubscription(gql),
 			Operations: operationsql.NewSubscription(gql),
+			Pricing:    pricingql.NewSubscription(gql),
 			Prisma:     prismaql.NewSubscription(gql),
 			Sales:      salesql.NewSubscription(gql),
+			Stay:       stayql.NewSubscription(gql),
 			Venue:      venueql.NewSubscription(gql),
 		},
 	}, nil

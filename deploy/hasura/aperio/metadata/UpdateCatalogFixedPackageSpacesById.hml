@@ -1,0 +1,268 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCatalogFixedPackageSpacesFixedPackageId
+  description: Update the 'fixed_package_id' column in the
+    'catalog_fixed_package_spaces' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCatalogFixedPackageSpacesFixedPackageId
+    inputTypeName: UpdateColumnCatalogFixedPackageSpacesFixedPackageIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_catalog_fixed_package_spaces_fixed_package_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCatalogFixedPackageSpacesFixedPackageId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCatalogFixedPackageSpacesId
+  description: Update the 'id' column in the 'catalog_fixed_package_spaces' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCatalogFixedPackageSpacesId
+    inputTypeName: UpdateColumnCatalogFixedPackageSpacesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_catalog_fixed_package_spaces_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCatalogFixedPackageSpacesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCatalogFixedPackageSpacesSpaceId
+  description: Update the 'space_id' column in the 'catalog_fixed_package_spaces' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCatalogFixedPackageSpacesSpaceId
+    inputTypeName: UpdateColumnCatalogFixedPackageSpacesSpaceIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_catalog_fixed_package_spaces_space_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCatalogFixedPackageSpacesSpaceId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCatalogFixedPackageSpacesSpaceName
+  description: Update the 'space_name' column in the
+    'catalog_fixed_package_spaces' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCatalogFixedPackageSpacesSpaceName
+    inputTypeName: UpdateColumnCatalogFixedPackageSpacesSpaceNameInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_catalog_fixed_package_spaces_space_name
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCatalogFixedPackageSpacesSpaceName
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCatalogFixedPackageSpacesByIdUpdateColumns
+  description: Update the columns of the 'catalog_fixed_package_spaces' collection
+  fields:
+    - name: fixedPackageId
+      type: UpdateColumnCatalogFixedPackageSpacesFixedPackageId
+      description: Update the 'fixed_package_id' column in the
+        'catalog_fixed_package_spaces' collection.
+    - name: id
+      type: UpdateColumnCatalogFixedPackageSpacesId
+      description: Update the 'id' column in the 'catalog_fixed_package_spaces' collection.
+    - name: spaceId
+      type: UpdateColumnCatalogFixedPackageSpacesSpaceId
+      description: Update the 'space_id' column in the 'catalog_fixed_package_spaces'
+        collection.
+    - name: spaceName
+      type: UpdateColumnCatalogFixedPackageSpacesSpaceName
+      description: Update the 'space_name' column in the
+        'catalog_fixed_package_spaces' collection.
+  graphql:
+    typeName: UpdateCatalogFixedPackageSpacesByIdUpdateColumns
+    inputTypeName: UpdateCatalogFixedPackageSpacesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_catalog_fixed_package_spaces_by_id_update_columns
+      fieldMapping:
+        fixedPackageId:
+          column:
+            name: fixed_package_id
+        id:
+          column:
+            name: id
+        spaceId:
+          column:
+            name: space_id
+        spaceName:
+          column:
+            name: space_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCatalogFixedPackageSpacesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fixedPackageId
+          - id
+          - spaceId
+          - spaceName
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCatalogFixedPackageSpacesByIdResponse
+  description: Responses from the 'update_catalog_fixed_package_spaces_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CatalogFixedPackageSpaces!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateCatalogFixedPackageSpacesByIdResponse
+    inputTypeName: UpdateCatalogFixedPackageSpacesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_catalog_fixed_package_spaces_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCatalogFixedPackageSpacesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateCatalogFixedPackageSpacesById
+  outputType: UpdateCatalogFixedPackageSpacesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: CatalogFixedPackageSpacesBoolExp
+      description: Update permission post-condition predicate over the
+        'catalog_fixed_package_spaces' collection
+    - name: preCheck
+      type: CatalogFixedPackageSpacesBoolExp
+      description: Update permission pre-condition predicate over the
+        'catalog_fixed_package_spaces' collection
+    - name: updateColumns
+      type: UpdateCatalogFixedPackageSpacesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_catalog_fixed_package_spaces_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateCatalogFixedPackageSpacesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'catalog_fixed_package_spaces' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateCatalogFixedPackageSpacesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

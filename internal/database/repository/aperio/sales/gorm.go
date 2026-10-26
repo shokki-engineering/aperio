@@ -27,15 +27,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// GormDishRepository is the GORM adapter of DishRepository: flat
+// GormActivityRepository is the GORM adapter of ActivityRepository: flat
 // CRUD over the generated model, store, converters, and filterx spec. Exported
 // fields and helpers are the Tier-2 seam — embed it and override whole methods
 // for behavior the schema cannot express; generated methods only call private
 // helpers, never the public interface, so overrides never re-enter generated
 // code.
-type GormDishRepository struct {
+type GormActivityRepository struct {
 	DB    *gorm.DB
-	Hooks DishHooks
+	Hooks ActivityHooks
 	// Refs, when set, is asked before a purge whether anything in another
 	// database or service still refers to the record (see Purge).
 	Refs *repox.References
@@ -44,21 +44,21 @@ type GormDishRepository struct {
 	ListOverrides map[string]filterx.SQLHandler
 }
 
-// NewGormDishRepository returns the GORM adapter bound to db.
-func NewGormDishRepository(db *gorm.DB) *GormDishRepository {
-	return &GormDishRepository{DB: db}
+// NewGormActivityRepository returns the GORM adapter bound to db.
+func NewGormActivityRepository(db *gorm.DB) *GormActivityRepository {
+	return &GormActivityRepository{DB: db}
 }
 
 // Create persists in under parent and returns the stored record.
-func (r *GormDishRepository) Create(ctx context.Context, parent string, in *salespbv1.Dish) (*salespbv1.Dish, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
+func (r *GormActivityRepository) Create(ctx context.Context, parent string, in *salespbv1.Activity) (*salespbv1.Activity, error) {
+	parentIDs, err := repox.SplitName(parent, "leads")
 	if err != nil {
 		return nil, err
 	}
 	id := repox.NewULID()
 	rowID := id
 	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "dishes")
+		ids, err := repox.SplitName(in.GetName(), "leads", "activities")
 		if err != nil {
 			return nil, err
 		}
@@ -69,8 +69,8 @@ func (r *GormDishRepository) Create(ctx context.Context, parent string, in *sale
 		}
 		id = ids[len(ids)-1]
 	}
-	in = proto.Clone(in).(*salespbv1.Dish)
-	in.Name = FormatDishName(parentIDs[0], id)
+	in = proto.Clone(in).(*salespbv1.Activity)
+	in.Name = FormatActivityName(parentIDs[0], id)
 	// The id is unique only under the parent, so the row is keyed by a
 	// surrogate of its own: the id itself only when it was minted here.
 	id = rowID
@@ -79,19 +79,19 @@ func (r *GormDishRepository) Create(ctx context.Context, parent string, in *sale
 			return nil, err
 		}
 	}
-	m := sales.DishFromProto(in)
+	m := sales.ActivityFromProto(in)
 	m.ID = id
 	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
+	m.LeadID = parentIDs[0]
 	m.Etag = repox.Ptr(repox.NewULID())
-	if err := sales.NewDishStore(r.DB).Create(ctx, m); err != nil {
+	if err := sales.NewActivityStore(r.DB).Create(ctx, m); err != nil {
 		return nil, repox.MapGormErr(err)
 	}
 	return r.get(ctx, m.Name)
 }
 
 // Get returns the record addressed by its resource name.
-func (r *GormDishRepository) Get(ctx context.Context, name string) (*salespbv1.Dish, error) {
+func (r *GormActivityRepository) Get(ctx context.Context, name string) (*salespbv1.Activity, error) {
 	key, err := r.rowKey(name)
 	if err != nil {
 		return nil, err
@@ -101,8 +101,8 @@ func (r *GormDishRepository) Get(ctx context.Context, name string) (*salespbv1.D
 
 // rowKey validates name and returns what its row is found by: the name
 // itself, because the id is unique only under the parent.
-func (r *GormDishRepository) rowKey(name string) (string, error) {
-	if _, err := repox.SplitName(name, "venues", "dishes"); err != nil {
+func (r *GormActivityRepository) rowKey(name string) (string, error) {
+	if _, err := repox.SplitName(name, "leads", "activities"); err != nil {
 		return "", err
 	}
 	return name, nil
@@ -110,8 +110,8 @@ func (r *GormDishRepository) rowKey(name string) (string, error) {
 
 // get loads by row key (rowKey) — the private read every generated method
 // re-reads through, so Tier-2 overrides of Get never re-enter generated writes.
-func (r *GormDishRepository) get(ctx context.Context, key string) (*salespbv1.Dish, error) {
-	var m sales.Dish
+func (r *GormActivityRepository) get(ctx context.Context, key string) (*salespbv1.Activity, error) {
+	var m sales.Activity
 	if err := r.DB.WithContext(ctx).First(&m, "name = ?", key).Error; err != nil {
 		return nil, repox.MapGormErr(err)
 	}
@@ -120,8 +120,8 @@ func (r *GormDishRepository) get(ctx context.Context, key string) (*salespbv1.Di
 
 // toProto converts a loaded row, decorating reference names and running the
 // AfterRead hook.
-func (r *GormDishRepository) toProto(ctx context.Context, m *sales.Dish) (*salespbv1.Dish, error) {
-	out := sales.DishToProto(m)
+func (r *GormActivityRepository) toProto(ctx context.Context, m *sales.Activity) (*salespbv1.Activity, error) {
+	out := sales.ActivityToProto(m)
 	if h := r.Hooks.AfterRead; h != nil {
 		if err := h(ctx, out); err != nil {
 			return nil, err
@@ -131,8 +131,8 @@ func (r *GormDishRepository) toProto(ctx context.Context, m *sales.Dish) (*sales
 }
 
 // List returns one page of records under parent.
-func (r *GormDishRepository) List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Dish, string, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
+func (r *GormActivityRepository) List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Activity, string, error) {
+	parentIDs, err := repox.SplitName(parent, "leads")
 	if err != nil {
 		return nil, "", err
 	}
@@ -141,21 +141,21 @@ func (r *GormDishRepository) List(ctx context.Context, parent string, in repox.L
 	if parentIDs[len(parentIDs)-1] == "-" {
 		return r.list(ctx, r.DB, in)
 	}
-	scope := r.DB.Where("venue_id = ?", parentIDs[len(parentIDs)-1])
+	scope := r.DB.Where("lead_id = ?", parentIDs[len(parentIDs)-1])
 	return r.list(ctx, scope, in)
 }
 
-func (r *GormDishRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.Dish, string, error) {
+func (r *GormActivityRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.Activity, string, error) {
 	conds, err := filterx.Parse(in.Filter)
 	if err != nil {
 		return nil, "", repox.MapFilterxErr(err)
 	}
 	conds = append(conds, in.Where...)
-	eng := filterx.Gorm[sales.Dish](sales.DishFilterSpec)
+	eng := filterx.Gorm[sales.Activity](sales.ActivityFilterSpec)
 	for f, h := range r.ListOverrides {
 		eng.Override(f, h)
 	}
-	if err := repox.CheckReadMask((*salespbv1.Dish)(nil), in.ReadMask); err != nil {
+	if err := repox.CheckReadMask((*salespbv1.Activity)(nil), in.ReadMask); err != nil {
 		return nil, "", err
 	}
 	rows, next, err := eng.List(ctx, r.reads(scope, in), filterx.ListInput{
@@ -167,7 +167,7 @@ func (r *GormDishRepository) list(ctx context.Context, scope *gorm.DB, in repox.
 	if err != nil {
 		return nil, "", repox.MapFilterxErr(err)
 	}
-	items := make([]*salespbv1.Dish, 0, len(rows))
+	items := make([]*salespbv1.Activity, 0, len(rows))
 	for i := range rows {
 		out, err := r.toProto(ctx, &rows[i])
 		if err != nil {
@@ -182,37 +182,32 @@ func (r *GormDishRepository) list(ctx context.Context, scope *gorm.DB, in repox.
 // reads is the query a List reads rows through: every column and value object
 // without a read mask; with one, only the columns and value objects of the
 // fields it names, and the columns the page is sorted by.
-func (r *GormDishRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
+func (r *GormActivityRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
 	if len(in.ReadMask) == 0 {
 		return db
 	}
-	if omit := repox.Unread(dishColumns, in.ReadMask, repox.OrderColumns(sales.DishFilterSpec, in.OrderBy)...); len(omit) > 0 {
+	if omit := repox.Unread(activityColumns, in.ReadMask, repox.OrderColumns(sales.ActivityFilterSpec, in.OrderBy)...); len(omit) > 0 {
 		db = db.Omit(omit...)
 	}
 	return db
 }
 
-// dishColumns are the row's columns by the field each stores, for
+// activityColumns are the row's columns by the field each stores, for
 // a read mask to leave out.
-var dishColumns = map[string][]string{
-	"display_name": {"display_name"},
-	"description":  {"description"},
-	"course":       {"course"},
-	"cuisine":      {"cuisine"},
-	"diets":        {"diets"},
-	"allergens":    {"allergens"},
-	"price":        {"price"},
-	"tax":          {"tax"},
-	"image_uri":    {"image_uri"},
-	"available":    {"available"},
-	"create_time":  {"create_time"},
-	"update_time":  {"update_time"},
-	"etag":         {"etag"},
+var activityColumns = map[string][]string{
+	"kind":        {"kind"},
+	"occur_time":  {"occur_time"},
+	"summary":     {"summary"},
+	"details":     {"details"},
+	"author":      {"author"},
+	"create_time": {"create_time"},
+	"update_time": {"update_time"},
+	"etag":        {"etag"},
 }
 
 // Update persists the masked fields of in; an empty mask replaces every
 // mutable field. The write happens in one transaction guarded by in.Etag.
-func (r *GormDishRepository) Update(ctx context.Context, in *salespbv1.Dish, paths []string) (*salespbv1.Dish, error) {
+func (r *GormActivityRepository) Update(ctx context.Context, in *salespbv1.Activity, paths []string) (*salespbv1.Activity, error) {
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
 		return nil, err
@@ -229,8 +224,8 @@ func (r *GormDishRepository) Update(ctx context.Context, in *salespbv1.Dish, pat
 // waits for this transaction and then sees the etag it wrote, so two writers
 // holding the same etag cannot both pass the guard. outputPaths names the
 // server-owned fields written alongside (UpdateWithOutputOnly); nil for Update.
-func (r *GormDishRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.Dish, paths, outputPaths []string) error {
-	var existing sales.Dish
+func (r *GormActivityRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.Activity, paths, outputPaths []string) error {
+	var existing sales.Activity
 	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "name = ?", key).Error; err != nil {
 		return err
 	}
@@ -239,42 +234,37 @@ func (r *GormDishRepository) updateTx(ctx context.Context, tx *gorm.DB, key stri
 	if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
 		return repox.ErrConflict
 	}
-	existingPB := sales.DishToProto(&existing)
-	merged := proto.Clone(existingPB).(*salespbv1.Dish)
-	applyDishMask(merged, in, paths)
+	existingPB := sales.ActivityToProto(&existing)
+	merged := proto.Clone(existingPB).(*salespbv1.Activity)
+	applyActivityMask(merged, in, paths)
 	if h := r.Hooks.BeforeUpdate; h != nil {
 		if err := h(ctx, existingPB, merged, paths); err != nil {
 			return err
 		}
 	}
-	next := sales.DishFromProto(merged)
+	next := sales.ActivityFromProto(merged)
 	_ = next
 	existing.Name = next.Name
-	existing.DisplayName = next.DisplayName
-	existing.Description = next.Description
-	existing.Course = next.Course
-	existing.Cuisine = next.Cuisine
-	existing.Diets = next.Diets
-	existing.Allergens = next.Allergens
-	existing.Price = next.Price
-	existing.Tax = next.Tax
-	existing.ImageURI = next.ImageURI
-	existing.Available = next.Available
+	existing.Kind = next.Kind
+	existing.OccurTime = next.OccurTime
+	existing.Summary = next.Summary
+	existing.Details = next.Details
+	existing.Author = next.Author
 	existing.Etag = repox.Ptr(repox.NewULID())
-	return sales.NewDishStore(tx).Update(ctx, &existing)
+	return sales.NewActivityStore(tx).Update(ctx, &existing)
 }
 
 // newRow builds the row a Batch inserts for in under parent, and the
 // record it stands for, named: the same resolution Create applies.
-func (r *GormDishRepository) newRow(parent string, in *salespbv1.Dish) (*sales.Dish, *salespbv1.Dish, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
+func (r *GormActivityRepository) newRow(parent string, in *salespbv1.Activity) (*sales.Activity, *salespbv1.Activity, error) {
+	parentIDs, err := repox.SplitName(parent, "leads")
 	if err != nil {
 		return nil, nil, err
 	}
 	id := repox.NewULID()
 	rowID := id
 	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "dishes")
+		ids, err := repox.SplitName(in.GetName(), "leads", "activities")
 		if err != nil {
 			return nil, nil, err
 		}
@@ -285,19 +275,19 @@ func (r *GormDishRepository) newRow(parent string, in *salespbv1.Dish) (*sales.D
 		}
 		id = ids[len(ids)-1]
 	}
-	in = proto.Clone(in).(*salespbv1.Dish)
-	in.Name = FormatDishName(parentIDs[0], id)
+	in = proto.Clone(in).(*salespbv1.Activity)
+	in.Name = FormatActivityName(parentIDs[0], id)
 	id = rowID // keyed as Create keys it
-	m := sales.DishFromProto(in)
+	m := sales.ActivityFromProto(in)
 	m.ID = id
 	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
+	m.LeadID = parentIDs[0]
 	m.Etag = repox.Ptr(repox.NewULID())
 	return m, in, nil
 }
 
 // Delete removes the record addressed by its resource name.
-func (r *GormDishRepository) Delete(ctx context.Context, name string) error {
+func (r *GormActivityRepository) Delete(ctx context.Context, name string) error {
 	key, err := r.rowKey(name)
 	if err != nil {
 		return err
@@ -307,33 +297,33 @@ func (r *GormDishRepository) Delete(ctx context.Context, name string) error {
 			return err
 		}
 	}
-	var existing sales.Dish
+	var existing sales.Activity
 	if err := r.DB.WithContext(ctx).First(&existing, "name = ?", key).Error; err != nil {
 		return repox.MapGormErr(err)
 	}
-	return repox.MapGormErr(sales.NewDishStore(r.DB).DeleteByID(ctx, existing.ID))
+	return repox.MapGormErr(sales.NewActivityStore(r.DB).DeleteByID(ctx, existing.ID))
 }
 
 // ListByKeys reads every record whose filter field field is one of keys; see
 // repox.ListByKeys.
-func (r *GormDishRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Dish, error) {
-	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.Dish, string, error) {
-		return r.List(ctx, "venues/-", in)
+func (r *GormActivityRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Activity, error) {
+	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.Activity, string, error) {
+		return r.List(ctx, "leads/-", in)
 	})
 }
 
 // Compile-time proof the adapter satisfies the interface.
-var _ DishRepository = (*GormDishRepository)(nil)
+var _ ActivityRepository = (*GormActivityRepository)(nil)
 
-// GormFixedPackageRepository is the GORM adapter of FixedPackageRepository: flat
+// GormLeadRepository is the GORM adapter of LeadRepository: flat
 // CRUD over the generated model, store, converters, and filterx spec. Exported
 // fields and helpers are the Tier-2 seam — embed it and override whole methods
 // for behavior the schema cannot express; generated methods only call private
 // helpers, never the public interface, so overrides never re-enter generated
 // code.
-type GormFixedPackageRepository struct {
+type GormLeadRepository struct {
 	DB    *gorm.DB
-	Hooks FixedPackageHooks
+	Hooks LeadHooks
 	// Refs, when set, is asked before a purge whether anything in another
 	// database or service still refers to the record (see Purge).
 	Refs *repox.References
@@ -342,57 +332,46 @@ type GormFixedPackageRepository struct {
 	ListOverrides map[string]filterx.SQLHandler
 }
 
-// NewGormFixedPackageRepository returns the GORM adapter bound to db.
-func NewGormFixedPackageRepository(db *gorm.DB) *GormFixedPackageRepository {
-	return &GormFixedPackageRepository{DB: db}
+// NewGormLeadRepository returns the GORM adapter bound to db.
+func NewGormLeadRepository(db *gorm.DB) *GormLeadRepository {
+	return &GormLeadRepository{DB: db}
 }
 
-// Create persists in under parent and returns the stored record.
-func (r *GormFixedPackageRepository) Create(ctx context.Context, parent string, in *salespbv1.FixedPackage) (*salespbv1.FixedPackage, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, err
-	}
+// Create persists in and returns the stored record.
+func (r *GormLeadRepository) Create(ctx context.Context, in *salespbv1.Lead) (*salespbv1.Lead, error) {
 	id := repox.NewULID()
-	rowID := id
 	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "fixedPackages")
+		ids, err := repox.SplitName(in.GetName(), "leads")
 		if err != nil {
 			return nil, err
 		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
 		id = ids[len(ids)-1]
 	}
-	in = proto.Clone(in).(*salespbv1.FixedPackage)
-	in.Name = FormatFixedPackageName(parentIDs[0], id)
-	// The id is unique only under the parent, so the row is keyed by a
-	// surrogate of its own: the id itself only when it was minted here.
-	id = rowID
+	in = proto.Clone(in).(*salespbv1.Lead)
+	in.Name = FormatLeadName(id)
 	if h := r.Hooks.BeforeCreate; h != nil {
 		if err := h(ctx, in); err != nil {
 			return nil, err
 		}
 	}
-	m := sales.FixedPackageFromProto(in)
+	m := sales.LeadFromProto(in)
 	m.ID = id
 	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	if v := in.GetMenu(); v != "" {
-		m.MenuID = repox.Ptr(v)
+	if v := in.GetContact(); v != "" {
+		m.ContactID = repox.LastSegment(v)
+	}
+	if v := in.GetVenue(); v != "" {
+		m.VenueID = repox.Ptr(repox.LastSegment(v))
 	}
 	m.Etag = repox.Ptr(repox.NewULID())
-	if err := sales.NewFixedPackageStore(r.DB).Create(ctx, m); err != nil {
+	if err := sales.NewLeadStore(r.DB).Create(ctx, m); err != nil {
 		return nil, repox.MapGormErr(err)
 	}
-	return r.get(ctx, m.Name)
+	return r.get(ctx, id)
 }
 
 // Get returns the record addressed by its resource name.
-func (r *GormFixedPackageRepository) Get(ctx context.Context, name string) (*salespbv1.FixedPackage, error) {
+func (r *GormLeadRepository) Get(ctx context.Context, name string) (*salespbv1.Lead, error) {
 	key, err := r.rowKey(name)
 	if err != nil {
 		return nil, err
@@ -400,20 +379,20 @@ func (r *GormFixedPackageRepository) Get(ctx context.Context, name string) (*sal
 	return r.get(ctx, key)
 }
 
-// rowKey validates name and returns what its row is found by: the name
-// itself, because the id is unique only under the parent.
-func (r *GormFixedPackageRepository) rowKey(name string) (string, error) {
-	if _, err := repox.SplitName(name, "venues", "fixedPackages"); err != nil {
+// rowKey validates name and returns what its row is found by: the bare id.
+func (r *GormLeadRepository) rowKey(name string) (string, error) {
+	ids, err := repox.SplitName(name, "leads")
+	if err != nil {
 		return "", err
 	}
-	return name, nil
+	return ids[len(ids)-1], nil
 }
 
 // get loads by row key (rowKey) — the private read every generated method
 // re-reads through, so Tier-2 overrides of Get never re-enter generated writes.
-func (r *GormFixedPackageRepository) get(ctx context.Context, key string) (*salespbv1.FixedPackage, error) {
-	var m sales.FixedPackage
-	if err := r.DB.WithContext(ctx).First(&m, "name = ?", key).Error; err != nil {
+func (r *GormLeadRepository) get(ctx context.Context, key string) (*salespbv1.Lead, error) {
+	var m sales.Lead
+	if err := r.DB.WithContext(ctx).First(&m, "id = ?", key).Error; err != nil {
 		return nil, repox.MapGormErr(err)
 	}
 	return r.toProto(ctx, &m)
@@ -421,10 +400,13 @@ func (r *GormFixedPackageRepository) get(ctx context.Context, key string) (*sale
 
 // toProto converts a loaded row, decorating reference names and running the
 // AfterRead hook.
-func (r *GormFixedPackageRepository) toProto(ctx context.Context, m *sales.FixedPackage) (*salespbv1.FixedPackage, error) {
-	out := sales.FixedPackageToProto(m)
-	if m.MenuID != nil {
-		out.Menu = *m.MenuID
+func (r *GormLeadRepository) toProto(ctx context.Context, m *sales.Lead) (*salespbv1.Lead, error) {
+	out := sales.LeadToProto(m)
+	if m.ContactID != "" {
+		out.Contact = "contacts/" + m.ContactID
+	}
+	if m.VenueID != nil && *m.VenueID != "" {
+		out.Venue = "venues/" + *m.VenueID
 	}
 	if h := r.Hooks.AfterRead; h != nil {
 		if err := h(ctx, out); err != nil {
@@ -434,32 +416,22 @@ func (r *GormFixedPackageRepository) toProto(ctx context.Context, m *sales.Fixed
 	return out, nil
 }
 
-// List returns one page of records under parent.
-func (r *GormFixedPackageRepository) List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.FixedPackage, string, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, "", err
-	}
-	// AIP-159: "-" for the parent reads across every parent; narrow with a
-	// Where on the parent field instead.
-	if parentIDs[len(parentIDs)-1] == "-" {
-		return r.list(ctx, r.DB, in)
-	}
-	scope := r.DB.Where("venue_id = ?", parentIDs[len(parentIDs)-1])
-	return r.list(ctx, scope, in)
+// List returns one page of records.
+func (r *GormLeadRepository) List(ctx context.Context, in repox.ListInput) ([]*salespbv1.Lead, string, error) {
+	return r.list(ctx, r.DB, in)
 }
 
-func (r *GormFixedPackageRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.FixedPackage, string, error) {
+func (r *GormLeadRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.Lead, string, error) {
 	conds, err := filterx.Parse(in.Filter)
 	if err != nil {
 		return nil, "", repox.MapFilterxErr(err)
 	}
 	conds = append(conds, in.Where...)
-	eng := filterx.Gorm[sales.FixedPackage](sales.FixedPackageFilterSpec)
+	eng := filterx.Gorm[sales.Lead](sales.LeadFilterSpec)
 	for f, h := range r.ListOverrides {
 		eng.Override(f, h)
 	}
-	if err := repox.CheckReadMask((*salespbv1.FixedPackage)(nil), in.ReadMask); err != nil {
+	if err := repox.CheckReadMask((*salespbv1.Lead)(nil), in.ReadMask); err != nil {
 		return nil, "", err
 	}
 	rows, next, err := eng.List(ctx, r.reads(scope, in), filterx.ListInput{
@@ -471,7 +443,7 @@ func (r *GormFixedPackageRepository) list(ctx context.Context, scope *gorm.DB, i
 	if err != nil {
 		return nil, "", repox.MapFilterxErr(err)
 	}
-	items := make([]*salespbv1.FixedPackage, 0, len(rows))
+	items := make([]*salespbv1.Lead, 0, len(rows))
 	for i := range rows {
 		out, err := r.toProto(ctx, &rows[i])
 		if err != nil {
@@ -486,37 +458,48 @@ func (r *GormFixedPackageRepository) list(ctx context.Context, scope *gorm.DB, i
 // reads is the query a List reads rows through: every column and value object
 // without a read mask; with one, only the columns and value objects of the
 // fields it names, and the columns the page is sorted by.
-func (r *GormFixedPackageRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
+func (r *GormLeadRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
 	if len(in.ReadMask) == 0 {
 		return db
 	}
-	if omit := repox.Unread(fixedPackageColumns, in.ReadMask, repox.OrderColumns(sales.FixedPackageFilterSpec, in.OrderBy)...); len(omit) > 0 {
+	if omit := repox.Unread(leadColumns, in.ReadMask, repox.OrderColumns(sales.LeadFilterSpec, in.OrderBy)...); len(omit) > 0 {
 		db = db.Omit(omit...)
 	}
 	return db
 }
 
-// fixedPackageColumns are the row's columns by the field each stores, for
+// leadColumns are the row's columns by the field each stores, for
 // a read mask to leave out.
-var fixedPackageColumns = map[string][]string{
-	"display_name":      {"display_name"},
-	"description":       {"description"},
-	"duration":          {"duration"},
-	"menu":              {"menu"},
-	"inclusions":        {"inclusions"},
-	"included_guests":   {"included_guests"},
-	"price":             {"price"},
-	"extra_guest_price": {"extra_guest_price"},
-	"tax":               {"tax"},
-	"active":            {"active"},
-	"create_time":       {"create_time"},
-	"update_time":       {"update_time"},
-	"etag":              {"etag"},
+var leadColumns = map[string][]string{
+	"display_name":        {"display_name"},
+	"contact":             {"contact"},
+	"venue":               {"venue"},
+	"kind":                {"kind"},
+	"event_type":          {"event_type"},
+	"source":              {"source"},
+	"source_detail":       {"source_detail"},
+	"stage":               {"stage"},
+	"dates":               {"dates"},
+	"dates_flexible":      {"dates_flexible"},
+	"guests":              {"guests"},
+	"rooms":               {"rooms"},
+	"budget":              {"budget"},
+	"requirements":        {"requirements"},
+	"owner":               {"owner"},
+	"next_follow_up_time": {"next_follow_up_time"},
+	"lost_reason":         {"lost_reason"},
+	"lost_detail":         {"lost_detail"},
+	"hold":                {"hold"},
+	"bookings":            {"bookings"},
+	"close_time":          {"close_time"},
+	"create_time":         {"create_time"},
+	"update_time":         {"update_time"},
+	"etag":                {"etag"},
 }
 
 // Update persists the masked fields of in; an empty mask replaces every
 // mutable field. The write happens in one transaction guarded by in.Etag.
-func (r *GormFixedPackageRepository) Update(ctx context.Context, in *salespbv1.FixedPackage, paths []string) (*salespbv1.FixedPackage, error) {
+func (r *GormLeadRepository) Update(ctx context.Context, in *salespbv1.Lead, paths []string) (*salespbv1.Lead, error) {
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
 		return nil, err
@@ -528,14 +511,28 @@ func (r *GormFixedPackageRepository) Update(ctx context.Context, in *salespbv1.F
 	return r.get(ctx, key)
 }
 
+// UpdateWithOutputOnly is Update plus the server-owned fields outputPaths
+// names, in Update's transaction and under its etag guard.
+func (r *GormLeadRepository) UpdateWithOutputOnly(ctx context.Context, in *salespbv1.Lead, paths, outputPaths []string) (*salespbv1.Lead, error) {
+	key, err := r.rowKey(in.GetName())
+	if err != nil {
+		return nil, err
+	}
+	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateTx(ctx, tx, key, in, paths, outputPaths) })
+	if err != nil {
+		return nil, repox.MapGormErr(err)
+	}
+	return r.get(ctx, key)
+}
+
 // updateTx is Update's write inside tx, which a Batch shares with other
 // writes. The row is read FOR UPDATE: a concurrent update of the same record
 // waits for this transaction and then sees the etag it wrote, so two writers
 // holding the same etag cannot both pass the guard. outputPaths names the
 // server-owned fields written alongside (UpdateWithOutputOnly); nil for Update.
-func (r *GormFixedPackageRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.FixedPackage, paths, outputPaths []string) error {
-	var existing sales.FixedPackage
-	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "name = ?", key).Error; err != nil {
+func (r *GormLeadRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.Lead, paths, outputPaths []string) error {
+	var existing sales.Lead
+	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "id = ?", key).Error; err != nil {
 		return err
 	}
 	id := existing.ID
@@ -543,692 +540,142 @@ func (r *GormFixedPackageRepository) updateTx(ctx context.Context, tx *gorm.DB, 
 	if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
 		return repox.ErrConflict
 	}
-	existingPB := sales.FixedPackageToProto(&existing)
+	existingPB := sales.LeadToProto(&existing)
 	{
 		m, out := &existing, existingPB
-		if m.MenuID != nil {
-			out.Menu = *m.MenuID
+		if m.ContactID != "" {
+			out.Contact = "contacts/" + m.ContactID
+		}
+		if m.VenueID != nil && *m.VenueID != "" {
+			out.Venue = "venues/" + *m.VenueID
 		}
 	}
-	merged := proto.Clone(existingPB).(*salespbv1.FixedPackage)
-	applyFixedPackageMask(merged, in, paths)
+	merged := proto.Clone(existingPB).(*salespbv1.Lead)
+	applyLeadMask(merged, in, paths)
+	repox.CopyFields(merged, in, outputPaths)
 	if h := r.Hooks.BeforeUpdate; h != nil {
 		if err := h(ctx, existingPB, merged, paths); err != nil {
 			return err
 		}
 	}
-	next := sales.FixedPackageFromProto(merged)
+	next := sales.LeadFromProto(merged)
 	_ = next
 	existing.Name = next.Name
 	existing.DisplayName = next.DisplayName
-	existing.Description = next.Description
-	existing.Duration = next.Duration
-	if v := merged.GetMenu(); v != "" {
-		existing.MenuID = repox.Ptr(v)
+	existing.ContactID = repox.LastSegment(merged.GetContact())
+	if v := merged.GetVenue(); v != "" {
+		existing.VenueID = repox.Ptr(repox.LastSegment(v))
 	} else {
-		existing.MenuID = nil
+		existing.VenueID = nil
 	}
-	existing.Inclusions = next.Inclusions
-	existing.IncludedGuests = next.IncludedGuests
-	existing.Price = next.Price
-	existing.ExtraGuestPrice = next.ExtraGuestPrice
-	existing.Tax = next.Tax
-	existing.Active = next.Active
+	existing.Kind = next.Kind
+	existing.EventType = next.EventType
+	existing.Source = next.Source
+	existing.SourceDetail = next.SourceDetail
+	existing.Stage = next.Stage
+	existing.Dates = next.Dates
+	existing.DatesFlexible = next.DatesFlexible
+	existing.Guests = next.Guests
+	existing.Rooms = next.Rooms
+	existing.Budget = next.Budget
+	existing.Requirements = next.Requirements
+	existing.Owner = next.Owner
+	existing.NextFollowUpTime = next.NextFollowUpTime
+	existing.LostReason = next.LostReason
+	existing.LostDetail = next.LostDetail
+	if len(outputPaths) > 0 {
+		paths := outputPaths
+		if repox.InMask(paths, "hold") {
+			existing.Hold = next.Hold
+		}
+		if repox.InMask(paths, "bookings") {
+			existing.Bookings = next.Bookings
+		}
+		if repox.InMask(paths, "close_time") {
+			existing.CloseTime = next.CloseTime
+		}
+	}
 	existing.Etag = repox.Ptr(repox.NewULID())
-	return sales.NewFixedPackageStore(tx).Update(ctx, &existing)
+	return sales.NewLeadStore(tx).Update(ctx, &existing)
 }
 
-// newRow builds the row a Batch inserts for in under parent, and the
-// record it stands for, named: the same resolution Create applies.
-func (r *GormFixedPackageRepository) newRow(parent string, in *salespbv1.FixedPackage) (*sales.FixedPackage, *salespbv1.FixedPackage, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, nil, err
-	}
-	id := repox.NewULID()
-	rowID := id
-	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "fixedPackages")
-		if err != nil {
-			return nil, nil, err
-		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
-		id = ids[len(ids)-1]
-	}
-	in = proto.Clone(in).(*salespbv1.FixedPackage)
-	in.Name = FormatFixedPackageName(parentIDs[0], id)
-	id = rowID // keyed as Create keys it
-	m := sales.FixedPackageFromProto(in)
-	m.ID = id
-	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	if v := in.GetMenu(); v != "" {
-		m.MenuID = repox.Ptr(v)
-	}
-	m.Etag = repox.Ptr(repox.NewULID())
-	return m, in, nil
-}
-
-// Delete removes the record addressed by its resource name.
-func (r *GormFixedPackageRepository) Delete(ctx context.Context, name string) error {
-	key, err := r.rowKey(name)
-	if err != nil {
-		return err
-	}
-	if h := r.Hooks.BeforeDelete; h != nil {
-		if err := h(ctx, name); err != nil {
-			return err
-		}
-	}
-	var existing sales.FixedPackage
-	if err := r.DB.WithContext(ctx).First(&existing, "name = ?", key).Error; err != nil {
-		return repox.MapGormErr(err)
-	}
-	return repox.MapGormErr(sales.NewFixedPackageStore(r.DB).DeleteByID(ctx, existing.ID))
-}
-
-// ListByKeys reads every record whose filter field field is one of keys; see
-// repox.ListByKeys.
-func (r *GormFixedPackageRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.FixedPackage, error) {
-	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.FixedPackage, string, error) {
-		return r.List(ctx, "venues/-", in)
-	})
-}
-
-// Compile-time proof the adapter satisfies the interface.
-var _ FixedPackageRepository = (*GormFixedPackageRepository)(nil)
-
-// GormMenuRepository is the GORM adapter of MenuRepository: flat
-// CRUD over the generated model, store, converters, and filterx spec. Exported
-// fields and helpers are the Tier-2 seam — embed it and override whole methods
-// for behavior the schema cannot express; generated methods only call private
-// helpers, never the public interface, so overrides never re-enter generated
-// code.
-type GormMenuRepository struct {
-	DB    *gorm.DB
-	Hooks MenuHooks
-	// Refs, when set, is asked before a purge whether anything in another
-	// database or service still refers to the record (see Purge).
-	Refs *repox.References
-	// ListOverrides substitute the generated dispatch for single filter fields
-	// (e.g. a derived state computed via subqueries).
-	ListOverrides map[string]filterx.SQLHandler
-}
-
-// NewGormMenuRepository returns the GORM adapter bound to db.
-func NewGormMenuRepository(db *gorm.DB) *GormMenuRepository {
-	return &GormMenuRepository{DB: db}
-}
-
-// Create persists in under parent and returns the stored record.
-func (r *GormMenuRepository) Create(ctx context.Context, parent string, in *salespbv1.Menu) (*salespbv1.Menu, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, err
-	}
-	id := repox.NewULID()
-	rowID := id
-	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "menus")
-		if err != nil {
-			return nil, err
-		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
-		id = ids[len(ids)-1]
-	}
-	in = proto.Clone(in).(*salespbv1.Menu)
-	in.Name = FormatMenuName(parentIDs[0], id)
-	// The id is unique only under the parent, so the row is keyed by a
-	// surrogate of its own: the id itself only when it was minted here.
-	id = rowID
-	if h := r.Hooks.BeforeCreate; h != nil {
-		if err := h(ctx, in); err != nil {
-			return nil, err
-		}
-	}
-	m := sales.MenuFromProto(in)
-	m.ID = id
-	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	m.Etag = repox.Ptr(repox.NewULID())
-	if err := sales.NewMenuStore(r.DB).Create(ctx, m); err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.get(ctx, m.Name)
-}
-
-// Get returns the record addressed by its resource name.
-func (r *GormMenuRepository) Get(ctx context.Context, name string) (*salespbv1.Menu, error) {
-	key, err := r.rowKey(name)
-	if err != nil {
-		return nil, err
-	}
-	return r.get(ctx, key)
-}
-
-// rowKey validates name and returns what its row is found by: the name
-// itself, because the id is unique only under the parent.
-func (r *GormMenuRepository) rowKey(name string) (string, error) {
-	if _, err := repox.SplitName(name, "venues", "menus"); err != nil {
-		return "", err
-	}
-	return name, nil
-}
-
-// get loads by row key (rowKey) — the private read every generated method
-// re-reads through, so Tier-2 overrides of Get never re-enter generated writes.
-func (r *GormMenuRepository) get(ctx context.Context, key string) (*salespbv1.Menu, error) {
-	var m sales.Menu
-	if err := r.DB.WithContext(ctx).First(&m, "name = ?", key).Error; err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.toProto(ctx, &m)
-}
-
-// toProto converts a loaded row, decorating reference names and running the
-// AfterRead hook.
-func (r *GormMenuRepository) toProto(ctx context.Context, m *sales.Menu) (*salespbv1.Menu, error) {
-	out := sales.MenuToProto(m)
-	if h := r.Hooks.AfterRead; h != nil {
-		if err := h(ctx, out); err != nil {
-			return nil, err
-		}
-	}
-	return out, nil
-}
-
-// List returns one page of records under parent.
-func (r *GormMenuRepository) List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Menu, string, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, "", err
-	}
-	// AIP-159: "-" for the parent reads across every parent; narrow with a
-	// Where on the parent field instead.
-	if parentIDs[len(parentIDs)-1] == "-" {
-		return r.list(ctx, r.DB, in)
-	}
-	scope := r.DB.Where("venue_id = ?", parentIDs[len(parentIDs)-1])
-	return r.list(ctx, scope, in)
-}
-
-func (r *GormMenuRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.Menu, string, error) {
-	conds, err := filterx.Parse(in.Filter)
-	if err != nil {
-		return nil, "", repox.MapFilterxErr(err)
-	}
-	conds = append(conds, in.Where...)
-	eng := filterx.Gorm[sales.Menu](sales.MenuFilterSpec)
-	for f, h := range r.ListOverrides {
-		eng.Override(f, h)
-	}
-	if err := repox.CheckReadMask((*salespbv1.Menu)(nil), in.ReadMask); err != nil {
-		return nil, "", err
-	}
-	rows, next, err := eng.List(ctx, r.reads(scope, in), filterx.ListInput{
-		PageSize:  in.PageSize,
-		PageToken: in.PageToken,
-		OrderBy:   in.OrderBy,
-		Filter:    conds,
-	})
-	if err != nil {
-		return nil, "", repox.MapFilterxErr(err)
-	}
-	items := make([]*salespbv1.Menu, 0, len(rows))
-	for i := range rows {
-		out, err := r.toProto(ctx, &rows[i])
-		if err != nil {
-			return nil, "", err
-		}
-		repox.Narrow(out, in.ReadMask)
-		items = append(items, out)
-	}
-	return items, next, nil
-}
-
-// reads is the query a List reads rows through: every column and value object
-// without a read mask; with one, only the columns and value objects of the
-// fields it names, and the columns the page is sorted by.
-func (r *GormMenuRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
-	if len(in.ReadMask) == 0 {
-		return db
-	}
-	if omit := repox.Unread(menuColumns, in.ReadMask, repox.OrderColumns(sales.MenuFilterSpec, in.OrderBy)...); len(omit) > 0 {
-		db = db.Omit(omit...)
-	}
-	return db
-}
-
-// menuColumns are the row's columns by the field each stores, for
-// a read mask to leave out.
-var menuColumns = map[string][]string{
-	"display_name": {"display_name"},
-	"description":  {"description"},
-	"diets":        {"diets"},
-	"courses":      {"courses"},
-	"add_ons":      {"add_ons"},
-	"plate_price":  {"plate_price"},
-	"min_plates":   {"min_plates"},
-	"tax":          {"tax"},
-	"active":       {"active"},
-	"create_time":  {"create_time"},
-	"update_time":  {"update_time"},
-	"etag":         {"etag"},
-}
-
-// Update persists the masked fields of in; an empty mask replaces every
-// mutable field. The write happens in one transaction guarded by in.Etag.
-func (r *GormMenuRepository) Update(ctx context.Context, in *salespbv1.Menu, paths []string) (*salespbv1.Menu, error) {
+// UpdateOutputOnly persists the server-owned fields of in that paths names, in
+// one transaction guarded by in.Etag.
+func (r *GormLeadRepository) UpdateOutputOnly(ctx context.Context, in *salespbv1.Lead, paths []string) (*salespbv1.Lead, error) {
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
 		return nil, err
 	}
-	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateTx(ctx, tx, key, in, paths, nil) })
+	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateOutputOnlyTx(ctx, tx, in, paths) })
 	if err != nil {
 		return nil, repox.MapGormErr(err)
 	}
 	return r.get(ctx, key)
 }
 
-// updateTx is Update's write inside tx, which a Batch shares with other
-// writes. The row is read FOR UPDATE: a concurrent update of the same record
-// waits for this transaction and then sees the etag it wrote, so two writers
-// holding the same etag cannot both pass the guard. outputPaths names the
-// server-owned fields written alongside (UpdateWithOutputOnly); nil for Update.
-func (r *GormMenuRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.Menu, paths, outputPaths []string) error {
-	var existing sales.Menu
-	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "name = ?", key).Error; err != nil {
-		return err
+// updateOutputOnlyTx is UpdateOutputOnly's write inside tx, which a Batch
+// shares with other writes.
+func (r *GormLeadRepository) updateOutputOnlyTx(ctx context.Context, tx *gorm.DB, in *salespbv1.Lead, paths []string) error {
+	if len(paths) == 0 {
+		return fmt.Errorf("%w: UpdateOutputOnly needs the fields to write", repox.ErrInvalidArgument)
 	}
-	id := existing.ID
-	_ = id
-	if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
-		return repox.ErrConflict
-	}
-	existingPB := sales.MenuToProto(&existing)
-	merged := proto.Clone(existingPB).(*salespbv1.Menu)
-	applyMenuMask(merged, in, paths)
-	if h := r.Hooks.BeforeUpdate; h != nil {
-		if err := h(ctx, existingPB, merged, paths); err != nil {
-			return err
-		}
-	}
-	next := sales.MenuFromProto(merged)
-	_ = next
-	existing.Name = next.Name
-	existing.DisplayName = next.DisplayName
-	existing.Description = next.Description
-	existing.Diets = next.Diets
-	existing.Courses = next.Courses
-	existing.AddOns = next.AddOns
-	existing.PlatePrice = next.PlatePrice
-	existing.MinPlates = next.MinPlates
-	existing.Tax = next.Tax
-	existing.Active = next.Active
-	existing.Etag = repox.Ptr(repox.NewULID())
-	return sales.NewMenuStore(tx).Update(ctx, &existing)
-}
-
-// newRow builds the row a Batch inserts for in under parent, and the
-// record it stands for, named: the same resolution Create applies.
-func (r *GormMenuRepository) newRow(parent string, in *salespbv1.Menu) (*sales.Menu, *salespbv1.Menu, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, nil, err
-	}
-	id := repox.NewULID()
-	rowID := id
-	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "menus")
-		if err != nil {
-			return nil, nil, err
-		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
-		id = ids[len(ids)-1]
-	}
-	in = proto.Clone(in).(*salespbv1.Menu)
-	in.Name = FormatMenuName(parentIDs[0], id)
-	id = rowID // keyed as Create keys it
-	m := sales.MenuFromProto(in)
-	m.ID = id
-	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	m.Etag = repox.Ptr(repox.NewULID())
-	return m, in, nil
-}
-
-// Delete removes the record addressed by its resource name.
-func (r *GormMenuRepository) Delete(ctx context.Context, name string) error {
-	key, err := r.rowKey(name)
-	if err != nil {
-		return err
-	}
-	if h := r.Hooks.BeforeDelete; h != nil {
-		if err := h(ctx, name); err != nil {
-			return err
-		}
-	}
-	var existing sales.Menu
-	if err := r.DB.WithContext(ctx).First(&existing, "name = ?", key).Error; err != nil {
-		return repox.MapGormErr(err)
-	}
-	return repox.MapGormErr(sales.NewMenuStore(r.DB).DeleteByID(ctx, existing.ID))
-}
-
-// ListByKeys reads every record whose filter field field is one of keys; see
-// repox.ListByKeys.
-func (r *GormMenuRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Menu, error) {
-	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.Menu, string, error) {
-		return r.List(ctx, "venues/-", in)
-	})
-}
-
-// Compile-time proof the adapter satisfies the interface.
-var _ MenuRepository = (*GormMenuRepository)(nil)
-
-// GormPriceRuleRepository is the GORM adapter of PriceRuleRepository: flat
-// CRUD over the generated model, store, converters, and filterx spec. Exported
-// fields and helpers are the Tier-2 seam — embed it and override whole methods
-// for behavior the schema cannot express; generated methods only call private
-// helpers, never the public interface, so overrides never re-enter generated
-// code.
-type GormPriceRuleRepository struct {
-	DB    *gorm.DB
-	Hooks PriceRuleHooks
-	// Refs, when set, is asked before a purge whether anything in another
-	// database or service still refers to the record (see Purge).
-	Refs *repox.References
-	// ListOverrides substitute the generated dispatch for single filter fields
-	// (e.g. a derived state computed via subqueries).
-	ListOverrides map[string]filterx.SQLHandler
-}
-
-// NewGormPriceRuleRepository returns the GORM adapter bound to db.
-func NewGormPriceRuleRepository(db *gorm.DB) *GormPriceRuleRepository {
-	return &GormPriceRuleRepository{DB: db}
-}
-
-// Create persists in under parent and returns the stored record.
-func (r *GormPriceRuleRepository) Create(ctx context.Context, parent string, in *salespbv1.PriceRule) (*salespbv1.PriceRule, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, err
-	}
-	id := repox.NewULID()
-	rowID := id
-	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "priceRules")
-		if err != nil {
-			return nil, err
-		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
-		id = ids[len(ids)-1]
-	}
-	in = proto.Clone(in).(*salespbv1.PriceRule)
-	in.Name = FormatPriceRuleName(parentIDs[0], id)
-	// The id is unique only under the parent, so the row is keyed by a
-	// surrogate of its own: the id itself only when it was minted here.
-	id = rowID
-	if h := r.Hooks.BeforeCreate; h != nil {
-		if err := h(ctx, in); err != nil {
-			return nil, err
-		}
-	}
-	m := sales.PriceRuleFromProto(in)
-	m.ID = id
-	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	if v := in.GetSeason(); v != "" {
-		m.SeasonID = repox.Ptr(v)
-	}
-	m.Etag = repox.Ptr(repox.NewULID())
-	if err := sales.NewPriceRuleStore(r.DB).Create(ctx, m); err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.get(ctx, m.Name)
-}
-
-// Get returns the record addressed by its resource name.
-func (r *GormPriceRuleRepository) Get(ctx context.Context, name string) (*salespbv1.PriceRule, error) {
-	key, err := r.rowKey(name)
-	if err != nil {
-		return nil, err
-	}
-	return r.get(ctx, key)
-}
-
-// rowKey validates name and returns what its row is found by: the name
-// itself, because the id is unique only under the parent.
-func (r *GormPriceRuleRepository) rowKey(name string) (string, error) {
-	if _, err := repox.SplitName(name, "venues", "priceRules"); err != nil {
-		return "", err
-	}
-	return name, nil
-}
-
-// get loads by row key (rowKey) — the private read every generated method
-// re-reads through, so Tier-2 overrides of Get never re-enter generated writes.
-func (r *GormPriceRuleRepository) get(ctx context.Context, key string) (*salespbv1.PriceRule, error) {
-	var m sales.PriceRule
-	if err := r.DB.WithContext(ctx).First(&m, "name = ?", key).Error; err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.toProto(ctx, &m)
-}
-
-// toProto converts a loaded row, decorating reference names and running the
-// AfterRead hook.
-func (r *GormPriceRuleRepository) toProto(ctx context.Context, m *sales.PriceRule) (*salespbv1.PriceRule, error) {
-	out := sales.PriceRuleToProto(m)
-	if m.SeasonID != nil {
-		out.Season = *m.SeasonID
-	}
-	if h := r.Hooks.AfterRead; h != nil {
-		if err := h(ctx, out); err != nil {
-			return nil, err
-		}
-	}
-	return out, nil
-}
-
-// List returns one page of records under parent.
-func (r *GormPriceRuleRepository) List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.PriceRule, string, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, "", err
-	}
-	// AIP-159: "-" for the parent reads across every parent; narrow with a
-	// Where on the parent field instead.
-	if parentIDs[len(parentIDs)-1] == "-" {
-		return r.list(ctx, r.DB, in)
-	}
-	scope := r.DB.Where("venue_id = ?", parentIDs[len(parentIDs)-1])
-	return r.list(ctx, scope, in)
-}
-
-func (r *GormPriceRuleRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.PriceRule, string, error) {
-	conds, err := filterx.Parse(in.Filter)
-	if err != nil {
-		return nil, "", repox.MapFilterxErr(err)
-	}
-	conds = append(conds, in.Where...)
-	eng := filterx.Gorm[sales.PriceRule](sales.PriceRuleFilterSpec)
-	for f, h := range r.ListOverrides {
-		eng.Override(f, h)
-	}
-	if err := repox.CheckReadMask((*salespbv1.PriceRule)(nil), in.ReadMask); err != nil {
-		return nil, "", err
-	}
-	rows, next, err := eng.List(ctx, r.reads(scope, in), filterx.ListInput{
-		PageSize:  in.PageSize,
-		PageToken: in.PageToken,
-		OrderBy:   in.OrderBy,
-		Filter:    conds,
-	})
-	if err != nil {
-		return nil, "", repox.MapFilterxErr(err)
-	}
-	items := make([]*salespbv1.PriceRule, 0, len(rows))
-	for i := range rows {
-		out, err := r.toProto(ctx, &rows[i])
-		if err != nil {
-			return nil, "", err
-		}
-		repox.Narrow(out, in.ReadMask)
-		items = append(items, out)
-	}
-	return items, next, nil
-}
-
-// reads is the query a List reads rows through: every column and value object
-// without a read mask; with one, only the columns and value objects of the
-// fields it names, and the columns the page is sorted by.
-func (r *GormPriceRuleRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
-	if len(in.ReadMask) == 0 {
-		return db
-	}
-	if omit := repox.Unread(priceRuleColumns, in.ReadMask, repox.OrderColumns(sales.PriceRuleFilterSpec, in.OrderBy)...); len(omit) > 0 {
-		db = db.Omit(omit...)
-	}
-	return db
-}
-
-// priceRuleColumns are the row's columns by the field each stores, for
-// a read mask to leave out.
-var priceRuleColumns = map[string][]string{
-	"display_name": {"display_name"},
-	"season":       {"season"},
-	"target":       {"target"},
-	"min_guests":   {"min_guests"},
-	"fixed_price":  {"fixed_price"},
-	"percent":      {"percent"},
-	"amount":       {"amount"},
-	"priority":     {"priority"},
-	"active":       {"active"},
-	"create_time":  {"create_time"},
-	"update_time":  {"update_time"},
-	"etag":         {"etag"},
-	"items":        {"items"},
-}
-
-// Update persists the masked fields of in; an empty mask replaces every
-// mutable field. The write happens in one transaction guarded by in.Etag.
-func (r *GormPriceRuleRepository) Update(ctx context.Context, in *salespbv1.PriceRule, paths []string) (*salespbv1.PriceRule, error) {
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
-		return nil, err
-	}
-	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateTx(ctx, tx, key, in, paths, nil) })
-	if err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.get(ctx, key)
-}
-
-// updateTx is Update's write inside tx, which a Batch shares with other
-// writes. The row is read FOR UPDATE: a concurrent update of the same record
-// waits for this transaction and then sees the etag it wrote, so two writers
-// holding the same etag cannot both pass the guard. outputPaths names the
-// server-owned fields written alongside (UpdateWithOutputOnly); nil for Update.
-func (r *GormPriceRuleRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.PriceRule, paths, outputPaths []string) error {
-	var existing sales.PriceRule
-	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "name = ?", key).Error; err != nil {
 		return err
 	}
-	id := existing.ID
-	_ = id
-	if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
-		return repox.ErrConflict
-	}
-	existingPB := sales.PriceRuleToProto(&existing)
 	{
-		m, out := &existing, existingPB
-		if m.SeasonID != nil {
-			out.Season = *m.SeasonID
-		}
-	}
-	merged := proto.Clone(existingPB).(*salespbv1.PriceRule)
-	applyPriceRuleMask(merged, in, paths)
-	if h := r.Hooks.BeforeUpdate; h != nil {
-		if err := h(ctx, existingPB, merged, paths); err != nil {
+		var existing sales.Lead
+		// FOR UPDATE, as in updateTx: concurrent writers holding one etag
+		// take turns, and only the first passes the guard.
+		if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "id = ?", key).Error; err != nil {
 			return err
 		}
+		if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
+			return repox.ErrConflict
+		}
+		next := sales.LeadFromProto(in)
+		if repox.InMask(paths, "hold") {
+			existing.Hold = next.Hold
+		}
+		if repox.InMask(paths, "bookings") {
+			existing.Bookings = next.Bookings
+		}
+		if repox.InMask(paths, "close_time") {
+			existing.CloseTime = next.CloseTime
+		}
+		existing.Etag = repox.Ptr(repox.NewULID())
+		return sales.NewLeadStore(tx).Update(ctx, &existing)
 	}
-	next := sales.PriceRuleFromProto(merged)
-	_ = next
-	existing.Name = next.Name
-	existing.DisplayName = next.DisplayName
-	if v := merged.GetSeason(); v != "" {
-		existing.SeasonID = repox.Ptr(v)
-	} else {
-		existing.SeasonID = nil
-	}
-	existing.Target = next.Target
-	existing.MinGuests = next.MinGuests
-	existing.FixedPrice = next.FixedPrice
-	existing.Percent = next.Percent
-	existing.Amount = next.Amount
-	existing.Priority = next.Priority
-	existing.Active = next.Active
-	existing.Items = next.Items
-	existing.AdjustmentCase = next.AdjustmentCase
-	existing.Etag = repox.Ptr(repox.NewULID())
-	return sales.NewPriceRuleStore(tx).Update(ctx, &existing)
 }
 
-// newRow builds the row a Batch inserts for in under parent, and the
+// newRow builds the row a Batch inserts for in, and the
 // record it stands for, named: the same resolution Create applies.
-func (r *GormPriceRuleRepository) newRow(parent string, in *salespbv1.PriceRule) (*sales.PriceRule, *salespbv1.PriceRule, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, nil, err
-	}
+func (r *GormLeadRepository) newRow(in *salespbv1.Lead) (*sales.Lead, *salespbv1.Lead, error) {
 	id := repox.NewULID()
-	rowID := id
 	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "priceRules")
+		ids, err := repox.SplitName(in.GetName(), "leads")
 		if err != nil {
 			return nil, nil, err
 		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
 		id = ids[len(ids)-1]
 	}
-	in = proto.Clone(in).(*salespbv1.PriceRule)
-	in.Name = FormatPriceRuleName(parentIDs[0], id)
-	id = rowID // keyed as Create keys it
-	m := sales.PriceRuleFromProto(in)
+	in = proto.Clone(in).(*salespbv1.Lead)
+	in.Name = FormatLeadName(id)
+	m := sales.LeadFromProto(in)
 	m.ID = id
 	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	if v := in.GetSeason(); v != "" {
-		m.SeasonID = repox.Ptr(v)
+	if v := in.GetContact(); v != "" {
+		m.ContactID = repox.LastSegment(v)
+	}
+	if v := in.GetVenue(); v != "" {
+		m.VenueID = repox.Ptr(repox.LastSegment(v))
 	}
 	m.Etag = repox.Ptr(repox.NewULID())
 	return m, in, nil
 }
 
 // Delete removes the record addressed by its resource name.
-func (r *GormPriceRuleRepository) Delete(ctx context.Context, name string) error {
+func (r *GormLeadRepository) Delete(ctx context.Context, name string) error {
 	key, err := r.rowKey(name)
 	if err != nil {
 		return err
@@ -1238,23 +685,23 @@ func (r *GormPriceRuleRepository) Delete(ctx context.Context, name string) error
 			return err
 		}
 	}
-	var existing sales.PriceRule
-	if err := r.DB.WithContext(ctx).First(&existing, "name = ?", key).Error; err != nil {
+	var existing sales.Lead
+	if err := r.DB.WithContext(ctx).First(&existing, "id = ?", key).Error; err != nil {
 		return repox.MapGormErr(err)
 	}
-	return repox.MapGormErr(sales.NewPriceRuleStore(r.DB).DeleteByID(ctx, existing.ID))
+	return repox.MapGormErr(sales.NewLeadStore(r.DB).DeleteByID(ctx, existing.ID))
 }
 
 // ListByKeys reads every record whose filter field field is one of keys; see
 // repox.ListByKeys.
-func (r *GormPriceRuleRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.PriceRule, error) {
-	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.PriceRule, string, error) {
-		return r.List(ctx, "venues/-", in)
+func (r *GormLeadRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Lead, error) {
+	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.Lead, string, error) {
+		return r.List(ctx, in)
 	})
 }
 
 // Compile-time proof the adapter satisfies the interface.
-var _ PriceRuleRepository = (*GormPriceRuleRepository)(nil)
+var _ LeadRepository = (*GormLeadRepository)(nil)
 
 // GormQuoteRepository is the GORM adapter of QuoteRepository: flat
 // CRUD over the generated model, store, converters, and filterx spec. Exported
@@ -1715,292 +1162,6 @@ func (r *GormQuoteRepository) ListByKeys(ctx context.Context, field string, keys
 // Compile-time proof the adapter satisfies the interface.
 var _ QuoteRepository = (*GormQuoteRepository)(nil)
 
-// GormSeasonRepository is the GORM adapter of SeasonRepository: flat
-// CRUD over the generated model, store, converters, and filterx spec. Exported
-// fields and helpers are the Tier-2 seam — embed it and override whole methods
-// for behavior the schema cannot express; generated methods only call private
-// helpers, never the public interface, so overrides never re-enter generated
-// code.
-type GormSeasonRepository struct {
-	DB    *gorm.DB
-	Hooks SeasonHooks
-	// Refs, when set, is asked before a purge whether anything in another
-	// database or service still refers to the record (see Purge).
-	Refs *repox.References
-	// ListOverrides substitute the generated dispatch for single filter fields
-	// (e.g. a derived state computed via subqueries).
-	ListOverrides map[string]filterx.SQLHandler
-}
-
-// NewGormSeasonRepository returns the GORM adapter bound to db.
-func NewGormSeasonRepository(db *gorm.DB) *GormSeasonRepository {
-	return &GormSeasonRepository{DB: db}
-}
-
-// Create persists in under parent and returns the stored record.
-func (r *GormSeasonRepository) Create(ctx context.Context, parent string, in *salespbv1.Season) (*salespbv1.Season, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, err
-	}
-	id := repox.NewULID()
-	rowID := id
-	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "seasons")
-		if err != nil {
-			return nil, err
-		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
-		id = ids[len(ids)-1]
-	}
-	in = proto.Clone(in).(*salespbv1.Season)
-	in.Name = FormatSeasonName(parentIDs[0], id)
-	// The id is unique only under the parent, so the row is keyed by a
-	// surrogate of its own: the id itself only when it was minted here.
-	id = rowID
-	if h := r.Hooks.BeforeCreate; h != nil {
-		if err := h(ctx, in); err != nil {
-			return nil, err
-		}
-	}
-	m := sales.SeasonFromProto(in)
-	m.ID = id
-	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	m.Etag = repox.Ptr(repox.NewULID())
-	if err := sales.NewSeasonStore(r.DB).Create(ctx, m); err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.get(ctx, m.Name)
-}
-
-// Get returns the record addressed by its resource name.
-func (r *GormSeasonRepository) Get(ctx context.Context, name string) (*salespbv1.Season, error) {
-	key, err := r.rowKey(name)
-	if err != nil {
-		return nil, err
-	}
-	return r.get(ctx, key)
-}
-
-// rowKey validates name and returns what its row is found by: the name
-// itself, because the id is unique only under the parent.
-func (r *GormSeasonRepository) rowKey(name string) (string, error) {
-	if _, err := repox.SplitName(name, "venues", "seasons"); err != nil {
-		return "", err
-	}
-	return name, nil
-}
-
-// get loads by row key (rowKey) — the private read every generated method
-// re-reads through, so Tier-2 overrides of Get never re-enter generated writes.
-func (r *GormSeasonRepository) get(ctx context.Context, key string) (*salespbv1.Season, error) {
-	var m sales.Season
-	if err := r.DB.WithContext(ctx).First(&m, "name = ?", key).Error; err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.toProto(ctx, &m)
-}
-
-// toProto converts a loaded row, decorating reference names and running the
-// AfterRead hook.
-func (r *GormSeasonRepository) toProto(ctx context.Context, m *sales.Season) (*salespbv1.Season, error) {
-	out := sales.SeasonToProto(m)
-	if h := r.Hooks.AfterRead; h != nil {
-		if err := h(ctx, out); err != nil {
-			return nil, err
-		}
-	}
-	return out, nil
-}
-
-// List returns one page of records under parent.
-func (r *GormSeasonRepository) List(ctx context.Context, parent string, in repox.ListInput) ([]*salespbv1.Season, string, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, "", err
-	}
-	// AIP-159: "-" for the parent reads across every parent; narrow with a
-	// Where on the parent field instead.
-	if parentIDs[len(parentIDs)-1] == "-" {
-		return r.list(ctx, r.DB, in)
-	}
-	scope := r.DB.Where("venue_id = ?", parentIDs[len(parentIDs)-1])
-	return r.list(ctx, scope, in)
-}
-
-func (r *GormSeasonRepository) list(ctx context.Context, scope *gorm.DB, in repox.ListInput) ([]*salespbv1.Season, string, error) {
-	conds, err := filterx.Parse(in.Filter)
-	if err != nil {
-		return nil, "", repox.MapFilterxErr(err)
-	}
-	conds = append(conds, in.Where...)
-	eng := filterx.Gorm[sales.Season](sales.SeasonFilterSpec)
-	for f, h := range r.ListOverrides {
-		eng.Override(f, h)
-	}
-	if err := repox.CheckReadMask((*salespbv1.Season)(nil), in.ReadMask); err != nil {
-		return nil, "", err
-	}
-	rows, next, err := eng.List(ctx, r.reads(scope, in), filterx.ListInput{
-		PageSize:  in.PageSize,
-		PageToken: in.PageToken,
-		OrderBy:   in.OrderBy,
-		Filter:    conds,
-	})
-	if err != nil {
-		return nil, "", repox.MapFilterxErr(err)
-	}
-	items := make([]*salespbv1.Season, 0, len(rows))
-	for i := range rows {
-		out, err := r.toProto(ctx, &rows[i])
-		if err != nil {
-			return nil, "", err
-		}
-		repox.Narrow(out, in.ReadMask)
-		items = append(items, out)
-	}
-	return items, next, nil
-}
-
-// reads is the query a List reads rows through: every column and value object
-// without a read mask; with one, only the columns and value objects of the
-// fields it names, and the columns the page is sorted by.
-func (r *GormSeasonRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
-	if len(in.ReadMask) == 0 {
-		return db
-	}
-	if omit := repox.Unread(seasonColumns, in.ReadMask, repox.OrderColumns(sales.SeasonFilterSpec, in.OrderBy)...); len(omit) > 0 {
-		db = db.Omit(omit...)
-	}
-	return db
-}
-
-// seasonColumns are the row's columns by the field each stores, for
-// a read mask to leave out.
-var seasonColumns = map[string][]string{
-	"display_name":  {"display_name"},
-	"dates":         {"dates"},
-	"recurs_yearly": {"recurs_yearly"},
-	"weekdays":      {"weekdays"},
-	"create_time":   {"create_time"},
-	"update_time":   {"update_time"},
-	"etag":          {"etag"},
-}
-
-// Update persists the masked fields of in; an empty mask replaces every
-// mutable field. The write happens in one transaction guarded by in.Etag.
-func (r *GormSeasonRepository) Update(ctx context.Context, in *salespbv1.Season, paths []string) (*salespbv1.Season, error) {
-	key, err := r.rowKey(in.GetName())
-	if err != nil {
-		return nil, err
-	}
-	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateTx(ctx, tx, key, in, paths, nil) })
-	if err != nil {
-		return nil, repox.MapGormErr(err)
-	}
-	return r.get(ctx, key)
-}
-
-// updateTx is Update's write inside tx, which a Batch shares with other
-// writes. The row is read FOR UPDATE: a concurrent update of the same record
-// waits for this transaction and then sees the etag it wrote, so two writers
-// holding the same etag cannot both pass the guard. outputPaths names the
-// server-owned fields written alongside (UpdateWithOutputOnly); nil for Update.
-func (r *GormSeasonRepository) updateTx(ctx context.Context, tx *gorm.DB, key string, in *salespbv1.Season, paths, outputPaths []string) error {
-	var existing sales.Season
-	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "name = ?", key).Error; err != nil {
-		return err
-	}
-	id := existing.ID
-	_ = id
-	if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
-		return repox.ErrConflict
-	}
-	existingPB := sales.SeasonToProto(&existing)
-	merged := proto.Clone(existingPB).(*salespbv1.Season)
-	applySeasonMask(merged, in, paths)
-	if h := r.Hooks.BeforeUpdate; h != nil {
-		if err := h(ctx, existingPB, merged, paths); err != nil {
-			return err
-		}
-	}
-	next := sales.SeasonFromProto(merged)
-	_ = next
-	existing.Name = next.Name
-	existing.DisplayName = next.DisplayName
-	existing.Dates = next.Dates
-	existing.RecursYearly = next.RecursYearly
-	existing.Weekdays = next.Weekdays
-	existing.Etag = repox.Ptr(repox.NewULID())
-	return sales.NewSeasonStore(tx).Update(ctx, &existing)
-}
-
-// newRow builds the row a Batch inserts for in under parent, and the
-// record it stands for, named: the same resolution Create applies.
-func (r *GormSeasonRepository) newRow(parent string, in *salespbv1.Season) (*sales.Season, *salespbv1.Season, error) {
-	parentIDs, err := repox.SplitName(parent, "venues")
-	if err != nil {
-		return nil, nil, err
-	}
-	id := repox.NewULID()
-	rowID := id
-	if in.GetName() != "" {
-		ids, err := repox.SplitName(in.GetName(), "venues", "seasons")
-		if err != nil {
-			return nil, nil, err
-		}
-		for i := range parentIDs {
-			if ids[i] != parentIDs[i] {
-				return nil, nil, fmt.Errorf("%w: name %q is not under parent %q", repox.ErrInvalidArgument, in.GetName(), parent)
-			}
-		}
-		id = ids[len(ids)-1]
-	}
-	in = proto.Clone(in).(*salespbv1.Season)
-	in.Name = FormatSeasonName(parentIDs[0], id)
-	id = rowID // keyed as Create keys it
-	m := sales.SeasonFromProto(in)
-	m.ID = id
-	m.Name = in.GetName()
-	m.VenueID = parentIDs[0]
-	m.Etag = repox.Ptr(repox.NewULID())
-	return m, in, nil
-}
-
-// Delete removes the record addressed by its resource name.
-func (r *GormSeasonRepository) Delete(ctx context.Context, name string) error {
-	key, err := r.rowKey(name)
-	if err != nil {
-		return err
-	}
-	if h := r.Hooks.BeforeDelete; h != nil {
-		if err := h(ctx, name); err != nil {
-			return err
-		}
-	}
-	var existing sales.Season
-	if err := r.DB.WithContext(ctx).First(&existing, "name = ?", key).Error; err != nil {
-		return repox.MapGormErr(err)
-	}
-	return repox.MapGormErr(sales.NewSeasonStore(r.DB).DeleteByID(ctx, existing.ID))
-}
-
-// ListByKeys reads every record whose filter field field is one of keys; see
-// repox.ListByKeys.
-func (r *GormSeasonRepository) ListByKeys(ctx context.Context, field string, keys []string, in repox.ListInput) ([]*salespbv1.Season, error) {
-	return repox.ListByKeys(ctx, field, keys, in, func(ctx context.Context, in repox.ListInput) ([]*salespbv1.Season, string, error) {
-		return r.List(ctx, "venues/-", in)
-	})
-}
-
-// Compile-time proof the adapter satisfies the interface.
-var _ SeasonRepository = (*GormSeasonRepository)(nil)
-
 // gormBatch is Batch on GORM: queued writes run in the Unit's transaction on
 // Commit.
 type gormBatch struct {
@@ -2011,9 +1172,9 @@ type gormBatch struct {
 // Commit applies the Unit's writes; see repox.Unit.Commit.
 func (b *gormBatch) Commit(ctx context.Context) error { return b.u.Commit(ctx) }
 
-// CreateDish queues a create and returns the name the record will have.
-func (b *gormBatch) CreateDish(parent string, in *salespbv1.Dish) (string, error) {
-	r := &GormDishRepository{DB: b.db}
+// CreateActivity queues a create and returns the name the record will have.
+func (b *gormBatch) CreateActivity(parent string, in *salespbv1.Activity) (string, error) {
+	r := &GormActivityRepository{DB: b.db}
 	m, named, err := r.newRow(parent, in)
 	if err != nil {
 		return "", err
@@ -2022,51 +1183,51 @@ func (b *gormBatch) CreateDish(parent string, in *salespbv1.Dish) (string, error
 	if k, ok := any(m).(interface{ NoOverlapKeys() []string }); ok {
 		locks = k.NoOverlapKeys()
 	}
-	queueDishReferences(b.u, named, nil)
+	queueActivityReferences(b.u, named, nil)
 	b.u.QueueGorm(locks, func(ctx context.Context, tx *gorm.DB) error {
-		return sales.NewDishStore(tx).Create(ctx, m)
+		return sales.NewActivityStore(tx).Create(ctx, m)
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Dish", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Activity", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
 	return named.GetName(), nil
 }
 
-// UpdateDish queues Update; in.Etag, when set, guards it, and a guard
+// UpdateActivity queues Update; in.Etag, when set, guards it, and a guard
 // that fails rolls the whole batch back.
-func (b *gormBatch) UpdateDish(in *salespbv1.Dish, paths []string) {
-	r := &GormDishRepository{DB: b.db}
+func (b *gormBatch) UpdateActivity(in *salespbv1.Activity, paths []string) {
+	r := &GormActivityRepository{DB: b.db}
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
 		b.u.Fail(err)
 		return
 	}
-	queueDishReferences(b.u, in, paths)
+	queueActivityReferences(b.u, in, paths)
 	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
 		return r.updateTx(ctx, tx, key, in, paths, nil)
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Dish", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getDish)})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Activity", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getActivity)})
 }
 
-// DeleteDish queues the record's removal for good. A record already
+// DeleteActivity queues the record's removal for good. A record already
 // gone is not an error: two batches clearing the same row must not fail each
 // other.
-func (b *gormBatch) DeleteDish(name string) {
-	r := &GormDishRepository{DB: b.db}
+func (b *gormBatch) DeleteActivity(name string) {
+	r := &GormActivityRepository{DB: b.db}
 	key, err := r.rowKey(name)
 	if err != nil {
 		b.u.Fail(err)
 		return
 	}
-	queueDishDelete(b.u, name, true)
+	queueActivityDelete(b.u, name, true)
 	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return tx.WithContext(ctx).Delete(&sales.Dish{}, "name = ?", key).Error
+		return tx.WithContext(ctx).Delete(&sales.Activity{}, "name = ?", key).Error
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Dish", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getDish)})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Activity", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getActivity)})
 }
 
-// CreateFixedPackage queues a create and returns the name the record will have.
-func (b *gormBatch) CreateFixedPackage(parent string, in *salespbv1.FixedPackage) (string, error) {
-	r := &GormFixedPackageRepository{DB: b.db}
-	m, named, err := r.newRow(parent, in)
+// CreateLead queues a create and returns the name the record will have.
+func (b *gormBatch) CreateLead(in *salespbv1.Lead) (string, error) {
+	r := &GormLeadRepository{DB: b.db}
+	m, named, err := r.newRow(in)
 	if err != nil {
 		return "", err
 	}
@@ -2074,149 +1235,70 @@ func (b *gormBatch) CreateFixedPackage(parent string, in *salespbv1.FixedPackage
 	if k, ok := any(m).(interface{ NoOverlapKeys() []string }); ok {
 		locks = k.NoOverlapKeys()
 	}
-	queueFixedPackageReferences(b.u, named, nil)
+	queueLeadReferences(b.u, named, nil)
 	b.u.QueueGorm(locks, func(ctx context.Context, tx *gorm.DB) error {
-		return sales.NewFixedPackageStore(tx).Create(ctx, m)
+		return sales.NewLeadStore(tx).Create(ctx, m)
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/FixedPackage", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Lead", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
 	return named.GetName(), nil
 }
 
-// UpdateFixedPackage queues Update; in.Etag, when set, guards it, and a guard
+// UpdateLead queues Update; in.Etag, when set, guards it, and a guard
 // that fails rolls the whole batch back.
-func (b *gormBatch) UpdateFixedPackage(in *salespbv1.FixedPackage, paths []string) {
-	r := &GormFixedPackageRepository{DB: b.db}
+func (b *gormBatch) UpdateLead(in *salespbv1.Lead, paths []string) {
+	r := &GormLeadRepository{DB: b.db}
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
 		b.u.Fail(err)
 		return
 	}
-	queueFixedPackageReferences(b.u, in, paths)
+	queueLeadReferences(b.u, in, paths)
 	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
 		return r.updateTx(ctx, tx, key, in, paths, nil)
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/FixedPackage", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getFixedPackage)})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Lead", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getLead)})
 }
 
-// DeleteFixedPackage queues the record's removal for good. A record already
-// gone is not an error: two batches clearing the same row must not fail each
-// other.
-func (b *gormBatch) DeleteFixedPackage(name string) {
-	r := &GormFixedPackageRepository{DB: b.db}
-	key, err := r.rowKey(name)
-	if err != nil {
-		b.u.Fail(err)
-		return
-	}
-	queueFixedPackageDelete(b.u, name, true)
-	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return tx.WithContext(ctx).Delete(&sales.FixedPackage{}, "name = ?", key).Error
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/FixedPackage", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getFixedPackage)})
-}
-
-// CreateMenu queues a create and returns the name the record will have.
-func (b *gormBatch) CreateMenu(parent string, in *salespbv1.Menu) (string, error) {
-	r := &GormMenuRepository{DB: b.db}
-	m, named, err := r.newRow(parent, in)
-	if err != nil {
-		return "", err
-	}
-	var locks []string
-	if k, ok := any(m).(interface{ NoOverlapKeys() []string }); ok {
-		locks = k.NoOverlapKeys()
-	}
-	queueMenuReferences(b.u, named, nil)
-	b.u.QueueGorm(locks, func(ctx context.Context, tx *gorm.DB) error {
-		return sales.NewMenuStore(tx).Create(ctx, m)
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Menu", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
-	return named.GetName(), nil
-}
-
-// UpdateMenu queues Update; in.Etag, when set, guards it, and a guard
-// that fails rolls the whole batch back.
-func (b *gormBatch) UpdateMenu(in *salespbv1.Menu, paths []string) {
-	r := &GormMenuRepository{DB: b.db}
+// UpdateLeadWithOutputOnly queues UpdateWithOutputOnly; in.Etag, when
+// set, guards it, and a guard that fails rolls the whole batch back.
+func (b *gormBatch) UpdateLeadWithOutputOnly(in *salespbv1.Lead, paths, outputPaths []string) {
+	r := &GormLeadRepository{DB: b.db}
 	key, err := r.rowKey(in.GetName())
 	if err != nil {
 		b.u.Fail(err)
 		return
 	}
-	queueMenuReferences(b.u, in, paths)
+	queueLeadReferences(b.u, in, paths)
 	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return r.updateTx(ctx, tx, key, in, paths, nil)
+		return r.updateTx(ctx, tx, key, in, paths, outputPaths)
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Menu", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getMenu)})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Lead", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getLead)})
 }
 
-// DeleteMenu queues the record's removal for good. A record already
+// UpdateLeadOutputOnly queues UpdateOutputOnly; in.Etag, when set, guards it.
+func (b *gormBatch) UpdateLeadOutputOnly(in *salespbv1.Lead, paths []string) {
+	r := &GormLeadRepository{DB: b.db}
+	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
+		return r.updateOutputOnlyTx(ctx, tx, in, paths)
+	})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Lead", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getLead)})
+}
+
+// DeleteLead queues the record's removal for good. A record already
 // gone is not an error: two batches clearing the same row must not fail each
 // other.
-func (b *gormBatch) DeleteMenu(name string) {
-	r := &GormMenuRepository{DB: b.db}
+func (b *gormBatch) DeleteLead(name string) {
+	r := &GormLeadRepository{DB: b.db}
 	key, err := r.rowKey(name)
 	if err != nil {
 		b.u.Fail(err)
 		return
 	}
-	queueMenuDelete(b.u, name, true)
+	queueLeadDelete(b.u, name, true)
 	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return tx.WithContext(ctx).Delete(&sales.Menu{}, "name = ?", key).Error
+		return tx.WithContext(ctx).Delete(&sales.Lead{}, "id = ?", key).Error
 	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Menu", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getMenu)})
-}
-
-// CreatePriceRule queues a create and returns the name the record will have.
-func (b *gormBatch) CreatePriceRule(parent string, in *salespbv1.PriceRule) (string, error) {
-	r := &GormPriceRuleRepository{DB: b.db}
-	m, named, err := r.newRow(parent, in)
-	if err != nil {
-		return "", err
-	}
-	var locks []string
-	if k, ok := any(m).(interface{ NoOverlapKeys() []string }); ok {
-		locks = k.NoOverlapKeys()
-	}
-	queuePriceRuleReferences(b.u, named, nil)
-	b.u.QueueGorm(locks, func(ctx context.Context, tx *gorm.DB) error {
-		return sales.NewPriceRuleStore(tx).Create(ctx, m)
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/PriceRule", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
-	return named.GetName(), nil
-}
-
-// UpdatePriceRule queues Update; in.Etag, when set, guards it, and a guard
-// that fails rolls the whole batch back.
-func (b *gormBatch) UpdatePriceRule(in *salespbv1.PriceRule, paths []string) {
-	r := &GormPriceRuleRepository{DB: b.db}
-	key, err := r.rowKey(in.GetName())
-	if err != nil {
-		b.u.Fail(err)
-		return
-	}
-	queuePriceRuleReferences(b.u, in, paths)
-	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return r.updateTx(ctx, tx, key, in, paths, nil)
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/PriceRule", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getPriceRule)})
-}
-
-// DeletePriceRule queues the record's removal for good. A record already
-// gone is not an error: two batches clearing the same row must not fail each
-// other.
-func (b *gormBatch) DeletePriceRule(name string) {
-	r := &GormPriceRuleRepository{DB: b.db}
-	key, err := r.rowKey(name)
-	if err != nil {
-		b.u.Fail(err)
-		return
-	}
-	queuePriceRuleDelete(b.u, name, true)
-	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return tx.WithContext(ctx).Delete(&sales.PriceRule{}, "name = ?", key).Error
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/PriceRule", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getPriceRule)})
+	b.u.Record(repox.Change{Type: "aperio.sales.v1/Lead", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getLead)})
 }
 
 // CreateQuote queues a create and returns the name the record will have.
@@ -2294,56 +1376,4 @@ func (b *gormBatch) DeleteQuote(name string) {
 		return tx.WithContext(ctx).Delete(&sales.Quote{}, "name = ?", key).Error
 	})
 	b.u.Record(repox.Change{Type: "aperio.sales.v1/Quote", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getQuote)})
-}
-
-// CreateSeason queues a create and returns the name the record will have.
-func (b *gormBatch) CreateSeason(parent string, in *salespbv1.Season) (string, error) {
-	r := &GormSeasonRepository{DB: b.db}
-	m, named, err := r.newRow(parent, in)
-	if err != nil {
-		return "", err
-	}
-	var locks []string
-	if k, ok := any(m).(interface{ NoOverlapKeys() []string }); ok {
-		locks = k.NoOverlapKeys()
-	}
-	queueSeasonReferences(b.u, named, nil)
-	b.u.QueueGorm(locks, func(ctx context.Context, tx *gorm.DB) error {
-		return sales.NewSeasonStore(tx).Create(ctx, m)
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Season", Name: named.GetName(), Op: repox.ChangeCreate, Record: named})
-	return named.GetName(), nil
-}
-
-// UpdateSeason queues Update; in.Etag, when set, guards it, and a guard
-// that fails rolls the whole batch back.
-func (b *gormBatch) UpdateSeason(in *salespbv1.Season, paths []string) {
-	r := &GormSeasonRepository{DB: b.db}
-	key, err := r.rowKey(in.GetName())
-	if err != nil {
-		b.u.Fail(err)
-		return
-	}
-	queueSeasonReferences(b.u, in, paths)
-	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return r.updateTx(ctx, tx, key, in, paths, nil)
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Season", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getSeason)})
-}
-
-// DeleteSeason queues the record's removal for good. A record already
-// gone is not an error: two batches clearing the same row must not fail each
-// other.
-func (b *gormBatch) DeleteSeason(name string) {
-	r := &GormSeasonRepository{DB: b.db}
-	key, err := r.rowKey(name)
-	if err != nil {
-		b.u.Fail(err)
-		return
-	}
-	queueSeasonDelete(b.u, name, true)
-	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
-		return tx.WithContext(ctx).Delete(&sales.Season{}, "name = ?", key).Error
-	})
-	b.u.Record(repox.Change{Type: "aperio.sales.v1/Season", Name: name, Op: repox.ChangeDelete, LoadPrior: repox.PriorOf(name, getSeason)})
 }

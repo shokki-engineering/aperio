@@ -1,0 +1,337 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventResource
+  fields:
+    - name: cancelReason
+      type: String_1
+    - name: cancelTime
+      type: Timestamptz
+    - name: contact
+      type: String_1!
+    - name: coordinator
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: dates
+      type: Json!
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: eventType
+      type: Enum!
+    - name: guests
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: lead
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: quote
+      type: String_1
+    - name: specialRequests
+      type: Json
+    - name: state
+      type: Enum
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: EventResource
+    inputTypeName: EventResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_resource
+      fieldMapping:
+        cancelReason:
+          column:
+            name: cancel_reason
+        cancelTime:
+          column:
+            name: cancel_time
+        contact:
+          column:
+            name: contact
+        coordinator:
+          column:
+            name: coordinator
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        eventType:
+          column:
+            name: event_type
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        lead:
+          column:
+            name: lead
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        quote:
+          column:
+            name: quote
+        specialRequests:
+          column:
+            name: special_requests
+        state:
+          column:
+            name: state
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelReason
+          - cancelTime
+          - contact
+          - coordinator
+          - createTime
+          - dates
+          - displayName
+          - etag
+          - eventType
+          - guests
+          - id
+          - lead
+          - name
+          - notes
+          - quote
+          - specialRequests
+          - state
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventResourceBoolExp
+  operand:
+    object:
+      type: EventResource
+      comparableFields:
+        - fieldName: cancelReason
+          booleanExpressionType: TextBoolExp
+        - fieldName: cancelTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: contact
+          booleanExpressionType: TextBoolExp
+        - fieldName: coordinator
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dates
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventType
+          booleanExpressionType: EventEventTypeBoolExp
+        - fieldName: guests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lead
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: notes
+          booleanExpressionType: TextBoolExp
+        - fieldName: quote
+          booleanExpressionType: TextBoolExp
+        - fieldName: specialRequests
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: state
+          booleanExpressionType: EventEventStateBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventResourceAggExp
+  operand:
+    object:
+      aggregatedType: EventResource
+      aggregatableFields:
+        - fieldName: cancelReason
+          aggregateExpression: TextAggExp
+        - fieldName: cancelTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: contact
+          aggregateExpression: TextAggExp
+        - fieldName: coordinator
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dates
+          aggregateExpression: JsonbAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: eventType
+          aggregateExpression: EventEventTypeAggExp
+        - fieldName: guests
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lead
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: notes
+          aggregateExpression: TextAggExp
+        - fieldName: quote
+          aggregateExpression: TextAggExp
+        - fieldName: specialRequests
+          aggregateExpression: JsonbAggExp
+        - fieldName: state
+          aggregateExpression: EventEventStateAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventResourceOrderByExp
+  operand:
+    object:
+      orderedType: EventResource
+      orderableFields:
+        - fieldName: cancelReason
+          orderByExpression: String1OrderByExp
+        - fieldName: cancelTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: contact
+          orderByExpression: String1OrderByExp
+        - fieldName: coordinator
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dates
+          orderByExpression: JsonOrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: eventType
+          orderByExpression: EnumOrderByExp
+        - fieldName: guests
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lead
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: notes
+          orderByExpression: String1OrderByExp
+        - fieldName: quote
+          orderByExpression: String1OrderByExp
+        - fieldName: specialRequests
+          orderByExpression: JsonOrderByExp
+        - fieldName: state
+          orderByExpression: EnumOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventResource
+  objectType: EventResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_resource
+  filterExpressionType: EventResourceBoolExp
+  aggregateExpression: EventResourceAggExp
+  orderByExpression: EventResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventResource
+      subscription:
+        rootField: eventResource
+    selectUniques:
+      - queryRootField: eventResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventResourceById
+    filterInputTypeName: EventResourceFilterInput
+    aggregate:
+      queryRootField: eventResourceAggregate
+      subscription:
+        rootField: eventResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

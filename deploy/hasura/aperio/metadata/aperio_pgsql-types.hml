@@ -549,6 +549,110 @@ definition:
 kind: ScalarType
 version: v1
 definition:
+  name: Boolean_1
+  graphql:
+    typeName: Boolean1
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BoolBoolExp
+  operand:
+    scalar:
+      type: Boolean_1
+      comparisonOperators:
+        - name: _eq
+          argumentType: Boolean_1!
+        - name: _gt
+          argumentType: Boolean_1!
+        - name: _gte
+          argumentType: Boolean_1!
+        - name: _in
+          argumentType: "[Boolean_1!]!"
+        - name: _lt
+          argumentType: Boolean_1!
+        - name: _lte
+          argumentType: Boolean_1!
+        - name: _neq
+          argumentType: Boolean_1!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: bool
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BoolBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: bool
+  representation: Boolean_1
+  graphql:
+    comparisonExpressionTypeName: Boolean1ComparisonExp
+
+---
+kind: ScalarType
+version: v1
+definition:
+  name: Enum
+  graphql:
+    typeName: Enum
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CatalogCourseBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: catalog_course
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CatalogCourseBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: catalog_course
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp
+
+---
+kind: ScalarType
+version: v1
+definition:
   name: Json
   graphql:
     typeName: Json
@@ -604,100 +708,68 @@ definition:
     comparisonExpressionTypeName: JsonComparisonExp
 
 ---
-kind: ScalarType
+kind: AggregateExpression
 version: v1
 definition:
-  name: Enum
-  graphql:
-    typeName: Enum
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: BookingEventTypeBoolExp
+  name: BoolAggExp
   operand:
     scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
+      aggregatedType: Boolean_1
+      aggregationFunctions:
+        - name: bool_and
+          returnType: Boolean_1
+        - name: bool_or
+          returnType: Boolean_1
+        - name: every
+          returnType: Boolean_1
+      dataConnectorAggregationFunctionMapping:
         - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_event_type
-          operatorMapping: {}
-  logicalOperators:
+          dataConnectorScalarType: bool
+          functionMapping:
+            bool_and:
+              name: bool_and
+            bool_or:
+              name: bool_or
+            every:
+              name: every
+  count:
     enable: true
-  isNull:
+    returnType: Int64
+  countDistinct:
     enable: true
+    returnType: Int64
   graphql:
-    typeName: BookingEventTypeBoolExp
+    selectTypeName: BoolAggExp
 
 ---
-kind: DataConnectorScalarRepresentation
+kind: AggregateExpression
 version: v1
 definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: booking_event_type
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: BookingEventStateBoolExp
+  name: CatalogCourseAggExp
   operand:
     scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
         - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_event_state
-          operatorMapping: {}
-  logicalOperators:
+          dataConnectorScalarType: catalog_course
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
     enable: true
-  isNull:
+    returnType: Int64
+  countDistinct:
     enable: true
+    returnType: Int64
   graphql:
-    typeName: BookingEventStateBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: booking_event_state
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_1
+    selectTypeName: CatalogCourseAggExp
 
 ---
 kind: AggregateExpression
@@ -722,64 +794,30 @@ definition:
     selectTypeName: JsonbAggExp
 
 ---
-kind: AggregateExpression
+kind: OrderByExpression
 version: v1
 definition:
-  name: BookingEventTypeAggExp
+  name: Boolean1OrderByExp
   operand:
     scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_event_type
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
+      orderedType: Boolean_1
+      enableOrderByDirections:
+        enableAll: true
   graphql:
-    selectTypeName: BookingEventTypeAggExp
+    expressionTypeName: Boolean1OrderByExp
 
 ---
-kind: AggregateExpression
+kind: OrderByExpression
 version: v1
 definition:
-  name: BookingEventStateAggExp
+  name: EnumOrderByExp
   operand:
     scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_event_state
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
+      orderedType: Enum
+      enableOrderByDirections:
+        enableAll: true
   graphql:
-    selectTypeName: BookingEventStateAggExp
+    expressionTypeName: EnumOrderByExp
 
 ---
 kind: OrderByExpression
@@ -795,17 +833,48 @@ definition:
     expressionTypeName: JsonOrderByExp
 
 ---
-kind: OrderByExpression
+kind: BooleanExpressionType
 version: v1
 definition:
-  name: EnumOrderByExp
+  name: DocumentCategoryBoolExp
   operand:
     scalar:
-      orderedType: Enum
-      enableOrderByDirections:
-        enableAll: true
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: document_category
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
   graphql:
-    expressionTypeName: EnumOrderByExp
+    typeName: DocumentCategoryBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: document_category
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_1
 
 ---
 kind: ScalarType
@@ -863,784 +932,6 @@ definition:
 kind: BooleanExpressionType
 version: v1
 definition:
-  name: BookingChannelBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_channel
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: BookingChannelBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: booking_channel
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_2
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: BookingReservationStateBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_reservation_state
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: BookingReservationStateBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: booking_reservation_state
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_3
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: DateAggExp
-  operand:
-    scalar:
-      aggregatedType: Date
-      aggregationFunctions:
-        - name: max
-          returnType: Date
-        - name: min
-          returnType: Date
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: date
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: DateAggExp
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: BookingChannelAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_channel
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: BookingChannelAggExp
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: BookingReservationStateAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_reservation_state
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: BookingReservationStateAggExp
-
----
-kind: OrderByExpression
-version: v1
-definition:
-  name: DateOrderByExp
-  operand:
-    scalar:
-      orderedType: Date
-      enableOrderByDirections:
-        enableAll: true
-  graphql:
-    expressionTypeName: DateOrderByExp
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: BookingLayoutBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_layout
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: BookingLayoutBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: booking_layout
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_4
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: BookingLayoutAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: booking_layout
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: BookingLayoutAggExp
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: CrmActivityKindBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_activity_kind
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: CrmActivityKindBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: crm_activity_kind
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_5
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: CrmActivityKindAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_activity_kind
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: CrmActivityKindAggExp
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: CrmContactKindBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_contact_kind
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: CrmContactKindBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: crm_contact_kind
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_6
-
----
-kind: ScalarType
-version: v1
-definition:
-  name: Boolean_1
-  graphql:
-    typeName: Boolean1
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: BoolBoolExp
-  operand:
-    scalar:
-      type: Boolean_1
-      comparisonOperators:
-        - name: _eq
-          argumentType: Boolean_1!
-        - name: _gt
-          argumentType: Boolean_1!
-        - name: _gte
-          argumentType: Boolean_1!
-        - name: _in
-          argumentType: "[Boolean_1!]!"
-        - name: _lt
-          argumentType: Boolean_1!
-        - name: _lte
-          argumentType: Boolean_1!
-        - name: _neq
-          argumentType: Boolean_1!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: bool
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: BoolBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: bool
-  representation: Boolean_1
-  graphql:
-    comparisonExpressionTypeName: Boolean1ComparisonExp
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: CrmContactKindAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_contact_kind
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: CrmContactKindAggExp
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: BoolAggExp
-  operand:
-    scalar:
-      aggregatedType: Boolean_1
-      aggregationFunctions:
-        - name: bool_and
-          returnType: Boolean_1
-        - name: bool_or
-          returnType: Boolean_1
-        - name: every
-          returnType: Boolean_1
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: bool
-          functionMapping:
-            bool_and:
-              name: bool_and
-            bool_or:
-              name: bool_or
-            every:
-              name: every
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: BoolAggExp
-
----
-kind: OrderByExpression
-version: v1
-definition:
-  name: Boolean1OrderByExp
-  operand:
-    scalar:
-      orderedType: Boolean_1
-      enableOrderByDirections:
-        enableAll: true
-  graphql:
-    expressionTypeName: Boolean1OrderByExp
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: CrmLeadKindBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_lead_kind
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: CrmLeadKindBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: crm_lead_kind
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_7
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: CrmLostReasonBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_lost_reason
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: CrmLostReasonBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: crm_lost_reason
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_8
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: CrmStageBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_stage
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: CrmStageBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: crm_stage
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_9
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: CrmLeadKindAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_lead_kind
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: CrmLeadKindAggExp
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: CrmLostReasonAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_lost_reason
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: CrmLostReasonAggExp
-
----
-kind: AggregateExpression
-version: v1
-definition:
-  name: CrmStageAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: crm_stage
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: CrmStageAggExp
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: DocumentCategoryBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: document_category
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: DocumentCategoryBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: document_category
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_10
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
   name: DocumentVisibilityBoolExp
   operand:
     scalar:
@@ -1679,7 +970,7 @@ definition:
   dataConnectorScalarType: document_visibility
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_11
+    comparisonExpressionTypeName: EnumComparisonExp_2
 
 ---
 kind: AggregateExpression
@@ -1710,6 +1001,36 @@ definition:
     returnType: Int64
   graphql:
     selectTypeName: DocumentCategoryAggExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: DateAggExp
+  operand:
+    scalar:
+      aggregatedType: Date
+      aggregationFunctions:
+        - name: max
+          returnType: Date
+        - name: min
+          returnType: Date
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: date
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: DateAggExp
 
 ---
 kind: AggregateExpression
@@ -1819,6 +1140,19 @@ definition:
 kind: OrderByExpression
 version: v1
 definition:
+  name: DateOrderByExp
+  operand:
+    scalar:
+      orderedType: Date
+      enableOrderByDirections:
+        enableAll: true
+  graphql:
+    expressionTypeName: DateOrderByExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
   name: Int64OrderByExp
   operand:
     scalar:
@@ -1827,6 +1161,228 @@ definition:
         enableAll: true
   graphql:
     expressionTypeName: Int64OrderByExp
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventEventTypeBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: event_event_type
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventEventTypeBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: event_event_type
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_3
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventEventStateBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: event_event_state
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventEventStateBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: event_event_state
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_4
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventEventTypeAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: event_event_type
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventEventTypeAggExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventEventStateAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: event_event_state
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventEventStateAggExp
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventLayoutBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: event_layout
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventLayoutBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: event_layout
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_5
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventLayoutAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: event_layout
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventLayoutAggExp
 
 ---
 kind: BooleanExpressionType
@@ -1870,7 +1426,7 @@ definition:
   dataConnectorScalarType: finance_invoice_kind
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_12
+    comparisonExpressionTypeName: EnumComparisonExp_6
 
 ---
 kind: BooleanExpressionType
@@ -1914,7 +1470,7 @@ definition:
   dataConnectorScalarType: finance_invoice_state
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_13
+    comparisonExpressionTypeName: EnumComparisonExp_7
 
 ---
 kind: AggregateExpression
@@ -1980,6 +1536,50 @@ definition:
 kind: BooleanExpressionType
 version: v1
 definition:
+  name: FinanceChannelBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: finance_channel
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: FinanceChannelBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: finance_channel
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_8
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
   name: FinancePaymentKindBoolExp
   operand:
     scalar:
@@ -2018,7 +1618,7 @@ definition:
   dataConnectorScalarType: finance_payment_kind
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_14
+    comparisonExpressionTypeName: EnumComparisonExp_9
 
 ---
 kind: BooleanExpressionType
@@ -2062,7 +1662,7 @@ definition:
   dataConnectorScalarType: finance_payment_method
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_15
+    comparisonExpressionTypeName: EnumComparisonExp_10
 
 ---
 kind: BooleanExpressionType
@@ -2106,7 +1706,37 @@ definition:
   dataConnectorScalarType: finance_payment_state
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_16
+    comparisonExpressionTypeName: EnumComparisonExp_11
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: FinanceChannelAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: finance_channel
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: FinanceChannelAggExp
 
 ---
 kind: AggregateExpression
@@ -2277,6 +1907,80 @@ definition:
 kind: BooleanExpressionType
 version: v1
 definition:
+  name: GuestContactKindBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: guest_contact_kind
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: GuestContactKindBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: guest_contact_kind
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_12
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: GuestContactKindAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: guest_contact_kind
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: GuestContactKindAggExp
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
   name: OperationsDepartmentBoolExp
   operand:
     scalar:
@@ -2315,7 +2019,7 @@ definition:
   dataConnectorScalarType: operations_department
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_17
+    comparisonExpressionTypeName: EnumComparisonExp_13
 
 ---
 kind: BooleanExpressionType
@@ -2359,7 +2063,7 @@ definition:
   dataConnectorScalarType: operations_priority
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_18
+    comparisonExpressionTypeName: EnumComparisonExp_14
 
 ---
 kind: BooleanExpressionType
@@ -2403,7 +2107,7 @@ definition:
   dataConnectorScalarType: operations_operations_state
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_19
+    comparisonExpressionTypeName: EnumComparisonExp_15
 
 ---
 kind: AggregateExpression
@@ -2499,7 +2203,7 @@ definition:
 kind: BooleanExpressionType
 version: v1
 definition:
-  name: SalesCourseBoolExp
+  name: PricingPriceRuleAdjustmentCaseBoolExp
   operand:
     scalar:
       type: Enum
@@ -2520,60 +2224,296 @@ definition:
           argumentType: Enum!
       dataConnectorOperatorMapping:
         - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: sales_course
+          dataConnectorScalarType: pricing_price_rule_adjustment_case
           operatorMapping: {}
   logicalOperators:
     enable: true
   isNull:
     enable: true
   graphql:
-    typeName: SalesCourseBoolExp
+    typeName: PricingPriceRuleAdjustmentCaseBoolExp
 
 ---
 kind: DataConnectorScalarRepresentation
 version: v1
 definition:
   dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: sales_course
+  dataConnectorScalarType: pricing_price_rule_adjustment_case
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_16
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PricingPriceTargetBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: pricing_price_target
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PricingPriceTargetBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: pricing_price_target
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_17
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PricingPriceRuleAdjustmentCaseAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: pricing_price_rule_adjustment_case
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PricingPriceRuleAdjustmentCaseAggExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PricingPriceTargetAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: pricing_price_target
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PricingPriceTargetAggExp
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SalesActivityKindBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: sales_activity_kind
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SalesActivityKindBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: sales_activity_kind
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_18
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: SalesActivityKindAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: sales_activity_kind
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: SalesActivityKindAggExp
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SalesLeadKindBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: sales_lead_kind
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SalesLeadKindBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: sales_lead_kind
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_19
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SalesLostReasonBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: sales_lost_reason
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SalesLostReasonBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: sales_lost_reason
   representation: Enum
   graphql:
     comparisonExpressionTypeName: EnumComparisonExp_20
 
 ---
-kind: AggregateExpression
-version: v1
-definition:
-  name: SalesCourseAggExp
-  operand:
-    scalar:
-      aggregatedType: Enum
-      aggregationFunctions:
-        - name: max
-          returnType: Enum
-        - name: min
-          returnType: Enum
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: sales_course
-          functionMapping:
-            max:
-              name: max
-            min:
-              name: min
-  count:
-    enable: true
-    returnType: Int64
-  countDistinct:
-    enable: true
-    returnType: Int64
-  graphql:
-    selectTypeName: SalesCourseAggExp
-
----
 kind: BooleanExpressionType
 version: v1
 definition:
-  name: SalesPriceRuleAdjustmentCaseBoolExp
+  name: SalesStageBoolExp
   operand:
     scalar:
       type: Enum
@@ -2594,74 +2534,30 @@ definition:
           argumentType: Enum!
       dataConnectorOperatorMapping:
         - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: sales_price_rule_adjustment_case
+          dataConnectorScalarType: sales_stage
           operatorMapping: {}
   logicalOperators:
     enable: true
   isNull:
     enable: true
   graphql:
-    typeName: SalesPriceRuleAdjustmentCaseBoolExp
+    typeName: SalesStageBoolExp
 
 ---
 kind: DataConnectorScalarRepresentation
 version: v1
 definition:
   dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: sales_price_rule_adjustment_case
+  dataConnectorScalarType: sales_stage
   representation: Enum
   graphql:
     comparisonExpressionTypeName: EnumComparisonExp_21
 
 ---
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: SalesPriceTargetBoolExp
-  operand:
-    scalar:
-      type: Enum
-      comparisonOperators:
-        - name: _eq
-          argumentType: Enum!
-        - name: _gt
-          argumentType: Enum!
-        - name: _gte
-          argumentType: Enum!
-        - name: _in
-          argumentType: "[Enum!]!"
-        - name: _lt
-          argumentType: Enum!
-        - name: _lte
-          argumentType: Enum!
-        - name: _neq
-          argumentType: Enum!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: sales_price_target
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: SalesPriceTargetBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: aperio_pgsql
-  dataConnectorScalarType: sales_price_target
-  representation: Enum
-  graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_22
-
----
 kind: AggregateExpression
 version: v1
 definition:
-  name: SalesPriceRuleAdjustmentCaseAggExp
+  name: SalesLeadKindAggExp
   operand:
     scalar:
       aggregatedType: Enum
@@ -2672,7 +2568,7 @@ definition:
           returnType: Enum
       dataConnectorAggregationFunctionMapping:
         - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: sales_price_rule_adjustment_case
+          dataConnectorScalarType: sales_lead_kind
           functionMapping:
             max:
               name: max
@@ -2685,13 +2581,13 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: SalesPriceRuleAdjustmentCaseAggExp
+    selectTypeName: SalesLeadKindAggExp
 
 ---
 kind: AggregateExpression
 version: v1
 definition:
-  name: SalesPriceTargetAggExp
+  name: SalesLostReasonAggExp
   operand:
     scalar:
       aggregatedType: Enum
@@ -2702,7 +2598,7 @@ definition:
           returnType: Enum
       dataConnectorAggregationFunctionMapping:
         - dataConnectorName: aperio_pgsql
-          dataConnectorScalarType: sales_price_target
+          dataConnectorScalarType: sales_lost_reason
           functionMapping:
             max:
               name: max
@@ -2715,7 +2611,37 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: SalesPriceTargetAggExp
+    selectTypeName: SalesLostReasonAggExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: SalesStageAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: sales_stage
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: SalesStageAggExp
 
 ---
 kind: BooleanExpressionType
@@ -2759,7 +2685,7 @@ definition:
   dataConnectorScalarType: sales_sales_state
   representation: Enum
   graphql:
-    comparisonExpressionTypeName: EnumComparisonExp_23
+    comparisonExpressionTypeName: EnumComparisonExp_22
 
 ---
 kind: AggregateExpression
@@ -2790,6 +2716,80 @@ definition:
     returnType: Int64
   graphql:
     selectTypeName: SalesSalesStateAggExp
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: StayStayStateBoolExp
+  operand:
+    scalar:
+      type: Enum
+      comparisonOperators:
+        - name: _eq
+          argumentType: Enum!
+        - name: _gt
+          argumentType: Enum!
+        - name: _gte
+          argumentType: Enum!
+        - name: _in
+          argumentType: "[Enum!]!"
+        - name: _lt
+          argumentType: Enum!
+        - name: _lte
+          argumentType: Enum!
+        - name: _neq
+          argumentType: Enum!
+      dataConnectorOperatorMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: stay_stay_state
+          operatorMapping: {}
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: StayStayStateBoolExp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: aperio_pgsql
+  dataConnectorScalarType: stay_stay_state
+  representation: Enum
+  graphql:
+    comparisonExpressionTypeName: EnumComparisonExp_23
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: StayStayStateAggExp
+  operand:
+    scalar:
+      aggregatedType: Enum
+      aggregationFunctions:
+        - name: max
+          returnType: Enum
+        - name: min
+          returnType: Enum
+      dataConnectorAggregationFunctionMapping:
+        - dataConnectorName: aperio_pgsql
+          dataConnectorScalarType: stay_stay_state
+          functionMapping:
+            max:
+              name: max
+            min:
+              name: min
+  count:
+    enable: true
+    returnType: Int64
+  countDistinct:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: StayStayStateAggExp
 
 ---
 kind: BooleanExpressionType

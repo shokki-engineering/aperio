@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CatalogDishes
+  fields:
+    - name: allergens
+      type: String_1
+    - name: available
+      type: Boolean_1
+    - name: course
+      type: Enum!
+    - name: createTime
+      type: Timestamptz!
+    - name: cuisine
+      type: String_1
+    - name: description
+      type: String_1
+    - name: diets
+      type: String_1
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: imageUri
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: price
+      type: Json
+    - name: tax
+      type: Json
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: CatalogDishes
+    inputTypeName: CatalogDishesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: catalog_dishes
+      fieldMapping:
+        allergens:
+          column:
+            name: allergens
+        available:
+          column:
+            name: available
+        course:
+          column:
+            name: course
+        createTime:
+          column:
+            name: create_time
+        cuisine:
+          column:
+            name: cuisine
+        description:
+          column:
+            name: description
+        diets:
+          column:
+            name: diets
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        imageUri:
+          column:
+            name: image_uri
+        name:
+          column:
+            name: name
+        price:
+          column:
+            name: price
+        tax:
+          column:
+            name: tax
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CatalogDishes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - allergens
+          - available
+          - course
+          - createTime
+          - cuisine
+          - description
+          - diets
+          - displayName
+          - etag
+          - id
+          - imageUri
+          - name
+          - price
+          - tax
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CatalogDishesBoolExp
+  operand:
+    object:
+      type: CatalogDishes
+      comparableFields:
+        - fieldName: allergens
+          booleanExpressionType: TextBoolExp
+        - fieldName: available
+          booleanExpressionType: BoolBoolExp
+        - fieldName: course
+          booleanExpressionType: CatalogCourseBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: cuisine
+          booleanExpressionType: TextBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: diets
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: imageUri
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: price
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: tax
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CatalogDishesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CatalogDishesAggExp
+  operand:
+    object:
+      aggregatedType: CatalogDishes
+      aggregatableFields:
+        - fieldName: allergens
+          aggregateExpression: TextAggExp
+        - fieldName: available
+          aggregateExpression: BoolAggExp
+        - fieldName: course
+          aggregateExpression: CatalogCourseAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: cuisine
+          aggregateExpression: TextAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: diets
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: imageUri
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: price
+          aggregateExpression: JsonbAggExp
+        - fieldName: tax
+          aggregateExpression: JsonbAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CatalogDishesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CatalogDishesOrderByExp
+  operand:
+    object:
+      orderedType: CatalogDishes
+      orderableFields:
+        - fieldName: allergens
+          orderByExpression: String1OrderByExp
+        - fieldName: available
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: course
+          orderByExpression: EnumOrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: cuisine
+          orderByExpression: String1OrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: diets
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: imageUri
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: price
+          orderByExpression: JsonOrderByExp
+        - fieldName: tax
+          orderByExpression: JsonOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CatalogDishesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CatalogDishes
+  objectType: CatalogDishes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: catalog_dishes
+  filterExpressionType: CatalogDishesBoolExp
+  aggregateExpression: CatalogDishesAggExp
+  orderByExpression: CatalogDishesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: catalogDishes
+      subscription:
+        rootField: catalogDishes
+    selectUniques:
+      - queryRootField: catalogDishesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: catalogDishesById
+    filterInputTypeName: CatalogDishesFilterInput
+    aggregate:
+      queryRootField: catalogDishesAggregate
+      subscription:
+        rootField: catalogDishesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CatalogDishes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

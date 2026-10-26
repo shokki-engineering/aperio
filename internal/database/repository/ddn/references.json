@@ -2,168 +2,28 @@
   "version": 1,
   "mutations": [
     {
-      "field": "insertBookingEvents",
-      "kind": "insert",
-      "resourceType": "aperio.booking.v1/Event",
-      "references": [
-        {
-          "field": "coordinator",
-          "column": "coordinator",
-          "type": "users.shokki.engineering/User",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "updateBookingEventsById",
-      "kind": "update",
-      "resourceType": "aperio.booking.v1/Event",
-      "references": [
-        {
-          "field": "coordinator",
-          "column": "coordinator",
-          "type": "users.shokki.engineering/User",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "deleteBookingEventsById",
+      "field": "deleteCatalogDishesById",
       "kind": "delete",
-      "resourceType": "aperio.booking.v1/Event",
-      "pattern": "venues/{venue}/events/{event}",
+      "resourceType": "aperio.catalog.v1/Dish",
+      "pattern": "venues/{venue}/dishes/{dish}",
       "keyArgument": "keyId",
-      "byIdQuery": "bookingEventsById"
+      "byIdQuery": "catalogDishesById"
     },
     {
-      "field": "deleteBookingReservationsById",
+      "field": "deleteCatalogFixedPackagesById",
       "kind": "delete",
-      "resourceType": "aperio.booking.v1/Reservation",
-      "pattern": "venues/{venue}/reservations/{reservation}",
+      "resourceType": "aperio.catalog.v1/FixedPackage",
+      "pattern": "venues/{venue}/fixedPackages/{fixed_package}",
       "keyArgument": "keyId",
-      "byIdQuery": "bookingReservationsById"
+      "byIdQuery": "catalogFixedPackagesById"
     },
     {
-      "field": "insertBookingSessions",
-      "kind": "insert",
-      "resourceType": "aperio.booking.v1/Session",
-      "references": [
-        {
-          "field": "freebusy_reservation",
-          "column": "freebusyReservation",
-          "type": "freebusy.reservation.v1/Reservation",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "updateBookingSessionsById",
-      "kind": "update",
-      "resourceType": "aperio.booking.v1/Session",
-      "references": [
-        {
-          "field": "freebusy_reservation",
-          "column": "freebusyReservation",
-          "type": "freebusy.reservation.v1/Reservation",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "deleteBookingSessionsById",
+      "field": "deleteCatalogMenusById",
       "kind": "delete",
-      "resourceType": "aperio.booking.v1/Session",
-      "pattern": "venues/{venue}/events/{event}/sessions/{session}",
+      "resourceType": "aperio.catalog.v1/Menu",
+      "pattern": "venues/{venue}/menus/{menu}",
       "keyArgument": "keyId",
-      "byIdQuery": "bookingSessionsById"
-    },
-    {
-      "field": "insertCrmActivities",
-      "kind": "insert",
-      "resourceType": "aperio.crm.v1/Activity",
-      "references": [
-        {
-          "field": "author",
-          "column": "author",
-          "type": "users.shokki.engineering/User",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "updateCrmActivitiesById",
-      "kind": "update",
-      "resourceType": "aperio.crm.v1/Activity",
-      "references": [
-        {
-          "field": "author",
-          "column": "author",
-          "type": "users.shokki.engineering/User",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "deleteCrmActivitiesById",
-      "kind": "delete",
-      "resourceType": "aperio.crm.v1/Activity",
-      "pattern": "leads/{lead}/activities/{activity}",
-      "keyArgument": "keyId",
-      "byIdQuery": "crmActivitiesById"
-    },
-    {
-      "field": "deleteCrmContactsById",
-      "kind": "delete",
-      "resourceType": "aperio.crm.v1/Contact",
-      "pattern": "contacts/{contact}",
-      "keyArgument": "keyId",
-      "byIdQuery": "crmContactsById"
-    },
-    {
-      "field": "insertCrmLeads",
-      "kind": "insert",
-      "resourceType": "aperio.crm.v1/Lead",
-      "references": [
-        {
-          "field": "owner",
-          "column": "owner",
-          "type": "users.shokki.engineering/User",
-          "onDelete": "ON_DELETE_ALLOW"
-        },
-        {
-          "field": "hold",
-          "column": "hold",
-          "type": "freebusy.allocation.v1/Hold",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "updateCrmLeadsById",
-      "kind": "update",
-      "resourceType": "aperio.crm.v1/Lead",
-      "references": [
-        {
-          "field": "owner",
-          "column": "owner",
-          "type": "users.shokki.engineering/User",
-          "onDelete": "ON_DELETE_ALLOW"
-        },
-        {
-          "field": "hold",
-          "column": "hold",
-          "type": "freebusy.allocation.v1/Hold",
-          "onDelete": "ON_DELETE_ALLOW"
-        }
-      ]
-    },
-    {
-      "field": "deleteCrmLeadsById",
-      "kind": "delete",
-      "resourceType": "aperio.crm.v1/Lead",
-      "pattern": "leads/{lead}",
-      "keyArgument": "keyId",
-      "byIdQuery": "crmLeadsById"
+      "byIdQuery": "catalogMenusById"
     },
     {
       "field": "deleteDocumentResourceById",
@@ -172,6 +32,74 @@
       "pattern": "venues/{venue}/documents/{document}",
       "keyArgument": "keyId",
       "byIdQuery": "documentResourceById"
+    },
+    {
+      "field": "insertEventResource",
+      "kind": "insert",
+      "resourceType": "aperio.event.v1/Event",
+      "references": [
+        {
+          "field": "coordinator",
+          "column": "coordinator",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateEventResourceById",
+      "kind": "update",
+      "resourceType": "aperio.event.v1/Event",
+      "references": [
+        {
+          "field": "coordinator",
+          "column": "coordinator",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteEventResourceById",
+      "kind": "delete",
+      "resourceType": "aperio.event.v1/Event",
+      "pattern": "venues/{venue}/events/{event}",
+      "keyArgument": "keyId",
+      "byIdQuery": "eventResourceById"
+    },
+    {
+      "field": "insertEventSessions",
+      "kind": "insert",
+      "resourceType": "aperio.event.v1/Session",
+      "references": [
+        {
+          "field": "freebusy_reservation",
+          "column": "freebusyReservation",
+          "type": "freebusy.reservation.v1/Reservation",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateEventSessionsById",
+      "kind": "update",
+      "resourceType": "aperio.event.v1/Session",
+      "references": [
+        {
+          "field": "freebusy_reservation",
+          "column": "freebusyReservation",
+          "type": "freebusy.reservation.v1/Reservation",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteEventSessionsById",
+      "kind": "delete",
+      "resourceType": "aperio.event.v1/Session",
+      "pattern": "venues/{venue}/events/{event}/sessions/{session}",
+      "keyArgument": "keyId",
+      "byIdQuery": "eventSessionsById"
     },
     {
       "field": "deleteFinanceInvoicesById",
@@ -216,6 +144,14 @@
       "byIdQuery": "financePaymentsById"
     },
     {
+      "field": "deleteGuestContactsById",
+      "kind": "delete",
+      "resourceType": "aperio.guest.v1/Contact",
+      "pattern": "contacts/{contact}",
+      "keyArgument": "keyId",
+      "byIdQuery": "guestContactsById"
+    },
+    {
       "field": "insertOperationsServiceRequests",
       "kind": "insert",
       "resourceType": "aperio.operations.v1/ServiceRequest",
@@ -250,36 +186,100 @@
       "byIdQuery": "operationsServiceRequestsById"
     },
     {
-      "field": "deleteSalesDishesById",
+      "field": "deletePricingPriceRulesById",
       "kind": "delete",
-      "resourceType": "aperio.sales.v1/Dish",
-      "pattern": "venues/{venue}/dishes/{dish}",
-      "keyArgument": "keyId",
-      "byIdQuery": "salesDishesById"
-    },
-    {
-      "field": "deleteSalesFixedPackagesById",
-      "kind": "delete",
-      "resourceType": "aperio.sales.v1/FixedPackage",
-      "pattern": "venues/{venue}/fixedPackages/{fixed_package}",
-      "keyArgument": "keyId",
-      "byIdQuery": "salesFixedPackagesById"
-    },
-    {
-      "field": "deleteSalesMenusById",
-      "kind": "delete",
-      "resourceType": "aperio.sales.v1/Menu",
-      "pattern": "venues/{venue}/menus/{menu}",
-      "keyArgument": "keyId",
-      "byIdQuery": "salesMenusById"
-    },
-    {
-      "field": "deleteSalesPriceRulesById",
-      "kind": "delete",
-      "resourceType": "aperio.sales.v1/PriceRule",
+      "resourceType": "aperio.pricing.v1/PriceRule",
       "pattern": "venues/{venue}/priceRules/{price_rule}",
       "keyArgument": "keyId",
-      "byIdQuery": "salesPriceRulesById"
+      "byIdQuery": "pricingPriceRulesById"
+    },
+    {
+      "field": "deletePricingSeasonsById",
+      "kind": "delete",
+      "resourceType": "aperio.pricing.v1/Season",
+      "pattern": "venues/{venue}/seasons/{season}",
+      "keyArgument": "keyId",
+      "byIdQuery": "pricingSeasonsById"
+    },
+    {
+      "field": "insertSalesActivities",
+      "kind": "insert",
+      "resourceType": "aperio.sales.v1/Activity",
+      "references": [
+        {
+          "field": "author",
+          "column": "author",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateSalesActivitiesById",
+      "kind": "update",
+      "resourceType": "aperio.sales.v1/Activity",
+      "references": [
+        {
+          "field": "author",
+          "column": "author",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteSalesActivitiesById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/Activity",
+      "pattern": "leads/{lead}/activities/{activity}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesActivitiesById"
+    },
+    {
+      "field": "insertSalesLeads",
+      "kind": "insert",
+      "resourceType": "aperio.sales.v1/Lead",
+      "references": [
+        {
+          "field": "owner",
+          "column": "owner",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        },
+        {
+          "field": "hold",
+          "column": "hold",
+          "type": "freebusy.allocation.v1/Hold",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateSalesLeadsById",
+      "kind": "update",
+      "resourceType": "aperio.sales.v1/Lead",
+      "references": [
+        {
+          "field": "owner",
+          "column": "owner",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        },
+        {
+          "field": "hold",
+          "column": "hold",
+          "type": "freebusy.allocation.v1/Hold",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteSalesLeadsById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/Lead",
+      "pattern": "leads/{lead}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesLeadsById"
     },
     {
       "field": "deleteSalesQuotesById",
@@ -290,12 +290,12 @@
       "byIdQuery": "salesQuotesById"
     },
     {
-      "field": "deleteSalesSeasonsById",
+      "field": "deleteStayReservationsById",
       "kind": "delete",
-      "resourceType": "aperio.sales.v1/Season",
-      "pattern": "venues/{venue}/seasons/{season}",
+      "resourceType": "aperio.stay.v1/Reservation",
+      "pattern": "venues/{venue}/reservations/{reservation}",
       "keyArgument": "keyId",
-      "byIdQuery": "salesSeasonsById"
+      "byIdQuery": "stayReservationsById"
     },
     {
       "field": "deleteVenueSpacesById",

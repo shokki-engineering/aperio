@@ -161,45 +161,125 @@ erDiagram
 - `telemetry/telemetry.go` — the first-party telemetry adapter: `New(o)` wraps an SDK handle as the `gormx.Telemetry` the stores observe through (`WithTelemetry(telemetry.New(o))`), and `Plugin(o)` is the SQL-level gorm plugin. Emitted with the `telemetry` opt; requires `github.com/the-protobuf-project/telemetry/telemetry-go`.
 - `Registry.Instrument(db, o)` in `migrate.go` — installs the generated telemetry gorm plugin so every query emits a span (and metric) through the SDK handle.
 
-## Schema `booking`
+## Schema `catalog`
 
-### `Reservation` → `reservations`
+### `Dish` → `dishes`
 
-A Reservation is a stay: rooms at a venue for a span of nights, booked directly, from a lead, or by a channel. What is searched and reported on is aperio's own -- the dates, the rooms, the channel, the state -- and is stored as columns, so "who arrives today" is one indexed read. What a channel sends is kept as it sent it: the room stays and guests are OpenTravel's RoomStay and ResGuest, so an OTA_HotelResNotif from Booking.com is stored without translation and sent back unchanged. The rooms are freebusy's: a reservation is a freebusy hold made into a freebusy reservation for each room line, named in freebusy_reservations.
+A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a live chaat counter, a mocktail. It is the catalogue menus are made from, so a dish is described once -- its course, the diets it suits, its allergens -- and every menu that offers it says the same. A dish has its own price only when it is sold on its own: à la carte, room service, an add-on to a menu.
 
 | Column | Type | Null |
 | --- | --- | --- |
 | `id` | `CHAR(26)` | not null |
 | `name` | `VARCHAR(255)` | not null |
-| `contact` | `CHAR(26)` | not null |
-| `lead` | `CHAR(26)` | nullable |
-| `event` | `VARCHAR(255)` | nullable |
-| `channel` | `Channel` | not null |
-| `channel_reference` | `VARCHAR(255)` | nullable |
-| `state` | `ReservationState` | nullable |
-| `arrival_date` | `DATE` | not null |
-| `departure_date` | `DATE` | not null |
-| `adults` | `INTEGER` | not null |
-| `children` | `INTEGER` | nullable |
-| `rooms` | `JSONB` | not null |
-| `room_stays` | `JSONB` | nullable |
-| `res_guests` | `JSONB` | nullable |
-| `dietary_requirements` | `JSONB` | nullable |
-| `special_requests` | `JSONB` | nullable |
-| `total` | `JSONB` | nullable |
-| `quote` | `VARCHAR(255)` | nullable |
-| `notes` | `VARCHAR(255)` | nullable |
-| `cancel_reason` | `VARCHAR(255)` | nullable |
-| `arrive_time` | `TIMESTAMPTZ` | nullable |
-| `depart_time` | `TIMESTAMPTZ` | nullable |
-| `cancel_time` | `TIMESTAMPTZ` | nullable |
+| `display_name` | `VARCHAR(255)` | not null |
+| `description` | `VARCHAR(255)` | nullable |
+| `course` | `Course` | not null |
+| `cuisine` | `VARCHAR(255)` | nullable |
+| `diets` | `` | nullable |
+| `allergens` | `` | nullable |
+| `price` | `JSONB` | nullable |
+| `tax` | `JSONB` | nullable |
+| `image_uri` | `VARCHAR(255)` | nullable |
+| `available` | `BOOLEAN` | nullable |
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
 | `venue_id` | `CHAR(26)` | not null |
-| `freebusy_reservations` | `VARCHAR(255)[]` | nullable |
 
-### `Event` → `events`
+### `Menu` → `menus`
+
+A Menu is a plate menu sold for events at a price per plate: "Silver Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice, 2 desserts". It is a set of courses, each a choice among dishes, with add-ons priced per plate on top. Its plate_price is the base price. What a plate costs on a given date is the base price with the venue's price rules applied (PriceRule), so a wedding-season surcharge needs no edit to the menu.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `display_name` | `VARCHAR(255)` | not null |
+| `description` | `VARCHAR(255)` | nullable |
+| `diets` | `` | nullable |
+| `courses` | `JSONB` | not null |
+| `add_ons` | `JSONB` | nullable |
+| `plate_price` | `JSONB` | not null |
+| `min_plates` | `INTEGER` | nullable |
+| `tax` | `JSONB` | not null |
+| `active` | `BOOLEAN` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+| `venue_id` | `CHAR(26)` | not null |
+
+### `FixedPackage` → `fixed_packages`
+
+A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8 hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It includes so many guests, and charges each guest beyond them. Its price is the base price; what it costs on a date is the base price with the venue's price rules applied, as a menu's is.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `display_name` | `VARCHAR(255)` | not null |
+| `description` | `VARCHAR(255)` | nullable |
+| `duration` | `INTERVAL` | nullable |
+| `menu` | `VARCHAR(255)` | nullable |
+| `inclusions` | `JSONB` | nullable |
+| `included_guests` | `INTEGER` | not null |
+| `price` | `JSONB` | not null |
+| `extra_guest_price` | `JSONB` | nullable |
+| `tax` | `JSONB` | not null |
+| `active` | `BOOLEAN` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+| `venue_id` | `CHAR(26)` | not null |
+
+### `FixedPackageSpaces` → `fixed_package_spaces`
+
+Join table for the many-to-many relation FixedPackage.spaces ↔ Space.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `fixed_package_id` | `CHAR(26)` | not null |
+| `space_id` | `CHAR(26)` | not null |
+| `space_name` | `TEXT` | not null |
+
+### Enums
+
+- `Course`: WELCOME_DRINK, STARTER, SOUP, SALAD, MAIN, BREAD, RICE, SIDE, DESSERT, BEVERAGE, LIVE_COUNTER, OTHER
+
+## Schema `document`
+
+### `Document` → `resource`
+
+A Document is a file kept at a venue: the floor plan of the ballroom, the parking layout, the Wi-Fi and network sheet, the fire licence, a signed contract, a guest's ID at check-in, the menu card. The file is in object storage; the document is its record -- what it is, what it is about, who may see it, and when it lapses -- so a venue's papers are found in one place, by category or by what they concern.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `display_name` | `VARCHAR(255)` | not null |
+| `category` | `Category` | not null |
+| `subject` | `VARCHAR(255)` | nullable |
+| `uri` | `VARCHAR(255)` | not null |
+| `mime_type` | `VARCHAR(255)` | nullable |
+| `size_bytes` | `BIGINT` | nullable |
+| `sha256` | `VARCHAR(255)` | nullable |
+| `visibility` | `Visibility` | nullable |
+| `expiry_date` | `DATE` | nullable |
+| `tags` | `VARCHAR(255)[]` | nullable |
+| `notes` | `VARCHAR(255)` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+| `venue_id` | `CHAR(26)` | not null |
+
+### Enums
+
+- `Category`: FLOOR_PLAN, PARKING, IT_NETWORK, SAFETY, LICENCE, INSURANCE, CONTRACT, IDENTITY, MENU, BROCHURE, MEDIA, OTHER
+- `Visibility`: STAFF, GUEST, PUBLIC
+
+## Schema `event`
+
+### `Event` → `resource`
 
 An Event is an occasion held at a venue: a wedding, a conference, a birthday. It is the booking a hall lead becomes, and it may run over days, as its sessions do -- a wedding is a mehendi, a sangeet, a ceremony and a reception, each in its own space at its own time. Rooms for its guests are reservations naming the event.
 
@@ -211,7 +291,7 @@ An Event is an occasion held at a venue: a wedding, a conference, a birthday. It
 | `contact` | `CHAR(26)` | not null |
 | `lead` | `CHAR(26)` | nullable |
 | `event_type` | `EventType` | not null |
-| `state` | `EventState` | nullable |
+| `state` | `State` | nullable |
 | `dates` | `JSONB` | not null |
 | `guests` | `INTEGER` | nullable |
 | `quote` | `VARCHAR(255)` | nullable |
@@ -256,128 +336,9 @@ A Session is one part of an event, in one space at one time -- what an Indian we
 
 ### Enums
 
-- `Channel`: WEBSITE, PHONE, WALK_IN, EMAIL, WHATSAPP, INSTAGRAM, FACEBOOK, REFERRAL, BOOKING_COM, AIRBNB, MAKEMYTRIP, GOIBIBO, AGODA, EXPEDIA, CHANNEL_MANAGER, RFP, OTHER
-- `ReservationState`: PENDING, CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED, NO_SHOW
 - `EventType`: WEDDING, RECEPTION, ENGAGEMENT, PRE_WEDDING, BIRTHDAY, ANNIVERSARY, SOCIAL, RELIGIOUS, MEETING, CONFERENCE, OFFSITE, LAUNCH, OTHER
-- `EventState`: TENTATIVE, CONFIRMED, COMPLETED, CANCELLED
+- `State`: TENTATIVE, CONFIRMED, COMPLETED, CANCELLED
 - `Layout`: THEATRE, BANQUET, CLASSROOM, U_SHAPE, BOARDROOM, COCKTAIL, CABARET, FLOOR
-
-## Schema `crm`
-
-### `Contact` → `contacts`
-
-A Contact is a person or a company aperio deals with: a guest, a couple booking their wedding, a company booking an offsite, an agent. Leads, bookings, quotes, invoices and payments all name one, so a guest who comes back is the same contact with their history. A person's name and address are OpenTravel's PersonName and Address, the shapes channels send guests in, so a booking from Booking.com fills a contact without translation.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `kind` | `ContactKind` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `name_parts` | `JSONB` | nullable |
-| `company_display_name` | `VARCHAR(255)` | nullable |
-| `phones` | `JSONB` | nullable |
-| `emails` | `VARCHAR(255)[]` | nullable |
-| `addresses` | `JSONB` | nullable |
-| `gst` | `JSONB` | nullable |
-| `dietary_requirements` | `JSONB` | nullable |
-| `marketing_consent` | `BOOLEAN` | nullable |
-| `tags` | `VARCHAR(255)[]` | nullable |
-| `notes` | `VARCHAR(255)` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `phone_numbers` | `VARCHAR(255)[]` | nullable |
-
-### `Lead` → `leads`
-
-A Lead is an enquiry that may become a booking: a couple asking about a December wedding, a company asking for an offsite with forty rooms, a family asking about a week at the resort. It covers both venues and every kind of booking -- a stay, an event, or both, as a wedding with rooms for its guests is. A lead moves through a sales pipeline, from NEW to WON or LOST, owned by one salesperson with a follow-up date. While it is negotiated its dates can be held in freebusy (`hold`), so they are not sold under it; winning it turns the accepted quote into the booking.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `contact` | `CHAR(26)` | not null |
-| `venue` | `CHAR(26)` | nullable |
-| `kind` | `LeadKind` | not null |
-| `event_type` | `EventType` | nullable |
-| `source` | `Channel` | nullable |
-| `source_detail` | `VARCHAR(255)` | nullable |
-| `stage` | `Stage` | nullable |
-| `dates` | `JSONB` | nullable |
-| `dates_flexible` | `BOOLEAN` | nullable |
-| `guests` | `INTEGER` | nullable |
-| `rooms` | `INTEGER` | nullable |
-| `budget` | `JSONB` | nullable |
-| `requirements` | `VARCHAR(255)` | nullable |
-| `owner` | `VARCHAR(255)` | nullable |
-| `next_follow_up_time` | `TIMESTAMPTZ` | nullable |
-| `lost_reason` | `LostReason` | nullable |
-| `lost_detail` | `VARCHAR(255)` | nullable |
-| `hold` | `VARCHAR(255)` | nullable |
-| `bookings` | `VARCHAR(255)[]` | nullable |
-| `close_time` | `TIMESTAMPTZ` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-
-### `Activity` → `activities`
-
-An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a quote sent. The activities of a lead are its history, newest first.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `kind` | `ActivityKind` | not null |
-| `occur_time` | `TIMESTAMPTZ` | not null |
-| `summary` | `VARCHAR(255)` | not null |
-| `details` | `VARCHAR(255)` | nullable |
-| `author` | `VARCHAR(255)` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `lead_id` | `CHAR(26)` | not null |
-
-### Enums
-
-- `ContactKind`: PERSON, COMPANY
-- `LeadKind`: STAY, EVENT, EVENT_WITH_STAY
-- `Stage`: NEW, CONTACTED, SITE_VISIT, PROPOSAL, NEGOTIATION, WON, LOST
-- `LostReason`: PRICE, DATES, COMPETITOR, CAPACITY, CANCELLED_PLANS, NO_RESPONSE, OTHER
-- `ActivityKind`: CALL, EMAIL, WHATSAPP, MEETING, SITE_VISIT, QUOTE_SENT, NOTE
-
-## Schema `document`
-
-### `Document` → `resource`
-
-A Document is a file kept at a venue: the floor plan of the ballroom, the parking layout, the Wi-Fi and network sheet, the fire licence, a signed contract, a guest's ID at check-in, the menu card. The file is in object storage; the document is its record -- what it is, what it is about, who may see it, and when it lapses -- so a venue's papers are found in one place, by category or by what they concern.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `category` | `Category` | not null |
-| `subject` | `VARCHAR(255)` | nullable |
-| `uri` | `VARCHAR(255)` | not null |
-| `mime_type` | `VARCHAR(255)` | nullable |
-| `size_bytes` | `BIGINT` | nullable |
-| `sha256` | `VARCHAR(255)` | nullable |
-| `visibility` | `Visibility` | nullable |
-| `expiry_date` | `DATE` | nullable |
-| `tags` | `VARCHAR(255)[]` | nullable |
-| `notes` | `VARCHAR(255)` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-
-### Enums
-
-- `Category`: FLOOR_PLAN, PARKING, IT_NETWORK, SAFETY, LICENCE, INSURANCE, CONTRACT, IDENTITY, MENU, BROCHURE, MEDIA, OTHER
-- `Visibility`: STAFF, GUEST, PUBLIC
 
 ## Schema `finance`
 
@@ -453,7 +414,39 @@ A Payment is one movement of money between a venue and a guest: an advance throu
 - `InvoiceState`: DRAFT, ISSUED, PAID, CANCELLED
 - `PaymentKind`: RECEIPT, REFUND
 - `PaymentMethod`: GATEWAY, UPI, CARD, CASH, BANK_TRANSFER, CHEQUE, CHANNEL, OTHER
+- `Channel`: WEBSITE, PHONE, WALK_IN, EMAIL, WHATSAPP, INSTAGRAM, FACEBOOK, REFERRAL, BOOKING_COM, AIRBNB, MAKEMYTRIP, GOIBIBO, AGODA, EXPEDIA, CHANNEL_MANAGER, RFP, OTHER
 - `PaymentState`: PENDING, SUCCEEDED, FAILED, VOIDED
+
+## Schema `guest`
+
+### `Contact` → `contacts`
+
+A Contact is a person or a company aperio deals with: a guest, a couple booking their wedding, a company booking an offsite, an agent. Leads, bookings, quotes, invoices and payments all name one, so a guest who comes back is the same contact with their history. A person's name and address are OpenTravel's PersonName and Address, the shapes channels send guests in, so a booking from Booking.com fills a contact without translation.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `kind` | `ContactKind` | not null |
+| `display_name` | `VARCHAR(255)` | not null |
+| `name_parts` | `JSONB` | nullable |
+| `company_display_name` | `VARCHAR(255)` | nullable |
+| `phones` | `JSONB` | nullable |
+| `emails` | `VARCHAR(255)[]` | nullable |
+| `addresses` | `JSONB` | nullable |
+| `gst` | `JSONB` | nullable |
+| `dietary_requirements` | `JSONB` | nullable |
+| `marketing_consent` | `BOOLEAN` | nullable |
+| `tags` | `VARCHAR(255)[]` | nullable |
+| `notes` | `VARCHAR(255)` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+| `phone_numbers` | `VARCHAR(255)[]` | nullable |
+
+### Enums
+
+- `ContactKind`: PERSON, COMPANY
 
 ## Schema `operations`
 
@@ -491,75 +484,7 @@ A ServiceRequest is something wanted in a room, now or by a time: four black cof
 - `Priority`: LOW, NORMAL, URGENT
 - `State`: OPEN, ACKNOWLEDGED, IN_PROGRESS, DONE, CANCELLED
 
-## Schema `sales`
-
-### `Dish` → `dishes`
-
-A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a live chaat counter, a mocktail. It is the catalogue menus are made from, so a dish is described once -- its course, the diets it suits, its allergens -- and every menu that offers it says the same. A dish has its own price only when it is sold on its own: à la carte, room service, an add-on to a menu.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `description` | `VARCHAR(255)` | nullable |
-| `course` | `Course` | not null |
-| `cuisine` | `VARCHAR(255)` | nullable |
-| `diets` | `` | nullable |
-| `allergens` | `` | nullable |
-| `price` | `JSONB` | nullable |
-| `tax` | `JSONB` | nullable |
-| `image_uri` | `VARCHAR(255)` | nullable |
-| `available` | `BOOLEAN` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-
-### `Menu` → `menus`
-
-A Menu is a plate menu sold for events at a price per plate: "Silver Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice, 2 desserts". It is a set of courses, each a choice among dishes, with add-ons priced per plate on top. Its plate_price is the base price. What a plate costs on a given date is the base price with the venue's price rules applied (PriceRule), so a wedding-season surcharge needs no edit to the menu.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `description` | `VARCHAR(255)` | nullable |
-| `diets` | `` | nullable |
-| `courses` | `JSONB` | not null |
-| `add_ons` | `JSONB` | nullable |
-| `plate_price` | `JSONB` | not null |
-| `min_plates` | `INTEGER` | nullable |
-| `tax` | `JSONB` | not null |
-| `active` | `BOOLEAN` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-
-### `FixedPackage` → `fixed_packages`
-
-A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8 hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It includes so many guests, and charges each guest beyond them. Its price is the base price; what it costs on a date is the base price with the venue's price rules applied, as a menu's is.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `description` | `VARCHAR(255)` | nullable |
-| `duration` | `INTERVAL` | nullable |
-| `menu` | `VARCHAR(255)` | nullable |
-| `inclusions` | `JSONB` | nullable |
-| `included_guests` | `INTEGER` | not null |
-| `price` | `JSONB` | not null |
-| `extra_guest_price` | `JSONB` | nullable |
-| `tax` | `JSONB` | not null |
-| `active` | `BOOLEAN` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
+## Schema `pricing`
 
 ### `Season` → `seasons`
 
@@ -602,6 +527,64 @@ A PriceRule changes the price of what a venue sells in a season: "plate menus +1
 | `venue_id` | `CHAR(26)` | not null |
 | `items` | `VARCHAR(255)[]` | nullable |
 
+### Enums
+
+- `PriceTarget`: MENU, FIXED_PACKAGE, SPACE, DISH
+- `PriceRuleAdjustmentCase`: FIXED_PRICE, PERCENT, AMOUNT
+
+## Schema `sales`
+
+### `Lead` → `leads`
+
+A Lead is an enquiry that may become a booking: a couple asking about a December wedding, a company asking for an offsite with forty rooms, a family asking about a week at the resort. It covers both venues and every kind of booking -- a stay, an event, or both, as a wedding with rooms for its guests is. A lead moves through a sales pipeline, from NEW to WON or LOST, owned by one salesperson with a follow-up date. While it is negotiated its dates can be held in freebusy (`hold`), so they are not sold under it; winning it turns the accepted quote into the booking.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `display_name` | `VARCHAR(255)` | not null |
+| `contact` | `CHAR(26)` | not null |
+| `venue` | `CHAR(26)` | nullable |
+| `kind` | `LeadKind` | not null |
+| `event_type` | `EventType` | nullable |
+| `source` | `Channel` | nullable |
+| `source_detail` | `VARCHAR(255)` | nullable |
+| `stage` | `Stage` | nullable |
+| `dates` | `JSONB` | nullable |
+| `dates_flexible` | `BOOLEAN` | nullable |
+| `guests` | `INTEGER` | nullable |
+| `rooms` | `INTEGER` | nullable |
+| `budget` | `JSONB` | nullable |
+| `requirements` | `VARCHAR(255)` | nullable |
+| `owner` | `VARCHAR(255)` | nullable |
+| `next_follow_up_time` | `TIMESTAMPTZ` | nullable |
+| `lost_reason` | `LostReason` | nullable |
+| `lost_detail` | `VARCHAR(255)` | nullable |
+| `hold` | `VARCHAR(255)` | nullable |
+| `bookings` | `VARCHAR(255)[]` | nullable |
+| `close_time` | `TIMESTAMPTZ` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+
+### `Activity` → `activities`
+
+An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a quote sent. The activities of a lead are its history, newest first.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `CHAR(26)` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `kind` | `ActivityKind` | not null |
+| `occur_time` | `TIMESTAMPTZ` | not null |
+| `summary` | `VARCHAR(255)` | not null |
+| `details` | `VARCHAR(255)` | nullable |
+| `author` | `VARCHAR(255)` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+| `lead_id` | `CHAR(26)` | not null |
+
 ### `Quote` → `quotes`
 
 A Quote is a priced proposal to a guest: the spaces, rooms, menus and packages they asked for, at the prices of their dates, with GST. A lead usually has several, one superseding the next as the negotiation goes; accepting one makes the booking. A draft's line prices follow the price rules as they change. Sending the quote fixes them, so the guest is held to what they were offered and no rule changed after can change it.
@@ -636,23 +619,55 @@ A Quote is a priced proposal to a guest: the spaces, rooms, menus and packages t
 | `ttl` | `INTERVAL` | nullable |
 | `venue_id` | `CHAR(26)` | not null |
 
-### `FixedPackageSpaces` → `fixed_package_spaces`
+### Enums
 
-Join table for the many-to-many relation FixedPackage.spaces ↔ Space.
+- `LeadKind`: STAY, EVENT, EVENT_WITH_STAY
+- `Stage`: NEW, CONTACTED, SITE_VISIT, PROPOSAL, NEGOTIATION, WON, LOST
+- `LostReason`: PRICE, DATES, COMPETITOR, CAPACITY, CANCELLED_PLANS, NO_RESPONSE, OTHER
+- `ActivityKind`: CALL, EMAIL, WHATSAPP, MEETING, SITE_VISIT, QUOTE_SENT, NOTE
+- `State`: DRAFT, SENT, ACCEPTED, DECLINED, EXPIRED, SUPERSEDED
+
+## Schema `stay`
+
+### `Reservation` → `reservations`
+
+A Reservation is a stay: rooms at a venue for a span of nights, booked directly, from a lead, or by a channel. What is searched and reported on is aperio's own -- the dates, the rooms, the channel, the state -- and is stored as columns, so "who arrives today" is one indexed read. What a channel sends is kept as it sent it: the room stays and guests are OpenTravel's RoomStay and ResGuest, so an OTA_HotelResNotif from Booking.com is stored without translation and sent back unchanged. The rooms are freebusy's: a reservation is a freebusy hold made into a freebusy reservation for each room line, named in freebusy_reservations.
 
 | Column | Type | Null |
 | --- | --- | --- |
 | `id` | `CHAR(26)` | not null |
-| `fixed_package_id` | `CHAR(26)` | not null |
-| `space_id` | `CHAR(26)` | not null |
-| `space_name` | `TEXT` | not null |
+| `name` | `VARCHAR(255)` | not null |
+| `contact` | `CHAR(26)` | not null |
+| `lead` | `CHAR(26)` | nullable |
+| `event` | `VARCHAR(255)` | nullable |
+| `channel` | `Channel` | not null |
+| `channel_reference` | `VARCHAR(255)` | nullable |
+| `state` | `State` | nullable |
+| `arrival_date` | `DATE` | not null |
+| `departure_date` | `DATE` | not null |
+| `adults` | `INTEGER` | not null |
+| `children` | `INTEGER` | nullable |
+| `rooms` | `JSONB` | not null |
+| `room_stays` | `JSONB` | nullable |
+| `res_guests` | `JSONB` | nullable |
+| `dietary_requirements` | `JSONB` | nullable |
+| `special_requests` | `JSONB` | nullable |
+| `total` | `JSONB` | nullable |
+| `quote` | `VARCHAR(255)` | nullable |
+| `notes` | `VARCHAR(255)` | nullable |
+| `cancel_reason` | `VARCHAR(255)` | nullable |
+| `arrive_time` | `TIMESTAMPTZ` | nullable |
+| `depart_time` | `TIMESTAMPTZ` | nullable |
+| `cancel_time` | `TIMESTAMPTZ` | nullable |
+| `create_time` | `TIMESTAMPTZ` | not null |
+| `update_time` | `TIMESTAMPTZ` | not null |
+| `etag` | `VARCHAR(255)` | nullable |
+| `venue_id` | `CHAR(26)` | not null |
+| `freebusy_reservations` | `VARCHAR(255)[]` | nullable |
 
 ### Enums
 
-- `Course`: WELCOME_DRINK, STARTER, SOUP, SALAD, MAIN, BREAD, RICE, SIDE, DESSERT, BEVERAGE, LIVE_COUNTER, OTHER
-- `PriceTarget`: MENU, FIXED_PACKAGE, SPACE, DISH
-- `PriceRuleAdjustmentCase`: FIXED_PRICE, PERCENT, AMOUNT
-- `State`: DRAFT, SENT, ACCEPTED, DECLINED, EXPIRED, SUPERSEDED
+- `State`: PENDING, CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED, NO_SHOW
 
 ## Schema `venue`
 

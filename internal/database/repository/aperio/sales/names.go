@@ -19,71 +19,36 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 )
 
-// FormatDishName builds "venues/{venue}/dishes/{dish}" from bare ids.
-func FormatDishName(venue, dish string) string {
-	return "venues" + "/" + venue + "/" + "dishes" + "/" + dish
+// FormatActivityName builds "leads/{lead}/activities/{activity}" from bare ids.
+func FormatActivityName(lead, activity string) string {
+	return "leads" + "/" + lead + "/" + "activities" + "/" + activity
 }
 
-// ParseDishName splits a "venues/{venue}/dishes/{dish}" resource name into its bare ids,
+// ParseActivityName splits a "leads/{lead}/activities/{activity}" resource name into its bare ids,
 // rejecting other shapes with repox.ErrInvalidArgument.
-func ParseDishName(name string) (venue, dish string, err error) {
-	ids, err := repox.SplitName(name, "venues", "dishes")
+func ParseActivityName(name string) (lead, activity string, err error) {
+	ids, err := repox.SplitName(name, "leads", "activities")
 	if err != nil {
 		return
 	}
-	venue = ids[0]
-	dish = ids[1]
+	lead = ids[0]
+	activity = ids[1]
 	return
 }
 
-// FormatFixedPackageName builds "venues/{venue}/fixedPackages/{fixed_package}" from bare ids.
-func FormatFixedPackageName(venue, fixedPackage string) string {
-	return "venues" + "/" + venue + "/" + "fixedPackages" + "/" + fixedPackage
+// FormatLeadName builds "leads/{lead}" from bare ids.
+func FormatLeadName(lead string) string {
+	return "leads" + "/" + lead
 }
 
-// ParseFixedPackageName splits a "venues/{venue}/fixedPackages/{fixed_package}" resource name into its bare ids,
+// ParseLeadName splits a "leads/{lead}" resource name into its bare ids,
 // rejecting other shapes with repox.ErrInvalidArgument.
-func ParseFixedPackageName(name string) (venue, fixedPackage string, err error) {
-	ids, err := repox.SplitName(name, "venues", "fixedPackages")
+func ParseLeadName(name string) (lead string, err error) {
+	ids, err := repox.SplitName(name, "leads")
 	if err != nil {
 		return
 	}
-	venue = ids[0]
-	fixedPackage = ids[1]
-	return
-}
-
-// FormatMenuName builds "venues/{venue}/menus/{menu}" from bare ids.
-func FormatMenuName(venue, menu string) string {
-	return "venues" + "/" + venue + "/" + "menus" + "/" + menu
-}
-
-// ParseMenuName splits a "venues/{venue}/menus/{menu}" resource name into its bare ids,
-// rejecting other shapes with repox.ErrInvalidArgument.
-func ParseMenuName(name string) (venue, menu string, err error) {
-	ids, err := repox.SplitName(name, "venues", "menus")
-	if err != nil {
-		return
-	}
-	venue = ids[0]
-	menu = ids[1]
-	return
-}
-
-// FormatPriceRuleName builds "venues/{venue}/priceRules/{price_rule}" from bare ids.
-func FormatPriceRuleName(venue, priceRule string) string {
-	return "venues" + "/" + venue + "/" + "priceRules" + "/" + priceRule
-}
-
-// ParsePriceRuleName splits a "venues/{venue}/priceRules/{price_rule}" resource name into its bare ids,
-// rejecting other shapes with repox.ErrInvalidArgument.
-func ParsePriceRuleName(name string) (venue, priceRule string, err error) {
-	ids, err := repox.SplitName(name, "venues", "priceRules")
-	if err != nil {
-		return
-	}
-	venue = ids[0]
-	priceRule = ids[1]
+	lead = ids[0]
 	return
 }
 
@@ -101,22 +66,5 @@ func ParseQuoteName(name string) (venue, quote string, err error) {
 	}
 	venue = ids[0]
 	quote = ids[1]
-	return
-}
-
-// FormatSeasonName builds "venues/{venue}/seasons/{season}" from bare ids.
-func FormatSeasonName(venue, season string) string {
-	return "venues" + "/" + venue + "/" + "seasons" + "/" + season
-}
-
-// ParseSeasonName splits a "venues/{venue}/seasons/{season}" resource name into its bare ids,
-// rejecting other shapes with repox.ErrInvalidArgument.
-func ParseSeasonName(name string) (venue, season string, err error) {
-	ids, err := repox.SplitName(name, "venues", "seasons")
-	if err != nil {
-		return
-	}
-	venue = ids[0]
-	season = ids[1]
 	return
 }

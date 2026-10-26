@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CatalogFixedPackageSpaces
+  fields:
+    - name: fixedPackageId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: spaceId
+      type: String_1!
+    - name: spaceName
+      type: String_1!
+  graphql:
+    typeName: CatalogFixedPackageSpaces
+    inputTypeName: CatalogFixedPackageSpacesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: catalog_fixed_package_spaces
+      fieldMapping:
+        fixedPackageId:
+          column:
+            name: fixed_package_id
+        id:
+          column:
+            name: id
+        spaceId:
+          column:
+            name: space_id
+        spaceName:
+          column:
+            name: space_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CatalogFixedPackageSpaces
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fixedPackageId
+          - id
+          - spaceId
+          - spaceName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CatalogFixedPackageSpacesBoolExp
+  operand:
+    object:
+      type: CatalogFixedPackageSpaces
+      comparableFields:
+        - fieldName: fixedPackageId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: spaceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: spaceName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CatalogFixedPackageSpacesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CatalogFixedPackageSpacesAggExp
+  operand:
+    object:
+      aggregatedType: CatalogFixedPackageSpaces
+      aggregatableFields:
+        - fieldName: fixedPackageId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: spaceId
+          aggregateExpression: TextAggExp
+        - fieldName: spaceName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CatalogFixedPackageSpacesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CatalogFixedPackageSpacesOrderByExp
+  operand:
+    object:
+      orderedType: CatalogFixedPackageSpaces
+      orderableFields:
+        - fieldName: fixedPackageId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: spaceId
+          orderByExpression: String1OrderByExp
+        - fieldName: spaceName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CatalogFixedPackageSpacesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CatalogFixedPackageSpaces
+  objectType: CatalogFixedPackageSpaces
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: catalog_fixed_package_spaces
+  filterExpressionType: CatalogFixedPackageSpacesBoolExp
+  aggregateExpression: CatalogFixedPackageSpacesAggExp
+  orderByExpression: CatalogFixedPackageSpacesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: catalogFixedPackageSpaces
+      subscription:
+        rootField: catalogFixedPackageSpaces
+    selectUniques:
+      - queryRootField: catalogFixedPackageSpacesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: catalogFixedPackageSpacesById
+    filterInputTypeName: CatalogFixedPackageSpacesFilterInput
+    aggregate:
+      queryRootField: catalogFixedPackageSpacesAggregate
+      subscription:
+        rootField: catalogFixedPackageSpacesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CatalogFixedPackageSpaces
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

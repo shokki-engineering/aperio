@@ -18,17 +18,13 @@ package sales
 import (
 	"encoding/json"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/sales"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/dishesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/fixedpackagesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/menusql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/pricerulesql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/activitiesql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/leadsql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/quotesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/seasonsql"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/the-protobuf-project/runtime-go/network/graphql"
-	"google.golang.org/genproto/googleapis/type/decimal"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -55,20 +51,6 @@ func strToTs(s string) *timestamppb.Timestamp {
 		}
 	}
 	return nil
-}
-
-// decToBig is a google.type.Decimal as the client sends it; empty, and so
-// omitted, when it is unset.
-func decToBig(d *decimal.Decimal) graphql.Bigdecimal {
-	return graphql.Bigdecimal(d.GetValue())
-}
-
-// bigToDec reads a bigdecimal column back, nil when it is empty.
-func bigToDec(b graphql.Bigdecimal) *decimal.Decimal {
-	if b == "" {
-		return nil
-	}
-	return &decimal.Decimal{Value: string(b)}
 }
 
 // docToJSON is a document field as stored: the message's JSON form, nil when
@@ -190,340 +172,252 @@ func strSliceToPtrs(in []string) []*string {
 	return out
 }
 
-// dishToCreateInput maps the proto onto the client's insert input.
+// activityToCreateInput maps the proto onto the client's insert input.
 // Identity (id, name resolution), parentage, audit timestamps, and etag are
 // set by the adapter.
-func dishToCreateInput(in *salespbv1.Dish) dishesql.CreateInput {
-	var ci dishesql.CreateInput
+func activityToCreateInput(in *salespbv1.Activity) activitiesql.CreateInput {
+	var ci activitiesql.CreateInput
 	ci.Name = in.GetName()
-	ci.DisplayName = in.GetDisplayName()
-	ci.Description = in.GetDescription()
-	if v := in.GetCourse(); v != 0 {
-		ci.Course = string(sales.CourseFromProto(v))
+	if v := in.GetKind(); v != 0 {
+		ci.Kind = string(sales.ActivityKindFromProto(v))
 	}
-	ci.Cuisine = in.GetCuisine()
-	// not mapped here: diets (unsupported scalar shape)
-	// not mapped here: allergens (unsupported scalar shape)
-	ci.Price = docToJSON(in.GetPrice())
-	ci.Tax = docToJSON(in.GetTax())
-	ci.ImageUri = in.GetImageUri()
-	ci.Available = in.GetAvailable()
+	ci.OccurTime = tsToStr(in.GetOccurTime())
+	ci.Summary = in.GetSummary()
+	ci.Details = in.GetDetails()
+	ci.Author = in.GetAuthor()
 	return ci
 }
 
-// dishToUpdatePatch maps the merged proto onto a replace-write
+// activityToUpdatePatch maps the merged proto onto a replace-write
 // patch of every mutable column (mask semantics already applied to merged),
 // mirroring the gorm adapter's write-back exactly.
-func dishToUpdatePatch(merged *salespbv1.Dish) dishesql.UpdateInput {
-	var patch dishesql.UpdateInput
+func activityToUpdatePatch(merged *salespbv1.Activity) activitiesql.UpdateInput {
+	var patch activitiesql.UpdateInput
 	patch.Name = graphql.Value(merged.GetName())
-	patch.DisplayName = graphql.Value(merged.GetDisplayName())
-	if v := merged.GetDescription(); v != "" {
-		patch.Description = graphql.Value(v)
+	patch.Kind = graphql.Value(string(sales.ActivityKindFromProto(merged.GetKind())))
+	patch.OccurTime = graphql.Value(tsToStr(merged.GetOccurTime()))
+	patch.Summary = graphql.Value(merged.GetSummary())
+	if v := merged.GetDetails(); v != "" {
+		patch.Details = graphql.Value(v)
 	} else {
-		patch.Description = graphql.Null[string]()
+		patch.Details = graphql.Null[string]()
 	}
-	patch.Course = graphql.Value(string(sales.CourseFromProto(merged.GetCourse())))
-	if v := merged.GetCuisine(); v != "" {
-		patch.Cuisine = graphql.Value(v)
+	if v := merged.GetAuthor(); v != "" {
+		patch.Author = graphql.Value(v)
 	} else {
-		patch.Cuisine = graphql.Null[string]()
-	}
-	patch.Price = graphql.Value(docToJSON(merged.GetPrice()))
-	patch.Tax = graphql.Value(docToJSON(merged.GetTax()))
-	if v := merged.GetImageUri(); v != "" {
-		patch.ImageUri = graphql.Value(v)
-	} else {
-		patch.ImageUri = graphql.Null[string]()
-	}
-	if v := merged.GetAvailable(); v != false {
-		patch.Available = graphql.Value(v)
-	} else {
-		patch.Available = graphql.Null[bool]()
+		patch.Author = graphql.Null[string]()
 	}
 	return patch
 }
 
-// dishFromRow re-hydrates the proto from a client row, decorating
+// activityFromRow re-hydrates the proto from a client row, decorating
 // reference names from their stored bare ids.
-func dishFromRow(row *dishesql.SalesDishes) *salespbv1.Dish {
+func activityFromRow(row *activitiesql.SalesActivities) *salespbv1.Activity {
 	if row == nil {
 		return nil
 	}
-	out := &salespbv1.Dish{}
+	out := &salespbv1.Activity{}
 	out.Name = row.Name
-	out.DisplayName = row.DisplayName
-	out.Description = repox.Deref(row.Description)
-	out.Course = sales.CourseToProto(sales.Course(row.Course))
-	out.Cuisine = repox.Deref(row.Cuisine)
-	out.Price = jsonToDoc[money.Money](row.Price)
-	out.Tax = jsonToDoc[typepbv1.Tax](row.Tax)
-	out.ImageUri = repox.Deref(row.ImageUri)
-	out.Available = repox.Deref(row.Available)
+	out.Kind = sales.ActivityKindToProto(sales.ActivityKind(row.Kind))
+	out.OccurTime = strToTs(row.OccurTime)
+	out.Summary = row.Summary
+	out.Details = repox.Deref(row.Details)
+	out.Author = repox.Deref(row.Author)
 	out.Etag = repox.Deref(row.Etag)
 	out.CreateTime = strToTs(row.CreateTime)
 	out.UpdateTime = strToTs(row.UpdateTime)
 	return out
 }
 
-// fixedPackageToCreateInput maps the proto onto the client's insert input.
+// leadToCreateInput maps the proto onto the client's insert input.
 // Identity (id, name resolution), parentage, audit timestamps, and etag are
 // set by the adapter.
-func fixedPackageToCreateInput(in *salespbv1.FixedPackage) fixedpackagesql.CreateInput {
-	var ci fixedpackagesql.CreateInput
+func leadToCreateInput(in *salespbv1.Lead) leadsql.CreateInput {
+	var ci leadsql.CreateInput
 	ci.Name = in.GetName()
 	ci.DisplayName = in.GetDisplayName()
-	ci.Description = in.GetDescription()
-	if v := durToStr(in.GetDuration()); v != "" {
-		ci.Duration = v
+	if v := in.GetContact(); v != "" {
+		ci.Contact = repox.LastSegment(v)
 	}
-	if v := in.GetMenu(); v != "" {
-		ci.Menu = v
+	if v := in.GetVenue(); v != "" {
+		ci.Venue = repox.LastSegment(v)
 	}
-	ci.Inclusions = docsToJSON(in.GetInclusions())
-	ci.IncludedGuests = int32(in.GetIncludedGuests())
-	ci.Price = docToJSON(in.GetPrice())
-	ci.ExtraGuestPrice = docToJSON(in.GetExtraGuestPrice())
-	ci.Tax = docToJSON(in.GetTax())
-	ci.Active = in.GetActive()
+	if v := in.GetKind(); v != 0 {
+		ci.Kind = string(sales.LeadKindFromProto(v))
+	}
+	if v := in.GetEventType(); v != 0 {
+		ci.EventType = string(sales.EventTypeFromProto(v))
+	}
+	if v := in.GetSource(); v != 0 {
+		ci.Source = string(sales.ChannelFromProto(v))
+	}
+	ci.SourceDetail = in.GetSourceDetail()
+	if v := in.GetStage(); v != 0 {
+		ci.Stage = string(sales.StageFromProto(v))
+	}
+	ci.Dates = docsToJSON(in.GetDates())
+	ci.DatesFlexible = in.GetDatesFlexible()
+	ci.Guests = int32(in.GetGuests())
+	ci.Rooms = int32(in.GetRooms())
+	ci.Budget = docToJSON(in.GetBudget())
+	ci.Requirements = in.GetRequirements()
+	ci.Owner = in.GetOwner()
+	ci.NextFollowUpTime = tsToStr(in.GetNextFollowUpTime())
+	if v := in.GetLostReason(); v != 0 {
+		ci.LostReason = string(sales.LostReasonFromProto(v))
+	}
+	ci.LostDetail = in.GetLostDetail()
+	ci.Hold = in.GetHold()
+	ci.Bookings = strSliceToPtrs(in.GetBookings())
+	ci.CloseTime = tsToStr(in.GetCloseTime())
 	return ci
 }
 
-// fixedPackageToUpdatePatch maps the merged proto onto a replace-write
+// leadToUpdatePatch maps the merged proto onto a replace-write
 // patch of every mutable column (mask semantics already applied to merged),
 // mirroring the gorm adapter's write-back exactly.
-func fixedPackageToUpdatePatch(merged *salespbv1.FixedPackage) fixedpackagesql.UpdateInput {
-	var patch fixedpackagesql.UpdateInput
+func leadToUpdatePatch(merged *salespbv1.Lead) leadsql.UpdateInput {
+	var patch leadsql.UpdateInput
 	patch.Name = graphql.Value(merged.GetName())
 	patch.DisplayName = graphql.Value(merged.GetDisplayName())
-	if v := merged.GetDescription(); v != "" {
-		patch.Description = graphql.Value(v)
+	patch.Contact = graphql.Value(repox.LastSegment(merged.GetContact()))
+	if v := repox.LastSegment(merged.GetVenue()); v != "" {
+		patch.Venue = graphql.Value(v)
 	} else {
-		patch.Description = graphql.Null[string]()
+		patch.Venue = graphql.Null[string]()
 	}
-	if v := durToStr(merged.GetDuration()); v != "" {
-		patch.Duration = graphql.Value(v)
+	patch.Kind = graphql.Value(string(sales.LeadKindFromProto(merged.GetKind())))
+	if v := string(sales.EventTypeFromProto(merged.GetEventType())); v != "" {
+		patch.EventType = graphql.Value(v)
 	} else {
-		patch.Duration = graphql.Null[string]()
+		patch.EventType = graphql.Null[string]()
 	}
-	if v := merged.GetMenu(); v != "" {
-		patch.Menu = graphql.Value(v)
+	if v := string(sales.ChannelFromProto(merged.GetSource())); v != "" {
+		patch.Source = graphql.Value(v)
 	} else {
-		patch.Menu = graphql.Null[string]()
+		patch.Source = graphql.Null[string]()
 	}
-	patch.Inclusions = graphql.Value(docsToJSON(merged.GetInclusions()))
-	patch.IncludedGuests = graphql.Value(int32(merged.GetIncludedGuests()))
-	patch.Price = graphql.Value(docToJSON(merged.GetPrice()))
-	patch.ExtraGuestPrice = graphql.Value(docToJSON(merged.GetExtraGuestPrice()))
-	patch.Tax = graphql.Value(docToJSON(merged.GetTax()))
-	if v := merged.GetActive(); v != false {
-		patch.Active = graphql.Value(v)
+	if v := merged.GetSourceDetail(); v != "" {
+		patch.SourceDetail = graphql.Value(v)
 	} else {
-		patch.Active = graphql.Null[bool]()
+		patch.SourceDetail = graphql.Null[string]()
+	}
+	if v := string(sales.StageFromProto(merged.GetStage())); v != "" {
+		patch.Stage = graphql.Value(v)
+	} else {
+		patch.Stage = graphql.Null[string]()
+	}
+	patch.Dates = graphql.Value(docsToJSON(merged.GetDates()))
+	if v := merged.GetDatesFlexible(); v != false {
+		patch.DatesFlexible = graphql.Value(v)
+	} else {
+		patch.DatesFlexible = graphql.Null[bool]()
+	}
+	if v := int32(merged.GetGuests()); v != 0 {
+		patch.Guests = graphql.Value(v)
+	} else {
+		patch.Guests = graphql.Null[int32]()
+	}
+	if v := int32(merged.GetRooms()); v != 0 {
+		patch.Rooms = graphql.Value(v)
+	} else {
+		patch.Rooms = graphql.Null[int32]()
+	}
+	patch.Budget = graphql.Value(docToJSON(merged.GetBudget()))
+	if v := merged.GetRequirements(); v != "" {
+		patch.Requirements = graphql.Value(v)
+	} else {
+		patch.Requirements = graphql.Null[string]()
+	}
+	if v := merged.GetOwner(); v != "" {
+		patch.Owner = graphql.Value(v)
+	} else {
+		patch.Owner = graphql.Null[string]()
+	}
+	if v := tsToStr(merged.GetNextFollowUpTime()); v != "" {
+		patch.NextFollowUpTime = graphql.Value(v)
+	} else {
+		patch.NextFollowUpTime = graphql.Null[string]()
+	}
+	if v := string(sales.LostReasonFromProto(merged.GetLostReason())); v != "" {
+		patch.LostReason = graphql.Value(v)
+	} else {
+		patch.LostReason = graphql.Null[string]()
+	}
+	if v := merged.GetLostDetail(); v != "" {
+		patch.LostDetail = graphql.Value(v)
+	} else {
+		patch.LostDetail = graphql.Null[string]()
 	}
 	return patch
 }
 
-// fixedPackageFromRow re-hydrates the proto from a client row, decorating
-// reference names from their stored bare ids.
-func fixedPackageFromRow(row *fixedpackagesql.SalesFixedPackages) *salespbv1.FixedPackage {
-	if row == nil {
-		return nil
-	}
-	out := &salespbv1.FixedPackage{}
-	out.Name = row.Name
-	out.DisplayName = row.DisplayName
-	out.Description = repox.Deref(row.Description)
-	out.Duration = strToDur(repox.Deref(row.Duration))
-	out.Menu = repox.Deref(row.Menu)
-	out.Inclusions = jsonToDocs[salespbv1.PackageInclusion](row.Inclusions)
-	out.IncludedGuests = int32(row.IncludedGuests)
-	out.Price = jsonToDoc[money.Money](&row.Price)
-	out.ExtraGuestPrice = jsonToDoc[money.Money](row.ExtraGuestPrice)
-	out.Tax = jsonToDoc[typepbv1.Tax](&row.Tax)
-	out.Active = repox.Deref(row.Active)
-	out.Etag = repox.Deref(row.Etag)
-	out.CreateTime = strToTs(row.CreateTime)
-	out.UpdateTime = strToTs(row.UpdateTime)
-	return out
-}
-
-// menuToCreateInput maps the proto onto the client's insert input.
-// Identity (id, name resolution), parentage, audit timestamps, and etag are
-// set by the adapter.
-func menuToCreateInput(in *salespbv1.Menu) menusql.CreateInput {
-	var ci menusql.CreateInput
-	ci.Name = in.GetName()
-	ci.DisplayName = in.GetDisplayName()
-	ci.Description = in.GetDescription()
-	// not mapped here: diets (unsupported scalar shape)
-	ci.Courses = docsToJSON(in.GetCourses())
-	ci.AddOns = docsToJSON(in.GetAddOns())
-	ci.PlatePrice = docToJSON(in.GetPlatePrice())
-	ci.MinPlates = int32(in.GetMinPlates())
-	ci.Tax = docToJSON(in.GetTax())
-	ci.Active = in.GetActive()
-	return ci
-}
-
-// menuToUpdatePatch maps the merged proto onto a replace-write
-// patch of every mutable column (mask semantics already applied to merged),
-// mirroring the gorm adapter's write-back exactly.
-func menuToUpdatePatch(merged *salespbv1.Menu) menusql.UpdateInput {
-	var patch menusql.UpdateInput
-	patch.Name = graphql.Value(merged.GetName())
-	patch.DisplayName = graphql.Value(merged.GetDisplayName())
-	if v := merged.GetDescription(); v != "" {
-		patch.Description = graphql.Value(v)
-	} else {
-		patch.Description = graphql.Null[string]()
-	}
-	patch.Courses = graphql.Value(docsToJSON(merged.GetCourses()))
-	patch.AddOns = graphql.Value(docsToJSON(merged.GetAddOns()))
-	patch.PlatePrice = graphql.Value(docToJSON(merged.GetPlatePrice()))
-	if v := int32(merged.GetMinPlates()); v != 0 {
-		patch.MinPlates = graphql.Value(v)
-	} else {
-		patch.MinPlates = graphql.Null[int32]()
-	}
-	patch.Tax = graphql.Value(docToJSON(merged.GetTax()))
-	if v := merged.GetActive(); v != false {
-		patch.Active = graphql.Value(v)
-	} else {
-		patch.Active = graphql.Null[bool]()
-	}
+// leadToOutputPatch maps the server-owned fields paths names onto
+// a patch, for UpdateOutputOnly: every other column is left as it is.
+func leadToOutputPatch(merged *salespbv1.Lead, paths []string) leadsql.UpdateInput {
+	var patch leadsql.UpdateInput
+	leadAddOutputPatch(&patch, merged, paths)
 	return patch
 }
 
-// menuFromRow re-hydrates the proto from a client row, decorating
+// leadAddOutputPatch sets the server-owned fields paths names on
+// patch, for UpdateWithOutputOnly: an update patch carrying them too.
+func leadAddOutputPatch(patch *leadsql.UpdateInput, merged *salespbv1.Lead, paths []string) {
+	if repox.InMask(paths, "hold") {
+		if v := merged.GetHold(); v != "" {
+			patch.Hold = graphql.Value(v)
+		} else {
+			patch.Hold = graphql.Null[string]()
+		}
+	}
+	if repox.InMask(paths, "bookings") {
+		patch.Bookings = graphql.Value(strSliceToPtrs(merged.GetBookings()))
+	}
+	if repox.InMask(paths, "close_time") {
+		if v := tsToStr(merged.GetCloseTime()); v != "" {
+			patch.CloseTime = graphql.Value(v)
+		} else {
+			patch.CloseTime = graphql.Null[string]()
+		}
+	}
+}
+
+// leadFromRow re-hydrates the proto from a client row, decorating
 // reference names from their stored bare ids.
-func menuFromRow(row *menusql.SalesMenus) *salespbv1.Menu {
+func leadFromRow(row *leadsql.SalesLeads) *salespbv1.Lead {
 	if row == nil {
 		return nil
 	}
-	out := &salespbv1.Menu{}
+	out := &salespbv1.Lead{}
 	out.Name = row.Name
 	out.DisplayName = row.DisplayName
-	out.Description = repox.Deref(row.Description)
-	out.Courses = jsonToDocs[salespbv1.MenuCourse](&row.Courses)
-	out.AddOns = jsonToDocs[salespbv1.MenuAddOn](row.AddOns)
-	out.PlatePrice = jsonToDoc[money.Money](&row.PlatePrice)
-	out.MinPlates = int32(repox.Deref(row.MinPlates))
-	out.Tax = jsonToDoc[typepbv1.Tax](&row.Tax)
-	out.Active = repox.Deref(row.Active)
+	if row.Contact != "" {
+		out.Contact = "contacts/" + row.Contact
+	}
+	if v := repox.Deref(row.Venue); v != "" {
+		out.Venue = "venues/" + v
+	}
+	out.Kind = sales.LeadKindToProto(sales.LeadKind(row.Kind))
+	out.EventType = sales.EventTypeToProto(sales.EventType(repox.Deref(row.EventType)))
+	out.Source = sales.ChannelToProto(sales.Channel(repox.Deref(row.Source)))
+	out.SourceDetail = repox.Deref(row.SourceDetail)
+	out.Stage = sales.StageToProto(sales.Stage(repox.Deref(row.Stage)))
+	out.Dates = jsonToDocs[typepbv1.DateRange](row.Dates)
+	out.DatesFlexible = repox.Deref(row.DatesFlexible)
+	out.Guests = int32(repox.Deref(row.Guests))
+	out.Rooms = int32(repox.Deref(row.Rooms))
+	out.Budget = jsonToDoc[money.Money](row.Budget)
+	out.Requirements = repox.Deref(row.Requirements)
+	out.Owner = repox.Deref(row.Owner)
+	out.NextFollowUpTime = strToTs(repox.Deref(row.NextFollowUpTime))
+	out.LostReason = sales.LostReasonToProto(sales.LostReason(repox.Deref(row.LostReason)))
+	out.LostDetail = repox.Deref(row.LostDetail)
 	out.Etag = repox.Deref(row.Etag)
 	out.CreateTime = strToTs(row.CreateTime)
 	out.UpdateTime = strToTs(row.UpdateTime)
-	return out
-}
-
-// priceRuleToCreateInput maps the proto onto the client's insert input.
-// Identity (id, name resolution), parentage, audit timestamps, and etag are
-// set by the adapter.
-func priceRuleToCreateInput(in *salespbv1.PriceRule) pricerulesql.CreateInput {
-	var ci pricerulesql.CreateInput
-	ci.Name = in.GetName()
-	ci.DisplayName = in.GetDisplayName()
-	if v := in.GetSeason(); v != "" {
-		ci.Season = v
-	}
-	if v := in.GetTarget(); v != 0 {
-		ci.Target = string(sales.PriceTargetFromProto(v))
-	}
-	ci.MinGuests = int32(in.GetMinGuests())
-	ci.FixedPrice = docToJSON(in.GetFixedPrice())
-	ci.Percent = decToBig(in.GetPercent())
-	ci.Amount = docToJSON(in.GetAmount())
-	ci.Priority = int32(in.GetPriority())
-	ci.Active = in.GetActive()
-	ci.Items = strSliceToPtrs(in.GetItems())
-	switch in.GetAdjustment().(type) {
-	case *salespbv1.PriceRule_FixedPrice:
-		ci.AdjustmentCase = "FIXED_PRICE"
-	case *salespbv1.PriceRule_Percent:
-		ci.AdjustmentCase = "PERCENT"
-	case *salespbv1.PriceRule_Amount:
-		ci.AdjustmentCase = "AMOUNT"
-	}
-	return ci
-}
-
-// priceRuleToUpdatePatch maps the merged proto onto a replace-write
-// patch of every mutable column (mask semantics already applied to merged),
-// mirroring the gorm adapter's write-back exactly.
-func priceRuleToUpdatePatch(merged *salespbv1.PriceRule) pricerulesql.UpdateInput {
-	var patch pricerulesql.UpdateInput
-	patch.Name = graphql.Value(merged.GetName())
-	patch.DisplayName = graphql.Value(merged.GetDisplayName())
-	if v := merged.GetSeason(); v != "" {
-		patch.Season = graphql.Value(v)
-	} else {
-		patch.Season = graphql.Null[string]()
-	}
-	patch.Target = graphql.Value(string(sales.PriceTargetFromProto(merged.GetTarget())))
-	if v := int32(merged.GetMinGuests()); v != 0 {
-		patch.MinGuests = graphql.Value(v)
-	} else {
-		patch.MinGuests = graphql.Null[int32]()
-	}
-	patch.FixedPrice = graphql.Value(docToJSON(merged.GetFixedPrice()))
-	if v := decToBig(merged.GetPercent()); v != graphql.Bigdecimal("") {
-		patch.Percent = graphql.Value(v)
-	} else {
-		patch.Percent = graphql.Null[graphql.Bigdecimal]()
-	}
-	patch.Amount = graphql.Value(docToJSON(merged.GetAmount()))
-	if v := int32(merged.GetPriority()); v != 0 {
-		patch.Priority = graphql.Value(v)
-	} else {
-		patch.Priority = graphql.Null[int32]()
-	}
-	if v := merged.GetActive(); v != false {
-		patch.Active = graphql.Value(v)
-	} else {
-		patch.Active = graphql.Null[bool]()
-	}
-	patch.Items = graphql.Value(strSliceToPtrs(merged.GetItems()))
-	switch merged.GetAdjustment().(type) {
-	case *salespbv1.PriceRule_FixedPrice:
-		patch.AdjustmentCase = graphql.Value("FIXED_PRICE")
-	case *salespbv1.PriceRule_Percent:
-		patch.AdjustmentCase = graphql.Value("PERCENT")
-	case *salespbv1.PriceRule_Amount:
-		patch.AdjustmentCase = graphql.Value("AMOUNT")
-	default:
-		patch.AdjustmentCase = graphql.Null[string]()
-	}
-	return patch
-}
-
-// priceRuleFromRow re-hydrates the proto from a client row, decorating
-// reference names from their stored bare ids.
-func priceRuleFromRow(row *pricerulesql.SalesPriceRules) *salespbv1.PriceRule {
-	if row == nil {
-		return nil
-	}
-	out := &salespbv1.PriceRule{}
-	out.Name = row.Name
-	out.DisplayName = row.DisplayName
-	out.Season = repox.Deref(row.Season)
-	out.Target = sales.PriceTargetToProto(sales.PriceTarget(row.Target))
-	out.MinGuests = int32(repox.Deref(row.MinGuests))
-	if v := jsonToDoc[money.Money](row.FixedPrice); v != nil {
-		out.Adjustment = &salespbv1.PriceRule_FixedPrice{FixedPrice: v}
-	}
-	if row.Percent != nil {
-		out.Adjustment = &salespbv1.PriceRule_Percent{Percent: bigToDec(repox.Deref(row.Percent))}
-	}
-	if v := jsonToDoc[money.Money](row.Amount); v != nil {
-		out.Adjustment = &salespbv1.PriceRule_Amount{Amount: v}
-	}
-	out.Priority = int32(repox.Deref(row.Priority))
-	out.Active = repox.Deref(row.Active)
-	out.Items = strPtrsToSlice(row.Items)
-	out.Etag = repox.Deref(row.Etag)
-	out.CreateTime = strToTs(row.CreateTime)
-	out.UpdateTime = strToTs(row.UpdateTime)
+	out.Hold = repox.Deref(row.Hold)
+	out.Bookings = strPtrsToSlice(row.Bookings)
+	out.CloseTime = strToTs(repox.Deref(row.CloseTime))
 	return out
 }
 
@@ -718,51 +612,5 @@ func quoteFromRow(row *quotesql.SalesQuotes) *salespbv1.Quote {
 	out.AcceptTime = strToTs(repox.Deref(row.AcceptTime))
 	out.Booking = repox.Deref(row.Booking)
 	out.DeclineReason = repox.Deref(row.DeclineReason)
-	return out
-}
-
-// seasonToCreateInput maps the proto onto the client's insert input.
-// Identity (id, name resolution), parentage, audit timestamps, and etag are
-// set by the adapter.
-func seasonToCreateInput(in *salespbv1.Season) seasonsql.CreateInput {
-	var ci seasonsql.CreateInput
-	ci.Name = in.GetName()
-	ci.DisplayName = in.GetDisplayName()
-	ci.Dates = docsToJSON(in.GetDates())
-	ci.RecursYearly = in.GetRecursYearly()
-	// not mapped here: weekdays (unsupported scalar shape)
-	return ci
-}
-
-// seasonToUpdatePatch maps the merged proto onto a replace-write
-// patch of every mutable column (mask semantics already applied to merged),
-// mirroring the gorm adapter's write-back exactly.
-func seasonToUpdatePatch(merged *salespbv1.Season) seasonsql.UpdateInput {
-	var patch seasonsql.UpdateInput
-	patch.Name = graphql.Value(merged.GetName())
-	patch.DisplayName = graphql.Value(merged.GetDisplayName())
-	patch.Dates = graphql.Value(docsToJSON(merged.GetDates()))
-	if v := merged.GetRecursYearly(); v != false {
-		patch.RecursYearly = graphql.Value(v)
-	} else {
-		patch.RecursYearly = graphql.Null[bool]()
-	}
-	return patch
-}
-
-// seasonFromRow re-hydrates the proto from a client row, decorating
-// reference names from their stored bare ids.
-func seasonFromRow(row *seasonsql.SalesSeasons) *salespbv1.Season {
-	if row == nil {
-		return nil
-	}
-	out := &salespbv1.Season{}
-	out.Name = row.Name
-	out.DisplayName = row.DisplayName
-	out.Dates = jsonToDocs[typepbv1.DateRange](row.Dates)
-	out.RecursYearly = repox.Deref(row.RecursYearly)
-	out.Etag = repox.Deref(row.Etag)
-	out.CreateTime = strToTs(row.CreateTime)
-	out.UpdateTime = strToTs(row.UpdateTime)
 	return out
 }

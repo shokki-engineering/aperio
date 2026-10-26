@@ -1,0 +1,373 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventSessions
+  fields:
+    - name: createTime
+      type: Timestamptz!
+    - name: dietaryRequirements
+      type: Json
+    - name: displayName
+      type: String_1!
+    - name: endTime
+      type: Timestamptz!
+    - name: etag
+      type: String_1
+    - name: eventId
+      type: String_1!
+    - name: eventType
+      type: Enum
+    - name: freebusyReservation
+      type: String_1
+    - name: guaranteedGuests
+      type: Int32
+    - name: guests
+      type: Int32!
+    - name: id
+      type: String_1!
+    - name: layout
+      type: Enum
+    - name: menu
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: setupTime
+      type: Timestamptz
+    - name: space
+      type: String_1!
+    - name: specialRequests
+      type: Json
+    - name: startTime
+      type: Timestamptz!
+    - name: teardownTime
+      type: Timestamptz
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: EventSessions
+    inputTypeName: EventSessionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_sessions
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        dietaryRequirements:
+          column:
+            name: dietary_requirements
+        displayName:
+          column:
+            name: display_name
+        endTime:
+          column:
+            name: end_time
+        etag:
+          column:
+            name: etag
+        eventId:
+          column:
+            name: event_id
+        eventType:
+          column:
+            name: event_type
+        freebusyReservation:
+          column:
+            name: freebusy_reservation
+        guaranteedGuests:
+          column:
+            name: guaranteed_guests
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        layout:
+          column:
+            name: layout
+        menu:
+          column:
+            name: menu
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        setupTime:
+          column:
+            name: setup_time
+        space:
+          column:
+            name: space
+        specialRequests:
+          column:
+            name: special_requests
+        startTime:
+          column:
+            name: start_time
+        teardownTime:
+          column:
+            name: teardown_time
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventSessions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - dietaryRequirements
+          - displayName
+          - endTime
+          - etag
+          - eventId
+          - eventType
+          - freebusyReservation
+          - guaranteedGuests
+          - guests
+          - id
+          - layout
+          - menu
+          - name
+          - notes
+          - setupTime
+          - space
+          - specialRequests
+          - startTime
+          - teardownTime
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventSessionsBoolExp
+  operand:
+    object:
+      type: EventSessions
+      comparableFields:
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dietaryRequirements
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: endTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventType
+          booleanExpressionType: EventEventTypeBoolExp
+        - fieldName: freebusyReservation
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteedGuests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: guests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: layout
+          booleanExpressionType: EventLayoutBoolExp
+        - fieldName: menu
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: notes
+          booleanExpressionType: TextBoolExp
+        - fieldName: setupTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: space
+          booleanExpressionType: TextBoolExp
+        - fieldName: specialRequests
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: startTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: teardownTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventSessionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventSessionsAggExp
+  operand:
+    object:
+      aggregatedType: EventSessions
+      aggregatableFields:
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dietaryRequirements
+          aggregateExpression: JsonbAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: endTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: eventId
+          aggregateExpression: TextAggExp
+        - fieldName: eventType
+          aggregateExpression: EventEventTypeAggExp
+        - fieldName: freebusyReservation
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteedGuests
+          aggregateExpression: Int4AggExp
+        - fieldName: guests
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: layout
+          aggregateExpression: EventLayoutAggExp
+        - fieldName: menu
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: notes
+          aggregateExpression: TextAggExp
+        - fieldName: setupTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: space
+          aggregateExpression: TextAggExp
+        - fieldName: specialRequests
+          aggregateExpression: JsonbAggExp
+        - fieldName: startTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: teardownTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventSessionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventSessionsOrderByExp
+  operand:
+    object:
+      orderedType: EventSessions
+      orderableFields:
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dietaryRequirements
+          orderByExpression: JsonOrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: endTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: eventId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventType
+          orderByExpression: EnumOrderByExp
+        - fieldName: freebusyReservation
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteedGuests
+          orderByExpression: Int32OrderByExp
+        - fieldName: guests
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: layout
+          orderByExpression: EnumOrderByExp
+        - fieldName: menu
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: notes
+          orderByExpression: String1OrderByExp
+        - fieldName: setupTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: space
+          orderByExpression: String1OrderByExp
+        - fieldName: specialRequests
+          orderByExpression: JsonOrderByExp
+        - fieldName: startTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: teardownTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventSessionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventSessions
+  objectType: EventSessions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_sessions
+  filterExpressionType: EventSessionsBoolExp
+  aggregateExpression: EventSessionsAggExp
+  orderByExpression: EventSessionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventSessions
+      subscription:
+        rootField: eventSessions
+    selectUniques:
+      - queryRootField: eventSessionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventSessionsById
+    filterInputTypeName: EventSessionsFilterInput
+    aggregate:
+      queryRootField: eventSessionsAggregate
+      subscription:
+        rootField: eventSessionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventSessions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

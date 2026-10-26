@@ -14,121 +14,73 @@
 package salesql
 
 import (
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/dishesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/fixedpackagespacesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/fixedpackagesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/menusql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/pricerulesql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/activitiesql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/leadsql"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/quotesql"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/salesql/seasonsql"
 	"github.com/the-protobuf-project/runtime-go/network/runtime"
 )
 
 // Model type aliases for this domain, re-exported from the owning resource packages.
-type DeleteSalesDishesByIdResponse = dishesql.DeleteSalesDishesByIdResponse
-type InsertSalesDishesResponse = dishesql.InsertSalesDishesResponse
-type SalesDishes = dishesql.SalesDishes
-type SalesDishesAggExp = dishesql.SalesDishesAggExp
-type UpdateSalesDishesByIdResponse = dishesql.UpdateSalesDishesByIdResponse
-type DeleteSalesFixedPackageSpacesByIdResponse = fixedpackagespacesql.DeleteSalesFixedPackageSpacesByIdResponse
-type InsertSalesFixedPackageSpacesResponse = fixedpackagespacesql.InsertSalesFixedPackageSpacesResponse
-type SalesFixedPackageSpaces = fixedpackagespacesql.SalesFixedPackageSpaces
-type SalesFixedPackageSpacesAggExp = fixedpackagespacesql.SalesFixedPackageSpacesAggExp
-type UpdateSalesFixedPackageSpacesByIdResponse = fixedpackagespacesql.UpdateSalesFixedPackageSpacesByIdResponse
-type DeleteSalesFixedPackagesByIdResponse = fixedpackagesql.DeleteSalesFixedPackagesByIdResponse
-type InsertSalesFixedPackagesResponse = fixedpackagesql.InsertSalesFixedPackagesResponse
-type SalesFixedPackages = fixedpackagesql.SalesFixedPackages
-type SalesFixedPackagesAggExp = fixedpackagesql.SalesFixedPackagesAggExp
-type UpdateSalesFixedPackagesByIdResponse = fixedpackagesql.UpdateSalesFixedPackagesByIdResponse
-type DeleteSalesMenusByIdResponse = menusql.DeleteSalesMenusByIdResponse
-type InsertSalesMenusResponse = menusql.InsertSalesMenusResponse
-type SalesMenus = menusql.SalesMenus
-type SalesMenusAggExp = menusql.SalesMenusAggExp
-type UpdateSalesMenusByIdResponse = menusql.UpdateSalesMenusByIdResponse
-type DeleteSalesPriceRulesByIdResponse = pricerulesql.DeleteSalesPriceRulesByIdResponse
-type InsertSalesPriceRulesResponse = pricerulesql.InsertSalesPriceRulesResponse
-type SalesPriceRules = pricerulesql.SalesPriceRules
-type SalesPriceRulesAggExp = pricerulesql.SalesPriceRulesAggExp
-type UpdateSalesPriceRulesByIdResponse = pricerulesql.UpdateSalesPriceRulesByIdResponse
+type DeleteSalesActivitiesByIdResponse = activitiesql.DeleteSalesActivitiesByIdResponse
+type InsertSalesActivitiesResponse = activitiesql.InsertSalesActivitiesResponse
+type SalesActivities = activitiesql.SalesActivities
+type SalesActivitiesAggExp = activitiesql.SalesActivitiesAggExp
+type UpdateSalesActivitiesByIdResponse = activitiesql.UpdateSalesActivitiesByIdResponse
+type DeleteSalesLeadsByIdResponse = leadsql.DeleteSalesLeadsByIdResponse
+type InsertSalesLeadsResponse = leadsql.InsertSalesLeadsResponse
+type SalesLeads = leadsql.SalesLeads
+type SalesLeadsAggExp = leadsql.SalesLeadsAggExp
+type UpdateSalesLeadsByIdResponse = leadsql.UpdateSalesLeadsByIdResponse
 type DeleteSalesQuotesByIdResponse = quotesql.DeleteSalesQuotesByIdResponse
 type InsertSalesQuotesResponse = quotesql.InsertSalesQuotesResponse
 type SalesQuotes = quotesql.SalesQuotes
 type SalesQuotesAggExp = quotesql.SalesQuotesAggExp
 type UpdateSalesQuotesByIdResponse = quotesql.UpdateSalesQuotesByIdResponse
-type DeleteSalesSeasonsByIdResponse = seasonsql.DeleteSalesSeasonsByIdResponse
-type InsertSalesSeasonsResponse = seasonsql.InsertSalesSeasonsResponse
-type SalesSeasons = seasonsql.SalesSeasons
-type SalesSeasonsAggExp = seasonsql.SalesSeasonsAggExp
-type UpdateSalesSeasonsByIdResponse = seasonsql.UpdateSalesSeasonsByIdResponse
 
 // QueryHandler aggregates query handlers for the salesql domain.
 type QueryHandler struct {
-	Dishes             dishesql.QueryHandler
-	FixedPackageSpaces fixedpackagespacesql.QueryHandler
-	FixedPackages      fixedpackagesql.QueryHandler
-	Menus              menusql.QueryHandler
-	PriceRules         pricerulesql.QueryHandler
-	Quotes             quotesql.QueryHandler
-	Seasons            seasonsql.QueryHandler
+	Activities activitiesql.QueryHandler
+	Leads      leadsql.QueryHandler
+	Quotes     quotesql.QueryHandler
 }
 
 // NewQuery wires every query handler in the domain.
 func NewQuery(gql *runtime.GraphQLClient) QueryHandler {
 	return QueryHandler{
-		Dishes:             dishesql.NewQuery(gql),
-		FixedPackageSpaces: fixedpackagespacesql.NewQuery(gql),
-		FixedPackages:      fixedpackagesql.NewQuery(gql),
-		Menus:              menusql.NewQuery(gql),
-		PriceRules:         pricerulesql.NewQuery(gql),
-		Quotes:             quotesql.NewQuery(gql),
-		Seasons:            seasonsql.NewQuery(gql),
+		Activities: activitiesql.NewQuery(gql),
+		Leads:      leadsql.NewQuery(gql),
+		Quotes:     quotesql.NewQuery(gql),
 	}
 }
 
 // MutationHandler aggregates mutation handlers for the salesql domain.
 type MutationHandler struct {
-	Dishes             dishesql.MutationHandler
-	FixedPackageSpaces fixedpackagespacesql.MutationHandler
-	FixedPackages      fixedpackagesql.MutationHandler
-	Menus              menusql.MutationHandler
-	PriceRules         pricerulesql.MutationHandler
-	Quotes             quotesql.MutationHandler
-	Seasons            seasonsql.MutationHandler
+	Activities activitiesql.MutationHandler
+	Leads      leadsql.MutationHandler
+	Quotes     quotesql.MutationHandler
 }
 
 // NewMutation wires every mutation handler in the domain.
 func NewMutation(gql *runtime.GraphQLClient) MutationHandler {
 	return MutationHandler{
-		Dishes:             dishesql.NewMutation(gql),
-		FixedPackageSpaces: fixedpackagespacesql.NewMutation(gql),
-		FixedPackages:      fixedpackagesql.NewMutation(gql),
-		Menus:              menusql.NewMutation(gql),
-		PriceRules:         pricerulesql.NewMutation(gql),
-		Quotes:             quotesql.NewMutation(gql),
-		Seasons:            seasonsql.NewMutation(gql),
+		Activities: activitiesql.NewMutation(gql),
+		Leads:      leadsql.NewMutation(gql),
+		Quotes:     quotesql.NewMutation(gql),
 	}
 }
 
 // SubscriptionHandler aggregates subscription handlers for the salesql domain.
 type SubscriptionHandler struct {
-	Dishes             dishesql.SubscriptionHandler
-	FixedPackageSpaces fixedpackagespacesql.SubscriptionHandler
-	FixedPackages      fixedpackagesql.SubscriptionHandler
-	Menus              menusql.SubscriptionHandler
-	PriceRules         pricerulesql.SubscriptionHandler
-	Quotes             quotesql.SubscriptionHandler
-	Seasons            seasonsql.SubscriptionHandler
+	Activities activitiesql.SubscriptionHandler
+	Leads      leadsql.SubscriptionHandler
+	Quotes     quotesql.SubscriptionHandler
 }
 
 // NewSubscription wires every subscription handler in the domain.
 func NewSubscription(gql *runtime.GraphQLClient) SubscriptionHandler {
 	return SubscriptionHandler{
-		Dishes:             dishesql.NewSubscription(gql),
-		FixedPackageSpaces: fixedpackagespacesql.NewSubscription(gql),
-		FixedPackages:      fixedpackagesql.NewSubscription(gql),
-		Menus:              menusql.NewSubscription(gql),
-		PriceRules:         pricerulesql.NewSubscription(gql),
-		Quotes:             quotesql.NewSubscription(gql),
-		Seasons:            seasonsql.NewSubscription(gql),
+		Activities: activitiesql.NewSubscription(gql),
+		Leads:      leadsql.NewSubscription(gql),
+		Quotes:     quotesql.NewSubscription(gql),
 	}
 }

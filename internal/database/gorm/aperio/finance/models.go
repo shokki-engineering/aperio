@@ -83,21 +83,6 @@ const (
 	PaymentMethodOther PaymentMethod = "OTHER"
 )
 
-// Where a payment is.
-type PaymentState string
-
-// PaymentState values as stored in the database.
-const (
-	// Started, not yet settled: a gateway payment awaiting its webhook, a cheque not yet cleared.
-	PaymentStatePending PaymentState = "PENDING"
-	// The money moved.
-	PaymentStateSucceeded PaymentState = "SUCCEEDED"
-	// It did not go through.
-	PaymentStateFailed PaymentState = "FAILED"
-	// Recorded in error and voided.
-	PaymentStateVoided PaymentState = "VOIDED"
-)
-
 // Channel is where a lead or a booking came from.
 type Channel string
 
@@ -137,6 +122,21 @@ const (
 	ChannelRfp Channel = "RFP"
 	// Another source, described where it is recorded.
 	ChannelOther Channel = "OTHER"
+)
+
+// Where a payment is.
+type PaymentState string
+
+// PaymentState values as stored in the database.
+const (
+	// Started, not yet settled: a gateway payment awaiting its webhook, a cheque not yet cleared.
+	PaymentStatePending PaymentState = "PENDING"
+	// The money moved.
+	PaymentStateSucceeded PaymentState = "SUCCEEDED"
+	// It did not go through.
+	PaymentStateFailed PaymentState = "FAILED"
+	// Recorded in error and voided.
+	PaymentStateVoided PaymentState = "VOIDED"
 )
 
 // An Invoice is a GST document a venue issues: a tax invoice for what it supplied, a proforma before it, a receipt for an advance, or a credit note correcting an issued invoice. A draft is edited freely. IssueInvoice gives it the next number in the venue's series, dates it and fixes it: an issued invoice never changes, and a mistake in one is corrected by a credit note (CreditInvoice), as the law requires. Each line carries its HSN or SAC code and rate; the GST is split into CGST and SGST when the place of supply is in the venue's state, and charged as IGST when it is not.

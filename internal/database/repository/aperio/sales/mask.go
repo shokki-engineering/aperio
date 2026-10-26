@@ -20,158 +20,94 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 )
 
-// applyDishMask merges the masked fields of in onto merged. An empty
+// applyActivityMask merges the masked fields of in onto merged. An empty
 // mask replaces every mutable field; identity, parentage, timestamps, and etag
 // are repository-managed and never masked. Message-typed fields are replaced
 // wholesale when the mask touches them or any of their subpaths, and a oneof is
 // replaced whole when the mask touches any of its arms — it holds at most one.
-func applyDishMask(merged, in *salespbv1.Dish, paths []string) {
+func applyActivityMask(merged, in *salespbv1.Activity, paths []string) {
 	if repox.InMask(paths, "name") {
 		merged.Name = in.GetName()
 	}
-	if repox.InMask(paths, "display_name") {
-		merged.DisplayName = in.GetDisplayName()
+	if repox.InMask(paths, "kind") {
+		merged.Kind = in.GetKind()
 	}
-	if repox.InMask(paths, "description") {
-		merged.Description = in.GetDescription()
+	if repox.GroupTouched(paths, "occur_time") {
+		merged.OccurTime = in.GetOccurTime()
 	}
-	if repox.InMask(paths, "course") {
-		merged.Course = in.GetCourse()
+	if repox.InMask(paths, "summary") {
+		merged.Summary = in.GetSummary()
 	}
-	if repox.InMask(paths, "cuisine") {
-		merged.Cuisine = in.GetCuisine()
+	if repox.InMask(paths, "details") {
+		merged.Details = in.GetDetails()
 	}
-	if repox.InMask(paths, "diets") {
-		merged.Diets = in.GetDiets()
-	}
-	if repox.InMask(paths, "allergens") {
-		merged.Allergens = in.GetAllergens()
-	}
-	if repox.GroupTouched(paths, "price") {
-		merged.Price = in.GetPrice()
-	}
-	if repox.GroupTouched(paths, "tax") {
-		merged.Tax = in.GetTax()
-	}
-	if repox.InMask(paths, "image_uri") {
-		merged.ImageUri = in.GetImageUri()
-	}
-	if repox.InMask(paths, "available") {
-		merged.Available = in.GetAvailable()
+	if repox.InMask(paths, "author") {
+		merged.Author = in.GetAuthor()
 	}
 }
 
-// applyFixedPackageMask merges the masked fields of in onto merged. An empty
+// applyLeadMask merges the masked fields of in onto merged. An empty
 // mask replaces every mutable field; identity, parentage, timestamps, and etag
 // are repository-managed and never masked. Message-typed fields are replaced
 // wholesale when the mask touches them or any of their subpaths, and a oneof is
 // replaced whole when the mask touches any of its arms — it holds at most one.
-func applyFixedPackageMask(merged, in *salespbv1.FixedPackage, paths []string) {
+func applyLeadMask(merged, in *salespbv1.Lead, paths []string) {
 	if repox.InMask(paths, "name") {
 		merged.Name = in.GetName()
 	}
 	if repox.InMask(paths, "display_name") {
 		merged.DisplayName = in.GetDisplayName()
 	}
-	if repox.InMask(paths, "description") {
-		merged.Description = in.GetDescription()
+	if repox.InMask(paths, "contact") {
+		merged.Contact = in.GetContact()
 	}
-	if repox.GroupTouched(paths, "duration") {
-		merged.Duration = in.GetDuration()
+	if repox.InMask(paths, "venue") {
+		merged.Venue = in.GetVenue()
 	}
-	if repox.InMask(paths, "menu") {
-		merged.Menu = in.GetMenu()
+	if repox.InMask(paths, "kind") {
+		merged.Kind = in.GetKind()
 	}
-	if repox.GroupTouched(paths, "inclusions") {
-		merged.Inclusions = in.GetInclusions()
+	if repox.InMask(paths, "event_type") {
+		merged.EventType = in.GetEventType()
 	}
-	if repox.InMask(paths, "included_guests") {
-		merged.IncludedGuests = in.GetIncludedGuests()
+	if repox.InMask(paths, "source") {
+		merged.Source = in.GetSource()
 	}
-	if repox.GroupTouched(paths, "price") {
-		merged.Price = in.GetPrice()
+	if repox.InMask(paths, "source_detail") {
+		merged.SourceDetail = in.GetSourceDetail()
 	}
-	if repox.GroupTouched(paths, "extra_guest_price") {
-		merged.ExtraGuestPrice = in.GetExtraGuestPrice()
+	if repox.InMask(paths, "stage") {
+		merged.Stage = in.GetStage()
 	}
-	if repox.GroupTouched(paths, "tax") {
-		merged.Tax = in.GetTax()
+	if repox.GroupTouched(paths, "dates") {
+		merged.Dates = in.GetDates()
 	}
-	if repox.InMask(paths, "active") {
-		merged.Active = in.GetActive()
+	if repox.InMask(paths, "dates_flexible") {
+		merged.DatesFlexible = in.GetDatesFlexible()
 	}
-}
-
-// applyMenuMask merges the masked fields of in onto merged. An empty
-// mask replaces every mutable field; identity, parentage, timestamps, and etag
-// are repository-managed and never masked. Message-typed fields are replaced
-// wholesale when the mask touches them or any of their subpaths, and a oneof is
-// replaced whole when the mask touches any of its arms — it holds at most one.
-func applyMenuMask(merged, in *salespbv1.Menu, paths []string) {
-	if repox.InMask(paths, "name") {
-		merged.Name = in.GetName()
+	if repox.InMask(paths, "guests") {
+		merged.Guests = in.GetGuests()
 	}
-	if repox.InMask(paths, "display_name") {
-		merged.DisplayName = in.GetDisplayName()
+	if repox.InMask(paths, "rooms") {
+		merged.Rooms = in.GetRooms()
 	}
-	if repox.InMask(paths, "description") {
-		merged.Description = in.GetDescription()
+	if repox.GroupTouched(paths, "budget") {
+		merged.Budget = in.GetBudget()
 	}
-	if repox.InMask(paths, "diets") {
-		merged.Diets = in.GetDiets()
+	if repox.InMask(paths, "requirements") {
+		merged.Requirements = in.GetRequirements()
 	}
-	if repox.GroupTouched(paths, "courses") {
-		merged.Courses = in.GetCourses()
+	if repox.InMask(paths, "owner") {
+		merged.Owner = in.GetOwner()
 	}
-	if repox.GroupTouched(paths, "add_ons") {
-		merged.AddOns = in.GetAddOns()
+	if repox.GroupTouched(paths, "next_follow_up_time") {
+		merged.NextFollowUpTime = in.GetNextFollowUpTime()
 	}
-	if repox.GroupTouched(paths, "plate_price") {
-		merged.PlatePrice = in.GetPlatePrice()
+	if repox.InMask(paths, "lost_reason") {
+		merged.LostReason = in.GetLostReason()
 	}
-	if repox.InMask(paths, "min_plates") {
-		merged.MinPlates = in.GetMinPlates()
-	}
-	if repox.GroupTouched(paths, "tax") {
-		merged.Tax = in.GetTax()
-	}
-	if repox.InMask(paths, "active") {
-		merged.Active = in.GetActive()
-	}
-}
-
-// applyPriceRuleMask merges the masked fields of in onto merged. An empty
-// mask replaces every mutable field; identity, parentage, timestamps, and etag
-// are repository-managed and never masked. Message-typed fields are replaced
-// wholesale when the mask touches them or any of their subpaths, and a oneof is
-// replaced whole when the mask touches any of its arms — it holds at most one.
-func applyPriceRuleMask(merged, in *salespbv1.PriceRule, paths []string) {
-	if repox.InMask(paths, "name") {
-		merged.Name = in.GetName()
-	}
-	if repox.InMask(paths, "display_name") {
-		merged.DisplayName = in.GetDisplayName()
-	}
-	if repox.InMask(paths, "season") {
-		merged.Season = in.GetSeason()
-	}
-	if repox.InMask(paths, "target") {
-		merged.Target = in.GetTarget()
-	}
-	if repox.InMask(paths, "min_guests") {
-		merged.MinGuests = in.GetMinGuests()
-	}
-	if repox.GroupTouched(paths, "fixed_price") || repox.GroupTouched(paths, "percent") || repox.GroupTouched(paths, "amount") {
-		merged.Adjustment = in.Adjustment
-	}
-	if repox.InMask(paths, "priority") {
-		merged.Priority = in.GetPriority()
-	}
-	if repox.InMask(paths, "active") {
-		merged.Active = in.GetActive()
-	}
-	if repox.InMask(paths, "items") {
-		merged.Items = in.GetItems()
+	if repox.InMask(paths, "lost_detail") {
+		merged.LostDetail = in.GetLostDetail()
 	}
 }
 
@@ -216,28 +152,5 @@ func applyQuoteMask(merged, in *salespbv1.Quote, paths []string) {
 	}
 	if repox.GroupTouched(paths, "ttl") {
 		merged.Ttl = in.GetTtl()
-	}
-}
-
-// applySeasonMask merges the masked fields of in onto merged. An empty
-// mask replaces every mutable field; identity, parentage, timestamps, and etag
-// are repository-managed and never masked. Message-typed fields are replaced
-// wholesale when the mask touches them or any of their subpaths, and a oneof is
-// replaced whole when the mask touches any of its arms — it holds at most one.
-func applySeasonMask(merged, in *salespbv1.Season, paths []string) {
-	if repox.InMask(paths, "name") {
-		merged.Name = in.GetName()
-	}
-	if repox.InMask(paths, "display_name") {
-		merged.DisplayName = in.GetDisplayName()
-	}
-	if repox.GroupTouched(paths, "dates") {
-		merged.Dates = in.GetDates()
-	}
-	if repox.InMask(paths, "recurs_yearly") {
-		merged.RecursYearly = in.GetRecursYearly()
-	}
-	if repox.InMask(paths, "weekdays") {
-		merged.Weekdays = in.GetWeekdays()
 	}
 }

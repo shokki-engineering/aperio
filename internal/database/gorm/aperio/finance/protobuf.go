@@ -233,55 +233,6 @@ func PaymentMethodPtrToProto(v *PaymentMethod) financepbv1.PaymentMethod {
 	return PaymentMethodToProto(*v)
 }
 
-// PaymentStateFromProto maps the proto enum onto its stored form ("" for
-// unspecified or unknown values, so the column is omitted / left to default).
-func PaymentStateFromProto(v financepbv1.Payment_State) PaymentState {
-	switch v {
-	case financepbv1.Payment_STATE_PENDING:
-		return PaymentStatePending
-	case financepbv1.Payment_STATE_SUCCEEDED:
-		return PaymentStateSucceeded
-	case financepbv1.Payment_STATE_FAILED:
-		return PaymentStateFailed
-	case financepbv1.Payment_STATE_VOIDED:
-		return PaymentStateVoided
-	}
-	return ""
-}
-
-// PaymentStateToProto maps the stored form back onto the proto enum
-// (unspecified for empty or unknown values).
-func PaymentStateToProto(v PaymentState) financepbv1.Payment_State {
-	switch v {
-	case PaymentStatePending:
-		return financepbv1.Payment_STATE_PENDING
-	case PaymentStateSucceeded:
-		return financepbv1.Payment_STATE_SUCCEEDED
-	case PaymentStateFailed:
-		return financepbv1.Payment_STATE_FAILED
-	case PaymentStateVoided:
-		return financepbv1.Payment_STATE_VOIDED
-	}
-	return 0
-}
-
-// PaymentStatePtrFromProto is PaymentStateFromProto for nullable columns:
-// unspecified maps to nil.
-func PaymentStatePtrFromProto(v financepbv1.Payment_State) *PaymentState {
-	if s := PaymentStateFromProto(v); s != "" {
-		return &s
-	}
-	return nil
-}
-
-// PaymentStatePtrToProto is PaymentStateToProto for nullable columns.
-func PaymentStatePtrToProto(v *PaymentState) financepbv1.Payment_State {
-	if v == nil {
-		return 0
-	}
-	return PaymentStateToProto(*v)
-}
-
 // ChannelFromProto maps the proto enum onto its stored form ("" for
 // unspecified or unknown values, so the column is omitted / left to default).
 func ChannelFromProto(v typepbv1.Channel) Channel {
@@ -381,6 +332,55 @@ func ChannelPtrToProto(v *Channel) typepbv1.Channel {
 		return 0
 	}
 	return ChannelToProto(*v)
+}
+
+// PaymentStateFromProto maps the proto enum onto its stored form ("" for
+// unspecified or unknown values, so the column is omitted / left to default).
+func PaymentStateFromProto(v financepbv1.Payment_State) PaymentState {
+	switch v {
+	case financepbv1.Payment_STATE_PENDING:
+		return PaymentStatePending
+	case financepbv1.Payment_STATE_SUCCEEDED:
+		return PaymentStateSucceeded
+	case financepbv1.Payment_STATE_FAILED:
+		return PaymentStateFailed
+	case financepbv1.Payment_STATE_VOIDED:
+		return PaymentStateVoided
+	}
+	return ""
+}
+
+// PaymentStateToProto maps the stored form back onto the proto enum
+// (unspecified for empty or unknown values).
+func PaymentStateToProto(v PaymentState) financepbv1.Payment_State {
+	switch v {
+	case PaymentStatePending:
+		return financepbv1.Payment_STATE_PENDING
+	case PaymentStateSucceeded:
+		return financepbv1.Payment_STATE_SUCCEEDED
+	case PaymentStateFailed:
+		return financepbv1.Payment_STATE_FAILED
+	case PaymentStateVoided:
+		return financepbv1.Payment_STATE_VOIDED
+	}
+	return 0
+}
+
+// PaymentStatePtrFromProto is PaymentStateFromProto for nullable columns:
+// unspecified maps to nil.
+func PaymentStatePtrFromProto(v financepbv1.Payment_State) *PaymentState {
+	if s := PaymentStateFromProto(v); s != "" {
+		return &s
+	}
+	return nil
+}
+
+// PaymentStatePtrToProto is PaymentStateToProto for nullable columns.
+func PaymentStatePtrToProto(v *PaymentState) financepbv1.Payment_State {
+	if v == nil {
+		return 0
+	}
+	return PaymentStateToProto(*v)
 }
 
 // InvoiceToProto converts the stored row (with its belongs-to associations,

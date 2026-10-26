@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: SalesActivities
+  fields:
+    - name: author
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: details
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: kind
+      type: Enum!
+    - name: leadId
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: occurTime
+      type: Timestamptz!
+    - name: summary
+      type: String_1!
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: SalesActivities
+    inputTypeName: SalesActivitiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: sales_activities
+      fieldMapping:
+        author:
+          column:
+            name: author
+        createTime:
+          column:
+            name: create_time
+        details:
+          column:
+            name: details
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        kind:
+          column:
+            name: kind
+        leadId:
+          column:
+            name: lead_id
+        name:
+          column:
+            name: name
+        occurTime:
+          column:
+            name: occur_time
+        summary:
+          column:
+            name: summary
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: SalesActivities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - author
+          - createTime
+          - details
+          - etag
+          - id
+          - kind
+          - leadId
+          - name
+          - occurTime
+          - summary
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SalesActivitiesBoolExp
+  operand:
+    object:
+      type: SalesActivities
+      comparableFields:
+        - fieldName: author
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: details
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: kind
+          booleanExpressionType: SalesActivityKindBoolExp
+        - fieldName: leadId
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: occurTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: summary
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SalesActivitiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: SalesActivitiesAggExp
+  operand:
+    object:
+      aggregatedType: SalesActivities
+      aggregatableFields:
+        - fieldName: author
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: details
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: kind
+          aggregateExpression: SalesActivityKindAggExp
+        - fieldName: leadId
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: occurTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: summary
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: SalesActivitiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: SalesActivitiesOrderByExp
+  operand:
+    object:
+      orderedType: SalesActivities
+      orderableFields:
+        - fieldName: author
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: details
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: kind
+          orderByExpression: EnumOrderByExp
+        - fieldName: leadId
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: occurTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: summary
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: SalesActivitiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: SalesActivities
+  objectType: SalesActivities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: sales_activities
+  filterExpressionType: SalesActivitiesBoolExp
+  aggregateExpression: SalesActivitiesAggExp
+  orderByExpression: SalesActivitiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: salesActivities
+      subscription:
+        rootField: salesActivities
+    selectUniques:
+      - queryRootField: salesActivitiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: salesActivitiesById
+    filterInputTypeName: SalesActivitiesFilterInput
+    aggregate:
+      queryRootField: salesActivitiesAggregate
+      subscription:
+        rootField: salesActivitiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: SalesActivities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

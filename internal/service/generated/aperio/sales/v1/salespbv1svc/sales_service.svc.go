@@ -20,18 +20,14 @@ import (
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // SalesServiceRepositories are the generated repositories SalesServiceServer
 // persists through, each opened by its schema package's New.
 type SalesServiceRepositories struct {
-	Dishes        sales.DishRepository
-	Menus         sales.MenuRepository
-	FixedPackages sales.FixedPackageRepository
-	Seasons       sales.SeasonRepository
-	PriceRules    sales.PriceRuleRepository
-	Quotes        sales.QuoteRepository
+	Leads      sales.LeadRepository
+	Activities sales.ActivityRepository
+	Quotes     sales.QuoteRepository
 }
 
 // SalesServiceHooks is the business logic SalesServiceServer runs around its
@@ -40,86 +36,24 @@ type SalesServiceRepositories struct {
 // problem.Translator: a *problem.Problem (servicex.BadField, Missing,
 // Blocked), an error wrapping a registered sentinel, or a gRPC status.
 type SalesServiceHooks interface {
-	// ValidateDish checks the dish about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
-	ValidateDish(ctx context.Context, op servicex.Op, m *salespbv1.Dish, paths []string) error
-	// ParentCheckDish checks the parent the dish is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
-	ParentCheckDish(ctx context.Context, op servicex.Op, parent string) error
-	// BeforeCreateDish runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
-	BeforeCreateDish(ctx context.Context, parent string, m *salespbv1.Dish) error
-	// AfterCreateDish runs after a create is written; an error fails the call, though the record stays.
-	AfterCreateDish(ctx context.Context, m *salespbv1.Dish) error
-	// BeforeUpdateDish runs last before an update is written (or previewed).
-	BeforeUpdateDish(ctx context.Context, m *salespbv1.Dish, paths []string) error
-	// AfterUpdateDish runs after an update is written.
-	AfterUpdateDish(ctx context.Context, m *salespbv1.Dish) error
-	// BeforeDeleteDish runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteDish(ctx context.Context, name string, force bool) error
-	// AfterDeleteDish runs after a delete.
-	AfterDeleteDish(ctx context.Context, name string) error
-	// ValidateMenu checks the menu about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
-	ValidateMenu(ctx context.Context, op servicex.Op, m *salespbv1.Menu, paths []string) error
-	// ParentCheckMenu checks the parent the menu is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
-	ParentCheckMenu(ctx context.Context, op servicex.Op, parent string) error
-	// BeforeCreateMenu runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
-	BeforeCreateMenu(ctx context.Context, parent string, m *salespbv1.Menu) error
-	// AfterCreateMenu runs after a create is written; an error fails the call, though the record stays.
-	AfterCreateMenu(ctx context.Context, m *salespbv1.Menu) error
-	// BeforeUpdateMenu runs last before an update is written (or previewed).
-	BeforeUpdateMenu(ctx context.Context, m *salespbv1.Menu, paths []string) error
-	// AfterUpdateMenu runs after an update is written.
-	AfterUpdateMenu(ctx context.Context, m *salespbv1.Menu) error
-	// BeforeDeleteMenu runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteMenu(ctx context.Context, name string, force bool) error
-	// AfterDeleteMenu runs after a delete.
-	AfterDeleteMenu(ctx context.Context, name string) error
-	// ValidateFixedPackage checks the fixed package about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
-	ValidateFixedPackage(ctx context.Context, op servicex.Op, m *salespbv1.FixedPackage, paths []string) error
-	// ParentCheckFixedPackage checks the parent the fixed package is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
-	ParentCheckFixedPackage(ctx context.Context, op servicex.Op, parent string) error
-	// BeforeCreateFixedPackage runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
-	BeforeCreateFixedPackage(ctx context.Context, parent string, m *salespbv1.FixedPackage) error
-	// AfterCreateFixedPackage runs after a create is written; an error fails the call, though the record stays.
-	AfterCreateFixedPackage(ctx context.Context, m *salespbv1.FixedPackage) error
-	// BeforeUpdateFixedPackage runs last before an update is written (or previewed).
-	BeforeUpdateFixedPackage(ctx context.Context, m *salespbv1.FixedPackage, paths []string) error
-	// AfterUpdateFixedPackage runs after an update is written.
-	AfterUpdateFixedPackage(ctx context.Context, m *salespbv1.FixedPackage) error
-	// BeforeDeleteFixedPackage runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteFixedPackage(ctx context.Context, name string, force bool) error
-	// AfterDeleteFixedPackage runs after a delete.
-	AfterDeleteFixedPackage(ctx context.Context, name string) error
-	// ValidateSeason checks the season about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
-	ValidateSeason(ctx context.Context, op servicex.Op, m *salespbv1.Season, paths []string) error
-	// ParentCheckSeason checks the parent the season is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
-	ParentCheckSeason(ctx context.Context, op servicex.Op, parent string) error
-	// BeforeCreateSeason runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
-	BeforeCreateSeason(ctx context.Context, parent string, m *salespbv1.Season) error
-	// AfterCreateSeason runs after a create is written; an error fails the call, though the record stays.
-	AfterCreateSeason(ctx context.Context, m *salespbv1.Season) error
-	// BeforeUpdateSeason runs last before an update is written (or previewed).
-	BeforeUpdateSeason(ctx context.Context, m *salespbv1.Season, paths []string) error
-	// AfterUpdateSeason runs after an update is written.
-	AfterUpdateSeason(ctx context.Context, m *salespbv1.Season) error
-	// BeforeDeleteSeason runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteSeason(ctx context.Context, name string, force bool) error
-	// AfterDeleteSeason runs after a delete.
-	AfterDeleteSeason(ctx context.Context, name string) error
-	// ValidatePriceRule checks the price rule about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
-	ValidatePriceRule(ctx context.Context, op servicex.Op, m *salespbv1.PriceRule, paths []string) error
-	// ParentCheckPriceRule checks the parent the price rule is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
-	ParentCheckPriceRule(ctx context.Context, op servicex.Op, parent string) error
-	// BeforeCreatePriceRule runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
-	BeforeCreatePriceRule(ctx context.Context, parent string, m *salespbv1.PriceRule) error
-	// AfterCreatePriceRule runs after a create is written; an error fails the call, though the record stays.
-	AfterCreatePriceRule(ctx context.Context, m *salespbv1.PriceRule) error
-	// BeforeUpdatePriceRule runs last before an update is written (or previewed).
-	BeforeUpdatePriceRule(ctx context.Context, m *salespbv1.PriceRule, paths []string) error
-	// AfterUpdatePriceRule runs after an update is written.
-	AfterUpdatePriceRule(ctx context.Context, m *salespbv1.PriceRule) error
-	// BeforeDeletePriceRule runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeletePriceRule(ctx context.Context, name string, force bool) error
-	// AfterDeletePriceRule runs after a delete.
-	AfterDeletePriceRule(ctx context.Context, name string) error
+	// ValidateLead checks the lead about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
+	ValidateLead(ctx context.Context, op servicex.Op, m *salespbv1.Lead, paths []string) error
+	// BeforeCreateLead runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
+	BeforeCreateLead(ctx context.Context, parent string, m *salespbv1.Lead) error
+	// AfterCreateLead runs after a create is written; an error fails the call, though the record stays.
+	AfterCreateLead(ctx context.Context, m *salespbv1.Lead) error
+	// BeforeUpdateLead runs last before an update is written (or previewed).
+	BeforeUpdateLead(ctx context.Context, m *salespbv1.Lead, paths []string) error
+	// AfterUpdateLead runs after an update is written.
+	AfterUpdateLead(ctx context.Context, m *salespbv1.Lead) error
+	// ValidateActivity checks the activity about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
+	ValidateActivity(ctx context.Context, op servicex.Op, m *salespbv1.Activity, paths []string) error
+	// ParentCheckActivity checks the parent the activity is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
+	ParentCheckActivity(ctx context.Context, op servicex.Op, parent string) error
+	// BeforeCreateActivity runs last before a create is written (or, with validate_only, returned): m has its name, when the caller chose one, and no server-owned field.
+	BeforeCreateActivity(ctx context.Context, parent string, m *salespbv1.Activity) error
+	// AfterCreateActivity runs after a create is written; an error fails the call, though the record stays.
+	AfterCreateActivity(ctx context.Context, m *salespbv1.Activity) error
 	// ValidateQuote checks the quote about to be written, after the standard checks: a reference that must name a live resource, a rule between fields. paths is the update mask (empty: every field), nil on create.
 	ValidateQuote(ctx context.Context, op servicex.Op, m *salespbv1.Quote, paths []string) error
 	// ParentCheckQuote checks the parent the quote is created or listed under, after its shape is checked: that it exists and is live, say. A List parent may hold AIP-159 wildcards.
@@ -132,10 +66,6 @@ type SalesServiceHooks interface {
 	BeforeUpdateQuote(ctx context.Context, m *salespbv1.Quote, paths []string) error
 	// AfterUpdateQuote runs after an update is written.
 	AfterUpdateQuote(ctx context.Context, m *salespbv1.Quote) error
-	// BeforeDeleteQuote runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteQuote(ctx context.Context, name string, force bool) error
-	// AfterDeleteQuote runs after a delete.
-	AfterDeleteQuote(ctx context.Context, name string) error
 }
 
 // NopSalesServiceHooks implements every hook as doing nothing.
@@ -143,189 +73,46 @@ type NopSalesServiceHooks struct{}
 
 var _ SalesServiceHooks = NopSalesServiceHooks{}
 
-// ValidateDish does nothing.
-func (NopSalesServiceHooks) ValidateDish(ctx context.Context, op servicex.Op, m *salespbv1.Dish, paths []string) error {
+// ValidateLead does nothing.
+func (NopSalesServiceHooks) ValidateLead(ctx context.Context, op servicex.Op, m *salespbv1.Lead, paths []string) error {
 	return nil
 }
 
-// ParentCheckDish does nothing.
-func (NopSalesServiceHooks) ParentCheckDish(ctx context.Context, op servicex.Op, parent string) error {
+// BeforeCreateLead does nothing.
+func (NopSalesServiceHooks) BeforeCreateLead(ctx context.Context, parent string, m *salespbv1.Lead) error {
 	return nil
 }
 
-// BeforeCreateDish does nothing.
-func (NopSalesServiceHooks) BeforeCreateDish(ctx context.Context, parent string, m *salespbv1.Dish) error {
+// AfterCreateLead does nothing.
+func (NopSalesServiceHooks) AfterCreateLead(ctx context.Context, m *salespbv1.Lead) error { return nil }
+
+// BeforeUpdateLead does nothing.
+func (NopSalesServiceHooks) BeforeUpdateLead(ctx context.Context, m *salespbv1.Lead, paths []string) error {
 	return nil
 }
 
-// AfterCreateDish does nothing.
-func (NopSalesServiceHooks) AfterCreateDish(ctx context.Context, m *salespbv1.Dish) error { return nil }
+// AfterUpdateLead does nothing.
+func (NopSalesServiceHooks) AfterUpdateLead(ctx context.Context, m *salespbv1.Lead) error { return nil }
 
-// BeforeUpdateDish does nothing.
-func (NopSalesServiceHooks) BeforeUpdateDish(ctx context.Context, m *salespbv1.Dish, paths []string) error {
+// ValidateActivity does nothing.
+func (NopSalesServiceHooks) ValidateActivity(ctx context.Context, op servicex.Op, m *salespbv1.Activity, paths []string) error {
 	return nil
 }
 
-// AfterUpdateDish does nothing.
-func (NopSalesServiceHooks) AfterUpdateDish(ctx context.Context, m *salespbv1.Dish) error { return nil }
-
-// BeforeDeleteDish does nothing.
-func (NopSalesServiceHooks) BeforeDeleteDish(ctx context.Context, name string, force bool) error {
+// ParentCheckActivity does nothing.
+func (NopSalesServiceHooks) ParentCheckActivity(ctx context.Context, op servicex.Op, parent string) error {
 	return nil
 }
 
-// AfterDeleteDish does nothing.
-func (NopSalesServiceHooks) AfterDeleteDish(ctx context.Context, name string) error { return nil }
-
-// ValidateMenu does nothing.
-func (NopSalesServiceHooks) ValidateMenu(ctx context.Context, op servicex.Op, m *salespbv1.Menu, paths []string) error {
+// BeforeCreateActivity does nothing.
+func (NopSalesServiceHooks) BeforeCreateActivity(ctx context.Context, parent string, m *salespbv1.Activity) error {
 	return nil
 }
 
-// ParentCheckMenu does nothing.
-func (NopSalesServiceHooks) ParentCheckMenu(ctx context.Context, op servicex.Op, parent string) error {
+// AfterCreateActivity does nothing.
+func (NopSalesServiceHooks) AfterCreateActivity(ctx context.Context, m *salespbv1.Activity) error {
 	return nil
 }
-
-// BeforeCreateMenu does nothing.
-func (NopSalesServiceHooks) BeforeCreateMenu(ctx context.Context, parent string, m *salespbv1.Menu) error {
-	return nil
-}
-
-// AfterCreateMenu does nothing.
-func (NopSalesServiceHooks) AfterCreateMenu(ctx context.Context, m *salespbv1.Menu) error { return nil }
-
-// BeforeUpdateMenu does nothing.
-func (NopSalesServiceHooks) BeforeUpdateMenu(ctx context.Context, m *salespbv1.Menu, paths []string) error {
-	return nil
-}
-
-// AfterUpdateMenu does nothing.
-func (NopSalesServiceHooks) AfterUpdateMenu(ctx context.Context, m *salespbv1.Menu) error { return nil }
-
-// BeforeDeleteMenu does nothing.
-func (NopSalesServiceHooks) BeforeDeleteMenu(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteMenu does nothing.
-func (NopSalesServiceHooks) AfterDeleteMenu(ctx context.Context, name string) error { return nil }
-
-// ValidateFixedPackage does nothing.
-func (NopSalesServiceHooks) ValidateFixedPackage(ctx context.Context, op servicex.Op, m *salespbv1.FixedPackage, paths []string) error {
-	return nil
-}
-
-// ParentCheckFixedPackage does nothing.
-func (NopSalesServiceHooks) ParentCheckFixedPackage(ctx context.Context, op servicex.Op, parent string) error {
-	return nil
-}
-
-// BeforeCreateFixedPackage does nothing.
-func (NopSalesServiceHooks) BeforeCreateFixedPackage(ctx context.Context, parent string, m *salespbv1.FixedPackage) error {
-	return nil
-}
-
-// AfterCreateFixedPackage does nothing.
-func (NopSalesServiceHooks) AfterCreateFixedPackage(ctx context.Context, m *salespbv1.FixedPackage) error {
-	return nil
-}
-
-// BeforeUpdateFixedPackage does nothing.
-func (NopSalesServiceHooks) BeforeUpdateFixedPackage(ctx context.Context, m *salespbv1.FixedPackage, paths []string) error {
-	return nil
-}
-
-// AfterUpdateFixedPackage does nothing.
-func (NopSalesServiceHooks) AfterUpdateFixedPackage(ctx context.Context, m *salespbv1.FixedPackage) error {
-	return nil
-}
-
-// BeforeDeleteFixedPackage does nothing.
-func (NopSalesServiceHooks) BeforeDeleteFixedPackage(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteFixedPackage does nothing.
-func (NopSalesServiceHooks) AfterDeleteFixedPackage(ctx context.Context, name string) error {
-	return nil
-}
-
-// ValidateSeason does nothing.
-func (NopSalesServiceHooks) ValidateSeason(ctx context.Context, op servicex.Op, m *salespbv1.Season, paths []string) error {
-	return nil
-}
-
-// ParentCheckSeason does nothing.
-func (NopSalesServiceHooks) ParentCheckSeason(ctx context.Context, op servicex.Op, parent string) error {
-	return nil
-}
-
-// BeforeCreateSeason does nothing.
-func (NopSalesServiceHooks) BeforeCreateSeason(ctx context.Context, parent string, m *salespbv1.Season) error {
-	return nil
-}
-
-// AfterCreateSeason does nothing.
-func (NopSalesServiceHooks) AfterCreateSeason(ctx context.Context, m *salespbv1.Season) error {
-	return nil
-}
-
-// BeforeUpdateSeason does nothing.
-func (NopSalesServiceHooks) BeforeUpdateSeason(ctx context.Context, m *salespbv1.Season, paths []string) error {
-	return nil
-}
-
-// AfterUpdateSeason does nothing.
-func (NopSalesServiceHooks) AfterUpdateSeason(ctx context.Context, m *salespbv1.Season) error {
-	return nil
-}
-
-// BeforeDeleteSeason does nothing.
-func (NopSalesServiceHooks) BeforeDeleteSeason(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteSeason does nothing.
-func (NopSalesServiceHooks) AfterDeleteSeason(ctx context.Context, name string) error { return nil }
-
-// ValidatePriceRule does nothing.
-func (NopSalesServiceHooks) ValidatePriceRule(ctx context.Context, op servicex.Op, m *salespbv1.PriceRule, paths []string) error {
-	return nil
-}
-
-// ParentCheckPriceRule does nothing.
-func (NopSalesServiceHooks) ParentCheckPriceRule(ctx context.Context, op servicex.Op, parent string) error {
-	return nil
-}
-
-// BeforeCreatePriceRule does nothing.
-func (NopSalesServiceHooks) BeforeCreatePriceRule(ctx context.Context, parent string, m *salespbv1.PriceRule) error {
-	return nil
-}
-
-// AfterCreatePriceRule does nothing.
-func (NopSalesServiceHooks) AfterCreatePriceRule(ctx context.Context, m *salespbv1.PriceRule) error {
-	return nil
-}
-
-// BeforeUpdatePriceRule does nothing.
-func (NopSalesServiceHooks) BeforeUpdatePriceRule(ctx context.Context, m *salespbv1.PriceRule, paths []string) error {
-	return nil
-}
-
-// AfterUpdatePriceRule does nothing.
-func (NopSalesServiceHooks) AfterUpdatePriceRule(ctx context.Context, m *salespbv1.PriceRule) error {
-	return nil
-}
-
-// BeforeDeletePriceRule does nothing.
-func (NopSalesServiceHooks) BeforeDeletePriceRule(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeletePriceRule does nothing.
-func (NopSalesServiceHooks) AfterDeletePriceRule(ctx context.Context, name string) error { return nil }
 
 // ValidateQuote does nothing.
 func (NopSalesServiceHooks) ValidateQuote(ctx context.Context, op servicex.Op, m *salespbv1.Quote, paths []string) error {
@@ -357,20 +144,12 @@ func (NopSalesServiceHooks) AfterUpdateQuote(ctx context.Context, m *salespbv1.Q
 	return nil
 }
 
-// BeforeDeleteQuote does nothing.
-func (NopSalesServiceHooks) BeforeDeleteQuote(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteQuote does nothing.
-func (NopSalesServiceHooks) AfterDeleteQuote(ctx context.Context, name string) error { return nil }
-
 // SalesServiceServer serves aperio.sales.v1.SalesService's AIP standard methods over the
 // generated repositories.
 //
 // Custom methods are answered by the embedded UnimplementedSalesServiceServer
 // until you write them: embed *SalesServiceServer in a type of your own and
-// define SendQuote, AcceptQuote, DeclineQuote, ReviseQuote, CalculatePrice on it. Define a standard method there too to
+// define SendQuote, AcceptQuote, DeclineQuote, ReviseQuote on it. Define a standard method there too to
 // replace the generated one.
 type SalesServiceServer struct {
 	salespbv1.UnimplementedSalesServiceServer
@@ -403,201 +182,77 @@ func (s *SalesServiceServer) Options() servicex.Options { return s.opts }
 // Repositories are the repositories the server persists through.
 func (s *SalesServiceServer) Repositories() SalesServiceRepositories { return s.repos }
 
-const salesServiceDishType = "aperio.sales.v1/Dish"
+const salesServiceLeadType = "aperio.sales.v1/Lead"
 
 var (
-	salesServiceDishCollections = []string{"venues", "dishes"}
-	salesServiceDishParent      = []string{"venues"}
-	salesServiceDishRequired    = []string{"display_name", "course"}
-	salesServiceDishOutputOnly  = []string{"create_time", "update_time"}
+	salesServiceLeadCollections = []string{"leads"}
+	salesServiceLeadRequired    = []string{"display_name", "contact", "kind"}
+	salesServiceLeadOutputOnly  = []string{"hold", "bookings", "close_time", "create_time", "update_time"}
 )
 
-// createDish is AIP-133's create of in under parent, named name
-// ("" has the repository mint an id), shared by CreateDish and an
+// createLead is AIP-133's create of in under parent, named name
+// ("" has the repository mint an id), shared by CreateLead and an
 // allow_missing update.
-func (s *SalesServiceServer) createDish(ctx context.Context, parent, name string, in *salespbv1.Dish, validateOnly bool) (*salespbv1.Dish, error) {
-	servicex.ClearOutputOnly(in, salesServiceDishOutputOnly)
+func (s *SalesServiceServer) createLead(ctx context.Context, parent, name string, in *salespbv1.Lead, validateOnly bool) (*salespbv1.Lead, error) {
+	servicex.ClearOutputOnly(in, salesServiceLeadOutputOnly)
 	in.Name = name
-	if err := servicex.Required(in, "dish", salesServiceDishRequired); err != nil {
+	if err := servicex.Required(in, "lead", salesServiceLeadRequired); err != nil {
 		return nil, err
 	}
-	if err := s.hooks.ParentCheckDish(ctx, servicex.OpCreate, parent); err != nil {
+	if err := s.hooks.ValidateLead(ctx, servicex.OpCreate, in, nil); err != nil {
 		return nil, err
 	}
-	if err := s.hooks.ValidateDish(ctx, servicex.OpCreate, in, nil); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.BeforeCreateDish(ctx, parent, in); err != nil {
+	if err := s.hooks.BeforeCreateLead(ctx, parent, in); err != nil {
 		return nil, err
 	}
 	if validateOnly {
 		return in, nil
 	}
-	out, err := s.repos.Dishes.Create(ctx, parent, in)
+	out, err := s.repos.Leads.Create(ctx, in)
 	if err != nil {
-		return nil, servicex.AlreadyExistsAs(err, salesServiceDishType, name, "Choose another dish_id, or leave it empty to have one assigned")
+		return nil, servicex.AlreadyExistsAs(err, salesServiceLeadType, name, "Choose another lead_id, or leave it empty to have one assigned")
 	}
-	if err := s.hooks.AfterCreateDish(ctx, out); err != nil {
+	if err := s.hooks.AfterCreateLead(ctx, out); err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-const salesServiceMenuType = "aperio.sales.v1/Menu"
+const salesServiceActivityType = "aperio.sales.v1/Activity"
 
 var (
-	salesServiceMenuCollections = []string{"venues", "menus"}
-	salesServiceMenuParent      = []string{"venues"}
-	salesServiceMenuRequired    = []string{"display_name", "courses", "plate_price", "tax"}
-	salesServiceMenuOutputOnly  = []string{"create_time", "update_time"}
+	salesServiceActivityCollections = []string{"leads", "activities"}
+	salesServiceActivityParent      = []string{"leads"}
+	salesServiceActivityRequired    = []string{"kind", "occur_time", "summary"}
+	salesServiceActivityOutputOnly  = []string{"create_time", "update_time"}
 )
 
-// createMenu is AIP-133's create of in under parent, named name
-// ("" has the repository mint an id), shared by CreateMenu and an
+// createActivity is AIP-133's create of in under parent, named name
+// ("" has the repository mint an id), shared by CreateActivity and an
 // allow_missing update.
-func (s *SalesServiceServer) createMenu(ctx context.Context, parent, name string, in *salespbv1.Menu, validateOnly bool) (*salespbv1.Menu, error) {
-	servicex.ClearOutputOnly(in, salesServiceMenuOutputOnly)
+func (s *SalesServiceServer) createActivity(ctx context.Context, parent, name string, in *salespbv1.Activity, validateOnly bool) (*salespbv1.Activity, error) {
+	servicex.ClearOutputOnly(in, salesServiceActivityOutputOnly)
 	in.Name = name
-	if err := servicex.Required(in, "menu", salesServiceMenuRequired); err != nil {
+	if err := servicex.Required(in, "activity", salesServiceActivityRequired); err != nil {
 		return nil, err
 	}
-	if err := s.hooks.ParentCheckMenu(ctx, servicex.OpCreate, parent); err != nil {
+	if err := s.hooks.ParentCheckActivity(ctx, servicex.OpCreate, parent); err != nil {
 		return nil, err
 	}
-	if err := s.hooks.ValidateMenu(ctx, servicex.OpCreate, in, nil); err != nil {
+	if err := s.hooks.ValidateActivity(ctx, servicex.OpCreate, in, nil); err != nil {
 		return nil, err
 	}
-	if err := s.hooks.BeforeCreateMenu(ctx, parent, in); err != nil {
+	if err := s.hooks.BeforeCreateActivity(ctx, parent, in); err != nil {
 		return nil, err
 	}
 	if validateOnly {
 		return in, nil
 	}
-	out, err := s.repos.Menus.Create(ctx, parent, in)
+	out, err := s.repos.Activities.Create(ctx, parent, in)
 	if err != nil {
-		return nil, servicex.AlreadyExistsAs(err, salesServiceMenuType, name, "Choose another menu_id, or leave it empty to have one assigned")
+		return nil, servicex.AlreadyExistsAs(err, salesServiceActivityType, name, "Choose another activity_id, or leave it empty to have one assigned")
 	}
-	if err := s.hooks.AfterCreateMenu(ctx, out); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-const salesServiceFixedPackageType = "aperio.sales.v1/FixedPackage"
-
-var (
-	salesServiceFixedPackageCollections = []string{"venues", "fixedPackages"}
-	salesServiceFixedPackageParent      = []string{"venues"}
-	salesServiceFixedPackageRequired    = []string{"display_name", "included_guests", "price", "tax"}
-	salesServiceFixedPackageOutputOnly  = []string{"create_time", "update_time"}
-)
-
-// createFixedPackage is AIP-133's create of in under parent, named name
-// ("" has the repository mint an id), shared by CreateFixedPackage and an
-// allow_missing update.
-func (s *SalesServiceServer) createFixedPackage(ctx context.Context, parent, name string, in *salespbv1.FixedPackage, validateOnly bool) (*salespbv1.FixedPackage, error) {
-	servicex.ClearOutputOnly(in, salesServiceFixedPackageOutputOnly)
-	in.Name = name
-	if err := servicex.Required(in, "fixed_package", salesServiceFixedPackageRequired); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.ParentCheckFixedPackage(ctx, servicex.OpCreate, parent); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.ValidateFixedPackage(ctx, servicex.OpCreate, in, nil); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.BeforeCreateFixedPackage(ctx, parent, in); err != nil {
-		return nil, err
-	}
-	if validateOnly {
-		return in, nil
-	}
-	out, err := s.repos.FixedPackages.Create(ctx, parent, in)
-	if err != nil {
-		return nil, servicex.AlreadyExistsAs(err, salesServiceFixedPackageType, name, "Choose another fixed_package_id, or leave it empty to have one assigned")
-	}
-	if err := s.hooks.AfterCreateFixedPackage(ctx, out); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-const salesServiceSeasonType = "aperio.sales.v1/Season"
-
-var (
-	salesServiceSeasonCollections = []string{"venues", "seasons"}
-	salesServiceSeasonParent      = []string{"venues"}
-	salesServiceSeasonRequired    = []string{"display_name"}
-	salesServiceSeasonOutputOnly  = []string{"create_time", "update_time"}
-)
-
-// createSeason is AIP-133's create of in under parent, named name
-// ("" has the repository mint an id), shared by CreateSeason and an
-// allow_missing update.
-func (s *SalesServiceServer) createSeason(ctx context.Context, parent, name string, in *salespbv1.Season, validateOnly bool) (*salespbv1.Season, error) {
-	servicex.ClearOutputOnly(in, salesServiceSeasonOutputOnly)
-	in.Name = name
-	if err := servicex.Required(in, "season", salesServiceSeasonRequired); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.ParentCheckSeason(ctx, servicex.OpCreate, parent); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.ValidateSeason(ctx, servicex.OpCreate, in, nil); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.BeforeCreateSeason(ctx, parent, in); err != nil {
-		return nil, err
-	}
-	if validateOnly {
-		return in, nil
-	}
-	out, err := s.repos.Seasons.Create(ctx, parent, in)
-	if err != nil {
-		return nil, servicex.AlreadyExistsAs(err, salesServiceSeasonType, name, "Choose another season_id, or leave it empty to have one assigned")
-	}
-	if err := s.hooks.AfterCreateSeason(ctx, out); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-const salesServicePriceRuleType = "aperio.sales.v1/PriceRule"
-
-var (
-	salesServicePriceRuleCollections = []string{"venues", "priceRules"}
-	salesServicePriceRuleParent      = []string{"venues"}
-	salesServicePriceRuleRequired    = []string{"display_name", "target"}
-	salesServicePriceRuleOutputOnly  = []string{"create_time", "update_time"}
-)
-
-// createPriceRule is AIP-133's create of in under parent, named name
-// ("" has the repository mint an id), shared by CreatePriceRule and an
-// allow_missing update.
-func (s *SalesServiceServer) createPriceRule(ctx context.Context, parent, name string, in *salespbv1.PriceRule, validateOnly bool) (*salespbv1.PriceRule, error) {
-	servicex.ClearOutputOnly(in, salesServicePriceRuleOutputOnly)
-	in.Name = name
-	if err := servicex.Required(in, "price_rule", salesServicePriceRuleRequired); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.ParentCheckPriceRule(ctx, servicex.OpCreate, parent); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.ValidatePriceRule(ctx, servicex.OpCreate, in, nil); err != nil {
-		return nil, err
-	}
-	if err := s.hooks.BeforeCreatePriceRule(ctx, parent, in); err != nil {
-		return nil, err
-	}
-	if validateOnly {
-		return in, nil
-	}
-	out, err := s.repos.PriceRules.Create(ctx, parent, in)
-	if err != nil {
-		return nil, servicex.AlreadyExistsAs(err, salesServicePriceRuleType, name, "Choose another price_rule_id, or leave it empty to have one assigned")
-	}
-	if err := s.hooks.AfterCreatePriceRule(ctx, out); err != nil {
+	if err := s.hooks.AfterCreateActivity(ctx, out); err != nil {
 		return nil, err
 	}
 	return out, nil
@@ -643,16 +298,16 @@ func (s *SalesServiceServer) createQuote(ctx context.Context, parent, name strin
 	return out, nil
 }
 
-// GetDish is AIP-131's Get: the dish by name, deleted or not.
-func (s *SalesServiceServer) GetDish(ctx context.Context, req *salespbv1.GetDishRequest) (*salespbv1.Dish, error) {
-	var out *salespbv1.Dish
-	err := s.opts.Run(ctx, "SalesService", "GetDish", func(ctx context.Context) (err error) {
+// GetLead is AIP-131's Get: the lead by name, deleted or not.
+func (s *SalesServiceServer) GetLead(ctx context.Context, req *salespbv1.GetLeadRequest) (*salespbv1.Lead, error) {
+	var out *salespbv1.Lead
+	err := s.opts.Run(ctx, "SalesService", "GetLead", func(ctx context.Context) (err error) {
 		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceDishCollections...); err != nil {
+		if err := servicex.CheckName("name", name, false, salesServiceLeadCollections...); err != nil {
 			return err
 		}
-		out, err = s.repos.Dishes.Get(ctx, name)
-		return servicex.NotFoundAs(err, salesServiceDishType, name)
+		out, err = s.repos.Leads.Get(ctx, name)
+		return servicex.NotFoundAs(err, salesServiceLeadType, name)
 	})
 	if err != nil {
 		return nil, err
@@ -660,17 +315,141 @@ func (s *SalesServiceServer) GetDish(ctx context.Context, req *salespbv1.GetDish
 	return out, nil
 }
 
-// ListDishes is AIP-132's List: one page of dish records under
-// parent (AIP-159 "-" ids read across parents),
+// ListLeads is AIP-132's List: one page of lead records,
 // filtered (AIP-160) and ordered (AIP-132) by the repository.
-func (s *SalesServiceServer) ListDishes(ctx context.Context, req *salespbv1.ListDishesRequest) (*salespbv1.ListDishesResponse, error) {
-	out := &salespbv1.ListDishesResponse{}
-	err := s.opts.Run(ctx, "SalesService", "ListDishes", func(ctx context.Context) (err error) {
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, true, salesServiceDishParent...); err != nil {
+func (s *SalesServiceServer) ListLeads(ctx context.Context, req *salespbv1.ListLeadsRequest) (*salespbv1.ListLeadsResponse, error) {
+	out := &salespbv1.ListLeadsResponse{}
+	err := s.opts.Run(ctx, "SalesService", "ListLeads", func(ctx context.Context) (err error) {
+		if req.GetPageSize() < 0 {
+			return servicex.BadField(servicex.ReasonInvalidArgument, "page_size", "page_size must not be negative", "Send 0 for the default page size")
+		}
+		in := repox.ListInput{
+			PageSize:  req.GetPageSize(),
+			PageToken: req.GetPageToken(),
+			Filter:    req.GetFilter(),
+			OrderBy:   req.GetOrderBy(),
+		}
+		out.Leads, out.NextPageToken, err = s.repos.Leads.List(ctx, in)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// CreateLead is AIP-133's Create. lead_id names the
+// lead (AIP-122); empty has the repository mint an id.
+func (s *SalesServiceServer) CreateLead(ctx context.Context, req *salespbv1.CreateLeadRequest) (*salespbv1.Lead, error) {
+	var out *salespbv1.Lead
+	err := s.opts.Run(ctx, "SalesService", "CreateLead", func(ctx context.Context) (err error) {
+		if req.GetLead() == nil {
+			return servicex.BadField(servicex.ReasonRequiredField, "lead", "lead is required", "Send the lead to write")
+		}
+		in := proto.Clone(req.GetLead()).(*salespbv1.Lead)
+		parent := ""
+		name := ""
+		id := req.GetLeadId()
+		if err := servicex.CheckID("lead_id", id); err != nil {
 			return err
 		}
-		if err := s.hooks.ParentCheckDish(ctx, servicex.OpList, parent); err != nil {
+		if id != "" {
+			name = "leads/" + id
+		}
+		out, err = s.createLead(ctx, parent, name, in, req.GetValidateOnly())
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UpdateLead is AIP-134's Update: the fields update_mask names ("*" for
+// every mutable one, absent for the ones the request sets), guarded by the
+// record's etag when it carries one.
+func (s *SalesServiceServer) UpdateLead(ctx context.Context, req *salespbv1.UpdateLeadRequest) (*salespbv1.Lead, error) {
+	var out *salespbv1.Lead
+	err := s.opts.Run(ctx, "SalesService", "UpdateLead", func(ctx context.Context) (err error) {
+		in := req.GetLead()
+		if in == nil {
+			return servicex.BadField(servicex.ReasonRequiredField, "lead", "lead is required", "Send the lead to write")
+		}
+		name := in.GetName()
+		if err := servicex.CheckName("lead.name", name, false, salesServiceLeadCollections...); err != nil {
+			return err
+		}
+		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "lead", salesServiceLeadOutputOnly)
+		if err != nil {
+			return err
+		}
+		if false || req.GetValidateOnly() {
+			existing, err := s.repos.Leads.Get(ctx, name)
+			if err != nil {
+				return servicex.NotFoundAs(err, salesServiceLeadType, name)
+			}
+			if req.GetValidateOnly() {
+				if err := servicex.CheckEtag(salesServiceLeadType, name, in.GetEtag(), existing.GetEtag()); err != nil {
+					return err
+				}
+				preview := proto.Clone(existing).(*salespbv1.Lead)
+				servicex.Merge(preview, in, paths)
+				if err := s.hooks.ValidateLead(ctx, servicex.OpUpdate, preview, paths); err != nil {
+					return err
+				}
+				if err := s.hooks.BeforeUpdateLead(ctx, preview, paths); err != nil {
+					return err
+				}
+				out = preview
+				return nil
+			}
+		}
+		if err := s.hooks.ValidateLead(ctx, servicex.OpUpdate, in, paths); err != nil {
+			return err
+		}
+		if err := s.hooks.BeforeUpdateLead(ctx, in, paths); err != nil {
+			return err
+		}
+		out, err = s.repos.Leads.Update(ctx, in, paths)
+		if err != nil {
+			return servicex.NotFoundAs(err, salesServiceLeadType, name)
+		}
+		return s.hooks.AfterUpdateLead(ctx, out)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GetActivity is AIP-131's Get: the activity by name, deleted or not.
+func (s *SalesServiceServer) GetActivity(ctx context.Context, req *salespbv1.GetActivityRequest) (*salespbv1.Activity, error) {
+	var out *salespbv1.Activity
+	err := s.opts.Run(ctx, "SalesService", "GetActivity", func(ctx context.Context) (err error) {
+		name := req.GetName()
+		if err := servicex.CheckName("name", name, false, salesServiceActivityCollections...); err != nil {
+			return err
+		}
+		out, err = s.repos.Activities.Get(ctx, name)
+		return servicex.NotFoundAs(err, salesServiceActivityType, name)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ListActivities is AIP-132's List: one page of activity records under
+// parent (AIP-159 "-" ids read across parents),
+// filtered (AIP-160) and ordered (AIP-132) by the repository.
+func (s *SalesServiceServer) ListActivities(ctx context.Context, req *salespbv1.ListActivitiesRequest) (*salespbv1.ListActivitiesResponse, error) {
+	out := &salespbv1.ListActivitiesResponse{}
+	err := s.opts.Run(ctx, "SalesService", "ListActivities", func(ctx context.Context) (err error) {
+		parent := req.GetParent()
+		if err := servicex.CheckName("parent", parent, true, salesServiceActivityParent...); err != nil {
+			return err
+		}
+		if err := s.hooks.ParentCheckActivity(ctx, servicex.OpList, parent); err != nil {
 			return err
 		}
 		if req.GetPageSize() < 0 {
@@ -682,7 +461,7 @@ func (s *SalesServiceServer) ListDishes(ctx context.Context, req *salespbv1.List
 			Filter:    req.GetFilter(),
 			OrderBy:   req.GetOrderBy(),
 		}
-		out.Dishes, out.NextPageToken, err = s.repos.Dishes.List(ctx, parent, in)
+		out.Activities, out.NextPageToken, err = s.repos.Activities.List(ctx, parent, in)
 		return err
 	})
 	if err != nil {
@@ -691,826 +470,34 @@ func (s *SalesServiceServer) ListDishes(ctx context.Context, req *salespbv1.List
 	return out, nil
 }
 
-// CreateDish is AIP-133's Create. dish_id names the
-// dish (AIP-122); empty has the repository mint an id.
-func (s *SalesServiceServer) CreateDish(ctx context.Context, req *salespbv1.CreateDishRequest) (*salespbv1.Dish, error) {
-	var out *salespbv1.Dish
-	err := s.opts.Run(ctx, "SalesService", "CreateDish", func(ctx context.Context) (err error) {
-		if req.GetDish() == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "dish", "dish is required", "Send the dish to write")
+// CreateActivity is AIP-133's Create. activity_id names the
+// activity (AIP-122); empty has the repository mint an id.
+func (s *SalesServiceServer) CreateActivity(ctx context.Context, req *salespbv1.CreateActivityRequest) (*salespbv1.Activity, error) {
+	var out *salespbv1.Activity
+	err := s.opts.Run(ctx, "SalesService", "CreateActivity", func(ctx context.Context) (err error) {
+		if req.GetActivity() == nil {
+			return servicex.BadField(servicex.ReasonRequiredField, "activity", "activity is required", "Send the activity to write")
 		}
-		in := proto.Clone(req.GetDish()).(*salespbv1.Dish)
+		in := proto.Clone(req.GetActivity()).(*salespbv1.Activity)
 		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, false, salesServiceDishParent...); err != nil {
+		if err := servicex.CheckName("parent", parent, false, salesServiceActivityParent...); err != nil {
 			return err
 		}
 		name := ""
-		id := req.GetDishId()
-		if err := servicex.CheckID("dish_id", id); err != nil {
+		id := req.GetActivityId()
+		if err := servicex.CheckID("activity_id", id); err != nil {
 			return err
 		}
 		if id != "" {
-			name = parent + "/dishes/" + id
+			name = parent + "/activities/" + id
 		}
-		out, err = s.createDish(ctx, parent, name, in, req.GetValidateOnly())
+		out, err = s.createActivity(ctx, parent, name, in, req.GetValidateOnly())
 		return err
 	})
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
-}
-
-// UpdateDish is AIP-134's Update: the fields update_mask names ("*" for
-// every mutable one, absent for the ones the request sets), guarded by the
-// record's etag when it carries one.
-func (s *SalesServiceServer) UpdateDish(ctx context.Context, req *salespbv1.UpdateDishRequest) (*salespbv1.Dish, error) {
-	var out *salespbv1.Dish
-	err := s.opts.Run(ctx, "SalesService", "UpdateDish", func(ctx context.Context) (err error) {
-		in := req.GetDish()
-		if in == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "dish", "dish is required", "Send the dish to write")
-		}
-		name := in.GetName()
-		if err := servicex.CheckName("dish.name", name, false, salesServiceDishCollections...); err != nil {
-			return err
-		}
-		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "dish", salesServiceDishOutputOnly)
-		if err != nil {
-			return err
-		}
-		if false || req.GetValidateOnly() {
-			existing, err := s.repos.Dishes.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceDishType, name)
-			}
-			if req.GetValidateOnly() {
-				if err := servicex.CheckEtag(salesServiceDishType, name, in.GetEtag(), existing.GetEtag()); err != nil {
-					return err
-				}
-				preview := proto.Clone(existing).(*salespbv1.Dish)
-				servicex.Merge(preview, in, paths)
-				if err := s.hooks.ValidateDish(ctx, servicex.OpUpdate, preview, paths); err != nil {
-					return err
-				}
-				if err := s.hooks.BeforeUpdateDish(ctx, preview, paths); err != nil {
-					return err
-				}
-				out = preview
-				return nil
-			}
-		}
-		if err := s.hooks.ValidateDish(ctx, servicex.OpUpdate, in, paths); err != nil {
-			return err
-		}
-		if err := s.hooks.BeforeUpdateDish(ctx, in, paths); err != nil {
-			return err
-		}
-		out, err = s.repos.Dishes.Update(ctx, in, paths)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceDishType, name)
-		}
-		return s.hooks.AfterUpdateDish(ctx, out)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeleteDish is AIP-135's Delete: a soft delete
-// (AIP-164) when the dish has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *SalesServiceServer) DeleteDish(ctx context.Context, req *salespbv1.DeleteDishRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "SalesService", "DeleteDish", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceDishCollections...); err != nil {
-			return err
-		}
-		var existing *salespbv1.Dish
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.Dishes.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceDishType, name)
-			}
-			if err := servicex.CheckEtag(salesServiceDishType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteDish(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.Dishes.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceDishType, name)
-		}
-		return s.hooks.AfterDeleteDish(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
-}
-
-// GetMenu is AIP-131's Get: the menu by name, deleted or not.
-func (s *SalesServiceServer) GetMenu(ctx context.Context, req *salespbv1.GetMenuRequest) (*salespbv1.Menu, error) {
-	var out *salespbv1.Menu
-	err := s.opts.Run(ctx, "SalesService", "GetMenu", func(ctx context.Context) (err error) {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceMenuCollections...); err != nil {
-			return err
-		}
-		out, err = s.repos.Menus.Get(ctx, name)
-		return servicex.NotFoundAs(err, salesServiceMenuType, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// ListMenus is AIP-132's List: one page of menu records under
-// parent (AIP-159 "-" ids read across parents),
-// filtered (AIP-160) and ordered (AIP-132) by the repository.
-func (s *SalesServiceServer) ListMenus(ctx context.Context, req *salespbv1.ListMenusRequest) (*salespbv1.ListMenusResponse, error) {
-	out := &salespbv1.ListMenusResponse{}
-	err := s.opts.Run(ctx, "SalesService", "ListMenus", func(ctx context.Context) (err error) {
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, true, salesServiceMenuParent...); err != nil {
-			return err
-		}
-		if err := s.hooks.ParentCheckMenu(ctx, servicex.OpList, parent); err != nil {
-			return err
-		}
-		if req.GetPageSize() < 0 {
-			return servicex.BadField(servicex.ReasonInvalidArgument, "page_size", "page_size must not be negative", "Send 0 for the default page size")
-		}
-		in := repox.ListInput{
-			PageSize:  req.GetPageSize(),
-			PageToken: req.GetPageToken(),
-			Filter:    req.GetFilter(),
-			OrderBy:   req.GetOrderBy(),
-		}
-		out.Menus, out.NextPageToken, err = s.repos.Menus.List(ctx, parent, in)
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// CreateMenu is AIP-133's Create. menu_id names the
-// menu (AIP-122); empty has the repository mint an id.
-func (s *SalesServiceServer) CreateMenu(ctx context.Context, req *salespbv1.CreateMenuRequest) (*salespbv1.Menu, error) {
-	var out *salespbv1.Menu
-	err := s.opts.Run(ctx, "SalesService", "CreateMenu", func(ctx context.Context) (err error) {
-		if req.GetMenu() == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "menu", "menu is required", "Send the menu to write")
-		}
-		in := proto.Clone(req.GetMenu()).(*salespbv1.Menu)
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, false, salesServiceMenuParent...); err != nil {
-			return err
-		}
-		name := ""
-		id := req.GetMenuId()
-		if err := servicex.CheckID("menu_id", id); err != nil {
-			return err
-		}
-		if id != "" {
-			name = parent + "/menus/" + id
-		}
-		out, err = s.createMenu(ctx, parent, name, in, req.GetValidateOnly())
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UpdateMenu is AIP-134's Update: the fields update_mask names ("*" for
-// every mutable one, absent for the ones the request sets), guarded by the
-// record's etag when it carries one.
-func (s *SalesServiceServer) UpdateMenu(ctx context.Context, req *salespbv1.UpdateMenuRequest) (*salespbv1.Menu, error) {
-	var out *salespbv1.Menu
-	err := s.opts.Run(ctx, "SalesService", "UpdateMenu", func(ctx context.Context) (err error) {
-		in := req.GetMenu()
-		if in == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "menu", "menu is required", "Send the menu to write")
-		}
-		name := in.GetName()
-		if err := servicex.CheckName("menu.name", name, false, salesServiceMenuCollections...); err != nil {
-			return err
-		}
-		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "menu", salesServiceMenuOutputOnly)
-		if err != nil {
-			return err
-		}
-		if false || req.GetValidateOnly() {
-			existing, err := s.repos.Menus.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceMenuType, name)
-			}
-			if req.GetValidateOnly() {
-				if err := servicex.CheckEtag(salesServiceMenuType, name, in.GetEtag(), existing.GetEtag()); err != nil {
-					return err
-				}
-				preview := proto.Clone(existing).(*salespbv1.Menu)
-				servicex.Merge(preview, in, paths)
-				if err := s.hooks.ValidateMenu(ctx, servicex.OpUpdate, preview, paths); err != nil {
-					return err
-				}
-				if err := s.hooks.BeforeUpdateMenu(ctx, preview, paths); err != nil {
-					return err
-				}
-				out = preview
-				return nil
-			}
-		}
-		if err := s.hooks.ValidateMenu(ctx, servicex.OpUpdate, in, paths); err != nil {
-			return err
-		}
-		if err := s.hooks.BeforeUpdateMenu(ctx, in, paths); err != nil {
-			return err
-		}
-		out, err = s.repos.Menus.Update(ctx, in, paths)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceMenuType, name)
-		}
-		return s.hooks.AfterUpdateMenu(ctx, out)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeleteMenu is AIP-135's Delete: a soft delete
-// (AIP-164) when the menu has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *SalesServiceServer) DeleteMenu(ctx context.Context, req *salespbv1.DeleteMenuRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "SalesService", "DeleteMenu", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceMenuCollections...); err != nil {
-			return err
-		}
-		var existing *salespbv1.Menu
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.Menus.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceMenuType, name)
-			}
-			if err := servicex.CheckEtag(salesServiceMenuType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteMenu(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.Menus.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceMenuType, name)
-		}
-		return s.hooks.AfterDeleteMenu(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
-}
-
-// GetFixedPackage is AIP-131's Get: the fixed_package by name, deleted or not.
-func (s *SalesServiceServer) GetFixedPackage(ctx context.Context, req *salespbv1.GetFixedPackageRequest) (*salespbv1.FixedPackage, error) {
-	var out *salespbv1.FixedPackage
-	err := s.opts.Run(ctx, "SalesService", "GetFixedPackage", func(ctx context.Context) (err error) {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceFixedPackageCollections...); err != nil {
-			return err
-		}
-		out, err = s.repos.FixedPackages.Get(ctx, name)
-		return servicex.NotFoundAs(err, salesServiceFixedPackageType, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// ListFixedPackages is AIP-132's List: one page of fixed_package records under
-// parent (AIP-159 "-" ids read across parents),
-// filtered (AIP-160) and ordered (AIP-132) by the repository.
-func (s *SalesServiceServer) ListFixedPackages(ctx context.Context, req *salespbv1.ListFixedPackagesRequest) (*salespbv1.ListFixedPackagesResponse, error) {
-	out := &salespbv1.ListFixedPackagesResponse{}
-	err := s.opts.Run(ctx, "SalesService", "ListFixedPackages", func(ctx context.Context) (err error) {
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, true, salesServiceFixedPackageParent...); err != nil {
-			return err
-		}
-		if err := s.hooks.ParentCheckFixedPackage(ctx, servicex.OpList, parent); err != nil {
-			return err
-		}
-		if req.GetPageSize() < 0 {
-			return servicex.BadField(servicex.ReasonInvalidArgument, "page_size", "page_size must not be negative", "Send 0 for the default page size")
-		}
-		in := repox.ListInput{
-			PageSize:  req.GetPageSize(),
-			PageToken: req.GetPageToken(),
-			Filter:    req.GetFilter(),
-			OrderBy:   req.GetOrderBy(),
-		}
-		out.FixedPackages, out.NextPageToken, err = s.repos.FixedPackages.List(ctx, parent, in)
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// CreateFixedPackage is AIP-133's Create. fixed_package_id names the
-// fixed_package (AIP-122); empty has the repository mint an id.
-func (s *SalesServiceServer) CreateFixedPackage(ctx context.Context, req *salespbv1.CreateFixedPackageRequest) (*salespbv1.FixedPackage, error) {
-	var out *salespbv1.FixedPackage
-	err := s.opts.Run(ctx, "SalesService", "CreateFixedPackage", func(ctx context.Context) (err error) {
-		if req.GetFixedPackage() == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "fixed_package", "fixed_package is required", "Send the fixed_package to write")
-		}
-		in := proto.Clone(req.GetFixedPackage()).(*salespbv1.FixedPackage)
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, false, salesServiceFixedPackageParent...); err != nil {
-			return err
-		}
-		name := ""
-		id := req.GetFixedPackageId()
-		if err := servicex.CheckID("fixed_package_id", id); err != nil {
-			return err
-		}
-		if id != "" {
-			name = parent + "/fixedPackages/" + id
-		}
-		out, err = s.createFixedPackage(ctx, parent, name, in, req.GetValidateOnly())
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UpdateFixedPackage is AIP-134's Update: the fields update_mask names ("*" for
-// every mutable one, absent for the ones the request sets), guarded by the
-// record's etag when it carries one.
-func (s *SalesServiceServer) UpdateFixedPackage(ctx context.Context, req *salespbv1.UpdateFixedPackageRequest) (*salespbv1.FixedPackage, error) {
-	var out *salespbv1.FixedPackage
-	err := s.opts.Run(ctx, "SalesService", "UpdateFixedPackage", func(ctx context.Context) (err error) {
-		in := req.GetFixedPackage()
-		if in == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "fixed_package", "fixed_package is required", "Send the fixed_package to write")
-		}
-		name := in.GetName()
-		if err := servicex.CheckName("fixed_package.name", name, false, salesServiceFixedPackageCollections...); err != nil {
-			return err
-		}
-		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "fixed_package", salesServiceFixedPackageOutputOnly)
-		if err != nil {
-			return err
-		}
-		if false || req.GetValidateOnly() {
-			existing, err := s.repos.FixedPackages.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceFixedPackageType, name)
-			}
-			if req.GetValidateOnly() {
-				if err := servicex.CheckEtag(salesServiceFixedPackageType, name, in.GetEtag(), existing.GetEtag()); err != nil {
-					return err
-				}
-				preview := proto.Clone(existing).(*salespbv1.FixedPackage)
-				servicex.Merge(preview, in, paths)
-				if err := s.hooks.ValidateFixedPackage(ctx, servicex.OpUpdate, preview, paths); err != nil {
-					return err
-				}
-				if err := s.hooks.BeforeUpdateFixedPackage(ctx, preview, paths); err != nil {
-					return err
-				}
-				out = preview
-				return nil
-			}
-		}
-		if err := s.hooks.ValidateFixedPackage(ctx, servicex.OpUpdate, in, paths); err != nil {
-			return err
-		}
-		if err := s.hooks.BeforeUpdateFixedPackage(ctx, in, paths); err != nil {
-			return err
-		}
-		out, err = s.repos.FixedPackages.Update(ctx, in, paths)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceFixedPackageType, name)
-		}
-		return s.hooks.AfterUpdateFixedPackage(ctx, out)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeleteFixedPackage is AIP-135's Delete: a soft delete
-// (AIP-164) when the fixed_package has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *SalesServiceServer) DeleteFixedPackage(ctx context.Context, req *salespbv1.DeleteFixedPackageRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "SalesService", "DeleteFixedPackage", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceFixedPackageCollections...); err != nil {
-			return err
-		}
-		var existing *salespbv1.FixedPackage
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.FixedPackages.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceFixedPackageType, name)
-			}
-			if err := servicex.CheckEtag(salesServiceFixedPackageType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteFixedPackage(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.FixedPackages.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceFixedPackageType, name)
-		}
-		return s.hooks.AfterDeleteFixedPackage(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
-}
-
-// GetSeason is AIP-131's Get: the season by name, deleted or not.
-func (s *SalesServiceServer) GetSeason(ctx context.Context, req *salespbv1.GetSeasonRequest) (*salespbv1.Season, error) {
-	var out *salespbv1.Season
-	err := s.opts.Run(ctx, "SalesService", "GetSeason", func(ctx context.Context) (err error) {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceSeasonCollections...); err != nil {
-			return err
-		}
-		out, err = s.repos.Seasons.Get(ctx, name)
-		return servicex.NotFoundAs(err, salesServiceSeasonType, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// ListSeasons is AIP-132's List: one page of season records under
-// parent (AIP-159 "-" ids read across parents),
-// filtered (AIP-160) and ordered (AIP-132) by the repository.
-func (s *SalesServiceServer) ListSeasons(ctx context.Context, req *salespbv1.ListSeasonsRequest) (*salespbv1.ListSeasonsResponse, error) {
-	out := &salespbv1.ListSeasonsResponse{}
-	err := s.opts.Run(ctx, "SalesService", "ListSeasons", func(ctx context.Context) (err error) {
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, true, salesServiceSeasonParent...); err != nil {
-			return err
-		}
-		if err := s.hooks.ParentCheckSeason(ctx, servicex.OpList, parent); err != nil {
-			return err
-		}
-		if req.GetPageSize() < 0 {
-			return servicex.BadField(servicex.ReasonInvalidArgument, "page_size", "page_size must not be negative", "Send 0 for the default page size")
-		}
-		in := repox.ListInput{
-			PageSize:  req.GetPageSize(),
-			PageToken: req.GetPageToken(),
-			Filter:    req.GetFilter(),
-			OrderBy:   req.GetOrderBy(),
-		}
-		out.Seasons, out.NextPageToken, err = s.repos.Seasons.List(ctx, parent, in)
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// CreateSeason is AIP-133's Create. season_id names the
-// season (AIP-122); empty has the repository mint an id.
-func (s *SalesServiceServer) CreateSeason(ctx context.Context, req *salespbv1.CreateSeasonRequest) (*salespbv1.Season, error) {
-	var out *salespbv1.Season
-	err := s.opts.Run(ctx, "SalesService", "CreateSeason", func(ctx context.Context) (err error) {
-		if req.GetSeason() == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "season", "season is required", "Send the season to write")
-		}
-		in := proto.Clone(req.GetSeason()).(*salespbv1.Season)
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, false, salesServiceSeasonParent...); err != nil {
-			return err
-		}
-		name := ""
-		id := req.GetSeasonId()
-		if err := servicex.CheckID("season_id", id); err != nil {
-			return err
-		}
-		if id != "" {
-			name = parent + "/seasons/" + id
-		}
-		out, err = s.createSeason(ctx, parent, name, in, req.GetValidateOnly())
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UpdateSeason is AIP-134's Update: the fields update_mask names ("*" for
-// every mutable one, absent for the ones the request sets), guarded by the
-// record's etag when it carries one.
-func (s *SalesServiceServer) UpdateSeason(ctx context.Context, req *salespbv1.UpdateSeasonRequest) (*salespbv1.Season, error) {
-	var out *salespbv1.Season
-	err := s.opts.Run(ctx, "SalesService", "UpdateSeason", func(ctx context.Context) (err error) {
-		in := req.GetSeason()
-		if in == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "season", "season is required", "Send the season to write")
-		}
-		name := in.GetName()
-		if err := servicex.CheckName("season.name", name, false, salesServiceSeasonCollections...); err != nil {
-			return err
-		}
-		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "season", salesServiceSeasonOutputOnly)
-		if err != nil {
-			return err
-		}
-		if false || req.GetValidateOnly() {
-			existing, err := s.repos.Seasons.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceSeasonType, name)
-			}
-			if req.GetValidateOnly() {
-				if err := servicex.CheckEtag(salesServiceSeasonType, name, in.GetEtag(), existing.GetEtag()); err != nil {
-					return err
-				}
-				preview := proto.Clone(existing).(*salespbv1.Season)
-				servicex.Merge(preview, in, paths)
-				if err := s.hooks.ValidateSeason(ctx, servicex.OpUpdate, preview, paths); err != nil {
-					return err
-				}
-				if err := s.hooks.BeforeUpdateSeason(ctx, preview, paths); err != nil {
-					return err
-				}
-				out = preview
-				return nil
-			}
-		}
-		if err := s.hooks.ValidateSeason(ctx, servicex.OpUpdate, in, paths); err != nil {
-			return err
-		}
-		if err := s.hooks.BeforeUpdateSeason(ctx, in, paths); err != nil {
-			return err
-		}
-		out, err = s.repos.Seasons.Update(ctx, in, paths)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceSeasonType, name)
-		}
-		return s.hooks.AfterUpdateSeason(ctx, out)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeleteSeason is AIP-135's Delete: a soft delete
-// (AIP-164) when the season has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *SalesServiceServer) DeleteSeason(ctx context.Context, req *salespbv1.DeleteSeasonRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "SalesService", "DeleteSeason", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceSeasonCollections...); err != nil {
-			return err
-		}
-		var existing *salespbv1.Season
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.Seasons.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceSeasonType, name)
-			}
-			if err := servicex.CheckEtag(salesServiceSeasonType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteSeason(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.Seasons.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceSeasonType, name)
-		}
-		return s.hooks.AfterDeleteSeason(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
-}
-
-// GetPriceRule is AIP-131's Get: the price_rule by name, deleted or not.
-func (s *SalesServiceServer) GetPriceRule(ctx context.Context, req *salespbv1.GetPriceRuleRequest) (*salespbv1.PriceRule, error) {
-	var out *salespbv1.PriceRule
-	err := s.opts.Run(ctx, "SalesService", "GetPriceRule", func(ctx context.Context) (err error) {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServicePriceRuleCollections...); err != nil {
-			return err
-		}
-		out, err = s.repos.PriceRules.Get(ctx, name)
-		return servicex.NotFoundAs(err, salesServicePriceRuleType, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// ListPriceRules is AIP-132's List: one page of price_rule records under
-// parent (AIP-159 "-" ids read across parents),
-// filtered (AIP-160) and ordered (AIP-132) by the repository.
-func (s *SalesServiceServer) ListPriceRules(ctx context.Context, req *salespbv1.ListPriceRulesRequest) (*salespbv1.ListPriceRulesResponse, error) {
-	out := &salespbv1.ListPriceRulesResponse{}
-	err := s.opts.Run(ctx, "SalesService", "ListPriceRules", func(ctx context.Context) (err error) {
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, true, salesServicePriceRuleParent...); err != nil {
-			return err
-		}
-		if err := s.hooks.ParentCheckPriceRule(ctx, servicex.OpList, parent); err != nil {
-			return err
-		}
-		if req.GetPageSize() < 0 {
-			return servicex.BadField(servicex.ReasonInvalidArgument, "page_size", "page_size must not be negative", "Send 0 for the default page size")
-		}
-		in := repox.ListInput{
-			PageSize:  req.GetPageSize(),
-			PageToken: req.GetPageToken(),
-			Filter:    req.GetFilter(),
-			OrderBy:   req.GetOrderBy(),
-		}
-		out.PriceRules, out.NextPageToken, err = s.repos.PriceRules.List(ctx, parent, in)
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// CreatePriceRule is AIP-133's Create. price_rule_id names the
-// price_rule (AIP-122); empty has the repository mint an id.
-func (s *SalesServiceServer) CreatePriceRule(ctx context.Context, req *salespbv1.CreatePriceRuleRequest) (*salespbv1.PriceRule, error) {
-	var out *salespbv1.PriceRule
-	err := s.opts.Run(ctx, "SalesService", "CreatePriceRule", func(ctx context.Context) (err error) {
-		if req.GetPriceRule() == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "price_rule", "price_rule is required", "Send the price_rule to write")
-		}
-		in := proto.Clone(req.GetPriceRule()).(*salespbv1.PriceRule)
-		parent := req.GetParent()
-		if err := servicex.CheckName("parent", parent, false, salesServicePriceRuleParent...); err != nil {
-			return err
-		}
-		name := ""
-		id := req.GetPriceRuleId()
-		if err := servicex.CheckID("price_rule_id", id); err != nil {
-			return err
-		}
-		if id != "" {
-			name = parent + "/priceRules/" + id
-		}
-		out, err = s.createPriceRule(ctx, parent, name, in, req.GetValidateOnly())
-		return err
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UpdatePriceRule is AIP-134's Update: the fields update_mask names ("*" for
-// every mutable one, absent for the ones the request sets), guarded by the
-// record's etag when it carries one.
-func (s *SalesServiceServer) UpdatePriceRule(ctx context.Context, req *salespbv1.UpdatePriceRuleRequest) (*salespbv1.PriceRule, error) {
-	var out *salespbv1.PriceRule
-	err := s.opts.Run(ctx, "SalesService", "UpdatePriceRule", func(ctx context.Context) (err error) {
-		in := req.GetPriceRule()
-		if in == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "price_rule", "price_rule is required", "Send the price_rule to write")
-		}
-		name := in.GetName()
-		if err := servicex.CheckName("price_rule.name", name, false, salesServicePriceRuleCollections...); err != nil {
-			return err
-		}
-		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "price_rule", salesServicePriceRuleOutputOnly)
-		if err != nil {
-			return err
-		}
-		if false || req.GetValidateOnly() {
-			existing, err := s.repos.PriceRules.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServicePriceRuleType, name)
-			}
-			if req.GetValidateOnly() {
-				if err := servicex.CheckEtag(salesServicePriceRuleType, name, in.GetEtag(), existing.GetEtag()); err != nil {
-					return err
-				}
-				preview := proto.Clone(existing).(*salespbv1.PriceRule)
-				servicex.Merge(preview, in, paths)
-				if err := s.hooks.ValidatePriceRule(ctx, servicex.OpUpdate, preview, paths); err != nil {
-					return err
-				}
-				if err := s.hooks.BeforeUpdatePriceRule(ctx, preview, paths); err != nil {
-					return err
-				}
-				out = preview
-				return nil
-			}
-		}
-		if err := s.hooks.ValidatePriceRule(ctx, servicex.OpUpdate, in, paths); err != nil {
-			return err
-		}
-		if err := s.hooks.BeforeUpdatePriceRule(ctx, in, paths); err != nil {
-			return err
-		}
-		out, err = s.repos.PriceRules.Update(ctx, in, paths)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServicePriceRuleType, name)
-		}
-		return s.hooks.AfterUpdatePriceRule(ctx, out)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeletePriceRule is AIP-135's Delete: a soft delete
-// (AIP-164) when the price_rule has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *SalesServiceServer) DeletePriceRule(ctx context.Context, req *salespbv1.DeletePriceRuleRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "SalesService", "DeletePriceRule", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServicePriceRuleCollections...); err != nil {
-			return err
-		}
-		var existing *salespbv1.PriceRule
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.PriceRules.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServicePriceRuleType, name)
-			}
-			if err := servicex.CheckEtag(salesServicePriceRuleType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeletePriceRule(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.PriceRules.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServicePriceRuleType, name)
-		}
-		return s.hooks.AfterDeletePriceRule(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
 }
 
 // GetQuote is AIP-131's Get: the quote by name, deleted or not.
@@ -1646,43 +633,4 @@ func (s *SalesServiceServer) UpdateQuote(ctx context.Context, req *salespbv1.Upd
 		return nil, err
 	}
 	return out, nil
-}
-
-// DeleteQuote is AIP-135's Delete: a soft delete
-// (AIP-164) when the quote has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *SalesServiceServer) DeleteQuote(ctx context.Context, req *salespbv1.DeleteQuoteRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "SalesService", "DeleteQuote", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, salesServiceQuoteCollections...); err != nil {
-			return err
-		}
-		var existing *salespbv1.Quote
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.Quotes.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, salesServiceQuoteType, name)
-			}
-			if err := servicex.CheckEtag(salesServiceQuoteType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteQuote(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.Quotes.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, salesServiceQuoteType, name)
-		}
-		return s.hooks.AfterDeleteQuote(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
 }

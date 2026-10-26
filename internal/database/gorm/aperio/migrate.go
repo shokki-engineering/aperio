@@ -4,7 +4,7 @@
 // 	protoc (unknown)
 //
 // database: aperio
-// schemas:  booking, crm, document, finance, operations, sales, venue
+// schemas:  catalog, document, event, finance, guest, operations, pricing, sales, stay, venue
 //
 // Migration aggregator: every model in one factory Registry.
 // annotations: entity.v1 1.6.7, store.v1 1.6.7
@@ -19,12 +19,15 @@
 package aperio
 
 import (
-	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/booking"
-	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/crm"
+	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/catalog"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/document"
+	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/event"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/finance"
+	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/operations"
+	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/pricing"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/sales"
+	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/stay"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio/venue"
 
 	"github.com/shokki-engineering/aperio/internal/database/gorm/telemetry"
@@ -41,12 +44,15 @@ type Migrator interface {
 // schemas lists every Postgres schema the registered models live in, so
 // EnsureSchemas can create them before AutoMigrate builds schema-qualified tables.
 var schemas = []string{
-	"booking",
-	"crm",
+	"catalog",
 	"document",
+	"event",
 	"finance",
+	"guest",
 	"operations",
+	"pricing",
 	"sales",
+	"stay",
 	"venue",
 }
 
@@ -125,23 +131,23 @@ func (*Registry) EnsureSchemas(db *gorm.DB) error {
 //
 //	aperio.Default.Register(&MyModel{})
 var Default = New().Register(
-	&booking.Reservation{},
-	&booking.Event{},
-	&booking.Session{},
-	&crm.Contact{},
-	&crm.Lead{},
-	&crm.Activity{},
+	&catalog.Dish{},
+	&catalog.Menu{},
+	&catalog.FixedPackage{},
+	&catalog.FixedPackageSpaces{},
 	&document.Document{},
+	&event.Event{},
+	&event.Session{},
 	&finance.Invoice{},
 	&finance.Payment{},
+	&guest.Contact{},
 	&operations.ServiceRequest{},
-	&sales.Dish{},
-	&sales.Menu{},
-	&sales.FixedPackage{},
-	&sales.Season{},
-	&sales.PriceRule{},
+	&pricing.Season{},
+	&pricing.PriceRule{},
+	&sales.Lead{},
+	&sales.Activity{},
 	&sales.Quote{},
-	&sales.FixedPackageSpaces{},
+	&stay.Reservation{},
 	&venue.Venue{},
 	&venue.Space{},
 )

@@ -20,7 +20,6 @@ import (
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // OperationsServiceRepositories are the generated repositories OperationsServiceServer
@@ -43,14 +42,6 @@ type OperationsServiceHooks interface {
 	BeforeCreateServiceRequest(ctx context.Context, parent string, m *operationspbv1.ServiceRequest) error
 	// AfterCreateServiceRequest runs after a create is written; an error fails the call, though the record stays.
 	AfterCreateServiceRequest(ctx context.Context, m *operationspbv1.ServiceRequest) error
-	// BeforeUpdateServiceRequest runs last before an update is written (or previewed).
-	BeforeUpdateServiceRequest(ctx context.Context, m *operationspbv1.ServiceRequest, paths []string) error
-	// AfterUpdateServiceRequest runs after an update is written.
-	AfterUpdateServiceRequest(ctx context.Context, m *operationspbv1.ServiceRequest) error
-	// BeforeDeleteServiceRequest runs before a delete; returning an error refuses it -- a parent that still has children, say. force is the request's force (AIP-135), false when it has none.
-	BeforeDeleteServiceRequest(ctx context.Context, name string, force bool) error
-	// AfterDeleteServiceRequest runs after a delete.
-	AfterDeleteServiceRequest(ctx context.Context, name string) error
 }
 
 // NopOperationsServiceHooks implements every hook as doing nothing.
@@ -75,26 +66,6 @@ func (NopOperationsServiceHooks) BeforeCreateServiceRequest(ctx context.Context,
 
 // AfterCreateServiceRequest does nothing.
 func (NopOperationsServiceHooks) AfterCreateServiceRequest(ctx context.Context, m *operationspbv1.ServiceRequest) error {
-	return nil
-}
-
-// BeforeUpdateServiceRequest does nothing.
-func (NopOperationsServiceHooks) BeforeUpdateServiceRequest(ctx context.Context, m *operationspbv1.ServiceRequest, paths []string) error {
-	return nil
-}
-
-// AfterUpdateServiceRequest does nothing.
-func (NopOperationsServiceHooks) AfterUpdateServiceRequest(ctx context.Context, m *operationspbv1.ServiceRequest) error {
-	return nil
-}
-
-// BeforeDeleteServiceRequest does nothing.
-func (NopOperationsServiceHooks) BeforeDeleteServiceRequest(ctx context.Context, name string, force bool) error {
-	return nil
-}
-
-// AfterDeleteServiceRequest does nothing.
-func (NopOperationsServiceHooks) AfterDeleteServiceRequest(ctx context.Context, name string) error {
 	return nil
 }
 
@@ -252,100 +223,4 @@ func (s *OperationsServiceServer) CreateServiceRequest(ctx context.Context, req 
 		return nil, err
 	}
 	return out, nil
-}
-
-// UpdateServiceRequest is AIP-134's Update: the fields update_mask names ("*" for
-// every mutable one, absent for the ones the request sets), guarded by the
-// record's etag when it carries one.
-func (s *OperationsServiceServer) UpdateServiceRequest(ctx context.Context, req *operationspbv1.UpdateServiceRequestRequest) (*operationspbv1.ServiceRequest, error) {
-	var out *operationspbv1.ServiceRequest
-	err := s.opts.Run(ctx, "OperationsService", "UpdateServiceRequest", func(ctx context.Context) (err error) {
-		in := req.GetServiceRequest()
-		if in == nil {
-			return servicex.BadField(servicex.ReasonRequiredField, "service_request", "service_request is required", "Send the service_request to write")
-		}
-		name := in.GetName()
-		if err := servicex.CheckName("service_request.name", name, false, operationsServiceServiceRequestCollections...); err != nil {
-			return err
-		}
-		paths, err := servicex.UpdatePaths(in, req.GetUpdateMask(), "service_request", operationsServiceServiceRequestOutputOnly)
-		if err != nil {
-			return err
-		}
-		if false || req.GetValidateOnly() {
-			existing, err := s.repos.ServiceRequests.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, operationsServiceServiceRequestType, name)
-			}
-			if req.GetValidateOnly() {
-				if err := servicex.CheckEtag(operationsServiceServiceRequestType, name, in.GetEtag(), existing.GetEtag()); err != nil {
-					return err
-				}
-				preview := proto.Clone(existing).(*operationspbv1.ServiceRequest)
-				servicex.Merge(preview, in, paths)
-				if err := s.hooks.ValidateServiceRequest(ctx, servicex.OpUpdate, preview, paths); err != nil {
-					return err
-				}
-				if err := s.hooks.BeforeUpdateServiceRequest(ctx, preview, paths); err != nil {
-					return err
-				}
-				out = preview
-				return nil
-			}
-		}
-		if err := s.hooks.ValidateServiceRequest(ctx, servicex.OpUpdate, in, paths); err != nil {
-			return err
-		}
-		if err := s.hooks.BeforeUpdateServiceRequest(ctx, in, paths); err != nil {
-			return err
-		}
-		out, err = s.repos.ServiceRequests.Update(ctx, in, paths)
-		if err != nil {
-			return servicex.NotFoundAs(err, operationsServiceServiceRequestType, name)
-		}
-		return s.hooks.AfterUpdateServiceRequest(ctx, out)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeleteServiceRequest is AIP-135's Delete: a soft delete
-// (AIP-164) when the service_request has a delete_time, so Get still
-// returns it and Undelete restores it.
-func (s *OperationsServiceServer) DeleteServiceRequest(ctx context.Context, req *operationspbv1.DeleteServiceRequestRequest) (*emptypb.Empty, error) {
-	err := s.opts.Run(ctx, "OperationsService", "DeleteServiceRequest", func(ctx context.Context) error {
-		name := req.GetName()
-		if err := servicex.CheckName("name", name, false, operationsServiceServiceRequestCollections...); err != nil {
-			return err
-		}
-		var existing *operationspbv1.ServiceRequest
-		if req.GetEtag() != "" || req.GetValidateOnly() {
-			var err error
-			existing, err = s.repos.ServiceRequests.Get(ctx, name)
-			if err != nil {
-				return servicex.NotFoundAs(err, operationsServiceServiceRequestType, name)
-			}
-			if err := servicex.CheckEtag(operationsServiceServiceRequestType, name, req.GetEtag(), existing.GetEtag()); err != nil {
-				return err
-			}
-		}
-		_ = existing
-		if err := s.hooks.BeforeDeleteServiceRequest(ctx, name, false); err != nil {
-			return err
-		}
-		if req.GetValidateOnly() {
-			return nil
-		}
-		err := s.repos.ServiceRequests.Delete(ctx, name)
-		if err != nil {
-			return servicex.NotFoundAs(err, operationsServiceServiceRequestType, name)
-		}
-		return s.hooks.AfterDeleteServiceRequest(ctx, name)
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &emptypb.Empty{}, nil
 }

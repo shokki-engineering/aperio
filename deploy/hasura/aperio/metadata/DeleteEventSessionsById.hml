@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventSessionsByIdResponse
+  description: Responses from the 'delete_event_sessions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventSessions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventSessionsByIdResponse
+    inputTypeName: DeleteEventSessionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_event_sessions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventSessionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventSessionsById
+  outputType: DeleteEventSessionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventSessionsBoolExp
+      description: Delete permission predicate over the 'event_sessions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_event_sessions_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventSessionsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'event_sessions' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventSessionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

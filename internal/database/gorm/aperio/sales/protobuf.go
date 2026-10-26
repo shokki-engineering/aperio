@@ -16,15 +16,11 @@ package sales
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/lib/pq"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
-	"google.golang.org/genproto/googleapis/type/dayofweek"
-	"google.golang.org/genproto/googleapis/type/decimal"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -32,134 +28,232 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// CourseFromProto maps the proto enum onto its stored form ("" for
+// LeadKindFromProto maps the proto enum onto its stored form ("" for
 // unspecified or unknown values, so the column is omitted / left to default).
-func CourseFromProto(v salespbv1.Course) Course {
+func LeadKindFromProto(v salespbv1.LeadKind) LeadKind {
 	switch v {
-	case salespbv1.Course_COURSE_WELCOME_DRINK:
-		return CourseWelcomeDrink
-	case salespbv1.Course_COURSE_STARTER:
-		return CourseStarter
-	case salespbv1.Course_COURSE_SOUP:
-		return CourseSoup
-	case salespbv1.Course_COURSE_SALAD:
-		return CourseSalad
-	case salespbv1.Course_COURSE_MAIN:
-		return CourseMain
-	case salespbv1.Course_COURSE_BREAD:
-		return CourseBread
-	case salespbv1.Course_COURSE_RICE:
-		return CourseRice
-	case salespbv1.Course_COURSE_SIDE:
-		return CourseSide
-	case salespbv1.Course_COURSE_DESSERT:
-		return CourseDessert
-	case salespbv1.Course_COURSE_BEVERAGE:
-		return CourseBeverage
-	case salespbv1.Course_COURSE_LIVE_COUNTER:
-		return CourseLiveCounter
-	case salespbv1.Course_COURSE_OTHER:
-		return CourseOther
+	case salespbv1.LeadKind_LEAD_KIND_STAY:
+		return LeadKindStay
+	case salespbv1.LeadKind_LEAD_KIND_EVENT:
+		return LeadKindEvent
+	case salespbv1.LeadKind_LEAD_KIND_EVENT_WITH_STAY:
+		return LeadKindEventWithStay
 	}
 	return ""
 }
 
-// CourseToProto maps the stored form back onto the proto enum
+// LeadKindToProto maps the stored form back onto the proto enum
 // (unspecified for empty or unknown values).
-func CourseToProto(v Course) salespbv1.Course {
+func LeadKindToProto(v LeadKind) salespbv1.LeadKind {
 	switch v {
-	case CourseWelcomeDrink:
-		return salespbv1.Course_COURSE_WELCOME_DRINK
-	case CourseStarter:
-		return salespbv1.Course_COURSE_STARTER
-	case CourseSoup:
-		return salespbv1.Course_COURSE_SOUP
-	case CourseSalad:
-		return salespbv1.Course_COURSE_SALAD
-	case CourseMain:
-		return salespbv1.Course_COURSE_MAIN
-	case CourseBread:
-		return salespbv1.Course_COURSE_BREAD
-	case CourseRice:
-		return salespbv1.Course_COURSE_RICE
-	case CourseSide:
-		return salespbv1.Course_COURSE_SIDE
-	case CourseDessert:
-		return salespbv1.Course_COURSE_DESSERT
-	case CourseBeverage:
-		return salespbv1.Course_COURSE_BEVERAGE
-	case CourseLiveCounter:
-		return salespbv1.Course_COURSE_LIVE_COUNTER
-	case CourseOther:
-		return salespbv1.Course_COURSE_OTHER
+	case LeadKindStay:
+		return salespbv1.LeadKind_LEAD_KIND_STAY
+	case LeadKindEvent:
+		return salespbv1.LeadKind_LEAD_KIND_EVENT
+	case LeadKindEventWithStay:
+		return salespbv1.LeadKind_LEAD_KIND_EVENT_WITH_STAY
 	}
 	return 0
 }
 
-// CoursePtrFromProto is CourseFromProto for nullable columns:
+// LeadKindPtrFromProto is LeadKindFromProto for nullable columns:
 // unspecified maps to nil.
-func CoursePtrFromProto(v salespbv1.Course) *Course {
-	if s := CourseFromProto(v); s != "" {
+func LeadKindPtrFromProto(v salespbv1.LeadKind) *LeadKind {
+	if s := LeadKindFromProto(v); s != "" {
 		return &s
 	}
 	return nil
 }
 
-// CoursePtrToProto is CourseToProto for nullable columns.
-func CoursePtrToProto(v *Course) salespbv1.Course {
+// LeadKindPtrToProto is LeadKindToProto for nullable columns.
+func LeadKindPtrToProto(v *LeadKind) salespbv1.LeadKind {
 	if v == nil {
 		return 0
 	}
-	return CourseToProto(*v)
+	return LeadKindToProto(*v)
 }
 
-// PriceTargetFromProto maps the proto enum onto its stored form ("" for
+// StageFromProto maps the proto enum onto its stored form ("" for
 // unspecified or unknown values, so the column is omitted / left to default).
-func PriceTargetFromProto(v salespbv1.PriceTarget) PriceTarget {
+func StageFromProto(v salespbv1.Stage) Stage {
 	switch v {
-	case salespbv1.PriceTarget_PRICE_TARGET_MENU:
-		return PriceTargetMenu
-	case salespbv1.PriceTarget_PRICE_TARGET_FIXED_PACKAGE:
-		return PriceTargetFixedPackage
-	case salespbv1.PriceTarget_PRICE_TARGET_SPACE:
-		return PriceTargetSpace
-	case salespbv1.PriceTarget_PRICE_TARGET_DISH:
-		return PriceTargetDish
+	case salespbv1.Stage_STAGE_NEW:
+		return StageNew
+	case salespbv1.Stage_STAGE_CONTACTED:
+		return StageContacted
+	case salespbv1.Stage_STAGE_SITE_VISIT:
+		return StageSiteVisit
+	case salespbv1.Stage_STAGE_PROPOSAL:
+		return StageProposal
+	case salespbv1.Stage_STAGE_NEGOTIATION:
+		return StageNegotiation
+	case salespbv1.Stage_STAGE_WON:
+		return StageWon
+	case salespbv1.Stage_STAGE_LOST:
+		return StageLost
 	}
 	return ""
 }
 
-// PriceTargetToProto maps the stored form back onto the proto enum
+// StageToProto maps the stored form back onto the proto enum
 // (unspecified for empty or unknown values).
-func PriceTargetToProto(v PriceTarget) salespbv1.PriceTarget {
+func StageToProto(v Stage) salespbv1.Stage {
 	switch v {
-	case PriceTargetMenu:
-		return salespbv1.PriceTarget_PRICE_TARGET_MENU
-	case PriceTargetFixedPackage:
-		return salespbv1.PriceTarget_PRICE_TARGET_FIXED_PACKAGE
-	case PriceTargetSpace:
-		return salespbv1.PriceTarget_PRICE_TARGET_SPACE
-	case PriceTargetDish:
-		return salespbv1.PriceTarget_PRICE_TARGET_DISH
+	case StageNew:
+		return salespbv1.Stage_STAGE_NEW
+	case StageContacted:
+		return salespbv1.Stage_STAGE_CONTACTED
+	case StageSiteVisit:
+		return salespbv1.Stage_STAGE_SITE_VISIT
+	case StageProposal:
+		return salespbv1.Stage_STAGE_PROPOSAL
+	case StageNegotiation:
+		return salespbv1.Stage_STAGE_NEGOTIATION
+	case StageWon:
+		return salespbv1.Stage_STAGE_WON
+	case StageLost:
+		return salespbv1.Stage_STAGE_LOST
 	}
 	return 0
 }
 
-// PriceTargetPtrFromProto is PriceTargetFromProto for nullable columns:
+// StagePtrFromProto is StageFromProto for nullable columns:
 // unspecified maps to nil.
-func PriceTargetPtrFromProto(v salespbv1.PriceTarget) *PriceTarget {
-	if s := PriceTargetFromProto(v); s != "" {
+func StagePtrFromProto(v salespbv1.Stage) *Stage {
+	if s := StageFromProto(v); s != "" {
 		return &s
 	}
 	return nil
 }
 
-// PriceTargetPtrToProto is PriceTargetToProto for nullable columns.
-func PriceTargetPtrToProto(v *PriceTarget) salespbv1.PriceTarget {
+// StagePtrToProto is StageToProto for nullable columns.
+func StagePtrToProto(v *Stage) salespbv1.Stage {
 	if v == nil {
 		return 0
 	}
-	return PriceTargetToProto(*v)
+	return StageToProto(*v)
+}
+
+// LostReasonFromProto maps the proto enum onto its stored form ("" for
+// unspecified or unknown values, so the column is omitted / left to default).
+func LostReasonFromProto(v salespbv1.LostReason) LostReason {
+	switch v {
+	case salespbv1.LostReason_LOST_REASON_PRICE:
+		return LostReasonPrice
+	case salespbv1.LostReason_LOST_REASON_DATES:
+		return LostReasonDates
+	case salespbv1.LostReason_LOST_REASON_COMPETITOR:
+		return LostReasonCompetitor
+	case salespbv1.LostReason_LOST_REASON_CAPACITY:
+		return LostReasonCapacity
+	case salespbv1.LostReason_LOST_REASON_CANCELLED_PLANS:
+		return LostReasonCancelledPlans
+	case salespbv1.LostReason_LOST_REASON_NO_RESPONSE:
+		return LostReasonNoResponse
+	case salespbv1.LostReason_LOST_REASON_OTHER:
+		return LostReasonOther
+	}
+	return ""
+}
+
+// LostReasonToProto maps the stored form back onto the proto enum
+// (unspecified for empty or unknown values).
+func LostReasonToProto(v LostReason) salespbv1.LostReason {
+	switch v {
+	case LostReasonPrice:
+		return salespbv1.LostReason_LOST_REASON_PRICE
+	case LostReasonDates:
+		return salespbv1.LostReason_LOST_REASON_DATES
+	case LostReasonCompetitor:
+		return salespbv1.LostReason_LOST_REASON_COMPETITOR
+	case LostReasonCapacity:
+		return salespbv1.LostReason_LOST_REASON_CAPACITY
+	case LostReasonCancelledPlans:
+		return salespbv1.LostReason_LOST_REASON_CANCELLED_PLANS
+	case LostReasonNoResponse:
+		return salespbv1.LostReason_LOST_REASON_NO_RESPONSE
+	case LostReasonOther:
+		return salespbv1.LostReason_LOST_REASON_OTHER
+	}
+	return 0
+}
+
+// LostReasonPtrFromProto is LostReasonFromProto for nullable columns:
+// unspecified maps to nil.
+func LostReasonPtrFromProto(v salespbv1.LostReason) *LostReason {
+	if s := LostReasonFromProto(v); s != "" {
+		return &s
+	}
+	return nil
+}
+
+// LostReasonPtrToProto is LostReasonToProto for nullable columns.
+func LostReasonPtrToProto(v *LostReason) salespbv1.LostReason {
+	if v == nil {
+		return 0
+	}
+	return LostReasonToProto(*v)
+}
+
+// ActivityKindFromProto maps the proto enum onto its stored form ("" for
+// unspecified or unknown values, so the column is omitted / left to default).
+func ActivityKindFromProto(v salespbv1.ActivityKind) ActivityKind {
+	switch v {
+	case salespbv1.ActivityKind_ACTIVITY_KIND_CALL:
+		return ActivityKindCall
+	case salespbv1.ActivityKind_ACTIVITY_KIND_EMAIL:
+		return ActivityKindEmail
+	case salespbv1.ActivityKind_ACTIVITY_KIND_WHATSAPP:
+		return ActivityKindWhatsapp
+	case salespbv1.ActivityKind_ACTIVITY_KIND_MEETING:
+		return ActivityKindMeeting
+	case salespbv1.ActivityKind_ACTIVITY_KIND_SITE_VISIT:
+		return ActivityKindSiteVisit
+	case salespbv1.ActivityKind_ACTIVITY_KIND_QUOTE_SENT:
+		return ActivityKindQuoteSent
+	case salespbv1.ActivityKind_ACTIVITY_KIND_NOTE:
+		return ActivityKindNote
+	}
+	return ""
+}
+
+// ActivityKindToProto maps the stored form back onto the proto enum
+// (unspecified for empty or unknown values).
+func ActivityKindToProto(v ActivityKind) salespbv1.ActivityKind {
+	switch v {
+	case ActivityKindCall:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_CALL
+	case ActivityKindEmail:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_EMAIL
+	case ActivityKindWhatsapp:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_WHATSAPP
+	case ActivityKindMeeting:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_MEETING
+	case ActivityKindSiteVisit:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_SITE_VISIT
+	case ActivityKindQuoteSent:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_QUOTE_SENT
+	case ActivityKindNote:
+		return salespbv1.ActivityKind_ACTIVITY_KIND_NOTE
+	}
+	return 0
+}
+
+// ActivityKindPtrFromProto is ActivityKindFromProto for nullable columns:
+// unspecified maps to nil.
+func ActivityKindPtrFromProto(v salespbv1.ActivityKind) *ActivityKind {
+	if s := ActivityKindFromProto(v); s != "" {
+		return &s
+	}
+	return nil
+}
+
+// ActivityKindPtrToProto is ActivityKindToProto for nullable columns.
+func ActivityKindPtrToProto(v *ActivityKind) salespbv1.ActivityKind {
+	if v == nil {
+		return 0
+	}
+	return ActivityKindToProto(*v)
 }
 
 // StateFromProto maps the proto enum onto its stored form ("" for
@@ -304,241 +398,208 @@ func EventTypePtrToProto(v *EventType) typepbv1.EventType {
 	return EventTypeToProto(*v)
 }
 
-// DishToProto converts the stored row (with its belongs-to associations,
+// ChannelFromProto maps the proto enum onto its stored form ("" for
+// unspecified or unknown values, so the column is omitted / left to default).
+func ChannelFromProto(v typepbv1.Channel) Channel {
+	switch v {
+	case typepbv1.Channel_CHANNEL_WEBSITE:
+		return ChannelWebsite
+	case typepbv1.Channel_CHANNEL_PHONE:
+		return ChannelPhone
+	case typepbv1.Channel_CHANNEL_WALK_IN:
+		return ChannelWalkIn
+	case typepbv1.Channel_CHANNEL_EMAIL:
+		return ChannelEmail
+	case typepbv1.Channel_CHANNEL_WHATSAPP:
+		return ChannelWhatsapp
+	case typepbv1.Channel_CHANNEL_INSTAGRAM:
+		return ChannelInstagram
+	case typepbv1.Channel_CHANNEL_FACEBOOK:
+		return ChannelFacebook
+	case typepbv1.Channel_CHANNEL_REFERRAL:
+		return ChannelReferral
+	case typepbv1.Channel_CHANNEL_BOOKING_COM:
+		return ChannelBookingCom
+	case typepbv1.Channel_CHANNEL_AIRBNB:
+		return ChannelAirbnb
+	case typepbv1.Channel_CHANNEL_MAKEMYTRIP:
+		return ChannelMakemytrip
+	case typepbv1.Channel_CHANNEL_GOIBIBO:
+		return ChannelGoibibo
+	case typepbv1.Channel_CHANNEL_AGODA:
+		return ChannelAgoda
+	case typepbv1.Channel_CHANNEL_EXPEDIA:
+		return ChannelExpedia
+	case typepbv1.Channel_CHANNEL_CHANNEL_MANAGER:
+		return ChannelChannelManager
+	case typepbv1.Channel_CHANNEL_RFP:
+		return ChannelRfp
+	case typepbv1.Channel_CHANNEL_OTHER:
+		return ChannelOther
+	}
+	return ""
+}
+
+// ChannelToProto maps the stored form back onto the proto enum
+// (unspecified for empty or unknown values).
+func ChannelToProto(v Channel) typepbv1.Channel {
+	switch v {
+	case ChannelWebsite:
+		return typepbv1.Channel_CHANNEL_WEBSITE
+	case ChannelPhone:
+		return typepbv1.Channel_CHANNEL_PHONE
+	case ChannelWalkIn:
+		return typepbv1.Channel_CHANNEL_WALK_IN
+	case ChannelEmail:
+		return typepbv1.Channel_CHANNEL_EMAIL
+	case ChannelWhatsapp:
+		return typepbv1.Channel_CHANNEL_WHATSAPP
+	case ChannelInstagram:
+		return typepbv1.Channel_CHANNEL_INSTAGRAM
+	case ChannelFacebook:
+		return typepbv1.Channel_CHANNEL_FACEBOOK
+	case ChannelReferral:
+		return typepbv1.Channel_CHANNEL_REFERRAL
+	case ChannelBookingCom:
+		return typepbv1.Channel_CHANNEL_BOOKING_COM
+	case ChannelAirbnb:
+		return typepbv1.Channel_CHANNEL_AIRBNB
+	case ChannelMakemytrip:
+		return typepbv1.Channel_CHANNEL_MAKEMYTRIP
+	case ChannelGoibibo:
+		return typepbv1.Channel_CHANNEL_GOIBIBO
+	case ChannelAgoda:
+		return typepbv1.Channel_CHANNEL_AGODA
+	case ChannelExpedia:
+		return typepbv1.Channel_CHANNEL_EXPEDIA
+	case ChannelChannelManager:
+		return typepbv1.Channel_CHANNEL_CHANNEL_MANAGER
+	case ChannelRfp:
+		return typepbv1.Channel_CHANNEL_RFP
+	case ChannelOther:
+		return typepbv1.Channel_CHANNEL_OTHER
+	}
+	return 0
+}
+
+// ChannelPtrFromProto is ChannelFromProto for nullable columns:
+// unspecified maps to nil.
+func ChannelPtrFromProto(v typepbv1.Channel) *Channel {
+	if s := ChannelFromProto(v); s != "" {
+		return &s
+	}
+	return nil
+}
+
+// ChannelPtrToProto is ChannelToProto for nullable columns.
+func ChannelPtrToProto(v *Channel) typepbv1.Channel {
+	if v == nil {
+		return 0
+	}
+	return ChannelToProto(*v)
+}
+
+// LeadToProto converts the stored row (with its belongs-to associations,
 // when preloaded) to its proto message. Nil in, nil out.
-func DishToProto(m *Dish) *salespbv1.Dish {
+func LeadToProto(m *Lead) *salespbv1.Lead {
 	if m == nil {
 		return nil
 	}
-	out := &salespbv1.Dish{}
+	out := &salespbv1.Lead{}
+	// not mapped here: contact (resource reference), venue (resource reference)
 	out.Name = m.Name
 	out.DisplayName = m.DisplayName
-	out.Description = fromPtr(m.Description)
-	out.Course = CourseToProto(m.Course)
-	out.Cuisine = fromPtr(m.Cuisine)
-	out.Diets = enumsFromCSV[typepbv1.Diet](m.Diets, typepbv1.Diet_value)
-	out.Allergens = enumsFromCSV[typepbv1.Allergen](m.Allergens, typepbv1.Allergen_value)
-	out.Price = jsonToDoc[money.Money](m.Price)
-	out.Tax = jsonToDoc[typepbv1.Tax](m.Tax)
-	out.ImageUri = fromPtr(m.ImageURI)
-	out.Available = fromPtr(m.Available)
-	out.CreateTime = goValToTs(m.CreateTime)
-	out.UpdateTime = goValToTs(m.UpdateTime)
-	out.Etag = fromPtr(m.Etag)
-	return out
-}
-
-// DishFromProto maps the proto message's data fields onto a fresh row.
-// It never invents keys or relations: primary keys, resource references, and
-// sub-row graph wiring stay with the caller. Nil in, nil out.
-func DishFromProto(pb *salespbv1.Dish) *Dish {
-	if pb == nil {
-		return nil
-	}
-	m := &Dish{}
-	m.Name = pb.GetName()
-	m.DisplayName = pb.GetDisplayName()
-	m.Description = toPtr(pb.GetDescription())
-	m.Course = CourseFromProto(pb.GetCourse())
-	m.Cuisine = toPtr(pb.GetCuisine())
-	m.Diets = enumsToCSV(pb.GetDiets())
-	m.Allergens = enumsToCSV(pb.GetAllergens())
-	m.Price = docToJSON(pb.GetPrice())
-	m.Tax = docToJSON(pb.GetTax())
-	m.ImageURI = toPtr(pb.GetImageUri())
-	m.Available = toPtr(pb.GetAvailable())
-	m.Etag = toPtr(pb.GetEtag())
-	return m
-}
-
-// MenuToProto converts the stored row (with its belongs-to associations,
-// when preloaded) to its proto message. Nil in, nil out.
-func MenuToProto(m *Menu) *salespbv1.Menu {
-	if m == nil {
-		return nil
-	}
-	out := &salespbv1.Menu{}
-	out.Name = m.Name
-	out.DisplayName = m.DisplayName
-	out.Description = fromPtr(m.Description)
-	out.Diets = enumsFromCSV[typepbv1.Diet](m.Diets, typepbv1.Diet_value)
-	out.Courses = jsonToDocs[salespbv1.MenuCourse](m.Courses)
-	out.AddOns = jsonToDocs[salespbv1.MenuAddOn](m.AddOns)
-	out.PlatePrice = jsonToDoc[money.Money](m.PlatePrice)
-	out.MinPlates = fromPtr(m.MinPlates)
-	out.Tax = jsonToDoc[typepbv1.Tax](m.Tax)
-	out.Active = fromPtr(m.Active)
-	out.CreateTime = goValToTs(m.CreateTime)
-	out.UpdateTime = goValToTs(m.UpdateTime)
-	out.Etag = fromPtr(m.Etag)
-	return out
-}
-
-// MenuFromProto maps the proto message's data fields onto a fresh row.
-// It never invents keys or relations: primary keys, resource references, and
-// sub-row graph wiring stay with the caller. Nil in, nil out.
-func MenuFromProto(pb *salespbv1.Menu) *Menu {
-	if pb == nil {
-		return nil
-	}
-	m := &Menu{}
-	m.Name = pb.GetName()
-	m.DisplayName = pb.GetDisplayName()
-	m.Description = toPtr(pb.GetDescription())
-	m.Diets = enumsToCSV(pb.GetDiets())
-	m.Courses = docsToJSON(pb.GetCourses())
-	m.AddOns = docsToJSON(pb.GetAddOns())
-	m.PlatePrice = docToJSON(pb.GetPlatePrice())
-	m.MinPlates = toPtr(pb.GetMinPlates())
-	m.Tax = docToJSON(pb.GetTax())
-	m.Active = toPtr(pb.GetActive())
-	m.Etag = toPtr(pb.GetEtag())
-	return m
-}
-
-// FixedPackageToProto converts the stored row (with its belongs-to associations,
-// when preloaded) to its proto message. Nil in, nil out.
-func FixedPackageToProto(m *FixedPackage) *salespbv1.FixedPackage {
-	if m == nil {
-		return nil
-	}
-	out := &salespbv1.FixedPackage{}
-	// not mapped here: menu (resource reference)
-	out.Name = m.Name
-	out.DisplayName = m.DisplayName
-	out.Description = fromPtr(m.Description)
-	out.Duration = goToDur(m.Duration)
-	out.Inclusions = jsonToDocs[salespbv1.PackageInclusion](m.Inclusions)
-	out.IncludedGuests = m.IncludedGuests
-	out.Price = jsonToDoc[money.Money](m.Price)
-	out.ExtraGuestPrice = jsonToDoc[money.Money](m.ExtraGuestPrice)
-	out.Tax = jsonToDoc[typepbv1.Tax](m.Tax)
-	out.Active = fromPtr(m.Active)
-	out.CreateTime = goValToTs(m.CreateTime)
-	out.UpdateTime = goValToTs(m.UpdateTime)
-	out.Etag = fromPtr(m.Etag)
-	return out
-}
-
-// FixedPackageFromProto maps the proto message's data fields onto a fresh row.
-// It never invents keys or relations: primary keys, resource references, and
-// sub-row graph wiring stay with the caller. Nil in, nil out.
-func FixedPackageFromProto(pb *salespbv1.FixedPackage) *FixedPackage {
-	if pb == nil {
-		return nil
-	}
-	m := &FixedPackage{}
-	// not mapped here: menu (resource reference)
-	m.Name = pb.GetName()
-	m.DisplayName = pb.GetDisplayName()
-	m.Description = toPtr(pb.GetDescription())
-	m.Duration = durToGo(pb.GetDuration())
-	m.Inclusions = docsToJSON(pb.GetInclusions())
-	m.IncludedGuests = pb.GetIncludedGuests()
-	m.Price = docToJSON(pb.GetPrice())
-	m.ExtraGuestPrice = docToJSON(pb.GetExtraGuestPrice())
-	m.Tax = docToJSON(pb.GetTax())
-	m.Active = toPtr(pb.GetActive())
-	m.Etag = toPtr(pb.GetEtag())
-	return m
-}
-
-// SeasonToProto converts the stored row (with its belongs-to associations,
-// when preloaded) to its proto message. Nil in, nil out.
-func SeasonToProto(m *Season) *salespbv1.Season {
-	if m == nil {
-		return nil
-	}
-	out := &salespbv1.Season{}
-	out.Name = m.Name
-	out.DisplayName = m.DisplayName
+	out.Kind = LeadKindToProto(m.Kind)
+	out.EventType = EventTypePtrToProto(m.EventType)
+	out.Source = ChannelPtrToProto(m.Source)
+	out.SourceDetail = fromPtr(m.SourceDetail)
+	out.Stage = StagePtrToProto(m.Stage)
 	out.Dates = jsonToDocs[typepbv1.DateRange](m.Dates)
-	out.RecursYearly = fromPtr(m.RecursYearly)
-	out.Weekdays = enumsFromCSV[dayofweek.DayOfWeek](m.Weekdays, dayofweek.DayOfWeek_value)
+	out.DatesFlexible = fromPtr(m.DatesFlexible)
+	out.Guests = fromPtr(m.Guests)
+	out.Rooms = fromPtr(m.Rooms)
+	out.Budget = jsonToDoc[money.Money](m.Budget)
+	out.Requirements = fromPtr(m.Requirements)
+	out.Owner = fromPtr(m.Owner)
+	out.NextFollowUpTime = goToTs(m.NextFollowUpTime)
+	out.LostReason = LostReasonPtrToProto(m.LostReason)
+	out.LostDetail = fromPtr(m.LostDetail)
+	out.Hold = fromPtr(m.Hold)
+	out.Bookings = []string(m.Bookings)
+	out.CloseTime = goToTs(m.CloseTime)
 	out.CreateTime = goValToTs(m.CreateTime)
 	out.UpdateTime = goValToTs(m.UpdateTime)
 	out.Etag = fromPtr(m.Etag)
 	return out
 }
 
-// SeasonFromProto maps the proto message's data fields onto a fresh row.
+// LeadFromProto maps the proto message's data fields onto a fresh row.
 // It never invents keys or relations: primary keys, resource references, and
 // sub-row graph wiring stay with the caller. Nil in, nil out.
-func SeasonFromProto(pb *salespbv1.Season) *Season {
+func LeadFromProto(pb *salespbv1.Lead) *Lead {
 	if pb == nil {
 		return nil
 	}
-	m := &Season{}
+	m := &Lead{}
+	// not mapped here: contact (resource reference), venue (resource reference)
 	m.Name = pb.GetName()
 	m.DisplayName = pb.GetDisplayName()
+	m.Kind = LeadKindFromProto(pb.GetKind())
+	m.EventType = EventTypePtrFromProto(pb.GetEventType())
+	m.Source = ChannelPtrFromProto(pb.GetSource())
+	m.SourceDetail = toPtr(pb.GetSourceDetail())
+	m.Stage = StagePtrFromProto(pb.GetStage())
 	m.Dates = docsToJSON(pb.GetDates())
-	m.RecursYearly = toPtr(pb.GetRecursYearly())
-	m.Weekdays = enumsToCSV(pb.GetWeekdays())
+	m.DatesFlexible = toPtr(pb.GetDatesFlexible())
+	m.Guests = toPtr(pb.GetGuests())
+	m.Rooms = toPtr(pb.GetRooms())
+	m.Budget = docToJSON(pb.GetBudget())
+	m.Requirements = toPtr(pb.GetRequirements())
+	m.Owner = toPtr(pb.GetOwner())
+	m.NextFollowUpTime = tsToGo(pb.GetNextFollowUpTime())
+	m.LostReason = LostReasonPtrFromProto(pb.GetLostReason())
+	m.LostDetail = toPtr(pb.GetLostDetail())
+	m.Hold = toPtr(pb.GetHold())
+	m.Bookings = pq.StringArray(pb.GetBookings())
+	m.CloseTime = tsToGo(pb.GetCloseTime())
 	m.Etag = toPtr(pb.GetEtag())
 	return m
 }
 
-// PriceRuleToProto converts the stored row (with its belongs-to associations,
+// ActivityToProto converts the stored row (with its belongs-to associations,
 // when preloaded) to its proto message. Nil in, nil out.
-func PriceRuleToProto(m *PriceRule) *salespbv1.PriceRule {
+func ActivityToProto(m *Activity) *salespbv1.Activity {
 	if m == nil {
 		return nil
 	}
-	out := &salespbv1.PriceRule{}
-	// not mapped here: season (resource reference)
+	out := &salespbv1.Activity{}
 	out.Name = m.Name
-	out.DisplayName = m.DisplayName
-	out.Target = PriceTargetToProto(m.Target)
-	out.MinGuests = fromPtr(m.MinGuests)
-	if v := jsonToDoc[money.Money](m.FixedPrice); v != nil {
-		out.Adjustment = &salespbv1.PriceRule_FixedPrice{FixedPrice: v}
-	}
-	if v := goToDec(m.Percent); v != nil {
-		out.Adjustment = &salespbv1.PriceRule_Percent{Percent: v}
-	}
-	if v := jsonToDoc[money.Money](m.Amount); v != nil {
-		out.Adjustment = &salespbv1.PriceRule_Amount{Amount: v}
-	}
-	out.Priority = fromPtr(m.Priority)
-	out.Active = fromPtr(m.Active)
+	out.Kind = ActivityKindToProto(m.Kind)
+	out.OccurTime = goValToTs(m.OccurTime)
+	out.Summary = m.Summary
+	out.Details = fromPtr(m.Details)
+	out.Author = fromPtr(m.Author)
 	out.CreateTime = goValToTs(m.CreateTime)
 	out.UpdateTime = goValToTs(m.UpdateTime)
 	out.Etag = fromPtr(m.Etag)
-	out.Items = []string(m.Items)
 	return out
 }
 
-// PriceRuleFromProto maps the proto message's data fields onto a fresh row.
+// ActivityFromProto maps the proto message's data fields onto a fresh row.
 // It never invents keys or relations: primary keys, resource references, and
 // sub-row graph wiring stay with the caller. Nil in, nil out.
-func PriceRuleFromProto(pb *salespbv1.PriceRule) *PriceRule {
+func ActivityFromProto(pb *salespbv1.Activity) *Activity {
 	if pb == nil {
 		return nil
 	}
-	m := &PriceRule{}
-	// not mapped here: season (resource reference)
+	m := &Activity{}
 	m.Name = pb.GetName()
-	m.DisplayName = pb.GetDisplayName()
-	m.Target = PriceTargetFromProto(pb.GetTarget())
-	m.MinGuests = toPtr(pb.GetMinGuests())
-	m.FixedPrice = docToJSON(pb.GetFixedPrice())
-	m.Percent = decToGo(pb.GetPercent())
-	m.Amount = docToJSON(pb.GetAmount())
-	m.Priority = toPtr(pb.GetPriority())
-	m.Active = toPtr(pb.GetActive())
+	m.Kind = ActivityKindFromProto(pb.GetKind())
+	m.OccurTime = tsToGoVal(pb.GetOccurTime())
+	m.Summary = pb.GetSummary()
+	m.Details = toPtr(pb.GetDetails())
+	m.Author = toPtr(pb.GetAuthor())
 	m.Etag = toPtr(pb.GetEtag())
-	m.Items = pq.StringArray(pb.GetItems())
-	switch pb.GetAdjustment().(type) {
-	case *salespbv1.PriceRule_FixedPrice:
-		c := PriceRuleAdjustmentCaseFixedPrice
-		m.AdjustmentCase = &c
-	case *salespbv1.PriceRule_Percent:
-		c := PriceRuleAdjustmentCasePercent
-		m.AdjustmentCase = &c
-	case *salespbv1.PriceRule_Amount:
-		c := PriceRuleAdjustmentCaseAmount
-		m.AdjustmentCase = &c
-	}
 	return m
 }
 
@@ -681,64 +742,6 @@ func goToDur(s *string) *durationpb.Duration {
 		return nil
 	}
 	return durationpb.New(d)
-}
-
-// enumsToCSV stores a repeated proto enum as the comma-joined list of its
-// value names; nil for an empty list, so the column stays NULL.
-func enumsToCSV[E interface {
-	~int32
-	fmt.Stringer
-}](vs []E) *string {
-	if len(vs) == 0 {
-		return nil
-	}
-	parts := make([]string, 0, len(vs))
-	for _, v := range vs {
-		parts = append(parts, v.String())
-	}
-	s := strings.Join(parts, ",")
-	return &s
-}
-
-// enumsFromCSV parses a stored comma-joined list of proto enum value names
-// back onto the repeated enum, resolving each name through the enum's value
-// map; unknown names map to 0.
-func enumsFromCSV[E ~int32](s *string, byName map[string]int32) []E {
-	if s == nil || *s == "" {
-		return nil
-	}
-	names := strings.Split(*s, ",")
-	out := make([]E, 0, len(names))
-	for _, n := range names {
-		out = append(out, E(byName[strings.TrimSpace(n)]))
-	}
-	return out
-}
-
-// decToGo is a nullable google.type.Decimal as stored: its decimal string, nil
-// when it is unset.
-func decToGo(d *decimal.Decimal) *string {
-	if d.GetValue() == "" {
-		return nil
-	}
-	v := d.GetValue()
-	return &v
-}
-
-// goToDec reads a nullable decimal column back, nil when it is NULL.
-func goToDec(s *string) *decimal.Decimal {
-	if s == nil || *s == "" {
-		return nil
-	}
-	return &decimal.Decimal{Value: *s}
-}
-
-// goValToDec reads a decimal column back, nil when it is empty.
-func goValToDec(s string) *decimal.Decimal {
-	if s == "" {
-		return nil
-	}
-	return &decimal.Decimal{Value: s}
 }
 
 // docToJSON is a document field as stored: the message's JSON form, nil when

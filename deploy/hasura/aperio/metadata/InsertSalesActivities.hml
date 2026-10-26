@@ -1,0 +1,162 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesActivitiesObject
+  fields:
+    - name: author
+      type: String_1
+    - name: createTime
+      type: Timestamptz
+    - name: details
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: kind
+      type: Enum
+    - name: leadId
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: occurTime
+      type: Timestamptz!
+    - name: summary
+      type: String_1!
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertSalesActivitiesObject
+    inputTypeName: InsertSalesActivitiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_activities_object
+      fieldMapping:
+        author:
+          column:
+            name: author
+        createTime:
+          column:
+            name: create_time
+        details:
+          column:
+            name: details
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        kind:
+          column:
+            name: kind
+        leadId:
+          column:
+            name: lead_id
+        name:
+          column:
+            name: name
+        occurTime:
+          column:
+            name: occur_time
+        summary:
+          column:
+            name: summary
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesActivitiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - author
+          - createTime
+          - details
+          - etag
+          - id
+          - kind
+          - leadId
+          - name
+          - occurTime
+          - summary
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesActivitiesResponse
+  description: Responses from the 'insert_sales_activities' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[SalesActivities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertSalesActivitiesResponse
+    inputTypeName: InsertSalesActivitiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_activities_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesActivitiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertSalesActivities
+  outputType: InsertSalesActivitiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertSalesActivitiesObject!]!"
+    - name: postCheck
+      type: SalesActivitiesBoolExp
+      description: Insert permission predicate over the 'sales_activities' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_sales_activities
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertSalesActivities
+    rootFieldKind: Mutation
+  description: Insert into the sales_activities table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertSalesActivities
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteGuestContactsByIdResponse
+  description: Responses from the 'delete_guest_contacts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[GuestContacts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteGuestContactsByIdResponse
+    inputTypeName: DeleteGuestContactsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_guest_contacts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteGuestContactsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteGuestContactsById
+  outputType: DeleteGuestContactsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: GuestContactsBoolExp
+      description: Delete permission predicate over the 'guest_contacts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_guest_contacts_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteGuestContactsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'guest_contacts' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteGuestContactsById
+  permissions:
+    - role: admin
+      allowExecution: true
+
