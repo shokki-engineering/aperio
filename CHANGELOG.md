@@ -29,8 +29,21 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
 - MCP: every service's tools at :8091/mcp, now that protoc-gen-mcp shares
   types through `$defs`.
 
+- The concierge (`aperio.concierge.v1`): FindStay, HoldStay and ConfirmStay,
+  the guest's side for the website and voice agents; a hold is a freebusy
+  hold the booking then takes, sealed in a token. Contacts carry
+  `phone_numbers`, by which a returning guest is found.
+
 ### Changed
 
+- **Breaking:** the API is one service per part of the business: venue,
+  catalog, pricing, guest, sales, stay, event, finance, operations,
+  document and concierge (97 methods, was 111). Resource names and URLs are
+  unchanged; resource types move (`aperio.booking.v1/Reservation` is
+  `aperio.stay.v1/Reservation`). Bookings, quotes and leads are cancelled or
+  lost, never deleted. The database migrations are squashed into a fresh
+  init.
+
 - The layout follows freebusy's: service packages named after their domain
-  (`internal/service/booking`, `sales`, `finance`), shared live-test setup in
+  (`internal/service/stay`, `event`, `sales`, ...), shared live-test setup in
   `test/live`, the calendar-links command in `tools/calendar`.

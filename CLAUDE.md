@@ -21,8 +21,16 @@ they import.
   `test/live` for what live suites share, and command-line tools under
   `tools/`, not `cmd/`. When adding a piece freebusy already has, shape it
   as freebusy's.
+- The API is one service per part of the business (`protobuf/aperio`):
+  venue, catalog (dishes, menus, packages), pricing (seasons, rules,
+  CalculatePrice), guest (contacts), sales (leads, quotes), stay, event,
+  finance, operations, document, and concierge (the guest's tasks). A
+  resource gets only the methods its lifecycle allows: bookings, quotes,
+  invoices and requests move by state methods and are never deleted.
 - Hand-written services live in `internal/service/<domain>`, named after the
-  domain as the repository package is. A file that needs both -- a test, the
+  domain as the repository package is; services call each other through
+  their gRPC methods, so each one's rules hold whoever asks. What the stay
+  and event services share is `internal/booking`, a library. A file that needs both -- a test, the
   server's assembly -- takes the repositories from a helper in a file of its
   own (`test/live/<domain>.go`, `internal/server/repositories_<domain>.go`).
 - Every hand-written file stays under 200 lines and is documented.

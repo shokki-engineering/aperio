@@ -6,8 +6,12 @@ agentic voice call: a caller rings the resort or the hall, a voice agent
 through MCP -- asking the caller, through MCP elicitation, for what it does
 not know and for consent before anything is taken or charged.
 
-Status: proposal, 27 October 2026. Nothing here is built yet; see
-[roadmap.md](roadmap.md), M9.
+Status, 27 October 2026: `FindStay`, `HoldStay` and `ConfirmStay` are built
+(`internal/service/concierge`) and served on REST, gRPC and MCP -- for the
+website first, a LiveKit voice agent later. A guest's missing details come
+back as a structured error naming the field, which a frontend shows as a form
+and an agent asks for. The rest -- more tasks, elicitation in the plugin, the
+voice agent -- is [roadmap.md](roadmap.md), M9.
 
 ## Why the existing tools do not work by voice
 
@@ -33,12 +37,14 @@ A new package, `aperio.concierge.v1`, of task methods over the existing
 services -- the resource APIs stay as they are, for staff and integrations.
 Its MCP tools are the only ones a voice agent is given.
 
-```
-caller ── telephony ── voice agent (STT · LLM · TTS) ── MCP ──> ConciergeService
-                                                                 │ hooks
-                                     pricing · booking · sales · crm · finance · operations
-                                                                 │
-                                                             freebusy
+```mermaid
+flowchart LR
+    caller((caller)) --- tel[telephony] --- agent["voice agent<br/>STT · LLM · TTS"]
+    web((guest on<br/>the website)) --- fe[frontend]
+    agent -->|MCP| c[ConciergeService]
+    fe -->|REST| c
+    c -->|"through their gRPC methods"| svcs["pricing · stay · event · guest · sales · finance · operations"]
+    svcs --> fb[freebusy]
 ```
 
 ### Rules for every concierge method
@@ -91,20 +97,28 @@ reservations", "event enquiry") are MCP prompts.
 
 ### A call, end to end
 
-```
-Caller:  Do you have a sea-view room on the twelfth of December, two nights, for two?
-Agent →  FindStay {arrival_date: 2027-12-12, nights: 2, adults: 2}
-      ←  spoken: "Yes -- a Sea View Deluxe is fourteen thousand a night, twenty-eight
-                  thousand for both nights plus GST."
-Caller:  Book it.
-Agent →  HoldStay {option: "sea-view-deluxe", request_id: …}
-      ⇄  elicitation: "May I have your name for the booking?"  → "Priya Iyer"
-      ←  spoken: "I've held it for fifteen minutes." confirmation_token: …
-Agent →  ConfirmStay {confirmation_token: …}
-      ⇄  elicitation (required): "Book Sea View Deluxe, 12 to 14 December, for
-          thirty-one thousand three hundred and sixty rupees with GST?" → yes
-      ←  spoken: "Done. I've sent a payment link to your phone; the booking is
-                  confirmed when the advance is paid."
+```mermaid
+sequenceDiagram
+    actor Caller
+    participant Agent as Voice agent
+    participant C as ConciergeService
+    Caller->>Agent: Do you have a sea-view room on 12 December, two nights, for two?
+    Agent->>C: FindStay {arrival_date 2027-12-12, nights 2, adults 2}
+    C-->>Agent: spoken "Sea View Deluxe, 28,000 rupees for 2 nights, before taxes"
+    Agent->>Caller: says it
+    Caller->>Agent: Book it.
+    Agent->>C: HoldStay {space, request_id}
+    C-->>Agent: elicitation "May I have your name for the booking?"
+    Agent->>Caller: asks
+    Caller->>Agent: Priya Iyer
+    Agent->>C: answer
+    C-->>Agent: hold_token · spoken "I've held it for 15 minutes. Shall I book it?"
+    Agent->>C: ConfirmStay {hold_token}
+    C-->>Agent: elicitation (required) "Book Sea View Deluxe, 12 to 14 December, for 31,360 rupees with GST?"
+    Agent->>Caller: asks
+    Caller->>Agent: Yes
+    Agent->>C: answer
+    C-->>Agent: spoken "Done. I've sent a payment link to your phone."
 ```
 
 ## The protos (sketch)

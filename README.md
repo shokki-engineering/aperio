@@ -25,18 +25,11 @@ What is built and what is next: [docs/roadmap.md](docs/roadmap.md).
 
 ## How it works
 
-```
- guests, staff, agents, channels
-              |  gRPC :50061 / REST :8090 / MCP :8091/mcp
-   +----------v-----------+         freebusy SDK (gRPC)        +-------------+
-   | aperio               | ---------------------------------> | freebusy    |
-   | services + hooks     |   check, hold -> reserve, cancel,  | own Postgres|
-   +----------+-----------+   calendar notes                   | own Hasura  |
-              | GORM / Hasura DDN                              +-------------+
-   +----------v-----------+
-   | aperio Postgres      |  7 schemas, 19 tables, Prisma migrations;
-   | + Hasura DDN :3281   |  OpenTravel structures stored as JSONB documents
-   +----------------------+
+```mermaid
+flowchart LR
+    who["guests, staff,<br/>agents, channels"] -->|"gRPC :50061 · REST :8090 · MCP :8091/mcp"| aperio["aperio<br/>services + hooks"]
+    aperio -->|"GORM / Hasura DDN"| db[("aperio Postgres<br/>10 schemas, 19 tables<br/>+ Hasura DDN :3281")]
+    aperio -->|"freebusy SDK (gRPC):<br/>check, hold → reserve,<br/>cancel, calendar notes"| fb["freebusy<br/>own Postgres, own Hasura"]
 ```
 
 The schema is aperio's own protos (`protobuf/aperio`), written in the
@@ -56,10 +49,11 @@ It follows freebusy's.
 | `internal/telemetry` | logs, traces and metrics (OTLP) |
 | `internal/server` | the HybridServer: services assembled and registered on gRPC, REST and MCP |
 | `internal/database` | the connection (GORM or Hasura); generated models, repositories, caches, Hasura client beneath |
-| `internal/service/{booking,sales,finance}` | business logic over the generated services |
+| `internal/service/<domain>` | business logic over the generated services: `stay`, `event`, `guest`, `pricing`, `sales`, `finance`, `concierge` |
+| `internal/booking` | what the stay and event services share in taking rooms and halls from freebusy |
 | `internal/service/generated` | the generated AIP services |
 | `internal/engine` | freebusy, through its Go SDK |
-| `internal/pricing`, `internal/calendar` | pricing rules and GST; calendar notes |
+| `internal/pricing`, `internal/calendar` | the price rules, exact money and GST; calendar notes |
 | `protobuf/aperio` | the protos; `protobuf/generated` their Go, Prisma and MCP output |
 | `test/live` | what the live suites share |
 | `tools/` | `just` modules, buf templates, the calendar-links tool |
@@ -79,7 +73,7 @@ curl 'localhost:8090/v1/venues?pageSize=10'
 Booking needs freebusy running (`just run` in its checkout, gRPC :50051).
 
 Agents connect to every service's tools at once at `http://localhost:8091/mcp`
-(streamable HTTP): 108 tools, 0.9 MB of schemas. The schemas are trimmed for
+(streamable HTTP): 97 tools, 0.9 MB of schemas. The schemas are trimmed for
 an agent's context (`tools/protobuf/buf/go.buf.gen.yaml`): shared types once
 under `$defs`, OpenTravel code lists over 64 values as patterns, short nested
 descriptions, no output schemas. The server validates every request in full.

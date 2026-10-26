@@ -14,27 +14,34 @@ service requests (pantry, housekeeping) inside the venue.
 
 ## Architecture: two systems, two databases
 
-```
-                 guests, staff, agents, channels (Booking.com, Airbnb, MakeMyTrip)
-                                    |
-                     gRPC / REST / MCP (one aperio deployable)
-                                    |
-   +--------------------------------v---------------------------------+
-   | aperio                                                           |
-   |  hand-written: hooks and custom methods (internal/service/*),    |
-   |  pricing, calendar notes, the engine client                      |
-   |  generated:    AIP services, repositories, caches, Hasura client |
-   +-----------+-------------------------------------+----------------+
-               | gorm (writes)  /  Hasura DDN (reads)|  freebusy-go SDK (gRPC)
-   +-----------v-----------+              +----------v-----------------+
-   | aperio Postgres       |              | freebusy                   |
-   | schemas: venue, crm,  |              | the availability engine:   |
-   | booking, sales,       |   names only | resources, calendars,      |
-   | finance, document,    | <----------> | holds, reservations,       |
-   | operations (19 tables)|  (soft refs) | CalDAV and .ics feeds,     |
-   | migrations: Prisma    |              | webhooks; its own Postgres |
-   | API: Hasura DDN :3281 |              | and its own Hasura         |
-   +-----------------------+              +----------------------------+
+```mermaid
+flowchart TB
+    who["guests, staff, agents,<br/>channels (Booking.com, Airbnb, MakeMyTrip)"]
+    who -->|"gRPC :50061 · REST :8090 · MCP :8091"| aperio
+
+    subgraph aperio["aperio (one deployable)"]
+        direction TB
+        hand["hand-written: hooks and custom methods<br/>(internal/service/*), internal/booking,<br/>pricing, calendar notes, the engine client"]
+        gen["generated: AIP services, repositories,<br/>caches, Hasura client"]
+        hand --- gen
+    end
+
+    subgraph adb["aperio database"]
+        pg[("Postgres: venue, catalog, pricing, guest,<br/>sales, stay, event, finance, document,<br/>operations · Prisma migrations")]
+        ddn["Hasura DDN :3281"]
+        ddn --- pg
+    end
+
+    subgraph fb["freebusy (availability engine)"]
+        fbsvc["resources, calendars, holds,<br/>reservations, CalDAV and .ics feeds,<br/>webhooks"]
+        fbpg[("its own Postgres<br/>and its own Hasura")]
+        fbsvc --- fbpg
+    end
+
+    aperio -->|"gorm (writes)"| pg
+    aperio -->|"aperioql (reads)"| ddn
+    aperio -->|"freebusy-go SDK (gRPC)"| fbsvc
+    pg -. "names only (soft references)" .- fbpg
 ```
 
 - **aperio owns the business**: who is coming, what they pay, what they eat,
@@ -48,7 +55,7 @@ service requests (pantry, housekeeping) inside the venue.
   `Session.freebusy_reservation`, `Space.resources`).
 - **No shared database and no cross-database foreign keys.** The two agree
   through the API: idempotent booking keys, compensation when a step fails
-  (`internal/service/booking`), and -- still to build -- webhooks and a
+  (`internal/service/stay`, `event`), and -- still to build -- webhooks and a
   reconciler for drift.
 - **Hasura DDN** puts a typed GraphQL API over aperio's database
   (connector `aperio_pgsql`, engine `:3281`), which the generated
@@ -57,6 +64,11 @@ service requests (pantry, housekeeping) inside the venue.
   database.
 
 ## Status at a glance
+
+The API is one service per part of the business, each with only the methods
+its resources' lifecycles allow (27 October 2026): venue (8), catalog (12),
+pricing (11), guest (4), sales (15), stay (8), event (11), finance (13),
+operations (7), document (5) and concierge (3) -- 97 methods.
 
 | Area | Status | What exists | What is missing |
 |---|---|---|---|
@@ -71,14 +83,14 @@ service requests (pantry, housekeeping) inside the venue.
 | Quotes | Done | priced drafts, Send, Decline, Revise, Accept (makes event + stay, wins lead) | expiry job; PDF proposal |
 | Invoices (GST) | Done | `internal/service/finance`: CGST/SGST/IGST per line, rupee rounding, series per venue, kind and year, Issue / Cancel / Credit; live test | raising from a quote, e-invoice IRN, paid / due from payments |
 | Payments | In progress | `internal/service/finance`: any currency at an exchange rate, paid / due and PAID on invoices, an advance confirming its booking, `Settle` for a gateway's webhook (idempotent), Refund (through the gateway) and Void; live test | a gateway adapter (signature check, webhook route, payment links), cheque clearing, receipt vouchers |
-| CRM (leads, contacts) | Generated only | standard methods | lead hold in freebusy, follow-ups, lost reasons flow, dedupe contacts |
+| Guests and leads | Partly | guest service: contacts with searchable `phone_numbers`; leads and activities in sales | lead hold in freebusy, follow-ups, dedupe contacts |
 | Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
 | Service requests | Generated only | proto with event option | state methods, notifying staff (pantry, housekeeping), charges to a booking |
 | Channels | Not started | `Channel` enum, OTA types in the schema | Booking.com (OTA), Airbnb, MakeMyTrip adapters; rates and inventory push |
 | Server | Done | `main.go` on the HybridServer, every service on gRPC :50061, REST :8090 and MCP :8091 (108 tools); `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | the cache wired, query tracing, background jobs |
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
-| Voice | Designed | [voice.md](voice.md): a concierge API for calls, elicitation for consent | everything (M9) |
+| Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay over REST, gRPC and MCP (a freebusy hold the booking takes; a sealed token; guests found by phone); live test | more tasks (events, lookup, cancel, service requests); elicitation in the plugin; payment link; a LiveKit demo (M9) |
 | Agents (MCP) | Served | 108 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone): shared messages and enums under `$defs`, code lists over 64 values as patterns, short nested descriptions, no output schemas | reservation tools still ~250 KB (the OpenTravel RoomStay vocabulary); task-level tools ("today's arrivals") |
 
 ## Milestones
@@ -265,11 +277,11 @@ For every feature:
 - Freebusy: `internal/engine` (check, hold -> reserve, cancel, notes);
   freebusy's read-only signed `.ics` feeds (`internal/caldav/feed.go` in
   freebusy).
-- Bookings: `internal/service/booking` -- stays, sessions, events, state
+- Bookings: `internal/service/stay` and `event` (sharing `internal/booking`) -- stays, sessions, events, state
   methods, compensation; live tests.
 - Calendars: notes with guest count, names, emails, phones, address, diet and
   requests on the booked rooms' calendars; `tools/calendar (`just calendar-links`)`.
-- Pricing and quotes: `internal/pricing`, `internal/service/sales` --
+- Pricing and quotes: `internal/pricing`, `internal/service/pricing` and `sales` --
   seasons, rules, GST, quotes through Send / Decline / Revise / Accept;
   unit and live tests.
 - GST invoices: `internal/service/finance` -- CGST/SGST/IGST, numbering
