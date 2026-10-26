@@ -222,6 +222,13 @@ message ConfirmStayRequest {
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 1
   ];
+
+  // Whether the guest agreed to book the stay as the hold gave it. Unset,
+  // ConfirmStay books nothing and asks: its error carries the question --
+  // the room, the dates, the amount -- for a form to show or an agent to say
+  // (an MCP client is asked it as an elicitation), and the call is made
+  // again with confirmed set.
+  bool confirmed = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ConfirmStay.
@@ -334,6 +341,10 @@ message CancelBookingRequest {
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.max_len = 500
   ];
+
+  // Whether the guest agreed to cancel. Unset, CancelBooking cancels nothing
+  // and asks, as ConfirmStay does.
+  bool confirmed = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for CancelBooking.

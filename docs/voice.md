@@ -9,10 +9,11 @@ not know and for consent before anything is taken or charged.
 Status, 27 October 2026: `FindStay`, `HoldStay`, `ConfirmStay`, `FindBooking`,
 `CancelBooking`, `EnquireEvent` and `RequestService` are built
 (`internal/service/concierge`) and served on REST, gRPC and MCP -- for the
-website first, a LiveKit voice agent later. A guest's missing details come
-back as a structured error naming the field, which a frontend shows as a form
-and an agent asks for. The rest -- more tasks, elicitation in the plugin, the
-voice agent -- is [roadmap.md](roadmap.md), M9.
+website first, a LiveKit voice agent later. A guest's missing details, and
+consent before booking or cancelling, are asked by elicitation (below); over
+REST the same question is a structured error a frontend shows as a form. The
+rest -- more tasks, the payment link, the voice agent -- is
+[roadmap.md](roadmap.md), M9.
 
 ## Why the existing tools do not work by voice
 
@@ -81,12 +82,12 @@ flowchart LR
 | Method | Does | Asks the caller (elicitation) |
 |---|---|---|
 | `FindStay` | rooms free and priced for dates and guests, cheapest first | -- |
-| `HoldStay` | holds rooms in freebusy (15 min), drafts a PENDING stay, prices it | name, if the contact has none; email, optional |
+| `HoldStay` | holds rooms in freebusy (15 min), drafts a PENDING stay, prices it | name and phone, whichever is missing |
 | `ConfirmStay` | books the hold, sends the advance payment link | **consent**, with the dates, rooms and amount |
-| `EnquireEvent` | a lead and a draft quote for an occasion, date and guest count, with menus that fit their diet | occasion, guests, diet, if missing |
+| `EnquireEvent` | a lead and a draft quote for an occasion, date and guest count, with menus that fit their diet | name and phone, whichever is missing |
 | `SendQuote` | sends the quote by WhatsApp or email | **consent** to send |
-| `FindBooking` | the caller's bookings, by their number (and a date or reference) | -- |
-| `CancelBooking` | cancels, after reading the policy and refund | **consent**, with the refund amount |
+| `FindBooking` | the caller's bookings, by their number and a reference or arrival date | -- |
+| `CancelBooking` | cancels a stay by the caller's number and its reference | **consent**, with the dates and reference (the refund amount once there is a policy) |
 | `RequestService` | in-house: "two black coffees to room 204" | quantity and place, if missing |
 | `AskVenue` | answers from the venue's documents and policies (check-in, parking, pets) | -- |
 | `HandOff` | transfers to a person, with a summary of the call | -- |
@@ -137,18 +138,16 @@ service ConciergeService {
   // Holds a stay option for 15 minutes and prices it.
   rpc HoldStay(HoldStayRequest) returns (HoldStayResponse) {
     option (google.api.http) = {post: "/v1/{venue=venues/*}:holdStay" body: "*"};
-    option (mcp.v1.elicitation) = {
-      message: "May I have the name for the booking?"
-      schema: "aperio.concierge.v1.GuestDetails"
-      ask_missing_only: true           // proposed: see "What the plugin needs"
-    };
+    // A missing name or phone is asked by the handler (mcp.Ask), which knows
+    // which is missing. A static form would say:
+    //   option (mcp.v1.elicitation) = {message: "..." ask_missing_only: true};
   }
 
   // Books a held stay and sends the payment link: never without the caller's yes.
   rpc ConfirmStay(ConfirmStayRequest) returns (ConfirmStayResponse) {
     option (google.api.http) = {post: "/v1/{venue=venues/*}:confirmStay" body: "*"};
     // The question is the server's -- it carries the amount -- so it is
-    // raised by the handler (proposed), not written here.
+    // raised by the handler (mcp.Ask), not written here.
   }
 }
 
@@ -186,30 +185,55 @@ Every message is flat and small, so the concierge's tools are a few
 kilobytes each -- the schema-size problem does not arise for the voice agent
 at all.
 
-## What the plugin and runtime need
+## How elicitation works
 
-Three changes to protoc-gen-mcp and runtime-go's agents, each generic:
+Built in protoc-gen-mcp and runtime-go's agents (`mcp`), each generic:
 
 1. **Ask only what is missing** (`ask_missing_only: true` on
-   `mcp.v1.elicitation`). Today every form field is asked on every call; the
-   generated handler should drop fields the arguments already carry, and skip
-   the elicitation when none is left. `ElicitHook` would need the call's
-   arguments to do it by hand.
-2. **Questions the server raises.** A consent question must carry what only
-   the server knows -- the amount, the refund, the dates as booked -- so it
-   cannot be a static string in the proto. A handler returns a gRPC error
-   with an `ElicitationRequired` detail (message, flat fields); the generated
-   MCP layer turns it into an elicitation, merges the answer into the
-   arguments and calls the handler again (the multi-round-trip flow,
-   SEP-2322, the runtime already uses). The business logic stays in the
-   hook; over gRPC and REST the same error tells a client what to ask.
-3. **The caller from the call.** A documented extra property (`caller_phone`,
-   through `ExtraProperties`) that the voice platform sets from telephony
-   metadata, read in the handler from the context.
+   `mcp.v1.elicitation`). The generated handler drops the form's fields the
+   arguments already carry, and skips the elicitation when none is left.
+2. **Questions the server raises.** A handler returns `mcp.Ask(code,
+   question, fields)`: a gRPC status carrying a `google.rpc.ErrorInfo`
+   (reason `ELICITATION_REQUIRED`, the question and a JSON Schema of the
+   fields in its metadata). Each field asked is a field of the request --
+   `confirmed` on ConfirmStay and CancelBooking -- so the answer reaches the
+   handler as an argument. The concierge's are in
+   `internal/service/concierge/ask.go`.
 
-Without elicitation support in the voice client, the design still holds: the
-two steps and the `confirmation_token` make the LLM ask and the caller agree
-before `ConfirmStay` -- elicitation makes that consent explicit and auditable.
+```mermaid
+sequenceDiagram
+    participant Client as MCP client
+    participant Tool as generated tool
+    participant H as handler
+    Client->>Tool: tools/call confirm_stay {hold_token}
+    Tool->>H: ConfirmStay
+    H-->>Tool: mcp.Ask "Book Sea View Deluxe ... for 28,000 rupees plus taxes?"
+    Tool-->>Client: input_required: elicitation/create {confirmed}
+    Client->>Tool: tools/call again, inputResponses {confirmed: true}
+    Tool->>H: ConfirmStay {hold_token, confirmed: true}
+    H-->>Tool: booked
+    Tool-->>Client: spoken "Done. ..."
+```
+
+What a client gets depends on what it declared:
+
+| Client | The question arrives as |
+|---|---|
+| MCP, 2026-07-28 protocol, `elicitation` in its request `_meta` capabilities | an `input_required` result (SEP-2322); it calls again with `inputResponses` |
+| MCP, an older protocol on a session, `elicitation` declared at initialize | an elicitation the SDK sends over the session for it |
+| MCP, no `elicitation` declared (or an older client on aperio's stateless server) | a tool error, "May I have the guest's name and phone number? (guest_display_name, phone)", for the model to ask and call again with |
+| REST or gRPC (the website) | the error itself; the frontend reads the `ErrorInfo` and shows the form |
+
+A declined or cancelled answer ends the call ("Cancelled by the user.")
+without running the handler again.
+
+Still to do: **the caller from the call** -- a documented extra property
+(`caller_phone`, through `ExtraProperties`) that the voice platform sets from
+telephony metadata, read in the handler from the context.
+
+Without elicitation in the voice client the design still holds: the two
+steps and the hold token make the LLM ask and the caller agree before
+`ConfirmStay` -- elicitation makes that consent explicit and auditable.
 
 ## The voice side
 
@@ -227,7 +251,8 @@ Outside aperio, and to choose:
 1. `ConciergeService` with `FindStay`, `HoldStay`, `ConfirmStay`; the
    payment link; `spoken` in English. Tested by an MCP client script, no
    telephony.
-2. Plugin: `ask_missing_only` and server-raised elicitation.
+2. Plugin: `ask_missing_only` and server-raised elicitation (built; to
+   release).
 3. A voice agent on a test number, one language, inbound reservations only.
 4. `EnquireEvent` / `SendQuote`, `FindBooking`, `CancelBooking`.
 5. In-house `RequestService` (a room's own line), `AskVenue`, `HandOff`.

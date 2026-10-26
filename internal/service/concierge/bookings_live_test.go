@@ -15,6 +15,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
+	"github.com/the-protobuf-project/runtime-go/agents/mcp"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -29,7 +30,7 @@ func TestLiveFindCancelBooking(t *testing.T) {
 	if err != nil {
 		t.Fatalf("hold: %v", err)
 	}
-	booked, err := r.svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: r.venue.GetName(), HoldToken: held.GetHoldToken()})
+	booked, err := r.svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: r.venue.GetName(), HoldToken: held.GetHoldToken(), Confirmed: true})
 	if err != nil {
 		t.Fatalf("confirm: %v", err)
 	}
@@ -64,6 +65,11 @@ func TestLiveFindCancelBooking(t *testing.T) {
 		t.Errorf("cancel with a wrong reference = %v; want refused", err)
 	}
 	cancel.Reference, cancel.Reason = ref, "plans changed"
+	_, err = r.svc.CancelBooking(ctx, cancel)
+	if q, _, ok := mcp.Asked(err); !ok || !strings.Contains(q, "Cancel your stay from 3 November") || r.fb.Active() != 1 {
+		t.Errorf("cancel without consent = %v, %d held; want the stay asked about, and kept", err, r.fb.Active())
+	}
+	cancel.Confirmed = true
 	if _, err := r.svc.CancelBooking(ctx, cancel); err != nil {
 		t.Fatalf("cancel: %v", err)
 	}

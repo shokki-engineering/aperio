@@ -18,6 +18,7 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
+	"github.com/the-protobuf-project/runtime-go/agents/mcp"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -45,8 +46,9 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	}
 
 	hold := &conciergepbv1.HoldStayRequest{Venue: v.GetName(), Space: sp.GetName(), ArrivalDate: arrive, Nights: 2, Adults: 2, RequestId: uuid.NewString()}
-	if _, err := svc.HoldStay(ctx, hold); status.Code(err) != codes.InvalidArgument || !strings.Contains(err.Error(), "name") {
-		t.Errorf("hold with no guest = %v; want the guest's details asked for", err)
+	_, err = svc.HoldStay(ctx, hold)
+	if q, schema, ok := mcp.Asked(err); !ok || q != "May I have the guest's name and phone number?" || len(schema.Required) != 2 {
+		t.Errorf("hold with no guest = %v; want the name and phone asked for", err)
 	}
 	hold.GuestDisplayName, hold.Phone = "Priya Iyer", "98765 "+run[len(run)-5:]
 	held, err := svc.HoldStay(ctx, hold)
@@ -58,10 +60,17 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 		t.Errorf("a retried hold took more rooms: %d claims", fb.Active())
 	}
 
-	if _, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken() + "x"}); status.Code(err) != codes.InvalidArgument {
+	if _, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken() + "x", Confirmed: true}); status.Code(err) != codes.InvalidArgument {
 		t.Errorf("a tampered token = %v; want refused", err)
 	}
-	booked, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken()})
+	_, err = svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken()})
+	if q, _, ok := mcp.Asked(err); !ok || status.Code(err) != codes.FailedPrecondition || !strings.Contains(q, "Book 1 room of Sea View Deluxe for 2 nights") || !strings.Contains(q, "28,000 rupees") {
+		t.Errorf("confirm without consent = %v; want the room, the nights and the amount asked about", err)
+	}
+	if fb.Booked() != 0 || fb.Active() != 1 {
+		t.Errorf("asking booked something: %d booked, %d held", fb.Booked(), fb.Active())
+	}
+	booked, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken(), Confirmed: true})
 	must(err, "confirm")
 	if fb.Active() != 1 || fb.Booked() != 0 {
 		t.Errorf("booking took %d claims, %d of its own; want the hold's one", fb.Active(), fb.Booked())
@@ -76,7 +85,7 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	if want := "+9198765" + run[len(run)-5:]; len(c.GetPhoneNumbers()) != 1 || c.GetPhoneNumbers()[0] != want {
 		t.Errorf("guest's phone numbers = %v; want [%s]", c.GetPhoneNumbers(), want)
 	}
-	if again, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken()}); err != nil || again.GetReservation() != booked.GetReservation() {
+	if again, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken(), Confirmed: true}); err != nil || again.GetReservation() != booked.GetReservation() {
 		t.Errorf("a retried confirm = %v, %v; want the same stay", again.GetReservation(), err)
 	}
 
@@ -85,7 +94,7 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 		GuestDisplayName: "Priya", Phone: hold.GetPhone(), RequestId: uuid.NewString()}
 	held2, err := svc.HoldStay(ctx, second)
 	must(err, "second hold")
-	booked2, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held2.GetHoldToken()})
+	booked2, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held2.GetHoldToken(), Confirmed: true})
 	must(err, "second confirm")
 	r2, _ := bookings.GetReservation(ctx, &staypbv1.GetReservationRequest{Name: booked2.GetReservation()})
 	if r2.GetContact() != r.GetContact() {

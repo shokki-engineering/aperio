@@ -39,6 +39,13 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   with the menus priced and the halls free that day; RequestService sends a
   guest's ask -- two black coffees to room 204 -- to the department that
   does it.
+- Elicitation from the concierge: a method missing the guest's name or phone
+  asks for just those, and ConfirmStay and CancelBooking ask for consent with
+  the real amount and dates (`confirmed`) before they book or cancel. The
+  question is a gRPC error (`google.rpc.ErrorInfo`, reason
+  `ELICITATION_REQUIRED`) that a REST or gRPC client shows as a form; over MCP
+  it is an elicitation to a client that declares the capability, and a tool
+  error the model asks in its own words to one that does not.
 
 ### Changed
 

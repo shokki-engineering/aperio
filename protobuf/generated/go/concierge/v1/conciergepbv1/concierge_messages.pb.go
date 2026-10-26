@@ -492,7 +492,13 @@ type ConfirmStayRequest struct {
 	// Format: venues/{venue}
 	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
 	// The token HoldStay returned.
-	HoldToken     string `protobuf:"bytes,2,opt,name=hold_token,json=holdToken,proto3" json:"hold_token,omitempty"`
+	HoldToken string `protobuf:"bytes,2,opt,name=hold_token,json=holdToken,proto3" json:"hold_token,omitempty"`
+	// Whether the guest agreed to book the stay as the hold gave it. Unset,
+	// ConfirmStay books nothing and asks: its error carries the question --
+	// the room, the dates, the amount -- for a form to show or an agent to say
+	// (an MCP client is asked it as an elicitation), and the call is made
+	// again with confirmed set.
+	Confirmed     bool `protobuf:"varint,3,opt,name=confirmed,proto3" json:"confirmed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -539,6 +545,13 @@ func (x *ConfirmStayRequest) GetHoldToken() string {
 		return x.HoldToken
 	}
 	return ""
+}
+
+func (x *ConfirmStayRequest) GetConfirmed() bool {
+	if x != nil {
+		return x.Confirmed
+	}
+	return false
 }
 
 // Response message for ConfirmStay.
@@ -850,7 +863,10 @@ type CancelBookingRequest struct {
 	// The booking's reference.
 	Reference string `protobuf:"bytes,3,opt,name=reference,proto3" json:"reference,omitempty"`
 	// Why, in the guest's words; kept on the booking.
-	Reason        string `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	Reason string `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	// Whether the guest agreed to cancel. Unset, CancelBooking cancels nothing
+	// and asks, as ConfirmStay does.
+	Confirmed     bool `protobuf:"varint,5,opt,name=confirmed,proto3" json:"confirmed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -911,6 +927,13 @@ func (x *CancelBookingRequest) GetReason() string {
 		return x.Reason
 	}
 	return ""
+}
+
+func (x *CancelBookingRequest) GetConfirmed() bool {
+	if x != nil {
+		return x.Confirmed
+	}
+	return false
 }
 
 // Response message for CancelBooking.
@@ -1491,12 +1514,13 @@ const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\vexpire_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"expireTime\x12(\n" +
 	"\x05total\x18\x03 \x01(\v2\x12.google.type.MoneyR\x05total\x12\x16\n" +
-	"\x06spoken\x18\x04 \x01(\tR\x06spoken\"v\n" +
+	"\x06spoken\x18\x04 \x01(\tR\x06spoken\"\x9a\x01\n" +
 	"\x12ConfirmStayRequest\x124\n" +
 	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12*\n" +
 	"\n" +
-	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\"\xb8\x01\n" +
+	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\x12\"\n" +
+	"\tconfirmed\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\tconfirmed\"\xb8\x01\n" +
 	"\x13ConfirmStayResponse\x12A\n" +
 	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\vreservation\x12(\n" +
@@ -1519,13 +1543,14 @@ const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\farrival_date\x18\x03 \x01(\v2\x11.google.type.DateR\varrivalDate\x128\n" +
 	"\x0edeparture_date\x18\x04 \x01(\v2\x11.google.type.DateR\rdepartureDate\x12\x1a\n" +
 	"\x05state\x18\x05 \x01(\tB\x04\xe2A\x01\x03R\x05state\x12\x16\n" +
-	"\x06spoken\x18\x06 \x01(\tR\x06spoken\"\xc4\x01\n" +
+	"\x06spoken\x18\x06 \x01(\tR\x06spoken\"\xe8\x01\n" +
 	"\x14CancelBookingRequest\x124\n" +
 	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12#\n" +
 	"\x05phone\x18\x02 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\x10\x06\x18 R\x05phone\x12+\n" +
 	"\treference\x18\x03 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\x10\x04\x18\x10R\treference\x12$\n" +
-	"\x06reason\x18\x04 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xf4\x03R\x06reason\"r\n" +
+	"\x06reason\x18\x04 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xf4\x03R\x06reason\x12\"\n" +
+	"\tconfirmed\x18\x05 \x01(\bB\x04\xe2A\x01\x01R\tconfirmed\"r\n" +
 	"\x15CancelBookingResponse\x12A\n" +
 	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\vreservation\x12\x16\n" +

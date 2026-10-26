@@ -62,6 +62,10 @@ func (s *Server) CancelBooking(ctx context.Context, req *conciergepbv1.CancelBoo
 			return nil, servicex.BadField("BOOKING_NOT_FOUND", "reference", "no booking has that reference for that phone",
 				"Check the reference with the guest, or find the booking by its day of arrival")
 		}
+		if !req.GetConfirmed() {
+			return nil, askConsent(fmt.Sprintf("Cancel your stay from %s to %s, reference %s?",
+				day(stays[0].GetArrivalDate()), day(stays[0].GetDepartureDate()), spell(reference(stays[0].GetName()))))
+		}
 		r, err := s.booker.CancelReservation(ctx, &staypbv1.CancelReservationRequest{
 			Name: stays[0].GetName(), Reason: strings.TrimSpace("cancelled by the guest. " + req.GetReason()),
 		})

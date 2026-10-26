@@ -3,7 +3,8 @@
 
 package concierge
 
-// confirm.go is ConfirmStay: the held stay booked, for the guest the hold
+// confirm.go is ConfirmStay: the held stay booked -- once the guest has said
+// yes to it (ask.go) -- for the guest the hold
 // names -- found by their phone, or added -- through the stay service,
 // whose booking takes its rooms from the hold. The stay is PENDING until its
 // advance is paid (finance confirms it then). A retried ConfirmStay finds the
@@ -40,11 +41,20 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 		return nil, servicex.Blocked("HOLD_EXPIRED", "aperio.booking.v1/Reservation", h.Venue+"/reservations/"+h.Reservation,
 			"the hold lapsed before the stay was confirmed", "Hold the stay again; the rooms may have gone")
 	}
+	arrive := &date.Date{Year: h.Arrival[0], Month: h.Arrival[1], Day: h.Arrival[2]}
+	total := &money.Money{CurrencyCode: h.Currency, Units: h.Total, Nanos: h.TotalNanos}
+	if !req.GetConfirmed() {
+		room := h.Space
+		if sp, err := s.spaces.Get(ctx, h.Space); err == nil {
+			room = sp.GetDisplayName()
+		}
+		return nil, askConsent(fmt.Sprintf("Book %s of %s for %s from %s for %s, %s plus taxes?",
+			count(h.Rooms, "room"), room, count(h.Nights, "night"), day(arrive), h.Guest, amount(total)))
+	}
 	contact, err := s.guest(ctx, h)
 	if err != nil {
 		return nil, err
 	}
-	arrive := &date.Date{Year: h.Arrival[0], Month: h.Arrival[1], Day: h.Arrival[2]}
 	r := &staypbv1.Reservation{
 		Contact: contact, Channel: channel(h.Channel), Adults: h.Adults, Children: h.Children,
 		ArrivalDate: arrive, DepartureDate: engine.AddDays(arrive, int(h.Nights)),
@@ -61,7 +71,6 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 	if err != nil {
 		return nil, err
 	}
-	total := &money.Money{CurrencyCode: h.Currency, Units: h.Total, Nanos: h.TotalNanos}
 	return &conciergepbv1.ConfirmStayResponse{
 		Reservation: out.GetName(), Total: total, Reference: reference(out.GetName()),
 		Spoken: fmt.Sprintf("Done, %s: %s from %s is booked, %s plus taxes; your reference is %s. We'll send the payment "+

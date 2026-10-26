@@ -90,7 +90,7 @@ operations (7), document (5) and concierge (7) -- 101 methods.
 | Server | Done | `main.go` on the HybridServer, every service on gRPC :50061, REST :8090 and MCP :8091 (108 tools); `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | the cache wired, query tracing, background jobs |
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
-| Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking, EnquireEvent (a lead, a draft quote, menus priced, halls free), RequestService (to the right department) over REST, gRPC and MCP; live tests | event bookings beyond the enquiry; elicitation in the plugin; payment link; a LiveKit demo (M9) |
+| Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking, EnquireEvent (a lead, a draft quote, menus priced, halls free), RequestService (to the right department) over REST, gRPC and MCP; missing details and consent asked by elicitation; live tests | event bookings beyond the enquiry; the elicitation release (runtime-go, protoc-gen-mcp); payment link; a LiveKit demo (M9) |
 | Agents (MCP) | Served | 108 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone): shared messages and enums under `$defs`, code lists over 64 values as patterns, short nested descriptions, no output schemas | reservation tools still ~250 KB (the OpenTravel RoomStay vocabulary); task-level tools ("today's arrivals") |
 
 ## Milestones
@@ -219,8 +219,9 @@ before channels, a running server before anyone outside can use any of it.
   ConfirmStay, EnquireEvent, FindBooking, CancelBooking, RequestService --
   two-step consent for anything that books or charges, a `spoken` sentence
   in every reply, the caller known from the call. Design: [voice.md](voice.md).
-- protoc-gen-mcp and runtime-go: elicitation that asks only what is missing,
-  and questions the server raises (with the amount in them).
+- protoc-gen-mcp and runtime-go: elicitation that asks only what is missing
+  (`ask_missing_only`), and questions the server raises (`mcp.Ask`, with the
+  amount in them). Built and tested against local checkouts; to release.
 - A voice agent on a test number, one language, inbound reservations first.
 
 ## Gaps and risks

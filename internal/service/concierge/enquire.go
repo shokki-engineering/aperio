@@ -37,7 +37,7 @@ func (s *Server) EnquireEvent(ctx context.Context, req *conciergepbv1.EnquireEve
 }
 
 func (s *Server) enquireEvent(ctx context.Context, req *conciergepbv1.EnquireEventRequest) (*conciergepbv1.EnquireEventResponse, error) {
-	if err := guestDetails(req.GetGuestDisplayName(), req.GetPhone()); err != nil {
+	if err := askGuest(req.GetGuestDisplayName(), req.GetPhone()); err != nil {
 		return nil, err
 	}
 	v, err := s.venues.Get(ctx, req.GetVenue())
