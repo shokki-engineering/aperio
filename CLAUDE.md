@@ -79,6 +79,12 @@ they import.
 - Regenerate with `just gen` (or `just gen go|prisma|store|service`); `store`
   needs the local DDN engine up, as its graphql target introspects it.
 
+## Docs
+
+- Every diagram is Mermaid, in a ```` ```mermaid ```` block -- architecture,
+  flows, sequences, state machines -- never ASCII art: GitHub renders it, and
+  it stays editable as text.
+
 ## Repository
 
 - Don't commit or stage. The owner reviews the working tree and commits.

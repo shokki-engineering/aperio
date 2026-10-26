@@ -41,7 +41,7 @@ flowchart TB
     aperio -->|"gorm (writes)"| pg
     aperio -->|"aperioql (reads)"| ddn
     aperio -->|"freebusy-go SDK (gRPC)"| fbsvc
-    pg -. "names only (soft references)" .- fbpg
+    pg -.-|"names only (soft references)"| fbpg
 ```
 
 - **aperio owns the business**: who is coming, what they pay, what they eat,
