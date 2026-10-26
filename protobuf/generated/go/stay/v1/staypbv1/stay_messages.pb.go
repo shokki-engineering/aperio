@@ -12,6 +12,7 @@ package staypbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
+	date "google.golang.org/genproto/googleapis/type/date"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -585,11 +586,287 @@ func (x *DepartReservationRequest) GetEtag() string {
 	return ""
 }
 
+// Request message for SummarizeDay.
+type SummarizeDayRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// The day; today at the venue when unset.
+	Date          *date.Date `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeDayRequest) Reset() {
+	*x = SummarizeDayRequest{}
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeDayRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeDayRequest) ProtoMessage() {}
+
+func (x *SummarizeDayRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeDayRequest.ProtoReflect.Descriptor instead.
+func (*SummarizeDayRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_stay_v1_stay_messages_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SummarizeDayRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *SummarizeDayRequest) GetDate() *date.Date {
+	if x != nil {
+		return x.Date
+	}
+	return nil
+}
+
+// Response message for SummarizeDay. Cancelled stays and no-shows are left
+// out.
+type SummarizeDayResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The day summarized.
+	Date *date.Date `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	// The stays arriving that day.
+	Arrivals []*StayBrief `protobuf:"bytes,2,rep,name=arrivals,proto3" json:"arrivals,omitempty"`
+	// The stays leaving that day.
+	Departures []*StayBrief `protobuf:"bytes,3,rep,name=departures,proto3" json:"departures,omitempty"`
+	// The stays over that night, arrivals included.
+	Staying []*StayBrief `protobuf:"bytes,4,rep,name=staying,proto3" json:"staying,omitempty"`
+	// The rooms taken that night.
+	RoomsOccupied int32 `protobuf:"varint,5,opt,name=rooms_occupied,json=roomsOccupied,proto3" json:"rooms_occupied,omitempty"`
+	// The venue's rooms: the freebusy resources of its room types.
+	RoomsTotal    int32 `protobuf:"varint,6,opt,name=rooms_total,json=roomsTotal,proto3" json:"rooms_total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeDayResponse) Reset() {
+	*x = SummarizeDayResponse{}
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeDayResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeDayResponse) ProtoMessage() {}
+
+func (x *SummarizeDayResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeDayResponse.ProtoReflect.Descriptor instead.
+func (*SummarizeDayResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_stay_v1_stay_messages_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *SummarizeDayResponse) GetDate() *date.Date {
+	if x != nil {
+		return x.Date
+	}
+	return nil
+}
+
+func (x *SummarizeDayResponse) GetArrivals() []*StayBrief {
+	if x != nil {
+		return x.Arrivals
+	}
+	return nil
+}
+
+func (x *SummarizeDayResponse) GetDepartures() []*StayBrief {
+	if x != nil {
+		return x.Departures
+	}
+	return nil
+}
+
+func (x *SummarizeDayResponse) GetStaying() []*StayBrief {
+	if x != nil {
+		return x.Staying
+	}
+	return nil
+}
+
+func (x *SummarizeDayResponse) GetRoomsOccupied() int32 {
+	if x != nil {
+		return x.RoomsOccupied
+	}
+	return 0
+}
+
+func (x *SummarizeDayResponse) GetRoomsTotal() int32 {
+	if x != nil {
+		return x.RoomsTotal
+	}
+	return 0
+}
+
+// A stay as the front desk reads it.
+type StayBrief struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stay.
+	// Format: venues/{venue}/reservations/{reservation}
+	Reservation string `protobuf:"bytes,1,opt,name=reservation,proto3" json:"reservation,omitempty"`
+	// Its short reference, as the guest was given it.
+	Reference string `protobuf:"bytes,2,opt,name=reference,proto3" json:"reference,omitempty"`
+	// The guest's name.
+	Guest string `protobuf:"bytes,3,opt,name=guest,proto3" json:"guest,omitempty"`
+	// The guest's phone, E.164.
+	Phone string `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
+	// The rooms, as said: "2 Sea View Deluxe, 1 Garden Villa".
+	Rooms string `protobuf:"bytes,5,opt,name=rooms,proto3" json:"rooms,omitempty"`
+	// The nights of the stay.
+	Nights int32 `protobuf:"varint,6,opt,name=nights,proto3" json:"nights,omitempty"`
+	// The adults staying.
+	Adults int32 `protobuf:"varint,7,opt,name=adults,proto3" json:"adults,omitempty"`
+	// The children staying.
+	Children int32 `protobuf:"varint,8,opt,name=children,proto3" json:"children,omitempty"`
+	// Where the stay is in its life.
+	State Reservation_State `protobuf:"varint,9,opt,name=state,proto3,enum=aperio.stay.v1.Reservation_State" json:"state,omitempty"`
+	// What the guests asked for and may not eat, as said: "a cot", "nut allergy".
+	Requests      []string `protobuf:"bytes,10,rep,name=requests,proto3" json:"requests,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StayBrief) Reset() {
+	*x = StayBrief{}
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StayBrief) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StayBrief) ProtoMessage() {}
+
+func (x *StayBrief) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StayBrief.ProtoReflect.Descriptor instead.
+func (*StayBrief) Descriptor() ([]byte, []int) {
+	return file_aperio_stay_v1_stay_messages_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *StayBrief) GetReservation() string {
+	if x != nil {
+		return x.Reservation
+	}
+	return ""
+}
+
+func (x *StayBrief) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
+func (x *StayBrief) GetGuest() string {
+	if x != nil {
+		return x.Guest
+	}
+	return ""
+}
+
+func (x *StayBrief) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *StayBrief) GetRooms() string {
+	if x != nil {
+		return x.Rooms
+	}
+	return ""
+}
+
+func (x *StayBrief) GetNights() int32 {
+	if x != nil {
+		return x.Nights
+	}
+	return 0
+}
+
+func (x *StayBrief) GetAdults() int32 {
+	if x != nil {
+		return x.Adults
+	}
+	return 0
+}
+
+func (x *StayBrief) GetChildren() int32 {
+	if x != nil {
+		return x.Children
+	}
+	return 0
+}
+
+func (x *StayBrief) GetState() Reservation_State {
+	if x != nil {
+		return x.State
+	}
+	return Reservation_STATE_UNSPECIFIED
+}
+
+func (x *StayBrief) GetRequests() []string {
+	if x != nil {
+		return x.Requests
+	}
+	return nil
+}
+
 var File_aperio_stay_v1_stay_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_stay_v1_stay_messages_proto_rawDesc = "" +
 	"\n" +
-	"\"aperio/stay/v1/stay_messages.proto\x12\x0eaperio.stay.v1\x1a\x19aperio/stay/v1/stay.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"P\n" +
+	"\"aperio/stay/v1/stay_messages.proto\x12\x0eaperio.stay.v1\x1a\x19aperio/stay/v1/stay.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x16google/type/date.proto\"P\n" +
 	"\x15GetReservationRequest\x127\n" +
 	"\x04name\x18\x01 \x01(\tB#\xe2A\x01\x02\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\x04name\"\xe7\x01\n" +
@@ -629,7 +906,34 @@ const file_aperio_stay_v1_stay_messages_proto_rawDesc = "" +
 	"\x18DepartReservationRequest\x127\n" +
 	"\x04name\x18\x01 \x01(\tB#\xe2A\x01\x02\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etagB\xd7\x01\n" +
+	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\"x\n" +
+	"\x13SummarizeDayRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12+\n" +
+	"\x04date\x18\x02 \x01(\v2\x11.google.type.DateB\x04\xe2A\x01\x01R\x04date\"\xac\x02\n" +
+	"\x14SummarizeDayResponse\x12%\n" +
+	"\x04date\x18\x01 \x01(\v2\x11.google.type.DateR\x04date\x125\n" +
+	"\barrivals\x18\x02 \x03(\v2\x19.aperio.stay.v1.StayBriefR\barrivals\x129\n" +
+	"\n" +
+	"departures\x18\x03 \x03(\v2\x19.aperio.stay.v1.StayBriefR\n" +
+	"departures\x123\n" +
+	"\astaying\x18\x04 \x03(\v2\x19.aperio.stay.v1.StayBriefR\astaying\x12%\n" +
+	"\x0erooms_occupied\x18\x05 \x01(\x05R\rroomsOccupied\x12\x1f\n" +
+	"\vrooms_total\x18\x06 \x01(\x05R\n" +
+	"roomsTotal\"\xd5\x02\n" +
+	"\tStayBrief\x12A\n" +
+	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
+	"\x1aaperio.stay.v1/ReservationR\vreservation\x12\x1c\n" +
+	"\treference\x18\x02 \x01(\tR\treference\x12\x14\n" +
+	"\x05guest\x18\x03 \x01(\tR\x05guest\x12\x14\n" +
+	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x14\n" +
+	"\x05rooms\x18\x05 \x01(\tR\x05rooms\x12\x16\n" +
+	"\x06nights\x18\x06 \x01(\x05R\x06nights\x12\x16\n" +
+	"\x06adults\x18\a \x01(\x05R\x06adults\x12\x1a\n" +
+	"\bchildren\x18\b \x01(\x05R\bchildren\x12=\n" +
+	"\x05state\x18\t \x01(\x0e2!.aperio.stay.v1.Reservation.StateB\x04\xe2A\x01\x03R\x05state\x12\x1a\n" +
+	"\brequests\x18\n" +
+	" \x03(\tR\brequestsB\xd7\x01\n" +
 	"\x12com.aperio.stay.v1B\x11StayMessagesProtoP\x01ZTgithub.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1\xa2\x02\x03ASX\xaa\x02\x0eAperio.Stay.V1\xca\x02\x0eAperio\\Stay\\V1\xe2\x02\x1aAperio\\Stay\\V1\\GPBMetadata\xea\x02\x10Aperio::Stay::V1b\x06proto3"
 
 var (
@@ -644,7 +948,7 @@ func file_aperio_stay_v1_stay_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_stay_v1_stay_messages_proto_rawDescData
 }
 
-var file_aperio_stay_v1_stay_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_aperio_stay_v1_stay_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_aperio_stay_v1_stay_messages_proto_goTypes = []any{
 	(*GetReservationRequest)(nil),     // 0: aperio.stay.v1.GetReservationRequest
 	(*ListReservationsRequest)(nil),   // 1: aperio.stay.v1.ListReservationsRequest
@@ -655,19 +959,30 @@ var file_aperio_stay_v1_stay_messages_proto_goTypes = []any{
 	(*CancelReservationRequest)(nil),  // 6: aperio.stay.v1.CancelReservationRequest
 	(*ArriveReservationRequest)(nil),  // 7: aperio.stay.v1.ArriveReservationRequest
 	(*DepartReservationRequest)(nil),  // 8: aperio.stay.v1.DepartReservationRequest
-	(*Reservation)(nil),               // 9: aperio.stay.v1.Reservation
-	(*fieldmaskpb.FieldMask)(nil),     // 10: google.protobuf.FieldMask
+	(*SummarizeDayRequest)(nil),       // 9: aperio.stay.v1.SummarizeDayRequest
+	(*SummarizeDayResponse)(nil),      // 10: aperio.stay.v1.SummarizeDayResponse
+	(*StayBrief)(nil),                 // 11: aperio.stay.v1.StayBrief
+	(*Reservation)(nil),               // 12: aperio.stay.v1.Reservation
+	(*fieldmaskpb.FieldMask)(nil),     // 13: google.protobuf.FieldMask
+	(*date.Date)(nil),                 // 14: google.type.Date
+	(Reservation_State)(0),            // 15: aperio.stay.v1.Reservation.State
 }
 var file_aperio_stay_v1_stay_messages_proto_depIdxs = []int32{
-	9,  // 0: aperio.stay.v1.ListReservationsResponse.reservations:type_name -> aperio.stay.v1.Reservation
-	9,  // 1: aperio.stay.v1.CreateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
-	9,  // 2: aperio.stay.v1.UpdateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
-	10, // 3: aperio.stay.v1.UpdateReservationRequest.update_mask:type_name -> google.protobuf.FieldMask
-	4,  // [4:4] is the sub-list for method output_type
-	4,  // [4:4] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	12, // 0: aperio.stay.v1.ListReservationsResponse.reservations:type_name -> aperio.stay.v1.Reservation
+	12, // 1: aperio.stay.v1.CreateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
+	12, // 2: aperio.stay.v1.UpdateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
+	13, // 3: aperio.stay.v1.UpdateReservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	14, // 4: aperio.stay.v1.SummarizeDayRequest.date:type_name -> google.type.Date
+	14, // 5: aperio.stay.v1.SummarizeDayResponse.date:type_name -> google.type.Date
+	11, // 6: aperio.stay.v1.SummarizeDayResponse.arrivals:type_name -> aperio.stay.v1.StayBrief
+	11, // 7: aperio.stay.v1.SummarizeDayResponse.departures:type_name -> aperio.stay.v1.StayBrief
+	11, // 8: aperio.stay.v1.SummarizeDayResponse.staying:type_name -> aperio.stay.v1.StayBrief
+	15, // 9: aperio.stay.v1.StayBrief.state:type_name -> aperio.stay.v1.Reservation.State
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_aperio_stay_v1_stay_messages_proto_init() }
@@ -682,7 +997,7 @@ func file_aperio_stay_v1_stay_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_stay_v1_stay_messages_proto_rawDesc), len(file_aperio_stay_v1_stay_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

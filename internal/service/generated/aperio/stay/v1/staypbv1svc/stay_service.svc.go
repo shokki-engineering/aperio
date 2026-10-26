@@ -88,7 +88,7 @@ func (NopStayServiceHooks) AfterUpdateReservation(ctx context.Context, m *staypb
 //
 // Custom methods are answered by the embedded UnimplementedStayServiceServer
 // until you write them: embed *StayServiceServer in a type of your own and
-// define ConfirmReservation, CancelReservation, ArriveReservation, DepartReservation on it. Define a standard method there too to
+// define ConfirmReservation, CancelReservation, ArriveReservation, DepartReservation, SummarizeDay on it. Define a standard method there too to
 // replace the generated one.
 type StayServiceServer struct {
 	staypbv1.UnimplementedStayServiceServer
@@ -127,7 +127,7 @@ var (
 	stayServiceReservationCollections = []string{"venues", "reservations"}
 	stayServiceReservationParent      = []string{"venues"}
 	stayServiceReservationRequired    = []string{"contact", "channel", "arrival_date", "departure_date", "adults", "rooms"}
-	stayServiceReservationOutputOnly  = []string{"state", "freebusy_reservations", "cancel_reason", "arrive_time", "depart_time", "cancel_time", "create_time", "update_time"}
+	stayServiceReservationOutputOnly  = []string{"state", "freebusy_reservations", "cancel_reason", "arrive_time", "depart_time", "cancel_time", "create_time", "update_time", "spaces"}
 	stayServiceReservationImmutable   = []string{"channel", "channel_reference"}
 )
 

@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"slices"
 
 	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/engine"
@@ -20,14 +21,19 @@ import (
 )
 
 // BeforeCreateReservation checks that every room line is free for the stay,
-// unless a hold made for the reservation already has the line's rooms. It
+// unless a hold made for the reservation already has the line's rooms, and
+// sets the spaces a stay is searched by (its rooms never change after). It
 // takes nothing: validate_only runs it too.
 func (h *hooks) BeforeCreateReservation(ctx context.Context, parent string, m *staypbv1.Reservation) error {
 	w, err := h.stayWindow(ctx, parent, m)
 	if err != nil {
 		return err
 	}
+	m.Spaces = nil
 	for i, line := range m.GetRooms() {
+		if !slices.Contains(m.Spaces, line.GetSpace()) {
+			m.Spaces = append(m.Spaces, line.GetSpace())
+		}
 		res, err := h.Resources(ctx, parent, fmt.Sprintf("reservation.rooms[%d].space", i), line.GetSpace())
 		if err != nil {
 			return err

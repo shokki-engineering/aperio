@@ -1,0 +1,84 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.stay.v1;
+
+import "google/type/date.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1";
+option java_multiple_files = true;
+option java_outer_classname = "StayNightProto";
+option java_package = "engineering.shokki.aperio.stay.v1";
+
+// A StayNight is one night of one stay: the read model the front desk's day,
+// occupancy and a guest's history are read from, instead of every
+// reservation there is -- "who stays tonight" is the rows of one day, under
+// one index.
+//
+// Storage-only, and derived: no RPC takes or returns it. It is a projection
+// of the reservations, rewritten in the same transaction as every write to
+// one: a stay has a row for each night from arrival to the night before
+// departure, and none once it is cancelled or a no-show.
+message StayNight {
+  option (store.v1.projection) = {
+    sources: ["aperio.stay.v1/Reservation"]
+    key: [
+      "reservation",
+      "day"
+    ]
+    search_index: "aperio_stay_nights"
+    indexes: [
+      {
+        // A venue's night: equality on both, then the key, so a day's
+        // stays page straight from the index.
+        fields: [
+          "venue",
+          "day"
+        ]
+      },
+      {
+        // A guest's nights, for their history.
+        fields: [
+          "contact",
+          "day"
+        ]
+      }
+    ]
+  };
+
+  // The stay, "venues/{venue}/reservations/{reservation}". Not a resource
+  // reference: a projection row must never keep its source from being
+  // purged.
+  string reservation = 1;
+
+  // The venue, "venues/{venue}".
+  string venue = 2;
+
+  // The night: the day the guests sleep at the venue.
+  google.type.Date day = 3;
+
+  // The guest, "contacts/{contact}".
+  string contact = 4;
+
+  // The room types taken that night, "venues/{venue}/spaces/{space}".
+  repeated string spaces = 5;
+
+  // The rooms taken that night.
+  int32 rooms = 6;
+
+  // The guests staying that night, adults and children.
+  int32 guests = 7;
+
+  // Whether this is the stay's first night: the guests arrive that day.
+  bool first_night = 8;
+
+  // Whether this is the stay's last night: the guests leave the next day.
+  bool last_night = 9;
+
+  // The stay's state, as Reservation.State names it without its prefix:
+  // "PENDING", "CONFIRMED", "CHECKED_IN", "CHECKED_OUT".
+  string state = 10;
+}

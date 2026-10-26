@@ -206,6 +206,15 @@ message Reservation {
   // Opaque version for optimistic concurrency (AIP-154).
   string etag = 27 [(google.api.field_behavior) = OPTIONAL];
 
+  // The room types booked, kept by the server from rooms: what a stay is
+  // searched by, as in spaces:"venues/sbr/spaces/villa". A search key, like a
+  // contact's phone_numbers, not a relation: the rooms are the stay's.
+  // Format: venues/{venue}/spaces/{space}
+  repeated string spaces = 28 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.query) = {search: true}
+  ];
+
   // Where a reservation is in its life.
   enum State {
     // Default; never persisted.

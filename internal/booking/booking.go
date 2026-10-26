@@ -17,6 +17,7 @@ import (
 
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
+	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
@@ -35,6 +36,9 @@ type Base struct {
 	Spaces   venue.SpaceRepository
 	Contacts guest.ContactRepository
 	Now      func() time.Time
+	// Search is the handle the read models are searched through
+	// (database.Connection.SearchConn).
+	Search repox.Conn
 }
 
 // NewBase is a Base taking rooms through eng, reading venues and spaces from

@@ -73,7 +73,7 @@ func (s *Server) DepartReservation(ctx context.Context, req *staypbv1.DepartRese
 func (s *Server) moveReservation(ctx context.Context, method, name, etag string, from []staypbv1.Reservation_State,
 	move func(*staypbv1.Reservation) ([]string, error)) (*staypbv1.Reservation, error) {
 	var out *staypbv1.Reservation
-	err := s.Options().Run(ctx, "BookingService", method, func(ctx context.Context) error {
+	err := s.Options().Run(ctx, "StayService", method, func(ctx context.Context) error {
 		r, err := s.Repositories().Reservations.Get(ctx, name)
 		if err != nil {
 			return servicex.NotFoundAs(err, reservationType, name)

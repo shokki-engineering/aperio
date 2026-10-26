@@ -30,6 +30,7 @@ const (
 	StayService_CancelReservation_FullMethodName  = "/aperio.stay.v1.StayService/CancelReservation"
 	StayService_ArriveReservation_FullMethodName  = "/aperio.stay.v1.StayService/ArriveReservation"
 	StayService_DepartReservation_FullMethodName  = "/aperio.stay.v1.StayService/DepartReservation"
+	StayService_SummarizeDay_FullMethodName       = "/aperio.stay.v1.StayService/SummarizeDay"
 )
 
 // StayServiceClient is the client API for StayService service.
@@ -54,6 +55,9 @@ type StayServiceClient interface {
 	ArriveReservation(ctx context.Context, in *ArriveReservationRequest, opts ...grpc.CallOption) (*Reservation, error)
 	// Records the guests' departure.
 	DepartReservation(ctx context.Context, in *DepartReservationRequest, opts ...grpc.CallOption) (*Reservation, error)
+	// A day at a venue, for the front desk and its agents: who arrives, who
+	// leaves, who stays the night, and how many of the venue's rooms are taken.
+	SummarizeDay(ctx context.Context, in *SummarizeDayRequest, opts ...grpc.CallOption) (*SummarizeDayResponse, error)
 }
 
 type stayServiceClient struct {
@@ -144,6 +148,16 @@ func (c *stayServiceClient) DepartReservation(ctx context.Context, in *DepartRes
 	return out, nil
 }
 
+func (c *stayServiceClient) SummarizeDay(ctx context.Context, in *SummarizeDayRequest, opts ...grpc.CallOption) (*SummarizeDayResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SummarizeDayResponse)
+	err := c.cc.Invoke(ctx, StayService_SummarizeDay_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StayServiceServer is the server API for StayService service.
 // All implementations must embed UnimplementedStayServiceServer
 // for forward compatibility.
@@ -166,6 +180,9 @@ type StayServiceServer interface {
 	ArriveReservation(context.Context, *ArriveReservationRequest) (*Reservation, error)
 	// Records the guests' departure.
 	DepartReservation(context.Context, *DepartReservationRequest) (*Reservation, error)
+	// A day at a venue, for the front desk and its agents: who arrives, who
+	// leaves, who stays the night, and how many of the venue's rooms are taken.
+	SummarizeDay(context.Context, *SummarizeDayRequest) (*SummarizeDayResponse, error)
 	mustEmbedUnimplementedStayServiceServer()
 }
 
@@ -199,6 +216,9 @@ func (UnimplementedStayServiceServer) ArriveReservation(context.Context, *Arrive
 }
 func (UnimplementedStayServiceServer) DepartReservation(context.Context, *DepartReservationRequest) (*Reservation, error) {
 	return nil, status.Error(codes.Unimplemented, "method DepartReservation not implemented")
+}
+func (UnimplementedStayServiceServer) SummarizeDay(context.Context, *SummarizeDayRequest) (*SummarizeDayResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SummarizeDay not implemented")
 }
 func (UnimplementedStayServiceServer) mustEmbedUnimplementedStayServiceServer() {}
 func (UnimplementedStayServiceServer) testEmbeddedByValue()                     {}
@@ -365,6 +385,24 @@ func _StayService_DepartReservation_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StayService_SummarizeDay_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SummarizeDayRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StayServiceServer).SummarizeDay(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StayService_SummarizeDay_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StayServiceServer).SummarizeDay(ctx, req.(*SummarizeDayRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // StayService_ServiceDesc is the grpc.ServiceDesc for StayService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -403,6 +441,10 @@ var StayService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DepartReservation",
 			Handler:    _StayService_DepartReservation_Handler,
+		},
+		{
+			MethodName: "SummarizeDay",
+			Handler:    _StayService_SummarizeDay_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

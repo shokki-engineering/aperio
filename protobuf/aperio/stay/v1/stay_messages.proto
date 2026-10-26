@@ -10,6 +10,7 @@ import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
+import "google/type/date.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1";
 option java_multiple_files = true;
@@ -156,4 +157,73 @@ message DepartReservationRequest {
 
   // The etag the caller last read; the call fails when it has changed.
   string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for SummarizeDay.
+message SummarizeDayRequest {
+  // The venue.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The day; today at the venue when unset.
+  google.type.Date date = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for SummarizeDay. Cancelled stays and no-shows are left
+// out.
+message SummarizeDayResponse {
+  // The day summarized.
+  google.type.Date date = 1;
+
+  // The stays arriving that day.
+  repeated StayBrief arrivals = 2;
+
+  // The stays leaving that day.
+  repeated StayBrief departures = 3;
+
+  // The stays over that night, arrivals included.
+  repeated StayBrief staying = 4;
+
+  // The rooms taken that night.
+  int32 rooms_occupied = 5;
+
+  // The venue's rooms: the freebusy resources of its room types.
+  int32 rooms_total = 6;
+}
+
+// A stay as the front desk reads it.
+message StayBrief {
+  // The stay.
+  // Format: venues/{venue}/reservations/{reservation}
+  string reservation = 1 [(google.api.resource_reference).type = "aperio.stay.v1/Reservation"];
+
+  // Its short reference, as the guest was given it.
+  string reference = 2;
+
+  // The guest's name.
+  string guest = 3;
+
+  // The guest's phone, E.164.
+  string phone = 4;
+
+  // The rooms, as said: "2 Sea View Deluxe, 1 Garden Villa".
+  string rooms = 5;
+
+  // The nights of the stay.
+  int32 nights = 6;
+
+  // The adults staying.
+  int32 adults = 7;
+
+  // The children staying.
+  int32 children = 8;
+
+  // Where the stay is in its life.
+  Reservation.State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // What the guests asked for and may not eat, as said: "a cot", "nut allergy".
+  repeated string requests = 10;
 }

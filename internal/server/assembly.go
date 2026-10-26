@@ -13,6 +13,9 @@ package server
 // sales, catalog and operations.
 
 import (
+	"context"
+	"log/slog"
+
 	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
@@ -53,6 +56,10 @@ type Services struct {
 	Documents  *documentpbv1svc.DocumentServiceServer
 	Operations *operationspbv1svc.OperationsServiceServer
 	Concierge  *concierge.Server
+
+	// copies are the read models' OpenSearch copies, by read model; none
+	// unless [search] provider = "opensearch" (search.go).
+	copies map[string]searchIndex
 }
 
 // New assembles the services on conn, booking through eng, sealing the
@@ -60,9 +67,21 @@ type Services struct {
 // gateways' adapters (none yet: gateway payments are recorded, and refunded
 // in the gateway's own dashboard).
 func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gateways ...finance.Gateway) *Services {
+	// The read models' writers must be on the connection before anything
+	// builds a repository over it: each takes the projections it carries.
+	if conn.Projections == nil {
+		conn.Projections = repox.NewProjections(stay.NightsProjector())
+		conn.Projections.OnError = func(ctx context.Context, projection string, err error) {
+			// A Hasura write landed but its projection did not (it is sent
+			// in a request of its own): a summary misses what it changed
+			// until the next write to it, or a rebuild.
+			slog.WarnContext(ctx, "read model not updated after a write", "projection", projection, "err", err)
+		}
+	}
 	rc := conn.Repox()
 	venues, catalogRepos, guestRepos := venue.New(rc), catalogRepositories(rc), guestRepositories(rc)
 	base := booking.NewBase(eng, venues, guestRepos.Contacts)
+	base.Search = conn.SearchConn()
 	stays, events := stay.New(stayRepositories(rc), base), event.New(eventRepositories(rc), base)
 	prices := pricing.New(pricingRepositories(rc), catalogRepos, venues.Venues)
 	guests := guest.New(guestRepos)

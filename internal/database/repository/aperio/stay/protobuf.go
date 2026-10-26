@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-store 1.6.7
 // 	protoc (unknown)
-// source: aperio/stay/v1/stay.proto
+// source: aperio/stay/v1/stay.proto, aperio/stay/v1/stay_night.proto
 //
 // database: aperio
 // schema:   stay
@@ -213,6 +213,7 @@ func reservationToCreateInput(in *staypbv1.Reservation) reservationsql.CreateInp
 	ci.ArriveTime = tsToStr(in.GetArriveTime())
 	ci.DepartTime = tsToStr(in.GetDepartTime())
 	ci.CancelTime = tsToStr(in.GetCancelTime())
+	ci.Spaces = strSliceToPtrs(in.GetSpaces())
 	ci.FreebusyReservations = strSliceToPtrs(in.GetFreebusyReservations())
 	return ci
 }
@@ -313,6 +314,9 @@ func reservationAddOutputPatch(patch *reservationsql.UpdateInput, merged *staypb
 			patch.CancelTime = graphql.Null[string]()
 		}
 	}
+	if repox.InMask(paths, "spaces") {
+		patch.Spaces = graphql.Value(strSliceToPtrs(merged.GetSpaces()))
+	}
 	if repox.InMask(paths, "freebusy_reservations") {
 		patch.FreebusyReservations = graphql.Value(strSliceToPtrs(merged.GetFreebusyReservations()))
 	}
@@ -355,6 +359,7 @@ func reservationFromRow(row *reservationsql.StayReservations) *staypbv1.Reservat
 	out.ArriveTime = strToTs(repox.Deref(row.ArriveTime))
 	out.DepartTime = strToTs(repox.Deref(row.DepartTime))
 	out.CancelTime = strToTs(repox.Deref(row.CancelTime))
+	out.Spaces = strPtrsToSlice(row.Spaces)
 	out.FreebusyReservations = strPtrsToSlice(row.FreebusyReservations)
 	return out
 }

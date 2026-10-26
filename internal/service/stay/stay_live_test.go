@@ -43,7 +43,7 @@ type fixture struct {
 
 func setup(t *testing.T) *fixture {
 	t.Helper()
-	ctx, conn := context.Background(), live.Conn(t)
+	ctx, conn := context.Background(), live.Projected(live.Conn(t))
 	run := fmt.Sprint(time.Now().UnixNano())
 	venues := venue.New(conn)
 	v, err := venues.Venues.Create(ctx, &venuepbv1.Venue{
@@ -68,7 +68,9 @@ func setup(t *testing.T) *fixture {
 		t.Fatalf("create contact: %v", err)
 	}
 	fb := live.NewFreebusy()
-	return &fixture{svc: stay.New(live.StayRepositories(conn), booking.NewBase(fb, venues, guest.New(conn).Contacts)), fb: fb, venue: v.GetName(), rooms: sp.GetName(), contact: c.GetName(), run: run}
+	base := booking.NewBase(fb, venues, guest.New(conn).Contacts)
+	base.Search = conn
+	return &fixture{svc: stay.New(live.StayRepositories(conn), base), fb: fb, venue: v.GetName(), rooms: sp.GetName(), contact: c.GetName(), run: run}
 }
 
 // stay asks for lines of rooms in the space, 1-3 Dec 2026.

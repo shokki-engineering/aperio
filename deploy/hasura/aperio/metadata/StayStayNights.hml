@@ -1,0 +1,247 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: StayStayNights
+  fields:
+    - name: contact
+      type: String_1!
+    - name: day
+      type: Date!
+    - name: firstNight
+      type: Boolean_1!
+    - name: guests
+      type: Int32!
+    - name: id
+      type: String_1!
+    - name: lastNight
+      type: Boolean_1!
+    - name: reservation
+      type: String_1!
+    - name: rooms
+      type: Int32!
+    - name: rowVersion
+      type: Int64!
+    - name: spaces
+      type: "[String_1]"
+    - name: state
+      type: String_1!
+    - name: venue
+      type: String_1!
+  graphql:
+    typeName: StayStayNights
+    inputTypeName: StayStayNightsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: stay_stay_nights
+      fieldMapping:
+        contact:
+          column:
+            name: contact
+        day:
+          column:
+            name: day
+        firstNight:
+          column:
+            name: first_night
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        lastNight:
+          column:
+            name: last_night
+        reservation:
+          column:
+            name: reservation
+        rooms:
+          column:
+            name: rooms
+        rowVersion:
+          column:
+            name: row_version
+        spaces:
+          column:
+            name: spaces
+        state:
+          column:
+            name: state
+        venue:
+          column:
+            name: venue
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: StayStayNights
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contact
+          - day
+          - firstNight
+          - guests
+          - id
+          - lastNight
+          - reservation
+          - rooms
+          - rowVersion
+          - spaces
+          - state
+          - venue
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: StayStayNightsBoolExp
+  operand:
+    object:
+      type: StayStayNights
+      comparableFields:
+        - fieldName: contact
+          booleanExpressionType: TextBoolExp
+        - fieldName: day
+          booleanExpressionType: DateBoolExp
+        - fieldName: firstNight
+          booleanExpressionType: BoolBoolExp
+        - fieldName: guests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastNight
+          booleanExpressionType: BoolBoolExp
+        - fieldName: reservation
+          booleanExpressionType: TextBoolExp
+        - fieldName: rooms
+          booleanExpressionType: Int4BoolExp
+        - fieldName: rowVersion
+          booleanExpressionType: Int8BoolExp
+        - fieldName: state
+          booleanExpressionType: TextBoolExp
+        - fieldName: venue
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: StayStayNightsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: StayStayNightsAggExp
+  operand:
+    object:
+      aggregatedType: StayStayNights
+      aggregatableFields:
+        - fieldName: contact
+          aggregateExpression: TextAggExp
+        - fieldName: day
+          aggregateExpression: DateAggExp
+        - fieldName: firstNight
+          aggregateExpression: BoolAggExp
+        - fieldName: guests
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastNight
+          aggregateExpression: BoolAggExp
+        - fieldName: reservation
+          aggregateExpression: TextAggExp
+        - fieldName: rooms
+          aggregateExpression: Int4AggExp
+        - fieldName: rowVersion
+          aggregateExpression: Int8AggExp
+        - fieldName: state
+          aggregateExpression: TextAggExp
+        - fieldName: venue
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: StayStayNightsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: StayStayNightsOrderByExp
+  operand:
+    object:
+      orderedType: StayStayNights
+      orderableFields:
+        - fieldName: contact
+          orderByExpression: String1OrderByExp
+        - fieldName: day
+          orderByExpression: DateOrderByExp
+        - fieldName: firstNight
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: guests
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastNight
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: reservation
+          orderByExpression: String1OrderByExp
+        - fieldName: rooms
+          orderByExpression: Int32OrderByExp
+        - fieldName: rowVersion
+          orderByExpression: Int64OrderByExp
+        - fieldName: state
+          orderByExpression: String1OrderByExp
+        - fieldName: venue
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: StayStayNightsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: StayStayNights
+  objectType: StayStayNights
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: stay_stay_nights
+  filterExpressionType: StayStayNightsBoolExp
+  aggregateExpression: StayStayNightsAggExp
+  orderByExpression: StayStayNightsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: stayStayNights
+      subscription:
+        rootField: stayStayNights
+    selectUniques:
+      - queryRootField: stayStayNightsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: stayStayNightsById
+    filterInputTypeName: StayStayNightsFilterInput
+    aggregate:
+      queryRootField: stayStayNightsAggregate
+      subscription:
+        rootField: stayStayNightsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: StayStayNights
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

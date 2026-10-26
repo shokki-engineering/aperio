@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-store 1.6.7
 // 	protoc (unknown)
-// source: aperio/stay/v1/stay.proto
+// source: aperio/stay/v1/stay.proto, aperio/stay/v1/stay_night.proto
 //
 // database: aperio
 // schema:   stay
@@ -43,6 +43,7 @@ var ReservationFilterSpec = filterx.Spec{
 		"name":                  {Column: "name", Kind: filterx.KindText},
 		"notes":                 {Column: "notes", Kind: filterx.KindText},
 		"quote":                 {Column: "quote", Kind: filterx.KindText},
+		"spaces":                {Column: "spaces", Kind: filterx.KindTags},
 		"state":                 {Column: "state", Kind: filterx.KindEnum, EnumPrefix: "STATE_"},
 		"total":                 {Column: "total", Kind: filterx.KindJSON},
 		"update_time":           {Column: "update_time", Kind: filterx.KindTimestamp},
@@ -66,6 +67,36 @@ var ReservationFilterSpec = filterx.Spec{
 		"notes":             {Column: "notes", Kind: filterx.KindText},
 		"state":             {Column: "state", Kind: filterx.KindEnum},
 		"update_time":       {Column: "update_time", Kind: filterx.KindTimestamp, NotNull: true},
+	},
+	PK: []filterx.SortSpec{{Column: "id", Kind: filterx.KindText, NotNull: true}},
+}
+
+// StayNightFilterSpec is StayNight's AIP-160 filter / AIP-132 order_by surface,
+// consumed by the filterx.Gorm, filterx.Hasura and filterx.OpenSearch engines.
+var StayNightFilterSpec = filterx.Spec{
+	Table: `"stay"."stay_nights"`,
+	Fields: map[string]filterx.FieldSpec{
+		"contact":     {Column: "contact", Kind: filterx.KindText},
+		"day":         {Column: "day", Kind: filterx.KindDate},
+		"first_night": {Column: "first_night", Kind: filterx.KindBool},
+		"guests":      {Column: "guests", Kind: filterx.KindInt},
+		"last_night":  {Column: "last_night", Kind: filterx.KindBool},
+		"reservation": {Column: "reservation", Kind: filterx.KindText},
+		"rooms":       {Column: "rooms", Kind: filterx.KindInt},
+		"spaces":      {Column: "spaces", Kind: filterx.KindTags},
+		"state":       {Column: "state", Kind: filterx.KindText},
+		"venue":       {Column: "venue", Kind: filterx.KindText},
+	},
+	Sort: map[string]filterx.SortSpec{
+		"contact":     {Column: "contact", Kind: filterx.KindText},
+		"day":         {Column: "day", Kind: filterx.KindDate, NotNull: true},
+		"first_night": {Column: "first_night", Kind: filterx.KindBool},
+		"guests":      {Column: "guests", Kind: filterx.KindInt},
+		"last_night":  {Column: "last_night", Kind: filterx.KindBool},
+		"reservation": {Column: "reservation", Kind: filterx.KindText, NotNull: true},
+		"rooms":       {Column: "rooms", Kind: filterx.KindInt},
+		"state":       {Column: "state", Kind: filterx.KindText},
+		"venue":       {Column: "venue", Kind: filterx.KindText},
 	},
 	PK: []filterx.SortSpec{{Column: "id", Kind: filterx.KindText, NotNull: true}},
 }

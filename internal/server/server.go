@@ -107,11 +107,13 @@ func (s *Server) Start() error {
 	if err := s.hybridServer.Start(); err != nil {
 		return fmt.Errorf("failed to start hybrid server: %w", err)
 	}
+	go s.services.Prime(s.ctx)
 	return nil
 }
 
-// Stop gracefully drains active connections, shuts the server down, and
-// closes the freebusy client and the database pool.
+// Stop gracefully drains active connections, shuts the server down, flushes
+// the OpenSearch indexers, and closes the freebusy client and the database
+// pool.
 func (s *Server) Stop() error {
 	s.cancel()
 	if err := s.hybridServer.Stop(); err != nil {
@@ -120,7 +122,7 @@ func (s *Server) Stop() error {
 	if err := s.hybridServer.Close(); err != nil {
 		return fmt.Errorf("error closing hybrid server: %w", err)
 	}
-	return errors.Join(s.freebusy.Close(), s.services.Conn.Close())
+	return errors.Join(s.services.CloseSearch(context.Background()), s.freebusy.Close(), s.services.Conn.Close())
 }
 
 // Wait blocks until a SIGINT or SIGTERM signal is received, or until the

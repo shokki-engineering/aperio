@@ -6,7 +6,7 @@ Generated from Protobuf by protoc-gen-store. Source of truth is the `.proto` fil
 
 | Models | Enums |
 | ---: | ---: |
-| 19 | 26 |
+| 20 | 26 |
 
 ## Entity relationships
 
@@ -104,6 +104,9 @@ erDiagram
     Space {
         string id PK
         string venue_id FK
+    }
+    StayNight {
+        string id PK
     }
     Venue {
         string id PK

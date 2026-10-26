@@ -447,6 +447,59 @@ func local_request_StayService_DepartReservation_0(ctx context.Context, marshale
 	return msg, metadata, err
 }
 
+var filter_StayService_SummarizeDay_0 = &utilities.DoubleArray{Encoding: map[string]int{"venue": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_StayService_SummarizeDay_0(ctx context.Context, marshaler runtime.Marshaler, client StayServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SummarizeDayRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["venue"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "venue")
+	}
+	protoReq.Venue, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "venue", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StayService_SummarizeDay_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.SummarizeDay(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_StayService_SummarizeDay_0(ctx context.Context, marshaler runtime.Marshaler, server StayServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SummarizeDayRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["venue"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "venue")
+	}
+	protoReq.Venue, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "venue", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StayService_SummarizeDay_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.SummarizeDay(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterStayServiceHandlerServer registers the http handlers for service StayService to "mux".
 // UnaryRPC     :call StayServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -612,6 +665,26 @@ func RegisterStayServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 		forward_StayService_DepartReservation_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_StayService_SummarizeDay_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/aperio.stay.v1.StayService/SummarizeDay", runtime.WithHTTPPathPattern("/v1/{venue=venues/*}/reservations:summarizeDay"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_StayService_SummarizeDay_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_StayService_SummarizeDay_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -789,6 +862,23 @@ func RegisterStayServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_StayService_DepartReservation_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_StayService_SummarizeDay_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/aperio.stay.v1.StayService/SummarizeDay", runtime.WithHTTPPathPattern("/v1/{venue=venues/*}/reservations:summarizeDay"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_StayService_SummarizeDay_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_StayService_SummarizeDay_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
@@ -801,6 +891,7 @@ var (
 	pattern_StayService_CancelReservation_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "reservations", "name"}, "cancel"))
 	pattern_StayService_ArriveReservation_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "reservations", "name"}, "arrive"))
 	pattern_StayService_DepartReservation_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "reservations", "name"}, "depart"))
+	pattern_StayService_SummarizeDay_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "venue", "reservations"}, "summarizeDay"))
 )
 
 var (
@@ -812,4 +903,5 @@ var (
 	forward_StayService_CancelReservation_0  = runtime.ForwardResponseMessage
 	forward_StayService_ArriveReservation_0  = runtime.ForwardResponseMessage
 	forward_StayService_DepartReservation_0  = runtime.ForwardResponseMessage
+	forward_StayService_SummarizeDay_0       = runtime.ForwardResponseMessage
 )

@@ -6,7 +6,7 @@ Generated from Protobuf by protoc-gen-store. Source of truth is the `.proto` fil
 
 | Models | Enums |
 | ---: | ---: |
-| 1 | 1 |
+| 2 | 1 |
 
 ## Entity relationships
 
@@ -20,6 +20,9 @@ erDiagram
         string event FK
         string quote FK
         string venue_id FK
+    }
+    StayNight {
+        string id PK
     }
     Contact {
         string externalStub PK
@@ -46,3 +49,4 @@ erDiagram
 ## Subfolders
 
 - [`stay/`](./stay/README.md)
+- [`stay_night/`](./stay_night/README.md)

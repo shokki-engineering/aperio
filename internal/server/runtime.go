@@ -8,6 +8,7 @@ package server
 // suites do) and the freebusy client.
 
 import (
+	"context"
 	"crypto/rand"
 
 	"github.com/shokki-engineering/aperio/internal/config"
@@ -35,7 +36,11 @@ func newServices(conn *database.Connection) (*Services, *engine.Client, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	return New(conn, fb, secret), fb, nil
+	services := New(conn, fb, secret)
+	if err := services.useOpenSearch(context.Background(), config.Get().Search); err != nil {
+		return nil, nil, err
+	}
+	return services, fb, nil
 }
 
 // holdSecret is the concierge's configured hold secret, or one made for this

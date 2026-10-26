@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-store 1.6.7
 // 	protoc (unknown)
-// source: aperio/stay/v1/stay.proto
+// source: aperio/stay/v1/stay.proto, aperio/stay/v1/stay_night.proto
 //
 // database: aperio
 // schema:   stay
@@ -244,6 +244,7 @@ var reservationColumns = map[string][]string{
 	"create_time":           {"create_time"},
 	"update_time":           {"update_time"},
 	"etag":                  {"etag"},
+	"spaces":                {"spaces"},
 	"freebusy_reservations": {"freebusy_reservations"},
 }
 
@@ -363,6 +364,9 @@ func (r *GormReservationRepository) updateTx(ctx context.Context, tx *gorm.DB, k
 		if repox.InMask(paths, "cancel_time") {
 			existing.CancelTime = next.CancelTime
 		}
+		if repox.InMask(paths, "spaces") {
+			existing.Spaces = next.Spaces
+		}
 		if repox.InMask(paths, "freebusy_reservations") {
 			existing.FreebusyReservations = next.FreebusyReservations
 		}
@@ -420,6 +424,9 @@ func (r *GormReservationRepository) updateOutputOnlyTx(ctx context.Context, tx *
 		}
 		if repox.InMask(paths, "cancel_time") {
 			existing.CancelTime = next.CancelTime
+		}
+		if repox.InMask(paths, "spaces") {
+			existing.Spaces = next.Spaces
 		}
 		if repox.InMask(paths, "freebusy_reservations") {
 			existing.FreebusyReservations = next.FreebusyReservations

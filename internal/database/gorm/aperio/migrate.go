@@ -148,6 +148,7 @@ var Default = New().Register(
 	&sales.Activity{},
 	&sales.Quote{},
 	&stay.Reservation{},
+	&stay.StayNight{},
 	&venue.Venue{},
 	&venue.Space{},
 )

@@ -6,14 +6,14 @@ package concierge
 // bookings.go is FindBooking and CancelBooking: a guest's stays, found by the
 // phone they booked with and something only they would know -- the booking's
 // reference, or its day of arrival -- since anyone can say a phone number.
-// A booking's reference is the last six characters of its id, upper-cased:
-// nothing is stored for it, and among one guest's stays it is unique enough.
+// A booking's reference is booking.Reference.
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
@@ -64,7 +64,7 @@ func (s *Server) CancelBooking(ctx context.Context, req *conciergepbv1.CancelBoo
 		}
 		if !req.GetConfirmed() {
 			return nil, askConsent(fmt.Sprintf("Cancel your stay from %s to %s, reference %s?",
-				day(stays[0].GetArrivalDate()), day(stays[0].GetDepartureDate()), spell(reference(stays[0].GetName()))))
+				day(stays[0].GetArrivalDate()), day(stays[0].GetDepartureDate()), spell(booking.Reference(stays[0].GetName()))))
 		}
 		r, err := s.booker.CancelReservation(ctx, &staypbv1.CancelReservationRequest{
 			Name: stays[0].GetName(), Reason: strings.TrimSpace("cancelled by the guest. " + req.GetReason()),
@@ -74,7 +74,7 @@ func (s *Server) CancelBooking(ctx context.Context, req *conciergepbv1.CancelBoo
 		}
 		return &conciergepbv1.CancelBookingResponse{
 			Reservation: r.GetName(),
-			Spoken:      fmt.Sprintf("Your stay from %s, reference %s, is cancelled.", day(r.GetArrivalDate()), spell(reference(r.GetName()))),
+			Spoken:      fmt.Sprintf("Your stay from %s, reference %s, is cancelled.", day(r.GetArrivalDate()), spell(booking.Reference(r.GetName()))),
 		}, nil
 	})
 }
@@ -98,7 +98,7 @@ func (s *Server) stays(ctx context.Context, venueName, phone, ref string) ([]*st
 	}
 	var out []*staypbv1.Reservation
 	for _, r := range page.GetReservations() {
-		if ref == "" || strings.EqualFold(reference(r.GetName()), strings.TrimSpace(ref)) {
+		if ref == "" || strings.EqualFold(booking.Reference(r.GetName()), strings.TrimSpace(ref)) {
 			out = append(out, r)
 		}
 	}
@@ -118,18 +118,11 @@ func (s *Server) findGuest(ctx context.Context, phone string) (string, error) {
 func summary(r *staypbv1.Reservation) *conciergepbv1.BookingSummary {
 	state := strings.TrimPrefix(r.GetState().String(), "STATE_")
 	return &conciergepbv1.BookingSummary{
-		Reservation: r.GetName(), Reference: reference(r.GetName()), State: state,
+		Reservation: r.GetName(), Reference: booking.Reference(r.GetName()), State: state,
 		ArrivalDate: r.GetArrivalDate(), DepartureDate: r.GetDepartureDate(),
 		Spoken: fmt.Sprintf("a stay from %s to %s, reference %s, %s.", day(r.GetArrivalDate()), day(r.GetDepartureDate()),
-			spell(reference(r.GetName())), strings.ToLower(strings.ReplaceAll(state, "_", " "))),
+			spell(booking.Reference(r.GetName())), strings.ToLower(strings.ReplaceAll(state, "_", " "))),
 	}
-}
-
-// reference is a stay's short reference: the last six letters and digits of
-// its id, upper-cased.
-func reference(name string) string {
-	id := strings.ReplaceAll(servicex.IDOf(name), "-", "")
-	return strings.ToUpper(id[max(0, len(id)-6):])
 }
 
 // spell is a reference to say: its characters one by one, "7 F 3 A 9 C".

@@ -34,7 +34,7 @@ type priced struct {
 // CalculatePrice prices req.Item for req.ServiceDate at req.Venue.
 func (s *Server) CalculatePrice(ctx context.Context, req *pricingpbv1.CalculatePriceRequest) (*pricingpbv1.CalculatePriceResponse, error) {
 	var out *pricingpbv1.CalculatePriceResponse
-	err := s.Options().Run(ctx, "SalesService", "CalculatePrice", func(ctx context.Context) error {
+	err := s.Options().Run(ctx, "PricingService", "CalculatePrice", func(ctx context.Context) error {
 		cur, err := s.currency(ctx, req.GetVenue())
 		if err != nil {
 			return err

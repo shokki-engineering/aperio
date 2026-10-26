@@ -181,7 +181,12 @@ type Reservation struct {
 	// Last-modification timestamp.
 	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,26,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,27,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag string `protobuf:"bytes,27,opt,name=etag,proto3" json:"etag,omitempty"`
+	// The room types booked, kept by the server from rooms: what a stay is
+	// searched by, as in spaces:"venues/sbr/spaces/villa". A search key, like a
+	// contact's phone_numbers, not a relation: the rooms are the stay's.
+	// Format: venues/{venue}/spaces/{space}
+	Spaces        []string `protobuf:"bytes,28,rep,name=spaces,proto3" json:"spaces,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -405,6 +410,13 @@ func (x *Reservation) GetEtag() string {
 	return ""
 }
 
+func (x *Reservation) GetSpaces() []string {
+	if x != nil {
+		return x.Spaces
+	}
+	return nil
+}
+
 // RoomLine is some rooms of one type, booked for every night of a stay.
 type RoomLine struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -474,7 +486,7 @@ var File_aperio_stay_v1_stay_proto protoreflect.FileDescriptor
 
 const file_aperio_stay_v1_stay_proto_rawDesc = "" +
 	"\n" +
-	"\x19aperio/stay/v1/stay.proto\x12\x0eaperio.stay.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\x1aFprotobuf/opentravel/hotel/booking/reservation/v1/types/res_guest.proto\x1aFprotobuf/opentravel/hotel/booking/reservation/v1/types/room_stay.proto\x1a\x1astore/v1/annotations.proto\"\x8c\x11\n" +
+	"\x19aperio/stay/v1/stay.proto\x12\x0eaperio.stay.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\x1aFprotobuf/opentravel/hotel/booking/reservation/v1/types/res_guest.proto\x1aFprotobuf/opentravel/hotel/booking/reservation/v1/types/room_stay.proto\x1a\x1astore/v1/annotations.proto\"\xb0\x11\n" +
 	"\vReservation\x12C\n" +
 	"\x04name\x18\x01 \x01(\tB/\xe2A\x01\b\xbaH(\xd8\x01\x01r#2!^venues/[^/]+/reservations/[^/]+$R\x04name\x12Q\n" +
 	"\acontact\x18\x02 \x01(\tB7\xe2A\x01\x02\xfaA\x19\n" +
@@ -515,7 +527,9 @@ const file_aperio_stay_v1_stay_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\x1a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x1b \x01(\tB\x04\xe2A\x01\x01R\x04etag\"\x9b\x01\n" +
+	"\x04etag\x18\x1b \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12\"\n" +
+	"\x06spaces\x18\x1c \x03(\tB\n" +
+	"\xe2A\x01\x03\xe2\xb5\x18\x02\x18\x01R\x06spaces\"\x9b\x01\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rSTATE_PENDING\x10\x01\x12\x13\n" +

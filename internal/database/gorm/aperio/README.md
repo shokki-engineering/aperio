@@ -8,7 +8,7 @@ Generated from Protobuf by protoc-gen-store. Source of truth is the `.proto` fil
 
 | Models | Enums |
 | ---: | ---: |
-| 19 | 26 |
+| 20 | 26 |
 
 ## Entity relationships
 
@@ -106,6 +106,9 @@ erDiagram
     Space {
         string id PK
         string venue_id FK
+    }
+    StayNight {
+        string id PK
     }
     Venue {
         string id PK
@@ -662,8 +665,28 @@ A Reservation is a stay: rooms at a venue for a span of nights, booked directly,
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `spaces` | `VARCHAR(255)[]` | nullable |
 | `venue_id` | `CHAR(26)` | not null |
 | `freebusy_reservations` | `VARCHAR(255)[]` | nullable |
+
+### `StayNight` → `stay_nights`
+
+A StayNight is one night of one stay: the read model the front desk's day, occupancy and a guest's history are read from, instead of every reservation there is -- "who stays tonight" is the rows of one day, under one index. Storage-only, and derived: no RPC takes or returns it. It is a projection of the reservations, rewritten in the same transaction as every write to one: a stay has a row for each night from arrival to the night before departure, and none once it is cancelled or a no-show.
+
+| Column | Type | Null |
+| --- | --- | --- |
+| `id` | `TEXT` | not null |
+| `reservation` | `TEXT` | not null |
+| `venue` | `TEXT` | not null |
+| `day` | `DATE` | not null |
+| `contact` | `TEXT` | not null |
+| `spaces` | `TEXT[]` | not null |
+| `rooms` | `INTEGER` | not null |
+| `guests` | `INTEGER` | not null |
+| `first_night` | `BOOLEAN` | not null |
+| `last_night` | `BOOLEAN` | not null |
+| `state` | `TEXT` | not null |
+| `row_version` | `BIGINT` | not null |
 
 ### Enums
 

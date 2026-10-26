@@ -29,7 +29,7 @@ var File_aperio_stay_v1_stay_service_proto protoreflect.FileDescriptor
 
 const file_aperio_stay_v1_stay_service_proto_rawDesc = "" +
 	"\n" +
-	"!aperio/stay/v1/stay_service.proto\x12\x0eaperio.stay.v1\x1a\x19aperio/stay/v1/stay.proto\x1a\"aperio/stay/v1/stay_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xab\v\n" +
+	"!aperio/stay/v1/stay_service.proto\x12\x0eaperio.stay.v1\x1a\x19aperio/stay/v1/stay.proto\x1a\"aperio/stay/v1/stay_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xcc\f\n" +
 	"\vStayService\x12\x87\x01\n" +
 	"\x0eGetReservation\x12%.aperio.stay.v1.GetReservationRequest\x1a\x1b.aperio.stay.v1.Reservation\"1\xdaA\x04name\x82\xd3\xe4\x93\x02$\x12\"/v1/{name=venues/*/reservations/*}\x12\x9a\x01\n" +
 	"\x10ListReservations\x12'.aperio.stay.v1.ListReservationsRequest\x1a(.aperio.stay.v1.ListReservationsResponse\"3\xdaA\x06parent\x82\xd3\xe4\x93\x02$\x12\"/v1/{parent=venues/*}/reservations\x12\xb7\x01\n" +
@@ -38,7 +38,9 @@ const file_aperio_stay_v1_stay_service_proto_rawDesc = "" +
 	"\x12ConfirmReservation\x12).aperio.stay.v1.ConfirmReservationRequest\x1a\x1b.aperio.stay.v1.Reservation\"<\xdaA\x04name\x82\xd3\xe4\x93\x02/:\x01*\"*/v1/{name=venues/*/reservations/*}:confirm\x12\x97\x01\n" +
 	"\x11CancelReservation\x12(.aperio.stay.v1.CancelReservationRequest\x1a\x1b.aperio.stay.v1.Reservation\";\xdaA\x04name\x82\xd3\xe4\x93\x02.:\x01*\")/v1/{name=venues/*/reservations/*}:cancel\x12\x97\x01\n" +
 	"\x11ArriveReservation\x12(.aperio.stay.v1.ArriveReservationRequest\x1a\x1b.aperio.stay.v1.Reservation\";\xdaA\x04name\x82\xd3\xe4\x93\x02.:\x01*\")/v1/{name=venues/*/reservations/*}:arrive\x12\x97\x01\n" +
-	"\x11DepartReservation\x12(.aperio.stay.v1.DepartReservationRequest\x1a\x1b.aperio.stay.v1.Reservation\";\xdaA\x04name\x82\xd3\xe4\x93\x02.:\x01*\")/v1/{name=venues/*/reservations/*}:depart\x1a\x93\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18s\n" +
+	"\x11DepartReservation\x12(.aperio.stay.v1.DepartReservationRequest\x1a\x1b.aperio.stay.v1.Reservation\";\xdaA\x04name\x82\xd3\xe4\x93\x02.:\x01*\")/v1/{name=venues/*/reservations/*}:depart\x12\x9e\x01\n" +
+	"\fSummarizeDay\x12#.aperio.stay.v1.SummarizeDayRequest\x1a$.aperio.stay.v1.SummarizeDayResponse\"C\xdaA\n" +
+	"venue,date\x82\xd3\xe4\x93\x020\x12./v1/{venue=venues/*}/reservations:summarizeDay\x1a\x93\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18s\n" +
 	"q\n" +
 	"\x05Stays\x12\x051.0.0\x1aaStays at a venue: reservations of its rooms, booked in freebusy, and their arrival and departure.B\xd6\x01\n" +
 	"\x12com.aperio.stay.v1B\x10StayServiceProtoP\x01ZTgithub.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1\xa2\x02\x03ASX\xaa\x02\x0eAperio.Stay.V1\xca\x02\x0eAperio\\Stay\\V1\xe2\x02\x1aAperio\\Stay\\V1\\GPBMetadata\xea\x02\x10Aperio::Stay::V1b\x06proto3"
@@ -52,31 +54,35 @@ var file_aperio_stay_v1_stay_service_proto_goTypes = []any{
 	(*CancelReservationRequest)(nil),  // 5: aperio.stay.v1.CancelReservationRequest
 	(*ArriveReservationRequest)(nil),  // 6: aperio.stay.v1.ArriveReservationRequest
 	(*DepartReservationRequest)(nil),  // 7: aperio.stay.v1.DepartReservationRequest
-	(*Reservation)(nil),               // 8: aperio.stay.v1.Reservation
-	(*ListReservationsResponse)(nil),  // 9: aperio.stay.v1.ListReservationsResponse
+	(*SummarizeDayRequest)(nil),       // 8: aperio.stay.v1.SummarizeDayRequest
+	(*Reservation)(nil),               // 9: aperio.stay.v1.Reservation
+	(*ListReservationsResponse)(nil),  // 10: aperio.stay.v1.ListReservationsResponse
+	(*SummarizeDayResponse)(nil),      // 11: aperio.stay.v1.SummarizeDayResponse
 }
 var file_aperio_stay_v1_stay_service_proto_depIdxs = []int32{
-	0, // 0: aperio.stay.v1.StayService.GetReservation:input_type -> aperio.stay.v1.GetReservationRequest
-	1, // 1: aperio.stay.v1.StayService.ListReservations:input_type -> aperio.stay.v1.ListReservationsRequest
-	2, // 2: aperio.stay.v1.StayService.CreateReservation:input_type -> aperio.stay.v1.CreateReservationRequest
-	3, // 3: aperio.stay.v1.StayService.UpdateReservation:input_type -> aperio.stay.v1.UpdateReservationRequest
-	4, // 4: aperio.stay.v1.StayService.ConfirmReservation:input_type -> aperio.stay.v1.ConfirmReservationRequest
-	5, // 5: aperio.stay.v1.StayService.CancelReservation:input_type -> aperio.stay.v1.CancelReservationRequest
-	6, // 6: aperio.stay.v1.StayService.ArriveReservation:input_type -> aperio.stay.v1.ArriveReservationRequest
-	7, // 7: aperio.stay.v1.StayService.DepartReservation:input_type -> aperio.stay.v1.DepartReservationRequest
-	8, // 8: aperio.stay.v1.StayService.GetReservation:output_type -> aperio.stay.v1.Reservation
-	9, // 9: aperio.stay.v1.StayService.ListReservations:output_type -> aperio.stay.v1.ListReservationsResponse
-	8, // 10: aperio.stay.v1.StayService.CreateReservation:output_type -> aperio.stay.v1.Reservation
-	8, // 11: aperio.stay.v1.StayService.UpdateReservation:output_type -> aperio.stay.v1.Reservation
-	8, // 12: aperio.stay.v1.StayService.ConfirmReservation:output_type -> aperio.stay.v1.Reservation
-	8, // 13: aperio.stay.v1.StayService.CancelReservation:output_type -> aperio.stay.v1.Reservation
-	8, // 14: aperio.stay.v1.StayService.ArriveReservation:output_type -> aperio.stay.v1.Reservation
-	8, // 15: aperio.stay.v1.StayService.DepartReservation:output_type -> aperio.stay.v1.Reservation
-	8, // [8:16] is the sub-list for method output_type
-	0, // [0:8] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: aperio.stay.v1.StayService.GetReservation:input_type -> aperio.stay.v1.GetReservationRequest
+	1,  // 1: aperio.stay.v1.StayService.ListReservations:input_type -> aperio.stay.v1.ListReservationsRequest
+	2,  // 2: aperio.stay.v1.StayService.CreateReservation:input_type -> aperio.stay.v1.CreateReservationRequest
+	3,  // 3: aperio.stay.v1.StayService.UpdateReservation:input_type -> aperio.stay.v1.UpdateReservationRequest
+	4,  // 4: aperio.stay.v1.StayService.ConfirmReservation:input_type -> aperio.stay.v1.ConfirmReservationRequest
+	5,  // 5: aperio.stay.v1.StayService.CancelReservation:input_type -> aperio.stay.v1.CancelReservationRequest
+	6,  // 6: aperio.stay.v1.StayService.ArriveReservation:input_type -> aperio.stay.v1.ArriveReservationRequest
+	7,  // 7: aperio.stay.v1.StayService.DepartReservation:input_type -> aperio.stay.v1.DepartReservationRequest
+	8,  // 8: aperio.stay.v1.StayService.SummarizeDay:input_type -> aperio.stay.v1.SummarizeDayRequest
+	9,  // 9: aperio.stay.v1.StayService.GetReservation:output_type -> aperio.stay.v1.Reservation
+	10, // 10: aperio.stay.v1.StayService.ListReservations:output_type -> aperio.stay.v1.ListReservationsResponse
+	9,  // 11: aperio.stay.v1.StayService.CreateReservation:output_type -> aperio.stay.v1.Reservation
+	9,  // 12: aperio.stay.v1.StayService.UpdateReservation:output_type -> aperio.stay.v1.Reservation
+	9,  // 13: aperio.stay.v1.StayService.ConfirmReservation:output_type -> aperio.stay.v1.Reservation
+	9,  // 14: aperio.stay.v1.StayService.CancelReservation:output_type -> aperio.stay.v1.Reservation
+	9,  // 15: aperio.stay.v1.StayService.ArriveReservation:output_type -> aperio.stay.v1.Reservation
+	9,  // 16: aperio.stay.v1.StayService.DepartReservation:output_type -> aperio.stay.v1.Reservation
+	11, // 17: aperio.stay.v1.StayService.SummarizeDay:output_type -> aperio.stay.v1.SummarizeDayResponse
+	9,  // [9:18] is the sub-list for method output_type
+	0,  // [0:9] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_aperio_stay_v1_stay_service_proto_init() }

@@ -14,6 +14,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
@@ -72,10 +73,10 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 		return nil, err
 	}
 	return &conciergepbv1.ConfirmStayResponse{
-		Reservation: out.GetName(), Total: total, Reference: reference(out.GetName()),
+		Reservation: out.GetName(), Total: total, Reference: booking.Reference(out.GetName()),
 		Spoken: fmt.Sprintf("Done, %s: %s from %s is booked, %s plus taxes; your reference is %s. We'll send the payment "+
 			"details to %s; the booking is confirmed once the advance is paid.",
-			h.Guest, count(h.Nights, "night"), day(arrive), amount(total), spell(reference(out.GetName())), h.Phone),
+			h.Guest, count(h.Nights, "night"), day(arrive), amount(total), spell(booking.Reference(out.GetName())), h.Phone),
 	}, nil
 }
 

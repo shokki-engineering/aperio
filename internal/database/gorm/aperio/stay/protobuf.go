@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-store 1.6.7
 // 	protoc (unknown)
-// source: aperio/stay/v1/stay.proto
+// source: aperio/stay/v1/stay.proto, aperio/stay/v1/stay_night.proto
 //
 // database: aperio
 // schema:   stay
@@ -217,6 +217,7 @@ func ReservationToProto(m *Reservation) *staypbv1.Reservation {
 	out.CreateTime = goValToTs(m.CreateTime)
 	out.UpdateTime = goValToTs(m.UpdateTime)
 	out.Etag = fromPtr(m.Etag)
+	out.Spaces = []string(m.Spaces)
 	out.FreebusyReservations = []string(m.FreebusyReservations)
 	return out
 }
@@ -250,6 +251,7 @@ func ReservationFromProto(pb *staypbv1.Reservation) *Reservation {
 	m.DepartTime = tsToGo(pb.GetDepartTime())
 	m.CancelTime = tsToGo(pb.GetCancelTime())
 	m.Etag = toPtr(pb.GetEtag())
+	m.Spaces = pq.StringArray(pb.GetSpaces())
 	m.FreebusyReservations = pq.StringArray(pb.GetFreebusyReservations())
 	return m
 }

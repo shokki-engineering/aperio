@@ -69,6 +69,23 @@ plugins:
       - go_module=github.com/shokki-engineering/aperio/internal/database/repository
       - gorm_module=github.com/shokki-engineering/aperio/internal/database/gorm
       - graphql_module=github.com/shokki-engineering/aperio/internal/database/hasura/aperioql
+  # OpenSearch copy of the projections ((store.v1.projection): the read
+  # models agents and reports read, such as stay.v1.StayNight): the runtime
+  # (osx/) and one <Model>Index per projection -- generated mapping, index
+  # template and alias, the change-feed indexer, PIT search, facets and
+  # alias-swap reindex -- on github.com/oh-tarnished/opensearch-go-sdk, as
+  # freebusy's. Optional at run time: used only with [search] provider =
+  # "opensearch". gorm_module and repository_module MUST match the gorm and
+  # repository targets above.
+  - local: protoc-gen-store
+    out: internal/database/opensearch
+    strategy: all
+    opt:
+      - target=opensearch
+      - config=tools/protobuf/buf/config/store.backend.yaml
+      - go_module=github.com/shokki-engineering/aperio/internal/database/opensearch
+      - gorm_module=github.com/shokki-engineering/aperio/internal/database/gorm
+      - repository_module=github.com/shokki-engineering/aperio/internal/database/repository
   # Read-through cache decorators over the generated stores: a <Model>StoreIface
   # implementation wrapping the store from store_module -- same interface in,
   # same interface out. store_module and repository_module are paths, not

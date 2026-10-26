@@ -95,3 +95,35 @@ feeds_secret = ""
 # Seals hold tokens; set through APERIO_CONCIERGE__HOLD_SECRET. Empty, each
 # process makes its own.
 hold_secret = ""
+
+[search]
+# The read models -- one row per night of every stay (stay.v1.StayNight), and
+# those to come -- that summaries, reports and agents read instead of every
+# record, kept current in the same transaction as every write to their
+# sources. Where they are searched: "postgres" (their own tables) or
+# "opensearch" (a copy kept by a change-feed indexer, see [search.opensearch];
+# any error or timeout falls back to Postgres).
+provider = "postgres"
+# When the server recomputes a read model as it starts (in the background; it
+# serves meanwhile): "empty" when its table has no rows -- a fresh deployment,
+# or an upgrade from a version without it; "always" on every start -- the
+# repair after writes that bypassed the API: restart with it set, then set it
+# back; "never".
+rebuild_on_start = "empty"
+
+[search.opensearch]
+# The cluster, used only when provider = "opensearch". Credentials are
+# secrets: set APERIO_SEARCH__OPENSEARCH__USERNAME / __PASSWORD.
+url = ""
+username = ""
+password = ""
+# Committed changes buffered for an indexer before writes wait on it.
+index_queue = 1024
+# A search slower than this falls back to Postgres, in milliseconds.
+timeout_ms = 500
+# When the server reloads an index from its read model's table as it starts
+# (in the background: a new versioned index, then an alias swap): "empty" when
+# the index has no documents but the table has rows; "always" on every start
+# -- the repair after an indexer missed changes: restart one replica with it
+# set, then set it back; "never".
+reindex_on_start = "empty"

@@ -15,6 +15,7 @@ package stayql
 
 import (
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/stayql/reservationsql"
+	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/stayql/staynightsql"
 	"github.com/the-protobuf-project/runtime-go/network/runtime"
 )
 
@@ -24,39 +25,50 @@ type InsertStayReservationsResponse = reservationsql.InsertStayReservationsRespo
 type StayReservations = reservationsql.StayReservations
 type StayReservationsAggExp = reservationsql.StayReservationsAggExp
 type UpdateStayReservationsByIdResponse = reservationsql.UpdateStayReservationsByIdResponse
+type DeleteStayStayNightsByIdResponse = staynightsql.DeleteStayStayNightsByIdResponse
+type InsertStayStayNightsResponse = staynightsql.InsertStayStayNightsResponse
+type StayStayNights = staynightsql.StayStayNights
+type StayStayNightsAggExp = staynightsql.StayStayNightsAggExp
+type UpdateStayStayNightsByIdResponse = staynightsql.UpdateStayStayNightsByIdResponse
 
 // QueryHandler aggregates query handlers for the stayql domain.
 type QueryHandler struct {
 	Reservations reservationsql.QueryHandler
+	StayNights   staynightsql.QueryHandler
 }
 
 // NewQuery wires every query handler in the domain.
 func NewQuery(gql *runtime.GraphQLClient) QueryHandler {
 	return QueryHandler{
 		Reservations: reservationsql.NewQuery(gql),
+		StayNights:   staynightsql.NewQuery(gql),
 	}
 }
 
 // MutationHandler aggregates mutation handlers for the stayql domain.
 type MutationHandler struct {
 	Reservations reservationsql.MutationHandler
+	StayNights   staynightsql.MutationHandler
 }
 
 // NewMutation wires every mutation handler in the domain.
 func NewMutation(gql *runtime.GraphQLClient) MutationHandler {
 	return MutationHandler{
 		Reservations: reservationsql.NewMutation(gql),
+		StayNights:   staynightsql.NewMutation(gql),
 	}
 }
 
 // SubscriptionHandler aggregates subscription handlers for the stayql domain.
 type SubscriptionHandler struct {
 	Reservations reservationsql.SubscriptionHandler
+	StayNights   staynightsql.SubscriptionHandler
 }
 
 // NewSubscription wires every subscription handler in the domain.
 func NewSubscription(gql *runtime.GraphQLClient) SubscriptionHandler {
 	return SubscriptionHandler{
 		Reservations: reservationsql.NewSubscription(gql),
+		StayNights:   staynightsql.NewSubscription(gql),
 	}
 }

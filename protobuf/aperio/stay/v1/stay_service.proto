@@ -92,4 +92,11 @@ service StayService {
     };
     option (google.api.method_signature) = "name";
   }
+
+  // A day at a venue, for the front desk and its agents: who arrives, who
+  // leaves, who stays the night, and how many of the venue's rooms are taken.
+  rpc SummarizeDay(SummarizeDayRequest) returns (SummarizeDayResponse) {
+    option (google.api.http) = {get: "/v1/{venue=venues/*}/reservations:summarizeDay"};
+    option (google.api.method_signature) = "venue,date";
+  }
 }

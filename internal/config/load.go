@@ -103,6 +103,15 @@ func load() (*AppConfig, error) {
 	if m := cfg.Database.Postgres.PlanCacheMode; m != "" && !slices.Contains(PlanCacheModes, m) {
 		return nil, fmt.Errorf("config invalid: database.postgres.plan_cache_mode=%q (want %s)", m, strings.Join(PlanCacheModes, "|"))
 	}
+	if p := cfg.Search.Provider; p != "" && p != "postgres" && p != "opensearch" {
+		return nil, fmt.Errorf("config invalid: search.provider=%q (want postgres|opensearch)", p)
+	}
+	if m := cfg.Search.RebuildOnStart; m != "" && !slices.Contains(OnStartModes, m) {
+		return nil, fmt.Errorf("config invalid: search.rebuild_on_start=%q (want %s)", m, strings.Join(OnStartModes, "|"))
+	}
+	if m := cfg.Search.OpenSearch.ReindexOnStart; m != "" && !slices.Contains(OnStartModes, m) {
+		return nil, fmt.Errorf("config invalid: search.opensearch.reindex_on_start=%q (want %s)", m, strings.Join(OnStartModes, "|"))
+	}
 	if cfg.Server.ShutdownTimeoutSeconds < 0 {
 		return nil, fmt.Errorf("config invalid: server.shutdown_timeout_seconds=%d (want 0 for the default, or more)", cfg.Server.ShutdownTimeoutSeconds)
 	}

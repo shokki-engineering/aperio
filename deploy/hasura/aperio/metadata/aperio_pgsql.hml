@@ -146,6 +146,13 @@ definition:
               unique_columns:
                 - id
         - arguments: {}
+          name: stay_stay_nights
+          type: stay_stay_nights
+          uniqueness_constraints:
+            stay_nights_pkey:
+              unique_columns:
+                - id
+        - arguments: {}
           name: venue_resource
           type: venue_resource
           uniqueness_constraints:
@@ -777,6 +784,22 @@ definition:
               type:
                 element_type:
                   name: stay_reservations
+                  type: named
+                type: array
+          foreign_keys: {}
+        delete_stay_stay_nights_by_id_response:
+          description: Responses from the 'delete_stay_stay_nights_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                name: int4
+                type: named
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                element_type:
+                  name: stay_stay_nights
                   type: named
                 type: array
           foreign_keys: {}
@@ -3658,6 +3681,16 @@ definition:
               type:
                 name: jsonb
                 type: named
+            spaces:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             special_requests:
               type:
                 type: nullable
@@ -3698,6 +3731,81 @@ definition:
               type:
                 element_type:
                   name: stay_reservations
+                  type: named
+                type: array
+          foreign_keys: {}
+        insert_stay_stay_nights_object:
+          fields:
+            contact:
+              type:
+                name: text
+                type: named
+            day:
+              type:
+                name: date
+                type: named
+            first_night:
+              type:
+                name: bool
+                type: named
+            guests:
+              type:
+                name: int4
+                type: named
+            id:
+              type:
+                name: text
+                type: named
+            last_night:
+              type:
+                name: bool
+                type: named
+            reservation:
+              type:
+                name: text
+                type: named
+            rooms:
+              type:
+                name: int4
+                type: named
+            row_version:
+              type:
+                type: nullable
+                underlying_type:
+                  name: int8
+                  type: named
+            spaces:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
+            state:
+              type:
+                name: text
+                type: named
+            venue:
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
+        insert_stay_stay_nights_response:
+          description: Responses from the 'insert_stay_stay_nights' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                name: int4
+                type: named
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                element_type:
+                  name: stay_stay_nights
                   type: named
                 type: array
           foreign_keys: {}
@@ -4658,6 +4766,16 @@ definition:
               type:
                 name: jsonb
                 type: named
+            spaces:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             special_requests:
               type:
                 type: nullable
@@ -4710,6 +4828,63 @@ definition:
                 venue_id:
                   - id
               foreign_collection: venue_resource
+        stay_stay_nights:
+          fields:
+            contact:
+              type:
+                name: text
+                type: named
+            day:
+              type:
+                name: date
+                type: named
+            first_night:
+              type:
+                name: bool
+                type: named
+            guests:
+              type:
+                name: int4
+                type: named
+            id:
+              type:
+                name: text
+                type: named
+            last_night:
+              type:
+                name: bool
+                type: named
+            reservation:
+              type:
+                name: text
+                type: named
+            rooms:
+              type:
+                name: int4
+                type: named
+            row_version:
+              type:
+                name: int8
+                type: named
+            spaces:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
+            state:
+              type:
+                name: text
+                type: named
+            venue:
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
         update__prisma_migrations_by_id_response:
           description: Responses from the 'update__prisma_migrations_by_id' procedure
           fields:
@@ -8526,6 +8701,21 @@ definition:
                 name: jsonb
                 type: named
           foreign_keys: {}
+        update_column_stay_reservations_spaces:
+          description: Update the 'spaces' column in the 'stay_reservations' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
+          foreign_keys: {}
         update_column_stay_reservations_special_requests:
           description: Update the 'special_requests' column in the 'stay_reservations' collection
           fields:
@@ -8570,6 +8760,120 @@ definition:
           foreign_keys: {}
         update_column_stay_reservations_venue_id:
           description: Update the 'venue_id' column in the 'stay_reservations' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_contact:
+          description: Update the 'contact' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_day:
+          description: Update the 'day' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: date
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_first_night:
+          description: Update the 'first_night' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: bool
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_guests:
+          description: Update the 'guests' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: int4
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_id:
+          description: Update the 'id' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_last_night:
+          description: Update the 'last_night' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: bool
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_reservation:
+          description: Update the 'reservation' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_rooms:
+          description: Update the 'rooms' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: int4
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_row_version:
+          description: Update the 'row_version' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: int8
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_spaces:
+          description: Update the 'spaces' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
+          foreign_keys: {}
+        update_column_stay_stay_nights_state:
+          description: Update the 'state' column in the 'stay_stay_nights' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                name: text
+                type: named
+          foreign_keys: {}
+        update_column_stay_stay_nights_venue:
+          description: Update the 'venue' column in the 'stay_stay_nights' collection
           fields:
             _set:
               description: Set the column to this value
@@ -10918,6 +11222,13 @@ definition:
                 underlying_type:
                   name: update_column_stay_reservations_rooms
                   type: named
+            spaces:
+              description: Update the 'spaces' column in the 'stay_reservations' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_reservations_spaces
+                  type: named
             special_requests:
               description: Update the 'special_requests' column in the 'stay_reservations' collection.
               type:
@@ -10952,6 +11263,110 @@ definition:
                 type: nullable
                 underlying_type:
                   name: update_column_stay_reservations_venue_id
+                  type: named
+          foreign_keys: {}
+        update_stay_stay_nights_by_id_response:
+          description: Responses from the 'update_stay_stay_nights_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                name: int4
+                type: named
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                element_type:
+                  name: stay_stay_nights
+                  type: named
+                type: array
+          foreign_keys: {}
+        update_stay_stay_nights_by_id_update_columns:
+          description: Update the columns of the 'stay_stay_nights' collection
+          fields:
+            contact:
+              description: Update the 'contact' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_contact
+                  type: named
+            day:
+              description: Update the 'day' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_day
+                  type: named
+            first_night:
+              description: Update the 'first_night' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_first_night
+                  type: named
+            guests:
+              description: Update the 'guests' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_guests
+                  type: named
+            id:
+              description: Update the 'id' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_id
+                  type: named
+            last_night:
+              description: Update the 'last_night' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_last_night
+                  type: named
+            reservation:
+              description: Update the 'reservation' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_reservation
+                  type: named
+            rooms:
+              description: Update the 'rooms' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_rooms
+                  type: named
+            row_version:
+              description: Update the 'row_version' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_row_version
+                  type: named
+            spaces:
+              description: Update the 'spaces' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_spaces
+                  type: named
+            state:
+              description: Update the 'state' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_state
+                  type: named
+            venue:
+              description: Update the 'venue' column in the 'stay_stay_nights' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_stay_stay_nights_venue
                   type: named
           foreign_keys: {}
         update_venue_resource_by_id_response:
@@ -11600,6 +12015,23 @@ definition:
                 name: text
                 type: named
             pre_check:
+              description: Delete permission predicate over the 'stay_stay_nights' collection
+              type:
+                type: nullable
+                underlying_type:
+                  object_type_name: stay_stay_nights
+                  type: predicate
+          description: Delete any row on the 'stay_stay_nights' collection using the 'id' key
+          name: delete_stay_stay_nights_by_id
+          result_type:
+            name: delete_stay_stay_nights_by_id_response
+            type: named
+        - arguments:
+            key_id:
+              type:
+                name: text
+                type: named
+            pre_check:
               description: Delete permission predicate over the 'venue_resource' collection
               type:
                 type: nullable
@@ -11969,6 +12401,25 @@ definition:
           name: insert_stay_reservations
           result_type:
             name: insert_stay_reservations_response
+            type: named
+        - arguments:
+            objects:
+              type:
+                element_type:
+                  name: insert_stay_stay_nights_object
+                  type: named
+                type: array
+            post_check:
+              description: Insert permission predicate over the 'stay_stay_nights' collection
+              type:
+                type: nullable
+                underlying_type:
+                  object_type_name: stay_stay_nights
+                  type: predicate
+          description: Insert into the stay_stay_nights table
+          name: insert_stay_stay_nights
+          result_type:
+            name: insert_stay_stay_nights_response
             type: named
         - arguments:
             objects:
@@ -12511,6 +12962,34 @@ definition:
           name: update_stay_reservations_by_id
           result_type:
             name: update_stay_reservations_by_id_response
+            type: named
+        - arguments:
+            key_id:
+              type:
+                name: text
+                type: named
+            post_check:
+              description: Update permission post-condition predicate over the 'stay_stay_nights' collection
+              type:
+                type: nullable
+                underlying_type:
+                  object_type_name: stay_stay_nights
+                  type: predicate
+            pre_check:
+              description: Update permission pre-condition predicate over the 'stay_stay_nights' collection
+              type:
+                type: nullable
+                underlying_type:
+                  object_type_name: stay_stay_nights
+                  type: predicate
+            update_columns:
+              type:
+                name: update_stay_stay_nights_by_id_update_columns
+                type: named
+          description: Update any row on the 'stay_stay_nights' collection using the 'id' key
+          name: update_stay_stay_nights_by_id
+          result_type:
+            name: update_stay_stay_nights_by_id_response
             type: named
         - arguments:
             key_id:

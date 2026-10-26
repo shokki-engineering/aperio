@@ -133,6 +133,9 @@ model Reservation {
   /// Opaque version for optimistic concurrency (AIP-154).
   etag String? @map("etag")
 
+  /// The room types booked, kept by the server from rooms: what a stay is searched by, as in spaces:"venues/sbr/spaces/villa". A search key, like a contact's phone_numbers, not a relation: the rooms are the stay's. Format: venues/{venue}/spaces/{space}
+  spaces String[] @map("spaces")
+
   /// Parent reference to Venue (from the AIP resource pattern).
   venueID String @map("venue_id")
 
@@ -162,6 +165,8 @@ model Reservation {
   @@index([quoteID])
   /// GIN index: case-insensitive contains (ILIKE '%…%') cannot use a B-tree.
   @@index([channelReference(ops: raw("gin_trgm_ops"))], type: Gin)
+  /// GIN index: tag containment (@>) cannot use a B-tree.
+  @@index([spaces], type: Gin)
   /// GIN index: tag containment (@>) cannot use a B-tree.
   @@index([freebusyReservations], type: Gin)
   /// Maps the model to the "reservations" table in the database.

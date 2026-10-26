@@ -51,7 +51,7 @@ func (s *Server) CancelEvent(ctx context.Context, req *eventpbv1.CancelEventRequ
 func (s *Server) moveEvent(ctx context.Context, method, name, etag string, from []eventpbv1.Event_State,
 	move func(*eventpbv1.Event) ([]string, error)) (*eventpbv1.Event, error) {
 	var out *eventpbv1.Event
-	err := s.Options().Run(ctx, "BookingService", method, func(ctx context.Context) error {
+	err := s.Options().Run(ctx, "EventService", method, func(ctx context.Context) error {
 		e, err := s.Repositories().Events.Get(ctx, name)
 		if err != nil {
 			return servicex.NotFoundAs(err, eventType, name)

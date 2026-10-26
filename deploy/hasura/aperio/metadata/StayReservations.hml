@@ -52,6 +52,8 @@ definition:
       type: Json
     - name: rooms
       type: Json!
+    - name: spaces
+      type: "[String_1]"
     - name: specialRequests
       type: Json
     - name: state
@@ -141,6 +143,9 @@ definition:
         rooms:
           column:
             name: rooms
+        spaces:
+          column:
+            name: spaces
         specialRequests:
           column:
             name: special_requests
@@ -190,6 +195,7 @@ definition:
           - resGuests
           - roomStays
           - rooms
+          - spaces
           - specialRequests
           - state
           - total

@@ -72,6 +72,8 @@ type DeleteStayReservationsByIdResponse struct {
 		RoomStays *json.RawMessage `graphql:"roomStays" scalar:"true"`
 		// Rooms selects the "rooms" field.
 		Rooms json.RawMessage `graphql:"rooms" scalar:"true"`
+		// Spaces selects the "spaces" field.
+		Spaces []*string `graphql:"spaces"`
 		// SpecialRequests selects the "specialRequests" field; nil when the column is NULL.
 		SpecialRequests *json.RawMessage `graphql:"specialRequests" scalar:"true"`
 		// State selects the "state" field; nil when the column is NULL.
@@ -139,6 +141,8 @@ type InsertStayReservationsResponse struct {
 		RoomStays *json.RawMessage `graphql:"roomStays" scalar:"true"`
 		// Rooms selects the "rooms" field.
 		Rooms json.RawMessage `graphql:"rooms" scalar:"true"`
+		// Spaces selects the "spaces" field.
+		Spaces []*string `graphql:"spaces"`
 		// SpecialRequests selects the "specialRequests" field; nil when the column is NULL.
 		SpecialRequests *json.RawMessage `graphql:"specialRequests" scalar:"true"`
 		// State selects the "state" field; nil when the column is NULL.
@@ -204,6 +208,8 @@ type StayReservations struct {
 	RoomStays *json.RawMessage `graphql:"roomStays" scalar:"true"`
 	// Rooms selects the "rooms" field.
 	Rooms json.RawMessage `graphql:"rooms" scalar:"true"`
+	// Spaces selects the "spaces" field.
+	Spaces []*string `graphql:"spaces"`
 	// SpecialRequests selects the "specialRequests" field; nil when the column is NULL.
 	SpecialRequests *json.RawMessage `graphql:"specialRequests" scalar:"true"`
 	// State selects the "state" field; nil when the column is NULL.
@@ -605,6 +611,8 @@ type UpdateStayReservationsByIdResponse struct {
 		RoomStays *json.RawMessage `graphql:"roomStays" scalar:"true"`
 		// Rooms selects the "rooms" field.
 		Rooms json.RawMessage `graphql:"rooms" scalar:"true"`
+		// Spaces selects the "spaces" field.
+		Spaces []*string `graphql:"spaces"`
 		// SpecialRequests selects the "specialRequests" field; nil when the column is NULL.
 		SpecialRequests *json.RawMessage `graphql:"specialRequests" scalar:"true"`
 		// State selects the "state" field; nil when the column is NULL.

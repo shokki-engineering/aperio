@@ -13,8 +13,10 @@ package stay
 
 import (
 	"github.com/shokki-engineering/aperio/internal/booking"
+	"github.com/shokki-engineering/aperio/internal/search"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/stay/v1/staypbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 )
 
 // Server serves aperio.stay.v1.StayService: the generated standard methods,
@@ -26,9 +28,13 @@ type Server struct {
 
 // New returns the Server over repos, taking rooms through base.
 func New(repos staypbv1svc.StayServiceRepositories, base *booking.Base, opts ...servicex.Option) *Server {
-	h := &hooks{Base: base, repos: repos}
+	h := &hooks{Base: base, repos: repos, nights: PostgresNights(base.Search)}
 	return &Server{StayServiceServer: staypbv1svc.NewStayServiceServer(repos, h, opts...), h: h}
 }
+
+// ReadNightsFrom reads the stay read model through r -- its OpenSearch copy
+// (OpenNights) -- rather than its table.
+func (s *Server) ReadNightsFrom(r search.Reader[*staypbv1.StayNight]) { s.h.nights = r }
 
 // hooks is the business logic around the generated standard methods.
 type hooks struct {
@@ -36,6 +42,8 @@ type hooks struct {
 	*booking.Base
 
 	repos staypbv1svc.StayServiceRepositories
+	// nights is the stay read model (nights.go): its table, or its copy.
+	nights search.Reader[*staypbv1.StayNight]
 }
 
 // reservationType is the resource type errors name.

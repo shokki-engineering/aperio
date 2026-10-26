@@ -68,6 +68,8 @@ type CreateInput struct {
 	RoomStays json.RawMessage `json:"roomStays,omitzero"`
 	// Rooms sets the "rooms" column (required).
 	Rooms json.RawMessage `json:"rooms"`
+	// Spaces sets the "spaces" column; the zero value is omitted (column default / NULL).
+	Spaces []*string `json:"spaces,omitzero"`
 	// SpecialRequests sets the "specialRequests" column; the zero value is omitted (column default / NULL).
 	SpecialRequests json.RawMessage `json:"specialRequests,omitzero"`
 	// State sets the "state" column; the zero value is omitted (column default / NULL).
@@ -130,6 +132,8 @@ type UpdateInput struct {
 	RoomStays graphql.Nullable[json.RawMessage] `json:"roomStays"`
 	// Update the 'rooms' column in the 'stay_reservations' collection.
 	Rooms graphql.Nullable[json.RawMessage] `json:"rooms"`
+	// Update the 'spaces' column in the 'stay_reservations' collection.
+	Spaces graphql.Nullable[[]*string] `json:"spaces"`
 	// Update the 'special_requests' column in the 'stay_reservations' collection.
 	SpecialRequests graphql.Nullable[json.RawMessage] `json:"specialRequests"`
 	// Update the 'state' column in the 'stay_reservations' collection.

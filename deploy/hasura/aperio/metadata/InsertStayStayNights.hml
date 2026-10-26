@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStayStayNightsObject
+  fields:
+    - name: contact
+      type: String_1!
+    - name: day
+      type: Date!
+    - name: firstNight
+      type: Boolean_1!
+    - name: guests
+      type: Int32!
+    - name: id
+      type: String_1!
+    - name: lastNight
+      type: Boolean_1!
+    - name: reservation
+      type: String_1!
+    - name: rooms
+      type: Int32!
+    - name: rowVersion
+      type: Int64
+    - name: spaces
+      type: "[String_1]"
+    - name: state
+      type: String_1!
+    - name: venue
+      type: String_1!
+  graphql:
+    typeName: InsertStayStayNightsObject
+    inputTypeName: InsertStayStayNightsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_stay_nights_object
+      fieldMapping:
+        contact:
+          column:
+            name: contact
+        day:
+          column:
+            name: day
+        firstNight:
+          column:
+            name: first_night
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        lastNight:
+          column:
+            name: last_night
+        reservation:
+          column:
+            name: reservation
+        rooms:
+          column:
+            name: rooms
+        rowVersion:
+          column:
+            name: row_version
+        spaces:
+          column:
+            name: spaces
+        state:
+          column:
+            name: state
+        venue:
+          column:
+            name: venue
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStayStayNightsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contact
+          - day
+          - firstNight
+          - guests
+          - id
+          - lastNight
+          - reservation
+          - rooms
+          - rowVersion
+          - spaces
+          - state
+          - venue
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStayStayNightsResponse
+  description: Responses from the 'insert_stay_stay_nights' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StayStayNights!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStayStayNightsResponse
+    inputTypeName: InsertStayStayNightsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_stay_nights_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStayStayNightsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStayStayNights
+  outputType: InsertStayStayNightsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStayStayNightsObject!]!"
+    - name: postCheck
+      type: StayStayNightsBoolExp
+      description: Insert permission predicate over the 'stay_stay_nights' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_stay_stay_nights
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStayStayNights
+    rootFieldKind: Mutation
+  description: Insert into the stay_stay_nights table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStayStayNights
+  permissions:
+    - role: admin
+      allowExecution: true
+

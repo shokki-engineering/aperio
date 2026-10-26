@@ -78,6 +78,7 @@ A Reservation is a stay: rooms at a venue for a span of nights, booked directly,
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `spaces` | `VARCHAR(255)[]` | nullable |
 | `venue_id` | `CHAR(26)` | not null |
 | `freebusy_reservations` | `VARCHAR(255)[]` | nullable |
 

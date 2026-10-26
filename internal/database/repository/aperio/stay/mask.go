@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-store 1.6.7
 // 	protoc (unknown)
-// source: aperio/stay/v1/stay.proto
+// source: aperio/stay/v1/stay.proto, aperio/stay/v1/stay_night.proto
 //
 // database: aperio
 // schema:   stay

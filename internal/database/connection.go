@@ -36,6 +36,12 @@ type Connection struct {
 	PgSQLConn *gorm.DB
 	Hasura    *aperioql.Service
 	Provider  Provider
+
+	// Projections keeps the projection tables (the read models, such as
+	// stay.v1.StayNight) current with every write a repository or Batch
+	// built from Repox makes: inside the write's transaction on GORM, right
+	// after it on Hasura.
+	Projections *repox.Projections
 }
 
 // providerFromConfig resolves the configured provider, defaulting to GORM
@@ -54,9 +60,22 @@ func providerFromConfig() Provider {
 // handle is set, so passing both would route a GORM deployment to Hasura.
 func (c *Connection) Repox() repox.Conn {
 	if c.Provider == ProviderHasura {
-		return repox.Conn{GraphQL: c.Hasura}
+		return repox.Conn{GraphQL: c.Hasura, Projections: c.Projections}
 	}
-	return repox.Conn{Gorm: c.PgSQLConn}
+	return repox.Conn{Gorm: c.PgSQLConn, Projections: c.Projections}
+}
+
+// SearchConn is the handle projection searches read through: GORM whenever
+// the connection has a Postgres handle, Hasura deployments included -- the
+// projection tables live in the same Postgres, and DDN has none of the
+// upserts or GROUP BY a search wants, so over GraphQL a search scans at most
+// repox.GraphQLScanLimit rows. Writes keep going through Repox. Projections
+// rides along so a projection's Apply and Rebuild publish to its feed.
+func (c *Connection) SearchConn() repox.Conn {
+	if c.PgSQLConn != nil {
+		return repox.Conn{Gorm: c.PgSQLConn, Projections: c.Projections}
+	}
+	return repox.Conn{GraphQL: c.Hasura, Projections: c.Projections}
 }
 
 // Close closes the Postgres pool, if there is one.

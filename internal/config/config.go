@@ -43,6 +43,8 @@ type AppConfig struct {
 	Freebusy FreebusyConfig `koanf:"freebusy"`
 	// Concierge is the guest-facing find, hold and book.
 	Concierge ConciergeConfig `koanf:"concierge"`
+	// Search is the read models and their OpenSearch copy.
+	Search SearchConfig `koanf:"search"`
 }
 
 // AppMeta contains service identity fields.

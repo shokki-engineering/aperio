@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-store 1.6.7
 // 	protoc (unknown)
-// source: aperio/stay/v1/stay.proto
+// source: aperio/stay/v1/stay.proto, aperio/stay/v1/stay_night.proto
 //
 // database: aperio
 // schema:   stay
@@ -137,6 +137,8 @@ type Reservation struct {
 	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_reservations_update_time;index:idx_reservations_state_update_time,priority:2" json:"update_time"`
 	// Opaque version for optimistic concurrency (AIP-154).
 	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
+	// The room types booked, kept by the server from rooms: what a stay is searched by, as in spaces:"venues/sbr/spaces/villa". A search key, like a contact's phone_numbers, not a relation: the rooms are the stay's. Format: venues/{venue}/spaces/{space}
+	Spaces pq.StringArray `gorm:"column:spaces;type:text[];index:idx_reservations_spaces_gin,type:gin" json:"spaces,omitempty"`
 	// Parent reference to Venue (from the AIP resource pattern).
 	VenueID string `gorm:"column:venue_id;not null;index:idx_reservations_venue_id_id,priority:1" json:"venue_id" validate:"required"`
 	// The freebusy reservations holding the rooms, one per room line. Format: reservations/{reservation}
@@ -144,3 +146,33 @@ type Reservation struct {
 }
 
 func (*Reservation) TableName() string { return "stay.reservations" }
+
+// A StayNight is one night of one stay: the read model the front desk's day, occupancy and a guest's history are read from, instead of every reservation there is -- "who stays tonight" is the rows of one day, under one index. Storage-only, and derived: no RPC takes or returns it. It is a projection of the reservations, rewritten in the same transaction as every write to one: a stay has a row for each night from arrival to the night before departure, and none once it is cancelled or a no-show.
+type StayNight struct {
+	// The row's key: its key fields' values as a JSON array.
+	ID string `gorm:"column:id;primaryKey;not null;index:idx_stay_nights_venue_day_id,priority:3;index:idx_stay_nights_contact_day_id,priority:3" json:"id"`
+	// The stay, "venues/{venue}/reservations/{reservation}". Not a resource reference: a projection row must never keep its source from being purged.
+	Reservation string `gorm:"column:reservation;not null;uniqueIndex:idx_stay_nights_reservation_day,priority:1" json:"reservation" validate:"required"`
+	// The venue, "venues/{venue}".
+	Venue string `gorm:"column:venue;index:idx_stay_nights_venue_day_id,priority:1" json:"venue"`
+	// The night: the day the guests sleep at the venue.
+	Day time.Time `gorm:"column:day;type:date;not null;uniqueIndex:idx_stay_nights_reservation_day,priority:2;index:idx_stay_nights_venue_day_id,priority:2;index:idx_stay_nights_contact_day_id,priority:2" json:"day" validate:"required"`
+	// The guest, "contacts/{contact}".
+	Contact string `gorm:"column:contact;index:idx_stay_nights_contact_day_id,priority:1" json:"contact"`
+	// The room types taken that night, "venues/{venue}/spaces/{space}".
+	Spaces pq.StringArray `gorm:"column:spaces;type:text[];index:idx_stay_nights_spaces_gin,type:gin" json:"spaces"`
+	// The rooms taken that night.
+	Rooms int32 `gorm:"column:rooms" json:"rooms"`
+	// The guests staying that night, adults and children.
+	Guests int32 `gorm:"column:guests" json:"guests"`
+	// Whether this is the stay's first night: the guests arrive that day.
+	FirstNight bool `gorm:"column:first_night" json:"first_night"`
+	// Whether this is the stay's last night: the guests leave the next day.
+	LastNight bool `gorm:"column:last_night" json:"last_night"`
+	// The stay's state, as Reservation.State names it without its prefix: "PENDING", "CONFIRMED", "CHECKED_IN", "CHECKED_OUT".
+	State string `gorm:"column:state" json:"state"`
+	// The row's version: raised by every upsert of the row.
+	RowVersion int64 `gorm:"column:row_version;not null;default:0" json:"row_version" validate:"required"`
+}
+
+func (*StayNight) TableName() string { return "stay.stay_nights" }
