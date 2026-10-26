@@ -1,0 +1,120 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.crm.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1;crmpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.crm.v1";
+
+// ContactKind is whether a contact is a person or a company.
+enum ContactKind {
+  // Default; never set.
+  CONTACT_KIND_UNSPECIFIED = 0;
+
+  // A person.
+  CONTACT_KIND_PERSON = 1;
+
+  // A company, a planner or an agency.
+  CONTACT_KIND_COMPANY = 2;
+}
+
+// LeadKind is what a lead wants to book.
+enum LeadKind {
+  // Default; never set.
+  LEAD_KIND_UNSPECIFIED = 0;
+
+  // Rooms at the resort.
+  LEAD_KIND_STAY = 1;
+
+  // An event in a hall or space.
+  LEAD_KIND_EVENT = 2;
+
+  // An event and rooms for its guests, as a destination wedding or an
+  // offsite.
+  LEAD_KIND_EVENT_WITH_STAY = 3;
+}
+
+// Stage is where a lead is in the sales pipeline.
+enum Stage {
+  // Default; never set.
+  STAGE_UNSPECIFIED = 0;
+
+  // Just in; nobody has spoken to the guest.
+  STAGE_NEW = 1;
+
+  // Spoken to; requirements gathered.
+  STAGE_CONTACTED = 2;
+
+  // A site visit is booked or done.
+  STAGE_SITE_VISIT = 3;
+
+  // A quote has been sent.
+  STAGE_PROPOSAL = 4;
+
+  // Price, dates or inclusions are being negotiated.
+  STAGE_NEGOTIATION = 5;
+
+  // Won: a quote was accepted and the booking made.
+  STAGE_WON = 6;
+
+  // Lost.
+  STAGE_LOST = 7;
+}
+
+// LostReason is why a lead was lost.
+enum LostReason {
+  // Default; not lost, or not said.
+  LOST_REASON_UNSPECIFIED = 0;
+
+  // The guest found the price too high.
+  LOST_REASON_PRICE = 1;
+
+  // The dates were not available.
+  LOST_REASON_DATES = 2;
+
+  // The guest booked another venue.
+  LOST_REASON_COMPETITOR = 3;
+
+  // The space or the rooms were too small or too few.
+  LOST_REASON_CAPACITY = 4;
+
+  // The guest called off or postponed their plans.
+  LOST_REASON_CANCELLED_PLANS = 5;
+
+  // The guest stopped responding.
+  LOST_REASON_NO_RESPONSE = 6;
+
+  // Another reason, described in the lead's lost_detail.
+  LOST_REASON_OTHER = 7;
+}
+
+// ActivityKind is what kind of touch an activity was.
+enum ActivityKind {
+  // Default; never set.
+  ACTIVITY_KIND_UNSPECIFIED = 0;
+
+  // A phone call.
+  ACTIVITY_KIND_CALL = 1;
+
+  // An email.
+  ACTIVITY_KIND_EMAIL = 2;
+
+  // A WhatsApp message.
+  ACTIVITY_KIND_WHATSAPP = 3;
+
+  // A meeting.
+  ACTIVITY_KIND_MEETING = 4;
+
+  // A visit to the venue.
+  ACTIVITY_KIND_SITE_VISIT = 5;
+
+  // A quote was sent.
+  ACTIVITY_KIND_QUOTE_SENT = 6;
+
+  // A note to the file.
+  ACTIVITY_KIND_NOTE = 7;
+}

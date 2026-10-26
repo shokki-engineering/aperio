@@ -1,0 +1,293 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.crm.v1;
+
+import "aperio/crm/v1/crm.proto";
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1;crmpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "CrmMessagesProto";
+option java_package = "engineering.shokki.aperio.crm.v1";
+
+// Request message for GetContact.
+message GetContactRequest {
+  // The name of the contact to retrieve.
+  // Format: contacts/{contact}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Contact"
+  ];
+}
+
+// Request message for ListContacts.
+message ListContactsRequest {
+  // The maximum number of contacts to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListContacts call.
+  string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. display_name:"sharma".
+  string filter = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListContacts.
+message ListContactsResponse {
+  // The contacts.
+  repeated Contact contacts = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateContact.
+message CreateContactRequest {
+  // The contact to create.
+  Contact contact = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string contact_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateContact.
+message UpdateContactRequest {
+  // The contact to update, by its name.
+  Contact contact = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for DeleteContact.
+message DeleteContactRequest {
+  // The name of the contact to delete.
+  // Format: contacts/{contact}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Contact"
+  ];
+
+  // The etag the caller last read; the delete fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without deleting anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for GetLead.
+message GetLeadRequest {
+  // The name of the lead to retrieve.
+  // Format: leads/{lead}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Lead"
+  ];
+}
+
+// Request message for ListLeads.
+message ListLeadsRequest {
+  // The maximum number of leads to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListLeads call.
+  string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. stage = STAGE_PROPOSAL.
+  string filter = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListLeads.
+message ListLeadsResponse {
+  // The leads.
+  repeated Lead leads = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateLead.
+message CreateLeadRequest {
+  // The lead to create.
+  Lead lead = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string lead_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateLead.
+message UpdateLeadRequest {
+  // The lead to update, by its name.
+  Lead lead = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for DeleteLead.
+message DeleteLeadRequest {
+  // The name of the lead to delete.
+  // Format: leads/{lead}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Lead"
+  ];
+
+  // The etag the caller last read; the delete fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without deleting anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Delete its activities too; without it, a
+  // lead that has any fails with FAILED_PRECONDITION.
+  bool force = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for GetActivity.
+message GetActivityRequest {
+  // The name of the activity to retrieve.
+  // Format: leads/{lead}/activities/{activity}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Activity"
+  ];
+}
+
+// Request message for ListActivities.
+message ListActivitiesRequest {
+  // The parent whose activities to list.
+  // Format: leads/{lead}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.crm.v1/Activity"
+  ];
+
+  // The maximum number of activities to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListActivities call.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. kind = ACTIVITY_KIND_SITE_VISIT.
+  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListActivities.
+message ListActivitiesResponse {
+  // The activities.
+  repeated Activity activities = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateActivity.
+message CreateActivityRequest {
+  // The parent the activity is created under.
+  // Format: leads/{lead}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.crm.v1/Activity"
+  ];
+
+  // The activity to create.
+  Activity activity = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string activity_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateActivity.
+message UpdateActivityRequest {
+  // The activity to update, by its name.
+  Activity activity = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for DeleteActivity.
+message DeleteActivityRequest {
+  // The name of the activity to delete.
+  // Format: leads/{lead}/activities/{activity}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Activity"
+  ];
+
+  // The etag the caller last read; the delete fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without deleting anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}

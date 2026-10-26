@@ -1,0 +1,117 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.document.v1;
+
+import "aperio/document/v1/document.proto";
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/document/v1/documentpbv1;documentpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentMessagesProto";
+option java_package = "engineering.shokki.aperio.document.v1";
+
+// Request message for GetDocument.
+message GetDocumentRequest {
+  // The name of the document to retrieve.
+  // Format: venues/{venue}/documents/{document}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.document.v1/Document"
+  ];
+}
+
+// Request message for ListDocuments.
+message ListDocumentsRequest {
+  // The parent whose documents to list.
+  // Format: venues/{venue}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.document.v1/Document"
+  ];
+
+  // The maximum number of documents to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListDocuments call.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. category = CATEGORY_PARKING.
+  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListDocuments.
+message ListDocumentsResponse {
+  // The documents.
+  repeated Document documents = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateDocument.
+message CreateDocumentRequest {
+  // The parent the document is created under.
+  // Format: venues/{venue}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.document.v1/Document"
+  ];
+
+  // The document to create.
+  Document document = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string document_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateDocument.
+message UpdateDocumentRequest {
+  // The document to update, by its name.
+  Document document = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for DeleteDocument.
+message DeleteDocumentRequest {
+  // The name of the document to delete.
+  // Format: venues/{venue}/documents/{document}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.document.v1/Document"
+  ];
+
+  // The etag the caller last read; the delete fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without deleting anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}

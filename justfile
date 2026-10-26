@@ -31,6 +31,21 @@ vet:
 gotidy:
     go mod tidy
 
+# The protos: buf format and lint (structure), then api-linter (API design),
+# with the one rule api-linter.yaml disables. api-linter exits 0 on findings,
+# so a non-empty table fails the recipe.
+[group('lint')]
+lint:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    buf format --diff --exit-code
+    buf lint
+    d=$(mktemp -d); trap 'rm -rf "$d"' EXIT
+    buf build -o "$d/desc.binpb" --as-file-descriptor-set
+    (cd protobuf && api-linter --descriptor-set-in "$d/desc.binpb" --config ../api-linter.yaml \
+        --output-format=summary $(find aperio -name '*.proto')) | tee "$d/out"
+    if grep -q '| core::' "$d/out"; then echo "api-linter reported findings above" >&2; exit 1; fi
+
 # Unit tests with the race detector.
 [group('test')]
 test:

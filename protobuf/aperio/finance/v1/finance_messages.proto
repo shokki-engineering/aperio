@@ -1,0 +1,274 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.finance.v1;
+
+import "aperio/finance/v1/finance.proto";
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "FinanceMessagesProto";
+option java_package = "engineering.shokki.aperio.finance.v1";
+
+// Request message for GetInvoice.
+message GetInvoiceRequest {
+  // The name of the invoice to retrieve.
+  // Format: venues/{venue}/invoices/{invoice}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Invoice"
+  ];
+}
+
+// Request message for ListInvoices.
+message ListInvoicesRequest {
+  // The parent whose invoices to list.
+  // Format: venues/{venue}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.finance.v1/Invoice"
+  ];
+
+  // The maximum number of invoices to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListInvoices call.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. state = STATE_ISSUED.
+  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListInvoices.
+message ListInvoicesResponse {
+  // The invoices.
+  repeated Invoice invoices = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateInvoice.
+message CreateInvoiceRequest {
+  // The parent the invoice is created under.
+  // Format: venues/{venue}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.finance.v1/Invoice"
+  ];
+
+  // The invoice to create.
+  Invoice invoice = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string invoice_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateInvoice.
+message UpdateInvoiceRequest {
+  // The invoice to update, by its name.
+  Invoice invoice = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for IssueInvoice.
+message IssueInvoiceRequest {
+  // The name of the invoice to issue.
+  // Format: venues/{venue}/invoices/{invoice}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Invoice"
+  ];
+
+  // The etag the caller last read; the call fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for CancelInvoice.
+message CancelInvoiceRequest {
+  // The name of the invoice to cancel.
+  // Format: venues/{venue}/invoices/{invoice}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Invoice"
+  ];
+
+  // The etag the caller last read; the call fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Why, in the caller's words; kept on the invoice.
+  string reason = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+}
+
+// Request message for CreditInvoice.
+message CreditInvoiceRequest {
+  // The name of the invoice to credit.
+  // Format: venues/{venue}/invoices/{invoice}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Invoice"
+  ];
+
+  // The etag the caller last read; the call fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Why, in the caller's words; kept on the invoice.
+  string reason = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+}
+
+// Request message for GetPayment.
+message GetPaymentRequest {
+  // The name of the payment to retrieve.
+  // Format: venues/{venue}/payments/{payment}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Payment"
+  ];
+}
+
+// Request message for ListPayments.
+message ListPaymentsRequest {
+  // The parent whose payments to list.
+  // Format: venues/{venue}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.finance.v1/Payment"
+  ];
+
+  // The maximum number of payments to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListPayments call.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. method = PAYMENT_METHOD_CASH.
+  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListPayments.
+message ListPaymentsResponse {
+  // The payments.
+  repeated Payment payments = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreatePayment.
+message CreatePaymentRequest {
+  // The parent the payment is created under.
+  // Format: venues/{venue}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.finance.v1/Payment"
+  ];
+
+  // The payment to create.
+  Payment payment = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string payment_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdatePayment.
+message UpdatePaymentRequest {
+  // The payment to update, by its name.
+  Payment payment = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for RefundPayment.
+message RefundPaymentRequest {
+  // The name of the payment to refund.
+  // Format: venues/{venue}/payments/{payment}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Payment"
+  ];
+
+  // The etag the caller last read; the call fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Why, in the caller's words; kept on the payment.
+  string reason = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+}
+
+// Request message for VoidPayment.
+message VoidPaymentRequest {
+  // The name of the payment to void.
+  // Format: venues/{venue}/payments/{payment}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Payment"
+  ];
+
+  // The etag the caller last read; the call fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Why, in the caller's words; kept on the payment.
+  string reason = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+}

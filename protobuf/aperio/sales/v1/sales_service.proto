@@ -1,0 +1,293 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.sales.v1;
+
+import "aperio/sales/v1/sales.proto";
+import "aperio/sales/v1/sales_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/empty.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1";
+option java_multiple_files = true;
+option java_outer_classname = "SalesServiceProto";
+option java_package = "engineering.shokki.aperio.sales.v1";
+
+// SalesService: The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests.
+service SalesService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Sales"
+      version: "1.0.0"
+      description: "The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests."
+    }
+  };
+
+  // Retrieves one dish.
+  rpc GetDish(GetDishRequest) returns (Dish) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/dishes/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists dishes.
+  rpc ListDishes(ListDishesRequest) returns (ListDishesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/dishes"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a dish.
+  rpc CreateDish(CreateDishRequest) returns (Dish) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/dishes"
+      body: "dish"
+    };
+    option (google.api.method_signature) = "parent,dish,dish_id";
+  }
+
+  // Updates a dish. Only the fields in update_mask are written.
+  rpc UpdateDish(UpdateDishRequest) returns (Dish) {
+    option (google.api.http) = {
+      patch: "/v1/{dish.name=venues/*/dishes/*}"
+      body: "dish"
+    };
+    option (google.api.method_signature) = "dish,update_mask";
+  }
+
+  // Deletes a dish.
+  rpc DeleteDish(DeleteDishRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/dishes/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one menu.
+  rpc GetMenu(GetMenuRequest) returns (Menu) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/menus/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists menus.
+  rpc ListMenus(ListMenusRequest) returns (ListMenusResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/menus"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a menu.
+  rpc CreateMenu(CreateMenuRequest) returns (Menu) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/menus"
+      body: "menu"
+    };
+    option (google.api.method_signature) = "parent,menu,menu_id";
+  }
+
+  // Updates a menu. Only the fields in update_mask are written.
+  rpc UpdateMenu(UpdateMenuRequest) returns (Menu) {
+    option (google.api.http) = {
+      patch: "/v1/{menu.name=venues/*/menus/*}"
+      body: "menu"
+    };
+    option (google.api.method_signature) = "menu,update_mask";
+  }
+
+  // Deletes a menu.
+  rpc DeleteMenu(DeleteMenuRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/menus/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one fixed package.
+  rpc GetFixedPackage(GetFixedPackageRequest) returns (FixedPackage) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/fixedPackages/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists fixed packages.
+  rpc ListFixedPackages(ListFixedPackagesRequest) returns (ListFixedPackagesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/fixedPackages"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a fixed package.
+  rpc CreateFixedPackage(CreateFixedPackageRequest) returns (FixedPackage) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/fixedPackages"
+      body: "fixed_package"
+    };
+    option (google.api.method_signature) = "parent,fixed_package,fixed_package_id";
+  }
+
+  // Updates a fixed package. Only the fields in update_mask are written.
+  rpc UpdateFixedPackage(UpdateFixedPackageRequest) returns (FixedPackage) {
+    option (google.api.http) = {
+      patch: "/v1/{fixed_package.name=venues/*/fixedPackages/*}"
+      body: "fixed_package"
+    };
+    option (google.api.method_signature) = "fixed_package,update_mask";
+  }
+
+  // Deletes a fixed package.
+  rpc DeleteFixedPackage(DeleteFixedPackageRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/fixedPackages/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one season.
+  rpc GetSeason(GetSeasonRequest) returns (Season) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/seasons/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists seasons.
+  rpc ListSeasons(ListSeasonsRequest) returns (ListSeasonsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/seasons"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a season.
+  rpc CreateSeason(CreateSeasonRequest) returns (Season) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/seasons"
+      body: "season"
+    };
+    option (google.api.method_signature) = "parent,season,season_id";
+  }
+
+  // Updates a season. Only the fields in update_mask are written.
+  rpc UpdateSeason(UpdateSeasonRequest) returns (Season) {
+    option (google.api.http) = {
+      patch: "/v1/{season.name=venues/*/seasons/*}"
+      body: "season"
+    };
+    option (google.api.method_signature) = "season,update_mask";
+  }
+
+  // Deletes a season.
+  rpc DeleteSeason(DeleteSeasonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/seasons/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one price rule.
+  rpc GetPriceRule(GetPriceRuleRequest) returns (PriceRule) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/priceRules/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists price rules.
+  rpc ListPriceRules(ListPriceRulesRequest) returns (ListPriceRulesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/priceRules"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a price rule.
+  rpc CreatePriceRule(CreatePriceRuleRequest) returns (PriceRule) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/priceRules"
+      body: "price_rule"
+    };
+    option (google.api.method_signature) = "parent,price_rule,price_rule_id";
+  }
+
+  // Updates a price rule. Only the fields in update_mask are written.
+  rpc UpdatePriceRule(UpdatePriceRuleRequest) returns (PriceRule) {
+    option (google.api.http) = {
+      patch: "/v1/{price_rule.name=venues/*/priceRules/*}"
+      body: "price_rule"
+    };
+    option (google.api.method_signature) = "price_rule,update_mask";
+  }
+
+  // Deletes a price rule.
+  rpc DeletePriceRule(DeletePriceRuleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/priceRules/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one quote.
+  rpc GetQuote(GetQuoteRequest) returns (Quote) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/quotes/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists quotes.
+  rpc ListQuotes(ListQuotesRequest) returns (ListQuotesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/quotes"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a quote.
+  rpc CreateQuote(CreateQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/quotes"
+      body: "quote"
+    };
+    option (google.api.method_signature) = "parent,quote,quote_id";
+  }
+
+  // Updates a quote. Only the fields in update_mask are written.
+  rpc UpdateQuote(UpdateQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      patch: "/v1/{quote.name=venues/*/quotes/*}"
+      body: "quote"
+    };
+    option (google.api.method_signature) = "quote,update_mask";
+  }
+
+  // Deletes a quote.
+  rpc DeleteQuote(DeleteQuoteRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/quotes/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Sends a draft quote to the guest, fixing its prices.
+  rpc SendQuote(SendQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/quotes/*}:send"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Accepts a sent quote: makes the reservation or event it offers, and wins its lead.
+  rpc AcceptQuote(AcceptQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/quotes/*}:accept"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Records that the guest declined a sent quote.
+  rpc DeclineQuote(DeclineQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/quotes/*}:decline"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Revises a sent or declined quote: makes a new draft from it, which supersedes it.
+  rpc ReviseQuote(ReviseQuoteRequest) returns (Quote) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/quotes/*}:revise"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Prices a menu, fixed package, space or dish for a date: its base price with
+  // the matching price rule of the highest priority applied. The one way
+  // aperio prices anything -- quotes, the website and agents all ask it.
+  rpc CalculatePrice(CalculatePriceRequest) returns (CalculatePriceResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:calculatePrice"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,item,service_date";
+  }
+}

@@ -1,0 +1,88 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.venue.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1;venuepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.venue.v1";
+
+// VenueKind is what a venue sells.
+enum VenueKind {
+  // Default; never set.
+  VENUE_KIND_UNSPECIFIED = 0;
+
+  // Rooms by the night: a resort, a hotel, a villa.
+  VENUE_KIND_STAYS = 1;
+
+  // Spaces for events: a wedding or banquet hall, a lawn, a convention
+  // centre.
+  VENUE_KIND_EVENTS = 2;
+
+  // Both: a resort with event spaces.
+  VENUE_KIND_STAYS_AND_EVENTS = 3;
+
+  // Tables by the sitting, with private dining and buyouts as events.
+  VENUE_KIND_RESTAURANT = 4;
+}
+
+// SpaceKind is what a space is.
+enum SpaceKind {
+  // Default; never set.
+  SPACE_KIND_UNSPECIFIED = 0;
+
+  // A type of guest room, standing for every room of that type.
+  SPACE_KIND_ROOM_TYPE = 1;
+
+  // A villa, cottage or suite sold on its own.
+  SPACE_KIND_UNIT = 2;
+
+  // An indoor hall: a ballroom, a banquet or wedding hall.
+  SPACE_KIND_HALL = 3;
+
+  // An outdoor space: a lawn, a beach, a poolside, a terrace.
+  SPACE_KIND_OUTDOOR = 4;
+
+  // A meeting or conference room.
+  SPACE_KIND_MEETING_ROOM = 5;
+
+  // A dining space sold for private events: a restaurant, a private dining
+  // room.
+  SPACE_KIND_DINING = 6;
+
+  // A restaurant table, or a group of tables booked together.
+  SPACE_KIND_TABLE = 7;
+}
+
+// Layout is how an event space is set.
+enum Layout {
+  // Default; never set.
+  LAYOUT_UNSPECIFIED = 0;
+
+  // Rows of chairs facing a stage.
+  LAYOUT_THEATRE = 1;
+
+  // Round tables, for a seated meal.
+  LAYOUT_BANQUET = 2;
+
+  // Rows of tables facing the front.
+  LAYOUT_CLASSROOM = 3;
+
+  // Tables in a U, open at the front.
+  LAYOUT_U_SHAPE = 4;
+
+  // One long table.
+  LAYOUT_BOARDROOM = 5;
+
+  // Standing, with high tables.
+  LAYOUT_COCKTAIL = 6;
+
+  // Half-round tables facing a stage.
+  LAYOUT_CABARET = 7;
+
+  // Floor seating, for a ceremony or a mehendi.
+  LAYOUT_FLOOR = 8;
+}

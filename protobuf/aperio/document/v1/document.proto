@@ -1,0 +1,183 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.document.v1;
+
+import "buf/validate/validate.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/document/v1/documentpbv1;documentpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentProto";
+option java_package = "engineering.shokki.aperio.document.v1";
+
+// A Document is a file kept at a venue: the floor plan of the ballroom, the
+// parking layout, the Wi-Fi and network sheet, the fire licence, a signed
+// contract, a guest's ID at check-in, the menu card.
+//
+// The file is in object storage; the document is its record -- what it is,
+// what it is about, who may see it, and when it lapses -- so a venue's papers
+// are found in one place, by category or by what they concern.
+message Document {
+  // A venue's papers are read by category, and by what they concern.
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: [
+          "category",
+          "update_time"
+        ]
+      },
+      {
+        columns: ["subject"]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.document.v1/Document"
+    pattern: "venues/{venue}/documents/{document}"
+    singular: "document"
+    plural: "documents"
+  };
+
+  // The document name.
+  // Format: venues/{venue}/documents/{document}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/documents/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The document's title, e.g. "Ballroom floor plan, 2026".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // What kind of document it is.
+  Category category = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // What it concerns, when not the venue as a whole: a space, a reservation,
+  // an event, a lead, a contact, a quote, an invoice.
+  string subject = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // Where the file is, e.g. "s3://aperio-documents/…".
+  string uri = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.uri = true
+  ];
+
+  // The file's media type, e.g. "application/pdf".
+  string mime_type = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // The file's size in bytes.
+  int64 size_bytes = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int64.gte = 0
+  ];
+
+  // The file's SHA-256, hex-encoded, so a copy can be checked.
+  string sha256 = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[0-9a-f]{64}$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Who may see it.
+  Visibility visibility = 9 [(google.api.field_behavior) = OPTIONAL];
+
+  // The day it lapses, for a licence, a certificate or an insurance policy:
+  // the day to renew it by.
+  google.type.Date expiry_date = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // Free-form labels.
+  repeated string tags = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Anything else worth knowing.
+  string notes = 12 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 5000
+  ];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 15 [(google.api.field_behavior) = OPTIONAL];
+
+  // What kind of document it is.
+  enum Category {
+    // Default; never set.
+    CATEGORY_UNSPECIFIED = 0;
+
+    // A floor plan or layout of a space.
+    CATEGORY_FLOOR_PLAN = 1;
+
+    // Parking: the layout, capacity, valet arrangements.
+    CATEGORY_PARKING = 2;
+
+    // IT and network: Wi-Fi, bandwidth, AV connections.
+    CATEGORY_IT_NETWORK = 3;
+
+    // Safety: fire exits, evacuation plans, first aid.
+    CATEGORY_SAFETY = 4;
+
+    // A licence, a permit or a certificate: fire, liquor, FSSAI, music.
+    CATEGORY_LICENCE = 5;
+
+    // An insurance policy.
+    CATEGORY_INSURANCE = 6;
+
+    // A contract or agreement, signed or for signing.
+    CATEGORY_CONTRACT = 7;
+
+    // A guest's proof of identity.
+    CATEGORY_IDENTITY = 8;
+
+    // A menu card or catering brochure.
+    CATEGORY_MENU = 9;
+
+    // A brochure or marketing material.
+    CATEGORY_BROCHURE = 10;
+
+    // A photo or video.
+    CATEGORY_MEDIA = 11;
+
+    // Another kind.
+    CATEGORY_OTHER = 12;
+  }
+
+  // Who may see a document.
+  enum Visibility {
+    // Default; read as STAFF.
+    VISIBILITY_UNSPECIFIED = 0;
+
+    // The venue's staff only.
+    VISIBILITY_STAFF = 1;
+
+    // Staff, and the guest it concerns.
+    VISIBILITY_GUEST = 2;
+
+    // Anyone: a brochure, a menu card.
+    VISIBILITY_PUBLIC = 3;
+  }
+}

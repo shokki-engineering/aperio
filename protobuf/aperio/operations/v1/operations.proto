@@ -1,0 +1,249 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.operations.v1;
+
+import "buf/validate/validate.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/money.proto";
+import "service/v1/annotations.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1;operationspbv1";
+option java_multiple_files = true;
+option java_outer_classname = "OperationsProto";
+option java_package = "engineering.shokki.aperio.operations.v1";
+
+// A ServiceRequest is something wanted in a room, now or by a time: four
+// black coffees and six waters to Conference Room B, extra chairs on the
+// lawn, a fused bulb in 204, a cake to the bridal suite at midnight.
+//
+// It goes to one department, which is told the moment it is made -- each
+// change is an event (aperio.operations.service_request.*) delivered to the
+// staff's phones or a pantry screen -- and is worked through ACKNOWLEDGED,
+// IN_PROGRESS and DONE, so nobody walks up and down to ask. A guest's
+// request is charged to their booking; a meeting's is not.
+message ServiceRequest {
+  // A department's queue is read by state and due time.
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: [
+          "department",
+          "state",
+          "due_time"
+        ]
+      },
+      {
+        columns: ["update_time"]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.operations.v1/ServiceRequest"
+    pattern: "venues/{venue}/serviceRequests/{service_request}"
+    singular: "serviceRequest"
+    plural: "serviceRequests"
+  };
+
+  // Every change is an event, so the department is told the moment a request
+  // is made, and the requester when it is done.
+  option (service.v1.event) = {type: "aperio.operations.service_request"};
+
+  // The service request name.
+  // Format: venues/{venue}/serviceRequests/{service_request}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/serviceRequests/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The request in a line, e.g. "Coffee and water for the 11:00 board
+  // meeting".
+  string summary = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // The department it goes to.
+  Department department = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // Where it is wanted: a room type's room, a hall, a meeting room.
+  // Format: venues/{venue}/spaces/{space}
+  string space = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.venue.v1/Space",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/spaces/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The room, desk or spot within the space, e.g. "204" or "stage left".
+  string location = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // What is wanted, with how many of each.
+  repeated RequestItem items = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // How soon.
+  Priority priority = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // When it is wanted by; as soon as possible when empty.
+  google.protobuf.Timestamp due_time = 8 [(google.api.field_behavior) = OPTIONAL];
+
+  // Who asked: a staff member or a guest's contact.
+  string requester = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // Who is doing it.
+  // Format: users/{user}
+  string assignee = 10 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "users.shokki.engineering/User",
+    (store.v1.reference) = {on_delete: ON_DELETE_ALLOW},
+    (buf.validate.field).string.pattern = "^users/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The reservation or event it is for, which it is charged to.
+  string booking = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // What it is charged, when it is not free.
+  google.type.Money charge = 12 [(google.api.field_behavior) = OPTIONAL];
+
+  // Lifecycle state, moved by the custom methods.
+  State state = 13 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.column) = {default_value: "OPEN"}
+  ];
+
+  // Anything else: "no sugar", "use the back stairs", why it was cancelled.
+  string notes = 14 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // When the department took it up. Set by AcknowledgeServiceRequest.
+  google.protobuf.Timestamp acknowledge_time = 15 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When it was done. Set by CompleteServiceRequest.
+  google.protobuf.Timestamp complete_time = 16 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 17 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 18 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 19 [(google.api.field_behavior) = OPTIONAL];
+
+  // Where a service request is.
+  enum State {
+    // Default; never persisted.
+    STATE_UNSPECIFIED = 0;
+
+    // Made; the department has been told.
+    STATE_OPEN = 1;
+
+    // Taken up by the department.
+    STATE_ACKNOWLEDGED = 2;
+
+    // On its way.
+    STATE_IN_PROGRESS = 3;
+
+    // Done.
+    STATE_DONE = 4;
+
+    // Called off, or it cannot be done; the notes say why.
+    STATE_CANCELLED = 5;
+  }
+
+  // Which team a request goes to.
+  enum Department {
+    // Default; never set.
+    DEPARTMENT_UNSPECIFIED = 0;
+
+    // The pantry: tea, coffee, water, snacks.
+    DEPARTMENT_PANTRY = 1;
+
+    // The kitchen: meals and dishes.
+    DEPARTMENT_KITCHEN = 2;
+
+    // Housekeeping: cleaning, linen, towels, toiletries.
+    DEPARTMENT_HOUSEKEEPING = 3;
+
+    // Maintenance: something broken, power, plumbing, air conditioning.
+    DEPARTMENT_MAINTENANCE = 4;
+
+    // IT and AV: Wi-Fi, a projector, a microphone.
+    DEPARTMENT_IT_AV = 5;
+
+    // The front desk.
+    DEPARTMENT_FRONT_DESK = 6;
+
+    // Banquets and events: chairs, tables, setup.
+    DEPARTMENT_BANQUET = 7;
+
+    // Security.
+    DEPARTMENT_SECURITY = 8;
+  }
+
+  // How soon a request is wanted.
+  enum Priority {
+    // Default; read as NORMAL.
+    PRIORITY_UNSPECIFIED = 0;
+
+    // When there is time.
+    PRIORITY_LOW = 1;
+
+    // In the usual time.
+    PRIORITY_NORMAL = 2;
+
+    // Now.
+    PRIORITY_URGENT = 3;
+  }
+}
+
+// RequestItem is one thing a service request wants, and how many: 4 black
+// coffees, 6 waters, 2 extension cords.
+message RequestItem {
+  // The dish or drink, when it is one from the kitchen's catalogue.
+  // Format: venues/{venue}/dishes/{dish}
+  string dish = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Dish"
+  ];
+
+  // What it is, as the request says it; the dish's name when empty.
+  string display_name = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 200
+  ];
+
+  // How many.
+  int32 quantity = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // How it is wanted, e.g. "no sugar", "chilled".
+  string notes = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 500
+  ];
+}

@@ -1,0 +1,66 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.document.v1;
+
+import "aperio/document/v1/document.proto";
+import "aperio/document/v1/document_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/empty.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/document/v1/documentpbv1;documentpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentServiceProto";
+option java_package = "engineering.shokki.aperio.document.v1";
+
+// DocumentService: A venue's papers: floor plans, parking, IT and network sheets, licences, contracts, guest IDs, menu cards.
+service DocumentService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Documents"
+      version: "1.0.0"
+      description: "A venue's papers: floor plans, parking, IT and network sheets, licences, contracts, guest IDs, menu cards."
+    }
+  };
+
+  // Retrieves one document.
+  rpc GetDocument(GetDocumentRequest) returns (Document) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/documents/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists documents.
+  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/documents"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a document.
+  rpc CreateDocument(CreateDocumentRequest) returns (Document) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/documents"
+      body: "document"
+    };
+    option (google.api.method_signature) = "parent,document,document_id";
+  }
+
+  // Updates a document. Only the fields in update_mask are written.
+  rpc UpdateDocument(UpdateDocumentRequest) returns (Document) {
+    option (google.api.http) = {
+      patch: "/v1/{document.name=venues/*/documents/*}"
+      body: "document"
+    };
+    option (google.api.method_signature) = "document,update_mask";
+  }
+
+  // Deletes a document.
+  rpc DeleteDocument(DeleteDocumentRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/documents/*}"};
+    option (google.api.method_signature) = "name";
+  }
+}

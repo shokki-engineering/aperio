@@ -1,0 +1,73 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.finance.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.finance.v1";
+
+// InvoiceKind is what kind of GST document an invoice is.
+enum InvoiceKind {
+  // Default; never set.
+  INVOICE_KIND_UNSPECIFIED = 0;
+
+  // A tax invoice for a supply made.
+  INVOICE_KIND_TAX_INVOICE = 1;
+
+  // A proforma: what will be invoiced, sent before the supply. Not a tax
+  // document.
+  INVOICE_KIND_PROFORMA = 2;
+
+  // A receipt voucher for an advance received before the supply.
+  INVOICE_KIND_RECEIPT_VOUCHER = 3;
+
+  // A credit note reducing an issued tax invoice. Made by CreditInvoice.
+  INVOICE_KIND_CREDIT_NOTE = 4;
+}
+
+// PaymentKind is whether money came in or went out.
+enum PaymentKind {
+  // Default; never set.
+  PAYMENT_KIND_UNSPECIFIED = 0;
+
+  // Money received from the guest.
+  PAYMENT_KIND_RECEIPT = 1;
+
+  // Money returned to the guest. Made by RefundPayment.
+  PAYMENT_KIND_REFUND = 2;
+}
+
+// PaymentMethod is how a payment was made.
+enum PaymentMethod {
+  // Default; never set.
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+
+  // Through the venue's payment gateway, online.
+  PAYMENT_METHOD_GATEWAY = 1;
+
+  // UPI, directly to the venue's account.
+  PAYMENT_METHOD_UPI = 2;
+
+  // A card, on the venue's terminal.
+  PAYMENT_METHOD_CARD = 3;
+
+  // Cash.
+  PAYMENT_METHOD_CASH = 4;
+
+  // A bank transfer: NEFT, RTGS, IMPS, SWIFT.
+  PAYMENT_METHOD_BANK_TRANSFER = 5;
+
+  // A cheque or demand draft.
+  PAYMENT_METHOD_CHEQUE = 6;
+
+  // Collected by a channel, which settles with the venue: a Booking.com or
+  // Airbnb prepaid booking.
+  PAYMENT_METHOD_CHANNEL = 7;
+
+  // Another way, described in the notes.
+  PAYMENT_METHOD_OTHER = 8;
+}

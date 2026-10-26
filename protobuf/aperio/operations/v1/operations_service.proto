@@ -1,0 +1,102 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.operations.v1;
+
+import "aperio/operations/v1/operations.proto";
+import "aperio/operations/v1/operations_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/empty.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1;operationspbv1";
+option java_multiple_files = true;
+option java_outer_classname = "OperationsServiceProto";
+option java_package = "engineering.shokki.aperio.operations.v1";
+
+// OperationsService: Service requests to a venue's departments: pantry, kitchen, housekeeping, maintenance, IT and AV, with the items and quantities wanted where.
+service OperationsService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Operations"
+      version: "1.0.0"
+      description: "Service requests to a venue's departments: pantry, kitchen, housekeeping, maintenance, IT and AV, with the items and quantities wanted where."
+    }
+  };
+
+  // Retrieves one service request.
+  rpc GetServiceRequest(GetServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/serviceRequests/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists service requests.
+  rpc ListServiceRequests(ListServiceRequestsRequest) returns (ListServiceRequestsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/serviceRequests"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a service request.
+  rpc CreateServiceRequest(CreateServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/serviceRequests"
+      body: "service_request"
+    };
+    option (google.api.method_signature) = "parent,service_request,service_request_id";
+  }
+
+  // Updates a service request. Only the fields in update_mask are written.
+  rpc UpdateServiceRequest(UpdateServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {
+      patch: "/v1/{service_request.name=venues/*/serviceRequests/*}"
+      body: "service_request"
+    };
+    option (google.api.method_signature) = "service_request,update_mask";
+  }
+
+  // Deletes a service request.
+  rpc DeleteServiceRequest(DeleteServiceRequestRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/serviceRequests/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Takes up an open service request for its department.
+  rpc AcknowledgeServiceRequest(AcknowledgeServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/serviceRequests/*}:acknowledge"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Marks an acknowledged service request as on its way.
+  rpc StartServiceRequest(StartServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/serviceRequests/*}:start"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Marks a service request done; the requester is told.
+  rpc CompleteServiceRequest(CompleteServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/serviceRequests/*}:complete"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Calls off a service request.
+  rpc CancelServiceRequest(CancelServiceRequestRequest) returns (ServiceRequest) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/serviceRequests/*}:cancel"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+}

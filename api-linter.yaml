@@ -1,0 +1,12 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# api-linter configuration. Exactly one rule is disabled, and only for
+# aperio's own protos: core::0215::foreign-type-reference. aperio's resources
+# are written in the OpenTravel vocabulary -- a reservation's room stays and
+# guests are protobuf-ota's RoomStay and ResGuest -- which is a reference to
+# another package's messages by design. Every other finding is fixed.
+- included_paths:
+    - "aperio/**/*.proto"
+  disabled_rules:
+    - "core::0215::foreign-type-reference"

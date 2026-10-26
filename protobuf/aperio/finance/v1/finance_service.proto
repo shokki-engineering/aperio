@@ -1,0 +1,134 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.finance.v1;
+
+import "aperio/finance/v1/finance.proto";
+import "aperio/finance/v1/finance_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "FinanceServiceProto";
+option java_package = "engineering.shokki.aperio.finance.v1";
+
+// FinanceService: GST invoices, proformas, advance receipts and credit notes, and the ledger of payments and refunds in any currency.
+service FinanceService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Finance"
+      version: "1.0.0"
+      description: "GST invoices, proformas, advance receipts and credit notes, and the ledger of payments and refunds in any currency."
+    }
+  };
+
+  // Retrieves one invoice.
+  rpc GetInvoice(GetInvoiceRequest) returns (Invoice) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/invoices/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists invoices.
+  rpc ListInvoices(ListInvoicesRequest) returns (ListInvoicesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/invoices"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates an invoice.
+  rpc CreateInvoice(CreateInvoiceRequest) returns (Invoice) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/invoices"
+      body: "invoice"
+    };
+    option (google.api.method_signature) = "parent,invoice,invoice_id";
+  }
+
+  // Updates an invoice. Only the fields in update_mask are written.
+  rpc UpdateInvoice(UpdateInvoiceRequest) returns (Invoice) {
+    option (google.api.http) = {
+      patch: "/v1/{invoice.name=venues/*/invoices/*}"
+      body: "invoice"
+    };
+    option (google.api.method_signature) = "invoice,update_mask";
+  }
+
+  // Issues a draft invoice: gives it the next number in the venue's series, dates it and fixes it.
+  rpc IssueInvoice(IssueInvoiceRequest) returns (Invoice) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/invoices/*}:issue"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Cancels an issued invoice before it is reported; its number stays used.
+  rpc CancelInvoice(CancelInvoiceRequest) returns (Invoice) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/invoices/*}:cancel"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Makes a draft credit note correcting an issued tax invoice.
+  rpc CreditInvoice(CreditInvoiceRequest) returns (Invoice) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/invoices/*}:credit"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one payment.
+  rpc GetPayment(GetPaymentRequest) returns (Payment) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/payments/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists payments.
+  rpc ListPayments(ListPaymentsRequest) returns (ListPaymentsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/payments"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a payment.
+  rpc CreatePayment(CreatePaymentRequest) returns (Payment) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/payments"
+      body: "payment"
+    };
+    option (google.api.method_signature) = "parent,payment,payment_id";
+  }
+
+  // Updates a payment. Only the fields in update_mask are written.
+  rpc UpdatePayment(UpdatePaymentRequest) returns (Payment) {
+    option (google.api.http) = {
+      patch: "/v1/{payment.name=venues/*/payments/*}"
+      body: "payment"
+    };
+    option (google.api.method_signature) = "payment,update_mask";
+  }
+
+  // Makes a refund of a succeeded payment, as a payment of its own.
+  rpc RefundPayment(RefundPaymentRequest) returns (Payment) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/payments/*}:refund"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Voids a payment recorded in error.
+  rpc VoidPayment(VoidPaymentRequest) returns (Payment) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/payments/*}:void"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+}

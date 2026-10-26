@@ -1,0 +1,221 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.type.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1;typepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.type.v1";
+
+// PhoneKind is what a phone number is for.
+enum PhoneKind {
+  // Default; not said.
+  PHONE_KIND_UNSPECIFIED = 0;
+
+  // A mobile number.
+  PHONE_KIND_MOBILE = 1;
+
+  // A number that takes WhatsApp messages.
+  PHONE_KIND_WHATSAPP = 2;
+
+  // A work or office number.
+  PHONE_KIND_WORK = 3;
+
+  // A home number.
+  PHONE_KIND_HOME = 4;
+}
+
+// Diet is a kind of meal a guest eats.
+enum Diet {
+  // Default; never set.
+  DIET_UNSPECIFIED = 0;
+
+  // No meat, fish or egg.
+  DIET_VEGETARIAN = 1;
+
+  // No animal product at all.
+  DIET_VEGAN = 2;
+
+  // Vegetarian, with egg.
+  DIET_EGGETARIAN = 3;
+
+  // Meat and fish.
+  DIET_NON_VEGETARIAN = 4;
+
+  // Jain: vegetarian, without root vegetables, onion or garlic.
+  DIET_JAIN = 5;
+
+  // Vegetarian, without onion or garlic.
+  DIET_NO_ONION_NO_GARLIC = 6;
+
+  // Satvik: fresh vegetarian food, without onion, garlic or stimulants.
+  DIET_SATVIK = 7;
+
+  // Halal.
+  DIET_HALAL = 8;
+
+  // Kosher.
+  DIET_KOSHER = 9;
+
+  // Without gluten.
+  DIET_GLUTEN_FREE = 10;
+
+  // Without milk or milk products.
+  DIET_DAIRY_FREE = 11;
+
+  // Suitable for diabetics.
+  DIET_DIABETIC = 12;
+
+  // Low in salt.
+  DIET_LOW_SALT = 13;
+
+  // A child's meal.
+  DIET_CHILD = 14;
+
+  // Another diet, described in the requirement's notes.
+  DIET_OTHER = 15;
+}
+
+// Allergen is something a guest must not be served.
+enum Allergen {
+  // Default; never set.
+  ALLERGEN_UNSPECIFIED = 0;
+
+  // Peanuts.
+  ALLERGEN_PEANUT = 1;
+
+  // Tree nuts: almonds, cashews, walnuts, pistachios.
+  ALLERGEN_TREE_NUT = 2;
+
+  // Milk.
+  ALLERGEN_MILK = 3;
+
+  // Egg.
+  ALLERGEN_EGG = 4;
+
+  // Wheat and other cereals with gluten.
+  ALLERGEN_GLUTEN = 5;
+
+  // Soy.
+  ALLERGEN_SOY = 6;
+
+  // Fish.
+  ALLERGEN_FISH = 7;
+
+  // Shellfish and crustaceans.
+  ALLERGEN_SHELLFISH = 8;
+
+  // Sesame.
+  ALLERGEN_SESAME = 9;
+
+  // Mustard.
+  ALLERGEN_MUSTARD = 10;
+
+  // Another allergen, described in the requirement's notes.
+  ALLERGEN_OTHER = 11;
+}
+
+// EventType is the occasion an event is held for.
+enum EventType {
+  // Default; never set.
+  EVENT_TYPE_UNSPECIFIED = 0;
+
+  // A wedding ceremony.
+  EVENT_TYPE_WEDDING = 1;
+
+  // A wedding reception.
+  EVENT_TYPE_RECEPTION = 2;
+
+  // An engagement or ring ceremony.
+  EVENT_TYPE_ENGAGEMENT = 3;
+
+  // A mehendi, sangeet or haldi.
+  EVENT_TYPE_PRE_WEDDING = 4;
+
+  // A birthday.
+  EVENT_TYPE_BIRTHDAY = 5;
+
+  // An anniversary.
+  EVENT_TYPE_ANNIVERSARY = 6;
+
+  // Another family or social gathering.
+  EVENT_TYPE_SOCIAL = 7;
+
+  // A religious function or puja.
+  EVENT_TYPE_RELIGIOUS = 8;
+
+  // A corporate meeting or training.
+  EVENT_TYPE_MEETING = 9;
+
+  // A conference or seminar.
+  EVENT_TYPE_CONFERENCE = 10;
+
+  // A corporate offsite or retreat.
+  EVENT_TYPE_OFFSITE = 11;
+
+  // A product launch, exhibition or brand event.
+  EVENT_TYPE_LAUNCH = 12;
+
+  // Another occasion.
+  EVENT_TYPE_OTHER = 13;
+}
+
+// Channel is where a lead or a booking came from.
+enum Channel {
+  // Default; not known.
+  CHANNEL_UNSPECIFIED = 0;
+
+  // The venue's own website.
+  CHANNEL_WEBSITE = 1;
+
+  // A phone call.
+  CHANNEL_PHONE = 2;
+
+  // In person, at the venue.
+  CHANNEL_WALK_IN = 3;
+
+  // Email.
+  CHANNEL_EMAIL = 4;
+
+  // WhatsApp.
+  CHANNEL_WHATSAPP = 5;
+
+  // Instagram.
+  CHANNEL_INSTAGRAM = 6;
+
+  // Facebook.
+  CHANNEL_FACEBOOK = 7;
+
+  // A referral from a guest, a planner or an agent.
+  CHANNEL_REFERRAL = 8;
+
+  // Booking.com.
+  CHANNEL_BOOKING_COM = 9;
+
+  // Airbnb.
+  CHANNEL_AIRBNB = 10;
+
+  // MakeMyTrip.
+  CHANNEL_MAKEMYTRIP = 11;
+
+  // Goibibo.
+  CHANNEL_GOIBIBO = 12;
+
+  // Agoda.
+  CHANNEL_AGODA = 13;
+
+  // Expedia.
+  CHANNEL_EXPEDIA = 14;
+
+  // A channel manager, for a channel aperio is not connected to directly.
+  CHANNEL_CHANNEL_MANAGER = 15;
+
+  // A corporate request for proposal.
+  CHANNEL_RFP = 16;
+
+  // Another source, described where it is recorded.
+  CHANNEL_OTHER = 17;
+}

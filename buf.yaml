@@ -1,0 +1,29 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+version: v2
+modules:
+  - path: protobuf
+    name: buf.build/shokki-engineering/aperio
+    excludes:
+      # Generated output lives beside the protos; none of it is schema.
+      - protobuf/generated
+# BASIC, not STANDARD: STANDARD wants VenueServiceCreateVenueResponse-style
+# wrappers that AIP-131..135 forbid, and api-linter (api-linter.yaml) is the
+# authority on API design. buf checks structure; api-linter checks design.
+lint:
+  use:
+    - BASIC
+breaking:
+  use:
+    - FILE
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/bufbuild/protovalidate
+  - buf.build/the-protobuf-project/store
+  - buf.build/the-protobuf-project/cache
+  - buf.build/the-protobuf-project/service
+  - buf.build/the-protobuf-project/mcp
+  # The OpenTravel vocabulary aperio's resources are written in: its room
+  # stays, guests, special requests, hotel information and code tables.
+  - buf.build/shokki-engineering/protobuf-ota

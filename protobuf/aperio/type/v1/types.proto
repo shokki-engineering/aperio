@@ -1,0 +1,116 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.type.v1;
+
+import "aperio/type/v1/enums.proto";
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/type/date.proto";
+import "google/type/decimal.proto";
+import "protobuf/opentravel/common/profile/v1/enums/meal.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1;typepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "TypesProto";
+option java_package = "engineering.shokki.aperio.type.v1";
+
+// Gst is a GST registration: a venue's, on the invoices it issues, or a
+// business customer's, on the invoices it receives.
+message Gst {
+  // The 15-character GSTIN, e.g. "29ABCDE1234F1Z5".
+  string gstin = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.pattern = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$"
+  ];
+
+  // The legal name the GSTIN is registered to.
+  string legal_display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // The two-digit GST state code of the registration, e.g. "29" for
+  // Karnataka. With the place of supply it decides whether an invoice
+  // charges CGST and SGST (intra-state) or IGST (inter-state).
+  string gst_state_code = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.pattern = "^[0-9]{2}$"
+  ];
+}
+
+// DateRange is a span of whole days, [start_date, end_date]: the dates a lead
+// asks for, the nights of a stay, the days of a wedding.
+message DateRange {
+  // The first day.
+  google.type.Date start_date = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The last day, inclusive; the same as start_date for one day.
+  google.type.Date end_date = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Phone is a phone number a contact can be reached on.
+message Phone {
+  // The number in E.164 form, e.g. "+919876543210".
+  string number = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.pattern = "^\\+[1-9][0-9]{6,14}$"
+  ];
+
+  // What the number is for.
+  PhoneKind kind = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// DietaryRequirement is what a guest may or may not eat, or -- for an event --
+// how many guests need a kind of meal: "180 vegetarian, 25 Jain, 4 with a
+// nut allergy".
+//
+// OpenTravel's own meal preference (MealPrefType) carries the airline
+// special-meal codes, which have no Jain, eggetarian or no-onion-no-garlic
+// meal and no allergens, so aperio keeps its own diet and allergen lists and
+// the OTA code beside them: ota_meal is what a channel sent, or what aperio
+// sends one, when a diet has an OTA equivalent.
+message DietaryRequirement {
+  // The diet.
+  Diet diet = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // What the guests must not be served, whatever the diet.
+  repeated Allergen allergens = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many guests it applies to: at an event, the plates of this kind to
+  // prepare. Zero for one named guest of a stay.
+  int32 guests = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The guest it is for, at a stay, as the booking names them.
+  string guest_display_name = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // The OpenTravel special-meal code of the diet, when it has one (VGML for
+  // vegan, KSML for kosher, MOML for halal, GFML for gluten-free).
+  protobuf.opentravel.common.profile.v1.enums.Meal ota_meal = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Anything the kitchen should know that the codes do not say.
+  string notes = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+}
+
+// Tax is how GST applies to something sold: its HSN or SAC code and its rate.
+// The rate is the whole GST; an invoice splits it into CGST and SGST for an
+// intra-state supply, or charges it as IGST for an inter-state one.
+message Tax {
+  // The HSN code of goods or the SAC code of a service, as the venue's GST
+  // advisor classifies it. Printed on the tax invoice.
+  string hsn_sac_code = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.pattern = "^[0-9]{4,8}$"
+  ];
+
+  // The GST rate as a percentage, e.g. "18" or "5".
+  google.type.Decimal gst_rate = 2 [(google.api.field_behavior) = REQUIRED];
+}

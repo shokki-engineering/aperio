@@ -1,0 +1,760 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.sales.v1;
+
+import "aperio/sales/v1/enums.proto";
+import "aperio/type/v1/enums.proto";
+import "aperio/type/v1/types.proto";
+import "buf/validate/validate.proto";
+import "cache/v1/annotations.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
+import "google/type/dayofweek.proto";
+import "google/type/decimal.proto";
+import "google/type/money.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1";
+option java_multiple_files = true;
+option java_outer_classname = "SalesProto";
+option java_package = "engineering.shokki.aperio.sales.v1";
+
+// A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a
+// live chaat counter, a mocktail. It is the catalogue menus are made from, so
+// a dish is described once -- its course, the diets it suits, its allergens --
+// and every menu that offers it says the same.
+//
+// A dish has its own price only when it is sold on its own: à la carte, room
+// service, an add-on to a menu.
+message Dish {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Dishes are read with every menu and change rarely.
+  option (cache.v1.cache) = {
+    enabled: true
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.sales.v1/Dish"
+    pattern: "venues/{venue}/dishes/{dish}"
+    singular: "dish"
+    plural: "dishes"
+  };
+
+  // The dish name.
+  // Format: venues/{venue}/dishes/{dish}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/dishes/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The dish as the menu card names it.
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A line about it for the menu card.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The course it is served in.
+  Course course = 4 [(google.api.field_behavior) = REQUIRED];
+
+  // The cuisine, e.g. "North Indian", "Chettinad", "Continental".
+  string cuisine = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (store.v1.query) = {search: true}
+  ];
+
+  // The diets it suits: a paneer tikka is vegetarian and eggetarian, not
+  // Jain.
+  repeated aperio.type.v1.Diet diets = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // What it contains that some guests must not eat.
+  repeated aperio.type.v1.Allergen allergens = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // Its price on its own, before any season's rule: à la carte, room service,
+  // or as an add-on. Empty for a dish only served within a menu.
+  google.type.Money price = 8 [(google.api.field_behavior) = OPTIONAL];
+
+  // How GST applies to it on its own.
+  aperio.type.v1.Tax tax = 9 [(google.api.field_behavior) = OPTIONAL];
+
+  // A photo of it.
+  string image_uri = 10 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.uri = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Whether the kitchen offers it now; an unavailable dish stays on old menus
+  // and quotes but is not offered on new ones.
+  bool available = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 14 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A Menu is a plate menu sold for events at a price per plate: "Silver
+// Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice,
+// 2 desserts". It is a set of courses, each a choice among dishes, with
+// add-ons priced per plate on top.
+//
+// Its plate_price is the base price. What a plate costs on a given date is
+// the base price with the venue's price rules applied (PriceRule), so a
+// wedding-season surcharge needs no edit to the menu.
+message Menu {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Menus are read with every quote.
+  option (cache.v1.cache) = {
+    enabled: true
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.sales.v1/Menu"
+    pattern: "venues/{venue}/menus/{menu}"
+    singular: "menu"
+    plural: "menus"
+  };
+
+  // The menu name.
+  // Format: venues/{venue}/menus/{menu}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/menus/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The menu as it is sold, e.g. "Silver Vegetarian".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A line about it for the proposal.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The diets the whole menu suits: a vegetarian menu, a Jain menu.
+  repeated aperio.type.v1.Diet diets = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // The courses, in serving order.
+  repeated MenuCourse courses = 5 [(google.api.field_behavior) = REQUIRED];
+
+  // What can be added, priced per plate on top of the menu.
+  repeated MenuAddOn add_ons = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // The base price of a plate, before any price rule.
+  google.type.Money plate_price = 7 [(google.api.field_behavior) = REQUIRED];
+
+  // The fewest plates the menu is sold for.
+  int32 min_plates = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // How GST applies to it.
+  aperio.type.v1.Tax tax = 9 [(google.api.field_behavior) = REQUIRED];
+
+  // Whether it is offered on new quotes.
+  bool active = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 13 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// MenuCourse is one course of a menu: the dishes on offer, and how many of
+// them the host picks.
+message MenuCourse {
+  // The course.
+  Course course = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // How the proposal heads it, e.g. "Starters (any three)"; the course's name
+  // when empty.
+  string display_name = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many of the dishes the host picks; zero means all are served.
+  int32 choose = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The dishes on offer.
+  // Format: venues/{venue}/dishes/{dish}
+  repeated string dishes = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.sales.v1/Dish"
+  ];
+}
+
+// MenuAddOn is something added to a menu at a price per plate: a live
+// counter, an extra dessert, a bar.
+message MenuAddOn {
+  // The add-on as the proposal names it.
+  string display_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // The dish it is, when it is one.
+  // Format: venues/{venue}/dishes/{dish}
+  string dish = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Dish"
+  ];
+
+  // Its base price per plate, before any price rule.
+  google.type.Money plate_price = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8
+// hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It
+// includes so many guests, and charges each guest beyond them.
+//
+// Its price is the base price; what it costs on a date is the base price with
+// the venue's price rules applied, as a menu's is.
+message FixedPackage {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Packages are read with every quote.
+  option (cache.v1.cache) = {
+    enabled: true
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.sales.v1/FixedPackage"
+    pattern: "venues/{venue}/fixedPackages/{fixed_package}"
+    singular: "fixedPackage"
+    plural: "fixedPackages"
+  };
+
+  // The fixed package name.
+  // Format: venues/{venue}/fixedPackages/{fixed_package}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/fixedPackages/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The package as it is sold, e.g. "Wedding Gold".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A line about it for the proposal.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The spaces it can be held in.
+  // Format: venues/{venue}/spaces/{space}
+  repeated string spaces = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.venue.v1/Space"
+  ];
+
+  // How long the space is had for.
+  google.protobuf.Duration duration = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // The menu included, when food is.
+  // Format: venues/{venue}/menus/{menu}
+  string menu = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Menu"
+  ];
+
+  // What else is included: decor, a DJ, a bridal suite for the night.
+  repeated PackageInclusion inclusions = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many guests the price includes.
+  int32 included_guests = 8 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // The base price of the package, before any price rule.
+  google.type.Money price = 9 [(google.api.field_behavior) = REQUIRED];
+
+  // The base price of each guest beyond included_guests.
+  google.type.Money extra_guest_price = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // How GST applies to it.
+  aperio.type.v1.Tax tax = 11 [(google.api.field_behavior) = REQUIRED];
+
+  // Whether it is offered on new quotes.
+  bool active = 12 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 15 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// PackageInclusion is one thing a fixed package includes.
+message PackageInclusion {
+  // What it is, as the proposal says it.
+  string display_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // How many, when it is counted: 2 bridal rooms, 4 hours of a DJ.
+  int32 quantity = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+}
+
+// A Season is a named set of dates prices change on: "Wedding season"
+// (November to February), "Diwali week", "Monsoon", "Weekends". Seasons say
+// when; price rules say how much.
+//
+// A season that recurs yearly is matched on month and day, so "Wedding
+// season, 1 Nov -- 28 Feb" is next year's too without anyone editing it.
+message Season {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Seasons are read with every price.
+  option (cache.v1.cache) = {
+    enabled: true
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.sales.v1/Season"
+    pattern: "venues/{venue}/seasons/{season}"
+    singular: "season"
+    plural: "seasons"
+  };
+
+  // The season name.
+  // Format: venues/{venue}/seasons/{season}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/seasons/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The season as staff know it, e.g. "Wedding season".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // The dates it covers. Empty for a season of weekdays only ("Weekends").
+  repeated aperio.type.v1.DateRange dates = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Whether the dates recur every year, matched on month and day.
+  bool recurs_yearly = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // The days of the week it covers; every day when empty. With dates, only
+  // those days within them: "Fridays to Sundays of wedding season".
+  repeated google.type.DayOfWeek weekdays = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A PriceRule changes the price of what a venue sells in a season: "plate
+// menus +15% in wedding season", "the ballroom ₹2,50,000 on weekends",
+// "Deluxe rooms -20% in monsoon", "₹100 off a plate above 500 guests".
+//
+// Prices are never stored per date. The price of anything on a date is its
+// base price with the one matching rule of the highest priority applied --
+// matching its target, its season and its guest count -- so prices change on
+// their own as the seasons turn, and changing a rule changes every price it
+// covers at once. A quote fixes its prices when it is sent, so a later rule
+// does not change what a guest was offered.
+message PriceRule {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Rules are read with every price.
+  option (cache.v1.cache) = {
+    enabled: true
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.sales.v1/PriceRule"
+    pattern: "venues/{venue}/priceRules/{price_rule}"
+    singular: "priceRule"
+    plural: "priceRules"
+  };
+
+  // The price rule name.
+  // Format: venues/{venue}/priceRules/{price_rule}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/priceRules/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The rule as staff know it, e.g. "Wedding season menus".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // The season the rule applies in; every date when empty.
+  // Format: venues/{venue}/seasons/{season}
+  string season = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Season",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/seasons/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // What kind of thing the rule prices.
+  PriceTarget target = 4 [(google.api.field_behavior) = REQUIRED];
+
+  // The items it prices: menus, fixed packages, spaces or dishes of the
+  // target's kind. Every item of the kind when empty.
+  repeated string items = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // The fewest guests the rule applies to: a volume discount.
+  int32 min_guests = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // How the rule changes the price.
+  oneof adjustment {
+    // The price, replacing the base price.
+    google.type.Money fixed_price = 7;
+
+    // A percentage added to the base price; negative for a discount.
+    google.type.Decimal percent = 8;
+
+    // An amount added to the base price; negative for a discount.
+    google.type.Money amount = 9;
+  }
+
+  // Which rule wins when several match: the highest priority.
+  int32 priority = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // Whether the rule is applied.
+  bool active = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 14 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A Quote is a priced proposal to a guest: the spaces, rooms, menus and
+// packages they asked for, at the prices of their dates, with GST. A lead
+// usually has several, one superseding the next as the negotiation goes;
+// accepting one makes the booking.
+//
+// A draft's line prices follow the price rules as they change. Sending the
+// quote fixes them, so the guest is held to what they were offered and no
+// rule changed after can change it.
+message Quote {
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: [
+          "lead",
+          "create_time"
+        ]
+      },
+      {
+        columns: [
+          "state",
+          "expire_time"
+        ]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.sales.v1/Quote"
+    pattern: "venues/{venue}/quotes/{quote}"
+    singular: "quote"
+    plural: "quotes"
+  };
+
+  // The quote name.
+  // Format: venues/{venue}/quotes/{quote}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/quotes/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The quote's title, e.g. "Sharma–Iyer wedding -- option B".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // The guest it is for, who is billed.
+  // Format: contacts/{contact}
+  string contact = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.crm.v1/Contact",
+    (buf.validate.field).string.pattern = "^contacts/[^/]+$"
+  ];
+
+  // The lead it answers.
+  // Format: leads/{lead}
+  string lead = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.crm.v1/Lead",
+    (buf.validate.field).string.pattern = "^leads/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The quote this one revises. Set by ReviseQuote, which makes the
+  // revision.
+  // Format: venues/{venue}/quotes/{quote}
+  string supersedes = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Lifecycle state, moved by the custom methods.
+  State state = 6 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.column) = {default_value: "DRAFT"}
+  ];
+
+  // The occasion, for an event quote.
+  aperio.type.v1.EventType event_type = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // The dates quoted for.
+  aperio.type.v1.DateRange dates = 8 [(google.api.field_behavior) = REQUIRED];
+
+  // The guests quoted for.
+  int32 guests = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The lines, in the order the proposal shows them.
+  repeated QuoteLine lines = 10 [(google.api.field_behavior) = REQUIRED];
+
+  // The GST state code of the place of supply: the venue's, for services at
+  // the venue. With the venue's registration it decides CGST and SGST or
+  // IGST.
+  string supply_state_code = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[0-9]{2}$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The total of the lines before tax.
+  google.type.Money subtotal = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // The GST on the lines.
+  google.type.Money tax_total = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // What the guest pays: subtotal and tax.
+  google.type.Money total = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // The advance asked for to confirm, e.g. 25% of the total.
+  google.type.Money advance = 15 [(google.api.field_behavior) = OPTIONAL];
+
+  // The terms: cancellation, payment schedule, what the venue does not allow.
+  string terms = 16 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 20000
+  ];
+
+  // When the offer lapses: ttl after it is sent.
+  google.protobuf.Timestamp expire_time = 17 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When it was sent and its prices fixed. Set by SendQuote.
+  google.protobuf.Timestamp send_time = 18 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the guest accepted it. Set by AcceptQuote.
+  google.protobuf.Timestamp accept_time = 19 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // The booking accepting it made: a reservation or an event.
+  string booking = 20 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // Why the guest declined it. Set by DeclineQuote.
+  string decline_reason = 21 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 22 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 23 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 24 [(google.api.field_behavior) = OPTIONAL];
+
+  // How long the offer stands once it is sent, e.g. 14 days.
+  google.protobuf.Duration ttl = 25 [
+    (google.api.field_behavior) = INPUT_ONLY,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Where a quote is in its life.
+  enum State {
+    // Default; never persisted.
+    STATE_UNSPECIFIED = 0;
+
+    // Being prepared; its prices follow the price rules.
+    STATE_DRAFT = 1;
+
+    // Sent to the guest; its prices fixed.
+    STATE_SENT = 2;
+
+    // Accepted; the booking made.
+    STATE_ACCEPTED = 3;
+
+    // Declined by the guest.
+    STATE_DECLINED = 4;
+
+    // Lapsed unanswered.
+    STATE_EXPIRED = 5;
+
+    // Replaced by a revision made by ReviseQuote.
+    STATE_SUPERSEDED = 6;
+  }
+}
+
+// QuoteLine is one priced line of a quote: 300 plates of Silver Vegetarian
+// on 12 December, the ballroom for the evening, 20 Deluxe rooms for two
+// nights, a 5% discount.
+message QuoteLine {
+  // What the line sells.
+  LineKind kind = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The menu, fixed package, space or dish it sells; empty for a service or
+  // a discount described in full.
+  string item = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // The line as the proposal shows it; the item's name when empty.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The date the line is priced for: the event day, the first night.
+  google.type.Date service_date = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many: plates, nights of a room, hours, units.
+  int32 quantity = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // The price of one, from CalculatePrice for the service date unless the
+  // line sets it by hand.
+  google.type.Money unit_price = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // Whether unit_price was set by hand: a negotiated price no rule changes.
+  bool price_override = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // The price rule that set unit_price, when one did.
+  // Format: venues/{venue}/priceRules/{price_rule}
+  string price_rule = 8 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.resource_reference).type = "aperio.sales.v1/PriceRule"
+  ];
+
+  // How GST applies to the line; the item's when empty.
+  aperio.type.v1.Tax tax = 9 [(google.api.field_behavior) = OPTIONAL];
+
+  // quantity × unit_price, before tax.
+  google.type.Money amount = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // The GST on amount.
+  google.type.Money tax_amount = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
+}

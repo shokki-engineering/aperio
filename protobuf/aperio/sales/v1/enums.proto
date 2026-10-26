@@ -1,0 +1,98 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.sales.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.sales.v1";
+
+// Course is the course a dish is served in.
+enum Course {
+  // Default; never set.
+  COURSE_UNSPECIFIED = 0;
+
+  // A welcome drink.
+  COURSE_WELCOME_DRINK = 1;
+
+  // A starter or snack, passed or plated.
+  COURSE_STARTER = 2;
+
+  // A soup.
+  COURSE_SOUP = 3;
+
+  // A salad.
+  COURSE_SALAD = 4;
+
+  // A main course.
+  COURSE_MAIN = 5;
+
+  // A bread.
+  COURSE_BREAD = 6;
+
+  // A rice or biryani.
+  COURSE_RICE = 7;
+
+  // A dal, raita or side.
+  COURSE_SIDE = 8;
+
+  // A dessert.
+  COURSE_DESSERT = 9;
+
+  // A beverage.
+  COURSE_BEVERAGE = 10;
+
+  // A live counter: chaat, pasta, dosa, tandoor.
+  COURSE_LIVE_COUNTER = 11;
+
+  // Another course.
+  COURSE_OTHER = 12;
+}
+
+// PriceTarget is the kind of thing a price rule prices.
+enum PriceTarget {
+  // Default; never set.
+  PRICE_TARGET_UNSPECIFIED = 0;
+
+  // Plate menus and their add-ons.
+  PRICE_TARGET_MENU = 1;
+
+  // Fixed packages.
+  PRICE_TARGET_FIXED_PACKAGE = 2;
+
+  // Spaces: a hall's hire, a room type's nightly rate.
+  PRICE_TARGET_SPACE = 3;
+
+  // Dishes sold on their own.
+  PRICE_TARGET_DISH = 4;
+}
+
+// LineKind is what a quote line sells.
+enum LineKind {
+  // Default; never set.
+  LINE_KIND_UNSPECIFIED = 0;
+
+  // Plates of a menu.
+  LINE_KIND_MENU = 1;
+
+  // A fixed package.
+  LINE_KIND_FIXED_PACKAGE = 2;
+
+  // The hire of a space.
+  LINE_KIND_SPACE = 3;
+
+  // Nights of a room type.
+  LINE_KIND_ROOM = 4;
+
+  // A dish or add-on on its own.
+  LINE_KIND_DISH = 5;
+
+  // A service described in full: decor, a DJ, transport.
+  LINE_KIND_SERVICE = 6;
+
+  // A discount; its unit price is negative.
+  LINE_KIND_DISCOUNT = 7;
+}

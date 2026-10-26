@@ -1,0 +1,102 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.venue.v1;
+
+import "aperio/venue/v1/venue.proto";
+import "aperio/venue/v1/venue_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/empty.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1;venuepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueServiceProto";
+option java_package = "engineering.shokki.aperio.venue.v1";
+
+// VenueService: The venues aperio sells and the spaces each one books: room types, halls, lawns.
+service VenueService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Venues"
+      version: "1.0.0"
+      description: "The venues aperio sells and the spaces each one books: room types, halls, lawns."
+    }
+  };
+
+  // Retrieves one venue.
+  rpc GetVenue(GetVenueRequest) returns (Venue) {
+    option (google.api.http) = {get: "/v1/{name=venues/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists venues.
+  rpc ListVenues(ListVenuesRequest) returns (ListVenuesResponse) {
+    option (google.api.http) = {get: "/v1/venues"};
+    option (google.api.method_signature) = "";
+  }
+
+  // Creates a venue.
+  rpc CreateVenue(CreateVenueRequest) returns (Venue) {
+    option (google.api.http) = {
+      post: "/v1/venues"
+      body: "venue"
+    };
+    option (google.api.method_signature) = "venue,venue_id";
+  }
+
+  // Updates a venue. Only the fields in update_mask are written.
+  rpc UpdateVenue(UpdateVenueRequest) returns (Venue) {
+    option (google.api.http) = {
+      patch: "/v1/{venue.name=venues/*}"
+      body: "venue"
+    };
+    option (google.api.method_signature) = "venue,update_mask";
+  }
+
+  // Deletes a venue.
+  rpc DeleteVenue(DeleteVenueRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one space.
+  rpc GetSpace(GetSpaceRequest) returns (Space) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/spaces/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists spaces.
+  rpc ListSpaces(ListSpacesRequest) returns (ListSpacesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/spaces"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a space.
+  rpc CreateSpace(CreateSpaceRequest) returns (Space) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/spaces"
+      body: "space"
+    };
+    option (google.api.method_signature) = "parent,space,space_id";
+  }
+
+  // Updates a space. Only the fields in update_mask are written.
+  rpc UpdateSpace(UpdateSpaceRequest) returns (Space) {
+    option (google.api.http) = {
+      patch: "/v1/{space.name=venues/*/spaces/*}"
+      body: "space"
+    };
+    option (google.api.method_signature) = "space,update_mask";
+  }
+
+  // Deletes a space.
+  rpc DeleteSpace(DeleteSpaceRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/spaces/*}"};
+    option (google.api.method_signature) = "name";
+  }
+}
