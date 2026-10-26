@@ -1569,7 +1569,7 @@ var File_aperio_sales_v1_sales_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"\n" +
-	"\x1baperio/sales/v1/sales.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1acache/v1/annotations.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x1bgoogle/type/dayofweek.proto\x1a\x19google/type/decimal.proto\x1a\x17google/type/money.proto\x1a\x1astore/v1/annotations.proto\"\xaa\x06\n" +
+	"\x1baperio/sales/v1/sales.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1acache/v1/annotations.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x1bgoogle/type/dayofweek.proto\x1a\x19google/type/decimal.proto\x1a\x17google/type/money.proto\x1a\x1astore/v1/annotations.proto\"\xcf\x06\n" +
 	"\x04Dish\x12=\n" +
 	"\x04name\x18\x01 \x01(\tB)\xe2A\x01\b\xbaH\"\xd8\x01\x01r\x1d2\x1b^venues/[^/]+/dishes/[^/]+$R\x04name\x127\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12.\n" +
@@ -1588,8 +1588,8 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x0e \x01(\tB\x04\xe2A\x01\x01R\x04etag:^\xeaAB\n" +
-	"\x14aperio.sales.v1/Dish\x12\x1cvenues/{venue}/dishes/{dish}*\x06dishes2\x04dish\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19\x0f\b\x01\x1a\x03\b\xd8\x04:\x06\b\x01\x12\x02\b<\"\x87\x06\n" +
+	"\x04etag\x18\x0e \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x82\x01\xeaAB\n" +
+	"\x14aperio.sales.v1/Dish\x12\x1cvenues/{venue}/dishes/{dish}*\x06dishes2\x04dish\xca\xf3\x18\x02\x18\x01\x8a\xb2\x193\b\x01\x1a\x03\b\xd8\x042\"aperio.sales.v1.dish.venue.{venue}:\x06\b\x01\x12\x02\b<\"\xac\x06\n" +
 	"\x04Menu\x12<\n" +
 	"\x04name\x18\x01 \x01(\tB(\xe2A\x01\b\xbaH!\xd8\x01\x01r\x1c2\x1a^venues/[^/]+/menus/[^/]+$R\x04name\x127\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12.\n" +
@@ -1608,8 +1608,8 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\r \x01(\tB\x04\xe2A\x01\x01R\x04etag:\\\xeaA@\n" +
-	"\x14aperio.sales.v1/Menu\x12\x1bvenues/{venue}/menus/{menu}*\x05menus2\x04menu\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19\x0f\b\x01\x1a\x03\b\xd8\x04:\x06\b\x01\x12\x02\b<\"\xc8\x01\n" +
+	"\x04etag\x18\r \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x80\x01\xeaA@\n" +
+	"\x14aperio.sales.v1/Menu\x12\x1bvenues/{venue}/menus/{menu}*\x05menus2\x04menu\xca\xf3\x18\x02\x18\x01\x8a\xb2\x193\b\x01\x1a\x03\b\xd8\x042\"aperio.sales.v1.menu.venue.{venue}:\x06\b\x01\x12\x02\b<\"\xc8\x01\n" +
 	"\n" +
 	"MenuCourse\x125\n" +
 	"\x06course\x18\x01 \x01(\x0e2\x17.aperio.sales.v1.CourseB\x04\xe2A\x01\x02R\x06course\x12'\n" +
@@ -1622,7 +1622,7 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"\x04dish\x18\x02 \x01(\tB\x1d\xe2A\x01\x01\xfaA\x16\n" +
 	"\x14aperio.sales.v1/DishR\x04dish\x129\n" +
 	"\vplate_price\x18\x03 \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x02R\n" +
-	"platePrice\"\xcd\a\n" +
+	"platePrice\"\xf9\a\n" +
 	"\fFixedPackage\x12D\n" +
 	"\x04name\x18\x01 \x01(\tB0\xe2A\x01\b\xbaH)\xd8\x01\x01r$2\"^venues/[^/]+/fixedPackages/[^/]+$R\x04name\x127\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12.\n" +
@@ -1645,11 +1645,11 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x0f \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x85\x01\xeaAi\n" +
-	"\x1caperio.sales.v1/FixedPackage\x12,venues/{venue}/fixedPackages/{fixed_package}*\rfixedPackages2\ffixedPackage\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19\x0f\b\x01\x1a\x03\b\xd8\x04:\x06\b\x01\x12\x02\b<\"k\n" +
+	"\x04etag\x18\x0f \x01(\tB\x04\xe2A\x01\x01R\x04etag:\xb1\x01\xeaAi\n" +
+	"\x1caperio.sales.v1/FixedPackage\x12,venues/{venue}/fixedPackages/{fixed_package}*\rfixedPackages2\ffixedPackage\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19;\b\x01\x1a\x03\b\xd8\x042*aperio.sales.v1.fixedpackage.venue.{venue}:\x06\b\x01\x12\x02\b<\"k\n" +
 	"\x10PackageInclusion\x12.\n" +
 	"\fdisplay_name\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\vdisplayName\x12'\n" +
-	"\bquantity\x18\x02 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\bquantity\"\x9f\x04\n" +
+	"\bquantity\x18\x02 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\bquantity\"\xc6\x04\n" +
 	"\x06Season\x12>\n" +
 	"\x04name\x18\x01 \x01(\tB*\xe2A\x01\b\xbaH#\xd8\x01\x01r\x1e2\x1c^venues/[^/]+/seasons/[^/]+$R\x04name\x121\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\vdisplayName\x125\n" +
@@ -1660,8 +1660,8 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\b \x01(\tB\x04\xe2A\x01\x01R\x04etag:f\xeaAJ\n" +
-	"\x16aperio.sales.v1/Season\x12\x1fvenues/{venue}/seasons/{season}*\aseasons2\x06season\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19\x0f\b\x01\x1a\x03\b\xd8\x04:\x06\b\x01\x12\x02\b<\"\xe7\x06\n" +
+	"\x04etag\x18\b \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x8c\x01\xeaAJ\n" +
+	"\x16aperio.sales.v1/Season\x12\x1fvenues/{venue}/seasons/{season}*\aseasons2\x06season\xca\xf3\x18\x02\x18\x01\x8a\xb2\x195\b\x01\x1a\x03\b\xd8\x042$aperio.sales.v1.season.venue.{venue}:\x06\b\x01\x12\x02\b<\"\x91\a\n" +
 	"\tPriceRule\x12A\n" +
 	"\x04name\x18\x01 \x01(\tB-\xe2A\x01\b\xbaH&\xd8\x01\x01r!2\x1f^venues/[^/]+/priceRules/[^/]+$R\x04name\x121\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\vdisplayName\x12]\n" +
@@ -1684,9 +1684,9 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x0e \x01(\tB\x04\xe2A\x01\x01R\x04etag:v\xeaAZ\n" +
+	"\x04etag\x18\x0e \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x9f\x01\xeaAZ\n" +
 	"\x19aperio.sales.v1/PriceRule\x12&venues/{venue}/priceRules/{price_rule}*\n" +
-	"priceRules2\tpriceRule\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19\x0f\b\x01\x1a\x03\b\xd8\x04:\x06\b\x01\x12\x02\b<B\f\n" +
+	"priceRules2\tpriceRule\xca\xf3\x18\x02\x18\x01\x8a\xb2\x198\b\x01\x1a\x03\b\xd8\x042'aperio.sales.v1.pricerule.venue.{venue}:\x06\b\x01\x12\x02\b<B\f\n" +
 	"\n" +
 	"adjustment\"\x87\r\n" +
 	"\x05Quote\x12=\n" +
