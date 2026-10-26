@@ -23,6 +23,7 @@ var OperationsService_CreateServiceRequestSchemaJSON = `{"description":"Creates 
 var OperationsService_GetServiceRequestSchemaJSON = `{"description":"Retrieves one service request.","properties":{"name":{"description":"The name of the service request to retrieve. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"}},"required":["name"],"type":"object"}`
 var OperationsService_ListServiceRequestsSchemaJSON = `{"description":"Lists service requests.","properties":{"filter":{"description":"An AIP-160 filter, e.g. department = DEPARTMENT_PANTRY AND state = STATE_OPEN.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of service requests to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListServiceRequests call.","type":"string"},"parent":{"description":"The parent whose service requests to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
 var OperationsService_StartServiceRequestSchemaJSON = `{"description":"Marks an acknowledged service request as on its way.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the service request to start. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"}},"required":["name"],"type":"object"}`
+var OperationsService_SummarizeServiceRequestsSchemaJSON = `{"description":"A venue's open requests by department, for the departments and their agents: what is waiting, what is overdue, the oldest first, and what was done today.","properties":{"department":{"description":"One department only; every one when unset.","enum":["DEPARTMENT_UNSPECIFIED","DEPARTMENT_PANTRY","DEPARTMENT_KITCHEN","DEPARTMENT_HOUSEKEEPING","DEPARTMENT_MAINTENANCE","DEPARTMENT_IT_AV","DEPARTMENT_FRONT_DESK","DEPARTMENT_BANQUET","DEPARTMENT_SECURITY"],"type":"string"},"venue":{"description":"The venue. Format: venues/{venue}","type":"string"}},"required":["venue"],"type":"object"}`
 
 // JSON schemas for each RPC method's response, advertised as the tool's
 // outputSchema and satisfied by the structuredContent each handler returns.
@@ -33,6 +34,7 @@ var OperationsService_CreateServiceRequestOutputSchemaJSON = ``
 var OperationsService_GetServiceRequestOutputSchemaJSON = ``
 var OperationsService_ListServiceRequestsOutputSchemaJSON = ``
 var OperationsService_StartServiceRequestOutputSchemaJSON = ``
+var OperationsService_SummarizeServiceRequestsOutputSchemaJSON = ``
 
 // MCP tool descriptors. Each pairs a schema with a tool name and description
 // so that LLM clients can discover and invoke the underlying RPCs.
@@ -44,6 +46,7 @@ var (
 	OperationsService_GetServiceRequestTool         = newTool("operations_service-get_service_request_v1", `Retrieves one service request.`, OperationsService_GetServiceRequestSchemaJSON, OperationsService_GetServiceRequestOutputSchemaJSON, nil, "", nil)
 	OperationsService_ListServiceRequestsTool       = newTool("operations_service-list_service_requests_v1", `Lists service requests.`, OperationsService_ListServiceRequestsSchemaJSON, OperationsService_ListServiceRequestsOutputSchemaJSON, nil, "", nil)
 	OperationsService_StartServiceRequestTool       = newTool("operations_service-start_service_request_v1", `Marks an acknowledged service request as on its way.`, OperationsService_StartServiceRequestSchemaJSON, OperationsService_StartServiceRequestOutputSchemaJSON, nil, "", nil)
+	OperationsService_SummarizeServiceRequestsTool  = newTool("operations_service-summarize_service_requests_v1", `A venue's open requests by department, for the departments and their agents: what is waiting, what is overdue, the oldest first, and what was done today.`, OperationsService_SummarizeServiceRequestsSchemaJSON, OperationsService_SummarizeServiceRequestsOutputSchemaJSON, nil, "", nil)
 )
 
 // OperationsServiceMCPServer is the interface that users implement to handle MCP
@@ -59,6 +62,7 @@ type OperationsServiceMCPServer interface {
 	GetServiceRequest(ctx context.Context, req *GetServiceRequestRequest) (*ServiceRequest, error)
 	ListServiceRequests(ctx context.Context, req *ListServiceRequestsRequest) (*ListServiceRequestsResponse, error)
 	StartServiceRequest(ctx context.Context, req *StartServiceRequestRequest) (*ServiceRequest, error)
+	SummarizeServiceRequests(ctx context.Context, req *SummarizeServiceRequestsRequest) (*SummarizeServiceRequestsResponse, error)
 }
 
 // OperationsServiceMCPClient is the gRPC client interface used when forwarding MCP
@@ -71,6 +75,7 @@ type OperationsServiceMCPClient interface {
 	GetServiceRequest(ctx context.Context, req *GetServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 	ListServiceRequests(ctx context.Context, req *ListServiceRequestsRequest, opts ...grpc.CallOption) (*ListServiceRequestsResponse, error)
 	StartServiceRequest(ctx context.Context, req *StartServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
+	SummarizeServiceRequests(ctx context.Context, req *SummarizeServiceRequestsRequest, opts ...grpc.CallOption) (*SummarizeServiceRequestsResponse, error)
 }
 
 // RegisterOperationsServiceMCPHandler registers all OperationsService RPC methods as MCP
@@ -310,6 +315,40 @@ func RegisterOperationsServiceMCPHandler(s *mcp.Server, srv OperationsServiceMCP
 				return mcp.HandleError(err)
 			}
 			resp := rawResp.(*ServiceRequest)
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
+		tool := mcp.PrepareToolWithExtras(OperationsService_SummarizeServiceRequestsTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq SummarizeServiceRequestsRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			// Answers to questions the service raised (mcp.Ask) on an earlier
+			// pass of this call.
+			args, declined := mcp.MergeAnswers(req, args)
+			if declined {
+				return mcp.TextResult("Cancelled by the user."), nil
+			}
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			// Dispatch through the unary interceptor chain (when configured) so
+			// middleware sees this call exactly as it would the wire RPC.
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.operations.v1.OperationsService/SummarizeServiceRequests", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.SummarizeServiceRequests(ctx, req.(*SummarizeServiceRequestsRequest))
+			})
+			if pending, asked := mcp.AskPending(req, err); asked {
+				return pending, nil // the service asked a question; put it to the client
+			}
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			resp := rawResp.(*SummarizeServiceRequestsResponse)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -573,6 +612,36 @@ func ForwardToOperationsServiceMCPClient(s *mcp.Server, client OperationsService
 			}
 			ctx = mcp.ForwardMetadata(ctx)
 			resp, err := client.StartServiceRequest(ctx, &pbReq)
+			if pending, asked := mcp.AskPending(req, err); asked {
+				return pending, nil // the server asked a question; put it to the client
+			}
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
+		tool := mcp.PrepareToolWithExtras(OperationsService_SummarizeServiceRequestsTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq SummarizeServiceRequestsRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			// Answers to questions the service raised (mcp.Ask) on an earlier
+			// pass of this call.
+			args, declined := mcp.MergeAnswers(req, args)
+			if declined {
+				return mcp.TextResult("Cancelled by the user."), nil
+			}
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			ctx = mcp.ForwardMetadata(ctx)
+			resp, err := client.SummarizeServiceRequests(ctx, &pbReq)
 			if pending, asked := mcp.AskPending(req, err); asked {
 				return pending, nil // the server asked a question; put it to the client
 			}

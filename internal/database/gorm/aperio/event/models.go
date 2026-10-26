@@ -96,7 +96,7 @@ type Event struct {
 	ID string `gorm:"column:id;primaryKey;not null;index:idx_resource_venue_id_id,priority:2" json:"id"`
 	// The event name. Format: venues/{venue}/events/{event}
 	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The event's title, e.g. "Sharma–Iyer wedding".
+	// The event's title, e.g. "Doe–Roe wedding".
 	DisplayName string `gorm:"column:display_name;not null;index:idx_resource_display_name_trgm,type:gin,expression:display_name gin_trgm_ops" json:"display_name" validate:"required"`
 	// The host, who is billed. Format: contacts/{contact}
 	ContactID string `gorm:"column:contact;not null;index:idx_resource_contact" json:"contact" validate:"required"`

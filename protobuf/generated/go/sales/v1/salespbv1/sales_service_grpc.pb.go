@@ -22,21 +22,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SalesService_GetLead_FullMethodName        = "/aperio.sales.v1.SalesService/GetLead"
-	SalesService_ListLeads_FullMethodName      = "/aperio.sales.v1.SalesService/ListLeads"
-	SalesService_CreateLead_FullMethodName     = "/aperio.sales.v1.SalesService/CreateLead"
-	SalesService_UpdateLead_FullMethodName     = "/aperio.sales.v1.SalesService/UpdateLead"
-	SalesService_GetActivity_FullMethodName    = "/aperio.sales.v1.SalesService/GetActivity"
-	SalesService_ListActivities_FullMethodName = "/aperio.sales.v1.SalesService/ListActivities"
-	SalesService_CreateActivity_FullMethodName = "/aperio.sales.v1.SalesService/CreateActivity"
-	SalesService_GetQuote_FullMethodName       = "/aperio.sales.v1.SalesService/GetQuote"
-	SalesService_ListQuotes_FullMethodName     = "/aperio.sales.v1.SalesService/ListQuotes"
-	SalesService_CreateQuote_FullMethodName    = "/aperio.sales.v1.SalesService/CreateQuote"
-	SalesService_UpdateQuote_FullMethodName    = "/aperio.sales.v1.SalesService/UpdateQuote"
-	SalesService_SendQuote_FullMethodName      = "/aperio.sales.v1.SalesService/SendQuote"
-	SalesService_AcceptQuote_FullMethodName    = "/aperio.sales.v1.SalesService/AcceptQuote"
-	SalesService_DeclineQuote_FullMethodName   = "/aperio.sales.v1.SalesService/DeclineQuote"
-	SalesService_ReviseQuote_FullMethodName    = "/aperio.sales.v1.SalesService/ReviseQuote"
+	SalesService_GetLead_FullMethodName           = "/aperio.sales.v1.SalesService/GetLead"
+	SalesService_ListLeads_FullMethodName         = "/aperio.sales.v1.SalesService/ListLeads"
+	SalesService_CreateLead_FullMethodName        = "/aperio.sales.v1.SalesService/CreateLead"
+	SalesService_UpdateLead_FullMethodName        = "/aperio.sales.v1.SalesService/UpdateLead"
+	SalesService_GetActivity_FullMethodName       = "/aperio.sales.v1.SalesService/GetActivity"
+	SalesService_ListActivities_FullMethodName    = "/aperio.sales.v1.SalesService/ListActivities"
+	SalesService_CreateActivity_FullMethodName    = "/aperio.sales.v1.SalesService/CreateActivity"
+	SalesService_GetQuote_FullMethodName          = "/aperio.sales.v1.SalesService/GetQuote"
+	SalesService_ListQuotes_FullMethodName        = "/aperio.sales.v1.SalesService/ListQuotes"
+	SalesService_CreateQuote_FullMethodName       = "/aperio.sales.v1.SalesService/CreateQuote"
+	SalesService_UpdateQuote_FullMethodName       = "/aperio.sales.v1.SalesService/UpdateQuote"
+	SalesService_SendQuote_FullMethodName         = "/aperio.sales.v1.SalesService/SendQuote"
+	SalesService_AcceptQuote_FullMethodName       = "/aperio.sales.v1.SalesService/AcceptQuote"
+	SalesService_DeclineQuote_FullMethodName      = "/aperio.sales.v1.SalesService/DeclineQuote"
+	SalesService_ReviseQuote_FullMethodName       = "/aperio.sales.v1.SalesService/ReviseQuote"
+	SalesService_SummarizePipeline_FullMethodName = "/aperio.sales.v1.SalesService/SummarizePipeline"
 )
 
 // SalesServiceClient is the client API for SalesService service.
@@ -75,6 +76,10 @@ type SalesServiceClient interface {
 	DeclineQuote(ctx context.Context, in *DeclineQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
 	// Revises a sent or declined quote: makes a new draft from it, which supersedes it.
 	ReviseQuote(ctx context.Context, in *ReviseQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
+	// A venue's sales pipeline, for the sales team and their agents: open
+	// leads by stage, what was won and lost lately, the follow-ups due, leads
+	// nobody has contacted, and sent quotes about to expire.
+	SummarizePipeline(ctx context.Context, in *SummarizePipelineRequest, opts ...grpc.CallOption) (*SummarizePipelineResponse, error)
 }
 
 type salesServiceClient struct {
@@ -235,6 +240,16 @@ func (c *salesServiceClient) ReviseQuote(ctx context.Context, in *ReviseQuoteReq
 	return out, nil
 }
 
+func (c *salesServiceClient) SummarizePipeline(ctx context.Context, in *SummarizePipelineRequest, opts ...grpc.CallOption) (*SummarizePipelineResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SummarizePipelineResponse)
+	err := c.cc.Invoke(ctx, SalesService_SummarizePipeline_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SalesServiceServer is the server API for SalesService service.
 // All implementations must embed UnimplementedSalesServiceServer
 // for forward compatibility.
@@ -271,6 +286,10 @@ type SalesServiceServer interface {
 	DeclineQuote(context.Context, *DeclineQuoteRequest) (*Quote, error)
 	// Revises a sent or declined quote: makes a new draft from it, which supersedes it.
 	ReviseQuote(context.Context, *ReviseQuoteRequest) (*Quote, error)
+	// A venue's sales pipeline, for the sales team and their agents: open
+	// leads by stage, what was won and lost lately, the follow-ups due, leads
+	// nobody has contacted, and sent quotes about to expire.
+	SummarizePipeline(context.Context, *SummarizePipelineRequest) (*SummarizePipelineResponse, error)
 	mustEmbedUnimplementedSalesServiceServer()
 }
 
@@ -325,6 +344,9 @@ func (UnimplementedSalesServiceServer) DeclineQuote(context.Context, *DeclineQuo
 }
 func (UnimplementedSalesServiceServer) ReviseQuote(context.Context, *ReviseQuoteRequest) (*Quote, error) {
 	return nil, status.Error(codes.Unimplemented, "method ReviseQuote not implemented")
+}
+func (UnimplementedSalesServiceServer) SummarizePipeline(context.Context, *SummarizePipelineRequest) (*SummarizePipelineResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SummarizePipeline not implemented")
 }
 func (UnimplementedSalesServiceServer) mustEmbedUnimplementedSalesServiceServer() {}
 func (UnimplementedSalesServiceServer) testEmbeddedByValue()                      {}
@@ -617,6 +639,24 @@ func _SalesService_ReviseQuote_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SalesService_SummarizePipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SummarizePipelineRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SalesServiceServer).SummarizePipeline(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SalesService_SummarizePipeline_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SalesServiceServer).SummarizePipeline(ctx, req.(*SummarizePipelineRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SalesService_ServiceDesc is the grpc.ServiceDesc for SalesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -683,6 +723,10 @@ var SalesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReviseQuote",
 			Handler:    _SalesService_ReviseQuote_Handler,
+		},
+		{
+			MethodName: "SummarizePipeline",
+			Handler:    _SalesService_SummarizePipeline_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -143,4 +143,12 @@ service SalesService {
     };
     option (google.api.method_signature) = "name";
   }
+
+  // A venue's sales pipeline, for the sales team and their agents: open
+  // leads by stage, what was won and lost lately, the follow-ups due, leads
+  // nobody has contacted, and sent quotes about to expire.
+  rpc SummarizePipeline(SummarizePipelineRequest) returns (SummarizePipelineResponse) {
+    option (google.api.http) = {get: "/v1/{venue=venues/*}:summarizePipeline"};
+    option (google.api.method_signature) = "venue";
+  }
 }

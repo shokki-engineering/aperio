@@ -149,7 +149,7 @@ func (NopSalesServiceHooks) AfterUpdateQuote(ctx context.Context, m *salespbv1.Q
 //
 // Custom methods are answered by the embedded UnimplementedSalesServiceServer
 // until you write them: embed *SalesServiceServer in a type of your own and
-// define SendQuote, AcceptQuote, DeclineQuote, ReviseQuote on it. Define a standard method there too to
+// define SendQuote, AcceptQuote, DeclineQuote, ReviseQuote, SummarizePipeline on it. Define a standard method there too to
 // replace the generated one.
 type SalesServiceServer struct {
 	salespbv1.UnimplementedSalesServiceServer

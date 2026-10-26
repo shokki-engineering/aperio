@@ -56,4 +56,12 @@ service GuestService {
     };
     option (google.api.method_signature) = "contact,update_mask";
   }
+
+  // A guest's history, for staff and their agents: stays and nights, by room
+  // type, the last and the next; events; open leads and quotes; what they
+  // paid and still owe; what they have asked for before.
+  rpc SummarizeContact(SummarizeContactRequest) returns (SummarizeContactResponse) {
+    option (google.api.http) = {get: "/v1/{name=contacts/*}:summarize"};
+    option (google.api.method_signature) = "name";
+  }
 }

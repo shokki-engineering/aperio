@@ -9,6 +9,7 @@ import "aperio/operations/v1/operations.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1;operationspbv1";
 option java_multiple_files = true;
@@ -143,4 +144,72 @@ message CancelServiceRequestRequest {
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.max_len = 2000
   ];
+}
+
+// Request message for SummarizeServiceRequests.
+message SummarizeServiceRequestsRequest {
+  // The venue.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // One department only; every one when unset.
+  ServiceRequest.Department department = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for SummarizeServiceRequests.
+message SummarizeServiceRequestsResponse {
+  // The departments with open requests, the most overdue first.
+  repeated DepartmentQueue departments = 1;
+
+  // The requests completed today, at the venue.
+  int32 completed_today = 2;
+
+  // The median minutes from asked to done of today's completed requests.
+  int32 median_minutes = 3;
+}
+
+// One department's open requests.
+message DepartmentQueue {
+  // The department.
+  ServiceRequest.Department department = 1;
+
+  // Its requests not yet completed or cancelled.
+  int32 open = 2;
+
+  // The open ones past their due time.
+  int32 overdue = 3;
+
+  // The open ones, the oldest first; at most 20.
+  repeated RequestBrief requests = 4;
+}
+
+// A request as a department reads it.
+message RequestBrief {
+  // The request.
+  // Format: venues/{venue}/serviceRequests/{service_request}
+  string service_request = 1 [(google.api.resource_reference).type = "aperio.operations.v1/ServiceRequest"];
+
+  // What is asked: "2 black coffee".
+  string summary = 2;
+
+  // Where: "Room 204".
+  string location = 3;
+
+  // Where it is.
+  ServiceRequest.State state = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // How urgent.
+  ServiceRequest.Priority priority = 5;
+
+  // When it is due.
+  google.protobuf.Timestamp due_time = 6;
+
+  // When it was asked.
+  google.protobuf.Timestamp create_time = 7;
+
+  // Who has it.
+  string assignee = 8;
 }

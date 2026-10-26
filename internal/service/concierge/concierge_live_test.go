@@ -50,7 +50,7 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	if q, schema, ok := mcp.Asked(err); !ok || q != "May I have the guest's name and phone number?" || len(schema.Required) != 2 {
 		t.Errorf("hold with no guest = %v; want the name and phone asked for", err)
 	}
-	hold.GuestDisplayName, hold.Phone = "Priya Iyer", "98765 "+run[len(run)-5:]
+	hold.GuestDisplayName, hold.Phone = "John Doe", "98765 "+run[len(run)-5:]
 	held, err := svc.HoldStay(ctx, hold)
 	must(err, "hold")
 	if !strings.Contains(held.GetSpoken(), "Shall I book it?") || fb.Active() != 1 {
@@ -91,7 +91,7 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 
 	// The same guest, by phone, holding the second room: found, not added.
 	second := &conciergepbv1.HoldStayRequest{Venue: v.GetName(), Space: sp.GetName(), ArrivalDate: arrive, Nights: 2, Adults: 2,
-		GuestDisplayName: "Priya", Phone: hold.GetPhone(), RequestId: uuid.NewString()}
+		GuestDisplayName: "John", Phone: hold.GetPhone(), RequestId: uuid.NewString()}
 	held2, err := svc.HoldStay(ctx, second)
 	must(err, "second hold")
 	booked2, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held2.GetHoldToken(), Confirmed: true})

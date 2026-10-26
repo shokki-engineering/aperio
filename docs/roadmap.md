@@ -91,7 +91,7 @@ operations (7), document (5) and concierge (7) -- 101 methods.
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
 | Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking, EnquireEvent (a lead, a draft quote, menus priced, halls free), RequestService (to the right department) over REST, gRPC and MCP; missing details and consent asked by elicitation; live tests | event bookings beyond the enquiry; the elicitation release (runtime-go, protoc-gen-mcp); payment link; a LiveKit demo (M9) |
-| Agents (MCP) | In progress | 102 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone). Task tools on read models, service by service: stay done (`SummarizeDay` on `StayNight`, `Reservation.spaces`); read models in Postgres with an optional OpenSearch copy, as freebusy's | guest, event, sales, finance, operations task tools; documents last; reservation tools still ~250 KB |
+| Agents (MCP) | In progress | 102 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone). Task tools, service by service: stay (`SummarizeDay` on the `StayNight` read model, `Reservation.spaces`) and guest (`SummarizeContact`: a guest's history across stay, event, sales and finance) done; read models in Postgres with an optional OpenSearch copy, as freebusy's | event, sales, finance, operations task tools; documents last; reservation tools still ~250 KB |
 
 ## Milestones
 
@@ -211,9 +211,12 @@ before channels, a running server before anyone outside can use any of it.
 - Task tools on read models, one service at a time (documents last). Stay,
   done: `StayNight` (a row per night of every live stay, kept in the
   reservation's transaction) and `SummarizeDay` (arrivals, departures, who
-  stays, rooms taken: four indexed reads, an 890-byte tool). Next: a guest's
-  history, the kitchen's coming sessions, the sales pipeline, money owed,
-  open requests by department.
+  stays, rooms taken: four indexed reads, an 890-byte tool). Guest, done:
+  `SummarizeContact` (stays and nights by room type, last and next visit,
+  events, open leads and quotes, paid and due, past requests; from a day
+  for "this year"), read through the other services' list methods by the
+  indexed contact, all at once. Next: the kitchen's coming sessions, the
+  sales pipeline, money owed, open requests by department.
 - Read models as freebusy's: Postgres tables under the generated projection
   runtime, with an optional OpenSearch copy (`[search] provider`), a
   change-feed indexer, alias-swap reindex, and every read falling back to

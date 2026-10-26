@@ -103,7 +103,7 @@ type Event struct {
 	// The event name.
 	// Format: venues/{venue}/events/{event}
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The event's title, e.g. "Sharma–Iyer wedding".
+	// The event's title, e.g. "Doe–Roe wedding".
 	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// The host, who is billed.
 	// Format: contacts/{contact}

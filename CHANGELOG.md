@@ -48,6 +48,10 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   stays the night, rooms taken -- for the front desk and agents, from the
   read model in four indexed reads. `Reservation.spaces`, the room types
   booked, so stays filter as `spaces:"venues/sbr/spaces/villa"`.
+- `GuestService.SummarizeContact`: a guest's history in one call -- stays
+  and nights by room type, the last and next visit, events, open leads and
+  quotes, paid less refunds and still due, what they asked for before --
+  counted from `start_date` when given ("this year").
 - Elicitation from the concierge: a method missing the guest's name or phone
   asks for just those, and ConfirmStay and CancelBooking ask for consent with
   the real amount and dates (`confirmed`) before they book or cancel. The

@@ -26,6 +26,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/finance/v1/financepbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
@@ -60,6 +61,7 @@ type hooks struct {
 	venues    venue.VenueRepository
 	confirmer Confirmer
 	gateways  map[string]Gateway
+	contacts  guest.ContactRepository // names debtors; nil: unnamed
 	now       func() time.Time
 }
 

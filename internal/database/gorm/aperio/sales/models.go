@@ -196,7 +196,7 @@ type Lead struct {
 	ID string `gorm:"column:id;primaryKey;not null" json:"id"`
 	// The lead name. Format: leads/{lead}
 	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// A short title for the pipeline, e.g. "Sharma–Iyer wedding, Dec 2026".
+	// A short title for the pipeline, e.g. "Doe–Roe wedding, Dec 2026".
 	DisplayName string `gorm:"column:display_name;not null;index:idx_leads_display_name_trgm,type:gin,expression:display_name gin_trgm_ops" json:"display_name" validate:"required"`
 	// Who is asking. Format: contacts/{contact}
 	ContactID string `gorm:"column:contact;not null;index:idx_leads_contact" json:"contact" validate:"required"`
@@ -287,7 +287,7 @@ type Quote struct {
 	ID string `gorm:"column:id;primaryKey;not null;index:idx_quotes_venue_id_id,priority:2" json:"id"`
 	// The quote name. Format: venues/{venue}/quotes/{quote}
 	Name string `gorm:"column:name;not null;uniqueIndex" json:"name" validate:"required"`
-	// The quote's title, e.g. "Sharma–Iyer wedding -- option B".
+	// The quote's title, e.g. "Doe–Roe wedding -- option B".
 	DisplayName string `gorm:"column:display_name;not null" json:"display_name" validate:"required"`
 	// The guest it is for, who is billed. Format: contacts/{contact}
 	ContactID string `gorm:"column:contact;not null;index:idx_quotes_contact" json:"contact" validate:"required"`

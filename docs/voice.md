@@ -112,7 +112,7 @@ sequenceDiagram
     Agent->>C: HoldStay {space, request_id}
     C-->>Agent: elicitation "May I have your name for the booking?"
     Agent->>Caller: asks
-    Caller->>Agent: Priya Iyer
+    Caller->>Agent: John Doe
     Agent->>C: answer
     C-->>Agent: hold_token · spoken "I've held it for 15 minutes. Shall I book it?"
     Agent->>C: ConfirmStay {hold_token}

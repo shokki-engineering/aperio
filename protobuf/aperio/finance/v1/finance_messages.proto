@@ -10,6 +10,8 @@ import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
+import "google/type/date.proto";
+import "google/type/money.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1";
 option java_multiple_files = true;
@@ -271,4 +273,80 @@ message VoidPaymentRequest {
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.max_len = 2000
   ];
+}
+
+// Request message for SummarizeReceivables.
+message SummarizeReceivablesRequest {
+  // The venue.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // How many debtors to list, most owed first; 10 when unset.
+  int32 debtors = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 100
+    }
+  ];
+}
+
+// Response message for SummarizeReceivables, in the venue's currency. Only
+// issued invoices are owed: drafts, paid and cancelled ones are not.
+message SummarizeReceivablesResponse {
+  // The day it is counted on, at the venue.
+  google.type.Date date = 1;
+
+  // What issued invoices still ask for.
+  google.type.Money outstanding = 2;
+
+  // The part of it past its due date.
+  google.type.Money overdue = 3;
+
+  // The outstanding by how long past due: "current", "1-30", "31-60",
+  // "61-90", "90+" days.
+  repeated AgeBucket aging = 4;
+
+  // Who owes the most, most first.
+  repeated Debtor debtors = 5;
+
+  // What came in this month, less refunds.
+  google.type.Money collected = 6;
+}
+
+// The outstanding of one age.
+message AgeBucket {
+  // How long past due: "current", "1-30", "31-60", "61-90", "90+".
+  string age = 1;
+
+  // What is owed at that age.
+  google.type.Money amount = 2;
+
+  // The invoices owing it.
+  int32 invoices = 3;
+}
+
+// A guest who owes the venue.
+message Debtor {
+  // The guest.
+  // Format: contacts/{contact}
+  string contact = 1 [(google.api.resource_reference).type = "aperio.guest.v1/Contact"];
+
+  // Their name.
+  string display_name = 2;
+
+  // Their phone, E.164.
+  string phone = 3;
+
+  // What they owe.
+  google.type.Money due = 4;
+
+  // The invoices owing it.
+  int32 invoices = 5;
+
+  // The earliest due date among them.
+  google.type.Date oldest_due_date = 6;
 }

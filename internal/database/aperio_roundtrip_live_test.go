@@ -118,7 +118,7 @@ func TestLiveAperioRoundTrip(t *testing.T) {
 
 			contactIn := &guestpbv1.Contact{
 				Kind:                guestpbv1.ContactKind_CONTACT_KIND_PERSON,
-				DisplayName:         "Ananya Sharma",
+				DisplayName:         "John Doe",
 				Phones:              []*typepbv1.Phone{{Number: "+919876543210", Kind: typepbv1.PhoneKind_PHONE_KIND_WHATSAPP}},
 				Emails:              []string{"ananya@example.com"},
 				DietaryRequirements: []*typepbv1.DietaryRequirement{{Diet: typepbv1.Diet_DIET_JAIN}},
@@ -146,7 +146,7 @@ func TestLiveAperioRoundTrip(t *testing.T) {
 				RoomStays:        []*types.RoomStay{{MarketCode: "LEISURE", PromotionCode: "XMAS"}},
 				ResGuests:        []*types.ResGuest{{ResGuestRph: "1", Age: proto.Int32(34), Vip: proto.Bool(true)}},
 				DietaryRequirements: []*typepbv1.DietaryRequirement{
-					{Diet: typepbv1.Diet_DIET_JAIN, GuestDisplayName: "A. Sharma"},
+					{Diet: typepbv1.Diet_DIET_JAIN, GuestDisplayName: "J. Doe"},
 					{Diet: typepbv1.Diet_DIET_VEGAN, Allergens: []typepbv1.Allergen{typepbv1.Allergen_ALLERGEN_TREE_NUT}},
 				},
 				SpecialRequests: []*typepbv1.SpecialRequest{{

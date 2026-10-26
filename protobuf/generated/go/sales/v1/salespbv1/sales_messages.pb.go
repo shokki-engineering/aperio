@@ -12,9 +12,11 @@ package salespbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
+	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -1151,11 +1153,398 @@ func (x *ReviseQuoteRequest) GetEtag() string {
 	return ""
 }
 
+// Request message for SummarizePipeline.
+type SummarizePipelineRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// How many days ahead a follow-up or a quote's expiry counts as due, and
+	// back a win or a loss counts as lately; 7 when unset.
+	Days          int32 `protobuf:"varint,2,opt,name=days,proto3" json:"days,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizePipelineRequest) Reset() {
+	*x = SummarizePipelineRequest{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizePipelineRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizePipelineRequest) ProtoMessage() {}
+
+func (x *SummarizePipelineRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizePipelineRequest.ProtoReflect.Descriptor instead.
+func (*SummarizePipelineRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *SummarizePipelineRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *SummarizePipelineRequest) GetDays() int32 {
+	if x != nil {
+		return x.Days
+	}
+	return 0
+}
+
+// Response message for SummarizePipeline.
+type SummarizePipelineResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The open leads by stage, in the pipeline's order.
+	Stages []*StageCount `protobuf:"bytes,1,rep,name=stages,proto3" json:"stages,omitempty"`
+	// The leads won in the last days.
+	Won int32 `protobuf:"varint,2,opt,name=won,proto3" json:"won,omitempty"`
+	// The leads lost in the last days.
+	Lost int32 `protobuf:"varint,3,opt,name=lost,proto3" json:"lost,omitempty"`
+	// Open leads whose follow-up is overdue or due within days, soonest first.
+	FollowUps []*LeadBrief `protobuf:"bytes,4,rep,name=follow_ups,json=followUps,proto3" json:"follow_ups,omitempty"`
+	// Leads still NEW: nobody has contacted them, oldest first.
+	Uncontacted []*LeadBrief `protobuf:"bytes,5,rep,name=uncontacted,proto3" json:"uncontacted,omitempty"`
+	// Sent quotes expiring within days, soonest first.
+	Expiring      []*QuoteBrief `protobuf:"bytes,6,rep,name=expiring,proto3" json:"expiring,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizePipelineResponse) Reset() {
+	*x = SummarizePipelineResponse{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizePipelineResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizePipelineResponse) ProtoMessage() {}
+
+func (x *SummarizePipelineResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizePipelineResponse.ProtoReflect.Descriptor instead.
+func (*SummarizePipelineResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *SummarizePipelineResponse) GetStages() []*StageCount {
+	if x != nil {
+		return x.Stages
+	}
+	return nil
+}
+
+func (x *SummarizePipelineResponse) GetWon() int32 {
+	if x != nil {
+		return x.Won
+	}
+	return 0
+}
+
+func (x *SummarizePipelineResponse) GetLost() int32 {
+	if x != nil {
+		return x.Lost
+	}
+	return 0
+}
+
+func (x *SummarizePipelineResponse) GetFollowUps() []*LeadBrief {
+	if x != nil {
+		return x.FollowUps
+	}
+	return nil
+}
+
+func (x *SummarizePipelineResponse) GetUncontacted() []*LeadBrief {
+	if x != nil {
+		return x.Uncontacted
+	}
+	return nil
+}
+
+func (x *SummarizePipelineResponse) GetExpiring() []*QuoteBrief {
+	if x != nil {
+		return x.Expiring
+	}
+	return nil
+}
+
+// How many open leads are at one stage.
+type StageCount struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stage.
+	Stage Stage `protobuf:"varint,1,opt,name=stage,proto3,enum=aperio.sales.v1.Stage" json:"stage,omitempty"`
+	// The leads at it.
+	Leads         int32 `protobuf:"varint,2,opt,name=leads,proto3" json:"leads,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StageCount) Reset() {
+	*x = StageCount{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StageCount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StageCount) ProtoMessage() {}
+
+func (x *StageCount) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StageCount.ProtoReflect.Descriptor instead.
+func (*StageCount) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *StageCount) GetStage() Stage {
+	if x != nil {
+		return x.Stage
+	}
+	return Stage_STAGE_UNSPECIFIED
+}
+
+func (x *StageCount) GetLeads() int32 {
+	if x != nil {
+		return x.Leads
+	}
+	return 0
+}
+
+// A lead as the sales team reads it.
+type LeadBrief struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The lead.
+	// Format: leads/{lead}
+	Lead string `protobuf:"bytes,1,opt,name=lead,proto3" json:"lead,omitempty"`
+	// Its title: "Doe wedding, Dec 2026".
+	Title string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	// Who is asking.
+	Contact string `protobuf:"bytes,3,opt,name=contact,proto3" json:"contact,omitempty"`
+	// Their phone, E.164.
+	Phone string `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
+	// Where it is.
+	Stage Stage `protobuf:"varint,5,opt,name=stage,proto3,enum=aperio.sales.v1.Stage" json:"stage,omitempty"`
+	// When it is next to be followed up.
+	NextFollowUpTime *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=next_follow_up_time,json=nextFollowUpTime,proto3" json:"next_follow_up_time,omitempty"`
+	// When it came in.
+	CreateTime    *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LeadBrief) Reset() {
+	*x = LeadBrief{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LeadBrief) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LeadBrief) ProtoMessage() {}
+
+func (x *LeadBrief) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LeadBrief.ProtoReflect.Descriptor instead.
+func (*LeadBrief) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *LeadBrief) GetLead() string {
+	if x != nil {
+		return x.Lead
+	}
+	return ""
+}
+
+func (x *LeadBrief) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *LeadBrief) GetContact() string {
+	if x != nil {
+		return x.Contact
+	}
+	return ""
+}
+
+func (x *LeadBrief) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *LeadBrief) GetStage() Stage {
+	if x != nil {
+		return x.Stage
+	}
+	return Stage_STAGE_UNSPECIFIED
+}
+
+func (x *LeadBrief) GetNextFollowUpTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.NextFollowUpTime
+	}
+	return nil
+}
+
+func (x *LeadBrief) GetCreateTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreateTime
+	}
+	return nil
+}
+
+// A quote as the sales team reads it.
+type QuoteBrief struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The quote.
+	// Format: venues/{venue}/quotes/{quote}
+	Quote string `protobuf:"bytes,1,opt,name=quote,proto3" json:"quote,omitempty"`
+	// Its title.
+	Title string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	// Who it is for.
+	Contact string `protobuf:"bytes,3,opt,name=contact,proto3" json:"contact,omitempty"`
+	// What it comes to, with taxes.
+	Total *money.Money `protobuf:"bytes,4,opt,name=total,proto3" json:"total,omitempty"`
+	// When it expires.
+	ExpireTime    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QuoteBrief) Reset() {
+	*x = QuoteBrief{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QuoteBrief) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QuoteBrief) ProtoMessage() {}
+
+func (x *QuoteBrief) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QuoteBrief.ProtoReflect.Descriptor instead.
+func (*QuoteBrief) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *QuoteBrief) GetQuote() string {
+	if x != nil {
+		return x.Quote
+	}
+	return ""
+}
+
+func (x *QuoteBrief) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *QuoteBrief) GetContact() string {
+	if x != nil {
+		return x.Contact
+	}
+	return ""
+}
+
+func (x *QuoteBrief) GetTotal() *money.Money {
+	if x != nil {
+		return x.Total
+	}
+	return nil
+}
+
+func (x *QuoteBrief) GetExpireTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return nil
+}
+
 var File_aperio_sales_v1_sales_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\n" +
-	"$aperio/sales/v1/sales_messages.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"C\n" +
+	"$aperio/sales/v1/sales_messages.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1baperio/sales/v1/sales.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\"C\n" +
 	"\x0eGetLeadRequest\x121\n" +
 	"\x04name\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
 	"\x14aperio.sales.v1/LeadR\x04name\"\xa3\x01\n" +
@@ -1237,7 +1626,42 @@ const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\x12ReviseQuoteRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.sales.v1/QuoteR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etagB\xe0\x01\n" +
+	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\"s\n" +
+	"\x18SummarizePipelineRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12!\n" +
+	"\x04days\x18\x02 \x01(\x05B\r\xe2A\x01\x01\xbaH\x06\x1a\x04\x18Z(\x00R\x04days\"\xa8\x02\n" +
+	"\x19SummarizePipelineResponse\x123\n" +
+	"\x06stages\x18\x01 \x03(\v2\x1b.aperio.sales.v1.StageCountR\x06stages\x12\x10\n" +
+	"\x03won\x18\x02 \x01(\x05R\x03won\x12\x12\n" +
+	"\x04lost\x18\x03 \x01(\x05R\x04lost\x129\n" +
+	"\n" +
+	"follow_ups\x18\x04 \x03(\v2\x1a.aperio.sales.v1.LeadBriefR\tfollowUps\x12<\n" +
+	"\vuncontacted\x18\x05 \x03(\v2\x1a.aperio.sales.v1.LeadBriefR\vuncontacted\x127\n" +
+	"\bexpiring\x18\x06 \x03(\v2\x1b.aperio.sales.v1.QuoteBriefR\bexpiring\"P\n" +
+	"\n" +
+	"StageCount\x12,\n" +
+	"\x05stage\x18\x01 \x01(\x0e2\x16.aperio.sales.v1.StageR\x05stage\x12\x14\n" +
+	"\x05leads\x18\x02 \x01(\x05R\x05leads\"\xb6\x02\n" +
+	"\tLeadBrief\x12-\n" +
+	"\x04lead\x18\x01 \x01(\tB\x19\xfaA\x16\n" +
+	"\x14aperio.sales.v1/LeadR\x04lead\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
+	"\acontact\x18\x03 \x01(\tR\acontact\x12\x14\n" +
+	"\x05phone\x18\x04 \x01(\tR\x05phone\x12,\n" +
+	"\x05stage\x18\x05 \x01(\x0e2\x16.aperio.sales.v1.StageR\x05stage\x12I\n" +
+	"\x13next_follow_up_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x10nextFollowUpTime\x12;\n" +
+	"\vcreate_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"createTime\"\xd5\x01\n" +
+	"\n" +
+	"QuoteBrief\x120\n" +
+	"\x05quote\x18\x01 \x01(\tB\x1a\xfaA\x17\n" +
+	"\x15aperio.sales.v1/QuoteR\x05quote\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
+	"\acontact\x18\x03 \x01(\tR\acontact\x12(\n" +
+	"\x05total\x18\x04 \x01(\v2\x12.google.type.MoneyR\x05total\x12;\n" +
+	"\vexpire_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"expireTimeB\xe0\x01\n" +
 	"\x13com.aperio.sales.v1B\x12SalesMessagesProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1\xa2\x02\x03ASX\xaa\x02\x0fAperio.Sales.V1\xca\x02\x0fAperio\\Sales\\V1\xe2\x02\x1bAperio\\Sales\\V1\\GPBMetadata\xea\x02\x11Aperio::Sales::V1b\x06proto3"
 
 var (
@@ -1252,47 +1676,65 @@ func file_aperio_sales_v1_sales_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescData
 }
 
-var file_aperio_sales_v1_sales_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_aperio_sales_v1_sales_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_aperio_sales_v1_sales_messages_proto_goTypes = []any{
-	(*GetLeadRequest)(nil),         // 0: aperio.sales.v1.GetLeadRequest
-	(*ListLeadsRequest)(nil),       // 1: aperio.sales.v1.ListLeadsRequest
-	(*ListLeadsResponse)(nil),      // 2: aperio.sales.v1.ListLeadsResponse
-	(*CreateLeadRequest)(nil),      // 3: aperio.sales.v1.CreateLeadRequest
-	(*UpdateLeadRequest)(nil),      // 4: aperio.sales.v1.UpdateLeadRequest
-	(*GetActivityRequest)(nil),     // 5: aperio.sales.v1.GetActivityRequest
-	(*ListActivitiesRequest)(nil),  // 6: aperio.sales.v1.ListActivitiesRequest
-	(*ListActivitiesResponse)(nil), // 7: aperio.sales.v1.ListActivitiesResponse
-	(*CreateActivityRequest)(nil),  // 8: aperio.sales.v1.CreateActivityRequest
-	(*GetQuoteRequest)(nil),        // 9: aperio.sales.v1.GetQuoteRequest
-	(*ListQuotesRequest)(nil),      // 10: aperio.sales.v1.ListQuotesRequest
-	(*ListQuotesResponse)(nil),     // 11: aperio.sales.v1.ListQuotesResponse
-	(*CreateQuoteRequest)(nil),     // 12: aperio.sales.v1.CreateQuoteRequest
-	(*UpdateQuoteRequest)(nil),     // 13: aperio.sales.v1.UpdateQuoteRequest
-	(*SendQuoteRequest)(nil),       // 14: aperio.sales.v1.SendQuoteRequest
-	(*AcceptQuoteRequest)(nil),     // 15: aperio.sales.v1.AcceptQuoteRequest
-	(*DeclineQuoteRequest)(nil),    // 16: aperio.sales.v1.DeclineQuoteRequest
-	(*ReviseQuoteRequest)(nil),     // 17: aperio.sales.v1.ReviseQuoteRequest
-	(*Lead)(nil),                   // 18: aperio.sales.v1.Lead
-	(*fieldmaskpb.FieldMask)(nil),  // 19: google.protobuf.FieldMask
-	(*Activity)(nil),               // 20: aperio.sales.v1.Activity
-	(*Quote)(nil),                  // 21: aperio.sales.v1.Quote
+	(*GetLeadRequest)(nil),            // 0: aperio.sales.v1.GetLeadRequest
+	(*ListLeadsRequest)(nil),          // 1: aperio.sales.v1.ListLeadsRequest
+	(*ListLeadsResponse)(nil),         // 2: aperio.sales.v1.ListLeadsResponse
+	(*CreateLeadRequest)(nil),         // 3: aperio.sales.v1.CreateLeadRequest
+	(*UpdateLeadRequest)(nil),         // 4: aperio.sales.v1.UpdateLeadRequest
+	(*GetActivityRequest)(nil),        // 5: aperio.sales.v1.GetActivityRequest
+	(*ListActivitiesRequest)(nil),     // 6: aperio.sales.v1.ListActivitiesRequest
+	(*ListActivitiesResponse)(nil),    // 7: aperio.sales.v1.ListActivitiesResponse
+	(*CreateActivityRequest)(nil),     // 8: aperio.sales.v1.CreateActivityRequest
+	(*GetQuoteRequest)(nil),           // 9: aperio.sales.v1.GetQuoteRequest
+	(*ListQuotesRequest)(nil),         // 10: aperio.sales.v1.ListQuotesRequest
+	(*ListQuotesResponse)(nil),        // 11: aperio.sales.v1.ListQuotesResponse
+	(*CreateQuoteRequest)(nil),        // 12: aperio.sales.v1.CreateQuoteRequest
+	(*UpdateQuoteRequest)(nil),        // 13: aperio.sales.v1.UpdateQuoteRequest
+	(*SendQuoteRequest)(nil),          // 14: aperio.sales.v1.SendQuoteRequest
+	(*AcceptQuoteRequest)(nil),        // 15: aperio.sales.v1.AcceptQuoteRequest
+	(*DeclineQuoteRequest)(nil),       // 16: aperio.sales.v1.DeclineQuoteRequest
+	(*ReviseQuoteRequest)(nil),        // 17: aperio.sales.v1.ReviseQuoteRequest
+	(*SummarizePipelineRequest)(nil),  // 18: aperio.sales.v1.SummarizePipelineRequest
+	(*SummarizePipelineResponse)(nil), // 19: aperio.sales.v1.SummarizePipelineResponse
+	(*StageCount)(nil),                // 20: aperio.sales.v1.StageCount
+	(*LeadBrief)(nil),                 // 21: aperio.sales.v1.LeadBrief
+	(*QuoteBrief)(nil),                // 22: aperio.sales.v1.QuoteBrief
+	(*Lead)(nil),                      // 23: aperio.sales.v1.Lead
+	(*fieldmaskpb.FieldMask)(nil),     // 24: google.protobuf.FieldMask
+	(*Activity)(nil),                  // 25: aperio.sales.v1.Activity
+	(*Quote)(nil),                     // 26: aperio.sales.v1.Quote
+	(Stage)(0),                        // 27: aperio.sales.v1.Stage
+	(*timestamppb.Timestamp)(nil),     // 28: google.protobuf.Timestamp
+	(*money.Money)(nil),               // 29: google.type.Money
 }
 var file_aperio_sales_v1_sales_messages_proto_depIdxs = []int32{
-	18, // 0: aperio.sales.v1.ListLeadsResponse.leads:type_name -> aperio.sales.v1.Lead
-	18, // 1: aperio.sales.v1.CreateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
-	18, // 2: aperio.sales.v1.UpdateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
-	19, // 3: aperio.sales.v1.UpdateLeadRequest.update_mask:type_name -> google.protobuf.FieldMask
-	20, // 4: aperio.sales.v1.ListActivitiesResponse.activities:type_name -> aperio.sales.v1.Activity
-	20, // 5: aperio.sales.v1.CreateActivityRequest.activity:type_name -> aperio.sales.v1.Activity
-	21, // 6: aperio.sales.v1.ListQuotesResponse.quotes:type_name -> aperio.sales.v1.Quote
-	21, // 7: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
-	21, // 8: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
-	19, // 9: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	23, // 0: aperio.sales.v1.ListLeadsResponse.leads:type_name -> aperio.sales.v1.Lead
+	23, // 1: aperio.sales.v1.CreateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
+	23, // 2: aperio.sales.v1.UpdateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
+	24, // 3: aperio.sales.v1.UpdateLeadRequest.update_mask:type_name -> google.protobuf.FieldMask
+	25, // 4: aperio.sales.v1.ListActivitiesResponse.activities:type_name -> aperio.sales.v1.Activity
+	25, // 5: aperio.sales.v1.CreateActivityRequest.activity:type_name -> aperio.sales.v1.Activity
+	26, // 6: aperio.sales.v1.ListQuotesResponse.quotes:type_name -> aperio.sales.v1.Quote
+	26, // 7: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
+	26, // 8: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
+	24, // 9: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
+	20, // 10: aperio.sales.v1.SummarizePipelineResponse.stages:type_name -> aperio.sales.v1.StageCount
+	21, // 11: aperio.sales.v1.SummarizePipelineResponse.follow_ups:type_name -> aperio.sales.v1.LeadBrief
+	21, // 12: aperio.sales.v1.SummarizePipelineResponse.uncontacted:type_name -> aperio.sales.v1.LeadBrief
+	22, // 13: aperio.sales.v1.SummarizePipelineResponse.expiring:type_name -> aperio.sales.v1.QuoteBrief
+	27, // 14: aperio.sales.v1.StageCount.stage:type_name -> aperio.sales.v1.Stage
+	27, // 15: aperio.sales.v1.LeadBrief.stage:type_name -> aperio.sales.v1.Stage
+	28, // 16: aperio.sales.v1.LeadBrief.next_follow_up_time:type_name -> google.protobuf.Timestamp
+	28, // 17: aperio.sales.v1.LeadBrief.create_time:type_name -> google.protobuf.Timestamp
+	29, // 18: aperio.sales.v1.QuoteBrief.total:type_name -> google.type.Money
+	28, // 19: aperio.sales.v1.QuoteBrief.expire_time:type_name -> google.protobuf.Timestamp
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_aperio_sales_v1_sales_messages_proto_init() }
@@ -1300,6 +1742,7 @@ func file_aperio_sales_v1_sales_messages_proto_init() {
 	if File_aperio_sales_v1_sales_messages_proto != nil {
 		return
 	}
+	file_aperio_sales_v1_enums_proto_init()
 	file_aperio_sales_v1_sales_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1307,7 +1750,7 @@ func file_aperio_sales_v1_sales_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_sales_v1_sales_messages_proto_rawDesc), len(file_aperio_sales_v1_sales_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

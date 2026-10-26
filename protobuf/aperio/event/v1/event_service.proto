@@ -111,4 +111,12 @@ service EventService {
     option (google.api.http) = {delete: "/v1/{name=venues/*/events/*/sessions/*}"};
     option (google.api.method_signature) = "name";
   }
+
+  // The coming days' sessions at a venue, for the kitchen, the banquet team
+  // and their agents: each session's space, times, covers and menu, and the
+  // plates by diet, a day at a time.
+  rpc SummarizeSessions(SummarizeSessionsRequest) returns (SummarizeSessionsResponse) {
+    option (google.api.http) = {get: "/v1/{venue=venues/*}/events:summarizeSessions"};
+    option (google.api.method_signature) = "venue,start_date,days";
+  }
 }

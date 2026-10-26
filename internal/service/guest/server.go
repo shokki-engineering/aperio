@@ -1,11 +1,11 @@
 // Copyright 2026 Srikanth K.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Package crm serves aperio.crm.v1 -- contacts, leads and their activities --
-// on the generated AIP server, with the one rule the generated layer cannot
-// keep: a contact's phone_numbers, the E.164 numbers of its phones as a
-// column of their own, which is how a returning guest is found by the number
-// they call or type (the concierge's FindContact).
+// Package guest serves aperio.guest.v1 -- contacts -- on the generated AIP
+// server, with the rule the generated layer cannot keep: a contact's
+// phone_numbers, the E.164 numbers of its phones as a column of their own,
+// which is how a returning guest is found by the number they call or type
+// (the concierge's). SummarizeContact, a guest's history, is summary.go.
 package guest
 
 import (
@@ -19,10 +19,22 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// New returns the GuestService over repos.
-func New(repos guestpbv1svc.GuestServiceRepositories, opts ...servicex.Option) *guestpbv1svc.GuestServiceServer {
-	return guestpbv1svc.NewGuestServiceServer(repos, &hooks{repos: repos}, opts...)
+// Server serves aperio.guest.v1.GuestService: the generated standard methods
+// with the phone_numbers hooks, and SummarizeContact.
+type Server struct {
+	*guestpbv1svc.GuestServiceServer
+	history History
 }
+
+// New returns the GuestService over repos. SummarizeContact needs the other
+// services' (ReadHistoryFrom).
+func New(repos guestpbv1svc.GuestServiceRepositories, opts ...servicex.Option) *Server {
+	return &Server{GuestServiceServer: guestpbv1svc.NewGuestServiceServer(repos, &hooks{repos: repos}, opts...)}
+}
+
+// ReadHistoryFrom reads a guest's history from h: the services that are
+// built after this one, since they read its contacts.
+func (s *Server) ReadHistoryFrom(h History) { s.history = h }
 
 // hooks keep phone_numbers in step with phones.
 type hooks struct {

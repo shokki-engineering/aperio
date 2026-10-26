@@ -117,7 +117,7 @@ type Lead struct {
 	// The lead name.
 	// Format: leads/{lead}
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// A short title for the pipeline, e.g. "Sharma–Iyer wedding, Dec 2026".
+	// A short title for the pipeline, e.g. "Doe–Roe wedding, Dec 2026".
 	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Who is asking.
 	// Format: contacts/{contact}
@@ -513,7 +513,7 @@ type Quote struct {
 	// The quote name.
 	// Format: venues/{venue}/quotes/{quote}
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The quote's title, e.g. "Sharma–Iyer wedding -- option B".
+	// The quote's title, e.g. "Doe–Roe wedding -- option B".
 	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// The guest it is for, who is billed.
 	// Format: contacts/{contact}

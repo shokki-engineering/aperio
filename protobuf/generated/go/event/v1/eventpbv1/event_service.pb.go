@@ -30,7 +30,7 @@ var File_aperio_event_v1_event_service_proto protoreflect.FileDescriptor
 
 const file_aperio_event_v1_event_service_proto_rawDesc = "" +
 	"\n" +
-	"#aperio/event/v1/event_service.proto\x12\x0faperio.event.v1\x1a\x1baperio/event/v1/event.proto\x1a$aperio/event/v1/event_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18mcp/v1/annotations.proto2\xd5\r\n" +
+	"#aperio/event/v1/event_service.proto\x12\x0faperio.event.v1\x1a\x1baperio/event/v1/event.proto\x1a$aperio/event/v1/event_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18mcp/v1/annotations.proto2\x91\x0f\n" +
 	"\fEventService\x12q\n" +
 	"\bGetEvent\x12 .aperio.event.v1.GetEventRequest\x1a\x16.aperio.event.v1.Event\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{name=venues/*/events/*}\x12\x84\x01\n" +
 	"\n" +
@@ -44,28 +44,31 @@ const file_aperio_event_v1_event_service_proto_rawDesc = "" +
 	"\fListSessions\x12$.aperio.event.v1.ListSessionsRequest\x1a%.aperio.event.v1.ListSessionsResponse\"8\xdaA\x06parent\x82\xd3\xe4\x93\x02)\x12'/v1/{parent=venues/*/events/*}/sessions\x12\xa6\x01\n" +
 	"\rCreateSession\x12%.aperio.event.v1.CreateSessionRequest\x1a\x18.aperio.event.v1.Session\"T\xdaA\x19parent,session,session_id\x82\xd3\xe4\x93\x022:\asession\"'/v1/{parent=venues/*/events/*}/sessions\x12\xa8\x01\n" +
 	"\rUpdateSession\x12%.aperio.event.v1.UpdateSessionRequest\x1a\x18.aperio.event.v1.Session\"V\xdaA\x13session,update_mask\x82\xd3\xe4\x93\x02::\asession2//v1/{session.name=venues/*/events/*/sessions/*}\x12\x86\x01\n" +
-	"\rDeleteSession\x12%.aperio.event.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty\"6\xdaA\x04name\x82\xd3\xe4\x93\x02)*'/v1/{name=venues/*/events/*/sessions/*}\x1a\x9f\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\x7f\n" +
+	"\rDeleteSession\x12%.aperio.event.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty\"6\xdaA\x04name\x82\xd3\xe4\x93\x02)*'/v1/{name=venues/*/events/*/sessions/*}\x12\xb9\x01\n" +
+	"\x11SummarizeSessions\x12).aperio.event.v1.SummarizeSessionsRequest\x1a*.aperio.event.v1.SummarizeSessionsResponse\"M\xdaA\x15venue,start_date,days\x82\xd3\xe4\x93\x02/\x12-/v1/{venue=venues/*}/events:summarizeSessions\x1a\x9f\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\x7f\n" +
 	"}\n" +
 	"\x06Events\x12\x051.0.0\x1alEvents at a venue -- weddings, conferences, parties -- and their sessions, each holding a hall for its time.B\xdf\x01\n" +
 	"\x13com.aperio.event.v1B\x11EventServiceProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1;eventpbv1\xa2\x02\x03AEX\xaa\x02\x0fAperio.Event.V1\xca\x02\x0fAperio\\Event\\V1\xe2\x02\x1bAperio\\Event\\V1\\GPBMetadata\xea\x02\x11Aperio::Event::V1b\x06proto3"
 
 var file_aperio_event_v1_event_service_proto_goTypes = []any{
-	(*GetEventRequest)(nil),      // 0: aperio.event.v1.GetEventRequest
-	(*ListEventsRequest)(nil),    // 1: aperio.event.v1.ListEventsRequest
-	(*CreateEventRequest)(nil),   // 2: aperio.event.v1.CreateEventRequest
-	(*UpdateEventRequest)(nil),   // 3: aperio.event.v1.UpdateEventRequest
-	(*ConfirmEventRequest)(nil),  // 4: aperio.event.v1.ConfirmEventRequest
-	(*CancelEventRequest)(nil),   // 5: aperio.event.v1.CancelEventRequest
-	(*GetSessionRequest)(nil),    // 6: aperio.event.v1.GetSessionRequest
-	(*ListSessionsRequest)(nil),  // 7: aperio.event.v1.ListSessionsRequest
-	(*CreateSessionRequest)(nil), // 8: aperio.event.v1.CreateSessionRequest
-	(*UpdateSessionRequest)(nil), // 9: aperio.event.v1.UpdateSessionRequest
-	(*DeleteSessionRequest)(nil), // 10: aperio.event.v1.DeleteSessionRequest
-	(*Event)(nil),                // 11: aperio.event.v1.Event
-	(*ListEventsResponse)(nil),   // 12: aperio.event.v1.ListEventsResponse
-	(*Session)(nil),              // 13: aperio.event.v1.Session
-	(*ListSessionsResponse)(nil), // 14: aperio.event.v1.ListSessionsResponse
-	(*emptypb.Empty)(nil),        // 15: google.protobuf.Empty
+	(*GetEventRequest)(nil),           // 0: aperio.event.v1.GetEventRequest
+	(*ListEventsRequest)(nil),         // 1: aperio.event.v1.ListEventsRequest
+	(*CreateEventRequest)(nil),        // 2: aperio.event.v1.CreateEventRequest
+	(*UpdateEventRequest)(nil),        // 3: aperio.event.v1.UpdateEventRequest
+	(*ConfirmEventRequest)(nil),       // 4: aperio.event.v1.ConfirmEventRequest
+	(*CancelEventRequest)(nil),        // 5: aperio.event.v1.CancelEventRequest
+	(*GetSessionRequest)(nil),         // 6: aperio.event.v1.GetSessionRequest
+	(*ListSessionsRequest)(nil),       // 7: aperio.event.v1.ListSessionsRequest
+	(*CreateSessionRequest)(nil),      // 8: aperio.event.v1.CreateSessionRequest
+	(*UpdateSessionRequest)(nil),      // 9: aperio.event.v1.UpdateSessionRequest
+	(*DeleteSessionRequest)(nil),      // 10: aperio.event.v1.DeleteSessionRequest
+	(*SummarizeSessionsRequest)(nil),  // 11: aperio.event.v1.SummarizeSessionsRequest
+	(*Event)(nil),                     // 12: aperio.event.v1.Event
+	(*ListEventsResponse)(nil),        // 13: aperio.event.v1.ListEventsResponse
+	(*Session)(nil),                   // 14: aperio.event.v1.Session
+	(*ListSessionsResponse)(nil),      // 15: aperio.event.v1.ListSessionsResponse
+	(*emptypb.Empty)(nil),             // 16: google.protobuf.Empty
+	(*SummarizeSessionsResponse)(nil), // 17: aperio.event.v1.SummarizeSessionsResponse
 }
 var file_aperio_event_v1_event_service_proto_depIdxs = []int32{
 	0,  // 0: aperio.event.v1.EventService.GetEvent:input_type -> aperio.event.v1.GetEventRequest
@@ -79,19 +82,21 @@ var file_aperio_event_v1_event_service_proto_depIdxs = []int32{
 	8,  // 8: aperio.event.v1.EventService.CreateSession:input_type -> aperio.event.v1.CreateSessionRequest
 	9,  // 9: aperio.event.v1.EventService.UpdateSession:input_type -> aperio.event.v1.UpdateSessionRequest
 	10, // 10: aperio.event.v1.EventService.DeleteSession:input_type -> aperio.event.v1.DeleteSessionRequest
-	11, // 11: aperio.event.v1.EventService.GetEvent:output_type -> aperio.event.v1.Event
-	12, // 12: aperio.event.v1.EventService.ListEvents:output_type -> aperio.event.v1.ListEventsResponse
-	11, // 13: aperio.event.v1.EventService.CreateEvent:output_type -> aperio.event.v1.Event
-	11, // 14: aperio.event.v1.EventService.UpdateEvent:output_type -> aperio.event.v1.Event
-	11, // 15: aperio.event.v1.EventService.ConfirmEvent:output_type -> aperio.event.v1.Event
-	11, // 16: aperio.event.v1.EventService.CancelEvent:output_type -> aperio.event.v1.Event
-	13, // 17: aperio.event.v1.EventService.GetSession:output_type -> aperio.event.v1.Session
-	14, // 18: aperio.event.v1.EventService.ListSessions:output_type -> aperio.event.v1.ListSessionsResponse
-	13, // 19: aperio.event.v1.EventService.CreateSession:output_type -> aperio.event.v1.Session
-	13, // 20: aperio.event.v1.EventService.UpdateSession:output_type -> aperio.event.v1.Session
-	15, // 21: aperio.event.v1.EventService.DeleteSession:output_type -> google.protobuf.Empty
-	11, // [11:22] is the sub-list for method output_type
-	0,  // [0:11] is the sub-list for method input_type
+	11, // 11: aperio.event.v1.EventService.SummarizeSessions:input_type -> aperio.event.v1.SummarizeSessionsRequest
+	12, // 12: aperio.event.v1.EventService.GetEvent:output_type -> aperio.event.v1.Event
+	13, // 13: aperio.event.v1.EventService.ListEvents:output_type -> aperio.event.v1.ListEventsResponse
+	12, // 14: aperio.event.v1.EventService.CreateEvent:output_type -> aperio.event.v1.Event
+	12, // 15: aperio.event.v1.EventService.UpdateEvent:output_type -> aperio.event.v1.Event
+	12, // 16: aperio.event.v1.EventService.ConfirmEvent:output_type -> aperio.event.v1.Event
+	12, // 17: aperio.event.v1.EventService.CancelEvent:output_type -> aperio.event.v1.Event
+	14, // 18: aperio.event.v1.EventService.GetSession:output_type -> aperio.event.v1.Session
+	15, // 19: aperio.event.v1.EventService.ListSessions:output_type -> aperio.event.v1.ListSessionsResponse
+	14, // 20: aperio.event.v1.EventService.CreateSession:output_type -> aperio.event.v1.Session
+	14, // 21: aperio.event.v1.EventService.UpdateSession:output_type -> aperio.event.v1.Session
+	16, // 22: aperio.event.v1.EventService.DeleteSession:output_type -> google.protobuf.Empty
+	17, // 23: aperio.event.v1.EventService.SummarizeSessions:output_type -> aperio.event.v1.SummarizeSessionsResponse
+	12, // [12:24] is the sub-list for method output_type
+	0,  // [0:12] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

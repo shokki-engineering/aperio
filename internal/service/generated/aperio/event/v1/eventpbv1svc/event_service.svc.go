@@ -144,7 +144,7 @@ func (NopEventServiceHooks) AfterDeleteSession(ctx context.Context, name string)
 //
 // Custom methods are answered by the embedded UnimplementedEventServiceServer
 // until you write them: embed *EventServiceServer in a type of your own and
-// define ConfirmEvent, CancelEvent on it. Define a standard method there too to
+// define ConfirmEvent, CancelEvent, SummarizeSessions on it. Define a standard method there too to
 // replace the generated one.
 type EventServiceServer struct {
 	eventpbv1.UnimplementedEventServiceServer

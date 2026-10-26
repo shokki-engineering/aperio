@@ -12,6 +12,8 @@ package financepbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
+	date "google.golang.org/genproto/googleapis/type/date"
+	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -993,11 +995,316 @@ func (x *VoidPaymentRequest) GetReason() string {
 	return ""
 }
 
+// Request message for SummarizeReceivables.
+type SummarizeReceivablesRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// How many debtors to list, most owed first; 10 when unset.
+	Debtors       int32 `protobuf:"varint,2,opt,name=debtors,proto3" json:"debtors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeReceivablesRequest) Reset() {
+	*x = SummarizeReceivablesRequest{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeReceivablesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeReceivablesRequest) ProtoMessage() {}
+
+func (x *SummarizeReceivablesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeReceivablesRequest.ProtoReflect.Descriptor instead.
+func (*SummarizeReceivablesRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *SummarizeReceivablesRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *SummarizeReceivablesRequest) GetDebtors() int32 {
+	if x != nil {
+		return x.Debtors
+	}
+	return 0
+}
+
+// Response message for SummarizeReceivables, in the venue's currency. Only
+// issued invoices are owed: drafts, paid and cancelled ones are not.
+type SummarizeReceivablesResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The day it is counted on, at the venue.
+	Date *date.Date `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	// What issued invoices still ask for.
+	Outstanding *money.Money `protobuf:"bytes,2,opt,name=outstanding,proto3" json:"outstanding,omitempty"`
+	// The part of it past its due date.
+	Overdue *money.Money `protobuf:"bytes,3,opt,name=overdue,proto3" json:"overdue,omitempty"`
+	// The outstanding by how long past due: "current", "1-30", "31-60",
+	// "61-90", "90+" days.
+	Aging []*AgeBucket `protobuf:"bytes,4,rep,name=aging,proto3" json:"aging,omitempty"`
+	// Who owes the most, most first.
+	Debtors []*Debtor `protobuf:"bytes,5,rep,name=debtors,proto3" json:"debtors,omitempty"`
+	// What came in this month, less refunds.
+	Collected     *money.Money `protobuf:"bytes,6,opt,name=collected,proto3" json:"collected,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeReceivablesResponse) Reset() {
+	*x = SummarizeReceivablesResponse{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeReceivablesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeReceivablesResponse) ProtoMessage() {}
+
+func (x *SummarizeReceivablesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeReceivablesResponse.ProtoReflect.Descriptor instead.
+func (*SummarizeReceivablesResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *SummarizeReceivablesResponse) GetDate() *date.Date {
+	if x != nil {
+		return x.Date
+	}
+	return nil
+}
+
+func (x *SummarizeReceivablesResponse) GetOutstanding() *money.Money {
+	if x != nil {
+		return x.Outstanding
+	}
+	return nil
+}
+
+func (x *SummarizeReceivablesResponse) GetOverdue() *money.Money {
+	if x != nil {
+		return x.Overdue
+	}
+	return nil
+}
+
+func (x *SummarizeReceivablesResponse) GetAging() []*AgeBucket {
+	if x != nil {
+		return x.Aging
+	}
+	return nil
+}
+
+func (x *SummarizeReceivablesResponse) GetDebtors() []*Debtor {
+	if x != nil {
+		return x.Debtors
+	}
+	return nil
+}
+
+func (x *SummarizeReceivablesResponse) GetCollected() *money.Money {
+	if x != nil {
+		return x.Collected
+	}
+	return nil
+}
+
+// The outstanding of one age.
+type AgeBucket struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// How long past due: "current", "1-30", "31-60", "61-90", "90+".
+	Age string `protobuf:"bytes,1,opt,name=age,proto3" json:"age,omitempty"`
+	// What is owed at that age.
+	Amount *money.Money `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	// The invoices owing it.
+	Invoices      int32 `protobuf:"varint,3,opt,name=invoices,proto3" json:"invoices,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AgeBucket) Reset() {
+	*x = AgeBucket{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AgeBucket) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AgeBucket) ProtoMessage() {}
+
+func (x *AgeBucket) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AgeBucket.ProtoReflect.Descriptor instead.
+func (*AgeBucket) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *AgeBucket) GetAge() string {
+	if x != nil {
+		return x.Age
+	}
+	return ""
+}
+
+func (x *AgeBucket) GetAmount() *money.Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *AgeBucket) GetInvoices() int32 {
+	if x != nil {
+		return x.Invoices
+	}
+	return 0
+}
+
+// A guest who owes the venue.
+type Debtor struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The guest.
+	// Format: contacts/{contact}
+	Contact string `protobuf:"bytes,1,opt,name=contact,proto3" json:"contact,omitempty"`
+	// Their name.
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	// Their phone, E.164.
+	Phone string `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
+	// What they owe.
+	Due *money.Money `protobuf:"bytes,4,opt,name=due,proto3" json:"due,omitempty"`
+	// The invoices owing it.
+	Invoices int32 `protobuf:"varint,5,opt,name=invoices,proto3" json:"invoices,omitempty"`
+	// The earliest due date among them.
+	OldestDueDate *date.Date `protobuf:"bytes,6,opt,name=oldest_due_date,json=oldestDueDate,proto3" json:"oldest_due_date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Debtor) Reset() {
+	*x = Debtor{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Debtor) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Debtor) ProtoMessage() {}
+
+func (x *Debtor) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Debtor.ProtoReflect.Descriptor instead.
+func (*Debtor) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *Debtor) GetContact() string {
+	if x != nil {
+		return x.Contact
+	}
+	return ""
+}
+
+func (x *Debtor) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *Debtor) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *Debtor) GetDue() *money.Money {
+	if x != nil {
+		return x.Due
+	}
+	return nil
+}
+
+func (x *Debtor) GetInvoices() int32 {
+	if x != nil {
+		return x.Invoices
+	}
+	return 0
+}
+
+func (x *Debtor) GetOldestDueDate() *date.Date {
+	if x != nil {
+		return x.OldestDueDate
+	}
+	return nil
+}
+
 var File_aperio_finance_v1_finance_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_finance_v1_finance_messages_proto_rawDesc = "" +
 	"\n" +
-	"(aperio/finance/v1/finance_messages.proto\x12\x11aperio.finance.v1\x1a\x1faperio/finance/v1/finance.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"K\n" +
+	"(aperio/finance/v1/finance_messages.proto\x12\x11aperio.finance.v1\x1a\x1faperio/finance/v1/finance.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"K\n" +
 	"\x11GetInvoiceRequest\x126\n" +
 	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
 	"\x19aperio.finance.v1/InvoiceR\x04name\"\xe2\x01\n" +
@@ -1069,7 +1376,30 @@ const file_aperio_finance_v1_finance_messages_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
 	"\x19aperio.finance.v1/PaymentR\x04name\x12\x18\n" +
 	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12$\n" +
-	"\x06reason\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\x06reasonB\xf2\x01\n" +
+	"\x06reason\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\x06reason\"|\n" +
+	"\x1bSummarizeReceivablesRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12'\n" +
+	"\adebtors\x18\x02 \x01(\x05B\r\xe2A\x01\x01\xbaH\x06\x1a\x04\x18d(\x00R\adebtors\"\xc4\x02\n" +
+	"\x1cSummarizeReceivablesResponse\x12%\n" +
+	"\x04date\x18\x01 \x01(\v2\x11.google.type.DateR\x04date\x124\n" +
+	"\voutstanding\x18\x02 \x01(\v2\x12.google.type.MoneyR\voutstanding\x12,\n" +
+	"\aoverdue\x18\x03 \x01(\v2\x12.google.type.MoneyR\aoverdue\x122\n" +
+	"\x05aging\x18\x04 \x03(\v2\x1c.aperio.finance.v1.AgeBucketR\x05aging\x123\n" +
+	"\adebtors\x18\x05 \x03(\v2\x19.aperio.finance.v1.DebtorR\adebtors\x120\n" +
+	"\tcollected\x18\x06 \x01(\v2\x12.google.type.MoneyR\tcollected\"e\n" +
+	"\tAgeBucket\x12\x10\n" +
+	"\x03age\x18\x01 \x01(\tR\x03age\x12*\n" +
+	"\x06amount\x18\x02 \x01(\v2\x12.google.type.MoneyR\x06amount\x12\x1a\n" +
+	"\binvoices\x18\x03 \x01(\x05R\binvoices\"\xf6\x01\n" +
+	"\x06Debtor\x126\n" +
+	"\acontact\x18\x01 \x01(\tB\x1c\xfaA\x19\n" +
+	"\x17aperio.guest.v1/ContactR\acontact\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x14\n" +
+	"\x05phone\x18\x03 \x01(\tR\x05phone\x12$\n" +
+	"\x03due\x18\x04 \x01(\v2\x12.google.type.MoneyR\x03due\x12\x1a\n" +
+	"\binvoices\x18\x05 \x01(\x05R\binvoices\x129\n" +
+	"\x0foldest_due_date\x18\x06 \x01(\v2\x11.google.type.DateR\roldestDueDateB\xf2\x01\n" +
 	"\x15com.aperio.finance.v1B\x14FinanceMessagesProtoP\x01Z]github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1\xa2\x02\x03AFX\xaa\x02\x11Aperio.Finance.V1\xca\x02\x11Aperio\\Finance\\V1\xe2\x02\x1dAperio\\Finance\\V1\\GPBMetadata\xea\x02\x13Aperio::Finance::V1b\x06proto3"
 
 var (
@@ -1084,41 +1414,56 @@ func file_aperio_finance_v1_finance_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_finance_v1_finance_messages_proto_rawDescData
 }
 
-var file_aperio_finance_v1_finance_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_aperio_finance_v1_finance_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_aperio_finance_v1_finance_messages_proto_goTypes = []any{
-	(*GetInvoiceRequest)(nil),     // 0: aperio.finance.v1.GetInvoiceRequest
-	(*ListInvoicesRequest)(nil),   // 1: aperio.finance.v1.ListInvoicesRequest
-	(*ListInvoicesResponse)(nil),  // 2: aperio.finance.v1.ListInvoicesResponse
-	(*CreateInvoiceRequest)(nil),  // 3: aperio.finance.v1.CreateInvoiceRequest
-	(*UpdateInvoiceRequest)(nil),  // 4: aperio.finance.v1.UpdateInvoiceRequest
-	(*IssueInvoiceRequest)(nil),   // 5: aperio.finance.v1.IssueInvoiceRequest
-	(*CancelInvoiceRequest)(nil),  // 6: aperio.finance.v1.CancelInvoiceRequest
-	(*CreditInvoiceRequest)(nil),  // 7: aperio.finance.v1.CreditInvoiceRequest
-	(*GetPaymentRequest)(nil),     // 8: aperio.finance.v1.GetPaymentRequest
-	(*ListPaymentsRequest)(nil),   // 9: aperio.finance.v1.ListPaymentsRequest
-	(*ListPaymentsResponse)(nil),  // 10: aperio.finance.v1.ListPaymentsResponse
-	(*CreatePaymentRequest)(nil),  // 11: aperio.finance.v1.CreatePaymentRequest
-	(*UpdatePaymentRequest)(nil),  // 12: aperio.finance.v1.UpdatePaymentRequest
-	(*RefundPaymentRequest)(nil),  // 13: aperio.finance.v1.RefundPaymentRequest
-	(*VoidPaymentRequest)(nil),    // 14: aperio.finance.v1.VoidPaymentRequest
-	(*Invoice)(nil),               // 15: aperio.finance.v1.Invoice
-	(*fieldmaskpb.FieldMask)(nil), // 16: google.protobuf.FieldMask
-	(*Payment)(nil),               // 17: aperio.finance.v1.Payment
+	(*GetInvoiceRequest)(nil),            // 0: aperio.finance.v1.GetInvoiceRequest
+	(*ListInvoicesRequest)(nil),          // 1: aperio.finance.v1.ListInvoicesRequest
+	(*ListInvoicesResponse)(nil),         // 2: aperio.finance.v1.ListInvoicesResponse
+	(*CreateInvoiceRequest)(nil),         // 3: aperio.finance.v1.CreateInvoiceRequest
+	(*UpdateInvoiceRequest)(nil),         // 4: aperio.finance.v1.UpdateInvoiceRequest
+	(*IssueInvoiceRequest)(nil),          // 5: aperio.finance.v1.IssueInvoiceRequest
+	(*CancelInvoiceRequest)(nil),         // 6: aperio.finance.v1.CancelInvoiceRequest
+	(*CreditInvoiceRequest)(nil),         // 7: aperio.finance.v1.CreditInvoiceRequest
+	(*GetPaymentRequest)(nil),            // 8: aperio.finance.v1.GetPaymentRequest
+	(*ListPaymentsRequest)(nil),          // 9: aperio.finance.v1.ListPaymentsRequest
+	(*ListPaymentsResponse)(nil),         // 10: aperio.finance.v1.ListPaymentsResponse
+	(*CreatePaymentRequest)(nil),         // 11: aperio.finance.v1.CreatePaymentRequest
+	(*UpdatePaymentRequest)(nil),         // 12: aperio.finance.v1.UpdatePaymentRequest
+	(*RefundPaymentRequest)(nil),         // 13: aperio.finance.v1.RefundPaymentRequest
+	(*VoidPaymentRequest)(nil),           // 14: aperio.finance.v1.VoidPaymentRequest
+	(*SummarizeReceivablesRequest)(nil),  // 15: aperio.finance.v1.SummarizeReceivablesRequest
+	(*SummarizeReceivablesResponse)(nil), // 16: aperio.finance.v1.SummarizeReceivablesResponse
+	(*AgeBucket)(nil),                    // 17: aperio.finance.v1.AgeBucket
+	(*Debtor)(nil),                       // 18: aperio.finance.v1.Debtor
+	(*Invoice)(nil),                      // 19: aperio.finance.v1.Invoice
+	(*fieldmaskpb.FieldMask)(nil),        // 20: google.protobuf.FieldMask
+	(*Payment)(nil),                      // 21: aperio.finance.v1.Payment
+	(*date.Date)(nil),                    // 22: google.type.Date
+	(*money.Money)(nil),                  // 23: google.type.Money
 }
 var file_aperio_finance_v1_finance_messages_proto_depIdxs = []int32{
-	15, // 0: aperio.finance.v1.ListInvoicesResponse.invoices:type_name -> aperio.finance.v1.Invoice
-	15, // 1: aperio.finance.v1.CreateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
-	15, // 2: aperio.finance.v1.UpdateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
-	16, // 3: aperio.finance.v1.UpdateInvoiceRequest.update_mask:type_name -> google.protobuf.FieldMask
-	17, // 4: aperio.finance.v1.ListPaymentsResponse.payments:type_name -> aperio.finance.v1.Payment
-	17, // 5: aperio.finance.v1.CreatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
-	17, // 6: aperio.finance.v1.UpdatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
-	16, // 7: aperio.finance.v1.UpdatePaymentRequest.update_mask:type_name -> google.protobuf.FieldMask
-	8,  // [8:8] is the sub-list for method output_type
-	8,  // [8:8] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	19, // 0: aperio.finance.v1.ListInvoicesResponse.invoices:type_name -> aperio.finance.v1.Invoice
+	19, // 1: aperio.finance.v1.CreateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
+	19, // 2: aperio.finance.v1.UpdateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
+	20, // 3: aperio.finance.v1.UpdateInvoiceRequest.update_mask:type_name -> google.protobuf.FieldMask
+	21, // 4: aperio.finance.v1.ListPaymentsResponse.payments:type_name -> aperio.finance.v1.Payment
+	21, // 5: aperio.finance.v1.CreatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
+	21, // 6: aperio.finance.v1.UpdatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
+	20, // 7: aperio.finance.v1.UpdatePaymentRequest.update_mask:type_name -> google.protobuf.FieldMask
+	22, // 8: aperio.finance.v1.SummarizeReceivablesResponse.date:type_name -> google.type.Date
+	23, // 9: aperio.finance.v1.SummarizeReceivablesResponse.outstanding:type_name -> google.type.Money
+	23, // 10: aperio.finance.v1.SummarizeReceivablesResponse.overdue:type_name -> google.type.Money
+	17, // 11: aperio.finance.v1.SummarizeReceivablesResponse.aging:type_name -> aperio.finance.v1.AgeBucket
+	18, // 12: aperio.finance.v1.SummarizeReceivablesResponse.debtors:type_name -> aperio.finance.v1.Debtor
+	23, // 13: aperio.finance.v1.SummarizeReceivablesResponse.collected:type_name -> google.type.Money
+	23, // 14: aperio.finance.v1.AgeBucket.amount:type_name -> google.type.Money
+	23, // 15: aperio.finance.v1.Debtor.due:type_name -> google.type.Money
+	22, // 16: aperio.finance.v1.Debtor.oldest_due_date:type_name -> google.type.Date
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_aperio_finance_v1_finance_messages_proto_init() }
@@ -1133,7 +1478,7 @@ func file_aperio_finance_v1_finance_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_finance_v1_finance_messages_proto_rawDesc), len(file_aperio_finance_v1_finance_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

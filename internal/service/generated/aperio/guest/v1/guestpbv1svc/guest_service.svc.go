@@ -78,6 +78,11 @@ func (NopGuestServiceHooks) AfterUpdateContact(ctx context.Context, m *guestpbv1
 
 // GuestServiceServer serves aperio.guest.v1.GuestService's AIP standard methods over the
 // generated repositories.
+//
+// Custom methods are answered by the embedded UnimplementedGuestServiceServer
+// until you write them: embed *GuestServiceServer in a type of your own and
+// define SummarizeContact on it. Define a standard method there too to
+// replace the generated one.
 type GuestServiceServer struct {
 	guestpbv1.UnimplementedGuestServiceServer
 

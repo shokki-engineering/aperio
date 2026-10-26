@@ -29,7 +29,7 @@ var File_aperio_finance_v1_finance_service_proto protoreflect.FileDescriptor
 
 const file_aperio_finance_v1_finance_service_proto_rawDesc = "" +
 	"\n" +
-	"'aperio/finance/v1/finance_service.proto\x12\x11aperio.finance.v1\x1a\x1faperio/finance/v1/finance.proto\x1a(aperio/finance/v1/finance_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xbb\x10\n" +
+	"'aperio/finance/v1/finance_service.proto\x12\x11aperio.finance.v1\x1a\x1faperio/finance/v1/finance.proto\x1a(aperio/finance/v1/finance_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xf9\x11\n" +
 	"\x0eFinanceService\x12}\n" +
 	"\n" +
 	"GetInvoice\x12$.aperio.finance.v1.GetInvoiceRequest\x1a\x1a.aperio.finance.v1.Invoice\"-\xdaA\x04name\x82\xd3\xe4\x93\x02 \x12\x1e/v1/{name=venues/*/invoices/*}\x12\x90\x01\n" +
@@ -45,29 +45,32 @@ const file_aperio_finance_v1_finance_service_proto_rawDesc = "" +
 	"\rCreatePayment\x12'.aperio.finance.v1.CreatePaymentRequest\x1a\x1a.aperio.finance.v1.Payment\"K\xdaA\x19parent,payment,payment_id\x82\xd3\xe4\x93\x02):\apayment\"\x1e/v1/{parent=venues/*}/payments\x12\xa3\x01\n" +
 	"\rUpdatePayment\x12'.aperio.finance.v1.UpdatePaymentRequest\x1a\x1a.aperio.finance.v1.Payment\"M\xdaA\x13payment,update_mask\x82\xd3\xe4\x93\x021:\apayment2&/v1/{payment.name=venues/*/payments/*}\x12\x8d\x01\n" +
 	"\rRefundPayment\x12'.aperio.finance.v1.RefundPaymentRequest\x1a\x1a.aperio.finance.v1.Payment\"7\xdaA\x04name\x82\xd3\xe4\x93\x02*:\x01*\"%/v1/{name=venues/*/payments/*}:refund\x12\x87\x01\n" +
-	"\vVoidPayment\x12%.aperio.finance.v1.VoidPaymentRequest\x1a\x1a.aperio.finance.v1.Payment\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/payments/*}:void\x1a\xa9\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\x88\x01\n" +
+	"\vVoidPayment\x12%.aperio.finance.v1.VoidPaymentRequest\x1a\x1a.aperio.finance.v1.Payment\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/payments/*}:void\x12\xbb\x01\n" +
+	"\x14SummarizeReceivables\x12..aperio.finance.v1.SummarizeReceivablesRequest\x1a/.aperio.finance.v1.SummarizeReceivablesResponse\"B\xdaA\x05venue\x82\xd3\xe4\x93\x024\x122/v1/{venue=venues/*}/invoices:summarizeReceivables\x1a\xa9\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\x88\x01\n" +
 	"\x85\x01\n" +
 	"\aFinance\x12\x051.0.0\x1asGST invoices, proformas, advance receipts and credit notes, and the ledger of payments and refunds in any currency.B\xf1\x01\n" +
 	"\x15com.aperio.finance.v1B\x13FinanceServiceProtoP\x01Z]github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1\xa2\x02\x03AFX\xaa\x02\x11Aperio.Finance.V1\xca\x02\x11Aperio\\Finance\\V1\xe2\x02\x1dAperio\\Finance\\V1\\GPBMetadata\xea\x02\x13Aperio::Finance::V1b\x06proto3"
 
 var file_aperio_finance_v1_finance_service_proto_goTypes = []any{
-	(*GetInvoiceRequest)(nil),    // 0: aperio.finance.v1.GetInvoiceRequest
-	(*ListInvoicesRequest)(nil),  // 1: aperio.finance.v1.ListInvoicesRequest
-	(*CreateInvoiceRequest)(nil), // 2: aperio.finance.v1.CreateInvoiceRequest
-	(*UpdateInvoiceRequest)(nil), // 3: aperio.finance.v1.UpdateInvoiceRequest
-	(*IssueInvoiceRequest)(nil),  // 4: aperio.finance.v1.IssueInvoiceRequest
-	(*CancelInvoiceRequest)(nil), // 5: aperio.finance.v1.CancelInvoiceRequest
-	(*CreditInvoiceRequest)(nil), // 6: aperio.finance.v1.CreditInvoiceRequest
-	(*GetPaymentRequest)(nil),    // 7: aperio.finance.v1.GetPaymentRequest
-	(*ListPaymentsRequest)(nil),  // 8: aperio.finance.v1.ListPaymentsRequest
-	(*CreatePaymentRequest)(nil), // 9: aperio.finance.v1.CreatePaymentRequest
-	(*UpdatePaymentRequest)(nil), // 10: aperio.finance.v1.UpdatePaymentRequest
-	(*RefundPaymentRequest)(nil), // 11: aperio.finance.v1.RefundPaymentRequest
-	(*VoidPaymentRequest)(nil),   // 12: aperio.finance.v1.VoidPaymentRequest
-	(*Invoice)(nil),              // 13: aperio.finance.v1.Invoice
-	(*ListInvoicesResponse)(nil), // 14: aperio.finance.v1.ListInvoicesResponse
-	(*Payment)(nil),              // 15: aperio.finance.v1.Payment
-	(*ListPaymentsResponse)(nil), // 16: aperio.finance.v1.ListPaymentsResponse
+	(*GetInvoiceRequest)(nil),            // 0: aperio.finance.v1.GetInvoiceRequest
+	(*ListInvoicesRequest)(nil),          // 1: aperio.finance.v1.ListInvoicesRequest
+	(*CreateInvoiceRequest)(nil),         // 2: aperio.finance.v1.CreateInvoiceRequest
+	(*UpdateInvoiceRequest)(nil),         // 3: aperio.finance.v1.UpdateInvoiceRequest
+	(*IssueInvoiceRequest)(nil),          // 4: aperio.finance.v1.IssueInvoiceRequest
+	(*CancelInvoiceRequest)(nil),         // 5: aperio.finance.v1.CancelInvoiceRequest
+	(*CreditInvoiceRequest)(nil),         // 6: aperio.finance.v1.CreditInvoiceRequest
+	(*GetPaymentRequest)(nil),            // 7: aperio.finance.v1.GetPaymentRequest
+	(*ListPaymentsRequest)(nil),          // 8: aperio.finance.v1.ListPaymentsRequest
+	(*CreatePaymentRequest)(nil),         // 9: aperio.finance.v1.CreatePaymentRequest
+	(*UpdatePaymentRequest)(nil),         // 10: aperio.finance.v1.UpdatePaymentRequest
+	(*RefundPaymentRequest)(nil),         // 11: aperio.finance.v1.RefundPaymentRequest
+	(*VoidPaymentRequest)(nil),           // 12: aperio.finance.v1.VoidPaymentRequest
+	(*SummarizeReceivablesRequest)(nil),  // 13: aperio.finance.v1.SummarizeReceivablesRequest
+	(*Invoice)(nil),                      // 14: aperio.finance.v1.Invoice
+	(*ListInvoicesResponse)(nil),         // 15: aperio.finance.v1.ListInvoicesResponse
+	(*Payment)(nil),                      // 16: aperio.finance.v1.Payment
+	(*ListPaymentsResponse)(nil),         // 17: aperio.finance.v1.ListPaymentsResponse
+	(*SummarizeReceivablesResponse)(nil), // 18: aperio.finance.v1.SummarizeReceivablesResponse
 }
 var file_aperio_finance_v1_finance_service_proto_depIdxs = []int32{
 	0,  // 0: aperio.finance.v1.FinanceService.GetInvoice:input_type -> aperio.finance.v1.GetInvoiceRequest
@@ -83,21 +86,23 @@ var file_aperio_finance_v1_finance_service_proto_depIdxs = []int32{
 	10, // 10: aperio.finance.v1.FinanceService.UpdatePayment:input_type -> aperio.finance.v1.UpdatePaymentRequest
 	11, // 11: aperio.finance.v1.FinanceService.RefundPayment:input_type -> aperio.finance.v1.RefundPaymentRequest
 	12, // 12: aperio.finance.v1.FinanceService.VoidPayment:input_type -> aperio.finance.v1.VoidPaymentRequest
-	13, // 13: aperio.finance.v1.FinanceService.GetInvoice:output_type -> aperio.finance.v1.Invoice
-	14, // 14: aperio.finance.v1.FinanceService.ListInvoices:output_type -> aperio.finance.v1.ListInvoicesResponse
-	13, // 15: aperio.finance.v1.FinanceService.CreateInvoice:output_type -> aperio.finance.v1.Invoice
-	13, // 16: aperio.finance.v1.FinanceService.UpdateInvoice:output_type -> aperio.finance.v1.Invoice
-	13, // 17: aperio.finance.v1.FinanceService.IssueInvoice:output_type -> aperio.finance.v1.Invoice
-	13, // 18: aperio.finance.v1.FinanceService.CancelInvoice:output_type -> aperio.finance.v1.Invoice
-	13, // 19: aperio.finance.v1.FinanceService.CreditInvoice:output_type -> aperio.finance.v1.Invoice
-	15, // 20: aperio.finance.v1.FinanceService.GetPayment:output_type -> aperio.finance.v1.Payment
-	16, // 21: aperio.finance.v1.FinanceService.ListPayments:output_type -> aperio.finance.v1.ListPaymentsResponse
-	15, // 22: aperio.finance.v1.FinanceService.CreatePayment:output_type -> aperio.finance.v1.Payment
-	15, // 23: aperio.finance.v1.FinanceService.UpdatePayment:output_type -> aperio.finance.v1.Payment
-	15, // 24: aperio.finance.v1.FinanceService.RefundPayment:output_type -> aperio.finance.v1.Payment
-	15, // 25: aperio.finance.v1.FinanceService.VoidPayment:output_type -> aperio.finance.v1.Payment
-	13, // [13:26] is the sub-list for method output_type
-	0,  // [0:13] is the sub-list for method input_type
+	13, // 13: aperio.finance.v1.FinanceService.SummarizeReceivables:input_type -> aperio.finance.v1.SummarizeReceivablesRequest
+	14, // 14: aperio.finance.v1.FinanceService.GetInvoice:output_type -> aperio.finance.v1.Invoice
+	15, // 15: aperio.finance.v1.FinanceService.ListInvoices:output_type -> aperio.finance.v1.ListInvoicesResponse
+	14, // 16: aperio.finance.v1.FinanceService.CreateInvoice:output_type -> aperio.finance.v1.Invoice
+	14, // 17: aperio.finance.v1.FinanceService.UpdateInvoice:output_type -> aperio.finance.v1.Invoice
+	14, // 18: aperio.finance.v1.FinanceService.IssueInvoice:output_type -> aperio.finance.v1.Invoice
+	14, // 19: aperio.finance.v1.FinanceService.CancelInvoice:output_type -> aperio.finance.v1.Invoice
+	14, // 20: aperio.finance.v1.FinanceService.CreditInvoice:output_type -> aperio.finance.v1.Invoice
+	16, // 21: aperio.finance.v1.FinanceService.GetPayment:output_type -> aperio.finance.v1.Payment
+	17, // 22: aperio.finance.v1.FinanceService.ListPayments:output_type -> aperio.finance.v1.ListPaymentsResponse
+	16, // 23: aperio.finance.v1.FinanceService.CreatePayment:output_type -> aperio.finance.v1.Payment
+	16, // 24: aperio.finance.v1.FinanceService.UpdatePayment:output_type -> aperio.finance.v1.Payment
+	16, // 25: aperio.finance.v1.FinanceService.RefundPayment:output_type -> aperio.finance.v1.Payment
+	16, // 26: aperio.finance.v1.FinanceService.VoidPayment:output_type -> aperio.finance.v1.Payment
+	18, // 27: aperio.finance.v1.FinanceService.SummarizeReceivables:output_type -> aperio.finance.v1.SummarizeReceivablesResponse
+	14, // [14:28] is the sub-list for method output_type
+	0,  // [0:14] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

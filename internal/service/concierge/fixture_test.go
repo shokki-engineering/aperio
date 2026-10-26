@@ -18,7 +18,6 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/concierge"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/catalog/v1/catalogpbv1svc"
-	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/guest/v1/guestpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/operations/v1/operationspbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/guest"
 	"github.com/shokki-engineering/aperio/internal/service/pricing"
@@ -37,7 +36,7 @@ type resort struct {
 	svc    *concierge.Server
 	fb     *live.Freebusy
 	stays  *stay.Server
-	guests *guestpbv1svc.GuestServiceServer
+	guests *guest.Server
 	venue  *venuepbv1.Venue
 	space  *venuepbv1.Space
 	run    string

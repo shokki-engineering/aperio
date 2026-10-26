@@ -29,6 +29,7 @@ const (
 	OperationsService_StartServiceRequest_FullMethodName       = "/aperio.operations.v1.OperationsService/StartServiceRequest"
 	OperationsService_CompleteServiceRequest_FullMethodName    = "/aperio.operations.v1.OperationsService/CompleteServiceRequest"
 	OperationsService_CancelServiceRequest_FullMethodName      = "/aperio.operations.v1.OperationsService/CancelServiceRequest"
+	OperationsService_SummarizeServiceRequests_FullMethodName  = "/aperio.operations.v1.OperationsService/SummarizeServiceRequests"
 )
 
 // OperationsServiceClient is the client API for OperationsService service.
@@ -51,6 +52,10 @@ type OperationsServiceClient interface {
 	CompleteServiceRequest(ctx context.Context, in *CompleteServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 	// Calls off a service request.
 	CancelServiceRequest(ctx context.Context, in *CancelServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
+	// A venue's open requests by department, for the departments and their
+	// agents: what is waiting, what is overdue, the oldest first, and what was
+	// done today.
+	SummarizeServiceRequests(ctx context.Context, in *SummarizeServiceRequestsRequest, opts ...grpc.CallOption) (*SummarizeServiceRequestsResponse, error)
 }
 
 type operationsServiceClient struct {
@@ -131,6 +136,16 @@ func (c *operationsServiceClient) CancelServiceRequest(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *operationsServiceClient) SummarizeServiceRequests(ctx context.Context, in *SummarizeServiceRequestsRequest, opts ...grpc.CallOption) (*SummarizeServiceRequestsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SummarizeServiceRequestsResponse)
+	err := c.cc.Invoke(ctx, OperationsService_SummarizeServiceRequests_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OperationsServiceServer is the server API for OperationsService service.
 // All implementations must embed UnimplementedOperationsServiceServer
 // for forward compatibility.
@@ -151,6 +166,10 @@ type OperationsServiceServer interface {
 	CompleteServiceRequest(context.Context, *CompleteServiceRequestRequest) (*ServiceRequest, error)
 	// Calls off a service request.
 	CancelServiceRequest(context.Context, *CancelServiceRequestRequest) (*ServiceRequest, error)
+	// A venue's open requests by department, for the departments and their
+	// agents: what is waiting, what is overdue, the oldest first, and what was
+	// done today.
+	SummarizeServiceRequests(context.Context, *SummarizeServiceRequestsRequest) (*SummarizeServiceRequestsResponse, error)
 	mustEmbedUnimplementedOperationsServiceServer()
 }
 
@@ -181,6 +200,9 @@ func (UnimplementedOperationsServiceServer) CompleteServiceRequest(context.Conte
 }
 func (UnimplementedOperationsServiceServer) CancelServiceRequest(context.Context, *CancelServiceRequestRequest) (*ServiceRequest, error) {
 	return nil, status.Error(codes.Unimplemented, "method CancelServiceRequest not implemented")
+}
+func (UnimplementedOperationsServiceServer) SummarizeServiceRequests(context.Context, *SummarizeServiceRequestsRequest) (*SummarizeServiceRequestsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SummarizeServiceRequests not implemented")
 }
 func (UnimplementedOperationsServiceServer) mustEmbedUnimplementedOperationsServiceServer() {}
 func (UnimplementedOperationsServiceServer) testEmbeddedByValue()                           {}
@@ -329,6 +351,24 @@ func _OperationsService_CancelServiceRequest_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OperationsService_SummarizeServiceRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SummarizeServiceRequestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OperationsServiceServer).SummarizeServiceRequests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OperationsService_SummarizeServiceRequests_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OperationsServiceServer).SummarizeServiceRequests(ctx, req.(*SummarizeServiceRequestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OperationsService_ServiceDesc is the grpc.ServiceDesc for OperationsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -363,6 +403,10 @@ var OperationsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelServiceRequest",
 			Handler:    _OperationsService_CancelServiceRequest_Handler,
+		},
+		{
+			MethodName: "SummarizeServiceRequests",
+			Handler:    _OperationsService_SummarizeServiceRequests_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -22,19 +22,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	FinanceService_GetInvoice_FullMethodName    = "/aperio.finance.v1.FinanceService/GetInvoice"
-	FinanceService_ListInvoices_FullMethodName  = "/aperio.finance.v1.FinanceService/ListInvoices"
-	FinanceService_CreateInvoice_FullMethodName = "/aperio.finance.v1.FinanceService/CreateInvoice"
-	FinanceService_UpdateInvoice_FullMethodName = "/aperio.finance.v1.FinanceService/UpdateInvoice"
-	FinanceService_IssueInvoice_FullMethodName  = "/aperio.finance.v1.FinanceService/IssueInvoice"
-	FinanceService_CancelInvoice_FullMethodName = "/aperio.finance.v1.FinanceService/CancelInvoice"
-	FinanceService_CreditInvoice_FullMethodName = "/aperio.finance.v1.FinanceService/CreditInvoice"
-	FinanceService_GetPayment_FullMethodName    = "/aperio.finance.v1.FinanceService/GetPayment"
-	FinanceService_ListPayments_FullMethodName  = "/aperio.finance.v1.FinanceService/ListPayments"
-	FinanceService_CreatePayment_FullMethodName = "/aperio.finance.v1.FinanceService/CreatePayment"
-	FinanceService_UpdatePayment_FullMethodName = "/aperio.finance.v1.FinanceService/UpdatePayment"
-	FinanceService_RefundPayment_FullMethodName = "/aperio.finance.v1.FinanceService/RefundPayment"
-	FinanceService_VoidPayment_FullMethodName   = "/aperio.finance.v1.FinanceService/VoidPayment"
+	FinanceService_GetInvoice_FullMethodName           = "/aperio.finance.v1.FinanceService/GetInvoice"
+	FinanceService_ListInvoices_FullMethodName         = "/aperio.finance.v1.FinanceService/ListInvoices"
+	FinanceService_CreateInvoice_FullMethodName        = "/aperio.finance.v1.FinanceService/CreateInvoice"
+	FinanceService_UpdateInvoice_FullMethodName        = "/aperio.finance.v1.FinanceService/UpdateInvoice"
+	FinanceService_IssueInvoice_FullMethodName         = "/aperio.finance.v1.FinanceService/IssueInvoice"
+	FinanceService_CancelInvoice_FullMethodName        = "/aperio.finance.v1.FinanceService/CancelInvoice"
+	FinanceService_CreditInvoice_FullMethodName        = "/aperio.finance.v1.FinanceService/CreditInvoice"
+	FinanceService_GetPayment_FullMethodName           = "/aperio.finance.v1.FinanceService/GetPayment"
+	FinanceService_ListPayments_FullMethodName         = "/aperio.finance.v1.FinanceService/ListPayments"
+	FinanceService_CreatePayment_FullMethodName        = "/aperio.finance.v1.FinanceService/CreatePayment"
+	FinanceService_UpdatePayment_FullMethodName        = "/aperio.finance.v1.FinanceService/UpdatePayment"
+	FinanceService_RefundPayment_FullMethodName        = "/aperio.finance.v1.FinanceService/RefundPayment"
+	FinanceService_VoidPayment_FullMethodName          = "/aperio.finance.v1.FinanceService/VoidPayment"
+	FinanceService_SummarizeReceivables_FullMethodName = "/aperio.finance.v1.FinanceService/SummarizeReceivables"
 )
 
 // FinanceServiceClient is the client API for FinanceService service.
@@ -69,6 +70,10 @@ type FinanceServiceClient interface {
 	RefundPayment(ctx context.Context, in *RefundPaymentRequest, opts ...grpc.CallOption) (*Payment, error)
 	// Voids a payment recorded in error.
 	VoidPayment(ctx context.Context, in *VoidPaymentRequest, opts ...grpc.CallOption) (*Payment, error)
+	// What a venue is owed, for the accounts team and their agents: what is
+	// outstanding and overdue, its age, who owes the most, and what came in
+	// this month.
+	SummarizeReceivables(ctx context.Context, in *SummarizeReceivablesRequest, opts ...grpc.CallOption) (*SummarizeReceivablesResponse, error)
 }
 
 type financeServiceClient struct {
@@ -209,6 +214,16 @@ func (c *financeServiceClient) VoidPayment(ctx context.Context, in *VoidPaymentR
 	return out, nil
 }
 
+func (c *financeServiceClient) SummarizeReceivables(ctx context.Context, in *SummarizeReceivablesRequest, opts ...grpc.CallOption) (*SummarizeReceivablesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SummarizeReceivablesResponse)
+	err := c.cc.Invoke(ctx, FinanceService_SummarizeReceivables_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinanceServiceServer is the server API for FinanceService service.
 // All implementations must embed UnimplementedFinanceServiceServer
 // for forward compatibility.
@@ -241,6 +256,10 @@ type FinanceServiceServer interface {
 	RefundPayment(context.Context, *RefundPaymentRequest) (*Payment, error)
 	// Voids a payment recorded in error.
 	VoidPayment(context.Context, *VoidPaymentRequest) (*Payment, error)
+	// What a venue is owed, for the accounts team and their agents: what is
+	// outstanding and overdue, its age, who owes the most, and what came in
+	// this month.
+	SummarizeReceivables(context.Context, *SummarizeReceivablesRequest) (*SummarizeReceivablesResponse, error)
 	mustEmbedUnimplementedFinanceServiceServer()
 }
 
@@ -289,6 +308,9 @@ func (UnimplementedFinanceServiceServer) RefundPayment(context.Context, *RefundP
 }
 func (UnimplementedFinanceServiceServer) VoidPayment(context.Context, *VoidPaymentRequest) (*Payment, error) {
 	return nil, status.Error(codes.Unimplemented, "method VoidPayment not implemented")
+}
+func (UnimplementedFinanceServiceServer) SummarizeReceivables(context.Context, *SummarizeReceivablesRequest) (*SummarizeReceivablesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SummarizeReceivables not implemented")
 }
 func (UnimplementedFinanceServiceServer) mustEmbedUnimplementedFinanceServiceServer() {}
 func (UnimplementedFinanceServiceServer) testEmbeddedByValue()                        {}
@@ -545,6 +567,24 @@ func _FinanceService_VoidPayment_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinanceService_SummarizeReceivables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SummarizeReceivablesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinanceServiceServer).SummarizeReceivables(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinanceService_SummarizeReceivables_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinanceServiceServer).SummarizeReceivables(ctx, req.(*SummarizeReceivablesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinanceService_ServiceDesc is the grpc.ServiceDesc for FinanceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -603,6 +643,10 @@ var FinanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VoidPayment",
 			Handler:    _FinanceService_VoidPayment_Handler,
+		},
+		{
+			MethodName: "SummarizeReceivables",
+			Handler:    _FinanceService_SummarizeReceivables_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

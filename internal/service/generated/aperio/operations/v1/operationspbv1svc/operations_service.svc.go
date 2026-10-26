@@ -74,7 +74,7 @@ func (NopOperationsServiceHooks) AfterCreateServiceRequest(ctx context.Context, 
 //
 // Custom methods are answered by the embedded UnimplementedOperationsServiceServer
 // until you write them: embed *OperationsServiceServer in a type of your own and
-// define AcknowledgeServiceRequest, StartServiceRequest, CompleteServiceRequest, CancelServiceRequest on it. Define a standard method there too to
+// define AcknowledgeServiceRequest, StartServiceRequest, CompleteServiceRequest, CancelServiceRequest, SummarizeServiceRequests on it. Define a standard method there too to
 // replace the generated one.
 type OperationsServiceServer struct {
 	operationspbv1.UnimplementedOperationsServiceServer

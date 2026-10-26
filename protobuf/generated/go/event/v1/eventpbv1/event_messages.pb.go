@@ -12,9 +12,11 @@ package eventpbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
+	date "google.golang.org/genproto/googleapis/type/date"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -863,11 +865,406 @@ func (x *DeleteSessionRequest) GetValidateOnly() bool {
 	return false
 }
 
+// Request message for SummarizeSessions.
+type SummarizeSessionsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// The first day; today at the venue when unset.
+	StartDate *date.Date `protobuf:"bytes,2,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	// How many days, from start_date; 1 when unset, at most 14.
+	Days          int32 `protobuf:"varint,3,opt,name=days,proto3" json:"days,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeSessionsRequest) Reset() {
+	*x = SummarizeSessionsRequest{}
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeSessionsRequest) ProtoMessage() {}
+
+func (x *SummarizeSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeSessionsRequest.ProtoReflect.Descriptor instead.
+func (*SummarizeSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_event_v1_event_messages_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SummarizeSessionsRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *SummarizeSessionsRequest) GetStartDate() *date.Date {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+func (x *SummarizeSessionsRequest) GetDays() int32 {
+	if x != nil {
+		return x.Days
+	}
+	return 0
+}
+
+// Response message for SummarizeSessions. Sessions of cancelled events are
+// left out.
+type SummarizeSessionsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The days, in order; a day with no sessions is still listed.
+	Days          []*SessionDay `protobuf:"bytes,1,rep,name=days,proto3" json:"days,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeSessionsResponse) Reset() {
+	*x = SummarizeSessionsResponse{}
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeSessionsResponse) ProtoMessage() {}
+
+func (x *SummarizeSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeSessionsResponse.ProtoReflect.Descriptor instead.
+func (*SummarizeSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_event_v1_event_messages_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *SummarizeSessionsResponse) GetDays() []*SessionDay {
+	if x != nil {
+		return x.Days
+	}
+	return nil
+}
+
+// One day's sessions at a venue.
+type SessionDay struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The day, at the venue.
+	Date *date.Date `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	// The guests expected across the day's sessions.
+	Covers int32 `protobuf:"varint,2,opt,name=covers,proto3" json:"covers,omitempty"`
+	// The day's plates by diet, most first.
+	Diets []*DietCount `protobuf:"bytes,3,rep,name=diets,proto3" json:"diets,omitempty"`
+	// The day's sessions, by start time.
+	Sessions      []*SessionBrief `protobuf:"bytes,4,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SessionDay) Reset() {
+	*x = SessionDay{}
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SessionDay) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SessionDay) ProtoMessage() {}
+
+func (x *SessionDay) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SessionDay.ProtoReflect.Descriptor instead.
+func (*SessionDay) Descriptor() ([]byte, []int) {
+	return file_aperio_event_v1_event_messages_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *SessionDay) GetDate() *date.Date {
+	if x != nil {
+		return x.Date
+	}
+	return nil
+}
+
+func (x *SessionDay) GetCovers() int32 {
+	if x != nil {
+		return x.Covers
+	}
+	return 0
+}
+
+func (x *SessionDay) GetDiets() []*DietCount {
+	if x != nil {
+		return x.Diets
+	}
+	return nil
+}
+
+func (x *SessionDay) GetSessions() []*SessionBrief {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+// A session as the kitchen and the banquet team read it.
+type SessionBrief struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The session.
+	// Format: venues/{venue}/events/{event}/sessions/{session}
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	// The event's title: "Doe wedding".
+	Event string `protobuf:"bytes,2,opt,name=event,proto3" json:"event,omitempty"`
+	// The session's title: "Sangeet".
+	Title string `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	// The host's name.
+	Host string `protobuf:"bytes,4,opt,name=host,proto3" json:"host,omitempty"`
+	// Where it is held: "Grand Ballroom".
+	Space string `protobuf:"bytes,5,opt,name=space,proto3" json:"space,omitempty"`
+	// When guests arrive.
+	StartTime *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	// When it ends.
+	EndTime *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	// The guests expected.
+	Guests int32 `protobuf:"varint,8,opt,name=guests,proto3" json:"guests,omitempty"`
+	// The count the host guarantees to pay for.
+	GuaranteedGuests int32 `protobuf:"varint,9,opt,name=guaranteed_guests,json=guaranteedGuests,proto3" json:"guaranteed_guests,omitempty"`
+	// The menu served: "Silver Vegetarian".
+	Menu string `protobuf:"bytes,10,opt,name=menu,proto3" json:"menu,omitempty"`
+	// The plates by diet: vegetarian, Jain, allergic to peanut.
+	Diets []*DietCount `protobuf:"bytes,11,rep,name=diets,proto3" json:"diets,omitempty"`
+	// What the host asked for at this session.
+	Requests []string `protobuf:"bytes,12,rep,name=requests,proto3" json:"requests,omitempty"`
+	// Where the event is in its life.
+	State         Event_State `protobuf:"varint,13,opt,name=state,proto3,enum=aperio.event.v1.Event_State" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SessionBrief) Reset() {
+	*x = SessionBrief{}
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SessionBrief) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SessionBrief) ProtoMessage() {}
+
+func (x *SessionBrief) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SessionBrief.ProtoReflect.Descriptor instead.
+func (*SessionBrief) Descriptor() ([]byte, []int) {
+	return file_aperio_event_v1_event_messages_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *SessionBrief) GetSession() string {
+	if x != nil {
+		return x.Session
+	}
+	return ""
+}
+
+func (x *SessionBrief) GetEvent() string {
+	if x != nil {
+		return x.Event
+	}
+	return ""
+}
+
+func (x *SessionBrief) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *SessionBrief) GetHost() string {
+	if x != nil {
+		return x.Host
+	}
+	return ""
+}
+
+func (x *SessionBrief) GetSpace() string {
+	if x != nil {
+		return x.Space
+	}
+	return ""
+}
+
+func (x *SessionBrief) GetStartTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartTime
+	}
+	return nil
+}
+
+func (x *SessionBrief) GetEndTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndTime
+	}
+	return nil
+}
+
+func (x *SessionBrief) GetGuests() int32 {
+	if x != nil {
+		return x.Guests
+	}
+	return 0
+}
+
+func (x *SessionBrief) GetGuaranteedGuests() int32 {
+	if x != nil {
+		return x.GuaranteedGuests
+	}
+	return 0
+}
+
+func (x *SessionBrief) GetMenu() string {
+	if x != nil {
+		return x.Menu
+	}
+	return ""
+}
+
+func (x *SessionBrief) GetDiets() []*DietCount {
+	if x != nil {
+		return x.Diets
+	}
+	return nil
+}
+
+func (x *SessionBrief) GetRequests() []string {
+	if x != nil {
+		return x.Requests
+	}
+	return nil
+}
+
+func (x *SessionBrief) GetState() Event_State {
+	if x != nil {
+		return x.State
+	}
+	return Event_STATE_UNSPECIFIED
+}
+
+// How many plates of one kind.
+type DietCount struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The kind, as said: "vegetarian", "jain", "allergic to peanut".
+	Diet string `protobuf:"bytes,1,opt,name=diet,proto3" json:"diet,omitempty"`
+	// The plates of it.
+	Guests        int32 `protobuf:"varint,2,opt,name=guests,proto3" json:"guests,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DietCount) Reset() {
+	*x = DietCount{}
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DietCount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DietCount) ProtoMessage() {}
+
+func (x *DietCount) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_event_v1_event_messages_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DietCount.ProtoReflect.Descriptor instead.
+func (*DietCount) Descriptor() ([]byte, []int) {
+	return file_aperio_event_v1_event_messages_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *DietCount) GetDiet() string {
+	if x != nil {
+		return x.Diet
+	}
+	return ""
+}
+
+func (x *DietCount) GetGuests() int32 {
+	if x != nil {
+		return x.Guests
+	}
+	return 0
+}
+
 var File_aperio_event_v1_event_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_event_v1_event_messages_proto_rawDesc = "" +
 	"\n" +
-	"$aperio/event/v1/event_messages.proto\x12\x0faperio.event.v1\x1a\x1baperio/event/v1/event.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"E\n" +
+	"$aperio/event/v1/event_messages.proto\x12\x0faperio.event.v1\x1a\x1baperio/event/v1/event.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\"E\n" +
 	"\x0fGetEventRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.event.v1/EventR\x04name\"\xdc\x01\n" +
@@ -928,7 +1325,41 @@ const file_aperio_event_v1_event_messages_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tB \xe2A\x01\x02\xfaA\x19\n" +
 	"\x17aperio.event.v1/SessionR\x04name\x12\x18\n" +
 	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnlyB\xe0\x01\n" +
+	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xab\x01\n" +
+	"\x18SummarizeSessionsRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x126\n" +
+	"\n" +
+	"start_date\x18\x02 \x01(\v2\x11.google.type.DateB\x04\xe2A\x01\x01R\tstartDate\x12!\n" +
+	"\x04days\x18\x03 \x01(\x05B\r\xe2A\x01\x01\xbaH\x06\x1a\x04\x18\x0e(\x00R\x04days\"L\n" +
+	"\x19SummarizeSessionsResponse\x12/\n" +
+	"\x04days\x18\x01 \x03(\v2\x1b.aperio.event.v1.SessionDayR\x04days\"\xb8\x01\n" +
+	"\n" +
+	"SessionDay\x12%\n" +
+	"\x04date\x18\x01 \x01(\v2\x11.google.type.DateR\x04date\x12\x16\n" +
+	"\x06covers\x18\x02 \x01(\x05R\x06covers\x120\n" +
+	"\x05diets\x18\x03 \x03(\v2\x1a.aperio.event.v1.DietCountR\x05diets\x129\n" +
+	"\bsessions\x18\x04 \x03(\v2\x1d.aperio.event.v1.SessionBriefR\bsessions\"\xef\x03\n" +
+	"\fSessionBrief\x126\n" +
+	"\asession\x18\x01 \x01(\tB\x1c\xfaA\x19\n" +
+	"\x17aperio.event.v1/SessionR\asession\x12\x14\n" +
+	"\x05event\x18\x02 \x01(\tR\x05event\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\x12\x12\n" +
+	"\x04host\x18\x04 \x01(\tR\x04host\x12\x14\n" +
+	"\x05space\x18\x05 \x01(\tR\x05space\x129\n" +
+	"\n" +
+	"start_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
+	"\bend_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12\x16\n" +
+	"\x06guests\x18\b \x01(\x05R\x06guests\x12+\n" +
+	"\x11guaranteed_guests\x18\t \x01(\x05R\x10guaranteedGuests\x12\x12\n" +
+	"\x04menu\x18\n" +
+	" \x01(\tR\x04menu\x120\n" +
+	"\x05diets\x18\v \x03(\v2\x1a.aperio.event.v1.DietCountR\x05diets\x12\x1a\n" +
+	"\brequests\x18\f \x03(\tR\brequests\x128\n" +
+	"\x05state\x18\r \x01(\x0e2\x1c.aperio.event.v1.Event.StateB\x04\xe2A\x01\x03R\x05state\"7\n" +
+	"\tDietCount\x12\x12\n" +
+	"\x04diet\x18\x01 \x01(\tR\x04diet\x12\x16\n" +
+	"\x06guests\x18\x02 \x01(\x05R\x06guestsB\xe0\x01\n" +
 	"\x13com.aperio.event.v1B\x12EventMessagesProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1;eventpbv1\xa2\x02\x03AEX\xaa\x02\x0fAperio.Event.V1\xca\x02\x0fAperio\\Event\\V1\xe2\x02\x1bAperio\\Event\\V1\\GPBMetadata\xea\x02\x11Aperio::Event::V1b\x06proto3"
 
 var (
@@ -943,39 +1374,56 @@ func file_aperio_event_v1_event_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_event_v1_event_messages_proto_rawDescData
 }
 
-var file_aperio_event_v1_event_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_aperio_event_v1_event_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_aperio_event_v1_event_messages_proto_goTypes = []any{
-	(*GetEventRequest)(nil),       // 0: aperio.event.v1.GetEventRequest
-	(*ListEventsRequest)(nil),     // 1: aperio.event.v1.ListEventsRequest
-	(*ListEventsResponse)(nil),    // 2: aperio.event.v1.ListEventsResponse
-	(*CreateEventRequest)(nil),    // 3: aperio.event.v1.CreateEventRequest
-	(*UpdateEventRequest)(nil),    // 4: aperio.event.v1.UpdateEventRequest
-	(*ConfirmEventRequest)(nil),   // 5: aperio.event.v1.ConfirmEventRequest
-	(*CancelEventRequest)(nil),    // 6: aperio.event.v1.CancelEventRequest
-	(*GetSessionRequest)(nil),     // 7: aperio.event.v1.GetSessionRequest
-	(*ListSessionsRequest)(nil),   // 8: aperio.event.v1.ListSessionsRequest
-	(*ListSessionsResponse)(nil),  // 9: aperio.event.v1.ListSessionsResponse
-	(*CreateSessionRequest)(nil),  // 10: aperio.event.v1.CreateSessionRequest
-	(*UpdateSessionRequest)(nil),  // 11: aperio.event.v1.UpdateSessionRequest
-	(*DeleteSessionRequest)(nil),  // 12: aperio.event.v1.DeleteSessionRequest
-	(*Event)(nil),                 // 13: aperio.event.v1.Event
-	(*fieldmaskpb.FieldMask)(nil), // 14: google.protobuf.FieldMask
-	(*Session)(nil),               // 15: aperio.event.v1.Session
+	(*GetEventRequest)(nil),           // 0: aperio.event.v1.GetEventRequest
+	(*ListEventsRequest)(nil),         // 1: aperio.event.v1.ListEventsRequest
+	(*ListEventsResponse)(nil),        // 2: aperio.event.v1.ListEventsResponse
+	(*CreateEventRequest)(nil),        // 3: aperio.event.v1.CreateEventRequest
+	(*UpdateEventRequest)(nil),        // 4: aperio.event.v1.UpdateEventRequest
+	(*ConfirmEventRequest)(nil),       // 5: aperio.event.v1.ConfirmEventRequest
+	(*CancelEventRequest)(nil),        // 6: aperio.event.v1.CancelEventRequest
+	(*GetSessionRequest)(nil),         // 7: aperio.event.v1.GetSessionRequest
+	(*ListSessionsRequest)(nil),       // 8: aperio.event.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),      // 9: aperio.event.v1.ListSessionsResponse
+	(*CreateSessionRequest)(nil),      // 10: aperio.event.v1.CreateSessionRequest
+	(*UpdateSessionRequest)(nil),      // 11: aperio.event.v1.UpdateSessionRequest
+	(*DeleteSessionRequest)(nil),      // 12: aperio.event.v1.DeleteSessionRequest
+	(*SummarizeSessionsRequest)(nil),  // 13: aperio.event.v1.SummarizeSessionsRequest
+	(*SummarizeSessionsResponse)(nil), // 14: aperio.event.v1.SummarizeSessionsResponse
+	(*SessionDay)(nil),                // 15: aperio.event.v1.SessionDay
+	(*SessionBrief)(nil),              // 16: aperio.event.v1.SessionBrief
+	(*DietCount)(nil),                 // 17: aperio.event.v1.DietCount
+	(*Event)(nil),                     // 18: aperio.event.v1.Event
+	(*fieldmaskpb.FieldMask)(nil),     // 19: google.protobuf.FieldMask
+	(*Session)(nil),                   // 20: aperio.event.v1.Session
+	(*date.Date)(nil),                 // 21: google.type.Date
+	(*timestamppb.Timestamp)(nil),     // 22: google.protobuf.Timestamp
+	(Event_State)(0),                  // 23: aperio.event.v1.Event.State
 }
 var file_aperio_event_v1_event_messages_proto_depIdxs = []int32{
-	13, // 0: aperio.event.v1.ListEventsResponse.events:type_name -> aperio.event.v1.Event
-	13, // 1: aperio.event.v1.CreateEventRequest.event:type_name -> aperio.event.v1.Event
-	13, // 2: aperio.event.v1.UpdateEventRequest.event:type_name -> aperio.event.v1.Event
-	14, // 3: aperio.event.v1.UpdateEventRequest.update_mask:type_name -> google.protobuf.FieldMask
-	15, // 4: aperio.event.v1.ListSessionsResponse.sessions:type_name -> aperio.event.v1.Session
-	15, // 5: aperio.event.v1.CreateSessionRequest.session:type_name -> aperio.event.v1.Session
-	15, // 6: aperio.event.v1.UpdateSessionRequest.session:type_name -> aperio.event.v1.Session
-	14, // 7: aperio.event.v1.UpdateSessionRequest.update_mask:type_name -> google.protobuf.FieldMask
-	8,  // [8:8] is the sub-list for method output_type
-	8,  // [8:8] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	18, // 0: aperio.event.v1.ListEventsResponse.events:type_name -> aperio.event.v1.Event
+	18, // 1: aperio.event.v1.CreateEventRequest.event:type_name -> aperio.event.v1.Event
+	18, // 2: aperio.event.v1.UpdateEventRequest.event:type_name -> aperio.event.v1.Event
+	19, // 3: aperio.event.v1.UpdateEventRequest.update_mask:type_name -> google.protobuf.FieldMask
+	20, // 4: aperio.event.v1.ListSessionsResponse.sessions:type_name -> aperio.event.v1.Session
+	20, // 5: aperio.event.v1.CreateSessionRequest.session:type_name -> aperio.event.v1.Session
+	20, // 6: aperio.event.v1.UpdateSessionRequest.session:type_name -> aperio.event.v1.Session
+	19, // 7: aperio.event.v1.UpdateSessionRequest.update_mask:type_name -> google.protobuf.FieldMask
+	21, // 8: aperio.event.v1.SummarizeSessionsRequest.start_date:type_name -> google.type.Date
+	15, // 9: aperio.event.v1.SummarizeSessionsResponse.days:type_name -> aperio.event.v1.SessionDay
+	21, // 10: aperio.event.v1.SessionDay.date:type_name -> google.type.Date
+	17, // 11: aperio.event.v1.SessionDay.diets:type_name -> aperio.event.v1.DietCount
+	16, // 12: aperio.event.v1.SessionDay.sessions:type_name -> aperio.event.v1.SessionBrief
+	22, // 13: aperio.event.v1.SessionBrief.start_time:type_name -> google.protobuf.Timestamp
+	22, // 14: aperio.event.v1.SessionBrief.end_time:type_name -> google.protobuf.Timestamp
+	17, // 15: aperio.event.v1.SessionBrief.diets:type_name -> aperio.event.v1.DietCount
+	23, // 16: aperio.event.v1.SessionBrief.state:type_name -> aperio.event.v1.Event.State
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_aperio_event_v1_event_messages_proto_init() }
@@ -990,7 +1438,7 @@ func file_aperio_event_v1_event_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_event_v1_event_messages_proto_rawDesc), len(file_aperio_event_v1_event_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

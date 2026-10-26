@@ -29,36 +29,41 @@ var File_aperio_guest_v1_guest_service_proto protoreflect.FileDescriptor
 
 const file_aperio_guest_v1_guest_service_proto_rawDesc = "" +
 	"\n" +
-	"#aperio/guest/v1/guest_service.proto\x12\x0faperio.guest.v1\x1a\x1baperio/guest/v1/guest.proto\x1a$aperio/guest/v1/guest_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xa5\x05\n" +
+	"#aperio/guest/v1/guest_service.proto\x12\x0faperio.guest.v1\x1a\x1baperio/guest/v1/guest.proto\x1a$aperio/guest/v1/guest_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xbf\x06\n" +
 	"\fGuestService\x12p\n" +
 	"\n" +
 	"GetContact\x12\".aperio.guest.v1.GetContactRequest\x1a\x18.aperio.guest.v1.Contact\"$\xdaA\x04name\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/{name=contacts/*}\x12t\n" +
 	"\fListContacts\x12$.aperio.guest.v1.ListContactsRequest\x1a%.aperio.guest.v1.ListContactsResponse\"\x17\xdaA\x00\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/contacts\x12\x84\x01\n" +
 	"\rCreateContact\x12%.aperio.guest.v1.CreateContactRequest\x1a\x18.aperio.guest.v1.Contact\"2\xdaA\x12contact,contact_id\x82\xd3\xe4\x93\x02\x17:\acontact\"\f/v1/contacts\x12\x96\x01\n" +
-	"\rUpdateContact\x12%.aperio.guest.v1.UpdateContactRequest\x1a\x18.aperio.guest.v1.Contact\"D\xdaA\x13contact,update_mask\x82\xd3\xe4\x93\x02(:\acontact2\x1d/v1/{contact.name=contacts/*}\x1a\x8c\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18l\n" +
+	"\rUpdateContact\x12%.aperio.guest.v1.UpdateContactRequest\x1a\x18.aperio.guest.v1.Contact\"D\xdaA\x13contact,update_mask\x82\xd3\xe4\x93\x02(:\acontact2\x1d/v1/{contact.name=contacts/*}\x12\x97\x01\n" +
+	"\x10SummarizeContact\x12(.aperio.guest.v1.SummarizeContactRequest\x1a).aperio.guest.v1.SummarizeContactResponse\".\xdaA\x04name\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{name=contacts/*}:summarize\x1a\x8c\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18l\n" +
 	"j\n" +
 	"\x06Guests\x12\x051.0.0\x1aYThe guests and companies a venue knows: their names, phones, emails, addresses and diets.B\xdf\x01\n" +
 	"\x13com.aperio.guest.v1B\x11GuestServiceProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1\xa2\x02\x03AGX\xaa\x02\x0fAperio.Guest.V1\xca\x02\x0fAperio\\Guest\\V1\xe2\x02\x1bAperio\\Guest\\V1\\GPBMetadata\xea\x02\x11Aperio::Guest::V1b\x06proto3"
 
 var file_aperio_guest_v1_guest_service_proto_goTypes = []any{
-	(*GetContactRequest)(nil),    // 0: aperio.guest.v1.GetContactRequest
-	(*ListContactsRequest)(nil),  // 1: aperio.guest.v1.ListContactsRequest
-	(*CreateContactRequest)(nil), // 2: aperio.guest.v1.CreateContactRequest
-	(*UpdateContactRequest)(nil), // 3: aperio.guest.v1.UpdateContactRequest
-	(*Contact)(nil),              // 4: aperio.guest.v1.Contact
-	(*ListContactsResponse)(nil), // 5: aperio.guest.v1.ListContactsResponse
+	(*GetContactRequest)(nil),        // 0: aperio.guest.v1.GetContactRequest
+	(*ListContactsRequest)(nil),      // 1: aperio.guest.v1.ListContactsRequest
+	(*CreateContactRequest)(nil),     // 2: aperio.guest.v1.CreateContactRequest
+	(*UpdateContactRequest)(nil),     // 3: aperio.guest.v1.UpdateContactRequest
+	(*SummarizeContactRequest)(nil),  // 4: aperio.guest.v1.SummarizeContactRequest
+	(*Contact)(nil),                  // 5: aperio.guest.v1.Contact
+	(*ListContactsResponse)(nil),     // 6: aperio.guest.v1.ListContactsResponse
+	(*SummarizeContactResponse)(nil), // 7: aperio.guest.v1.SummarizeContactResponse
 }
 var file_aperio_guest_v1_guest_service_proto_depIdxs = []int32{
 	0, // 0: aperio.guest.v1.GuestService.GetContact:input_type -> aperio.guest.v1.GetContactRequest
 	1, // 1: aperio.guest.v1.GuestService.ListContacts:input_type -> aperio.guest.v1.ListContactsRequest
 	2, // 2: aperio.guest.v1.GuestService.CreateContact:input_type -> aperio.guest.v1.CreateContactRequest
 	3, // 3: aperio.guest.v1.GuestService.UpdateContact:input_type -> aperio.guest.v1.UpdateContactRequest
-	4, // 4: aperio.guest.v1.GuestService.GetContact:output_type -> aperio.guest.v1.Contact
-	5, // 5: aperio.guest.v1.GuestService.ListContacts:output_type -> aperio.guest.v1.ListContactsResponse
-	4, // 6: aperio.guest.v1.GuestService.CreateContact:output_type -> aperio.guest.v1.Contact
-	4, // 7: aperio.guest.v1.GuestService.UpdateContact:output_type -> aperio.guest.v1.Contact
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	4, // 4: aperio.guest.v1.GuestService.SummarizeContact:input_type -> aperio.guest.v1.SummarizeContactRequest
+	5, // 5: aperio.guest.v1.GuestService.GetContact:output_type -> aperio.guest.v1.Contact
+	6, // 6: aperio.guest.v1.GuestService.ListContacts:output_type -> aperio.guest.v1.ListContactsResponse
+	5, // 7: aperio.guest.v1.GuestService.CreateContact:output_type -> aperio.guest.v1.Contact
+	5, // 8: aperio.guest.v1.GuestService.UpdateContact:output_type -> aperio.guest.v1.Contact
+	7, // 9: aperio.guest.v1.GuestService.SummarizeContact:output_type -> aperio.guest.v1.SummarizeContactResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

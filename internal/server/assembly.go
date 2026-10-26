@@ -20,7 +20,6 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/document"
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/operations"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/engine"
@@ -29,10 +28,9 @@ import (
 	"github.com/shokki-engineering/aperio/internal/service/finance"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/catalog/v1/catalogpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/document/v1/documentpbv1svc"
-	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/guest/v1/guestpbv1svc"
-	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/operations/v1/operationspbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/venue/v1/venuepbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/guest"
+	"github.com/shokki-engineering/aperio/internal/service/operations"
 	"github.com/shokki-engineering/aperio/internal/service/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/sales"
 	"github.com/shokki-engineering/aperio/internal/service/stay"
@@ -48,13 +46,13 @@ type Services struct {
 	Venues     *venuepbv1svc.VenueServiceServer
 	Catalog    *catalogpbv1svc.CatalogServiceServer
 	Pricing    *pricing.Server
-	Guests     *guestpbv1svc.GuestServiceServer
+	Guests     *guest.Server
 	Sales      *sales.Server
 	Stays      *stay.Server
 	Events     *event.Server
 	Finance    *finance.Server
 	Documents  *documentpbv1svc.DocumentServiceServer
-	Operations *operationspbv1svc.OperationsServiceServer
+	Operations *operations.Server
 	Concierge  *concierge.Server
 
 	// copies are the read models' OpenSearch copies, by read model; none
@@ -83,12 +81,16 @@ func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gatewa
 	base := booking.NewBase(eng, venues, guestRepos.Contacts)
 	base.Search = conn.SearchConn()
 	stays, events := stay.New(stayRepositories(rc), base), event.New(eventRepositories(rc), base)
+	events.ReadMenusFrom(catalogRepos.Menus)
 	prices := pricing.New(pricingRepositories(rc), catalogRepos, venues.Venues)
 	guests := guest.New(guestRepos)
 	catalogSvc := catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{})
 	selling := sales.New(salesRepositories(rc), venues.Venues, catalogRepos.Menus, prices, events, stays)
-	ops := operationspbv1svc.NewOperationsServiceServer(
-		operationspbv1svc.OperationsServiceRepositories{ServiceRequests: operations.New(rc).ServiceRequests}, operationspbv1svc.NopOperationsServiceHooks{})
+	selling.ReadContactsFrom(guestRepos.Contacts)
+	ops := operations.New(operationsRepositories(rc), venues.Venues)
+	money := finance.New(financeRepositories(rc), venues.Venues, bookings{stays: stays, events: events}, gateways)
+	money.ReadContactsFrom(guestRepos.Contacts)
+	guests.ReadHistoryFrom(guest.History{Stays: stays, Events: events, Sales: selling, Finance: money, Spaces: venues.Spaces})
 	return &Services{
 		Conn:   conn,
 		Engine: eng,
@@ -100,7 +102,7 @@ func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gatewa
 		Sales:   selling,
 		Stays:   stays,
 		Events:  events,
-		Finance: finance.New(financeRepositories(rc), venues.Venues, bookings{stays: stays, events: events}, gateways),
+		Finance: money,
 		Documents: documentpbv1svc.NewDocumentServiceServer(
 			documentpbv1svc.DocumentServiceRepositories{Documents: document.New(rc).Documents}, documentpbv1svc.NopDocumentServiceHooks{}),
 		Operations: ops,

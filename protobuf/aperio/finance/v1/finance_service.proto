@@ -131,4 +131,12 @@ service FinanceService {
     };
     option (google.api.method_signature) = "name";
   }
+
+  // What a venue is owed, for the accounts team and their agents: what is
+  // outstanding and overdue, its age, who owes the most, and what came in
+  // this month.
+  rpc SummarizeReceivables(SummarizeReceivablesRequest) returns (SummarizeReceivablesResponse) {
+    option (google.api.http) = {get: "/v1/{venue=venues/*}/invoices:summarizeReceivables"};
+    option (google.api.method_signature) = "venue";
+  }
 }

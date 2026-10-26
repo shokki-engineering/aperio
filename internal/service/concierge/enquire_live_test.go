@@ -47,7 +47,7 @@ func TestLiveEnquireEvent(t *testing.T) {
 
 	day := &date.Date{Year: int32(time.Now().Year()) + 1, Month: 12, Day: 20}
 	enq := &conciergepbv1.EnquireEventRequest{Venue: r.venue.GetName(), EventType: typepbv1.EventType_EVENT_TYPE_WEDDING, EventDate: day,
-		Guests: 300, Diet: typepbv1.Diet_DIET_VEGETARIAN, GuestDisplayName: "Meera Shetty", Phone: "97400" + r.run[len(r.run)-5:], RequestId: uuid.NewString()}
+		Guests: 300, Diet: typepbv1.Diet_DIET_VEGETARIAN, GuestDisplayName: "John Doe", Phone: "97400" + r.run[len(r.run)-5:], RequestId: uuid.NewString()}
 	got, err := r.svc.EnquireEvent(ctx, enq)
 	must(err, "enquire")
 	if len(got.GetMenus()) != 1 || got.GetMenus()[0].GetTotal().GetUnits() != 360000 || got.GetQuote() == "" {

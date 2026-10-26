@@ -10,6 +10,8 @@ import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
+import "google/type/date.proto";
+import "google/type/money.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1";
 option java_multiple_files = true;
@@ -41,7 +43,7 @@ message ListContactsRequest {
   // A page token from a previous ListContacts call.
   string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
 
-  // An AIP-160 filter, e.g. display_name:"sharma".
+  // An AIP-160 filter, e.g. display_name:"doe".
   string filter = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // An AIP-132 ordering, e.g. "create_time desc".
@@ -84,4 +86,84 @@ message UpdateContactRequest {
 
   // Validate the request without updating anything.
   bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for SummarizeContact.
+message SummarizeContactRequest {
+  // The contact.
+  // Format: contacts/{contact}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.guest.v1/Contact"
+  ];
+
+  // Counts only stays arriving, events starting and payments made on or
+  // after this day ("this year" is 1 January); all of them when unset. What
+  // is due is always what is due now.
+  google.type.Date start_date = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for SummarizeContact. Cancelled stays and events, no-shows
+// and failed or voided payments are left out.
+message SummarizeContactResponse {
+  // The contact.
+  // Format: contacts/{contact}
+  string contact = 1 [(google.api.resource_reference).type = "aperio.guest.v1/Contact"];
+
+  // Their name.
+  string display_name = 2;
+
+  // Their phone, E.164.
+  string phone = 3;
+
+  // The stays they booked.
+  int32 stays = 4;
+
+  // The nights of those stays.
+  int32 nights = 5;
+
+  // The stays by room type, most booked first.
+  repeated RoomTypeCount room_types = 6;
+
+  // The day they last left; unset when they have not stayed.
+  google.type.Date last_departure = 7;
+
+  // The day they next arrive; unset when nothing is booked.
+  google.type.Date next_arrival = 8;
+
+  // The events they hosted or booked.
+  int32 events = 9;
+
+  // The first day of their next event; unset when none is booked.
+  google.type.Date next_event = 10;
+
+  // Their leads still open: not won or lost.
+  int32 open_leads = 11;
+
+  // Their quotes awaiting an answer: drafts and sent.
+  int32 open_quotes = 12;
+
+  // What they paid, less refunds, in the venues' currencies: one amount per
+  // currency.
+  repeated google.type.Money paid = 13;
+
+  // What their issued invoices still ask for, one amount per currency.
+  repeated google.type.Money due = 14;
+
+  // What they asked for on their stays, and their dietary needs, newest
+  // first, each once.
+  repeated string requests = 15;
+}
+
+// How often a guest booked one room type.
+message RoomTypeCount {
+  // The room type.
+  // Format: venues/{venue}/spaces/{space}
+  string space = 1 [(google.api.resource_reference).type = "aperio.venue.v1/Space"];
+
+  // Its name: "Garden Villa".
+  string display_name = 2;
+
+  // The stays that booked it.
+  int32 stays = 3;
 }

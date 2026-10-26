@@ -26,7 +26,7 @@ func TestLiveFindCancelBooking(t *testing.T) {
 	phone := "98765" + r.run[len(r.run)-5:]
 	arrive := &date.Date{Year: int32(time.Now().Year()) + 1, Month: 11, Day: 3}
 	held, err := r.svc.HoldStay(ctx, &conciergepbv1.HoldStayRequest{Venue: r.venue.GetName(), Space: r.space.GetName(), ArrivalDate: arrive,
-		Nights: 1, Adults: 2, GuestDisplayName: "Anil Rao", Phone: phone, RequestId: uuid.NewString()})
+		Nights: 1, Adults: 2, GuestDisplayName: "John Doe", Phone: phone, RequestId: uuid.NewString()})
 	if err != nil {
 		t.Fatalf("hold: %v", err)
 	}

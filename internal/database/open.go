@@ -8,6 +8,7 @@ package database
 
 import (
 	"fmt"
+	"log/slog"
 	"net/url"
 
 	"github.com/shokki-engineering/aperio/internal/config"
@@ -22,10 +23,33 @@ import (
 // Open connects to the backend the configuration selects.
 func Open() (*Connection, error) {
 	if providerFromConfig() == ProviderHasura {
-		h := config.Get().Database.Hasura
-		return OpenHasura(h.URL, h.AdminSecret)
+		return openHasura()
 	}
 	return openGorm()
+}
+
+// openHasura connects to the configured Hasura endpoint (see OpenHasura). The
+// read models are searched over Postgres when it is configured, as
+// freebusy's are (see SearchConn); writes stay on Hasura. Without it they
+// are searched over GraphQL.
+func openHasura() (*Connection, error) {
+	h := config.Get().Database.Hasura
+	conn, err := OpenHasura(h.URL, h.AdminSecret)
+	if err != nil {
+		return nil, err
+	}
+	if pg := config.Get().Database.Postgres; pg.Host != "" {
+		db, err := gorm.Open(postgres.Open(pg.DSN()), &gorm.Config{TranslateError: true, Logger: logger.Default.LogMode(logger.Warn)})
+		if err == nil {
+			err = BoundPool(db, pg.Pool())
+		}
+		if err != nil {
+			slog.Warn("read models are searched over Hasura: Postgres could not be opened", "err", err)
+			return conn, nil
+		}
+		conn.PgSQLConn = db
+	}
+	return conn, nil
 }
 
 // openGorm dials Postgres with the libpq DSN rendered from config and bounds

@@ -724,6 +724,59 @@ func local_request_FinanceService_VoidPayment_0(ctx context.Context, marshaler r
 	return msg, metadata, err
 }
 
+var filter_FinanceService_SummarizeReceivables_0 = &utilities.DoubleArray{Encoding: map[string]int{"venue": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_FinanceService_SummarizeReceivables_0(ctx context.Context, marshaler runtime.Marshaler, client FinanceServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SummarizeReceivablesRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["venue"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "venue")
+	}
+	protoReq.Venue, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "venue", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_FinanceService_SummarizeReceivables_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.SummarizeReceivables(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_FinanceService_SummarizeReceivables_0(ctx context.Context, marshaler runtime.Marshaler, server FinanceServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SummarizeReceivablesRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["venue"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "venue")
+	}
+	protoReq.Venue, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "venue", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_FinanceService_SummarizeReceivables_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.SummarizeReceivables(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterFinanceServiceHandlerServer registers the http handlers for service FinanceService to "mux".
 // UnaryRPC     :call FinanceServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -990,6 +1043,26 @@ func RegisterFinanceServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_FinanceService_VoidPayment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_FinanceService_SummarizeReceivables_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/aperio.finance.v1.FinanceService/SummarizeReceivables", runtime.WithHTTPPathPattern("/v1/{venue=venues/*}/invoices:summarizeReceivables"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_FinanceService_SummarizeReceivables_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_FinanceService_SummarizeReceivables_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 
 	return nil
 }
@@ -1251,37 +1324,56 @@ func RegisterFinanceServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_FinanceService_VoidPayment_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_FinanceService_SummarizeReceivables_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/aperio.finance.v1.FinanceService/SummarizeReceivables", runtime.WithHTTPPathPattern("/v1/{venue=venues/*}/invoices:summarizeReceivables"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_FinanceService_SummarizeReceivables_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_FinanceService_SummarizeReceivables_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_FinanceService_GetInvoice_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, ""))
-	pattern_FinanceService_ListInvoices_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "invoices"}, ""))
-	pattern_FinanceService_CreateInvoice_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "invoices"}, ""))
-	pattern_FinanceService_UpdateInvoice_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "invoice.name"}, ""))
-	pattern_FinanceService_IssueInvoice_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, "issue"))
-	pattern_FinanceService_CancelInvoice_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, "cancel"))
-	pattern_FinanceService_CreditInvoice_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, "credit"))
-	pattern_FinanceService_GetPayment_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "name"}, ""))
-	pattern_FinanceService_ListPayments_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "payments"}, ""))
-	pattern_FinanceService_CreatePayment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "payments"}, ""))
-	pattern_FinanceService_UpdatePayment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "payment.name"}, ""))
-	pattern_FinanceService_RefundPayment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "name"}, "refund"))
-	pattern_FinanceService_VoidPayment_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "name"}, "void"))
+	pattern_FinanceService_GetInvoice_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, ""))
+	pattern_FinanceService_ListInvoices_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "invoices"}, ""))
+	pattern_FinanceService_CreateInvoice_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "invoices"}, ""))
+	pattern_FinanceService_UpdateInvoice_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "invoice.name"}, ""))
+	pattern_FinanceService_IssueInvoice_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, "issue"))
+	pattern_FinanceService_CancelInvoice_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, "cancel"))
+	pattern_FinanceService_CreditInvoice_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "invoices", "name"}, "credit"))
+	pattern_FinanceService_GetPayment_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "name"}, ""))
+	pattern_FinanceService_ListPayments_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "payments"}, ""))
+	pattern_FinanceService_CreatePayment_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "parent", "payments"}, ""))
+	pattern_FinanceService_UpdatePayment_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "payment.name"}, ""))
+	pattern_FinanceService_RefundPayment_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "name"}, "refund"))
+	pattern_FinanceService_VoidPayment_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "venues", "payments", "name"}, "void"))
+	pattern_FinanceService_SummarizeReceivables_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "venues", "venue", "invoices"}, "summarizeReceivables"))
 )
 
 var (
-	forward_FinanceService_GetInvoice_0    = runtime.ForwardResponseMessage
-	forward_FinanceService_ListInvoices_0  = runtime.ForwardResponseMessage
-	forward_FinanceService_CreateInvoice_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_UpdateInvoice_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_IssueInvoice_0  = runtime.ForwardResponseMessage
-	forward_FinanceService_CancelInvoice_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_CreditInvoice_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_GetPayment_0    = runtime.ForwardResponseMessage
-	forward_FinanceService_ListPayments_0  = runtime.ForwardResponseMessage
-	forward_FinanceService_CreatePayment_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_UpdatePayment_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_RefundPayment_0 = runtime.ForwardResponseMessage
-	forward_FinanceService_VoidPayment_0   = runtime.ForwardResponseMessage
+	forward_FinanceService_GetInvoice_0           = runtime.ForwardResponseMessage
+	forward_FinanceService_ListInvoices_0         = runtime.ForwardResponseMessage
+	forward_FinanceService_CreateInvoice_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_UpdateInvoice_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_IssueInvoice_0         = runtime.ForwardResponseMessage
+	forward_FinanceService_CancelInvoice_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_CreditInvoice_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_GetPayment_0           = runtime.ForwardResponseMessage
+	forward_FinanceService_ListPayments_0         = runtime.ForwardResponseMessage
+	forward_FinanceService_CreatePayment_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_UpdatePayment_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_RefundPayment_0        = runtime.ForwardResponseMessage
+	forward_FinanceService_VoidPayment_0          = runtime.ForwardResponseMessage
+	forward_FinanceService_SummarizeReceivables_0 = runtime.ForwardResponseMessage
 )

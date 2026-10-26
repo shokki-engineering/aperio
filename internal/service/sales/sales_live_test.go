@@ -62,7 +62,7 @@ func TestLiveQuote(t *testing.T) {
 		Kind: venuepbv1.VenueKind_VENUE_KIND_EVENTS, TimeZone: "Asia/Kolkata", CurrencyCode: "INR",
 		Address: &postaladdress.PostalAddress{RegionCode: "IN"}, Gst: &typepbv1.Gst{Gstin: "29ABCDE1234F1Z5", LegalDisplayName: "Test", GstStateCode: "29"}})
 	must(err, "create venue")
-	c, err := guest.New(conn).Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Priya Iyer"})
+	c, err := guest.New(conn).Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "John Doe"})
 	must(err, "create contact")
 	food := &typepbv1.Tax{HsnSacCode: "996334", GstRate: &decimal.Decimal{Value: "5"}}
 	dish, err := menus.CreateDish(ctx, &catalogpbv1.CreateDishRequest{Parent: v.GetName(), Dish: &catalogpbv1.Dish{DisplayName: "Paneer tikka", Course: catalogpbv1.Course_COURSE_STARTER}})
@@ -101,7 +101,7 @@ func TestLiveQuote(t *testing.T) {
 	// A quote: 200 plates and decor at ₹50,000 (18%), less ₹10,000.
 	decor := &typepbv1.Tax{HsnSacCode: "998596", GstRate: &decimal.Decimal{Value: "18"}}
 	q, err := svc.CreateQuote(ctx, &salespbv1.CreateQuoteRequest{Parent: v.GetName(), Quote: &salespbv1.Quote{
-		DisplayName: "Iyer wedding", Contact: c.GetName(), Guests: 200,
+		DisplayName: "Doe wedding", Contact: c.GetName(), Guests: 200,
 		Dates: &typepbv1.DateRange{StartDate: december, EndDate: december},
 		Lines: []*salespbv1.QuoteLine{
 			{Kind: salespbv1.LineKind_LINE_KIND_MENU, Item: menu.GetName(), Quantity: 200},

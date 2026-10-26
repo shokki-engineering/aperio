@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/sales/v1/salespbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
@@ -77,6 +78,9 @@ type hooks struct {
 	menus  catalog.MenuRepository
 	pricer Pricer
 	now    func() time.Time
+	// contacts name the guests SummarizePipeline lists (pipeline.go); nil
+	// until ReadContactsFrom, and then it lists their resource names.
+	contacts guest.ContactRepository
 }
 
 // The resource types errors name.

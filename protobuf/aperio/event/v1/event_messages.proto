@@ -10,6 +10,8 @@ import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1;eventpbv1";
 option java_multiple_files = true;
@@ -230,4 +232,100 @@ message DeleteSessionRequest {
 
   // Validate the request without deleting anything.
   bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for SummarizeSessions.
+message SummarizeSessionsRequest {
+  // The venue.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The first day; today at the venue when unset.
+  google.type.Date start_date = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many days, from start_date; 1 when unset, at most 14.
+  int32 days = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 14
+    }
+  ];
+}
+
+// Response message for SummarizeSessions. Sessions of cancelled events are
+// left out.
+message SummarizeSessionsResponse {
+  // The days, in order; a day with no sessions is still listed.
+  repeated SessionDay days = 1;
+}
+
+// One day's sessions at a venue.
+message SessionDay {
+  // The day, at the venue.
+  google.type.Date date = 1;
+
+  // The guests expected across the day's sessions.
+  int32 covers = 2;
+
+  // The day's plates by diet, most first.
+  repeated DietCount diets = 3;
+
+  // The day's sessions, by start time.
+  repeated SessionBrief sessions = 4;
+}
+
+// A session as the kitchen and the banquet team read it.
+message SessionBrief {
+  // The session.
+  // Format: venues/{venue}/events/{event}/sessions/{session}
+  string session = 1 [(google.api.resource_reference).type = "aperio.event.v1/Session"];
+
+  // The event's title: "Doe wedding".
+  string event = 2;
+
+  // The session's title: "Sangeet".
+  string title = 3;
+
+  // The host's name.
+  string host = 4;
+
+  // Where it is held: "Grand Ballroom".
+  string space = 5;
+
+  // When guests arrive.
+  google.protobuf.Timestamp start_time = 6;
+
+  // When it ends.
+  google.protobuf.Timestamp end_time = 7;
+
+  // The guests expected.
+  int32 guests = 8;
+
+  // The count the host guarantees to pay for.
+  int32 guaranteed_guests = 9;
+
+  // The menu served: "Silver Vegetarian".
+  string menu = 10;
+
+  // The plates by diet: vegetarian, Jain, allergic to peanut.
+  repeated DietCount diets = 11;
+
+  // What the host asked for at this session.
+  repeated string requests = 12;
+
+  // Where the event is in its life.
+  Event.State state = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// How many plates of one kind.
+message DietCount {
+  // The kind, as said: "vegetarian", "jain", "allergic to peanut".
+  string diet = 1;
+
+  // The plates of it.
+  int32 guests = 2;
 }

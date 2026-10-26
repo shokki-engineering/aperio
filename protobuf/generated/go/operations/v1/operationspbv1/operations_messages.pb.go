@@ -14,6 +14,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -520,11 +521,314 @@ func (x *CancelServiceRequestRequest) GetReason() string {
 	return ""
 }
 
+// Request message for SummarizeServiceRequests.
+type SummarizeServiceRequestsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// One department only; every one when unset.
+	Department    ServiceRequest_Department `protobuf:"varint,2,opt,name=department,proto3,enum=aperio.operations.v1.ServiceRequest_Department" json:"department,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeServiceRequestsRequest) Reset() {
+	*x = SummarizeServiceRequestsRequest{}
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeServiceRequestsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeServiceRequestsRequest) ProtoMessage() {}
+
+func (x *SummarizeServiceRequestsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeServiceRequestsRequest.ProtoReflect.Descriptor instead.
+func (*SummarizeServiceRequestsRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *SummarizeServiceRequestsRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *SummarizeServiceRequestsRequest) GetDepartment() ServiceRequest_Department {
+	if x != nil {
+		return x.Department
+	}
+	return ServiceRequest_DEPARTMENT_UNSPECIFIED
+}
+
+// Response message for SummarizeServiceRequests.
+type SummarizeServiceRequestsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The departments with open requests, the most overdue first.
+	Departments []*DepartmentQueue `protobuf:"bytes,1,rep,name=departments,proto3" json:"departments,omitempty"`
+	// The requests completed today, at the venue.
+	CompletedToday int32 `protobuf:"varint,2,opt,name=completed_today,json=completedToday,proto3" json:"completed_today,omitempty"`
+	// The median minutes from asked to done of today's completed requests.
+	MedianMinutes int32 `protobuf:"varint,3,opt,name=median_minutes,json=medianMinutes,proto3" json:"median_minutes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeServiceRequestsResponse) Reset() {
+	*x = SummarizeServiceRequestsResponse{}
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeServiceRequestsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeServiceRequestsResponse) ProtoMessage() {}
+
+func (x *SummarizeServiceRequestsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeServiceRequestsResponse.ProtoReflect.Descriptor instead.
+func (*SummarizeServiceRequestsResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SummarizeServiceRequestsResponse) GetDepartments() []*DepartmentQueue {
+	if x != nil {
+		return x.Departments
+	}
+	return nil
+}
+
+func (x *SummarizeServiceRequestsResponse) GetCompletedToday() int32 {
+	if x != nil {
+		return x.CompletedToday
+	}
+	return 0
+}
+
+func (x *SummarizeServiceRequestsResponse) GetMedianMinutes() int32 {
+	if x != nil {
+		return x.MedianMinutes
+	}
+	return 0
+}
+
+// One department's open requests.
+type DepartmentQueue struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The department.
+	Department ServiceRequest_Department `protobuf:"varint,1,opt,name=department,proto3,enum=aperio.operations.v1.ServiceRequest_Department" json:"department,omitempty"`
+	// Its requests not yet completed or cancelled.
+	Open int32 `protobuf:"varint,2,opt,name=open,proto3" json:"open,omitempty"`
+	// The open ones past their due time.
+	Overdue int32 `protobuf:"varint,3,opt,name=overdue,proto3" json:"overdue,omitempty"`
+	// The open ones, the oldest first; at most 20.
+	Requests      []*RequestBrief `protobuf:"bytes,4,rep,name=requests,proto3" json:"requests,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DepartmentQueue) Reset() {
+	*x = DepartmentQueue{}
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DepartmentQueue) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DepartmentQueue) ProtoMessage() {}
+
+func (x *DepartmentQueue) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DepartmentQueue.ProtoReflect.Descriptor instead.
+func (*DepartmentQueue) Descriptor() ([]byte, []int) {
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DepartmentQueue) GetDepartment() ServiceRequest_Department {
+	if x != nil {
+		return x.Department
+	}
+	return ServiceRequest_DEPARTMENT_UNSPECIFIED
+}
+
+func (x *DepartmentQueue) GetOpen() int32 {
+	if x != nil {
+		return x.Open
+	}
+	return 0
+}
+
+func (x *DepartmentQueue) GetOverdue() int32 {
+	if x != nil {
+		return x.Overdue
+	}
+	return 0
+}
+
+func (x *DepartmentQueue) GetRequests() []*RequestBrief {
+	if x != nil {
+		return x.Requests
+	}
+	return nil
+}
+
+// A request as a department reads it.
+type RequestBrief struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The request.
+	// Format: venues/{venue}/serviceRequests/{service_request}
+	ServiceRequest string `protobuf:"bytes,1,opt,name=service_request,json=serviceRequest,proto3" json:"service_request,omitempty"`
+	// What is asked: "2 black coffee".
+	Summary string `protobuf:"bytes,2,opt,name=summary,proto3" json:"summary,omitempty"`
+	// Where: "Room 204".
+	Location string `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
+	// Where it is.
+	State ServiceRequest_State `protobuf:"varint,4,opt,name=state,proto3,enum=aperio.operations.v1.ServiceRequest_State" json:"state,omitempty"`
+	// How urgent.
+	Priority ServiceRequest_Priority `protobuf:"varint,5,opt,name=priority,proto3,enum=aperio.operations.v1.ServiceRequest_Priority" json:"priority,omitempty"`
+	// When it is due.
+	DueTime *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=due_time,json=dueTime,proto3" json:"due_time,omitempty"`
+	// When it was asked.
+	CreateTime *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	// Who has it.
+	Assignee      string `protobuf:"bytes,8,opt,name=assignee,proto3" json:"assignee,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestBrief) Reset() {
+	*x = RequestBrief{}
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestBrief) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestBrief) ProtoMessage() {}
+
+func (x *RequestBrief) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestBrief.ProtoReflect.Descriptor instead.
+func (*RequestBrief) Descriptor() ([]byte, []int) {
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *RequestBrief) GetServiceRequest() string {
+	if x != nil {
+		return x.ServiceRequest
+	}
+	return ""
+}
+
+func (x *RequestBrief) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *RequestBrief) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
+func (x *RequestBrief) GetState() ServiceRequest_State {
+	if x != nil {
+		return x.State
+	}
+	return ServiceRequest_STATE_UNSPECIFIED
+}
+
+func (x *RequestBrief) GetPriority() ServiceRequest_Priority {
+	if x != nil {
+		return x.Priority
+	}
+	return ServiceRequest_PRIORITY_UNSPECIFIED
+}
+
+func (x *RequestBrief) GetDueTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DueTime
+	}
+	return nil
+}
+
+func (x *RequestBrief) GetCreateTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreateTime
+	}
+	return nil
+}
+
+func (x *RequestBrief) GetAssignee() string {
+	if x != nil {
+		return x.Assignee
+	}
+	return ""
+}
+
 var File_aperio_operations_v1_operations_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_operations_v1_operations_messages_proto_rawDesc = "" +
 	"\n" +
-	".aperio/operations/v1/operations_messages.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\"\\\n" +
+	".aperio/operations/v1/operations_messages.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\\\n" +
 	"\x18GetServiceRequestRequest\x12@\n" +
 	"\x04name\x18\x01 \x01(\tB,\xe2A\x01\x02\xfaA%\n" +
 	"#aperio.operations.v1/ServiceRequestR\x04name\"\xf3\x01\n" +
@@ -559,7 +863,35 @@ const file_aperio_operations_v1_operations_messages_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tB,\xe2A\x01\x02\xfaA%\n" +
 	"#aperio.operations.v1/ServiceRequestR\x04name\x12\x18\n" +
 	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12$\n" +
-	"\x06reason\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\x06reasonB\x8d\x02\n" +
+	"\x06reason\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\x06reason\"\xae\x01\n" +
+	"\x1fSummarizeServiceRequestsRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12U\n" +
+	"\n" +
+	"department\x18\x02 \x01(\x0e2/.aperio.operations.v1.ServiceRequest.DepartmentB\x04\xe2A\x01\x01R\n" +
+	"department\"\xbb\x01\n" +
+	" SummarizeServiceRequestsResponse\x12G\n" +
+	"\vdepartments\x18\x01 \x03(\v2%.aperio.operations.v1.DepartmentQueueR\vdepartments\x12'\n" +
+	"\x0fcompleted_today\x18\x02 \x01(\x05R\x0ecompletedToday\x12%\n" +
+	"\x0emedian_minutes\x18\x03 \x01(\x05R\rmedianMinutes\"\xd0\x01\n" +
+	"\x0fDepartmentQueue\x12O\n" +
+	"\n" +
+	"department\x18\x01 \x01(\x0e2/.aperio.operations.v1.ServiceRequest.DepartmentR\n" +
+	"department\x12\x12\n" +
+	"\x04open\x18\x02 \x01(\x05R\x04open\x12\x18\n" +
+	"\aoverdue\x18\x03 \x01(\x05R\aoverdue\x12>\n" +
+	"\brequests\x18\x04 \x03(\v2\".aperio.operations.v1.RequestBriefR\brequests\"\xba\x03\n" +
+	"\fRequestBrief\x12Q\n" +
+	"\x0fservice_request\x18\x01 \x01(\tB(\xfaA%\n" +
+	"#aperio.operations.v1/ServiceRequestR\x0eserviceRequest\x12\x18\n" +
+	"\asummary\x18\x02 \x01(\tR\asummary\x12\x1a\n" +
+	"\blocation\x18\x03 \x01(\tR\blocation\x12F\n" +
+	"\x05state\x18\x04 \x01(\x0e2*.aperio.operations.v1.ServiceRequest.StateB\x04\xe2A\x01\x03R\x05state\x12I\n" +
+	"\bpriority\x18\x05 \x01(\x0e2-.aperio.operations.v1.ServiceRequest.PriorityR\bpriority\x125\n" +
+	"\bdue_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\adueTime\x12;\n" +
+	"\vcreate_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"createTime\x12\x1a\n" +
+	"\bassignee\x18\b \x01(\tR\bassigneeB\x8d\x02\n" +
 	"\x18com.aperio.operations.v1B\x17OperationsMessagesProtoP\x01Zfgithub.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1;operationspbv1\xa2\x02\x03AOX\xaa\x02\x14Aperio.Operations.V1\xca\x02\x14Aperio\\Operations\\V1\xe2\x02 Aperio\\Operations\\V1\\GPBMetadata\xea\x02\x16Aperio::Operations::V1b\x06proto3"
 
 var (
@@ -574,7 +906,7 @@ func file_aperio_operations_v1_operations_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_operations_v1_operations_messages_proto_rawDescData
 }
 
-var file_aperio_operations_v1_operations_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_aperio_operations_v1_operations_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_aperio_operations_v1_operations_messages_proto_goTypes = []any{
 	(*GetServiceRequestRequest)(nil),         // 0: aperio.operations.v1.GetServiceRequestRequest
 	(*ListServiceRequestsRequest)(nil),       // 1: aperio.operations.v1.ListServiceRequestsRequest
@@ -584,16 +916,32 @@ var file_aperio_operations_v1_operations_messages_proto_goTypes = []any{
 	(*StartServiceRequestRequest)(nil),       // 5: aperio.operations.v1.StartServiceRequestRequest
 	(*CompleteServiceRequestRequest)(nil),    // 6: aperio.operations.v1.CompleteServiceRequestRequest
 	(*CancelServiceRequestRequest)(nil),      // 7: aperio.operations.v1.CancelServiceRequestRequest
-	(*ServiceRequest)(nil),                   // 8: aperio.operations.v1.ServiceRequest
+	(*SummarizeServiceRequestsRequest)(nil),  // 8: aperio.operations.v1.SummarizeServiceRequestsRequest
+	(*SummarizeServiceRequestsResponse)(nil), // 9: aperio.operations.v1.SummarizeServiceRequestsResponse
+	(*DepartmentQueue)(nil),                  // 10: aperio.operations.v1.DepartmentQueue
+	(*RequestBrief)(nil),                     // 11: aperio.operations.v1.RequestBrief
+	(*ServiceRequest)(nil),                   // 12: aperio.operations.v1.ServiceRequest
+	(ServiceRequest_Department)(0),           // 13: aperio.operations.v1.ServiceRequest.Department
+	(ServiceRequest_State)(0),                // 14: aperio.operations.v1.ServiceRequest.State
+	(ServiceRequest_Priority)(0),             // 15: aperio.operations.v1.ServiceRequest.Priority
+	(*timestamppb.Timestamp)(nil),            // 16: google.protobuf.Timestamp
 }
 var file_aperio_operations_v1_operations_messages_proto_depIdxs = []int32{
-	8, // 0: aperio.operations.v1.ListServiceRequestsResponse.service_requests:type_name -> aperio.operations.v1.ServiceRequest
-	8, // 1: aperio.operations.v1.CreateServiceRequestRequest.service_request:type_name -> aperio.operations.v1.ServiceRequest
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	12, // 0: aperio.operations.v1.ListServiceRequestsResponse.service_requests:type_name -> aperio.operations.v1.ServiceRequest
+	12, // 1: aperio.operations.v1.CreateServiceRequestRequest.service_request:type_name -> aperio.operations.v1.ServiceRequest
+	13, // 2: aperio.operations.v1.SummarizeServiceRequestsRequest.department:type_name -> aperio.operations.v1.ServiceRequest.Department
+	10, // 3: aperio.operations.v1.SummarizeServiceRequestsResponse.departments:type_name -> aperio.operations.v1.DepartmentQueue
+	13, // 4: aperio.operations.v1.DepartmentQueue.department:type_name -> aperio.operations.v1.ServiceRequest.Department
+	11, // 5: aperio.operations.v1.DepartmentQueue.requests:type_name -> aperio.operations.v1.RequestBrief
+	14, // 6: aperio.operations.v1.RequestBrief.state:type_name -> aperio.operations.v1.ServiceRequest.State
+	15, // 7: aperio.operations.v1.RequestBrief.priority:type_name -> aperio.operations.v1.ServiceRequest.Priority
+	16, // 8: aperio.operations.v1.RequestBrief.due_time:type_name -> google.protobuf.Timestamp
+	16, // 9: aperio.operations.v1.RequestBrief.create_time:type_name -> google.protobuf.Timestamp
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_aperio_operations_v1_operations_messages_proto_init() }
@@ -608,7 +956,7 @@ func file_aperio_operations_v1_operations_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_operations_v1_operations_messages_proto_rawDesc), len(file_aperio_operations_v1_operations_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

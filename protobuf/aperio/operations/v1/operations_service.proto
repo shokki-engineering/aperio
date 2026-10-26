@@ -83,4 +83,12 @@ service OperationsService {
     };
     option (google.api.method_signature) = "name";
   }
+
+  // A venue's open requests by department, for the departments and their
+  // agents: what is waiting, what is overdue, the oldest first, and what was
+  // done today.
+  rpc SummarizeServiceRequests(SummarizeServiceRequestsRequest) returns (SummarizeServiceRequestsResponse) {
+    option (google.api.http) = {get: "/v1/{venue=venues/*}/serviceRequests:summarize"};
+    option (google.api.method_signature) = "venue";
+  }
 }

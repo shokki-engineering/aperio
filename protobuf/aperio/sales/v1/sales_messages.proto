@@ -5,11 +5,14 @@ syntax = "proto3";
 
 package aperio.sales.v1;
 
+import "aperio/sales/v1/enums.proto";
 import "aperio/sales/v1/sales.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/money.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1";
 option java_multiple_files = true;
@@ -298,4 +301,98 @@ message ReviseQuoteRequest {
 
   // The etag the caller last read; the call fails when it has changed.
   string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for SummarizePipeline.
+message SummarizePipelineRequest {
+  // The venue.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // How many days ahead a follow-up or a quote's expiry counts as due, and
+  // back a win or a loss counts as lately; 7 when unset.
+  int32 days = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 90
+    }
+  ];
+}
+
+// Response message for SummarizePipeline.
+message SummarizePipelineResponse {
+  // The open leads by stage, in the pipeline's order.
+  repeated StageCount stages = 1;
+
+  // The leads won in the last days.
+  int32 won = 2;
+
+  // The leads lost in the last days.
+  int32 lost = 3;
+
+  // Open leads whose follow-up is overdue or due within days, soonest first.
+  repeated LeadBrief follow_ups = 4;
+
+  // Leads still NEW: nobody has contacted them, oldest first.
+  repeated LeadBrief uncontacted = 5;
+
+  // Sent quotes expiring within days, soonest first.
+  repeated QuoteBrief expiring = 6;
+}
+
+// How many open leads are at one stage.
+message StageCount {
+  // The stage.
+  Stage stage = 1;
+
+  // The leads at it.
+  int32 leads = 2;
+}
+
+// A lead as the sales team reads it.
+message LeadBrief {
+  // The lead.
+  // Format: leads/{lead}
+  string lead = 1 [(google.api.resource_reference).type = "aperio.sales.v1/Lead"];
+
+  // Its title: "Doe wedding, Dec 2026".
+  string title = 2;
+
+  // Who is asking.
+  string contact = 3;
+
+  // Their phone, E.164.
+  string phone = 4;
+
+  // Where it is.
+  Stage stage = 5;
+
+  // When it is next to be followed up.
+  google.protobuf.Timestamp next_follow_up_time = 6;
+
+  // When it came in.
+  google.protobuf.Timestamp create_time = 7;
+}
+
+// A quote as the sales team reads it.
+message QuoteBrief {
+  // The quote.
+  // Format: venues/{venue}/quotes/{quote}
+  string quote = 1 [(google.api.resource_reference).type = "aperio.sales.v1/Quote"];
+
+  // Its title.
+  string title = 2;
+
+  // Who it is for.
+  string contact = 3;
+
+  // What it comes to, with taxes.
+  google.type.Money total = 4;
+
+  // When it expires.
+  google.protobuf.Timestamp expire_time = 5;
 }

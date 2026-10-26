@@ -29,7 +29,7 @@ var File_aperio_operations_v1_operations_service_proto protoreflect.FileDescript
 
 const file_aperio_operations_v1_operations_service_proto_rawDesc = "" +
 	"\n" +
-	"-aperio/operations/v1/operations_service.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a.aperio/operations/v1/operations_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xec\v\n" +
+	"-aperio/operations/v1/operations_service.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a.aperio/operations/v1/operations_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xb8\r\n" +
 	"\x11OperationsService\x12\x9f\x01\n" +
 	"\x11GetServiceRequest\x12..aperio.operations.v1.GetServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"4\xdaA\x04name\x82\xd3\xe4\x93\x02'\x12%/v1/{name=venues/*/serviceRequests/*}\x12\xb2\x01\n" +
 	"\x13ListServiceRequests\x120.aperio.operations.v1.ListServiceRequestsRequest\x1a1.aperio.operations.v1.ListServiceRequestsResponse\"6\xdaA\x06parent\x82\xd3\xe4\x93\x02'\x12%/v1/{parent=venues/*}/serviceRequests\x12\xdb\x01\n" +
@@ -37,7 +37,8 @@ const file_aperio_operations_v1_operations_service_proto_rawDesc = "" +
 	"\x19AcknowledgeServiceRequest\x126.aperio.operations.v1.AcknowledgeServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"C\xdaA\x04name\x82\xd3\xe4\x93\x026:\x01*\"1/v1/{name=venues/*/serviceRequests/*}:acknowledge\x12\xac\x01\n" +
 	"\x13StartServiceRequest\x120.aperio.operations.v1.StartServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"=\xdaA\x04name\x82\xd3\xe4\x93\x020:\x01*\"+/v1/{name=venues/*/serviceRequests/*}:start\x12\xb5\x01\n" +
 	"\x16CompleteServiceRequest\x123.aperio.operations.v1.CompleteServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"@\xdaA\x04name\x82\xd3\xe4\x93\x023:\x01*\"./v1/{name=venues/*/serviceRequests/*}:complete\x12\xaf\x01\n" +
-	"\x14CancelServiceRequest\x121.aperio.operations.v1.CancelServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\">\xdaA\x04name\x82\xd3\xe4\x93\x021:\x01*\",/v1/{name=venues/*/serviceRequests/*}:cancel\x1a\xc7\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\xa6\x01\n" +
+	"\x14CancelServiceRequest\x121.aperio.operations.v1.CancelServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\">\xdaA\x04name\x82\xd3\xe4\x93\x021:\x01*\",/v1/{name=venues/*/serviceRequests/*}:cancel\x12\xc9\x01\n" +
+	"\x18SummarizeServiceRequests\x125.aperio.operations.v1.SummarizeServiceRequestsRequest\x1a6.aperio.operations.v1.SummarizeServiceRequestsResponse\">\xdaA\x05venue\x82\xd3\xe4\x93\x020\x12./v1/{venue=venues/*}/serviceRequests:summarize\x1a\xc7\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\xa6\x01\n" +
 	"\xa3\x01\n" +
 	"\n" +
 	"Operations\x12\x051.0.0\x1a\x8d\x01Service requests to a venue's departments: pantry, kitchen, housekeeping, maintenance, IT and AV, with the items and quantities wanted where.B\x8c\x02\n" +
@@ -51,29 +52,33 @@ var file_aperio_operations_v1_operations_service_proto_goTypes = []any{
 	(*StartServiceRequestRequest)(nil),       // 4: aperio.operations.v1.StartServiceRequestRequest
 	(*CompleteServiceRequestRequest)(nil),    // 5: aperio.operations.v1.CompleteServiceRequestRequest
 	(*CancelServiceRequestRequest)(nil),      // 6: aperio.operations.v1.CancelServiceRequestRequest
-	(*ServiceRequest)(nil),                   // 7: aperio.operations.v1.ServiceRequest
-	(*ListServiceRequestsResponse)(nil),      // 8: aperio.operations.v1.ListServiceRequestsResponse
+	(*SummarizeServiceRequestsRequest)(nil),  // 7: aperio.operations.v1.SummarizeServiceRequestsRequest
+	(*ServiceRequest)(nil),                   // 8: aperio.operations.v1.ServiceRequest
+	(*ListServiceRequestsResponse)(nil),      // 9: aperio.operations.v1.ListServiceRequestsResponse
+	(*SummarizeServiceRequestsResponse)(nil), // 10: aperio.operations.v1.SummarizeServiceRequestsResponse
 }
 var file_aperio_operations_v1_operations_service_proto_depIdxs = []int32{
-	0, // 0: aperio.operations.v1.OperationsService.GetServiceRequest:input_type -> aperio.operations.v1.GetServiceRequestRequest
-	1, // 1: aperio.operations.v1.OperationsService.ListServiceRequests:input_type -> aperio.operations.v1.ListServiceRequestsRequest
-	2, // 2: aperio.operations.v1.OperationsService.CreateServiceRequest:input_type -> aperio.operations.v1.CreateServiceRequestRequest
-	3, // 3: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:input_type -> aperio.operations.v1.AcknowledgeServiceRequestRequest
-	4, // 4: aperio.operations.v1.OperationsService.StartServiceRequest:input_type -> aperio.operations.v1.StartServiceRequestRequest
-	5, // 5: aperio.operations.v1.OperationsService.CompleteServiceRequest:input_type -> aperio.operations.v1.CompleteServiceRequestRequest
-	6, // 6: aperio.operations.v1.OperationsService.CancelServiceRequest:input_type -> aperio.operations.v1.CancelServiceRequestRequest
-	7, // 7: aperio.operations.v1.OperationsService.GetServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	8, // 8: aperio.operations.v1.OperationsService.ListServiceRequests:output_type -> aperio.operations.v1.ListServiceRequestsResponse
-	7, // 9: aperio.operations.v1.OperationsService.CreateServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	7, // 10: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	7, // 11: aperio.operations.v1.OperationsService.StartServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	7, // 12: aperio.operations.v1.OperationsService.CompleteServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	7, // 13: aperio.operations.v1.OperationsService.CancelServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	7, // [7:14] is the sub-list for method output_type
-	0, // [0:7] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: aperio.operations.v1.OperationsService.GetServiceRequest:input_type -> aperio.operations.v1.GetServiceRequestRequest
+	1,  // 1: aperio.operations.v1.OperationsService.ListServiceRequests:input_type -> aperio.operations.v1.ListServiceRequestsRequest
+	2,  // 2: aperio.operations.v1.OperationsService.CreateServiceRequest:input_type -> aperio.operations.v1.CreateServiceRequestRequest
+	3,  // 3: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:input_type -> aperio.operations.v1.AcknowledgeServiceRequestRequest
+	4,  // 4: aperio.operations.v1.OperationsService.StartServiceRequest:input_type -> aperio.operations.v1.StartServiceRequestRequest
+	5,  // 5: aperio.operations.v1.OperationsService.CompleteServiceRequest:input_type -> aperio.operations.v1.CompleteServiceRequestRequest
+	6,  // 6: aperio.operations.v1.OperationsService.CancelServiceRequest:input_type -> aperio.operations.v1.CancelServiceRequestRequest
+	7,  // 7: aperio.operations.v1.OperationsService.SummarizeServiceRequests:input_type -> aperio.operations.v1.SummarizeServiceRequestsRequest
+	8,  // 8: aperio.operations.v1.OperationsService.GetServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	9,  // 9: aperio.operations.v1.OperationsService.ListServiceRequests:output_type -> aperio.operations.v1.ListServiceRequestsResponse
+	8,  // 10: aperio.operations.v1.OperationsService.CreateServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	8,  // 11: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	8,  // 12: aperio.operations.v1.OperationsService.StartServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	8,  // 13: aperio.operations.v1.OperationsService.CompleteServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	8,  // 14: aperio.operations.v1.OperationsService.CancelServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	10, // 15: aperio.operations.v1.OperationsService.SummarizeServiceRequests:output_type -> aperio.operations.v1.SummarizeServiceRequestsResponse
+	8,  // [8:16] is the sub-list for method output_type
+	0,  // [0:8] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_aperio_operations_v1_operations_service_proto_init() }

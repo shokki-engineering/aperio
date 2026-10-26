@@ -23,17 +23,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EventService_GetEvent_FullMethodName      = "/aperio.event.v1.EventService/GetEvent"
-	EventService_ListEvents_FullMethodName    = "/aperio.event.v1.EventService/ListEvents"
-	EventService_CreateEvent_FullMethodName   = "/aperio.event.v1.EventService/CreateEvent"
-	EventService_UpdateEvent_FullMethodName   = "/aperio.event.v1.EventService/UpdateEvent"
-	EventService_ConfirmEvent_FullMethodName  = "/aperio.event.v1.EventService/ConfirmEvent"
-	EventService_CancelEvent_FullMethodName   = "/aperio.event.v1.EventService/CancelEvent"
-	EventService_GetSession_FullMethodName    = "/aperio.event.v1.EventService/GetSession"
-	EventService_ListSessions_FullMethodName  = "/aperio.event.v1.EventService/ListSessions"
-	EventService_CreateSession_FullMethodName = "/aperio.event.v1.EventService/CreateSession"
-	EventService_UpdateSession_FullMethodName = "/aperio.event.v1.EventService/UpdateSession"
-	EventService_DeleteSession_FullMethodName = "/aperio.event.v1.EventService/DeleteSession"
+	EventService_GetEvent_FullMethodName          = "/aperio.event.v1.EventService/GetEvent"
+	EventService_ListEvents_FullMethodName        = "/aperio.event.v1.EventService/ListEvents"
+	EventService_CreateEvent_FullMethodName       = "/aperio.event.v1.EventService/CreateEvent"
+	EventService_UpdateEvent_FullMethodName       = "/aperio.event.v1.EventService/UpdateEvent"
+	EventService_ConfirmEvent_FullMethodName      = "/aperio.event.v1.EventService/ConfirmEvent"
+	EventService_CancelEvent_FullMethodName       = "/aperio.event.v1.EventService/CancelEvent"
+	EventService_GetSession_FullMethodName        = "/aperio.event.v1.EventService/GetSession"
+	EventService_ListSessions_FullMethodName      = "/aperio.event.v1.EventService/ListSessions"
+	EventService_CreateSession_FullMethodName     = "/aperio.event.v1.EventService/CreateSession"
+	EventService_UpdateSession_FullMethodName     = "/aperio.event.v1.EventService/UpdateSession"
+	EventService_DeleteSession_FullMethodName     = "/aperio.event.v1.EventService/DeleteSession"
+	EventService_SummarizeSessions_FullMethodName = "/aperio.event.v1.EventService/SummarizeSessions"
 )
 
 // EventServiceClient is the client API for EventService service.
@@ -64,6 +65,10 @@ type EventServiceClient interface {
 	UpdateSession(ctx context.Context, in *UpdateSessionRequest, opts ...grpc.CallOption) (*Session, error)
 	// Deletes a session.
 	DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// The coming days' sessions at a venue, for the kitchen, the banquet team
+	// and their agents: each session's space, times, covers and menu, and the
+	// plates by diet, a day at a time.
+	SummarizeSessions(ctx context.Context, in *SummarizeSessionsRequest, opts ...grpc.CallOption) (*SummarizeSessionsResponse, error)
 }
 
 type eventServiceClient struct {
@@ -184,6 +189,16 @@ func (c *eventServiceClient) DeleteSession(ctx context.Context, in *DeleteSessio
 	return out, nil
 }
 
+func (c *eventServiceClient) SummarizeSessions(ctx context.Context, in *SummarizeSessionsRequest, opts ...grpc.CallOption) (*SummarizeSessionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SummarizeSessionsResponse)
+	err := c.cc.Invoke(ctx, EventService_SummarizeSessions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EventServiceServer is the server API for EventService service.
 // All implementations must embed UnimplementedEventServiceServer
 // for forward compatibility.
@@ -212,6 +227,10 @@ type EventServiceServer interface {
 	UpdateSession(context.Context, *UpdateSessionRequest) (*Session, error)
 	// Deletes a session.
 	DeleteSession(context.Context, *DeleteSessionRequest) (*emptypb.Empty, error)
+	// The coming days' sessions at a venue, for the kitchen, the banquet team
+	// and their agents: each session's space, times, covers and menu, and the
+	// plates by diet, a day at a time.
+	SummarizeSessions(context.Context, *SummarizeSessionsRequest) (*SummarizeSessionsResponse, error)
 	mustEmbedUnimplementedEventServiceServer()
 }
 
@@ -254,6 +273,9 @@ func (UnimplementedEventServiceServer) UpdateSession(context.Context, *UpdateSes
 }
 func (UnimplementedEventServiceServer) DeleteSession(context.Context, *DeleteSessionRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteSession not implemented")
+}
+func (UnimplementedEventServiceServer) SummarizeSessions(context.Context, *SummarizeSessionsRequest) (*SummarizeSessionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SummarizeSessions not implemented")
 }
 func (UnimplementedEventServiceServer) mustEmbedUnimplementedEventServiceServer() {}
 func (UnimplementedEventServiceServer) testEmbeddedByValue()                      {}
@@ -474,6 +496,24 @@ func _EventService_DeleteSession_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EventService_SummarizeSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SummarizeSessionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EventServiceServer).SummarizeSessions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EventService_SummarizeSessions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EventServiceServer).SummarizeSessions(ctx, req.(*SummarizeSessionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EventService_ServiceDesc is the grpc.ServiceDesc for EventService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -524,6 +564,10 @@ var EventService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteSession",
 			Handler:    _EventService_DeleteSession_Handler,
+		},
+		{
+			MethodName: "SummarizeSessions",
+			Handler:    _EventService_SummarizeSessions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

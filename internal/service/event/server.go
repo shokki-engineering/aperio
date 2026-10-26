@@ -12,6 +12,7 @@ package event
 
 import (
 	"github.com/shokki-engineering/aperio/internal/booking"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/event/v1/eventpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 )
@@ -36,6 +37,9 @@ type hooks struct {
 	*booking.Base
 
 	repos eventpbv1svc.EventServiceRepositories
+	// menus names the menus SummarizeSessions reports; nil, it reports their
+	// ids (ReadMenusFrom).
+	menus catalog.MenuRepository
 }
 
 // The resource types errors name.

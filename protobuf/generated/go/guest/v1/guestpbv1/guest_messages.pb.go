@@ -12,6 +12,8 @@ package guestpbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
+	date "google.golang.org/genproto/googleapis/type/date"
+	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -82,7 +84,7 @@ type ListContactsRequest struct {
 	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A page token from a previous ListContacts call.
 	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// An AIP-160 filter, e.g. display_name:"sharma".
+	// An AIP-160 filter, e.g. display_name:"doe".
 	Filter string `protobuf:"bytes,3,opt,name=filter,proto3" json:"filter,omitempty"`
 	// An AIP-132 ordering, e.g. "create_time desc".
 	OrderBy       string `protobuf:"bytes,4,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
@@ -332,11 +334,310 @@ func (x *UpdateContactRequest) GetValidateOnly() bool {
 	return false
 }
 
+// Request message for SummarizeContact.
+type SummarizeContactRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The contact.
+	// Format: contacts/{contact}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Counts only stays arriving, events starting and payments made on or
+	// after this day ("this year" is 1 January); all of them when unset. What
+	// is due is always what is due now.
+	StartDate     *date.Date `protobuf:"bytes,2,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeContactRequest) Reset() {
+	*x = SummarizeContactRequest{}
+	mi := &file_aperio_guest_v1_guest_messages_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeContactRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeContactRequest) ProtoMessage() {}
+
+func (x *SummarizeContactRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_guest_v1_guest_messages_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeContactRequest.ProtoReflect.Descriptor instead.
+func (*SummarizeContactRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_guest_v1_guest_messages_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SummarizeContactRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SummarizeContactRequest) GetStartDate() *date.Date {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+// Response message for SummarizeContact. Cancelled stays and events, no-shows
+// and failed or voided payments are left out.
+type SummarizeContactResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The contact.
+	// Format: contacts/{contact}
+	Contact string `protobuf:"bytes,1,opt,name=contact,proto3" json:"contact,omitempty"`
+	// Their name.
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	// Their phone, E.164.
+	Phone string `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
+	// The stays they booked.
+	Stays int32 `protobuf:"varint,4,opt,name=stays,proto3" json:"stays,omitempty"`
+	// The nights of those stays.
+	Nights int32 `protobuf:"varint,5,opt,name=nights,proto3" json:"nights,omitempty"`
+	// The stays by room type, most booked first.
+	RoomTypes []*RoomTypeCount `protobuf:"bytes,6,rep,name=room_types,json=roomTypes,proto3" json:"room_types,omitempty"`
+	// The day they last left; unset when they have not stayed.
+	LastDeparture *date.Date `protobuf:"bytes,7,opt,name=last_departure,json=lastDeparture,proto3" json:"last_departure,omitempty"`
+	// The day they next arrive; unset when nothing is booked.
+	NextArrival *date.Date `protobuf:"bytes,8,opt,name=next_arrival,json=nextArrival,proto3" json:"next_arrival,omitempty"`
+	// The events they hosted or booked.
+	Events int32 `protobuf:"varint,9,opt,name=events,proto3" json:"events,omitempty"`
+	// The first day of their next event; unset when none is booked.
+	NextEvent *date.Date `protobuf:"bytes,10,opt,name=next_event,json=nextEvent,proto3" json:"next_event,omitempty"`
+	// Their leads still open: not won or lost.
+	OpenLeads int32 `protobuf:"varint,11,opt,name=open_leads,json=openLeads,proto3" json:"open_leads,omitempty"`
+	// Their quotes awaiting an answer: drafts and sent.
+	OpenQuotes int32 `protobuf:"varint,12,opt,name=open_quotes,json=openQuotes,proto3" json:"open_quotes,omitempty"`
+	// What they paid, less refunds, in the venues' currencies: one amount per
+	// currency.
+	Paid []*money.Money `protobuf:"bytes,13,rep,name=paid,proto3" json:"paid,omitempty"`
+	// What their issued invoices still ask for, one amount per currency.
+	Due []*money.Money `protobuf:"bytes,14,rep,name=due,proto3" json:"due,omitempty"`
+	// What they asked for on their stays, and their dietary needs, newest
+	// first, each once.
+	Requests      []string `protobuf:"bytes,15,rep,name=requests,proto3" json:"requests,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SummarizeContactResponse) Reset() {
+	*x = SummarizeContactResponse{}
+	mi := &file_aperio_guest_v1_guest_messages_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SummarizeContactResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SummarizeContactResponse) ProtoMessage() {}
+
+func (x *SummarizeContactResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_guest_v1_guest_messages_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SummarizeContactResponse.ProtoReflect.Descriptor instead.
+func (*SummarizeContactResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_guest_v1_guest_messages_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SummarizeContactResponse) GetContact() string {
+	if x != nil {
+		return x.Contact
+	}
+	return ""
+}
+
+func (x *SummarizeContactResponse) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *SummarizeContactResponse) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *SummarizeContactResponse) GetStays() int32 {
+	if x != nil {
+		return x.Stays
+	}
+	return 0
+}
+
+func (x *SummarizeContactResponse) GetNights() int32 {
+	if x != nil {
+		return x.Nights
+	}
+	return 0
+}
+
+func (x *SummarizeContactResponse) GetRoomTypes() []*RoomTypeCount {
+	if x != nil {
+		return x.RoomTypes
+	}
+	return nil
+}
+
+func (x *SummarizeContactResponse) GetLastDeparture() *date.Date {
+	if x != nil {
+		return x.LastDeparture
+	}
+	return nil
+}
+
+func (x *SummarizeContactResponse) GetNextArrival() *date.Date {
+	if x != nil {
+		return x.NextArrival
+	}
+	return nil
+}
+
+func (x *SummarizeContactResponse) GetEvents() int32 {
+	if x != nil {
+		return x.Events
+	}
+	return 0
+}
+
+func (x *SummarizeContactResponse) GetNextEvent() *date.Date {
+	if x != nil {
+		return x.NextEvent
+	}
+	return nil
+}
+
+func (x *SummarizeContactResponse) GetOpenLeads() int32 {
+	if x != nil {
+		return x.OpenLeads
+	}
+	return 0
+}
+
+func (x *SummarizeContactResponse) GetOpenQuotes() int32 {
+	if x != nil {
+		return x.OpenQuotes
+	}
+	return 0
+}
+
+func (x *SummarizeContactResponse) GetPaid() []*money.Money {
+	if x != nil {
+		return x.Paid
+	}
+	return nil
+}
+
+func (x *SummarizeContactResponse) GetDue() []*money.Money {
+	if x != nil {
+		return x.Due
+	}
+	return nil
+}
+
+func (x *SummarizeContactResponse) GetRequests() []string {
+	if x != nil {
+		return x.Requests
+	}
+	return nil
+}
+
+// How often a guest booked one room type.
+type RoomTypeCount struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The room type.
+	// Format: venues/{venue}/spaces/{space}
+	Space string `protobuf:"bytes,1,opt,name=space,proto3" json:"space,omitempty"`
+	// Its name: "Garden Villa".
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	// The stays that booked it.
+	Stays         int32 `protobuf:"varint,3,opt,name=stays,proto3" json:"stays,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RoomTypeCount) Reset() {
+	*x = RoomTypeCount{}
+	mi := &file_aperio_guest_v1_guest_messages_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RoomTypeCount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RoomTypeCount) ProtoMessage() {}
+
+func (x *RoomTypeCount) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_guest_v1_guest_messages_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RoomTypeCount.ProtoReflect.Descriptor instead.
+func (*RoomTypeCount) Descriptor() ([]byte, []int) {
+	return file_aperio_guest_v1_guest_messages_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *RoomTypeCount) GetSpace() string {
+	if x != nil {
+		return x.Space
+	}
+	return ""
+}
+
+func (x *RoomTypeCount) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *RoomTypeCount) GetStays() int32 {
+	if x != nil {
+		return x.Stays
+	}
+	return 0
+}
+
 var File_aperio_guest_v1_guest_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_guest_v1_guest_messages_proto_rawDesc = "" +
 	"\n" +
-	"$aperio/guest/v1/guest_messages.proto\x12\x0faperio.guest.v1\x1a\x1baperio/guest/v1/guest.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"I\n" +
+	"$aperio/guest/v1/guest_messages.proto\x12\x0faperio.guest.v1\x1a\x1baperio/guest/v1/guest.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"I\n" +
 	"\x11GetContactRequest\x124\n" +
 	"\x04name\x18\x01 \x01(\tB \xe2A\x01\x02\xfaA\x19\n" +
 	"\x17aperio.guest.v1/ContactR\x04name\"\xa6\x01\n" +
@@ -358,7 +659,39 @@ const file_aperio_guest_v1_guest_messages_proto_rawDesc = "" +
 	"\acontact\x18\x01 \x01(\v2\x18.aperio.guest.v1.ContactB\x04\xe2A\x01\x02R\acontact\x12A\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
 	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnlyB\xe0\x01\n" +
+	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x87\x01\n" +
+	"\x17SummarizeContactRequest\x124\n" +
+	"\x04name\x18\x01 \x01(\tB \xe2A\x01\x02\xfaA\x19\n" +
+	"\x17aperio.guest.v1/ContactR\x04name\x126\n" +
+	"\n" +
+	"start_date\x18\x02 \x01(\v2\x11.google.type.DateB\x04\xe2A\x01\x01R\tstartDate\"\xdc\x04\n" +
+	"\x18SummarizeContactResponse\x126\n" +
+	"\acontact\x18\x01 \x01(\tB\x1c\xfaA\x19\n" +
+	"\x17aperio.guest.v1/ContactR\acontact\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x14\n" +
+	"\x05phone\x18\x03 \x01(\tR\x05phone\x12\x14\n" +
+	"\x05stays\x18\x04 \x01(\x05R\x05stays\x12\x16\n" +
+	"\x06nights\x18\x05 \x01(\x05R\x06nights\x12=\n" +
+	"\n" +
+	"room_types\x18\x06 \x03(\v2\x1e.aperio.guest.v1.RoomTypeCountR\troomTypes\x128\n" +
+	"\x0elast_departure\x18\a \x01(\v2\x11.google.type.DateR\rlastDeparture\x124\n" +
+	"\fnext_arrival\x18\b \x01(\v2\x11.google.type.DateR\vnextArrival\x12\x16\n" +
+	"\x06events\x18\t \x01(\x05R\x06events\x120\n" +
+	"\n" +
+	"next_event\x18\n" +
+	" \x01(\v2\x11.google.type.DateR\tnextEvent\x12\x1d\n" +
+	"\n" +
+	"open_leads\x18\v \x01(\x05R\topenLeads\x12\x1f\n" +
+	"\vopen_quotes\x18\f \x01(\x05R\n" +
+	"openQuotes\x12&\n" +
+	"\x04paid\x18\r \x03(\v2\x12.google.type.MoneyR\x04paid\x12$\n" +
+	"\x03due\x18\x0e \x03(\v2\x12.google.type.MoneyR\x03due\x12\x1a\n" +
+	"\brequests\x18\x0f \x03(\tR\brequests\"z\n" +
+	"\rRoomTypeCount\x120\n" +
+	"\x05space\x18\x01 \x01(\tB\x1a\xfaA\x17\n" +
+	"\x15aperio.venue.v1/SpaceR\x05space\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x14\n" +
+	"\x05stays\x18\x03 \x01(\x05R\x05staysB\xe0\x01\n" +
 	"\x13com.aperio.guest.v1B\x12GuestMessagesProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1\xa2\x02\x03AGX\xaa\x02\x0fAperio.Guest.V1\xca\x02\x0fAperio\\Guest\\V1\xe2\x02\x1bAperio\\Guest\\V1\\GPBMetadata\xea\x02\x11Aperio::Guest::V1b\x06proto3"
 
 var (
@@ -373,26 +706,38 @@ func file_aperio_guest_v1_guest_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_guest_v1_guest_messages_proto_rawDescData
 }
 
-var file_aperio_guest_v1_guest_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_aperio_guest_v1_guest_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_aperio_guest_v1_guest_messages_proto_goTypes = []any{
-	(*GetContactRequest)(nil),     // 0: aperio.guest.v1.GetContactRequest
-	(*ListContactsRequest)(nil),   // 1: aperio.guest.v1.ListContactsRequest
-	(*ListContactsResponse)(nil),  // 2: aperio.guest.v1.ListContactsResponse
-	(*CreateContactRequest)(nil),  // 3: aperio.guest.v1.CreateContactRequest
-	(*UpdateContactRequest)(nil),  // 4: aperio.guest.v1.UpdateContactRequest
-	(*Contact)(nil),               // 5: aperio.guest.v1.Contact
-	(*fieldmaskpb.FieldMask)(nil), // 6: google.protobuf.FieldMask
+	(*GetContactRequest)(nil),        // 0: aperio.guest.v1.GetContactRequest
+	(*ListContactsRequest)(nil),      // 1: aperio.guest.v1.ListContactsRequest
+	(*ListContactsResponse)(nil),     // 2: aperio.guest.v1.ListContactsResponse
+	(*CreateContactRequest)(nil),     // 3: aperio.guest.v1.CreateContactRequest
+	(*UpdateContactRequest)(nil),     // 4: aperio.guest.v1.UpdateContactRequest
+	(*SummarizeContactRequest)(nil),  // 5: aperio.guest.v1.SummarizeContactRequest
+	(*SummarizeContactResponse)(nil), // 6: aperio.guest.v1.SummarizeContactResponse
+	(*RoomTypeCount)(nil),            // 7: aperio.guest.v1.RoomTypeCount
+	(*Contact)(nil),                  // 8: aperio.guest.v1.Contact
+	(*fieldmaskpb.FieldMask)(nil),    // 9: google.protobuf.FieldMask
+	(*date.Date)(nil),                // 10: google.type.Date
+	(*money.Money)(nil),              // 11: google.type.Money
 }
 var file_aperio_guest_v1_guest_messages_proto_depIdxs = []int32{
-	5, // 0: aperio.guest.v1.ListContactsResponse.contacts:type_name -> aperio.guest.v1.Contact
-	5, // 1: aperio.guest.v1.CreateContactRequest.contact:type_name -> aperio.guest.v1.Contact
-	5, // 2: aperio.guest.v1.UpdateContactRequest.contact:type_name -> aperio.guest.v1.Contact
-	6, // 3: aperio.guest.v1.UpdateContactRequest.update_mask:type_name -> google.protobuf.FieldMask
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	8,  // 0: aperio.guest.v1.ListContactsResponse.contacts:type_name -> aperio.guest.v1.Contact
+	8,  // 1: aperio.guest.v1.CreateContactRequest.contact:type_name -> aperio.guest.v1.Contact
+	8,  // 2: aperio.guest.v1.UpdateContactRequest.contact:type_name -> aperio.guest.v1.Contact
+	9,  // 3: aperio.guest.v1.UpdateContactRequest.update_mask:type_name -> google.protobuf.FieldMask
+	10, // 4: aperio.guest.v1.SummarizeContactRequest.start_date:type_name -> google.type.Date
+	7,  // 5: aperio.guest.v1.SummarizeContactResponse.room_types:type_name -> aperio.guest.v1.RoomTypeCount
+	10, // 6: aperio.guest.v1.SummarizeContactResponse.last_departure:type_name -> google.type.Date
+	10, // 7: aperio.guest.v1.SummarizeContactResponse.next_arrival:type_name -> google.type.Date
+	10, // 8: aperio.guest.v1.SummarizeContactResponse.next_event:type_name -> google.type.Date
+	11, // 9: aperio.guest.v1.SummarizeContactResponse.paid:type_name -> google.type.Money
+	11, // 10: aperio.guest.v1.SummarizeContactResponse.due:type_name -> google.type.Money
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_aperio_guest_v1_guest_messages_proto_init() }
@@ -407,7 +752,7 @@ func file_aperio_guest_v1_guest_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_guest_v1_guest_messages_proto_rawDesc), len(file_aperio_guest_v1_guest_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
