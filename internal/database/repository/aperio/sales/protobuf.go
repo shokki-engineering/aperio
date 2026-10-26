@@ -28,12 +28,12 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/the-protobuf-project/runtime-go/network/graphql"
+	"google.golang.org/genproto/googleapis/type/decimal"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"strconv"
 	"time"
 )
 
@@ -55,6 +55,20 @@ func strToTs(s string) *timestamppb.Timestamp {
 		}
 	}
 	return nil
+}
+
+// decToBig is a google.type.Decimal as the client sends it; empty, and so
+// omitted, when it is unset.
+func decToBig(d *decimal.Decimal) graphql.Bigdecimal {
+	return graphql.Bigdecimal(d.GetValue())
+}
+
+// bigToDec reads a bigdecimal column back, nil when it is empty.
+func bigToDec(b graphql.Bigdecimal) *decimal.Decimal {
+	if b == "" {
+		return nil
+	}
+	return &decimal.Decimal{Value: string(b)}
 }
 
 // docToJSON is a document field as stored: the message's JSON form, nil when
@@ -174,16 +188,6 @@ func strSliceToPtrs(in []string) []*string {
 		out = append(out, &in[i])
 	}
 	return out
-}
-
-// bigdec / fromBigdec cross the numeric boundary as decimal strings.
-func bigdec(f float64) graphql.Bigdecimal {
-	return graphql.Bigdecimal(strconv.FormatFloat(f, 'f', -1, 64))
-}
-
-func fromBigdec(b graphql.Bigdecimal) float64 {
-	f, _ := strconv.ParseFloat(string(b), 64)
-	return f
 }
 
 // dishToCreateInput maps the proto onto the client's insert input.
@@ -428,7 +432,7 @@ func priceRuleToCreateInput(in *salespbv1.PriceRule) pricerulesql.CreateInput {
 	}
 	ci.MinGuests = int32(in.GetMinGuests())
 	ci.FixedPrice = docToJSON(in.GetFixedPrice())
-	ci.Percent = bigdec(in.GetPercent())
+	ci.Percent = decToBig(in.GetPercent())
 	ci.Amount = docToJSON(in.GetAmount())
 	ci.Priority = int32(in.GetPriority())
 	ci.Active = in.GetActive()
@@ -463,7 +467,7 @@ func priceRuleToUpdatePatch(merged *salespbv1.PriceRule) pricerulesql.UpdateInpu
 		patch.MinGuests = graphql.Null[int32]()
 	}
 	patch.FixedPrice = graphql.Value(docToJSON(merged.GetFixedPrice()))
-	if v := bigdec(merged.GetPercent()); v != graphql.Bigdecimal("") {
+	if v := decToBig(merged.GetPercent()); v != graphql.Bigdecimal("") {
 		patch.Percent = graphql.Value(v)
 	} else {
 		patch.Percent = graphql.Null[graphql.Bigdecimal]()
@@ -509,7 +513,7 @@ func priceRuleFromRow(row *pricerulesql.SalesPriceRules) *salespbv1.PriceRule {
 		out.Adjustment = &salespbv1.PriceRule_FixedPrice{FixedPrice: v}
 	}
 	if row.Percent != nil {
-		out.Adjustment = &salespbv1.PriceRule_Percent{Percent: fromBigdec(repox.Deref(row.Percent))}
+		out.Adjustment = &salespbv1.PriceRule_Percent{Percent: bigToDec(repox.Deref(row.Percent))}
 	}
 	if v := jsonToDoc[money.Money](row.Amount); v != nil {
 		out.Adjustment = &salespbv1.PriceRule_Amount{Amount: v}

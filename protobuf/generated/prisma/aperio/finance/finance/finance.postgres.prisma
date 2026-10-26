@@ -213,7 +213,7 @@ model Payment {
   amount Json @map("amount")
 
   /// Units of the venue's currency to one of the payment's; one when they are the same.
-  exchangeRate Decimal? @map("exchange_rate")
+  exchangeRate Decimal? @aperio.Decimal @map("exchange_rate")
 
   /// The amount in the venue's currency, as the books count it.
   baseAmount Json? @map("base_amount")

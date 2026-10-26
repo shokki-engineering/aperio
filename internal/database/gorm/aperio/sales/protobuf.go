@@ -24,6 +24,7 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"google.golang.org/genproto/googleapis/type/dayofweek"
+	"google.golang.org/genproto/googleapis/type/decimal"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -484,13 +485,16 @@ func PriceRuleToProto(m *PriceRule) *salespbv1.PriceRule {
 		return nil
 	}
 	out := &salespbv1.PriceRule{}
-	// not mapped here: season (resource reference), percent
+	// not mapped here: season (resource reference)
 	out.Name = m.Name
 	out.DisplayName = m.DisplayName
 	out.Target = PriceTargetToProto(m.Target)
 	out.MinGuests = fromPtr(m.MinGuests)
 	if v := jsonToDoc[money.Money](m.FixedPrice); v != nil {
 		out.Adjustment = &salespbv1.PriceRule_FixedPrice{FixedPrice: v}
+	}
+	if v := goToDec(m.Percent); v != nil {
+		out.Adjustment = &salespbv1.PriceRule_Percent{Percent: v}
 	}
 	if v := jsonToDoc[money.Money](m.Amount); v != nil {
 		out.Adjustment = &salespbv1.PriceRule_Amount{Amount: v}
@@ -512,12 +516,13 @@ func PriceRuleFromProto(pb *salespbv1.PriceRule) *PriceRule {
 		return nil
 	}
 	m := &PriceRule{}
-	// not mapped here: season (resource reference), percent
+	// not mapped here: season (resource reference)
 	m.Name = pb.GetName()
 	m.DisplayName = pb.GetDisplayName()
 	m.Target = PriceTargetFromProto(pb.GetTarget())
 	m.MinGuests = toPtr(pb.GetMinGuests())
 	m.FixedPrice = docToJSON(pb.GetFixedPrice())
+	m.Percent = decToGo(pb.GetPercent())
 	m.Amount = docToJSON(pb.GetAmount())
 	m.Priority = toPtr(pb.GetPriority())
 	m.Active = toPtr(pb.GetActive())
@@ -708,6 +713,32 @@ func enumsFromCSV[E ~int32](s *string, byName map[string]int32) []E {
 		out = append(out, E(byName[strings.TrimSpace(n)]))
 	}
 	return out
+}
+
+// decToGo is a nullable google.type.Decimal as stored: its decimal string, nil
+// when it is unset.
+func decToGo(d *decimal.Decimal) *string {
+	if d.GetValue() == "" {
+		return nil
+	}
+	v := d.GetValue()
+	return &v
+}
+
+// goToDec reads a nullable decimal column back, nil when it is NULL.
+func goToDec(s *string) *decimal.Decimal {
+	if s == nil || *s == "" {
+		return nil
+	}
+	return &decimal.Decimal{Value: *s}
+}
+
+// goValToDec reads a decimal column back, nil when it is empty.
+func goValToDec(s string) *decimal.Decimal {
+	if s == "" {
+		return nil
+	}
+	return &decimal.Decimal{Value: s}
 }
 
 // docToJSON is a document field as stored: the message's JSON form, nil when

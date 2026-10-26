@@ -3,44 +3,56 @@
 
 # aperio
 
-The OpenTravel (OTA) hotel backend: it serves every resource of
-[protobuf-ota](https://buf.build/shokki-engineering/protobuf-ota) on gRPC, REST
-and MCP, persisted through a generated database layer.
+The venue backend: stays, events, leads, quotes, GST invoices, payments,
+documents and service requests for the venues aperio sells, on gRPC, REST and
+MCP. Availability is freebusy's: every booking is a freebusy hold and
+reservation first. The schema is aperio's own protos (`protobuf/aperio`),
+written in the OpenTravel vocabulary of
+[protobuf-ota](https://buf.build/shokki-engineering/protobuf-ota), whose types
+they import.
 
 ## Go imports
 
 - Never alias an import. Refer to a package by the name it declares:
-  `hotelv1.Hotel` from
-  `buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/hotel/hotel/v1`,
-  `hotelv1grpc.HotelsServer` from its `.../hotel/v1/hotelv1grpc` package.
-- When two imports in one file declare the same package name (every resource
-  has a `types`, a `codes` and an `enums`), split the code so each file needs
-  only one of them. Don't rename either import.
+  `bookingpbv1.Reservation` from
+  `github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1`,
+  `types.RoomStay` from
+  `buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/hotel/booking/reservation/v1/types`.
+- When two imports in one file declare the same package name (every
+  protobuf-ota package has a `types`, a `codes` and an `enums`), split the code
+  so each file needs only one of them. Don't rename either import.
+
+## API rules
+
+- `just lint` runs buf format and lint, then api-linter. The only rule that may
+  be disabled is `core::0215::foreign-type-reference` (api-linter.yaml), which
+  importing OpenTravel's types requires; fix every other finding.
 
 ## Generated code
 
-- protobuf-ota is the schema, consumed from the BSR at the commit the
-  templates in `tools/protobuf/buf/` pin. Its messages and gRPC stubs are the
-  BSR SDK's; nothing here generates them. protobuf-ota carries no annotation
-  but its own, so what aperio needs to say about it -- database layout, what
-  is cached, where bindings live -- is in `tools/protobuf/buf/config/`.
-- Everything that touches the database is generated: models, stores,
-  converters, filters, repositories, caches (`internal/database/`), and the
-  AIP service layer over them (`internal/service/generated/`). Hand-written
-  code is business logic in hooks and custom methods, and nothing else.
+- Everything that touches the database is generated, from aperio's protos:
+  models, stores, converters, filters, repositories, caches
+  (`internal/database/`), the Hasura client aperioql, the Prisma schema, and
+  the AIP service layer (`internal/service/generated/`). Hand-written code is
+  business logic in hooks and custom methods, and nothing else.
+- The OpenTravel types aperio's protos import are the BSR SDK's; nothing here
+  generates them.
+- A field whose message type a `documents` rule names is one JSONB column (the
+  message's JSON form), not a table: the OpenTravel vocabulary, aperio's own
+  value objects and `google.type` messages. What is searched or reported on is
+  a top-level field of its resource, and so a column of its own.
 - If the generated layer can't express something a service needs, extend the
   plugin (protoc-gen-store, protoc-gen-cache, protoc-gen-service, protokit)
   and regenerate. Don't edit generated output or write the query, converter or
   adapter by hand.
-- `store.backend.yaml`, `cache.yaml` and `service.yaml` repeat one layout
-  block; change all three together.
-- `store.graphql.yaml` repeats it too, as a fourth copy.
+- `store.backend.yaml`, `cache.yaml`, `service.yaml` and `store.graphql.yaml`
+  repeat one layout block; change all four together.
 - The database schema is Prisma's: `just gen prisma` writes it, and
   `just db migrate <name>` writes and applies the next migration. Never edit a
   migration by hand.
 - Never edit Hasura metadata (`deploy/hasura/**/*.hml`) by hand. Regenerate it
   with `just hasura regen`, and only when a schema change requires it.
-- Regenerate with `just gen` (or `just gen prisma|store|ota|service`); `store`
+- Regenerate with `just gen` (or `just gen go|prisma|store|service`); `store`
   needs the local DDN engine up, as its graphql target introspects it.
 
 ## Repository

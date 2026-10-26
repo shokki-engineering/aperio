@@ -21,6 +21,7 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"google.golang.org/genproto/googleapis/type/date"
+	"google.golang.org/genproto/googleapis/type/decimal"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/genproto/googleapis/type/postaladdress"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -460,13 +461,14 @@ func PaymentToProto(m *Payment) *financepbv1.Payment {
 		return nil
 	}
 	out := &financepbv1.Payment{}
-	// not mapped here: contact (resource reference), invoice (resource reference), exchange_rate
+	// not mapped here: contact (resource reference), invoice (resource reference)
 	out.Name = m.Name
 	out.Booking = fromPtr(m.Booking)
 	out.Kind = PaymentKindToProto(m.Kind)
 	out.Method = PaymentMethodToProto(m.Method)
 	out.Channel = ChannelPtrToProto(m.Channel)
 	out.Amount = jsonToDoc[money.Money](m.Amount)
+	out.ExchangeRate = goToDec(m.ExchangeRate)
 	out.BaseAmount = jsonToDoc[money.Money](m.BaseAmount)
 	out.State = PaymentStatePtrToProto(m.State)
 	out.Gateway = fromPtr(m.Gateway)
@@ -490,13 +492,14 @@ func PaymentFromProto(pb *financepbv1.Payment) *Payment {
 		return nil
 	}
 	m := &Payment{}
-	// not mapped here: contact (resource reference), invoice (resource reference), exchange_rate
+	// not mapped here: contact (resource reference), invoice (resource reference)
 	m.Name = pb.GetName()
 	m.Booking = toPtr(pb.GetBooking())
 	m.Kind = PaymentKindFromProto(pb.GetKind())
 	m.Method = PaymentMethodFromProto(pb.GetMethod())
 	m.Channel = ChannelPtrFromProto(pb.GetChannel())
 	m.Amount = docToJSON(pb.GetAmount())
+	m.ExchangeRate = decToGo(pb.GetExchangeRate())
 	m.BaseAmount = docToJSON(pb.GetBaseAmount())
 	m.State = PaymentStatePtrFromProto(pb.GetState())
 	m.Gateway = toPtr(pb.GetGateway())
@@ -577,6 +580,32 @@ func goToDate(t *time.Time) *date.Date {
 		return nil
 	}
 	return &date.Date{Year: int32(t.Year()), Month: int32(t.Month()), Day: int32(t.Day())}
+}
+
+// decToGo is a nullable google.type.Decimal as stored: its decimal string, nil
+// when it is unset.
+func decToGo(d *decimal.Decimal) *string {
+	if d.GetValue() == "" {
+		return nil
+	}
+	v := d.GetValue()
+	return &v
+}
+
+// goToDec reads a nullable decimal column back, nil when it is NULL.
+func goToDec(s *string) *decimal.Decimal {
+	if s == nil || *s == "" {
+		return nil
+	}
+	return &decimal.Decimal{Value: *s}
+}
+
+// goValToDec reads a decimal column back, nil when it is empty.
+func goValToDec(s string) *decimal.Decimal {
+	if s == "" {
+		return nil
+	}
+	return &decimal.Decimal{Value: s}
 }
 
 // docToJSON is a document field as stored: the message's JSON form, nil when

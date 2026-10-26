@@ -656,9 +656,9 @@ func (s *cachedFixedPackageStore) after(ctx context.Context, m *sales.FixedPacka
 		return err
 	}
 	// FixedPackage.menu references Menu, so writing a FixedPackage changes what that Menu preloads
-	if s.edges.Menu != nil {
+	if s.edges.Menu != nil && m.MenuID != nil {
 		if err := s.opts.afterWrite(ctx, "aperio.sales.v1.FixedPackage", "invalidate Menu",
-			s.edges.Menu.Invalidate(ctx, m.Menu)); err != nil {
+			s.edges.Menu.Invalidate(ctx, *m.MenuID)); err != nil {
 			return err
 		}
 	}
@@ -1080,9 +1080,9 @@ func (s *cachedPriceRuleStore) after(ctx context.Context, m *sales.PriceRule) er
 		return err
 	}
 	// PriceRule.season references Season, so writing a PriceRule changes what that Season preloads
-	if s.edges.Season != nil {
+	if s.edges.Season != nil && m.SeasonID != nil {
 		if err := s.opts.afterWrite(ctx, "aperio.sales.v1.PriceRule", "invalidate Season",
-			s.edges.Season.Invalidate(ctx, m.Season)); err != nil {
+			s.edges.Season.Invalidate(ctx, *m.SeasonID)); err != nil {
 			return err
 		}
 	}

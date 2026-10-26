@@ -26,12 +26,12 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/the-protobuf-project/runtime-go/network/graphql"
 	"google.golang.org/genproto/googleapis/type/date"
+	"google.golang.org/genproto/googleapis/type/decimal"
 	"google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/genproto/googleapis/type/postaladdress"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"strconv"
 	"time"
 )
 
@@ -69,6 +69,20 @@ func strToDate(s string) *date.Date {
 		return nil
 	}
 	return &date.Date{Year: int32(t.Year()), Month: int32(t.Month()), Day: int32(t.Day())}
+}
+
+// decToBig is a google.type.Decimal as the client sends it; empty, and so
+// omitted, when it is unset.
+func decToBig(d *decimal.Decimal) graphql.Bigdecimal {
+	return graphql.Bigdecimal(d.GetValue())
+}
+
+// bigToDec reads a bigdecimal column back, nil when it is empty.
+func bigToDec(b graphql.Bigdecimal) *decimal.Decimal {
+	if b == "" {
+		return nil
+	}
+	return &decimal.Decimal{Value: string(b)}
 }
 
 // docToJSON is a document field as stored: the message's JSON form, nil when
@@ -143,16 +157,6 @@ func jsonToDocs[T any, P interface {
 		out = append(out, m)
 	}
 	return out
-}
-
-// bigdec / fromBigdec cross the numeric boundary as decimal strings.
-func bigdec(f float64) graphql.Bigdecimal {
-	return graphql.Bigdecimal(strconv.FormatFloat(f, 'f', -1, 64))
-}
-
-func fromBigdec(b graphql.Bigdecimal) float64 {
-	f, _ := strconv.ParseFloat(string(b), 64)
-	return f
 }
 
 // invoiceToCreateInput maps the proto onto the client's insert input.
@@ -370,7 +374,7 @@ func paymentToCreateInput(in *financepbv1.Payment) paymentsql.CreateInput {
 		ci.Channel = string(finance.ChannelFromProto(v))
 	}
 	ci.Amount = docToJSON(in.GetAmount())
-	ci.ExchangeRate = bigdec(in.GetExchangeRate())
+	ci.ExchangeRate = decToBig(in.GetExchangeRate())
 	ci.Gateway = in.GetGateway()
 	ci.GatewayReference = in.GetGatewayReference()
 	ci.Reference = in.GetReference()
@@ -410,7 +414,7 @@ func paymentToUpdatePatch(merged *financepbv1.Payment) paymentsql.UpdateInput {
 		patch.Channel = graphql.Null[string]()
 	}
 	patch.Amount = graphql.Value(docToJSON(merged.GetAmount()))
-	if v := bigdec(merged.GetExchangeRate()); v != graphql.Bigdecimal("") {
+	if v := decToBig(merged.GetExchangeRate()); v != graphql.Bigdecimal("") {
 		patch.ExchangeRate = graphql.Value(v)
 	} else {
 		patch.ExchangeRate = graphql.Null[graphql.Bigdecimal]()
@@ -495,7 +499,7 @@ func paymentFromRow(row *paymentsql.FinancePayments) *financepbv1.Payment {
 	out.Method = finance.PaymentMethodToProto(finance.PaymentMethod(row.Method))
 	out.Channel = finance.ChannelToProto(finance.Channel(repox.Deref(row.Channel)))
 	out.Amount = jsonToDoc[money.Money](&row.Amount)
-	out.ExchangeRate = fromBigdec(repox.Deref(row.ExchangeRate))
+	out.ExchangeRate = bigToDec(repox.Deref(row.ExchangeRate))
 	out.Gateway = repox.Deref(row.Gateway)
 	out.GatewayReference = repox.Deref(row.GatewayReference)
 	out.Reference = repox.Deref(row.Reference)
