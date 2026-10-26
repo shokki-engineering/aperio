@@ -52,6 +52,14 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   and nights by room type, the last and next visit, events, open leads and
   quotes, paid less refunds and still due, what they asked for before --
   counted from `start_date` when given ("this year").
+- Task tools for the other services' staff and agents, each a few indexed
+  reads: `EventService.SummarizeSessions` (the coming days' sessions with
+  covers and plates by diet), `SalesService.SummarizePipeline` (leads by
+  stage, won and lost lately, follow-ups due, uncontacted leads, quotes
+  expiring), `FinanceService.SummarizeReceivables` (outstanding, overdue,
+  aging, debtors, collected this month; credit notes left out) and
+  `OperationsService.SummarizeServiceRequests` (open requests by
+  department, overdue first). Operations gets a service package of its own.
 - Elicitation from the concierge: a method missing the guest's name or phone
   asks for just those, and ConfirmStay and CancelBooking ask for consent with
   the real amount and dates (`confirmed`) before they book or cancel. The

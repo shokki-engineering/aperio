@@ -57,9 +57,9 @@ func TestLiveAcceptQuote(t *testing.T) {
 	rooms, err := venues.Spaces.Create(ctx, v.GetName(), &venuepbv1.Space{DisplayName: "Deluxe", Kind: venuepbv1.SpaceKind_SPACE_KIND_ROOM_TYPE,
 		Resources: []string{"resources/d1-" + run, "resources/d2-" + run, "resources/d3-" + run}})
 	must(err, "create space")
-	c, err := people.Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Rahul Menon"})
+	c, err := people.Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "John Doe"})
 	must(err, "create contact")
-	lead, err := salesRepos.Leads.Create(ctx, &salespbv1.Lead{DisplayName: "Menon wedding", Contact: c.GetName(), Venue: v.GetName(),
+	lead, err := salesRepos.Leads.Create(ctx, &salespbv1.Lead{DisplayName: "Doe wedding", Contact: c.GetName(), Venue: v.GetName(),
 		Kind: salespbv1.LeadKind_LEAD_KIND_EVENT_WITH_STAY, Source: typepbv1.Channel_CHANNEL_WHATSAPP, Stage: salespbv1.Stage_STAGE_PROPOSAL})
 	must(err, "create lead")
 
@@ -67,7 +67,7 @@ func TestLiveAcceptQuote(t *testing.T) {
 	dates := &typepbv1.DateRange{StartDate: &date.Date{Year: 2027, Month: 12, Day: 12}, EndDate: &date.Date{Year: 2027, Month: 12, Day: 14}}
 	stayTax := &typepbv1.Tax{HsnSacCode: "996311", GstRate: &decimal.Decimal{Value: "12"}}
 	q, err := svc.CreateQuote(ctx, &salespbv1.CreateQuoteRequest{Parent: v.GetName(), Quote: &salespbv1.Quote{
-		DisplayName: "Menon wedding", Contact: c.GetName(), Lead: lead.GetName(), EventType: typepbv1.EventType_EVENT_TYPE_WEDDING,
+		DisplayName: "Doe wedding", Contact: c.GetName(), Lead: lead.GetName(), EventType: typepbv1.EventType_EVENT_TYPE_WEDDING,
 		Dates: dates, Guests: 6,
 		Lines: []*salespbv1.QuoteLine{
 			{Kind: salespbv1.LineKind_LINE_KIND_ROOM, Item: rooms.GetName(), Quantity: 6, PriceOverride: true, UnitPrice: inr(6500), Tax: stayTax},

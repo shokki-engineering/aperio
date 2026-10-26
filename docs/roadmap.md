@@ -85,13 +85,13 @@ operations (7), document (5) and concierge (7) -- 101 methods.
 | Payments | In progress | `internal/service/finance`: any currency at an exchange rate, paid / due and PAID on invoices, an advance confirming its booking, `Settle` for a gateway's webhook (idempotent), Refund (through the gateway) and Void; live test | a gateway adapter (signature check, webhook route, payment links), cheque clearing, receipt vouchers |
 | Guests and leads | Partly | guest service: contacts with searchable `phone_numbers`; leads and activities in sales | lead hold in freebusy, follow-ups, dedupe contacts |
 | Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
-| Service requests | Generated only | proto with event option | state methods, notifying staff (pantry, housekeeping), charges to a booking |
+| Service requests | Partly | `internal/service/operations`: create (and the concierge's RequestService), `SummarizeServiceRequests` | state methods (Acknowledge, Start, Complete, Cancel answer Unimplemented), notifying staff (pantry, housekeeping), charges to a booking |
 | Channels | Not started | `Channel` enum, OTA types in the schema | Booking.com (OTA), Airbnb, MakeMyTrip adapters; rates and inventory push |
 | Server | Done | `main.go` on the HybridServer, every service on gRPC :50061, REST :8090 and MCP :8091 (108 tools); `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | the cache wired, query tracing, background jobs |
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
 | Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking, EnquireEvent (a lead, a draft quote, menus priced, halls free), RequestService (to the right department) over REST, gRPC and MCP; missing details and consent asked by elicitation; live tests | event bookings beyond the enquiry; the elicitation release (runtime-go, protoc-gen-mcp); payment link; a LiveKit demo (M9) |
-| Agents (MCP) | In progress | 102 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone). Task tools, service by service: stay (`SummarizeDay` on the `StayNight` read model, `Reservation.spaces`) and guest (`SummarizeContact`: a guest's history across stay, event, sales and finance) done; read models in Postgres with an optional OpenSearch copy, as freebusy's | event, sales, finance, operations task tools; documents last; reservation tools still ~250 KB |
+| Agents (MCP) | In progress | 107 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone). A task tool per service, each a few indexed reads: stay `SummarizeDay` (on the `StayNight` read model), guest `SummarizeContact`, event `SummarizeSessions`, sales `SummarizePipeline`, finance `SummarizeReceivables`, operations `SummarizeServiceRequests`; read models in Postgres with an optional OpenSearch copy, as freebusy's | documents last; reservation tools still ~250 KB |
 
 ## Milestones
 
@@ -215,8 +215,13 @@ before channels, a running server before anyone outside can use any of it.
   `SummarizeContact` (stays and nights by room type, last and next visit,
   events, open leads and quotes, paid and due, past requests; from a day
   for "this year"), read through the other services' list methods by the
-  indexed contact, all at once. Next: the kitchen's coming sessions, the
-  sales pipeline, money owed, open requests by department.
+  indexed contact, all at once. Event, sales, finance and operations,
+  done: `SummarizeSessions` (the kitchen's next days: sessions, covers,
+  plates by diet), `SummarizePipeline` (leads by stage, won and lost
+  lately, follow-ups due, uncontacted leads, quotes expiring),
+  `SummarizeReceivables` (outstanding, overdue, aging, debtors, collected
+  this month) and `SummarizeServiceRequests` (open requests by department,
+  overdue, oldest first, done today). Next: documents.
 - Read models as freebusy's: Postgres tables under the generated projection
   runtime, with an optional OpenSearch copy (`[search] provider`), a
   change-feed indexer, alias-swap reindex, and every read falling back to
