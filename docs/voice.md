@@ -6,8 +6,8 @@ agentic voice call: a caller rings the resort or the hall, a voice agent
 through MCP -- asking the caller, through MCP elicitation, for what it does
 not know and for consent before anything is taken or charged.
 
-Status, 27 October 2026: `FindStay`, `HoldStay`, `ConfirmStay`, `FindBooking`
-and `CancelBooking` are built
+Status, 27 October 2026: `FindStay`, `HoldStay`, `ConfirmStay`, `FindBooking`,
+`CancelBooking`, `EnquireEvent` and `RequestService` are built
 (`internal/service/concierge`) and served on REST, gRPC and MCP -- for the
 website first, a LiveKit voice agent later. A guest's missing details come
 back as a structured error naming the field, which a frontend shows as a form

@@ -9,7 +9,8 @@ package server
 // so each one's rules hold whoever asks: pricing prices what the catalog
 // sells; sales prices quotes through pricing and books accepted ones through
 // the stay and event services; finance confirms a paid booking through them;
-// the concierge, the guest's side, works through guest, pricing and stay.
+// the concierge, the guest's side, works through guest, pricing, stay,
+// sales, catalog and operations.
 
 import (
 	"github.com/shokki-engineering/aperio/internal/booking"
@@ -65,23 +66,28 @@ func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gatewa
 	stays, events := stay.New(stayRepositories(rc), base), event.New(eventRepositories(rc), base)
 	prices := pricing.New(pricingRepositories(rc), catalogRepos, venues.Venues)
 	guests := guest.New(guestRepos)
+	catalogSvc := catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{})
+	selling := sales.New(salesRepositories(rc), venues.Venues, catalogRepos.Menus, prices, events, stays)
+	ops := operationspbv1svc.NewOperationsServiceServer(
+		operationspbv1svc.OperationsServiceRepositories{ServiceRequests: operations.New(rc).ServiceRequests}, operationspbv1svc.NopOperationsServiceHooks{})
 	return &Services{
 		Conn:   conn,
 		Engine: eng,
 		Venues: venuepbv1svc.NewVenueServiceServer(
 			venuepbv1svc.VenueServiceRepositories{Venues: venues.Venues, Spaces: venues.Spaces}, venuepbv1svc.NopVenueServiceHooks{}),
-		Catalog: catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{}),
+		Catalog: catalogSvc,
 		Pricing: prices,
 		Guests:  guests,
-		Sales:   sales.New(salesRepositories(rc), venues.Venues, catalogRepos.Menus, prices, events, stays),
+		Sales:   selling,
 		Stays:   stays,
 		Events:  events,
 		Finance: finance.New(financeRepositories(rc), venues.Venues, bookings{stays: stays, events: events}, gateways),
 		Documents: documentpbv1svc.NewDocumentServiceServer(
 			documentpbv1svc.DocumentServiceRepositories{Documents: document.New(rc).Documents}, documentpbv1svc.NopDocumentServiceHooks{}),
-		Operations: operationspbv1svc.NewOperationsServiceServer(
-			operationspbv1svc.OperationsServiceRepositories{ServiceRequests: operations.New(rc).ServiceRequests}, operationspbv1svc.NopOperationsServiceHooks{}),
-		Concierge: concierge.New(venues, eng, prices, guests, stays, holdSecret),
+		Operations: ops,
+		Concierge: concierge.New(venues, eng, concierge.Services{
+			Pricing: prices, Guests: guests, Stays: stays, Sales: selling, Catalog: catalogSvc, Operations: ops,
+		}, holdSecret),
 	}
 }
 

@@ -80,4 +80,25 @@ service ConciergeService {
     };
     option (google.api.method_signature) = "venue,phone,reference";
   }
+
+  // Takes an event enquiry: makes a lead for the venue's sales team and a
+  // draft quote with the cheapest menu that fits, and says which menus suit
+  // and which halls are free that day.
+  rpc EnquireEvent(EnquireEventRequest) returns (EnquireEventResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:enquireEvent"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,event_type,event_date,guests,request_id";
+  }
+
+  // Asks a department for something during a stay or an event: two black
+  // coffees to room 204, towels, the Wi-Fi.
+  rpc RequestService(RequestServiceRequest) returns (RequestServiceResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:requestService"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,kind,what,location,request_id";
+  }
 }

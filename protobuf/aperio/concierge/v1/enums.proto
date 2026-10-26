@@ -1,0 +1,36 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.concierge.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.concierge.v1";
+
+// ServiceKind is what a guest asks for during a stay or an event, in a
+// guest's words; the concierge sends it to the department that does it.
+enum ServiceKind {
+  // Default; never set.
+  SERVICE_KIND_UNSPECIFIED = 0;
+
+  // Tea, coffee, water, snacks: the pantry.
+  SERVICE_KIND_DRINKS = 1;
+
+  // A meal or a dish: the kitchen.
+  SERVICE_KIND_FOOD = 2;
+
+  // Cleaning, towels, linen, toiletries: housekeeping.
+  SERVICE_KIND_HOUSEKEEPING = 3;
+
+  // Something broken, power, water, air conditioning: maintenance.
+  SERVICE_KIND_REPAIR = 4;
+
+  // Wi-Fi, a projector, a microphone: IT and AV.
+  SERVICE_KIND_WIFI_AV = 5;
+
+  // Anything else: the front desk.
+  SERVICE_KIND_FRONT_DESK = 6;
+}

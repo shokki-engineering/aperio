@@ -969,11 +969,485 @@ func (x *CancelBookingResponse) GetSpoken() string {
 	return ""
 }
 
+// Request message for EnquireEvent.
+type EnquireEventRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue to hold the event at.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// The occasion: a wedding, a conference, a birthday.
+	EventType typepbv1.EventType `protobuf:"varint,2,opt,name=event_type,json=eventType,proto3,enum=aperio.type.v1.EventType" json:"event_type,omitempty"`
+	// The day of the event.
+	EventDate *date.Date `protobuf:"bytes,3,opt,name=event_date,json=eventDate,proto3" json:"event_date,omitempty"`
+	// How many guests.
+	Guests int32 `protobuf:"varint,4,opt,name=guests,proto3" json:"guests,omitempty"`
+	// The diet the menus must suit, if one: vegetarian, Jain.
+	Diet typepbv1.Diet `protobuf:"varint,5,opt,name=diet,proto3,enum=aperio.type.v1.Diet" json:"diet,omitempty"`
+	// The guest's name. Asked for when empty.
+	GuestDisplayName string `protobuf:"bytes,6,opt,name=guest_display_name,json=guestDisplayName,proto3" json:"guest_display_name,omitempty"`
+	// The guest's phone. Asked for when empty; on a call, the number calling.
+	Phone string `protobuf:"bytes,7,opt,name=phone,proto3" json:"phone,omitempty"`
+	// The guest's email, for the quote; optional.
+	Email string `protobuf:"bytes,8,opt,name=email,proto3" json:"email,omitempty"`
+	// Anything else the guest wants: a theme, a stage, rooms for family.
+	Notes string `protobuf:"bytes,9,opt,name=notes,proto3" json:"notes,omitempty"`
+	// Where the guest is asking from: WEBSITE, PHONE, WHATSAPP.
+	Channel typepbv1.Channel `protobuf:"varint,10,opt,name=channel,proto3,enum=aperio.type.v1.Channel" json:"channel,omitempty"`
+	// A UUID for this enquiry: a retry with the same one finds the enquiry the
+	// first made rather than making another (AIP-155).
+	RequestId     string `protobuf:"bytes,11,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EnquireEventRequest) Reset() {
+	*x = EnquireEventRequest{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnquireEventRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnquireEventRequest) ProtoMessage() {}
+
+func (x *EnquireEventRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnquireEventRequest.ProtoReflect.Descriptor instead.
+func (*EnquireEventRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *EnquireEventRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *EnquireEventRequest) GetEventType() typepbv1.EventType {
+	if x != nil {
+		return x.EventType
+	}
+	return typepbv1.EventType(0)
+}
+
+func (x *EnquireEventRequest) GetEventDate() *date.Date {
+	if x != nil {
+		return x.EventDate
+	}
+	return nil
+}
+
+func (x *EnquireEventRequest) GetGuests() int32 {
+	if x != nil {
+		return x.Guests
+	}
+	return 0
+}
+
+func (x *EnquireEventRequest) GetDiet() typepbv1.Diet {
+	if x != nil {
+		return x.Diet
+	}
+	return typepbv1.Diet(0)
+}
+
+func (x *EnquireEventRequest) GetGuestDisplayName() string {
+	if x != nil {
+		return x.GuestDisplayName
+	}
+	return ""
+}
+
+func (x *EnquireEventRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *EnquireEventRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *EnquireEventRequest) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+func (x *EnquireEventRequest) GetChannel() typepbv1.Channel {
+	if x != nil {
+		return x.Channel
+	}
+	return typepbv1.Channel(0)
+}
+
+func (x *EnquireEventRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+// Response message for EnquireEvent.
+type EnquireEventResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The lead the enquiry made, which the venue's sales team follows up.
+	// Format: leads/{lead}
+	Lead string `protobuf:"bytes,1,opt,name=lead,proto3" json:"lead,omitempty"`
+	// A draft quote with the cheapest menu that fits, for the team to send;
+	// empty when no menu fits.
+	// Format: venues/{venue}/quotes/{quote}
+	Quote string `protobuf:"bytes,2,opt,name=quote,proto3" json:"quote,omitempty"`
+	// The menus that suit the guests and their diet, cheapest first; at most
+	// three.
+	Menus []*MenuOption `protobuf:"bytes,3,rep,name=menus,proto3" json:"menus,omitempty"`
+	// The halls that seat the guests and are free that day.
+	Halls []string `protobuf:"bytes,4,rep,name=halls,proto3" json:"halls,omitempty"`
+	// The enquiry as a sentence to say.
+	Spoken        string `protobuf:"bytes,5,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EnquireEventResponse) Reset() {
+	*x = EnquireEventResponse{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnquireEventResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnquireEventResponse) ProtoMessage() {}
+
+func (x *EnquireEventResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnquireEventResponse.ProtoReflect.Descriptor instead.
+func (*EnquireEventResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *EnquireEventResponse) GetLead() string {
+	if x != nil {
+		return x.Lead
+	}
+	return ""
+}
+
+func (x *EnquireEventResponse) GetQuote() string {
+	if x != nil {
+		return x.Quote
+	}
+	return ""
+}
+
+func (x *EnquireEventResponse) GetMenus() []*MenuOption {
+	if x != nil {
+		return x.Menus
+	}
+	return nil
+}
+
+func (x *EnquireEventResponse) GetHalls() []string {
+	if x != nil {
+		return x.Halls
+	}
+	return nil
+}
+
+func (x *EnquireEventResponse) GetSpoken() string {
+	if x != nil {
+		return x.Spoken
+	}
+	return ""
+}
+
+// MenuOption is a plate menu that suits an enquiry, priced for its day.
+type MenuOption struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The menu.
+	// Format: venues/{venue}/menus/{menu}
+	Menu string `protobuf:"bytes,1,opt,name=menu,proto3" json:"menu,omitempty"`
+	// The menu as it is sold, e.g. "Silver Vegetarian".
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	// A plate, on the day, before tax.
+	PlatePrice *money.Money `protobuf:"bytes,3,opt,name=plate_price,json=platePrice,proto3" json:"plate_price,omitempty"`
+	// Every guest's plate, before tax.
+	Total *money.Money `protobuf:"bytes,4,opt,name=total,proto3" json:"total,omitempty"`
+	// The option as a sentence to say.
+	Spoken        string `protobuf:"bytes,5,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MenuOption) Reset() {
+	*x = MenuOption{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MenuOption) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MenuOption) ProtoMessage() {}
+
+func (x *MenuOption) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MenuOption.ProtoReflect.Descriptor instead.
+func (*MenuOption) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *MenuOption) GetMenu() string {
+	if x != nil {
+		return x.Menu
+	}
+	return ""
+}
+
+func (x *MenuOption) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *MenuOption) GetPlatePrice() *money.Money {
+	if x != nil {
+		return x.PlatePrice
+	}
+	return nil
+}
+
+func (x *MenuOption) GetTotal() *money.Money {
+	if x != nil {
+		return x.Total
+	}
+	return nil
+}
+
+func (x *MenuOption) GetSpoken() string {
+	if x != nil {
+		return x.Spoken
+	}
+	return ""
+}
+
+// Request message for RequestService.
+type RequestServiceRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The venue the guest is at.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
+	// What kind of thing the guest wants.
+	Kind ServiceKind `protobuf:"varint,2,opt,name=kind,proto3,enum=aperio.concierge.v1.ServiceKind" json:"kind,omitempty"`
+	// What, in the guest's words: "black coffee", "two towels", "the AC".
+	What string `protobuf:"bytes,3,opt,name=what,proto3" json:"what,omitempty"`
+	// How many; one when empty.
+	Quantity int32 `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	// Where to: "Room 204", "the ballroom", "the pool deck".
+	Location string `protobuf:"bytes,5,opt,name=location,proto3" json:"location,omitempty"`
+	// Anything else: "no sugar", "after 4 pm".
+	Notes string `protobuf:"bytes,6,opt,name=notes,proto3" json:"notes,omitempty"`
+	// Whether it is wanted now rather than in the usual time.
+	Urgent bool `protobuf:"varint,7,opt,name=urgent,proto3" json:"urgent,omitempty"`
+	// A UUID for this request: a retry with the same one finds the request
+	// the first made (AIP-155).
+	RequestId     string `protobuf:"bytes,8,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestServiceRequest) Reset() {
+	*x = RequestServiceRequest{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestServiceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestServiceRequest) ProtoMessage() {}
+
+func (x *RequestServiceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestServiceRequest.ProtoReflect.Descriptor instead.
+func (*RequestServiceRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *RequestServiceRequest) GetVenue() string {
+	if x != nil {
+		return x.Venue
+	}
+	return ""
+}
+
+func (x *RequestServiceRequest) GetKind() ServiceKind {
+	if x != nil {
+		return x.Kind
+	}
+	return ServiceKind_SERVICE_KIND_UNSPECIFIED
+}
+
+func (x *RequestServiceRequest) GetWhat() string {
+	if x != nil {
+		return x.What
+	}
+	return ""
+}
+
+func (x *RequestServiceRequest) GetQuantity() int32 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *RequestServiceRequest) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
+func (x *RequestServiceRequest) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+func (x *RequestServiceRequest) GetUrgent() bool {
+	if x != nil {
+		return x.Urgent
+	}
+	return false
+}
+
+func (x *RequestServiceRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+// Response message for RequestService.
+type RequestServiceResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The service request the department works.
+	// Format: venues/{venue}/serviceRequests/{service_request}
+	ServiceRequest string `protobuf:"bytes,1,opt,name=service_request,json=serviceRequest,proto3" json:"service_request,omitempty"`
+	// The request as a sentence to say.
+	Spoken        string `protobuf:"bytes,2,opt,name=spoken,proto3" json:"spoken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestServiceResponse) Reset() {
+	*x = RequestServiceResponse{}
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestServiceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestServiceResponse) ProtoMessage() {}
+
+func (x *RequestServiceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_concierge_v1_concierge_messages_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestServiceResponse.ProtoReflect.Descriptor instead.
+func (*RequestServiceResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *RequestServiceResponse) GetServiceRequest() string {
+	if x != nil {
+		return x.ServiceRequest
+	}
+	return ""
+}
+
+func (x *RequestServiceResponse) GetSpoken() string {
+	if x != nil {
+		return x.Spoken
+	}
+	return ""
+}
+
 var File_aperio_concierge_v1_concierge_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\n" +
-	",aperio/concierge/v1/concierge_messages.proto\x12\x13aperio.concierge.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/api/field_info.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"\xa1\x02\n" +
+	",aperio/concierge/v1/concierge_messages.proto\x12\x13aperio.concierge.v1\x1a\x1faperio/concierge/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/api/field_info.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"\xa1\x02\n" +
 	"\x0fFindStayRequest\x124\n" +
 	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12:\n" +
@@ -1055,6 +1529,55 @@ const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\x15CancelBookingResponse\x12A\n" +
 	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\vreservation\x12\x16\n" +
+	"\x06spoken\x18\x02 \x01(\tR\x06spoken\"\xb2\x04\n" +
+	"\x13EnquireEventRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12>\n" +
+	"\n" +
+	"event_type\x18\x02 \x01(\x0e2\x19.aperio.type.v1.EventTypeB\x04\xe2A\x01\x02R\teventType\x126\n" +
+	"\n" +
+	"event_date\x18\x03 \x01(\v2\x11.google.type.DateB\x04\xe2A\x01\x02R\teventDate\x12&\n" +
+	"\x06guests\x18\x04 \x01(\x05B\x0e\xe2A\x01\x02\xbaH\a\x1a\x05\x18\x88'(\x01R\x06guests\x12.\n" +
+	"\x04diet\x18\x05 \x01(\x0e2\x14.aperio.type.v1.DietB\x04\xe2A\x01\x01R\x04diet\x12:\n" +
+	"\x12guest_display_name\x18\x06 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xc8\x01R\x10guestDisplayName\x12!\n" +
+	"\x05phone\x18\a \x01(\tB\v\xe2A\x01\x01\xbaH\x04r\x02\x18 R\x05phone\x12$\n" +
+	"\x05email\x18\b \x01(\tB\x0e\xe2A\x01\x01\xbaH\a\xd8\x01\x01r\x02`\x01R\x05email\x12\"\n" +
+	"\x05notes\x18\t \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\x05notes\x127\n" +
+	"\achannel\x18\n" +
+	" \x01(\x0e2\x17.aperio.type.v1.ChannelB\x04\xe2A\x01\x01R\achannel\x123\n" +
+	"\n" +
+	"request_id\x18\v \x01(\tB\x14\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xe2\x8c\xcf\xd7\b\x02\b\x01R\trequestId\"\xdc\x01\n" +
+	"\x14EnquireEventResponse\x12-\n" +
+	"\x04lead\x18\x01 \x01(\tB\x19\xfaA\x16\n" +
+	"\x14aperio.sales.v1/LeadR\x04lead\x120\n" +
+	"\x05quote\x18\x02 \x01(\tB\x1a\xfaA\x17\n" +
+	"\x15aperio.sales.v1/QuoteR\x05quote\x125\n" +
+	"\x05menus\x18\x03 \x03(\v2\x1f.aperio.concierge.v1.MenuOptionR\x05menus\x12\x14\n" +
+	"\x05halls\x18\x04 \x03(\tR\x05halls\x12\x16\n" +
+	"\x06spoken\x18\x05 \x01(\tR\x06spoken\"\xd7\x01\n" +
+	"\n" +
+	"MenuOption\x12/\n" +
+	"\x04menu\x18\x01 \x01(\tB\x1b\xfaA\x18\n" +
+	"\x16aperio.catalog.v1/MenuR\x04menu\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x123\n" +
+	"\vplate_price\x18\x03 \x01(\v2\x12.google.type.MoneyR\n" +
+	"platePrice\x12(\n" +
+	"\x05total\x18\x04 \x01(\v2\x12.google.type.MoneyR\x05total\x12\x16\n" +
+	"\x06spoken\x18\x05 \x01(\tR\x06spoken\"\xfa\x02\n" +
+	"\x15RequestServiceRequest\x124\n" +
+	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.venue.v1/VenueR\x05venue\x12:\n" +
+	"\x04kind\x18\x02 \x01(\x0e2 .aperio.concierge.v1.ServiceKindB\x04\xe2A\x01\x02R\x04kind\x12\"\n" +
+	"\x04what\x18\x03 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\x04what\x12)\n" +
+	"\bquantity\x18\x04 \x01(\x05B\r\xe2A\x01\x01\xbaH\x06\x1a\x04\x18d(\x00R\bquantity\x12)\n" +
+	"\blocation\x18\x05 \x01(\tB\r\xe2A\x01\x02\xbaH\x06r\x04\x10\x01\x18dR\blocation\x12\"\n" +
+	"\x05notes\x18\x06 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xe8\aR\x05notes\x12\x1c\n" +
+	"\x06urgent\x18\a \x01(\bB\x04\xe2A\x01\x01R\x06urgent\x123\n" +
+	"\n" +
+	"request_id\x18\b \x01(\tB\x14\xe2A\x01\x02\xbaH\x05r\x03\xb0\x01\x01\xe2\x8c\xcf\xd7\b\x02\b\x01R\trequestId\"\x83\x01\n" +
+	"\x16RequestServiceResponse\x12Q\n" +
+	"\x0fservice_request\x18\x01 \x01(\tB(\xfaA%\n" +
+	"#aperio.operations.v1/ServiceRequestR\x0eserviceRequest\x12\x16\n" +
 	"\x06spoken\x18\x02 \x01(\tR\x06spokenB\x84\x02\n" +
 	"\x17com.aperio.concierge.v1B\x16ConciergeMessagesProtoP\x01Zcgithub.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1\xa2\x02\x03ACX\xaa\x02\x13Aperio.Concierge.V1\xca\x02\x13Aperio\\Concierge\\V1\xe2\x02\x1fAperio\\Concierge\\V1\\GPBMetadata\xea\x02\x15Aperio::Concierge::V1b\x06proto3"
 
@@ -1070,43 +1593,59 @@ func file_aperio_concierge_v1_concierge_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_concierge_v1_concierge_messages_proto_rawDescData
 }
 
-var file_aperio_concierge_v1_concierge_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_aperio_concierge_v1_concierge_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_aperio_concierge_v1_concierge_messages_proto_goTypes = []any{
-	(*FindStayRequest)(nil),       // 0: aperio.concierge.v1.FindStayRequest
-	(*FindStayResponse)(nil),      // 1: aperio.concierge.v1.FindStayResponse
-	(*StayOption)(nil),            // 2: aperio.concierge.v1.StayOption
-	(*HoldStayRequest)(nil),       // 3: aperio.concierge.v1.HoldStayRequest
-	(*HoldStayResponse)(nil),      // 4: aperio.concierge.v1.HoldStayResponse
-	(*ConfirmStayRequest)(nil),    // 5: aperio.concierge.v1.ConfirmStayRequest
-	(*ConfirmStayResponse)(nil),   // 6: aperio.concierge.v1.ConfirmStayResponse
-	(*FindBookingRequest)(nil),    // 7: aperio.concierge.v1.FindBookingRequest
-	(*FindBookingResponse)(nil),   // 8: aperio.concierge.v1.FindBookingResponse
-	(*BookingSummary)(nil),        // 9: aperio.concierge.v1.BookingSummary
-	(*CancelBookingRequest)(nil),  // 10: aperio.concierge.v1.CancelBookingRequest
-	(*CancelBookingResponse)(nil), // 11: aperio.concierge.v1.CancelBookingResponse
-	(*date.Date)(nil),             // 12: google.type.Date
-	(*money.Money)(nil),           // 13: google.type.Money
-	(typepbv1.Channel)(0),         // 14: aperio.type.v1.Channel
-	(*timestamppb.Timestamp)(nil), // 15: google.protobuf.Timestamp
+	(*FindStayRequest)(nil),        // 0: aperio.concierge.v1.FindStayRequest
+	(*FindStayResponse)(nil),       // 1: aperio.concierge.v1.FindStayResponse
+	(*StayOption)(nil),             // 2: aperio.concierge.v1.StayOption
+	(*HoldStayRequest)(nil),        // 3: aperio.concierge.v1.HoldStayRequest
+	(*HoldStayResponse)(nil),       // 4: aperio.concierge.v1.HoldStayResponse
+	(*ConfirmStayRequest)(nil),     // 5: aperio.concierge.v1.ConfirmStayRequest
+	(*ConfirmStayResponse)(nil),    // 6: aperio.concierge.v1.ConfirmStayResponse
+	(*FindBookingRequest)(nil),     // 7: aperio.concierge.v1.FindBookingRequest
+	(*FindBookingResponse)(nil),    // 8: aperio.concierge.v1.FindBookingResponse
+	(*BookingSummary)(nil),         // 9: aperio.concierge.v1.BookingSummary
+	(*CancelBookingRequest)(nil),   // 10: aperio.concierge.v1.CancelBookingRequest
+	(*CancelBookingResponse)(nil),  // 11: aperio.concierge.v1.CancelBookingResponse
+	(*EnquireEventRequest)(nil),    // 12: aperio.concierge.v1.EnquireEventRequest
+	(*EnquireEventResponse)(nil),   // 13: aperio.concierge.v1.EnquireEventResponse
+	(*MenuOption)(nil),             // 14: aperio.concierge.v1.MenuOption
+	(*RequestServiceRequest)(nil),  // 15: aperio.concierge.v1.RequestServiceRequest
+	(*RequestServiceResponse)(nil), // 16: aperio.concierge.v1.RequestServiceResponse
+	(*date.Date)(nil),              // 17: google.type.Date
+	(*money.Money)(nil),            // 18: google.type.Money
+	(typepbv1.Channel)(0),          // 19: aperio.type.v1.Channel
+	(*timestamppb.Timestamp)(nil),  // 20: google.protobuf.Timestamp
+	(typepbv1.EventType)(0),        // 21: aperio.type.v1.EventType
+	(typepbv1.Diet)(0),             // 22: aperio.type.v1.Diet
+	(ServiceKind)(0),               // 23: aperio.concierge.v1.ServiceKind
 }
 var file_aperio_concierge_v1_concierge_messages_proto_depIdxs = []int32{
-	12, // 0: aperio.concierge.v1.FindStayRequest.arrival_date:type_name -> google.type.Date
+	17, // 0: aperio.concierge.v1.FindStayRequest.arrival_date:type_name -> google.type.Date
 	2,  // 1: aperio.concierge.v1.FindStayResponse.options:type_name -> aperio.concierge.v1.StayOption
-	13, // 2: aperio.concierge.v1.StayOption.total:type_name -> google.type.Money
-	12, // 3: aperio.concierge.v1.HoldStayRequest.arrival_date:type_name -> google.type.Date
-	14, // 4: aperio.concierge.v1.HoldStayRequest.channel:type_name -> aperio.type.v1.Channel
-	15, // 5: aperio.concierge.v1.HoldStayResponse.expire_time:type_name -> google.protobuf.Timestamp
-	13, // 6: aperio.concierge.v1.HoldStayResponse.total:type_name -> google.type.Money
-	13, // 7: aperio.concierge.v1.ConfirmStayResponse.total:type_name -> google.type.Money
-	12, // 8: aperio.concierge.v1.FindBookingRequest.arrival_date:type_name -> google.type.Date
+	18, // 2: aperio.concierge.v1.StayOption.total:type_name -> google.type.Money
+	17, // 3: aperio.concierge.v1.HoldStayRequest.arrival_date:type_name -> google.type.Date
+	19, // 4: aperio.concierge.v1.HoldStayRequest.channel:type_name -> aperio.type.v1.Channel
+	20, // 5: aperio.concierge.v1.HoldStayResponse.expire_time:type_name -> google.protobuf.Timestamp
+	18, // 6: aperio.concierge.v1.HoldStayResponse.total:type_name -> google.type.Money
+	18, // 7: aperio.concierge.v1.ConfirmStayResponse.total:type_name -> google.type.Money
+	17, // 8: aperio.concierge.v1.FindBookingRequest.arrival_date:type_name -> google.type.Date
 	9,  // 9: aperio.concierge.v1.FindBookingResponse.bookings:type_name -> aperio.concierge.v1.BookingSummary
-	12, // 10: aperio.concierge.v1.BookingSummary.arrival_date:type_name -> google.type.Date
-	12, // 11: aperio.concierge.v1.BookingSummary.departure_date:type_name -> google.type.Date
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	17, // 10: aperio.concierge.v1.BookingSummary.arrival_date:type_name -> google.type.Date
+	17, // 11: aperio.concierge.v1.BookingSummary.departure_date:type_name -> google.type.Date
+	21, // 12: aperio.concierge.v1.EnquireEventRequest.event_type:type_name -> aperio.type.v1.EventType
+	17, // 13: aperio.concierge.v1.EnquireEventRequest.event_date:type_name -> google.type.Date
+	22, // 14: aperio.concierge.v1.EnquireEventRequest.diet:type_name -> aperio.type.v1.Diet
+	19, // 15: aperio.concierge.v1.EnquireEventRequest.channel:type_name -> aperio.type.v1.Channel
+	14, // 16: aperio.concierge.v1.EnquireEventResponse.menus:type_name -> aperio.concierge.v1.MenuOption
+	18, // 17: aperio.concierge.v1.MenuOption.plate_price:type_name -> google.type.Money
+	18, // 18: aperio.concierge.v1.MenuOption.total:type_name -> google.type.Money
+	23, // 19: aperio.concierge.v1.RequestServiceRequest.kind:type_name -> aperio.concierge.v1.ServiceKind
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_aperio_concierge_v1_concierge_messages_proto_init() }
@@ -1114,13 +1653,14 @@ func file_aperio_concierge_v1_concierge_messages_proto_init() {
 	if File_aperio_concierge_v1_concierge_messages_proto != nil {
 		return
 	}
+	file_aperio_concierge_v1_enums_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_concierge_v1_concierge_messages_proto_rawDesc), len(file_aperio_concierge_v1_concierge_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

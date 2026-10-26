@@ -29,45 +29,56 @@ var File_aperio_concierge_v1_concierge_service_proto protoreflect.FileDescriptor
 
 const file_aperio_concierge_v1_concierge_service_proto_rawDesc = "" +
 	"\n" +
-	"+aperio/concierge/v1/concierge_service.proto\x12\x13aperio.concierge.v1\x1a,aperio/concierge/v1/concierge_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xf7\a\n" +
+	"+aperio/concierge/v1/concierge_service.proto\x12\x13aperio.concierge.v1\x1a,aperio/concierge/v1/concierge_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xfd\n" +
+	"\n" +
 	"\x10ConciergeService\x12\xa4\x01\n" +
 	"\bFindStay\x12$.aperio.concierge.v1.FindStayRequest\x1a%.aperio.concierge.v1.FindStayResponse\"K\xdaA venue,arrival_date,nights,adults\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/{venue=venues/*}:findStay\x12\xb5\x01\n" +
 	"\bHoldStay\x12$.aperio.concierge.v1.HoldStayRequest\x1a%.aperio.concierge.v1.HoldStayResponse\"\\\xdaA1venue,space,arrival_date,nights,adults,request_id\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/{venue=venues/*}:holdStay\x12\xa0\x01\n" +
 	"\vConfirmStay\x12'.aperio.concierge.v1.ConfirmStayRequest\x1a(.aperio.concierge.v1.ConfirmStayResponse\">\xdaA\x10venue,hold_token\x82\xd3\xe4\x93\x02%:\x01*\" /v1/{venue=venues/*}:confirmStay\x12\x9b\x01\n" +
 	"\vFindBooking\x12'.aperio.concierge.v1.FindBookingRequest\x1a(.aperio.concierge.v1.FindBookingResponse\"9\xdaA\vvenue,phone\x82\xd3\xe4\x93\x02%:\x01*\" /v1/{venue=venues/*}:findBooking\x12\xad\x01\n" +
-	"\rCancelBooking\x12).aperio.concierge.v1.CancelBookingRequest\x1a*.aperio.concierge.v1.CancelBookingResponse\"E\xdaA\x15venue,phone,reference\x82\xd3\xe4\x93\x02':\x01*\"\"/v1/{venue=venues/*}:cancelBooking\x1a\x92\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18r\n" +
+	"\rCancelBooking\x12).aperio.concierge.v1.CancelBookingRequest\x1a*.aperio.concierge.v1.CancelBookingResponse\"E\xdaA\x15venue,phone,reference\x82\xd3\xe4\x93\x02':\x01*\"\"/v1/{venue=venues/*}:cancelBooking\x12\xc1\x01\n" +
+	"\fEnquireEvent\x12(.aperio.concierge.v1.EnquireEventRequest\x1a).aperio.concierge.v1.EnquireEventResponse\"\\\xdaA-venue,event_type,event_date,guests,request_id\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/{venue=venues/*}:enquireEvent\x12\xbf\x01\n" +
+	"\x0eRequestService\x12*.aperio.concierge.v1.RequestServiceRequest\x1a+.aperio.concierge.v1.RequestServiceResponse\"T\xdaA#venue,kind,what,location,request_id\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{venue=venues/*}:requestService\x1a\x92\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18r\n" +
 	"p\n" +
 	"\tConcierge\x12\x051.0.0\x1a\\Find, hold and book a stay at a venue, as a guest asks for it: on the website, or on a call.B\x83\x02\n" +
 	"\x17com.aperio.concierge.v1B\x15ConciergeServiceProtoP\x01Zcgithub.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1\xa2\x02\x03ACX\xaa\x02\x13Aperio.Concierge.V1\xca\x02\x13Aperio\\Concierge\\V1\xe2\x02\x1fAperio\\Concierge\\V1\\GPBMetadata\xea\x02\x15Aperio::Concierge::V1b\x06proto3"
 
 var file_aperio_concierge_v1_concierge_service_proto_goTypes = []any{
-	(*FindStayRequest)(nil),       // 0: aperio.concierge.v1.FindStayRequest
-	(*HoldStayRequest)(nil),       // 1: aperio.concierge.v1.HoldStayRequest
-	(*ConfirmStayRequest)(nil),    // 2: aperio.concierge.v1.ConfirmStayRequest
-	(*FindBookingRequest)(nil),    // 3: aperio.concierge.v1.FindBookingRequest
-	(*CancelBookingRequest)(nil),  // 4: aperio.concierge.v1.CancelBookingRequest
-	(*FindStayResponse)(nil),      // 5: aperio.concierge.v1.FindStayResponse
-	(*HoldStayResponse)(nil),      // 6: aperio.concierge.v1.HoldStayResponse
-	(*ConfirmStayResponse)(nil),   // 7: aperio.concierge.v1.ConfirmStayResponse
-	(*FindBookingResponse)(nil),   // 8: aperio.concierge.v1.FindBookingResponse
-	(*CancelBookingResponse)(nil), // 9: aperio.concierge.v1.CancelBookingResponse
+	(*FindStayRequest)(nil),        // 0: aperio.concierge.v1.FindStayRequest
+	(*HoldStayRequest)(nil),        // 1: aperio.concierge.v1.HoldStayRequest
+	(*ConfirmStayRequest)(nil),     // 2: aperio.concierge.v1.ConfirmStayRequest
+	(*FindBookingRequest)(nil),     // 3: aperio.concierge.v1.FindBookingRequest
+	(*CancelBookingRequest)(nil),   // 4: aperio.concierge.v1.CancelBookingRequest
+	(*EnquireEventRequest)(nil),    // 5: aperio.concierge.v1.EnquireEventRequest
+	(*RequestServiceRequest)(nil),  // 6: aperio.concierge.v1.RequestServiceRequest
+	(*FindStayResponse)(nil),       // 7: aperio.concierge.v1.FindStayResponse
+	(*HoldStayResponse)(nil),       // 8: aperio.concierge.v1.HoldStayResponse
+	(*ConfirmStayResponse)(nil),    // 9: aperio.concierge.v1.ConfirmStayResponse
+	(*FindBookingResponse)(nil),    // 10: aperio.concierge.v1.FindBookingResponse
+	(*CancelBookingResponse)(nil),  // 11: aperio.concierge.v1.CancelBookingResponse
+	(*EnquireEventResponse)(nil),   // 12: aperio.concierge.v1.EnquireEventResponse
+	(*RequestServiceResponse)(nil), // 13: aperio.concierge.v1.RequestServiceResponse
 }
 var file_aperio_concierge_v1_concierge_service_proto_depIdxs = []int32{
-	0, // 0: aperio.concierge.v1.ConciergeService.FindStay:input_type -> aperio.concierge.v1.FindStayRequest
-	1, // 1: aperio.concierge.v1.ConciergeService.HoldStay:input_type -> aperio.concierge.v1.HoldStayRequest
-	2, // 2: aperio.concierge.v1.ConciergeService.ConfirmStay:input_type -> aperio.concierge.v1.ConfirmStayRequest
-	3, // 3: aperio.concierge.v1.ConciergeService.FindBooking:input_type -> aperio.concierge.v1.FindBookingRequest
-	4, // 4: aperio.concierge.v1.ConciergeService.CancelBooking:input_type -> aperio.concierge.v1.CancelBookingRequest
-	5, // 5: aperio.concierge.v1.ConciergeService.FindStay:output_type -> aperio.concierge.v1.FindStayResponse
-	6, // 6: aperio.concierge.v1.ConciergeService.HoldStay:output_type -> aperio.concierge.v1.HoldStayResponse
-	7, // 7: aperio.concierge.v1.ConciergeService.ConfirmStay:output_type -> aperio.concierge.v1.ConfirmStayResponse
-	8, // 8: aperio.concierge.v1.ConciergeService.FindBooking:output_type -> aperio.concierge.v1.FindBookingResponse
-	9, // 9: aperio.concierge.v1.ConciergeService.CancelBooking:output_type -> aperio.concierge.v1.CancelBookingResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: aperio.concierge.v1.ConciergeService.FindStay:input_type -> aperio.concierge.v1.FindStayRequest
+	1,  // 1: aperio.concierge.v1.ConciergeService.HoldStay:input_type -> aperio.concierge.v1.HoldStayRequest
+	2,  // 2: aperio.concierge.v1.ConciergeService.ConfirmStay:input_type -> aperio.concierge.v1.ConfirmStayRequest
+	3,  // 3: aperio.concierge.v1.ConciergeService.FindBooking:input_type -> aperio.concierge.v1.FindBookingRequest
+	4,  // 4: aperio.concierge.v1.ConciergeService.CancelBooking:input_type -> aperio.concierge.v1.CancelBookingRequest
+	5,  // 5: aperio.concierge.v1.ConciergeService.EnquireEvent:input_type -> aperio.concierge.v1.EnquireEventRequest
+	6,  // 6: aperio.concierge.v1.ConciergeService.RequestService:input_type -> aperio.concierge.v1.RequestServiceRequest
+	7,  // 7: aperio.concierge.v1.ConciergeService.FindStay:output_type -> aperio.concierge.v1.FindStayResponse
+	8,  // 8: aperio.concierge.v1.ConciergeService.HoldStay:output_type -> aperio.concierge.v1.HoldStayResponse
+	9,  // 9: aperio.concierge.v1.ConciergeService.ConfirmStay:output_type -> aperio.concierge.v1.ConfirmStayResponse
+	10, // 10: aperio.concierge.v1.ConciergeService.FindBooking:output_type -> aperio.concierge.v1.FindBookingResponse
+	11, // 11: aperio.concierge.v1.ConciergeService.CancelBooking:output_type -> aperio.concierge.v1.CancelBookingResponse
+	12, // 12: aperio.concierge.v1.ConciergeService.EnquireEvent:output_type -> aperio.concierge.v1.EnquireEventResponse
+	13, // 13: aperio.concierge.v1.ConciergeService.RequestService:output_type -> aperio.concierge.v1.RequestServiceResponse
+	7,  // [7:14] is the sub-list for method output_type
+	0,  // [0:7] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_aperio_concierge_v1_concierge_service_proto_init() }

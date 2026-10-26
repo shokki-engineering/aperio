@@ -5,6 +5,7 @@ syntax = "proto3";
 
 package aperio.concierge.v1;
 
+import "aperio/concierge/v1/enums.proto";
 import "aperio/type/v1/enums.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
@@ -342,5 +343,177 @@ message CancelBookingResponse {
   string reservation = 1 [(google.api.resource_reference).type = "aperio.stay.v1/Reservation"];
 
   // The cancellation as a sentence to say.
+  string spoken = 2;
+}
+
+// Request message for EnquireEvent.
+message EnquireEventRequest {
+  // The venue to hold the event at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The occasion: a wedding, a conference, a birthday.
+  aperio.type.v1.EventType event_type = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The day of the event.
+  google.type.Date event_date = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // How many guests.
+  int32 guests = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 5000
+    }
+  ];
+
+  // The diet the menus must suit, if one: vegetarian, Jain.
+  aperio.type.v1.Diet diet = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // The guest's name. Asked for when empty.
+  string guest_display_name = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 200
+  ];
+
+  // The guest's phone. Asked for when empty; on a call, the number calling.
+  string phone = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 32
+  ];
+
+  // The guest's email, for the quote; optional.
+  string email = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string.email = true
+  ];
+
+  // Anything else the guest wants: a theme, a stage, rooms for family.
+  string notes = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // Where the guest is asking from: WEBSITE, PHONE, WHATSAPP.
+  aperio.type.v1.Channel channel = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // A UUID for this enquiry: a retry with the same one finds the enquiry the
+  // first made rather than making another (AIP-155).
+  string request_id = 11 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_info).format = UUID4,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// Response message for EnquireEvent.
+message EnquireEventResponse {
+  // The lead the enquiry made, which the venue's sales team follows up.
+  // Format: leads/{lead}
+  string lead = 1 [(google.api.resource_reference).type = "aperio.sales.v1/Lead"];
+
+  // A draft quote with the cheapest menu that fits, for the team to send;
+  // empty when no menu fits.
+  // Format: venues/{venue}/quotes/{quote}
+  string quote = 2 [(google.api.resource_reference).type = "aperio.sales.v1/Quote"];
+
+  // The menus that suit the guests and their diet, cheapest first; at most
+  // three.
+  repeated MenuOption menus = 3;
+
+  // The halls that seat the guests and are free that day.
+  repeated string halls = 4;
+
+  // The enquiry as a sentence to say.
+  string spoken = 5;
+}
+
+// MenuOption is a plate menu that suits an enquiry, priced for its day.
+message MenuOption {
+  // The menu.
+  // Format: venues/{venue}/menus/{menu}
+  string menu = 1 [(google.api.resource_reference).type = "aperio.catalog.v1/Menu"];
+
+  // The menu as it is sold, e.g. "Silver Vegetarian".
+  string display_name = 2;
+
+  // A plate, on the day, before tax.
+  google.type.Money plate_price = 3;
+
+  // Every guest's plate, before tax.
+  google.type.Money total = 4;
+
+  // The option as a sentence to say.
+  string spoken = 5;
+}
+
+// Request message for RequestService.
+message RequestServiceRequest {
+  // The venue the guest is at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // What kind of thing the guest wants.
+  ServiceKind kind = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // What, in the guest's words: "black coffee", "two towels", "the AC".
+  string what = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // How many; one when empty.
+  int32 quantity = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 100
+    }
+  ];
+
+  // Where to: "Room 204", "the ballroom", "the pool deck".
+  string location = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ];
+
+  // Anything else: "no sugar", "after 4 pm".
+  string notes = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 1000
+  ];
+
+  // Whether it is wanted now rather than in the usual time.
+  bool urgent = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // A UUID for this request: a retry with the same one finds the request
+  // the first made (AIP-155).
+  string request_id = 8 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_info).format = UUID4,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// Response message for RequestService.
+message RequestServiceResponse {
+  // The service request the department works.
+  // Format: venues/{venue}/serviceRequests/{service_request}
+  string service_request = 1 [(google.api.resource_reference).type = "aperio.operations.v1/ServiceRequest"];
+
+  // The request as a sentence to say.
   string spoken = 2;
 }

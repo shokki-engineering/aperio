@@ -34,7 +34,11 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   hold the booking then takes, sealed in a token. Contacts carry
   `phone_numbers`, by which a returning guest is found. FindBooking and
   CancelBooking find and cancel a guest's stay by their phone and its
-  reference (ConfirmStay's), never by a phone alone.
+  reference (ConfirmStay's), never by a phone alone. EnquireEvent takes an
+  event enquiry as a lead and a draft quote of the cheapest menu that suits,
+  with the menus priced and the halls free that day; RequestService sends a
+  guest's ask -- two black coffees to room 204 -- to the department that
+  does it.
 
 ### Changed
 

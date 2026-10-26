@@ -33,7 +33,7 @@ func (s *Server) HoldStay(ctx context.Context, req *conciergepbv1.HoldStayReques
 }
 
 func (s *Server) holdStay(ctx context.Context, req *conciergepbv1.HoldStayRequest) (*conciergepbv1.HoldStayResponse, error) {
-	if err := guestDetails(req); err != nil {
+	if err := guestDetails(req.GetGuestDisplayName(), req.GetPhone()); err != nil {
 		return nil, err
 	}
 	v, w, err := s.window(ctx, req.GetVenue(), req.GetArrivalDate(), req.GetNights())
@@ -89,16 +89,16 @@ func (s *Server) holdStay(ctx context.Context, req *conciergepbv1.HoldStayReques
 // errNotHere is a space of another venue, which this venue does not have.
 var errNotHere = errors.New("concierge: not a space of the venue")
 
-// guestDetails fails when the hold has no one to book for: the guest's name
-// and phone, which an agent then asks for (and a form shows).
-func guestDetails(req *conciergepbv1.HoldStayRequest) error {
+// guestDetails fails when there is no one to book for: the guest's name and
+// phone, which an agent then asks for (and a form shows).
+func guestDetails(name, phone string) error {
 	switch {
-	case strings.TrimSpace(req.GetGuestDisplayName()) == "":
+	case strings.TrimSpace(name) == "":
 		return servicex.BadField("GUEST_DETAILS_REQUIRED", "guest_display_name",
-			"the stay needs the guest's name and phone number", "Ask the guest for their name, and their phone number if it is not known")
-	case guest.Normalize(req.GetPhone()) == "":
+			"the booking needs the guest's name and phone number", "Ask the guest for their name, and their phone number if it is not known")
+	case guest.Normalize(phone) == "":
 		return servicex.BadField("GUEST_DETAILS_REQUIRED", "phone",
-			"the stay needs the guest's phone number", "Ask the guest for their phone number")
+			"the booking needs the guest's phone number", "Ask the guest for their phone number")
 	}
 	return nil
 }

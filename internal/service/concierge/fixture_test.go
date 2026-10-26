@@ -17,9 +17,12 @@ import (
 	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/concierge"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/catalog/v1/catalogpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/guest/v1/guestpbv1svc"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/operations/v1/operationspbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/guest"
 	"github.com/shokki-engineering/aperio/internal/service/pricing"
+	"github.com/shokki-engineering/aperio/internal/service/sales"
 	"github.com/shokki-engineering/aperio/internal/service/stay"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
@@ -38,6 +41,11 @@ type resort struct {
 	venue  *venuepbv1.Venue
 	space  *venuepbv1.Space
 	run    string
+
+	catalog *catalogpbv1svc.CatalogServiceServer
+	sales   *sales.Server
+	ops     *operationspbv1svc.OperationsServiceServer
+	venues  venue.Repositories
 }
 
 func newResort(t *testing.T) *resort {
@@ -53,7 +61,12 @@ func newResort(t *testing.T) *resort {
 	guests := guest.New(live.GuestRepositories(conn))
 	bookings := stay.New(live.StayRepositories(conn), booking.NewBase(fb, venues, live.GuestRepositories(conn).Contacts))
 	pricer := pricing.New(live.PricingRepositories(conn), live.CatalogRepositories(conn), venues.Venues)
-	svc := concierge.New(venues, fb, pricer, guests, bookings, []byte(strings.Repeat("k", 32)))
+	catalogSvc := catalogpbv1svc.NewCatalogServiceServer(live.CatalogRepositories(conn), catalogpbv1svc.NopCatalogServiceHooks{})
+	selling := sales.New(live.SalesRepositories(conn), venues.Venues, live.CatalogRepositories(conn).Menus, pricer, nil, nil)
+	ops := operationspbv1svc.NewOperationsServiceServer(live.OperationsRepositories(conn), operationspbv1svc.NopOperationsServiceHooks{})
+	svc := concierge.New(venues, fb, concierge.Services{
+		Pricing: pricer, Guests: guests, Stays: bookings, Sales: selling, Catalog: catalogSvc, Operations: ops,
+	}, []byte(strings.Repeat("k", 32)))
 
 	run := strconv.FormatInt(time.Now().UnixNano(), 10)
 	v, err := venues.Venues.Create(ctx, &venuepbv1.Venue{DisplayName: "Concierge Resort " + run, Kind: venuepbv1.VenueKind_VENUE_KIND_STAYS,
@@ -68,5 +81,6 @@ func newResort(t *testing.T) *resort {
 		Adjustment: &pricingpbv1.PriceRule_FixedPrice{FixedPrice: &money.Money{CurrencyCode: "INR", Units: 14000}},
 	}})
 	must(err, "create rate")
-	return &resort{svc: svc, fb: fb, stays: bookings, guests: guests, venue: v, space: sp, run: run}
+	return &resort{svc: svc, fb: fb, stays: bookings, guests: guests, venue: v, space: sp, run: run,
+		catalog: catalogSvc, sales: selling, ops: ops, venues: venues}
 }

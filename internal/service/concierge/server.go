@@ -15,6 +15,10 @@
 //     the booking takes its rooms from that very hold.
 //   - FindBooking and CancelBooking (bookings.go) find and cancel a guest's
 //     stay by their phone and its reference -- never by a phone alone.
+//   - EnquireEvent (enquire.go) takes an event enquiry as a lead and a draft
+//     quote, with the menus that suit and the halls free that day.
+//   - RequestService (service.go) sends a guest's ask to the department
+//     that does it.
 //
 // Every reply carries a sentence to say (spoken.go).
 package concierge
@@ -26,9 +30,12 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/catalog/v1/catalogpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 )
 
@@ -52,6 +59,35 @@ type Booker interface {
 	CancelReservation(context.Context, *staypbv1.CancelReservationRequest) (*staypbv1.Reservation, error)
 }
 
+// Sales takes an enquiry as a lead and a draft quote: the sales service.
+type Sales interface {
+	CreateLead(context.Context, *salespbv1.CreateLeadRequest) (*salespbv1.Lead, error)
+	GetLead(context.Context, *salespbv1.GetLeadRequest) (*salespbv1.Lead, error)
+	CreateQuote(context.Context, *salespbv1.CreateQuoteRequest) (*salespbv1.Quote, error)
+	GetQuote(context.Context, *salespbv1.GetQuoteRequest) (*salespbv1.Quote, error)
+}
+
+// Catalog lists what a venue sells: the catalog service.
+type Catalog interface {
+	ListMenus(context.Context, *catalogpbv1.ListMenusRequest) (*catalogpbv1.ListMenusResponse, error)
+}
+
+// Operations sends a guest's request to a department: the operations service.
+type Operations interface {
+	CreateServiceRequest(context.Context, *operationspbv1.CreateServiceRequestRequest) (*operationspbv1.ServiceRequest, error)
+	GetServiceRequest(context.Context, *operationspbv1.GetServiceRequestRequest) (*operationspbv1.ServiceRequest, error)
+}
+
+// Services are the services the concierge works through.
+type Services struct {
+	Pricing    Pricer
+	Guests     Guests
+	Stays      Booker
+	Sales      Sales
+	Catalog    Catalog
+	Operations Operations
+}
+
 // Server serves aperio.concierge.v1.ConciergeService.
 type Server struct {
 	conciergepbv1.UnimplementedConciergeServiceServer
@@ -62,18 +98,22 @@ type Server struct {
 	prices Pricer
 	guests Guests
 	booker Booker
+	sales  Sales
+	menus  Catalog
+	ops    Operations
 	seal   []byte // HMAC key of the hold tokens
 	now    func() time.Time
 	opts   servicex.Options
 }
 
 // New returns the Server, reading venues and their spaces from venues,
-// checking and holding rooms through eng, and sealing hold tokens with
-// holdSecret.
-func New(venues venue.Repositories, eng engine.Engine, prices Pricer, guests Guests, booker Booker, holdSecret []byte, opts ...servicex.Option) *Server {
+// checking and holding rooms through eng, working through svcs, and sealing
+// hold tokens with holdSecret.
+func New(venues venue.Repositories, eng engine.Engine, svcs Services, holdSecret []byte, opts ...servicex.Option) *Server {
 	return &Server{
 		venues: venues.Venues, spaces: venues.Spaces, engine: eng,
-		prices: prices, guests: guests, booker: booker, seal: holdSecret, now: time.Now,
+		prices: svcs.Pricing, guests: svcs.Guests, booker: svcs.Stays, sales: svcs.Sales, menus: svcs.Catalog, ops: svcs.Operations,
+		seal: holdSecret, now: time.Now,
 		opts: servicex.Apply(servicex.Options{Translator: servicex.NewTranslator("aperio.dev")}, opts),
 	}
 }

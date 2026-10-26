@@ -73,7 +73,7 @@ curl 'localhost:8090/v1/venues?pageSize=10'
 Booking needs freebusy running (`just run` in its checkout, gRPC :50051).
 
 Agents connect to every service's tools at once at `http://localhost:8091/mcp`
-(streamable HTTP): 97 tools, 0.9 MB of schemas. The schemas are trimmed for
+(streamable HTTP): 101 tools, 0.9 MB of schemas. The schemas are trimmed for
 an agent's context (`tools/protobuf/buf/go.buf.gen.yaml`): shared types once
 under `$defs`, OpenTravel code lists over 64 values as patterns, short nested
 descriptions, no output schemas. The server validates every request in full.

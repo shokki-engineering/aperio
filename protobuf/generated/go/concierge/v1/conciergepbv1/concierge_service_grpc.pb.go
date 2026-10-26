@@ -22,11 +22,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ConciergeService_FindStay_FullMethodName      = "/aperio.concierge.v1.ConciergeService/FindStay"
-	ConciergeService_HoldStay_FullMethodName      = "/aperio.concierge.v1.ConciergeService/HoldStay"
-	ConciergeService_ConfirmStay_FullMethodName   = "/aperio.concierge.v1.ConciergeService/ConfirmStay"
-	ConciergeService_FindBooking_FullMethodName   = "/aperio.concierge.v1.ConciergeService/FindBooking"
-	ConciergeService_CancelBooking_FullMethodName = "/aperio.concierge.v1.ConciergeService/CancelBooking"
+	ConciergeService_FindStay_FullMethodName       = "/aperio.concierge.v1.ConciergeService/FindStay"
+	ConciergeService_HoldStay_FullMethodName       = "/aperio.concierge.v1.ConciergeService/HoldStay"
+	ConciergeService_ConfirmStay_FullMethodName    = "/aperio.concierge.v1.ConciergeService/ConfirmStay"
+	ConciergeService_FindBooking_FullMethodName    = "/aperio.concierge.v1.ConciergeService/FindBooking"
+	ConciergeService_CancelBooking_FullMethodName  = "/aperio.concierge.v1.ConciergeService/CancelBooking"
+	ConciergeService_EnquireEvent_FullMethodName   = "/aperio.concierge.v1.ConciergeService/EnquireEvent"
+	ConciergeService_RequestService_FullMethodName = "/aperio.concierge.v1.ConciergeService/RequestService"
 )
 
 // ConciergeServiceClient is the client API for ConciergeService service.
@@ -55,6 +57,13 @@ type ConciergeServiceClient interface {
 	// Cancels a guest's stay, found by their phone and its reference, giving
 	// its rooms back. Call it only once the guest has agreed.
 	CancelBooking(ctx context.Context, in *CancelBookingRequest, opts ...grpc.CallOption) (*CancelBookingResponse, error)
+	// Takes an event enquiry: makes a lead for the venue's sales team and a
+	// draft quote with the cheapest menu that fits, and says which menus suit
+	// and which halls are free that day.
+	EnquireEvent(ctx context.Context, in *EnquireEventRequest, opts ...grpc.CallOption) (*EnquireEventResponse, error)
+	// Asks a department for something during a stay or an event: two black
+	// coffees to room 204, towels, the Wi-Fi.
+	RequestService(ctx context.Context, in *RequestServiceRequest, opts ...grpc.CallOption) (*RequestServiceResponse, error)
 }
 
 type conciergeServiceClient struct {
@@ -115,6 +124,26 @@ func (c *conciergeServiceClient) CancelBooking(ctx context.Context, in *CancelBo
 	return out, nil
 }
 
+func (c *conciergeServiceClient) EnquireEvent(ctx context.Context, in *EnquireEventRequest, opts ...grpc.CallOption) (*EnquireEventResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnquireEventResponse)
+	err := c.cc.Invoke(ctx, ConciergeService_EnquireEvent_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *conciergeServiceClient) RequestService(ctx context.Context, in *RequestServiceRequest, opts ...grpc.CallOption) (*RequestServiceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestServiceResponse)
+	err := c.cc.Invoke(ctx, ConciergeService_RequestService_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConciergeServiceServer is the server API for ConciergeService service.
 // All implementations must embed UnimplementedConciergeServiceServer
 // for forward compatibility.
@@ -141,6 +170,13 @@ type ConciergeServiceServer interface {
 	// Cancels a guest's stay, found by their phone and its reference, giving
 	// its rooms back. Call it only once the guest has agreed.
 	CancelBooking(context.Context, *CancelBookingRequest) (*CancelBookingResponse, error)
+	// Takes an event enquiry: makes a lead for the venue's sales team and a
+	// draft quote with the cheapest menu that fits, and says which menus suit
+	// and which halls are free that day.
+	EnquireEvent(context.Context, *EnquireEventRequest) (*EnquireEventResponse, error)
+	// Asks a department for something during a stay or an event: two black
+	// coffees to room 204, towels, the Wi-Fi.
+	RequestService(context.Context, *RequestServiceRequest) (*RequestServiceResponse, error)
 	mustEmbedUnimplementedConciergeServiceServer()
 }
 
@@ -165,6 +201,12 @@ func (UnimplementedConciergeServiceServer) FindBooking(context.Context, *FindBoo
 }
 func (UnimplementedConciergeServiceServer) CancelBooking(context.Context, *CancelBookingRequest) (*CancelBookingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CancelBooking not implemented")
+}
+func (UnimplementedConciergeServiceServer) EnquireEvent(context.Context, *EnquireEventRequest) (*EnquireEventResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method EnquireEvent not implemented")
+}
+func (UnimplementedConciergeServiceServer) RequestService(context.Context, *RequestServiceRequest) (*RequestServiceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RequestService not implemented")
 }
 func (UnimplementedConciergeServiceServer) mustEmbedUnimplementedConciergeServiceServer() {}
 func (UnimplementedConciergeServiceServer) testEmbeddedByValue()                          {}
@@ -277,6 +319,42 @@ func _ConciergeService_CancelBooking_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConciergeService_EnquireEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnquireEventRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConciergeServiceServer).EnquireEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConciergeService_EnquireEvent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConciergeServiceServer).EnquireEvent(ctx, req.(*EnquireEventRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ConciergeService_RequestService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConciergeServiceServer).RequestService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConciergeService_RequestService_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConciergeServiceServer).RequestService(ctx, req.(*RequestServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConciergeService_ServiceDesc is the grpc.ServiceDesc for ConciergeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -303,6 +381,14 @@ var ConciergeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelBooking",
 			Handler:    _ConciergeService_CancelBooking_Handler,
+		},
+		{
+			MethodName: "EnquireEvent",
+			Handler:    _ConciergeService_EnquireEvent_Handler,
+		},
+		{
+			MethodName: "RequestService",
+			Handler:    _ConciergeService_RequestService_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
