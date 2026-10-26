@@ -1,29 +1,28 @@
 // Copyright 2026 Srikanth K.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Package sales serves aperio.sales.v1 on the generated AIP server
-// (protoc-gen-service): the business logic of pricing and quoting.
+// Package sales serves aperio.sales.v1 -- leads, their activity, and quotes
+// -- on the generated AIP server: the business logic of quoting.
 //
-//   - CalculatePrice (price.go) is the one way aperio prices anything: an
-//     item's base price with the venue's matching price rule applied
-//     (internal/pricing), and the GST on it.
-//   - A quote (quotes.go) is priced line by line through it when it is made,
-//     and again on every edit while it is a draft, so a draft follows the
-//     rules as they change; its totals are the server's, never the caller's.
+//   - A quote (quotes.go) is priced line by line through the pricing service
+//     when it is made, and again on every edit while it is a draft, so a
+//     draft follows the rules as they change; its totals are the server's.
 //   - SendQuote fixes the prices and starts the offer's clock; DeclineQuote
-//     and ReviseQuote move it on (states.go); AcceptQuote makes its bookings
-//     through the booking service and wins its lead (accept.go).
+//     and ReviseQuote move it on (states.go); AcceptQuote makes its event and
+//     stay through the event and stay services and wins its lead (accept.go).
 package sales
 
 import (
 	"context"
 	"time"
 
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/crm"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
-	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/sales/v1/salespbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 )
 
 // offerTTL is how long a sent quote stands. Quote.ttl is INPUT_ONLY and not
@@ -31,22 +30,42 @@ import (
 // every offer stands this long.
 const offerTTL = 14 * 24 * time.Hour
 
+// Pricer prices an item for a date: the pricing service.
+type Pricer interface {
+	CalculatePrice(context.Context, *pricingpbv1.CalculatePriceRequest) (*pricingpbv1.CalculatePriceResponse, error)
+}
+
+// Events makes, finds and cancels the event an accepted quote becomes: the
+// event service.
+type Events interface {
+	CreateEvent(context.Context, *eventpbv1.CreateEventRequest) (*eventpbv1.Event, error)
+	GetEvent(context.Context, *eventpbv1.GetEventRequest) (*eventpbv1.Event, error)
+	CancelEvent(context.Context, *eventpbv1.CancelEventRequest) (*eventpbv1.Event, error)
+}
+
+// Stays makes and finds the stay an accepted quote becomes: the stay
+// service, whose hooks take the rooms from freebusy.
+type Stays interface {
+	CreateReservation(context.Context, *staypbv1.CreateReservationRequest) (*staypbv1.Reservation, error)
+	GetReservation(context.Context, *staypbv1.GetReservationRequest) (*staypbv1.Reservation, error)
+}
+
 // Server serves aperio.sales.v1.SalesService: the generated standard methods
-// with the pricing hooks, and the custom methods.
+// with the pricing hooks, and the quote state methods.
 type Server struct {
 	*salespbv1svc.SalesServiceServer
 	h      *hooks
-	leads  crm.LeadRepository
-	booker Booker // nil: AcceptQuote is Unimplemented
+	events Events // nil, with stays: AcceptQuote is Unimplemented
+	stays  Stays
 }
 
-// New returns the Server over the sales repositories, reading each venue's
-// currency from venues, winning leads in leads, and making the bookings an
-// accepted quote becomes through booker.
-func New(repos salespbv1svc.SalesServiceRepositories, venues venue.VenueRepository, leads crm.LeadRepository,
-	booker Booker, opts ...servicex.Option) *Server {
-	h := &hooks{repos: repos, venues: venues, now: time.Now}
-	return &Server{SalesServiceServer: salespbv1svc.NewSalesServiceServer(repos, h, opts...), h: h, leads: leads, booker: booker}
+// New returns the Server over repos, reading each venue's currency from
+// venues and a menu's fewest plates from menus, pricing through pricer, and
+// making the bookings an accepted quote becomes through events and stays.
+func New(repos salespbv1svc.SalesServiceRepositories, venues venue.VenueRepository, menus catalog.MenuRepository,
+	pricer Pricer, events Events, stays Stays, opts ...servicex.Option) *Server {
+	h := &hooks{repos: repos, venues: venues, menus: menus, pricer: pricer, now: time.Now}
+	return &Server{SalesServiceServer: salespbv1svc.NewSalesServiceServer(repos, h, opts...), h: h, events: events, stays: stays}
 }
 
 // hooks is the business logic around the generated standard methods.
@@ -55,6 +74,8 @@ type hooks struct {
 
 	repos  salespbv1svc.SalesServiceRepositories
 	venues venue.VenueRepository
+	menus  catalog.MenuRepository
+	pricer Pricer
 	now    func() time.Time
 }
 
@@ -72,21 +93,4 @@ func (h *hooks) currency(ctx context.Context, venueName string) (string, error) 
 		return "", servicex.NotFoundAs(err, venueType, venueName)
 	}
 	return v.GetCurrencyCode(), nil
-}
-
-// all reads every page of a List.
-func all[T any](list func(repox.ListInput) ([]T, string, error)) ([]T, error) {
-	var out []T
-	in := repox.ListInput{PageSize: 500}
-	for {
-		page, next, err := list(in)
-		if err != nil {
-			return nil, err
-		}
-		out = append(out, page...)
-		if next == "" {
-			return out, nil
-		}
-		in.PageToken = next
-	}
 }

@@ -3,7 +3,7 @@
 
 package sales
 
-// quotes.go prices a quote: every line through price (price.go) unless its
+// quotes.go prices a quote: every line through the pricing service unless its
 // price was set by hand, each line's amount and GST, and the quote's totals.
 // A draft is priced when it is made and after every edit, so it follows the
 // rules as they change; once sent, its prices are fixed and it is not edited.
@@ -12,9 +12,11 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"strings"
 
 	"github.com/shokki-engineering/aperio/internal/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"google.golang.org/protobuf/proto"
 )
@@ -71,9 +73,9 @@ func (h *hooks) reprice(ctx context.Context, venueName string, q *salespbv1.Quot
 			return err
 		}
 		amount := pricing.Mul(pricing.Rat(l.GetUnitPrice()), int64(l.GetQuantity()))
-		tax, err := gst(amount, l.GetTax())
+		tax, err := pricing.GST(amount, l.GetTax().GetGstRate())
 		if err != nil {
-			return err
+			return servicex.BadField("INVALID_TAX", field+".tax.gst_rate", err.Error(), `Set the rate as a percentage, e.g. "18"`)
 		}
 		l.Amount, l.TaxAmount = pricing.Money(amount, cur), pricing.Money(tax, cur)
 		subtotal.Add(subtotal, pricing.Rat(l.Amount))
@@ -85,8 +87,8 @@ func (h *hooks) reprice(ctx context.Context, venueName string, q *salespbv1.Quot
 	return nil
 }
 
-// priceLine sets l's unit price, rule and tax: from price for its item and
-// date, unless its price was set by hand or it sells no item.
+// priceLine sets l's unit price, rule and tax: from the pricing service for
+// its item and date, unless its price was set by hand or it sells no item.
 func (h *hooks) priceLine(ctx context.Context, venueName, field string, q *salespbv1.Quote, l *salespbv1.QuoteLine, cur string) error {
 	if l.GetQuantity() <= 0 {
 		return servicex.BadField("INVALID_QUANTITY", field+".quantity", "the quantity is not positive", "Set how many: plates, nights, hours or units")
@@ -110,17 +112,21 @@ func (h *hooks) priceLine(ctx context.Context, venueName, field string, q *sales
 	if d == nil {
 		d = q.GetDates().GetStartDate()
 	}
-	p, err := h.price(ctx, venueName, field+".item", l.GetItem(), d, q.GetGuests(), cur)
+	p, err := h.pricer.CalculatePrice(ctx, &pricingpbv1.CalculatePriceRequest{
+		Venue: venueName, Item: l.GetItem(), ServiceDate: d, Quantity: 1, Guests: q.GetGuests(),
+	})
 	if err != nil {
 		return err
 	}
-	if min := p.menu.GetMinPlates(); min > 0 && l.GetQuantity() < min {
-		return servicex.BadField("BELOW_MIN_PLATES", field+".quantity",
-			fmt.Sprintf("the menu is sold for %d plates or more", min), "Quote at least the minimum, or choose another menu")
+	if strings.Contains(l.GetItem(), "/menus/") {
+		if menu, err := h.menus.Get(ctx, l.GetItem()); err == nil && menu.GetMinPlates() > 0 && l.GetQuantity() < menu.GetMinPlates() {
+			return servicex.BadField("BELOW_MIN_PLATES", field+".quantity",
+				fmt.Sprintf("the menu is sold for %d plates or more", menu.GetMinPlates()), "Quote at least the minimum, or choose another menu")
+		}
 	}
-	l.UnitPrice, l.PriceRule = pricing.Money(p.unit, cur), p.rule
+	l.UnitPrice, l.PriceRule = p.GetUnitPrice(), p.GetPriceRule()
 	if l.GetTax() == nil {
-		l.Tax = p.tax
+		l.Tax = p.GetTax()
 	}
 	return nil
 }

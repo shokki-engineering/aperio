@@ -6,7 +6,7 @@ package concierge
 // find.go is FindStay -- the room types with the rooms asked for free for
 // every night, priced, cheapest first -- and what HoldStay shares with it:
 // the venue's clock, the stay's window in freebusy, and its price, night by
-// night through the sales service, so a season or a weekend rule prices each
+// night through the pricing service, so a season or a weekend rule prices each
 // night as a quote would.
 
 import (
@@ -22,7 +22,7 @@ import (
 	"github.com/shokki-engineering/aperio/internal/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/genproto/googleapis/type/money"
@@ -86,7 +86,7 @@ func findSpoken(opts []*conciergepbv1.StayOption, rooms int32, arrive *date.Date
 }
 
 // window is venueName and the window a stay of nights from arrive takes
-// there, in the venue's time zone -- as the booking service reckons it, so a
+// there, in the venue's time zone -- as the stay service reckons it, so a
 // hold and the reservation made from it ask freebusy for the same window.
 func (s *Server) window(ctx context.Context, venueName string, arrive *date.Date, nights int32) (*venuepbv1.Venue, engine.Window, error) {
 	v, err := s.venues.Get(ctx, venueName)
@@ -108,7 +108,7 @@ func (s *Server) window(ctx context.Context, venueName string, arrive *date.Date
 func (s *Server) price(ctx context.Context, v *venuepbv1.Venue, space string, arrive *date.Date, nights, rooms, guests int32) (*money.Money, error) {
 	total := new(big.Rat)
 	for i := range nights {
-		p, err := s.prices.CalculatePrice(ctx, &salespbv1.CalculatePriceRequest{
+		p, err := s.prices.CalculatePrice(ctx, &pricingpbv1.CalculatePriceRequest{
 			Venue: v.GetName(), Item: space, ServiceDate: engine.AddDays(arrive, int(i)), Quantity: rooms, Guests: guests,
 		})
 		if err != nil {

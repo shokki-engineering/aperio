@@ -4,8 +4,8 @@
 // Package concierge serves aperio.concierge.v1: what a guest asks a venue
 // for, as a guest asks it -- on the website, or on a call to a voice agent
 // (docs/voice.md). Each method is a task over the resource services, called
-// through them so their rules hold: prices from the sales service, guests
-// through the CRM service, stays booked by the booking service, which takes
+// through them so their rules hold: prices from the pricing service, guests
+// through the guest service, stays booked by the stay service, which takes
 // the rooms in freebusy.
 //
 //   - FindStay (find.go) prices the room types free for the dates.
@@ -24,28 +24,28 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 )
 
-// Pricer prices an item for a date: the sales service.
+// Pricer prices an item for a date: the pricing service.
 type Pricer interface {
-	CalculatePrice(context.Context, *salespbv1.CalculatePriceRequest) (*salespbv1.CalculatePriceResponse, error)
+	CalculatePrice(context.Context, *pricingpbv1.CalculatePriceRequest) (*pricingpbv1.CalculatePriceResponse, error)
 }
 
-// Guests finds and adds the guests a stay is for: the CRM service, whose
+// Guests finds and adds the guests a stay is for: the guest service, whose
 // hooks keep a contact's phone numbers searchable.
 type Guests interface {
-	ListContacts(context.Context, *crmpbv1.ListContactsRequest) (*crmpbv1.ListContactsResponse, error)
-	CreateContact(context.Context, *crmpbv1.CreateContactRequest) (*crmpbv1.Contact, error)
+	ListContacts(context.Context, *guestpbv1.ListContactsRequest) (*guestpbv1.ListContactsResponse, error)
+	CreateContact(context.Context, *guestpbv1.CreateContactRequest) (*guestpbv1.Contact, error)
 }
 
-// Booker books a stay: the booking service.
+// Booker books a stay: the stay service.
 type Booker interface {
-	CreateReservation(context.Context, *bookingpbv1.CreateReservationRequest) (*bookingpbv1.Reservation, error)
-	GetReservation(context.Context, *bookingpbv1.GetReservationRequest) (*bookingpbv1.Reservation, error)
+	CreateReservation(context.Context, *staypbv1.CreateReservationRequest) (*staypbv1.Reservation, error)
+	GetReservation(context.Context, *staypbv1.GetReservationRequest) (*staypbv1.Reservation, error)
 }
 
 // Server serves aperio.concierge.v1.ConciergeService.

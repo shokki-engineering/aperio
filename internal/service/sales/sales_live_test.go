@@ -3,7 +3,8 @@
 
 package sales_test
 
-// Live tests of pricing and quoting over the dev database: a ₹1,200 plate
+// Live tests of quoting over the dev database, through the catalog and
+// pricing services: a ₹1,200 plate
 // menu at 5% GST, +15% in a wedding season that wraps the new year, priced
 // on its own and on a quote; the quote repriced when edited, fixed when
 // sent, and revised into a new draft.
@@ -17,10 +18,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/crm"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/catalog/v1/catalogpbv1svc"
+	"github.com/shokki-engineering/aperio/internal/service/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/sales"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/catalog/v1/catalogpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
@@ -42,7 +47,10 @@ func rupees(m *money.Money) string {
 func TestLiveQuote(t *testing.T) {
 	ctx, conn := context.Background(), live.Conn(t)
 	venues := venue.New(conn)
-	svc := sales.New(live.SalesRepositories(conn), venues.Venues, crm.New(conn).Leads, nil)
+	catalogRepos := live.CatalogRepositories(conn)
+	menus := catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{})
+	prices := pricing.New(live.PricingRepositories(conn), catalogRepos, venues.Venues)
+	svc := sales.New(live.SalesRepositories(conn), venues.Venues, catalogRepos.Menus, prices, nil, nil)
 	must := func(err error, what string) {
 		t.Helper()
 		if err != nil {
@@ -54,37 +62,37 @@ func TestLiveQuote(t *testing.T) {
 		Kind: venuepbv1.VenueKind_VENUE_KIND_EVENTS, TimeZone: "Asia/Kolkata", CurrencyCode: "INR",
 		Address: &postaladdress.PostalAddress{RegionCode: "IN"}, Gst: &typepbv1.Gst{Gstin: "29ABCDE1234F1Z5", LegalDisplayName: "Test", GstStateCode: "29"}})
 	must(err, "create venue")
-	c, err := crm.New(conn).Contacts.Create(ctx, &crmpbv1.Contact{Kind: crmpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Priya Iyer"})
+	c, err := guest.New(conn).Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Priya Iyer"})
 	must(err, "create contact")
 	food := &typepbv1.Tax{HsnSacCode: "996334", GstRate: &decimal.Decimal{Value: "5"}}
-	dish, err := svc.CreateDish(ctx, &salespbv1.CreateDishRequest{Parent: v.GetName(), Dish: &salespbv1.Dish{DisplayName: "Paneer tikka", Course: salespbv1.Course_COURSE_STARTER}})
+	dish, err := menus.CreateDish(ctx, &catalogpbv1.CreateDishRequest{Parent: v.GetName(), Dish: &catalogpbv1.Dish{DisplayName: "Paneer tikka", Course: catalogpbv1.Course_COURSE_STARTER}})
 	must(err, "create dish")
-	menu, err := svc.CreateMenu(ctx, &salespbv1.CreateMenuRequest{Parent: v.GetName(), Menu: &salespbv1.Menu{
+	menu, err := menus.CreateMenu(ctx, &catalogpbv1.CreateMenuRequest{Parent: v.GetName(), Menu: &catalogpbv1.Menu{
 		DisplayName: "Silver Vegetarian", PlatePrice: inr(1200), MinPlates: 100, Tax: food, Active: true,
-		Courses: []*salespbv1.MenuCourse{{Course: salespbv1.Course_COURSE_STARTER, Dishes: []string{dish.GetName()}}},
+		Courses: []*catalogpbv1.MenuCourse{{Course: catalogpbv1.Course_COURSE_STARTER, Dishes: []string{dish.GetName()}}},
 	}})
 	must(err, "create menu")
-	season, err := svc.CreateSeason(ctx, &salespbv1.CreateSeasonRequest{Parent: v.GetName(), Season: &salespbv1.Season{
+	season, err := prices.CreateSeason(ctx, &pricingpbv1.CreateSeasonRequest{Parent: v.GetName(), Season: &pricingpbv1.Season{
 		DisplayName: "Wedding season", RecursYearly: true,
 		Dates: []*typepbv1.DateRange{{StartDate: &date.Date{Year: 2026, Month: 11, Day: 1}, EndDate: &date.Date{Year: 2027, Month: 2, Day: 28}}},
 	}})
 	must(err, "create season")
-	rule, err := svc.CreatePriceRule(ctx, &salespbv1.CreatePriceRuleRequest{Parent: v.GetName(), PriceRule: &salespbv1.PriceRule{
-		DisplayName: "Wedding season menus", Season: season.GetName(), Target: salespbv1.PriceTarget_PRICE_TARGET_MENU,
-		Adjustment: &salespbv1.PriceRule_Percent{Percent: &decimal.Decimal{Value: "15"}}, Active: true,
+	rule, err := prices.CreatePriceRule(ctx, &pricingpbv1.CreatePriceRuleRequest{Parent: v.GetName(), PriceRule: &pricingpbv1.PriceRule{
+		DisplayName: "Wedding season menus", Season: season.GetName(), Target: pricingpbv1.PriceTarget_PRICE_TARGET_MENU,
+		Adjustment: &pricingpbv1.PriceRule_Percent{Percent: &decimal.Decimal{Value: "15"}}, Active: true,
 	}})
 	must(err, "create rule")
 
 	// On its own: 200 plates in December are ₹1,380 each, ₹2,76,000, GST ₹13,800.
 	december := &date.Date{Year: 2027, Month: 12, Day: 12}
-	p, err := svc.CalculatePrice(ctx, &salespbv1.CalculatePriceRequest{Venue: v.GetName(), Item: menu.GetName(), ServiceDate: december, Quantity: 200})
+	p, err := prices.CalculatePrice(ctx, &pricingpbv1.CalculatePriceRequest{Venue: v.GetName(), Item: menu.GetName(), ServiceDate: december, Quantity: 200})
 	must(err, "calculate price")
 	if rupees(p.GetUnitPrice()) != "1380.00" || rupees(p.GetAmount()) != "276000.00" || rupees(p.GetTaxAmount()) != "13800.00" || p.GetPriceRule() != rule.GetName() {
 		t.Errorf("price = %s × 200 = %s + GST %s by %q; want 1380.00, 276000.00, 13800.00 by the season rule",
 			rupees(p.GetUnitPrice()), rupees(p.GetAmount()), rupees(p.GetTaxAmount()), p.GetPriceRule())
 	}
 	// In July the base price stands.
-	july, err := svc.CalculatePrice(ctx, &salespbv1.CalculatePriceRequest{Venue: v.GetName(), Item: menu.GetName(), ServiceDate: &date.Date{Year: 2027, Month: 7, Day: 1}})
+	july, err := prices.CalculatePrice(ctx, &pricingpbv1.CalculatePriceRequest{Venue: v.GetName(), Item: menu.GetName(), ServiceDate: &date.Date{Year: 2027, Month: 7, Day: 1}})
 	must(err, "calculate july")
 	if rupees(july.GetUnitPrice()) != "1200.00" || july.GetPriceRule() != "" {
 		t.Errorf("July price = %s by %q; want 1200.00 by no rule", rupees(july.GetUnitPrice()), july.GetPriceRule())

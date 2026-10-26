@@ -1,40 +1,40 @@
 // Copyright 2026 Srikanth K.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package booking
+package event
 
 // sessions.go is the hooks around an event's sessions: each takes its space
-// in freebusy for its window (setup to teardown), the same way a stay takes
-// its rooms -- checked before create, booked after, locked against edits,
-// and given back on delete.
+// in freebusy for its window (setup to teardown) -- checked before create,
+// booked after, locked against edits, and given back on delete.
 
 import (
 	"context"
 	"errors"
 
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1"
 	"google.golang.org/protobuf/proto"
 )
 
 // BeforeCreateSession checks that the session's space is free for its
 // window. It takes nothing: validate_only runs it too.
-func (h *hooks) BeforeCreateSession(ctx context.Context, parent string, m *bookingpbv1.Session) error {
+func (h *hooks) BeforeCreateSession(ctx context.Context, parent string, m *eventpbv1.Session) error {
 	w, err := sessionWindow(m)
 	if err != nil {
 		return err
 	}
-	res, err := h.resources(ctx, servicex.ParentOf(parent), "session.space", m.GetSpace())
+	res, err := h.Resources(ctx, servicex.ParentOf(parent), "session.space", m.GetSpace())
 	if err != nil {
 		return err
 	}
-	free, err := h.engine.Free(ctx, res, w, 1)
+	free, err := h.Engine.Free(ctx, res, w, 1)
 	if err != nil {
 		return err
 	}
 	if !free {
-		return unavailable(m.GetSpace(), 1)
+		return booking.Unavailable(m.GetSpace(), 1)
 	}
 	return nil
 }
@@ -42,11 +42,11 @@ func (h *hooks) BeforeCreateSession(ctx context.Context, parent string, m *booki
 // AfterCreateSession books the stored session's space in freebusy and
 // records the freebusy reservation on it; should that fail, the session is
 // removed and anything booked given back.
-func (h *hooks) AfterCreateSession(ctx context.Context, out *bookingpbv1.Session) error {
+func (h *hooks) AfterCreateSession(ctx context.Context, out *eventpbv1.Session) error {
 	undo := func(booked string, cause error) error {
 		errs := []error{cause}
 		if booked != "" {
-			errs = append(errs, h.engine.Cancel(ctx, booked, "aperio: the session could not be completed"))
+			errs = append(errs, h.Engine.Cancel(ctx, booked, "aperio: the session could not be completed"))
 		}
 		errs = append(errs, h.repos.Sessions.Delete(ctx, out.GetName()))
 		return errors.Join(errs...)
@@ -56,11 +56,11 @@ func (h *hooks) AfterCreateSession(ctx context.Context, out *bookingpbv1.Session
 		return undo("", err)
 	}
 	event := servicex.ParentOf(out.GetName())
-	res, err := h.resources(ctx, servicex.ParentOf(event), "session.space", out.GetSpace())
+	res, err := h.Resources(ctx, servicex.ParentOf(event), "session.space", out.GetSpace())
 	if err != nil {
 		return undo("", err)
 	}
-	booked, err := h.engine.Book(ctx, engine.Booking{
+	booked, err := h.Engine.Book(ctx, engine.Booking{
 		Key:       out.GetName(),
 		Resources: res,
 		Window:    w,
@@ -72,7 +72,7 @@ func (h *hooks) AfterCreateSession(ctx context.Context, out *bookingpbv1.Session
 		},
 	})
 	if errors.Is(err, engine.ErrUnavailable) {
-		err = unavailable(out.GetSpace(), 1)
+		err = booking.Unavailable(out.GetSpace(), 1)
 	}
 	if err != nil {
 		return undo("", err)
@@ -90,7 +90,7 @@ func (h *hooks) AfterCreateSession(ctx context.Context, out *bookingpbv1.Session
 
 // BeforeUpdateSession refuses to move a session's space or times: they are
 // booked in freebusy, and moving them is a new session.
-func (h *hooks) BeforeUpdateSession(ctx context.Context, m *bookingpbv1.Session, paths []string) error {
+func (h *hooks) BeforeUpdateSession(ctx context.Context, m *eventpbv1.Session, paths []string) error {
 	locked := []string{"space", "start_time", "end_time", "setup_time", "teardown_time"}
 	if !servicex.TouchesAny(paths, locked) {
 		return nil
@@ -120,5 +120,5 @@ func (h *hooks) BeforeDeleteSession(ctx context.Context, name string, force bool
 	if s.GetFreebusyReservation() == "" {
 		return nil
 	}
-	return h.release(ctx, []string{s.GetFreebusyReservation()}, "aperio: the session was deleted")
+	return h.Release(ctx, []string{s.GetFreebusyReservation()}, "aperio: the session was deleted")
 }

@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -39,7 +39,7 @@ func guestNames[M proto.Message](ms []M) []string {
 }
 
 // contactLines describes c: its name, emails, phones and first address.
-func contactLines(c *crmpbv1.Contact) []string {
+func contactLines(c *guestpbv1.Contact) []string {
 	if c == nil {
 		return nil
 	}

@@ -18,13 +18,14 @@ import (
 	"time"
 
 	"github.com/shokki-engineering/aperio/internal/engine"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 )
 
 // Stay is the note for rooms of a reservation r, for contact c (nil when it
 // could not be read), at where, in w -- the stay's window in the venue's zone.
-func Stay(r *bookingpbv1.Reservation, c *crmpbv1.Contact, rooms int32, where string, w engine.Window) engine.Note {
+func Stay(r *staypbv1.Reservation, c *guestpbv1.Contact, rooms int32, where string, w engine.Window) engine.Note {
 	guests := fmt.Sprintf("%d adults", r.GetAdults())
 	if r.GetChildren() > 0 {
 		guests += fmt.Sprintf(", %d children", r.GetChildren())
@@ -54,7 +55,7 @@ func Stay(r *bookingpbv1.Reservation, c *crmpbv1.Contact, rooms int32, where str
 // Session is the note for session s of event ev, for contact c (nil when it
 // could not be read), at where, in w -- setup to teardown, in the venue's
 // zone.
-func Session(ev *bookingpbv1.Event, s *bookingpbv1.Session, c *crmpbv1.Contact, where string, w engine.Window) engine.Note {
+func Session(ev *eventpbv1.Event, s *eventpbv1.Session, c *guestpbv1.Contact, where string, w engine.Window) engine.Note {
 	at := func(t time.Time) string { return t.In(w.Start.Location()).Format("15:04") }
 	lines := []string{
 		fmt.Sprintf("Guests: %d (guaranteed %d)", s.GetGuests(), s.GetGuaranteedGuests()),
@@ -86,7 +87,7 @@ func trim(s, prefix string) string {
 
 // nameOf is the contact's display name, or its resource name when it could
 // not be read.
-func nameOf(c *crmpbv1.Contact, name string) string {
+func nameOf(c *guestpbv1.Contact, name string) string {
 	if c.GetDisplayName() != "" {
 		return c.GetDisplayName()
 	}

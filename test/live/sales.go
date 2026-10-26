@@ -15,5 +15,5 @@ import (
 // SalesRepositories are the SalesService's repositories over conn.
 func SalesRepositories(conn repox.Conn) salespbv1svc.SalesServiceRepositories {
 	r := sales.New(conn)
-	return salespbv1svc.SalesServiceRepositories{Dishes: r.Dishes, Menus: r.Menus, FixedPackages: r.FixedPackages, Seasons: r.Seasons, PriceRules: r.PriceRules, Quotes: r.Quotes}
+	return salespbv1svc.SalesServiceRepositories{Leads: r.Leads, Activities: r.Activities, Quotes: r.Quotes}
 }

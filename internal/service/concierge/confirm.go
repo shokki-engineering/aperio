@@ -4,7 +4,7 @@
 package concierge
 
 // confirm.go is ConfirmStay: the held stay booked, for the guest the hold
-// names -- found by their phone, or added -- through the booking service,
+// names -- found by their phone, or added -- through the stay service,
 // whose booking takes its rooms from the hold. The stay is PENDING until its
 // advance is paid (finance confirms it then). A retried ConfirmStay finds the
 // stay the first one made.
@@ -15,9 +15,9 @@ import (
 
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/genproto/googleapis/type/money"
@@ -45,18 +45,18 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 		return nil, err
 	}
 	arrive := &date.Date{Year: h.Arrival[0], Month: h.Arrival[1], Day: h.Arrival[2]}
-	r := &bookingpbv1.Reservation{
+	r := &staypbv1.Reservation{
 		Contact: contact, Channel: channel(h.Channel), Adults: h.Adults, Children: h.Children,
 		ArrivalDate: arrive, DepartureDate: engine.AddDays(arrive, int(h.Nights)),
-		Rooms: []*bookingpbv1.RoomLine{{Space: h.Space, Rooms: h.Rooms}},
+		Rooms: []*staypbv1.RoomLine{{Space: h.Space, Rooms: h.Rooms}},
 	}
 	if h.Requests != "" {
-		r.SpecialRequests = []*bookingpbv1.SpecialRequest{{Summary: h.Requests}}
+		r.SpecialRequests = []*typepbv1.SpecialRequest{{Summary: h.Requests}}
 	}
 	name := h.Venue + "/reservations/" + h.Reservation
-	out, err := s.booker.CreateReservation(ctx, &bookingpbv1.CreateReservationRequest{Parent: h.Venue, ReservationId: h.Reservation, Reservation: r})
+	out, err := s.booker.CreateReservation(ctx, &staypbv1.CreateReservationRequest{Parent: h.Venue, ReservationId: h.Reservation, Reservation: r})
 	if status.Code(err) == codes.AlreadyExists {
-		out, err = s.booker.GetReservation(ctx, &bookingpbv1.GetReservationRequest{Name: name})
+		out, err = s.booker.GetReservation(ctx, &staypbv1.GetReservationRequest{Name: name})
 	}
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 // guest is the contact the stay is for: the one whose phone numbers hold the
 // hold's phone, else one added with the hold's name, phone and email.
 func (s *Server) guest(ctx context.Context, h held) (string, error) {
-	found, err := s.guests.ListContacts(ctx, &crmpbv1.ListContactsRequest{
+	found, err := s.guests.ListContacts(ctx, &guestpbv1.ListContactsRequest{
 		PageSize: 1, Filter: fmt.Sprintf("phone_numbers:%q", h.Phone),
 	})
 	if err != nil {
@@ -81,14 +81,14 @@ func (s *Server) guest(ctx context.Context, h held) (string, error) {
 	if c := found.GetContacts(); len(c) > 0 {
 		return c[0].GetName(), nil
 	}
-	c := &crmpbv1.Contact{
-		Kind: crmpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: h.Guest,
+	c := &guestpbv1.Contact{
+		Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: h.Guest,
 		Phones: []*typepbv1.Phone{{Number: h.Phone, Kind: typepbv1.PhoneKind_PHONE_KIND_MOBILE}},
 	}
 	if h.Email != "" {
 		c.Emails = []string{h.Email}
 	}
-	made, err := s.guests.CreateContact(ctx, &crmpbv1.CreateContactRequest{Contact: c})
+	made, err := s.guests.CreateContact(ctx, &guestpbv1.CreateContactRequest{Contact: c})
 	if err != nil {
 		return "", err
 	}

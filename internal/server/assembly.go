@@ -4,28 +4,34 @@
 package server
 
 // assembly.go builds aperio's services on one database connection and one
-// freebusy client: the generated AIP servers, with the hand-written business
-// logic where there is some (booking, sales, finance), and plain generated
-// servers where the standard methods are all there is yet (venue, crm,
-// document, operations). The sales service books an accepted quote through
-// the booking service, and finance confirms a paid booking through it; the
-// concierge -- the guest's side -- works through all of them.
+// freebusy client: each a generated AIP server, with hand-written business
+// logic where it has some. They call each other through their gRPC methods,
+// so each one's rules hold whoever asks: pricing prices what the catalog
+// sells; sales prices quotes through pricing and books accepted ones through
+// the stay and event services; finance confirms a paid booking through them;
+// the concierge, the guest's side, works through guest, pricing and stay.
 
 import (
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/document"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/operations"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
+	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/engine"
-	"github.com/shokki-engineering/aperio/internal/service/booking"
 	"github.com/shokki-engineering/aperio/internal/service/concierge"
-	"github.com/shokki-engineering/aperio/internal/service/crm"
+	"github.com/shokki-engineering/aperio/internal/service/event"
 	"github.com/shokki-engineering/aperio/internal/service/finance"
-	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/crm/v1/crmpbv1svc"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/catalog/v1/catalogpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/document/v1/documentpbv1svc"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/guest/v1/guestpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/operations/v1/operationspbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/venue/v1/venuepbv1svc"
+	"github.com/shokki-engineering/aperio/internal/service/guest"
+	"github.com/shokki-engineering/aperio/internal/service/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/sales"
+	"github.com/shokki-engineering/aperio/internal/service/stay"
 	"github.com/the-protobuf-project/runtime-go/grpc/hints"
 	"google.golang.org/grpc"
 )
@@ -36,9 +42,12 @@ type Services struct {
 	Engine engine.Engine
 
 	Venues     *venuepbv1svc.VenueServiceServer
-	CRM        *crmpbv1svc.CrmServiceServer
-	Bookings   *booking.Server
+	Catalog    *catalogpbv1svc.CatalogServiceServer
+	Pricing    *pricing.Server
+	Guests     *guestpbv1svc.GuestServiceServer
 	Sales      *sales.Server
+	Stays      *stay.Server
+	Events     *event.Server
 	Finance    *finance.Server
 	Documents  *documentpbv1svc.DocumentServiceServer
 	Operations *operationspbv1svc.OperationsServiceServer
@@ -51,25 +60,35 @@ type Services struct {
 // in the gateway's own dashboard).
 func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gateways ...finance.Gateway) *Services {
 	rc := conn.Repox()
-	venues, people := venue.New(rc), crmRepositories(rc)
-	bookings := booking.New(bookingRepositories(rc), venues, people.Contacts, eng)
-	selling := sales.New(salesRepositories(rc), venues.Venues, people.Leads, bookings)
-	guests := crm.New(people)
+	venues, catalogRepos, guestRepos := venue.New(rc), catalogRepositories(rc), guestRepositories(rc)
+	base := booking.NewBase(eng, venues, guestRepos.Contacts)
+	stays, events := stay.New(stayRepositories(rc), base), event.New(eventRepositories(rc), base)
+	prices := pricing.New(pricingRepositories(rc), catalogRepos, venues.Venues)
+	guests := guest.New(guestRepos)
 	return &Services{
 		Conn:   conn,
 		Engine: eng,
 		Venues: venuepbv1svc.NewVenueServiceServer(
 			venuepbv1svc.VenueServiceRepositories{Venues: venues.Venues, Spaces: venues.Spaces}, venuepbv1svc.NopVenueServiceHooks{}),
-		CRM:      guests,
-		Bookings: bookings,
-		Sales:    selling,
-		Finance:  finance.New(financeRepositories(rc), venues.Venues, bookings, gateways),
+		Catalog: catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{}),
+		Pricing: prices,
+		Guests:  guests,
+		Sales:   sales.New(salesRepositories(rc), venues.Venues, catalogRepos.Menus, prices, events, stays),
+		Stays:   stays,
+		Events:  events,
+		Finance: finance.New(financeRepositories(rc), venues.Venues, bookings{stays: stays, events: events}, gateways),
 		Documents: documentpbv1svc.NewDocumentServiceServer(
 			documentpbv1svc.DocumentServiceRepositories{Documents: document.New(rc).Documents}, documentpbv1svc.NopDocumentServiceHooks{}),
 		Operations: operationspbv1svc.NewOperationsServiceServer(
 			operationspbv1svc.OperationsServiceRepositories{ServiceRequests: operations.New(rc).ServiceRequests}, operationspbv1svc.NopOperationsServiceHooks{}),
-		Concierge: concierge.New(venues, eng, selling, guests, bookings, holdSecret),
+		Concierge: concierge.New(venues, eng, prices, guests, stays, holdSecret),
 	}
+}
+
+// catalogRepositories are the CatalogService's repositories over conn.
+func catalogRepositories(conn repox.Conn) catalogpbv1svc.CatalogServiceRepositories {
+	r := catalog.New(conn)
+	return catalogpbv1svc.CatalogServiceRepositories{Dishes: r.Dishes, Menus: r.Menus, FixedPackages: r.FixedPackages}
 }
 
 // Interceptors are the unary interceptors every surface shares, after

@@ -109,3 +109,16 @@ func SameCurrency(m *money.Money, currency, what string) error {
 	}
 	return nil
 }
+
+// GST is the GST on amount at rate, a percentage ("18"), unrounded; zero
+// when there is no rate.
+func GST(amount *big.Rat, rate *decimal.Decimal) (*big.Rat, error) {
+	if rate == nil {
+		return new(big.Rat), nil
+	}
+	r, err := Decimal(rate)
+	if err != nil {
+		return nil, err
+	}
+	return Percent(amount, r), nil
+}

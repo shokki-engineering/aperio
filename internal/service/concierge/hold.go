@@ -7,7 +7,7 @@ package concierge
 // the token that books them.
 //
 // The stay's reservation id is fixed now, from the request id, and the hold
-// is made under the very key the booking service books that reservation's
+// is made under the very key the stay service books that reservation's
 // rooms with (booking.RoomsKey). freebusy's holds are idempotent on their
 // key, so when ConfirmStay books, the booking finds this hold and reserves
 // from it: nothing is released between the two, and nobody else can take the
@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/engine"
-	"github.com/shokki-engineering/aperio/internal/service/booking"
-	"github.com/shokki-engineering/aperio/internal/service/crm"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
+	"github.com/shokki-engineering/aperio/internal/service/guest"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -96,7 +96,7 @@ func guestDetails(req *conciergepbv1.HoldStayRequest) error {
 	case strings.TrimSpace(req.GetGuestDisplayName()) == "":
 		return servicex.BadField("GUEST_DETAILS_REQUIRED", "guest_display_name",
 			"the stay needs the guest's name and phone number", "Ask the guest for their name, and their phone number if it is not known")
-	case crm.Normalize(req.GetPhone()) == "":
+	case guest.Normalize(req.GetPhone()) == "":
 		return servicex.BadField("GUEST_DETAILS_REQUIRED", "phone",
 			"the stay needs the guest's phone number", "Ask the guest for their phone number")
 	}
@@ -106,7 +106,7 @@ func guestDetails(req *conciergepbv1.HoldStayRequest) error {
 // phoneE164 is number in E.164: as given when it has a country code, else
 // with region's -- India's, for a ten-digit number at an Indian venue.
 func phoneE164(number, region string) string {
-	n := crm.Normalize(number)
+	n := guest.Normalize(number)
 	switch {
 	case strings.HasPrefix(n, "+"):
 		return n

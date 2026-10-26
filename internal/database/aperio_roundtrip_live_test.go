@@ -25,14 +25,14 @@ import (
 
 	"buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/hotel/booking/reservation/v1/types"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql"
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/booking"
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/crm"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/finance"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/stay"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"google.golang.org/genproto/googleapis/type/date"
@@ -116,25 +116,25 @@ func TestLiveAperioRoundTrip(t *testing.T) {
 			}
 			same(t, "venue", venueIn, got)
 
-			contactIn := &crmpbv1.Contact{
-				Kind:                crmpbv1.ContactKind_CONTACT_KIND_PERSON,
+			contactIn := &guestpbv1.Contact{
+				Kind:                guestpbv1.ContactKind_CONTACT_KIND_PERSON,
 				DisplayName:         "Ananya Sharma",
 				Phones:              []*typepbv1.Phone{{Number: "+919876543210", Kind: typepbv1.PhoneKind_PHONE_KIND_WHATSAPP}},
 				Emails:              []string{"ananya@example.com"},
 				DietaryRequirements: []*typepbv1.DietaryRequirement{{Diet: typepbv1.Diet_DIET_JAIN}},
 				Tags:                []string{"vip"},
 			}
-			c, err := crm.New(conn).Contacts.Create(ctx, contactIn)
+			c, err := guest.New(conn).Contacts.Create(ctx, contactIn)
 			if err != nil {
 				t.Fatalf("create contact: %v", err)
 			}
-			gotContact, err := crm.New(conn).Contacts.Get(ctx, c.GetName())
+			gotContact, err := guest.New(conn).Contacts.Get(ctx, c.GetName())
 			if err != nil {
 				t.Fatalf("get contact: %v", err)
 			}
 			same(t, "contact", contactIn, gotContact)
 
-			resIn := &bookingpbv1.Reservation{
+			resIn := &staypbv1.Reservation{
 				Contact:          c.GetName(),
 				Channel:          typepbv1.Channel_CHANNEL_BOOKING_COM,
 				ChannelReference: "BDC-" + run,
@@ -142,25 +142,25 @@ func TestLiveAperioRoundTrip(t *testing.T) {
 				DepartureDate:    &date.Date{Year: 2026, Month: 12, Day: 27},
 				Adults:           2,
 				Children:         1,
-				Rooms:            []*bookingpbv1.RoomLine{{Space: v.GetName() + "/spaces/deluxe", Rooms: 1, RatePlanCode: "BAR"}},
+				Rooms:            []*staypbv1.RoomLine{{Space: v.GetName() + "/spaces/deluxe", Rooms: 1, RatePlanCode: "BAR"}},
 				RoomStays:        []*types.RoomStay{{MarketCode: "LEISURE", PromotionCode: "XMAS"}},
 				ResGuests:        []*types.ResGuest{{ResGuestRph: "1", Age: proto.Int32(34), Vip: proto.Bool(true)}},
 				DietaryRequirements: []*typepbv1.DietaryRequirement{
 					{Diet: typepbv1.Diet_DIET_JAIN, GuestDisplayName: "A. Sharma"},
 					{Diet: typepbv1.Diet_DIET_VEGAN, Allergens: []typepbv1.Allergen{typepbv1.Allergen_ALLERGEN_TREE_NUT}},
 				},
-				SpecialRequests: []*bookingpbv1.SpecialRequest{{
+				SpecialRequests: []*typepbv1.SpecialRequest{{
 					Summary:  "Cot in the room",
-					Category: bookingpbv1.RequestCategory_REQUEST_CATEGORY_ROOM,
+					Category: typepbv1.RequestCategory_REQUEST_CATEGORY_ROOM,
 					Ota:      &types.SpecialRequest{DisplayName: "Cot", LanguageCode: "en"},
 				}},
 				Total: &money.Money{CurrencyCode: "INR", Units: 42000},
 			}
-			r, err := booking.New(conn).Reservations.Create(ctx, v.GetName(), resIn)
+			r, err := stay.New(conn).Reservations.Create(ctx, v.GetName(), resIn)
 			if err != nil {
 				t.Fatalf("create reservation: %v", err)
 			}
-			gotRes, err := booking.New(conn).Reservations.Get(ctx, r.GetName())
+			gotRes, err := stay.New(conn).Reservations.Get(ctx, r.GetName())
 			if err != nil {
 				t.Fatalf("get reservation: %v", err)
 			}

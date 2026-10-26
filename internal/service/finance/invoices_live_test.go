@@ -18,11 +18,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/crm"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/finance"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"github.com/shokki-engineering/aperio/test/live"
@@ -59,7 +59,7 @@ func TestLiveInvoices(t *testing.T) {
 		TimeZone: "Asia/Kolkata", CurrencyCode: "INR", InvoicePrefix: prefix, Address: &postaladdress.PostalAddress{RegionCode: "IN"},
 		Gst: &typepbv1.Gst{Gstin: "29ABCDE1234F1Z5", LegalDisplayName: "Test", GstStateCode: "29"}})
 	must(err, "create venue")
-	c, err := crm.New(conn).Contacts.Create(ctx, &crmpbv1.Contact{Kind: crmpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Anil Rao"})
+	c, err := guest.New(conn).Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Anil Rao"})
 	must(err, "create contact")
 
 	gst18 := &typepbv1.Tax{HsnSacCode: "996311", GstRate: &decimal.Decimal{Value: "18"}}

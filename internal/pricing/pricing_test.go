@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/shokki-engineering/aperio/internal/pricing"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/genproto/googleapis/type/dayofweek"
@@ -47,12 +47,12 @@ func TestMoney(t *testing.T) {
 }
 
 func TestCovers(t *testing.T) {
-	wedding := &salespbv1.Season{RecursYearly: true, Dates: []*typepbv1.DateRange{{StartDate: day(2025, 11, 1), EndDate: day(2026, 2, 28)}}}
-	weekends := &salespbv1.Season{Weekdays: []dayofweek.DayOfWeek{dayofweek.DayOfWeek_SATURDAY, dayofweek.DayOfWeek_SUNDAY}}
-	diwali := &salespbv1.Season{Dates: []*typepbv1.DateRange{{StartDate: day(2026, 11, 6), EndDate: day(2026, 11, 12)}}}
+	wedding := &pricingpbv1.Season{RecursYearly: true, Dates: []*typepbv1.DateRange{{StartDate: day(2025, 11, 1), EndDate: day(2026, 2, 28)}}}
+	weekends := &pricingpbv1.Season{Weekdays: []dayofweek.DayOfWeek{dayofweek.DayOfWeek_SATURDAY, dayofweek.DayOfWeek_SUNDAY}}
+	diwali := &pricingpbv1.Season{Dates: []*typepbv1.DateRange{{StartDate: day(2026, 11, 6), EndDate: day(2026, 11, 12)}}}
 	for _, c := range []struct {
 		name   string
-		season *salespbv1.Season
+		season *pricingpbv1.Season
 		d      *date.Date
 		want   bool
 	}{
@@ -72,16 +72,16 @@ func TestCovers(t *testing.T) {
 
 func TestPickAndApply(t *testing.T) {
 	const menu = "venues/v/menus/silver"
-	seasons := map[string]*salespbv1.Season{
+	seasons := map[string]*pricingpbv1.Season{
 		"venues/v/seasons/wedding": {RecursYearly: true, Dates: []*typepbv1.DateRange{{StartDate: day(2025, 11, 1), EndDate: day(2026, 2, 28)}}},
 	}
-	rules := []*salespbv1.PriceRule{
-		{Name: "venues/v/priceRules/a-season", Active: true, Target: salespbv1.PriceTarget_PRICE_TARGET_MENU,
-			Season: "venues/v/seasons/wedding", Priority: 10, Adjustment: &salespbv1.PriceRule_Percent{Percent: &decimal.Decimal{Value: "15"}}},
-		{Name: "venues/v/priceRules/b-volume", Active: true, Target: salespbv1.PriceTarget_PRICE_TARGET_MENU, Items: []string{menu},
-			MinGuests: 500, Priority: 20, Adjustment: &salespbv1.PriceRule_Amount{Amount: inr(-100, 0)}},
-		{Name: "venues/v/priceRules/c-off", Active: false, Target: salespbv1.PriceTarget_PRICE_TARGET_MENU, Priority: 99,
-			Adjustment: &salespbv1.PriceRule_FixedPrice{FixedPrice: inr(1, 0)}},
+	rules := []*pricingpbv1.PriceRule{
+		{Name: "venues/v/priceRules/a-season", Active: true, Target: pricingpbv1.PriceTarget_PRICE_TARGET_MENU,
+			Season: "venues/v/seasons/wedding", Priority: 10, Adjustment: &pricingpbv1.PriceRule_Percent{Percent: &decimal.Decimal{Value: "15"}}},
+		{Name: "venues/v/priceRules/b-volume", Active: true, Target: pricingpbv1.PriceTarget_PRICE_TARGET_MENU, Items: []string{menu},
+			MinGuests: 500, Priority: 20, Adjustment: &pricingpbv1.PriceRule_Amount{Amount: inr(-100, 0)}},
+		{Name: "venues/v/priceRules/c-off", Active: false, Target: pricingpbv1.PriceTarget_PRICE_TARGET_MENU, Priority: 99,
+			Adjustment: &pricingpbv1.PriceRule_FixedPrice{FixedPrice: inr(1, 0)}},
 	}
 	base := pricing.Rat(inr(1200, 0))
 	for _, c := range []struct {
@@ -95,7 +95,7 @@ func TestPickAndApply(t *testing.T) {
 		{"wedding season", day(2027, 12, 5), 200, "venues/v/priceRules/a-season", 1380},
 		{"wedding season, 600 guests", day(2027, 12, 5), 600, "venues/v/priceRules/b-volume", 1100},
 	} {
-		r := pricing.Pick(rules, pricing.Match{Target: salespbv1.PriceTarget_PRICE_TARGET_MENU, Item: menu, Date: c.d, Guests: c.guests, Seasons: seasons})
+		r := pricing.Pick(rules, pricing.Match{Target: pricingpbv1.PriceTarget_PRICE_TARGET_MENU, Item: menu, Date: c.d, Guests: c.guests, Seasons: seasons})
 		if r.GetName() != c.rule {
 			t.Errorf("%s: rule = %q; want %q", c.name, r.GetName(), c.rule)
 		}

@@ -4,7 +4,7 @@
 package finance_test
 
 // Live tests of payments over the dev database, with a fake gateway and a
-// fake booking service: cash and a dollar payment settling an invoice, a
+// fake stay and event service: cash and a dollar payment settling an invoice, a
 // gateway payment settled by its webhook (twice, harmlessly), refunded
 // through the gateway, a void, and the advance confirming the booking. Run
 // as billing_live_test.go says.
@@ -16,12 +16,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/crm"
+	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/finance"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"github.com/shokki-engineering/aperio/test/live"
@@ -38,25 +39,25 @@ func (testpay) Refund(_ context.Context, ref string, _ *money.Money) (string, er
 	return "rf_" + ref, nil
 }
 
-// desk is a booking service holding one pending stay, recording confirms.
+// desk is a stay and event service holding one pending stay, recording confirms.
 type desk struct{ confirmed []string }
 
-func (d *desk) GetReservation(_ context.Context, r *bookingpbv1.GetReservationRequest) (*bookingpbv1.Reservation, error) {
-	state := bookingpbv1.Reservation_STATE_PENDING
+func (d *desk) GetReservation(_ context.Context, r *staypbv1.GetReservationRequest) (*staypbv1.Reservation, error) {
+	state := staypbv1.Reservation_STATE_PENDING
 	if len(d.confirmed) > 0 {
-		state = bookingpbv1.Reservation_STATE_CONFIRMED
+		state = staypbv1.Reservation_STATE_CONFIRMED
 	}
-	return &bookingpbv1.Reservation{Name: r.GetName(), State: state}, nil
+	return &staypbv1.Reservation{Name: r.GetName(), State: state}, nil
 }
-func (d *desk) ConfirmReservation(_ context.Context, r *bookingpbv1.ConfirmReservationRequest) (*bookingpbv1.Reservation, error) {
+func (d *desk) ConfirmReservation(_ context.Context, r *staypbv1.ConfirmReservationRequest) (*staypbv1.Reservation, error) {
 	d.confirmed = append(d.confirmed, r.GetName())
-	return &bookingpbv1.Reservation{Name: r.GetName()}, nil
+	return &staypbv1.Reservation{Name: r.GetName()}, nil
 }
-func (d *desk) GetEvent(context.Context, *bookingpbv1.GetEventRequest) (*bookingpbv1.Event, error) {
-	return &bookingpbv1.Event{}, nil
+func (d *desk) GetEvent(context.Context, *eventpbv1.GetEventRequest) (*eventpbv1.Event, error) {
+	return &eventpbv1.Event{}, nil
 }
-func (d *desk) ConfirmEvent(context.Context, *bookingpbv1.ConfirmEventRequest) (*bookingpbv1.Event, error) {
-	return &bookingpbv1.Event{}, nil
+func (d *desk) ConfirmEvent(context.Context, *eventpbv1.ConfirmEventRequest) (*eventpbv1.Event, error) {
+	return &eventpbv1.Event{}, nil
 }
 
 func TestLivePayments(t *testing.T) {
@@ -76,7 +77,7 @@ func TestLivePayments(t *testing.T) {
 		TimeZone: "Asia/Kolkata", CurrencyCode: "INR", InvoicePrefix: prefix, Address: &postaladdress.PostalAddress{RegionCode: "IN"},
 		Gst: &typepbv1.Gst{Gstin: "29ABCDE1234F1Z5", LegalDisplayName: "Test", GstStateCode: "29"}})
 	must(err, "create venue")
-	c, err := crm.New(conn).Contacts.Create(ctx, &crmpbv1.Contact{Kind: crmpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Sarah Klein"})
+	c, err := guest.New(conn).Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "Sarah Klein"})
 	must(err, "create contact")
 	stay := v.GetName() + "/reservations/klein"
 

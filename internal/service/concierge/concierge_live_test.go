@@ -4,7 +4,7 @@
 package concierge_test
 
 // A live test of a guest's find, hold and book over the dev database, with
-// freebusy faked (fake_test.go): a resort with two Sea View Deluxe rooms at
+// freebusy faked (test/live.Freebusy): a resort with two Sea View Deluxe rooms at
 // ₹14,000 a night. Run as test/live says.
 
 import (
@@ -15,15 +15,16 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
-	"github.com/shokki-engineering/aperio/internal/service/booking"
 	"github.com/shokki-engineering/aperio/internal/service/concierge"
-	"github.com/shokki-engineering/aperio/internal/service/crm"
-	"github.com/shokki-engineering/aperio/internal/service/sales"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
+	"github.com/shokki-engineering/aperio/internal/service/guest"
+	"github.com/shokki-engineering/aperio/internal/service/pricing"
+	"github.com/shokki-engineering/aperio/internal/service/stay"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"github.com/shokki-engineering/aperio/test/live"
@@ -42,10 +43,10 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 			t.Fatalf("%s: %v", what, err)
 		}
 	}
-	venues, fb := venue.New(conn), newFakeFreebusy()
-	guests := crm.New(live.CrmRepositories(conn))
-	bookings := booking.New(live.BookingRepositories(conn), venues, live.CrmRepositories(conn).Contacts, fb)
-	pricer := sales.New(live.SalesRepositories(conn), venues.Venues, live.CrmRepositories(conn).Leads, nil)
+	venues, fb := venue.New(conn), live.NewFreebusy()
+	guests := guest.New(live.GuestRepositories(conn))
+	bookings := stay.New(live.StayRepositories(conn), booking.NewBase(fb, venues, live.GuestRepositories(conn).Contacts))
+	pricer := pricing.New(live.PricingRepositories(conn), live.CatalogRepositories(conn), venues.Venues)
 	svc := concierge.New(venues, fb, pricer, guests, bookings, []byte(strings.Repeat("k", 32)))
 
 	run := strconv.FormatInt(time.Now().UnixNano(), 10)
@@ -56,9 +57,9 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	sp, err := venues.Spaces.Create(ctx, v.GetName(), &venuepbv1.Space{DisplayName: "Sea View Deluxe", Kind: venuepbv1.SpaceKind_SPACE_KIND_ROOM_TYPE,
 		Resources: []string{"resources/sv1-" + run, "resources/sv2-" + run}, Capacity: &venuepbv1.Capacity{MaxAdults: 2}})
 	must(err, "create space")
-	_, err = pricer.CreatePriceRule(ctx, &salespbv1.CreatePriceRuleRequest{Parent: v.GetName(), PriceRule: &salespbv1.PriceRule{
-		DisplayName: "Sea View rate", Target: salespbv1.PriceTarget_PRICE_TARGET_SPACE, Items: []string{sp.GetName()}, Active: true,
-		Adjustment: &salespbv1.PriceRule_FixedPrice{FixedPrice: &money.Money{CurrencyCode: "INR", Units: 14000}},
+	_, err = pricer.CreatePriceRule(ctx, &pricingpbv1.CreatePriceRuleRequest{Parent: v.GetName(), PriceRule: &pricingpbv1.PriceRule{
+		DisplayName: "Sea View rate", Target: pricingpbv1.PriceTarget_PRICE_TARGET_SPACE, Items: []string{sp.GetName()}, Active: true,
+		Adjustment: &pricingpbv1.PriceRule_FixedPrice{FixedPrice: &money.Money{CurrencyCode: "INR", Units: 14000}},
 	}})
 	must(err, "create rate")
 
@@ -79,11 +80,11 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	hold.GuestDisplayName, hold.Phone = "Priya Iyer", "98765 "+run[len(run)-5:]
 	held, err := svc.HoldStay(ctx, hold)
 	must(err, "hold")
-	if !strings.Contains(held.GetSpoken(), "Shall I book it?") || fb.claims() != 1 {
-		t.Errorf("hold: %q, %d claims; want a question and one claim", held.GetSpoken(), fb.claims())
+	if !strings.Contains(held.GetSpoken(), "Shall I book it?") || fb.Active() != 1 {
+		t.Errorf("hold: %q, %d claims; want a question and one claim", held.GetSpoken(), fb.Active())
 	}
-	if again, _ := svc.HoldStay(ctx, hold); again == nil || fb.claims() != 1 {
-		t.Errorf("a retried hold took more rooms: %d claims", fb.claims())
+	if again, _ := svc.HoldStay(ctx, hold); again == nil || fb.Active() != 1 {
+		t.Errorf("a retried hold took more rooms: %d claims", fb.Active())
 	}
 
 	if _, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken() + "x"}); status.Code(err) != codes.InvalidArgument {
@@ -91,15 +92,15 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	}
 	booked, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held.GetHoldToken()})
 	must(err, "confirm")
-	if fb.claims() != 1 || fb.books != 0 {
-		t.Errorf("booking took %d claims, %d of its own; want the hold's one", fb.claims(), fb.books)
+	if fb.Active() != 1 || fb.Booked() != 0 {
+		t.Errorf("booking took %d claims, %d of its own; want the hold's one", fb.Active(), fb.Booked())
 	}
-	r, err := bookings.GetReservation(ctx, &bookingpbv1.GetReservationRequest{Name: booked.GetReservation()})
+	r, err := bookings.GetReservation(ctx, &staypbv1.GetReservationRequest{Name: booked.GetReservation()})
 	must(err, "get stay")
-	if r.GetState() != bookingpbv1.Reservation_STATE_PENDING || r.GetRooms()[0].GetSpace() != sp.GetName() || r.GetChannel() != typepbv1.Channel_CHANNEL_WEBSITE {
+	if r.GetState() != staypbv1.Reservation_STATE_PENDING || r.GetRooms()[0].GetSpace() != sp.GetName() || r.GetChannel() != typepbv1.Channel_CHANNEL_WEBSITE {
 		t.Errorf("stay: %v, rooms %v, channel %v", r.GetState(), r.GetRooms(), r.GetChannel())
 	}
-	c, err := guests.GetContact(ctx, &crmpbv1.GetContactRequest{Name: r.GetContact()})
+	c, err := guests.GetContact(ctx, &guestpbv1.GetContactRequest{Name: r.GetContact()})
 	must(err, "get guest")
 	if want := "+9198765" + run[len(run)-5:]; len(c.GetPhoneNumbers()) != 1 || c.GetPhoneNumbers()[0] != want {
 		t.Errorf("guest's phone numbers = %v; want [%s]", c.GetPhoneNumbers(), want)
@@ -115,7 +116,7 @@ func TestLiveFindHoldConfirm(t *testing.T) {
 	must(err, "second hold")
 	booked2, err := svc.ConfirmStay(ctx, &conciergepbv1.ConfirmStayRequest{Venue: v.GetName(), HoldToken: held2.GetHoldToken()})
 	must(err, "second confirm")
-	r2, _ := bookings.GetReservation(ctx, &bookingpbv1.GetReservationRequest{Name: booked2.GetReservation()})
+	r2, _ := bookings.GetReservation(ctx, &staypbv1.GetReservationRequest{Name: booked2.GetReservation()})
 	if r2.GetContact() != r.GetContact() {
 		t.Errorf("a returning guest was added again: %q, then %q", r.GetContact(), r2.GetContact())
 	}

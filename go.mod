@@ -9,6 +9,7 @@ require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.12-20260825204119-511051f7f437.2
 	buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go v1.36.12-20261026050701-bb88093022b1.2
 	github.com/google/go-cmp v0.7.0
+	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.32.0
 	github.com/joho/godotenv v1.5.1
 	github.com/knadh/koanf/parsers/toml v0.1.0
@@ -73,7 +74,6 @@ require (
 	github.com/goccy/go-json v0.11.2 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
 	github.com/google/s2a-go v0.1.11 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.23 // indirect
 	github.com/googleapis/gax-go/v2 v2.27.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect

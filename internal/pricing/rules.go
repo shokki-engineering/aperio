@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/genproto/googleapis/type/dayofweek"
 )
@@ -22,7 +22,7 @@ import (
 // covers every day its weekdays allow; one with dates, the days within any
 // of them -- on month and day alone when it recurs yearly, so "1 Nov to
 // 28 Feb" wraps the new year and holds every year.
-func Covers(s *salespbv1.Season, d *date.Date) bool {
+func Covers(s *pricingpbv1.Season, d *date.Date) bool {
 	if wd := s.GetWeekdays(); len(wd) > 0 {
 		t := time.Date(int(d.GetYear()), time.Month(d.GetMonth()), int(d.GetDay()), 0, 0, 0, 0, time.UTC)
 		iso := dayofweek.DayOfWeek(t.Weekday()) // google.type.DayOfWeek: MONDAY 1 .. SUNDAY 7
@@ -53,11 +53,11 @@ func Covers(s *salespbv1.Season, d *date.Date) bool {
 
 // Match is what a rule is matched against.
 type Match struct {
-	Target  salespbv1.PriceTarget
-	Item    string                       // the item's resource name
-	Date    *date.Date                   // the service date
-	Guests  int32                        // the guests it is for
-	Seasons map[string]*salespbv1.Season // the venue's seasons, by name
+	Target  pricingpbv1.PriceTarget
+	Item    string                         // the item's resource name
+	Date    *date.Date                     // the service date
+	Guests  int32                          // the guests it is for
+	Seasons map[string]*pricingpbv1.Season // the venue's seasons, by name
 }
 
 // Pick is the rule that prices m: of the active rules for its target and
@@ -65,8 +65,8 @@ type Match struct {
 // of the highest priority; at equal priority one naming the item beats one
 // for every item, and then the first by name, so the choice never wavers.
 // nil when none matches: the base price stands.
-func Pick(rules []*salespbv1.PriceRule, m Match) *salespbv1.PriceRule {
-	var best *salespbv1.PriceRule
+func Pick(rules []*pricingpbv1.PriceRule, m Match) *pricingpbv1.PriceRule {
+	var best *pricingpbv1.PriceRule
 	for _, r := range rules {
 		if !r.GetActive() || r.GetTarget() != m.Target || r.GetMinGuests() > m.Guests {
 			continue
@@ -88,7 +88,7 @@ func Pick(rules []*salespbv1.PriceRule, m Match) *salespbv1.PriceRule {
 }
 
 // better reports whether a wins over b.
-func better(a, b *salespbv1.PriceRule) bool {
+func better(a, b *pricingpbv1.PriceRule) bool {
 	if a.GetPriority() != b.GetPriority() {
 		return a.GetPriority() > b.GetPriority()
 	}
@@ -102,7 +102,7 @@ func better(a, b *salespbv1.PriceRule) bool {
 // its percentage, or base plus its amount. base may be nil -- an item with no
 // price of its own, a hall hired only at a rule's fixed price -- and then
 // only a fixed price can price it. ok is false when nothing does.
-func Apply(r *salespbv1.PriceRule, base *big.Rat) (price *big.Rat, ok bool, err error) {
+func Apply(r *pricingpbv1.PriceRule, base *big.Rat) (price *big.Rat, ok bool, err error) {
 	switch {
 	case r.GetFixedPrice() != nil:
 		return Rat(r.GetFixedPrice()), true, nil
@@ -122,7 +122,7 @@ func Apply(r *salespbv1.PriceRule, base *big.Rat) (price *big.Rat, ok bool, err 
 
 // Scales reports whether r scales a price, as a percentage does: the one
 // kind of rule that also applies to a package's extra-guest price.
-func Scales(r *salespbv1.PriceRule) bool { return r.GetPercent() != nil }
+func Scales(r *pricingpbv1.PriceRule) bool { return r.GetPercent() != nil }
 
 func monthDay(d *date.Date) int32 { return d.GetMonth()*100 + d.GetDay() }
 func ymd(d *date.Date) int32      { return d.GetYear()*10000 + monthDay(d) }

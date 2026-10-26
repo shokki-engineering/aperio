@@ -21,18 +21,19 @@ import (
 
 	"github.com/shokki-engineering/aperio/internal/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-// Confirmer confirms a booking a payment holds: the booking service.
+// Confirmer confirms a booking a payment holds: the stay and event services.
 type Confirmer interface {
-	GetReservation(context.Context, *bookingpbv1.GetReservationRequest) (*bookingpbv1.Reservation, error)
-	ConfirmReservation(context.Context, *bookingpbv1.ConfirmReservationRequest) (*bookingpbv1.Reservation, error)
-	GetEvent(context.Context, *bookingpbv1.GetEventRequest) (*bookingpbv1.Event, error)
-	ConfirmEvent(context.Context, *bookingpbv1.ConfirmEventRequest) (*bookingpbv1.Event, error)
+	GetReservation(context.Context, *staypbv1.GetReservationRequest) (*staypbv1.Reservation, error)
+	ConfirmReservation(context.Context, *staypbv1.ConfirmReservationRequest) (*staypbv1.Reservation, error)
+	GetEvent(context.Context, *eventpbv1.GetEventRequest) (*eventpbv1.Event, error)
+	ConfirmEvent(context.Context, *eventpbv1.ConfirmEventRequest) (*eventpbv1.Event, error)
 }
 
 // settle brings p's invoice and booking in line with it.
@@ -91,16 +92,16 @@ func (h *hooks) confirm(ctx context.Context, booking string) error {
 	var err error
 	switch {
 	case strings.Contains(booking, "/reservations/"):
-		var r *bookingpbv1.Reservation
-		if r, err = h.confirmer.GetReservation(ctx, &bookingpbv1.GetReservationRequest{Name: booking}); err == nil &&
-			r.GetState() == bookingpbv1.Reservation_STATE_PENDING {
-			_, err = h.confirmer.ConfirmReservation(ctx, &bookingpbv1.ConfirmReservationRequest{Name: booking})
+		var r *staypbv1.Reservation
+		if r, err = h.confirmer.GetReservation(ctx, &staypbv1.GetReservationRequest{Name: booking}); err == nil &&
+			r.GetState() == staypbv1.Reservation_STATE_PENDING {
+			_, err = h.confirmer.ConfirmReservation(ctx, &staypbv1.ConfirmReservationRequest{Name: booking})
 		}
 	case strings.Contains(booking, "/events/"):
-		var e *bookingpbv1.Event
-		if e, err = h.confirmer.GetEvent(ctx, &bookingpbv1.GetEventRequest{Name: booking}); err == nil &&
-			e.GetState() == bookingpbv1.Event_STATE_TENTATIVE {
-			_, err = h.confirmer.ConfirmEvent(ctx, &bookingpbv1.ConfirmEventRequest{Name: booking})
+		var e *eventpbv1.Event
+		if e, err = h.confirmer.GetEvent(ctx, &eventpbv1.GetEventRequest{Name: booking}); err == nil &&
+			e.GetState() == eventpbv1.Event_STATE_TENTATIVE {
+			_, err = h.confirmer.ConfirmEvent(ctx, &eventpbv1.ConfirmEventRequest{Name: booking})
 		}
 	}
 	if status.Code(err) == codes.FailedPrecondition { // confirmed meanwhile

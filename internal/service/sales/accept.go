@@ -21,32 +21,21 @@ import (
 	"time"
 
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/crm/v1/crmpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-// Booker makes the bookings an accepted quote becomes: the booking service
-// (booking.Server), whose hooks take rooms and halls from freebusy.
-type Booker interface {
-	CreateEvent(context.Context, *bookingpbv1.CreateEventRequest) (*bookingpbv1.Event, error)
-	GetEvent(context.Context, *bookingpbv1.GetEventRequest) (*bookingpbv1.Event, error)
-	DeleteEvent(context.Context, *bookingpbv1.DeleteEventRequest) (*emptypb.Empty, error)
-	CreateReservation(context.Context, *bookingpbv1.CreateReservationRequest) (*bookingpbv1.Reservation, error)
-	GetReservation(context.Context, *bookingpbv1.GetReservationRequest) (*bookingpbv1.Reservation, error)
-}
 
 // AcceptQuote makes a sent quote's bookings, wins its lead, and accepts it.
 func (s *Server) AcceptQuote(ctx context.Context, req *salespbv1.AcceptQuoteRequest) (*salespbv1.Quote, error) {
 	return s.move(ctx, "AcceptQuote", req.GetName(), req.GetEtag(), []salespbv1.Quote_State{salespbv1.Quote_STATE_SENT},
 		func(ctx context.Context, q *salespbv1.Quote) (*salespbv1.Quote, error) {
-			if s.booker == nil {
+			if s.events == nil || s.stays == nil {
 				return nil, status.Error(codes.Unimplemented, "AcceptQuote: no booking service is configured")
 			}
 			now := s.h.now()
@@ -70,12 +59,12 @@ func (s *Server) AcceptQuote(ctx context.Context, req *salespbv1.AcceptQuoteRequ
 func (s *Server) book(ctx context.Context, q *salespbv1.Quote) (string, []string, error) {
 	venueName := servicex.ParentOf(q.GetName())
 	id := "quote-" + strings.ToLower(servicex.IDOf(q.GetName()))
-	var rooms []*bookingpbv1.RoomLine
+	var rooms []*staypbv1.RoomLine
 	event := q.GetEventType() != typepbv1.EventType_EVENT_TYPE_UNSPECIFIED
 	for _, l := range q.GetLines() {
 		switch l.GetKind() {
 		case salespbv1.LineKind_LINE_KIND_ROOM:
-			rooms = append(rooms, &bookingpbv1.RoomLine{Space: l.GetItem(), Rooms: l.GetQuantity()})
+			rooms = append(rooms, &staypbv1.RoomLine{Space: l.GetItem(), Rooms: l.GetQuantity()})
 		case salespbv1.LineKind_LINE_KIND_MENU, salespbv1.LineKind_LINE_KIND_FIXED_PACKAGE, salespbv1.LineKind_LINE_KIND_SPACE:
 			event = true
 		}
@@ -98,8 +87,8 @@ func (s *Server) book(ctx context.Context, q *salespbv1.Quote) (string, []string
 	}
 	r, err := s.stay(ctx, venueName, id, q, eventName, rooms)
 	if err != nil {
-		if eventName != "" { // a stay that cannot be had undoes the event made with it
-			_, _ = s.booker.DeleteEvent(context.WithoutCancel(ctx), &bookingpbv1.DeleteEventRequest{Name: eventName, Force: true})
+		if eventName != "" { // a stay that cannot be had calls off the event made with it
+			_, _ = s.events.CancelEvent(context.WithoutCancel(ctx), &eventpbv1.CancelEventRequest{Name: eventName, Reason: "its stay could not be booked"})
 		}
 		return "", nil, err
 	}
@@ -110,16 +99,16 @@ func (s *Server) book(ctx context.Context, q *salespbv1.Quote) (string, []string
 }
 
 // event makes q's event, or finds the one a failed attempt made.
-func (s *Server) event(ctx context.Context, venueName, id string, q *salespbv1.Quote) (*bookingpbv1.Event, error) {
+func (s *Server) event(ctx context.Context, venueName, id string, q *salespbv1.Quote) (*eventpbv1.Event, error) {
 	if q.GetEventType() == typepbv1.EventType_EVENT_TYPE_UNSPECIFIED {
 		return nil, servicex.BadField("MISSING_EVENT_TYPE", "quote.event_type", "an event quote has no event type", "Set the occasion, revise and send it again")
 	}
-	e, err := s.booker.CreateEvent(ctx, &bookingpbv1.CreateEventRequest{Parent: venueName, EventId: id, Event: &bookingpbv1.Event{
+	e, err := s.events.CreateEvent(ctx, &eventpbv1.CreateEventRequest{Parent: venueName, EventId: id, Event: &eventpbv1.Event{
 		DisplayName: q.GetDisplayName(), Contact: q.GetContact(), Lead: q.GetLead(), EventType: q.GetEventType(),
 		Dates: q.GetDates(), Guests: q.GetGuests(), Quote: q.GetName(),
 	}})
 	if status.Code(err) == codes.AlreadyExists {
-		return s.booker.GetEvent(ctx, &bookingpbv1.GetEventRequest{Name: venueName + "/events/" + id})
+		return s.events.GetEvent(ctx, &eventpbv1.GetEventRequest{Name: venueName + "/events/" + id})
 	}
 	return e, err
 }
@@ -128,7 +117,7 @@ func (s *Server) event(ctx context.Context, venueName, id string, q *salespbv1.Q
 // made. A room line's quantity is room-nights; the stay runs from the
 // quote's first date to its last (the departure), a night at least, so a
 // line's rooms are its quantity over the nights.
-func (s *Server) stay(ctx context.Context, venueName, id string, q *salespbv1.Quote, event string, rooms []*bookingpbv1.RoomLine) (*bookingpbv1.Reservation, error) {
+func (s *Server) stay(ctx context.Context, venueName, id string, q *salespbv1.Quote, event string, rooms []*staypbv1.RoomLine) (*staypbv1.Reservation, error) {
 	arrive, depart := q.GetDates().GetStartDate(), q.GetDates().GetEndDate()
 	nights := int32(days(arrive, depart))
 	if nights < 1 {
@@ -141,20 +130,20 @@ func (s *Server) stay(ctx context.Context, venueName, id string, q *salespbv1.Qu
 		}
 		l.Rooms /= nights
 	}
-	r, err := s.booker.CreateReservation(ctx, &bookingpbv1.CreateReservationRequest{Parent: venueName, ReservationId: id,
-		Reservation: &bookingpbv1.Reservation{
+	r, err := s.stays.CreateReservation(ctx, &staypbv1.CreateReservationRequest{Parent: venueName, ReservationId: id,
+		Reservation: &staypbv1.Reservation{
 			Contact: q.GetContact(), Lead: q.GetLead(), Event: event, Channel: s.channel(ctx, q.GetLead()),
 			ArrivalDate: arrive, DepartureDate: depart, Adults: max(q.GetGuests(), 1), Rooms: rooms, Quote: q.GetName(),
 		}})
 	if status.Code(err) == codes.AlreadyExists {
-		return s.booker.GetReservation(ctx, &bookingpbv1.GetReservationRequest{Name: venueName + "/reservations/" + id})
+		return s.stays.GetReservation(ctx, &staypbv1.GetReservationRequest{Name: venueName + "/reservations/" + id})
 	}
 	return r, err
 }
 
 // channel is where the lead came from; OTHER without one.
 func (s *Server) channel(ctx context.Context, lead string) typepbv1.Channel {
-	if l, err := s.leads.Get(ctx, lead); err == nil && l.GetSource() != typepbv1.Channel_CHANNEL_UNSPECIFIED {
+	if l, err := s.h.repos.Leads.Get(ctx, lead); err == nil && l.GetSource() != typepbv1.Channel_CHANNEL_UNSPECIFIED {
 		return l.GetSource()
 	}
 	return typepbv1.Channel_CHANNEL_OTHER
@@ -165,17 +154,17 @@ func (s *Server) win(ctx context.Context, lead string, bookings []string, now ti
 	if lead == "" {
 		return nil
 	}
-	l, err := s.leads.Get(ctx, lead)
+	l, err := s.h.repos.Leads.Get(ctx, lead)
 	if err != nil {
 		return servicex.NotFoundAs(err, "aperio.crm.v1/Lead", lead)
 	}
-	l.Stage, l.CloseTime = crmpbv1.Stage_STAGE_WON, timestamppb.New(now)
+	l.Stage, l.CloseTime = salespbv1.Stage_STAGE_WON, timestamppb.New(now)
 	for _, b := range bookings {
 		if !slices.Contains(l.GetBookings(), b) {
 			l.Bookings = append(l.Bookings, b)
 		}
 	}
-	_, err = s.leads.UpdateWithOutputOnly(ctx, l, []string{"stage"}, []string{"bookings", "close_time"})
+	_, err = s.h.repos.Leads.UpdateWithOutputOnly(ctx, l, []string{"stage"}, []string{"bookings", "close_time"})
 	return err
 }
 
