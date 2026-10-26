@@ -1,0 +1,118 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# protoc-gen-service's configuration: the store's database layout, so the
+# generated servers import the repository packages by the names
+# protoc-gen-store gave them, and the bindings -- where each proto package's
+# gRPC, gateway and MCP stubs live. The layout repeats store.backend.yaml's.
+
+strip_version: true
+dedupe_schema_table: true
+
+datasources:
+  # protobuf-ota, one rule per resource package. The `**` takes the resource's
+  # v1 package and its v1.types, v1.codes and v1.enums sub-packages into one
+  # schema: the value objects a resource embeds live beside it, and only the
+  # resource's own package tree refers to them (AIP-215). {leaf} would not do:
+  # it names every sub-package's schema "types", "codes" or "enums", pulling the
+  # value objects of all 28 resources into three schemas.
+  #
+  # Every schema name is one word: a multi-word
+  # schema breaks the graphql target, which splits DDN's PascalCase
+  # schema+table model names at the first token. room_type is "roomtype".
+  #
+  # One database, ota, for the upstream catalogue: regenerated when
+  # protobuf-ota releases, not when aperio changes.
+  - match: "protobuf.opentravel.common.profile.**"
+    database: ota
+    schema: profile
+  - match: "protobuf.opentravel.hotel.booking.reservation.**"
+    database: ota
+    schema: reservation
+  - match: "protobuf.opentravel.hotel.booking.stay.**"
+    database: ota
+    schema: stay
+  - match: "protobuf.opentravel.hotel.finance.commission.**"
+    database: ota
+    schema: commission
+  - match: "protobuf.opentravel.hotel.hotel.**"
+    database: ota
+    schema: hotel
+  - match: "protobuf.opentravel.hotel.property.affiliation_info.**"
+    database: ota
+    schema: affiliationinfo
+  - match: "protobuf.opentravel.hotel.property.area_info.**"
+    database: ota
+    schema: areainfo
+  - match: "protobuf.opentravel.hotel.property.contact.**"
+    database: ota
+    schema: contact
+  - match: "protobuf.opentravel.hotel.property.environmental_impact.**"
+    database: ota
+    schema: environmentalimpact
+  - match: "protobuf.opentravel.hotel.property.meeting_room.**"
+    database: ota
+    schema: meetingroom
+  - match: "protobuf.opentravel.hotel.property.multimedia.**"
+    database: ota
+    schema: multimedia
+  - match: "protobuf.opentravel.hotel.property.policy.**"
+    database: ota
+    schema: policy
+  - match: "protobuf.opentravel.hotel.property.promotion.**"
+    database: ota
+    schema: promotion
+  - match: "protobuf.opentravel.hotel.property.restaurant.**"
+    database: ota
+    schema: restaurant
+  - match: "protobuf.opentravel.hotel.property.room_type.**"
+    database: ota
+    schema: roomtype
+  - match: "protobuf.opentravel.hotel.reporting.statistic_report.**"
+    database: ota
+    schema: statisticreport
+  - match: "protobuf.opentravel.hotel.revenue.booking_rule.**"
+    database: ota
+    schema: bookingrule
+  - match: "protobuf.opentravel.hotel.revenue.hotel_product.**"
+    database: ota
+    schema: hotelproduct
+  - match: "protobuf.opentravel.hotel.revenue.inventory.**"
+    database: ota
+    schema: inventory
+  - match: "protobuf.opentravel.hotel.revenue.rate.**"
+    database: ota
+    schema: rate
+  - match: "protobuf.opentravel.hotel.revenue.rate_plan.**"
+    database: ota
+    schema: rateplan
+  - match: "protobuf.opentravel.hotel.revenue.restriction.**"
+    database: ota
+    schema: restriction
+  - match: "protobuf.opentravel.hotel.revenue.summary.**"
+    database: ota
+    schema: summary
+  - match: "protobuf.opentravel.hotel.sales.event.**"
+    database: ota
+    schema: event
+  - match: "protobuf.opentravel.hotel.sales.event_report.**"
+    database: ota
+    schema: eventreport
+  - match: "protobuf.opentravel.hotel.sales.inventory_block.**"
+    database: ota
+    schema: inventoryblock
+  - match: "protobuf.opentravel.hotel.sales.meeting_rfp.**"
+    database: ota
+    schema: meetingrfp
+  - match: "protobuf.opentravel.hotel.sales.transient_rfp.**"
+    database: ota
+    schema: transientrfp
+
+# protobuf-ota's stubs are the BSR SDK's gRPC packages and the standalone
+# gateway and MCP packages ota.buf.gen.yaml writes (otagw moves each gateway
+# into its <pkg>gw package).
+bindings:
+  - match: "protobuf.**"
+    grpc_package: "buf.build/gen/go/shokki-engineering/protobuf-ota/grpc/go/{proto_dir}/{package}grpc"
+    gateway_package: "github.com/shokki-engineering/aperio/protobuf/generated/go/ota/{proto_dir}/{package}gw"
+    mcp_package: "github.com/shokki-engineering/aperio/protobuf/generated/go/ota/{proto_dir}/{package}mcp"

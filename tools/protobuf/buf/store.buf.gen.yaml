@@ -1,0 +1,100 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# protoc-gen-store + protoc-gen-cache: the database layer from protobuf-ota --
+# the gorm models, stores, converters and filters, the proto-facing
+# repositories over gorm and Hasura, the typed Hasura client, and the
+# read-through cache decorators over them. Run via `just gen store`, with the
+# local DDN engine up. The Prisma schema has its own template
+# (prisma.buf.gen.yaml), which must not be cleaned.
+#
+# clean: true wipes every `out` dir before writing; nothing hand-written may
+# live under them.
+version: v2
+clean: true
+managed:
+  enabled: true
+  # googleapis and protovalidate keep their own go_package: their Go packages
+  # are google.golang.org/genproto and buf.build/gen/go/bufbuild/protovalidate.
+  disable:
+    - module: buf.build/googleapis/googleapis
+    - module: buf.build/bufbuild/protovalidate
+  override:
+    # The OTA messages are the BSR SDK's
+    # (buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go), so
+    # the database layer imports them from there. protobuf-ota commits no
+    # go_package; this prefix reproduces the SDK's import paths, and buf derives
+    # the same package names the BSR does ("rate_planv1" for a path ending in a
+    # version, "types", "codes", "enums" for the sub-packages), so no import is
+    # ever aliased.
+    - file_option: go_package_prefix
+      value: buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go
+      module: buf.build/shokki-engineering/protobuf-ota
+inputs:
+  # Pinned to the commit the SDK versions in go.mod were cut from: an unpinned
+  # module input resolves to the BSR head, and a regen then rewrites every store
+  # to whatever upstream last pushed.
+  - module: buf.build/shokki-engineering/protobuf-ota:bb88093022b144c89092c9fba49c744d
+
+plugins:
+  # strategy: all is required -- store must see every proto file in one
+  # invocation to resolve references and merge every resource's tables into the
+  # one `ota` database. config= maps packages to the database and its schemas.
+  - local: protoc-gen-store
+    out: internal/database/gorm
+    strategy: all
+    opt:
+      - target=gorm
+      - stores=true
+      # Proto<->model converters (<Model>ToProto/<Model>FromProto + enum value
+      # mappers) per schema package.
+      - converters=true
+      # Import path of the gorm output dir (module path + out). The generated
+      # stores import the shared gormx runtime package by this path, so it MUST
+      # match the `out` dir above.
+      - go_module=github.com/shokki-engineering/aperio/internal/database/gorm
+      - config=tools/protobuf/buf/config/store.backend.yaml
+      # First-party opentelemetry instrumentation: instrumented stores, the
+      # ormtelemetry adapter, a filterx observer, and Registry.Instrument.
+      - telemetry=true
+      # AIP-160 filter / AIP-132 order_by specs per schema + the shared filterx
+      # engines.
+      - filters=true
+  # Proto-facing repository layer: provider-agnostic CRUD interfaces per
+  # resource plus BOTH adapters -- GORM (composing the models, stores,
+  # converters and filterx specs from gorm_module) and GraphQL (composing the
+  # otaql client from graphql_module). New(conn) picks the adapter from the
+  # live handle.
+  - local: protoc-gen-store
+    out: internal/database/repository
+    strategy: all
+    opt:
+      - target=repository
+      - config=tools/protobuf/buf/config/store.backend.yaml
+      - go_module=github.com/shokki-engineering/aperio/internal/database/repository
+      - gorm_module=github.com/shokki-engineering/aperio/internal/database/gorm
+      - graphql_module=github.com/shokki-engineering/aperio/internal/database/hasura/otaql
+  # Read-through cache decorators over the generated stores: a <Model>StoreIface
+  # implementation wrapping the store from store_module -- same interface in,
+  # same interface out. store_module and repository_module are paths, not
+  # dependencies, and MUST match the gorm and repository targets' go_module
+  # above.
+  - local: protoc-gen-cache
+    out: internal/database/cache
+    strategy: all
+    opt:
+      - store_module=github.com/shokki-engineering/aperio/internal/database/gorm
+      - repository_module=github.com/shokki-engineering/aperio/internal/database/repository
+      - config=tools/protobuf/buf/config/cache.yaml
+
+  # Typed Hasura DDN GraphQL client (otaql). The target introspects the engine
+  # named in store.graphql.yaml's graphql: block -- the local DDN engine must be
+  # running, its metadata rebuilt by `just hasura regen` after a schema change --
+  # and emits the client under <out>/otaql. strategy: all: one invocation, as
+  # the target reads the endpoint, not the protos.
+  - local: protoc-gen-store
+    out: internal/database/hasura
+    strategy: all
+    opt:
+      - target=graphql
+      - config=tools/protobuf/buf/config/store.graphql.yaml
