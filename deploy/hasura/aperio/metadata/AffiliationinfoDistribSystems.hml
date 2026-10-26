@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoDistribSystems
+  fields:
+    - name: distribSystemId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: AffiliationinfoDistribSystems
+    inputTypeName: AffiliationinfoDistribSystemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_distrib_systems
+      fieldMapping:
+        distribSystemId:
+          column:
+            name: distrib_system_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoDistribSystems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - distribSystemId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoDistribSystemsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoDistribSystems
+      comparableFields:
+        - fieldName: distribSystemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoDistribSystemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoDistribSystemsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoDistribSystems
+      aggregatableFields:
+        - fieldName: distribSystemId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoDistribSystemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoDistribSystemsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoDistribSystems
+      orderableFields:
+        - fieldName: distribSystemId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoDistribSystemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoDistribSystems
+  objectType: AffiliationinfoDistribSystems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_distrib_systems
+  filterExpressionType: AffiliationinfoDistribSystemsBoolExp
+  aggregateExpression: AffiliationinfoDistribSystemsAggExp
+  orderByExpression: AffiliationinfoDistribSystemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoDistribSystems
+      subscription:
+        rootField: affiliationinfoDistribSystems
+    selectUniques:
+      - queryRootField: affiliationinfoDistribSystemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoDistribSystemsById
+    filterInputTypeName: AffiliationinfoDistribSystemsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoDistribSystemsAggregate
+      subscription:
+        rootField: affiliationinfoDistribSystemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoDistribSystems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

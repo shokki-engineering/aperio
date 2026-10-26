@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryblockCancelPenaltiesByIdResponse
+  description: Responses from the 'delete_inventoryblock_cancel_penalties_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockCancelPenalties!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryblockCancelPenaltiesByIdResponse
+    inputTypeName: DeleteInventoryblockCancelPenaltiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventoryblock_cancel_penalties_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryblockCancelPenaltiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryblockCancelPenaltiesById
+  outputType: DeleteInventoryblockCancelPenaltiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryblockCancelPenaltiesBoolExp
+      description: Delete permission predicate over the
+        'inventoryblock_cancel_penalties' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventoryblock_cancel_penalties_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryblockCancelPenaltiesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'inventoryblock_cancel_penalties' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryblockCancelPenaltiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

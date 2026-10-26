@@ -1,0 +1,308 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAdditionalChargesAmountId
+  description: Update the 'amount_id' column in the 'rateplan_additional_charges' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAdditionalChargesAmountId
+    inputTypeName: UpdateColumnRateplanAdditionalChargesAmountIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_additional_charges_amount_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAdditionalChargesAmountId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAdditionalChargesHotelAdditionalChargesId
+  description: Update the 'hotel_additional_charges_id' column in the
+    'rateplan_additional_charges' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAdditionalChargesHotelAdditionalChargesId
+    inputTypeName: UpdateColumnRateplanAdditionalChargesHotelAdditionalChargesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_additional_charges_hotel_additional_charges_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAdditionalChargesHotelAdditionalChargesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAdditionalChargesId
+  description: Update the 'id' column in the 'rateplan_additional_charges' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAdditionalChargesId
+    inputTypeName: UpdateColumnRateplanAdditionalChargesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_additional_charges_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAdditionalChargesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAdditionalChargesQuantity
+  description: Update the 'quantity' column in the 'rateplan_additional_charges' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAdditionalChargesQuantity
+    inputTypeName: UpdateColumnRateplanAdditionalChargesQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_additional_charges_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAdditionalChargesQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAdditionalChargesRoomAmenityCode
+  description: Update the 'room_amenity_code' column in the
+    'rateplan_additional_charges' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAdditionalChargesRoomAmenityCode
+    inputTypeName: UpdateColumnRateplanAdditionalChargesRoomAmenityCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_additional_charges_room_amenity_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAdditionalChargesRoomAmenityCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanAdditionalChargesByIdUpdateColumns
+  description: Update the columns of the 'rateplan_additional_charges' collection
+  fields:
+    - name: amountId
+      type: UpdateColumnRateplanAdditionalChargesAmountId
+      description: Update the 'amount_id' column in the 'rateplan_additional_charges'
+        collection.
+    - name: hotelAdditionalChargesId
+      type: UpdateColumnRateplanAdditionalChargesHotelAdditionalChargesId
+      description: Update the 'hotel_additional_charges_id' column in the
+        'rateplan_additional_charges' collection.
+    - name: id
+      type: UpdateColumnRateplanAdditionalChargesId
+      description: Update the 'id' column in the 'rateplan_additional_charges' collection.
+    - name: quantity
+      type: UpdateColumnRateplanAdditionalChargesQuantity
+      description: Update the 'quantity' column in the 'rateplan_additional_charges'
+        collection.
+    - name: roomAmenityCode
+      type: UpdateColumnRateplanAdditionalChargesRoomAmenityCode
+      description: Update the 'room_amenity_code' column in the
+        'rateplan_additional_charges' collection.
+  graphql:
+    typeName: UpdateRateplanAdditionalChargesByIdUpdateColumns
+    inputTypeName: UpdateRateplanAdditionalChargesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_additional_charges_by_id_update_columns
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        hotelAdditionalChargesId:
+          column:
+            name: hotel_additional_charges_id
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        roomAmenityCode:
+          column:
+            name: room_amenity_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanAdditionalChargesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - hotelAdditionalChargesId
+          - id
+          - quantity
+          - roomAmenityCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanAdditionalChargesByIdResponse
+  description: Responses from the 'update_rateplan_additional_charges_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanAdditionalCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanAdditionalChargesByIdResponse
+    inputTypeName: UpdateRateplanAdditionalChargesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_additional_charges_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanAdditionalChargesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanAdditionalChargesById
+  outputType: UpdateRateplanAdditionalChargesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanAdditionalChargesBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_additional_charges' collection
+    - name: preCheck
+      type: RateplanAdditionalChargesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_additional_charges' collection
+    - name: updateColumns
+      type: UpdateRateplanAdditionalChargesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_additional_charges_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanAdditionalChargesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_additional_charges' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanAdditionalChargesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

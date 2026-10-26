@@ -1,0 +1,186 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePersonNamesObject
+  fields:
+    - name: customerId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+  graphql:
+    typeName: InsertProfilePersonNamesObject
+    inputTypeName: InsertProfilePersonNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_person_names_object
+      fieldMapping:
+        customerId:
+          column:
+            name: customer_id
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePersonNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - customerId
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePersonNamesResponse
+  description: Responses from the 'insert_profile_person_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePersonNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePersonNamesResponse
+    inputTypeName: InsertProfilePersonNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_person_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePersonNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePersonNames
+  outputType: InsertProfilePersonNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePersonNamesObject!]!"
+    - name: postCheck
+      type: ProfilePersonNamesBoolExp
+      description: Insert permission predicate over the 'profile_person_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_person_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePersonNames
+    rootFieldKind: Mutation
+  description: Insert into the profile_person_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePersonNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

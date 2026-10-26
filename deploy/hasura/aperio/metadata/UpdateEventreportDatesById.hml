@@ -1,0 +1,249 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportDatesDay
+  description: Update the 'day' column in the 'eventreport_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportDatesDay
+    inputTypeName: UpdateColumnEventreportDatesDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_dates_day
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportDatesDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportDatesId
+  description: Update the 'id' column in the 'eventreport_dates' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportDatesId
+    inputTypeName: UpdateColumnEventreportDatesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_dates_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportDatesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportDatesMonth
+  description: Update the 'month' column in the 'eventreport_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportDatesMonth
+    inputTypeName: UpdateColumnEventreportDatesMonthInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_dates_month
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportDatesMonth
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportDatesYear
+  description: Update the 'year' column in the 'eventreport_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportDatesYear
+    inputTypeName: UpdateColumnEventreportDatesYearInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_dates_year
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportDatesYear
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportDatesByIdUpdateColumns
+  description: Update the columns of the 'eventreport_dates' collection
+  fields:
+    - name: day
+      type: UpdateColumnEventreportDatesDay
+      description: Update the 'day' column in the 'eventreport_dates' collection.
+    - name: id
+      type: UpdateColumnEventreportDatesId
+      description: Update the 'id' column in the 'eventreport_dates' collection.
+    - name: month
+      type: UpdateColumnEventreportDatesMonth
+      description: Update the 'month' column in the 'eventreport_dates' collection.
+    - name: year
+      type: UpdateColumnEventreportDatesYear
+      description: Update the 'year' column in the 'eventreport_dates' collection.
+  graphql:
+    typeName: UpdateEventreportDatesByIdUpdateColumns
+    inputTypeName: UpdateEventreportDatesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_dates_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportDatesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportDatesByIdResponse
+  description: Responses from the 'update_eventreport_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventreportDatesByIdResponse
+    inputTypeName: UpdateEventreportDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventreportDatesById
+  outputType: UpdateEventreportDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventreportDatesBoolExp
+      description: Update permission post-condition predicate over the
+        'eventreport_dates' collection
+    - name: preCheck
+      type: EventreportDatesBoolExp
+      description: Update permission pre-condition predicate over the
+        'eventreport_dates' collection
+    - name: updateColumns
+      type: UpdateEventreportDatesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_eventreport_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventreportDatesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'eventreport_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventreportDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

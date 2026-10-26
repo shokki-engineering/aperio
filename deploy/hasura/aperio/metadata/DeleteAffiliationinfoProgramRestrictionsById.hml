@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAffiliationinfoProgramRestrictionsByIdResponse
+  description: Responses from the
+    'delete_affiliationinfo_program_restrictions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoProgramRestrictions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAffiliationinfoProgramRestrictionsByIdResponse
+    inputTypeName: DeleteAffiliationinfoProgramRestrictionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_affiliationinfo_program_restrictions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAffiliationinfoProgramRestrictionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAffiliationinfoProgramRestrictionsById
+  outputType: DeleteAffiliationinfoProgramRestrictionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AffiliationinfoProgramRestrictionsBoolExp
+      description: Delete permission predicate over the
+        'affiliationinfo_program_restrictions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_affiliationinfo_program_restrictions_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAffiliationinfoProgramRestrictionsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'affiliationinfo_program_restrictions'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAffiliationinfoProgramRestrictionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

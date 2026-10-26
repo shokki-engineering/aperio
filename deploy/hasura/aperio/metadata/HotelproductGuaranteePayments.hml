@@ -1,0 +1,445 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductGuaranteePayments
+  fields:
+    - name: address
+      type: Boolean_1
+    - name: addressRetain
+      type: Boolean_1
+    - name: agencyNameAddrReq
+      type: Boolean_1
+    - name: amountPercentId
+      type: String_1
+    - name: companyNameAddrReq
+      type: Boolean_1
+    - name: displayName
+      type: Boolean_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: infoSource
+      type: String_1
+    - name: interbankNbr
+      type: Boolean_1
+    - name: nameRetain
+      type: Boolean_1
+    - name: noCardHolderInfoReq
+      type: Boolean_1
+    - name: noCardHolderInfoRetain
+      type: Boolean_1
+    - name: nonRefundableIndicator
+      type: Boolean_1
+    - name: paymentCode
+      type: String_1
+    - name: phone
+      type: Boolean_1
+    - name: phoneRetain
+      type: Boolean_1
+    - name: policyCode
+      type: String_1
+    - name: policyInfoId
+      type: String_1!
+    - name: retributionType
+      type: Enum
+    - name: roomTypeCode
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: HotelproductGuaranteePayments
+    inputTypeName: HotelproductGuaranteePaymentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_guarantee_payments
+      fieldMapping:
+        address:
+          column:
+            name: address
+        addressRetain:
+          column:
+            name: address_retain
+        agencyNameAddrReq:
+          column:
+            name: agency_name_addr_req
+        amountPercentId:
+          column:
+            name: amount_percent_id
+        companyNameAddrReq:
+          column:
+            name: company_name_addr_req
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        infoSource:
+          column:
+            name: info_source
+        interbankNbr:
+          column:
+            name: interbank_nbr
+        nameRetain:
+          column:
+            name: name_retain
+        noCardHolderInfoReq:
+          column:
+            name: no_card_holder_info_req
+        noCardHolderInfoRetain:
+          column:
+            name: no_card_holder_info_retain
+        nonRefundableIndicator:
+          column:
+            name: non_refundable_indicator
+        paymentCode:
+          column:
+            name: payment_code
+        phone:
+          column:
+            name: phone
+        phoneRetain:
+          column:
+            name: phone_retain
+        policyCode:
+          column:
+            name: policy_code
+        policyInfoId:
+          column:
+            name: policy_info_id
+        retributionType:
+          column:
+            name: retribution_type
+        roomTypeCode:
+          column:
+            name: room_type_code
+        startId:
+          column:
+            name: start_id
+        type:
+          column:
+            name: type
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductGuaranteePayments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - address
+          - addressRetain
+          - agencyNameAddrReq
+          - amountPercentId
+          - companyNameAddrReq
+          - displayName
+          - duration
+          - endId
+          - guaranteeCode
+          - guaranteeType
+          - holdClockId
+          - id
+          - infoSource
+          - interbankNbr
+          - nameRetain
+          - noCardHolderInfoReq
+          - noCardHolderInfoRetain
+          - nonRefundableIndicator
+          - paymentCode
+          - phone
+          - phoneRetain
+          - policyCode
+          - policyInfoId
+          - retributionType
+          - roomTypeCode
+          - startId
+          - type
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentsBoolExp
+  operand:
+    object:
+      type: HotelproductGuaranteePayments
+      comparableFields:
+        - fieldName: address
+          booleanExpressionType: BoolBoolExp
+        - fieldName: addressRetain
+          booleanExpressionType: BoolBoolExp
+        - fieldName: agencyNameAddrReq
+          booleanExpressionType: BoolBoolExp
+        - fieldName: amountPercentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyNameAddrReq
+          booleanExpressionType: BoolBoolExp
+        - fieldName: displayName
+          booleanExpressionType: BoolBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeType
+          booleanExpressionType: HotelproductHotelproductGuaranteeTypeBoolExp
+        - fieldName: holdClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: infoSource
+          booleanExpressionType: TextBoolExp
+        - fieldName: interbankNbr
+          booleanExpressionType: BoolBoolExp
+        - fieldName: nameRetain
+          booleanExpressionType: BoolBoolExp
+        - fieldName: noCardHolderInfoReq
+          booleanExpressionType: BoolBoolExp
+        - fieldName: noCardHolderInfoRetain
+          booleanExpressionType: BoolBoolExp
+        - fieldName: nonRefundableIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: paymentCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: phone
+          booleanExpressionType: BoolBoolExp
+        - fieldName: phoneRetain
+          booleanExpressionType: BoolBoolExp
+        - fieldName: policyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: policyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: retributionType
+          booleanExpressionType: HotelproductHotelproductRetributionTypeBoolExp
+        - fieldName: roomTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: HotelproductHotelproductTypeBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductGuaranteePaymentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentsAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductGuaranteePayments
+      aggregatableFields:
+        - fieldName: address
+          aggregateExpression: BoolAggExp
+        - fieldName: addressRetain
+          aggregateExpression: BoolAggExp
+        - fieldName: agencyNameAddrReq
+          aggregateExpression: BoolAggExp
+        - fieldName: amountPercentId
+          aggregateExpression: TextAggExp
+        - fieldName: companyNameAddrReq
+          aggregateExpression: BoolAggExp
+        - fieldName: displayName
+          aggregateExpression: BoolAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeCode
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeType
+          aggregateExpression: HotelproductHotelproductGuaranteeTypeAggExp
+        - fieldName: holdClockId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: infoSource
+          aggregateExpression: TextAggExp
+        - fieldName: interbankNbr
+          aggregateExpression: BoolAggExp
+        - fieldName: nameRetain
+          aggregateExpression: BoolAggExp
+        - fieldName: noCardHolderInfoReq
+          aggregateExpression: BoolAggExp
+        - fieldName: noCardHolderInfoRetain
+          aggregateExpression: BoolAggExp
+        - fieldName: nonRefundableIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: paymentCode
+          aggregateExpression: TextAggExp
+        - fieldName: phone
+          aggregateExpression: BoolAggExp
+        - fieldName: phoneRetain
+          aggregateExpression: BoolAggExp
+        - fieldName: policyCode
+          aggregateExpression: TextAggExp
+        - fieldName: policyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: retributionType
+          aggregateExpression: HotelproductHotelproductRetributionTypeAggExp
+        - fieldName: roomTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: HotelproductHotelproductTypeAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductGuaranteePaymentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentsOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductGuaranteePayments
+      orderableFields:
+        - fieldName: address
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: addressRetain
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: agencyNameAddrReq
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: amountPercentId
+          orderByExpression: String1OrderByExp
+        - fieldName: companyNameAddrReq
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: displayName
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeType
+          orderByExpression: EnumOrderByExp
+        - fieldName: holdClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: infoSource
+          orderByExpression: String1OrderByExp
+        - fieldName: interbankNbr
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: nameRetain
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: noCardHolderInfoReq
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: noCardHolderInfoRetain
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: nonRefundableIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: paymentCode
+          orderByExpression: String1OrderByExp
+        - fieldName: phone
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: phoneRetain
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: policyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: policyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: retributionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductGuaranteePaymentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductGuaranteePayments
+  objectType: HotelproductGuaranteePayments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_guarantee_payments
+  filterExpressionType: HotelproductGuaranteePaymentsBoolExp
+  aggregateExpression: HotelproductGuaranteePaymentsAggExp
+  orderByExpression: HotelproductGuaranteePaymentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductGuaranteePayments
+      subscription:
+        rootField: hotelproductGuaranteePayments
+    selectUniques:
+      - queryRootField: hotelproductGuaranteePaymentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductGuaranteePaymentsById
+    filterInputTypeName: HotelproductGuaranteePaymentsFilterInput
+    aggregate:
+      queryRootField: hotelproductGuaranteePaymentsAggregate
+      subscription:
+        rootField: hotelproductGuaranteePaymentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductGuaranteePayments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

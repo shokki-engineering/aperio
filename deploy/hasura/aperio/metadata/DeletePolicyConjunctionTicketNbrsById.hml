@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeletePolicyConjunctionTicketNbrsByIdResponse
+  description: Responses from the 'delete_policy_conjunction_ticket_nbrs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyConjunctionTicketNbrs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeletePolicyConjunctionTicketNbrsByIdResponse
+    inputTypeName: DeletePolicyConjunctionTicketNbrsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_policy_conjunction_ticket_nbrs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeletePolicyConjunctionTicketNbrsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeletePolicyConjunctionTicketNbrsById
+  outputType: DeletePolicyConjunctionTicketNbrsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: PolicyConjunctionTicketNbrsBoolExp
+      description: Delete permission predicate over the
+        'policy_conjunction_ticket_nbrs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_policy_conjunction_ticket_nbrs_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deletePolicyConjunctionTicketNbrsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'policy_conjunction_ticket_nbrs' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeletePolicyConjunctionTicketNbrsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

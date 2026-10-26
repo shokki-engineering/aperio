@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventOffSiteTransportations
+  fields:
+    - name: eventDayId
+      type: String_1!
+    - name: functionDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: provider
+      type: Enum
+    - name: providerDisplayName
+      type: String_1
+  graphql:
+    typeName: EventOffSiteTransportations
+    inputTypeName: EventOffSiteTransportationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_off_site_transportations
+      fieldMapping:
+        eventDayId:
+          column:
+            name: event_day_id
+        functionDisplayName:
+          column:
+            name: function_display_name
+        id:
+          column:
+            name: id
+        provider:
+          column:
+            name: provider
+        providerDisplayName:
+          column:
+            name: provider_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventOffSiteTransportations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - eventDayId
+          - functionDisplayName
+          - id
+          - provider
+          - providerDisplayName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventOffSiteTransportationsBoolExp
+  operand:
+    object:
+      type: EventOffSiteTransportations
+      comparableFields:
+        - fieldName: eventDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: functionDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: provider
+          booleanExpressionType: EventEventProviderBoolExp
+        - fieldName: providerDisplayName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventOffSiteTransportationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventOffSiteTransportationsAggExp
+  operand:
+    object:
+      aggregatedType: EventOffSiteTransportations
+      aggregatableFields:
+        - fieldName: eventDayId
+          aggregateExpression: TextAggExp
+        - fieldName: functionDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: provider
+          aggregateExpression: EventEventProviderAggExp
+        - fieldName: providerDisplayName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventOffSiteTransportationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventOffSiteTransportationsOrderByExp
+  operand:
+    object:
+      orderedType: EventOffSiteTransportations
+      orderableFields:
+        - fieldName: eventDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: functionDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: provider
+          orderByExpression: EnumOrderByExp
+        - fieldName: providerDisplayName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventOffSiteTransportationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventOffSiteTransportations
+  objectType: EventOffSiteTransportations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_off_site_transportations
+  filterExpressionType: EventOffSiteTransportationsBoolExp
+  aggregateExpression: EventOffSiteTransportationsAggExp
+  orderByExpression: EventOffSiteTransportationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventOffSiteTransportations
+      subscription:
+        rootField: eventOffSiteTransportations
+    selectUniques:
+      - queryRootField: eventOffSiteTransportationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventOffSiteTransportationsById
+    filterInputTypeName: EventOffSiteTransportationsFilterInput
+    aggregate:
+      queryRootField: eventOffSiteTransportationsAggregate
+      subscription:
+        rootField: eventOffSiteTransportationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventOffSiteTransportations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

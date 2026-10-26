@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationMiscChargeOrdersObject
+  fields:
+    - name: checkInhibitorType
+      type: Enum
+    - name: couponRphs
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: originalIssueDayId
+      type: String_1
+    - name: originalIssueIata
+      type: String_1
+    - name: originalIssuePlace
+      type: String_1
+    - name: originalPaymentForm
+      type: String_1
+    - name: originalTicketNumber
+      type: String_1
+    - name: paperMcoExist
+      type: Boolean_1
+    - name: ticketNumber
+      type: String_1
+  graphql:
+    typeName: InsertReservationMiscChargeOrdersObject
+    inputTypeName: InsertReservationMiscChargeOrdersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_misc_charge_orders_object
+      fieldMapping:
+        checkInhibitorType:
+          column:
+            name: check_inhibitor_type
+        couponRphs:
+          column:
+            name: coupon_rphs
+        id:
+          column:
+            name: id
+        originalIssueDayId:
+          column:
+            name: original_issue_day_id
+        originalIssueIata:
+          column:
+            name: original_issue_iata
+        originalIssuePlace:
+          column:
+            name: original_issue_place
+        originalPaymentForm:
+          column:
+            name: original_payment_form
+        originalTicketNumber:
+          column:
+            name: original_ticket_number
+        paperMcoExist:
+          column:
+            name: paper_mco_exist
+        ticketNumber:
+          column:
+            name: ticket_number
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationMiscChargeOrdersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkInhibitorType
+          - couponRphs
+          - id
+          - originalIssueDayId
+          - originalIssueIata
+          - originalIssuePlace
+          - originalPaymentForm
+          - originalTicketNumber
+          - paperMcoExist
+          - ticketNumber
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationMiscChargeOrdersResponse
+  description: Responses from the 'insert_reservation_misc_charge_orders' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationMiscChargeOrders!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationMiscChargeOrdersResponse
+    inputTypeName: InsertReservationMiscChargeOrdersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_misc_charge_orders_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationMiscChargeOrdersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationMiscChargeOrders
+  outputType: InsertReservationMiscChargeOrdersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationMiscChargeOrdersObject!]!"
+    - name: postCheck
+      type: ReservationMiscChargeOrdersBoolExp
+      description: Insert permission predicate over the
+        'reservation_misc_charge_orders' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_misc_charge_orders
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationMiscChargeOrders
+    rootFieldKind: Mutation
+  description: Insert into the reservation_misc_charge_orders table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationMiscChargeOrders
+  permissions:
+    - role: admin
+      allowExecution: true
+

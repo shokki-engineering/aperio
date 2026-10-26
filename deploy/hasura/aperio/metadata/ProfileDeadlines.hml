@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileDeadlines
+  fields:
+    - name: absoluteDeadlineId
+      type: String_1
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: offsetDropPoint
+      type: Enum
+    - name: offsetTimeUnit
+      type: Enum
+    - name: offsetUnitMultiplier
+      type: Int32
+    - name: overrideIndicator
+      type: Boolean_1
+  graphql:
+    typeName: ProfileDeadlines
+    inputTypeName: ProfileDeadlinesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_deadlines
+      fieldMapping:
+        absoluteDeadlineId:
+          column:
+            name: absolute_deadline_id
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        id:
+          column:
+            name: id
+        offsetDropPoint:
+          column:
+            name: offset_drop_point
+        offsetTimeUnit:
+          column:
+            name: offset_time_unit
+        offsetUnitMultiplier:
+          column:
+            name: offset_unit_multiplier
+        overrideIndicator:
+          column:
+            name: override_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileDeadlines
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteDeadlineId
+          - guaranteePaymentId
+          - id
+          - offsetDropPoint
+          - offsetTimeUnit
+          - offsetUnitMultiplier
+          - overrideIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileDeadlinesBoolExp
+  operand:
+    object:
+      type: ProfileDeadlines
+      comparableFields:
+        - fieldName: absoluteDeadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteePaymentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offsetDropPoint
+          booleanExpressionType: ProfileProfileOffsetDropTimeBoolExp
+        - fieldName: offsetTimeUnit
+          booleanExpressionType: ProfileProfileTimeUnitBoolExp
+        - fieldName: offsetUnitMultiplier
+          booleanExpressionType: Int4BoolExp
+        - fieldName: overrideIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileDeadlinesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileDeadlinesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileDeadlines
+      aggregatableFields:
+        - fieldName: absoluteDeadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteePaymentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offsetDropPoint
+          aggregateExpression: ProfileProfileOffsetDropTimeAggExp
+        - fieldName: offsetTimeUnit
+          aggregateExpression: ProfileProfileTimeUnitAggExp
+        - fieldName: offsetUnitMultiplier
+          aggregateExpression: Int4AggExp
+        - fieldName: overrideIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileDeadlinesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileDeadlinesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileDeadlines
+      orderableFields:
+        - fieldName: absoluteDeadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteePaymentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offsetDropPoint
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetTimeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetUnitMultiplier
+          orderByExpression: Int32OrderByExp
+        - fieldName: overrideIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileDeadlinesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileDeadlines
+  objectType: ProfileDeadlines
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_deadlines
+  filterExpressionType: ProfileDeadlinesBoolExp
+  aggregateExpression: ProfileDeadlinesAggExp
+  orderByExpression: ProfileDeadlinesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileDeadlines
+      subscription:
+        rootField: profileDeadlines
+    selectUniques:
+      - queryRootField: profileDeadlinesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileDeadlinesById
+    filterInputTypeName: ProfileDeadlinesFilterInput
+    aggregate:
+      queryRootField: profileDeadlinesAggregate
+      subscription:
+        rootField: profileDeadlinesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileDeadlines
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

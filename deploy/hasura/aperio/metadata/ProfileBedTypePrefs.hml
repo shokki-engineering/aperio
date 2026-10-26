@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileBedTypePrefs
+  fields:
+    - name: bedType
+      type: Enum
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileBedTypePrefs
+    inputTypeName: ProfileBedTypePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_bed_type_prefs
+      fieldMapping:
+        bedType:
+          column:
+            name: bed_type
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileBedTypePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bedType
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileBedTypePrefsBoolExp
+  operand:
+    object:
+      type: ProfileBedTypePrefs
+      comparableFields:
+        - fieldName: bedType
+          booleanExpressionType: ProfileBedTypeBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileBedTypePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileBedTypePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileBedTypePrefs
+      aggregatableFields:
+        - fieldName: bedType
+          aggregateExpression: ProfileBedTypeAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileBedTypePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileBedTypePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileBedTypePrefs
+      orderableFields:
+        - fieldName: bedType
+          orderByExpression: EnumOrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileBedTypePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileBedTypePrefs
+  objectType: ProfileBedTypePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_bed_type_prefs
+  filterExpressionType: ProfileBedTypePrefsBoolExp
+  aggregateExpression: ProfileBedTypePrefsAggExp
+  orderByExpression: ProfileBedTypePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileBedTypePrefs
+      subscription:
+        rootField: profileBedTypePrefs
+    selectUniques:
+      - queryRootField: profileBedTypePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileBedTypePrefsById
+    filterInputTypeName: ProfileBedTypePrefsFilterInput
+    aggregate:
+      queryRootField: profileBedTypePrefsAggregate
+      subscription:
+        rootField: profileBedTypePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileBedTypePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

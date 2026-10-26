@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfilePaymentCardCodes
+  fields:
+    - name: cardCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: text
+      type: String_1
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: ProfilePaymentCardCodes
+    inputTypeName: ProfilePaymentCardCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_payment_card_codes
+      fieldMapping:
+        cardCode:
+          column:
+            name: card_code
+        id:
+          column:
+            name: id
+        text:
+          column:
+            name: text
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfilePaymentCardCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cardCode
+          - id
+          - text
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfilePaymentCardCodesBoolExp
+  operand:
+    object:
+      type: ProfilePaymentCardCodes
+      comparableFields:
+        - fieldName: cardCode
+          booleanExpressionType: ProfileProfileCardCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: ProfileProfilePaymentCardCodeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfilePaymentCardCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfilePaymentCardCodesAggExp
+  operand:
+    object:
+      aggregatedType: ProfilePaymentCardCodes
+      aggregatableFields:
+        - fieldName: cardCode
+          aggregateExpression: ProfileProfileCardCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: ProfileProfilePaymentCardCodeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfilePaymentCardCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfilePaymentCardCodesOrderByExp
+  operand:
+    object:
+      orderedType: ProfilePaymentCardCodes
+      orderableFields:
+        - fieldName: cardCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfilePaymentCardCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfilePaymentCardCodes
+  objectType: ProfilePaymentCardCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_payment_card_codes
+  filterExpressionType: ProfilePaymentCardCodesBoolExp
+  aggregateExpression: ProfilePaymentCardCodesAggExp
+  orderByExpression: ProfilePaymentCardCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profilePaymentCardCodes
+      subscription:
+        rootField: profilePaymentCardCodes
+    selectUniques:
+      - queryRootField: profilePaymentCardCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profilePaymentCardCodesById
+    filterInputTypeName: ProfilePaymentCardCodesFilterInput
+    aggregate:
+      queryRootField: profilePaymentCardCodesAggregate
+      subscription:
+        rootField: profilePaymentCardCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfilePaymentCardCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

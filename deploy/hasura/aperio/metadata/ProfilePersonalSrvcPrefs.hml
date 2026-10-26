@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfilePersonalSrvcPrefs
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfilePersonalSrvcPrefs
+    inputTypeName: ProfilePersonalSrvcPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_personal_srvc_prefs
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfilePersonalSrvcPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfilePersonalSrvcPrefsBoolExp
+  operand:
+    object:
+      type: ProfilePersonalSrvcPrefs
+      comparableFields:
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfilePersonalSrvcPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfilePersonalSrvcPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfilePersonalSrvcPrefs
+      aggregatableFields:
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfilePersonalSrvcPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfilePersonalSrvcPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfilePersonalSrvcPrefs
+      orderableFields:
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfilePersonalSrvcPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfilePersonalSrvcPrefs
+  objectType: ProfilePersonalSrvcPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_personal_srvc_prefs
+  filterExpressionType: ProfilePersonalSrvcPrefsBoolExp
+  aggregateExpression: ProfilePersonalSrvcPrefsAggExp
+  orderByExpression: ProfilePersonalSrvcPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profilePersonalSrvcPrefs
+      subscription:
+        rootField: profilePersonalSrvcPrefs
+    selectUniques:
+      - queryRootField: profilePersonalSrvcPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profilePersonalSrvcPrefsById
+    filterInputTypeName: ProfilePersonalSrvcPrefsFilterInput
+    aggregate:
+      queryRootField: profilePersonalSrvcPrefsAggregate
+      subscription:
+        rootField: profilePersonalSrvcPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfilePersonalSrvcPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,140 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelImageItemsImageItemDescriptionsObject
+  fields:
+    - name: caption
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: imageItemId
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelImageItemsImageItemDescriptionsObject
+    inputTypeName: InsertHotelImageItemsImageItemDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_image_items_image_item_descriptions_object
+      fieldMapping:
+        caption:
+          column:
+            name: caption
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        imageItemId:
+          column:
+            name: image_item_id
+        languageCode:
+          column:
+            name: language_code
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelImageItemsImageItemDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - caption
+          - formatted
+          - id
+          - imageItemId
+          - languageCode
+          - textFormat
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelImageItemsImageItemDescriptionsResponse
+  description: Responses from the
+    'insert_hotel_image_items_image_item_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelImageItemsImageItemDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelImageItemsImageItemDescriptionsResponse
+    inputTypeName: InsertHotelImageItemsImageItemDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_image_items_image_item_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelImageItemsImageItemDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelImageItemsImageItemDescriptions
+  outputType: InsertHotelImageItemsImageItemDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelImageItemsImageItemDescriptionsObject!]!"
+    - name: postCheck
+      type: HotelImageItemsImageItemDescriptionsBoolExp
+      description: Insert permission predicate over the
+        'hotel_image_items_image_item_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_image_items_image_item_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelImageItemsImageItemDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the hotel_image_items_image_item_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelImageItemsImageItemDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

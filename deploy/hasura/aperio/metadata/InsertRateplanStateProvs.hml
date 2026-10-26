@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanStateProvsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRateplanStateProvsObject
+    inputTypeName: InsertRateplanStateProvsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_state_provs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanStateProvsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanStateProvsResponse
+  description: Responses from the 'insert_rateplan_state_provs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanStateProvs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanStateProvsResponse
+    inputTypeName: InsertRateplanStateProvsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_state_provs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanStateProvsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanStateProvs
+  outputType: InsertRateplanStateProvsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanStateProvsObject!]!"
+    - name: postCheck
+      type: RateplanStateProvsBoolExp
+      description: Insert permission predicate over the 'rateplan_state_provs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_state_provs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanStateProvs
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_state_provs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanStateProvs
+  permissions:
+    - role: admin
+      allowExecution: true
+

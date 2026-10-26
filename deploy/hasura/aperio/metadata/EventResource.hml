@@ -1,0 +1,361 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventResource
+  fields:
+    - name: acronym
+      type: String_1
+    - name: attendeeInfoId
+      type: String_1
+    - name: childrenInvitedIndicator
+      type: Boolean_1
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: displayName
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: frequency
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: mandatoryIndicator
+      type: Boolean_1
+    - name: name
+      type: String_1!
+    - name: preEventSetUpContractor
+      type: String_1
+    - name: preEventSetUpIndicator
+      type: Boolean_1
+    - name: scope
+      type: Enum
+    - name: spouseInvitedIndicator
+      type: Boolean_1
+    - name: status
+      type: String_1
+    - name: type
+      type: Enum
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: EventResource
+    inputTypeName: EventResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_resource
+      fieldMapping:
+        acronym:
+          column:
+            name: acronym
+        attendeeInfoId:
+          column:
+            name: attendee_info_id
+        childrenInvitedIndicator:
+          column:
+            name: children_invited_indicator
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        frequency:
+          column:
+            name: frequency
+        id:
+          column:
+            name: id
+        mandatoryIndicator:
+          column:
+            name: mandatory_indicator
+        name:
+          column:
+            name: name
+        preEventSetUpContractor:
+          column:
+            name: pre_event_set_up_contractor
+        preEventSetUpIndicator:
+          column:
+            name: pre_event_set_up_indicator
+        scope:
+          column:
+            name: scope
+        spouseInvitedIndicator:
+          column:
+            name: spouse_invited_indicator
+        status:
+          column:
+            name: status
+        type:
+          column:
+            name: type
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acronym
+          - attendeeInfoId
+          - childrenInvitedIndicator
+          - createTime
+          - deleteTime
+          - displayName
+          - etag
+          - expireTime
+          - frequency
+          - id
+          - mandatoryIndicator
+          - name
+          - preEventSetUpContractor
+          - preEventSetUpIndicator
+          - scope
+          - spouseInvitedIndicator
+          - status
+          - type
+          - uid
+          - updateTime
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventResourceBoolExp
+  operand:
+    object:
+      type: EventResource
+      comparableFields:
+        - fieldName: acronym
+          booleanExpressionType: TextBoolExp
+        - fieldName: attendeeInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: childrenInvitedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: frequency
+          booleanExpressionType: EventEventFrequencyBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: mandatoryIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: preEventSetUpContractor
+          booleanExpressionType: TextBoolExp
+        - fieldName: preEventSetUpIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: scope
+          booleanExpressionType: EventEventScopeBoolExp
+        - fieldName: spouseInvitedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: status
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: EventEventEventTypeBoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventResourceAggExp
+  operand:
+    object:
+      aggregatedType: EventResource
+      aggregatableFields:
+        - fieldName: acronym
+          aggregateExpression: TextAggExp
+        - fieldName: attendeeInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: childrenInvitedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: frequency
+          aggregateExpression: EventEventFrequencyAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: mandatoryIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: preEventSetUpContractor
+          aggregateExpression: TextAggExp
+        - fieldName: preEventSetUpIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: scope
+          aggregateExpression: EventEventScopeAggExp
+        - fieldName: spouseInvitedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: status
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: EventEventEventTypeAggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventResourceOrderByExp
+  operand:
+    object:
+      orderedType: EventResource
+      orderableFields:
+        - fieldName: acronym
+          orderByExpression: String1OrderByExp
+        - fieldName: attendeeInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: childrenInvitedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: frequency
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: mandatoryIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: preEventSetUpContractor
+          orderByExpression: String1OrderByExp
+        - fieldName: preEventSetUpIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: scope
+          orderByExpression: EnumOrderByExp
+        - fieldName: spouseInvitedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: status
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventResource
+  objectType: EventResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_resource
+  filterExpressionType: EventResourceBoolExp
+  aggregateExpression: EventResourceAggExp
+  orderByExpression: EventResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventResource
+      subscription:
+        rootField: eventResource
+    selectUniques:
+      - queryRootField: eventResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventResourceById
+    filterInputTypeName: EventResourceFilterInput
+    aggregate:
+      queryRootField: eventResourceAggregate
+      subscription:
+        rootField: eventResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

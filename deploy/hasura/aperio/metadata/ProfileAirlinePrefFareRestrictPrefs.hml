@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAirlinePrefFareRestrictPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: fareRestriction
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: whenId
+      type: String_1
+  graphql:
+    typeName: ProfileAirlinePrefFareRestrictPrefs
+    inputTypeName: ProfileAirlinePrefFareRestrictPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_airline_pref_fare_restrict_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        fareRestriction:
+          column:
+            name: fare_restriction
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        whenId:
+          column:
+            name: when_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAirlinePrefFareRestrictPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - fareRestriction
+          - id
+          - preferLevel
+          - whenId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAirlinePrefFareRestrictPrefsBoolExp
+  operand:
+    object:
+      type: ProfileAirlinePrefFareRestrictPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: fareRestriction
+          booleanExpressionType: ProfileFareRestrictionBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: whenId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAirlinePrefFareRestrictPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAirlinePrefFareRestrictPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAirlinePrefFareRestrictPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: fareRestriction
+          aggregateExpression: ProfileFareRestrictionAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: whenId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAirlinePrefFareRestrictPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAirlinePrefFareRestrictPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAirlinePrefFareRestrictPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: fareRestriction
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: whenId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAirlinePrefFareRestrictPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAirlinePrefFareRestrictPrefs
+  objectType: ProfileAirlinePrefFareRestrictPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_airline_pref_fare_restrict_prefs
+  filterExpressionType: ProfileAirlinePrefFareRestrictPrefsBoolExp
+  aggregateExpression: ProfileAirlinePrefFareRestrictPrefsAggExp
+  orderByExpression: ProfileAirlinePrefFareRestrictPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAirlinePrefFareRestrictPrefs
+      subscription:
+        rootField: profileAirlinePrefFareRestrictPrefs
+    selectUniques:
+      - queryRootField: profileAirlinePrefFareRestrictPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAirlinePrefFareRestrictPrefsById
+    filterInputTypeName: ProfileAirlinePrefFareRestrictPrefsFilterInput
+    aggregate:
+      queryRootField: profileAirlinePrefFareRestrictPrefsAggregate
+      subscription:
+        rootField: profileAirlinePrefFareRestrictPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAirlinePrefFareRestrictPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

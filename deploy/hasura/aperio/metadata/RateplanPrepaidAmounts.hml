@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanPrepaidAmounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanPrepaidAmounts
+    inputTypeName: RateplanPrepaidAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_prepaid_amounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanPrepaidAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanPrepaidAmountsBoolExp
+  operand:
+    object:
+      type: RateplanPrepaidAmounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanPrepaidAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanPrepaidAmountsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanPrepaidAmounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanPrepaidAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanPrepaidAmountsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanPrepaidAmounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanPrepaidAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanPrepaidAmounts
+  objectType: RateplanPrepaidAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_prepaid_amounts
+  filterExpressionType: RateplanPrepaidAmountsBoolExp
+  aggregateExpression: RateplanPrepaidAmountsAggExp
+  orderByExpression: RateplanPrepaidAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanPrepaidAmounts
+      subscription:
+        rootField: rateplanPrepaidAmounts
+    selectUniques:
+      - queryRootField: rateplanPrepaidAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanPrepaidAmountsById
+    filterInputTypeName: RateplanPrepaidAmountsFilterInput
+    aggregate:
+      queryRootField: rateplanPrepaidAmountsAggregate
+      subscription:
+        rootField: rateplanPrepaidAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanPrepaidAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,289 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoRecreation
+  fields:
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: contactId
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: featured
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: included
+      type: Boolean_1
+    - name: languageCode
+      type: String_1
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: name
+      type: String_1
+    - name: proximityCode
+      type: String_1
+    - name: recreationsId
+      type: String_1!
+    - name: sort
+      type: Int32
+    - name: yearReplacedId
+      type: String_1
+  graphql:
+    typeName: AreainfoRecreation
+    inputTypeName: AreainfoRecreationInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_recreation
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        contactId:
+          column:
+            name: contact_id
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        featured:
+          column:
+            name: featured
+        id:
+          column:
+            name: id
+        included:
+          column:
+            name: included
+        languageCode:
+          column:
+            name: language_code
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        name:
+          column:
+            name: name
+        proximityCode:
+          column:
+            name: proximity_code
+        recreationsId:
+          column:
+            name: recreations_id
+        sort:
+          column:
+            name: sort
+        yearReplacedId:
+          column:
+            name: year_replaced_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoRecreation
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeDetail
+          - contactId
+          - descriptiveText
+          - existsCode
+          - featured
+          - id
+          - included
+          - languageCode
+          - multimediaDescriptionsId
+          - name
+          - proximityCode
+          - recreationsId
+          - sort
+          - yearReplacedId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoRecreationBoolExp
+  operand:
+    object:
+      type: AreainfoRecreation
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: AreainfoAreainfoRecreationSrvcTypeBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: AreainfoAreainfoOptionTypeCodeBoolExp
+        - fieldName: featured
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: included
+          booleanExpressionType: BoolBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: proximityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: recreationsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: yearReplacedId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoRecreationBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoRecreationAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoRecreation
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: AreainfoAreainfoRecreationSrvcTypeAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: AreainfoAreainfoOptionTypeCodeAggExp
+        - fieldName: featured
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: included
+          aggregateExpression: BoolAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: proximityCode
+          aggregateExpression: TextAggExp
+        - fieldName: recreationsId
+          aggregateExpression: TextAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: yearReplacedId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoRecreationAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoRecreationOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoRecreation
+      orderableFields:
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: featured
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: included
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: proximityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: recreationsId
+          orderByExpression: String1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: yearReplacedId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoRecreationOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoRecreation
+  objectType: AreainfoRecreation
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_recreation
+  filterExpressionType: AreainfoRecreationBoolExp
+  aggregateExpression: AreainfoRecreationAggExp
+  orderByExpression: AreainfoRecreationOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoRecreation
+      subscription:
+        rootField: areainfoRecreation
+    selectUniques:
+      - queryRootField: areainfoRecreationById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoRecreationById
+    filterInputTypeName: AreainfoRecreationFilterInput
+    aggregate:
+      queryRootField: areainfoRecreationAggregate
+      subscription:
+        rootField: areainfoRecreationAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoRecreation
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

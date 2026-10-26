@@ -1,0 +1,361 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileCustomerTelephones
+  fields:
+    - name: areaCityCode
+      type: String_1
+    - name: countryAccessCode
+      type: String_1
+    - name: customerId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: extension
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: parentCompanyRef
+      type: String_1
+    - name: phoneLocationType
+      type: Enum
+    - name: phoneNumber
+      type: String_1!
+    - name: phoneTechType
+      type: Enum
+    - name: phoneUseType
+      type: Enum
+    - name: pin
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: transferAction
+      type: Enum
+  graphql:
+    typeName: ProfileCustomerTelephones
+    inputTypeName: ProfileCustomerTelephonesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_customer_telephones
+      fieldMapping:
+        areaCityCode:
+          column:
+            name: area_city_code
+        countryAccessCode:
+          column:
+            name: country_access_code
+        customerId:
+          column:
+            name: customer_id
+        defaultValue:
+          column:
+            name: default_value
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        extension:
+          column:
+            name: extension
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        parentCompanyRef:
+          column:
+            name: parent_company_ref
+        phoneLocationType:
+          column:
+            name: phone_location_type
+        phoneNumber:
+          column:
+            name: phone_number
+        phoneTechType:
+          column:
+            name: phone_tech_type
+        phoneUseType:
+          column:
+            name: phone_use_type
+        pin:
+          column:
+            name: pin
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileCustomerTelephones
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaCityCode
+          - countryAccessCode
+          - customerId
+          - defaultValue
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - extension
+          - formatted
+          - id
+          - parentCompanyRef
+          - phoneLocationType
+          - phoneNumber
+          - phoneTechType
+          - phoneUseType
+          - pin
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - transferAction
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileCustomerTelephonesBoolExp
+  operand:
+    object:
+      type: ProfileCustomerTelephones
+      comparableFields:
+        - fieldName: areaCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryAccessCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: customerId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: parentCompanyRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneLocationType
+          booleanExpressionType: ProfileProfilePhoneLocationTypeBoolExp
+        - fieldName: phoneNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneTechType
+          booleanExpressionType: ProfileProfilePhoneTechnologyTypeBoolExp
+        - fieldName: phoneUseType
+          booleanExpressionType: ProfileProfilePhoneUseTypeBoolExp
+        - fieldName: pin
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileCustomerTelephoneShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileCustomerTelephoneShareSynchIndBoolExp
+        - fieldName: transferAction
+          booleanExpressionType: ProfileTransferActionBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileCustomerTelephonesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileCustomerTelephonesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileCustomerTelephones
+      aggregatableFields:
+        - fieldName: areaCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: countryAccessCode
+          aggregateExpression: TextAggExp
+        - fieldName: customerId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: parentCompanyRef
+          aggregateExpression: TextAggExp
+        - fieldName: phoneLocationType
+          aggregateExpression: ProfileProfilePhoneLocationTypeAggExp
+        - fieldName: phoneNumber
+          aggregateExpression: TextAggExp
+        - fieldName: phoneTechType
+          aggregateExpression: ProfileProfilePhoneTechnologyTypeAggExp
+        - fieldName: phoneUseType
+          aggregateExpression: ProfileProfilePhoneUseTypeAggExp
+        - fieldName: pin
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileCustomerTelephoneShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileCustomerTelephoneShareSynchIndAggExp
+        - fieldName: transferAction
+          aggregateExpression: ProfileTransferActionAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileCustomerTelephonesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileCustomerTelephonesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileCustomerTelephones
+      orderableFields:
+        - fieldName: areaCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: countryAccessCode
+          orderByExpression: String1OrderByExp
+        - fieldName: customerId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: parentCompanyRef
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneLocationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneTechType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneUseType
+          orderByExpression: EnumOrderByExp
+        - fieldName: pin
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: transferAction
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileCustomerTelephonesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileCustomerTelephones
+  objectType: ProfileCustomerTelephones
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_customer_telephones
+  filterExpressionType: ProfileCustomerTelephonesBoolExp
+  aggregateExpression: ProfileCustomerTelephonesAggExp
+  orderByExpression: ProfileCustomerTelephonesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileCustomerTelephones
+      subscription:
+        rootField: profileCustomerTelephones
+    selectUniques:
+      - queryRootField: profileCustomerTelephonesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileCustomerTelephonesById
+    filterInputTypeName: ProfileCustomerTelephonesFilterInput
+    aggregate:
+      queryRootField: profileCustomerTelephonesAggregate
+      subscription:
+        rootField: profileCustomerTelephonesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileCustomerTelephones
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

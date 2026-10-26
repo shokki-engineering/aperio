@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductEmailsObject
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: emailType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: paymentCardId
+      type: String_1!
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: textFormat
+      type: Enum
+    - name: valid
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductEmailsObject
+    inputTypeName: InsertHotelproductEmailsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_emails_object
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        emailType:
+          column:
+            name: email_type
+        id:
+          column:
+            name: id
+        paymentCardId:
+          column:
+            name: payment_card_id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        textFormat:
+          column:
+            name: text_format
+        valid:
+          column:
+            name: valid
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductEmailsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - emailType
+          - id
+          - paymentCardId
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - textFormat
+          - valid
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductEmailsResponse
+  description: Responses from the 'insert_hotelproduct_emails' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductEmails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductEmailsResponse
+    inputTypeName: InsertHotelproductEmailsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_emails_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductEmailsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductEmails
+  outputType: InsertHotelproductEmailsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductEmailsObject!]!"
+    - name: postCheck
+      type: HotelproductEmailsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_emails' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_emails
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductEmails
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_emails table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductEmails
+  permissions:
+    - role: admin
+      allowExecution: true
+

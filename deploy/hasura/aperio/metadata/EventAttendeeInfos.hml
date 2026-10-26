@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventAttendeeInfos
+  fields:
+    - name: domesticQuantity
+      type: Int32
+    - name: expectedTotalQuantity
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: internationalQuantity
+      type: Int32
+    - name: preRegisteredQuantity
+      type: Int32
+  graphql:
+    typeName: EventAttendeeInfos
+    inputTypeName: EventAttendeeInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_attendee_infos
+      fieldMapping:
+        domesticQuantity:
+          column:
+            name: domestic_quantity
+        expectedTotalQuantity:
+          column:
+            name: expected_total_quantity
+        id:
+          column:
+            name: id
+        internationalQuantity:
+          column:
+            name: international_quantity
+        preRegisteredQuantity:
+          column:
+            name: pre_registered_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventAttendeeInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - domesticQuantity
+          - expectedTotalQuantity
+          - id
+          - internationalQuantity
+          - preRegisteredQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventAttendeeInfosBoolExp
+  operand:
+    object:
+      type: EventAttendeeInfos
+      comparableFields:
+        - fieldName: domesticQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: expectedTotalQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: internationalQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: preRegisteredQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventAttendeeInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventAttendeeInfosAggExp
+  operand:
+    object:
+      aggregatedType: EventAttendeeInfos
+      aggregatableFields:
+        - fieldName: domesticQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: expectedTotalQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: internationalQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: preRegisteredQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventAttendeeInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventAttendeeInfosOrderByExp
+  operand:
+    object:
+      orderedType: EventAttendeeInfos
+      orderableFields:
+        - fieldName: domesticQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: expectedTotalQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: internationalQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: preRegisteredQuantity
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventAttendeeInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventAttendeeInfos
+  objectType: EventAttendeeInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_attendee_infos
+  filterExpressionType: EventAttendeeInfosBoolExp
+  aggregateExpression: EventAttendeeInfosAggExp
+  orderByExpression: EventAttendeeInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventAttendeeInfos
+      subscription:
+        rootField: eventAttendeeInfos
+    selectUniques:
+      - queryRootField: eventAttendeeInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventAttendeeInfosById
+    filterInputTypeName: EventAttendeeInfosFilterInput
+    aggregate:
+      queryRootField: eventAttendeeInfosAggregate
+      subscription:
+        rootField: eventAttendeeInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventAttendeeInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

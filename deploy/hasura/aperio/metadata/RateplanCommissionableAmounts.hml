@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCommissionableAmounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: taxInclusiveIndicator
+      type: Boolean_1
+  graphql:
+    typeName: RateplanCommissionableAmounts
+    inputTypeName: RateplanCommissionableAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_commissionable_amounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+        taxInclusiveIndicator:
+          column:
+            name: tax_inclusive_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCommissionableAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+          - taxInclusiveIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCommissionableAmountsBoolExp
+  operand:
+    object:
+      type: RateplanCommissionableAmounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxInclusiveIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCommissionableAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCommissionableAmountsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCommissionableAmounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: taxInclusiveIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCommissionableAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCommissionableAmountsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCommissionableAmounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: taxInclusiveIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCommissionableAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCommissionableAmounts
+  objectType: RateplanCommissionableAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_commissionable_amounts
+  filterExpressionType: RateplanCommissionableAmountsBoolExp
+  aggregateExpression: RateplanCommissionableAmountsAggExp
+  orderByExpression: RateplanCommissionableAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCommissionableAmounts
+      subscription:
+        rootField: rateplanCommissionableAmounts
+    selectUniques:
+      - queryRootField: rateplanCommissionableAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCommissionableAmountsById
+    filterInputTypeName: RateplanCommissionableAmountsFilterInput
+    aggregate:
+      queryRootField: rateplanCommissionableAmountsAggregate
+      subscription:
+        rootField: rateplanCommissionableAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCommissionableAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

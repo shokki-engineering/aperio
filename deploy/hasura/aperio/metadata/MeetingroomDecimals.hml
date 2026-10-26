@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: MeetingroomDecimals
+    inputTypeName: MeetingroomDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomDecimalsBoolExp
+  operand:
+    object:
+      type: MeetingroomDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomDecimals
+  objectType: MeetingroomDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_decimals
+  filterExpressionType: MeetingroomDecimalsBoolExp
+  aggregateExpression: MeetingroomDecimalsAggExp
+  orderByExpression: MeetingroomDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomDecimals
+      subscription:
+        rootField: meetingroomDecimals
+    selectUniques:
+      - queryRootField: meetingroomDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomDecimalsById
+    filterInputTypeName: MeetingroomDecimalsFilterInput
+    aggregate:
+      queryRootField: meetingroomDecimalsAggregate
+      subscription:
+        rootField: meetingroomDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

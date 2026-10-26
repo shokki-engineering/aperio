@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeAdditionalGuestAmounts
+  fields:
+    - name: ageBucket
+      type: String_1
+    - name: ageQualifyingCode
+      type: Enum
+    - name: ageTimeUnit
+      type: Enum
+    - name: amountId
+      type: String_1!
+    - name: guestRoomId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: maxAdditionalGuests
+      type: Int32
+    - name: maxAge
+      type: Int32
+    - name: minAge
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: RoomtypeAdditionalGuestAmounts
+    inputTypeName: RoomtypeAdditionalGuestAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_additional_guest_amounts
+      fieldMapping:
+        ageBucket:
+          column:
+            name: age_bucket
+        ageQualifyingCode:
+          column:
+            name: age_qualifying_code
+        ageTimeUnit:
+          column:
+            name: age_time_unit
+        amountId:
+          column:
+            name: amount_id
+        guestRoomId:
+          column:
+            name: guest_room_id
+        id:
+          column:
+            name: id
+        maxAdditionalGuests:
+          column:
+            name: max_additional_guests
+        maxAge:
+          column:
+            name: max_age
+        minAge:
+          column:
+            name: min_age
+        percentId:
+          column:
+            name: percent_id
+        rph:
+          column:
+            name: rph
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeAdditionalGuestAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - ageBucket
+          - ageQualifyingCode
+          - ageTimeUnit
+          - amountId
+          - guestRoomId
+          - id
+          - maxAdditionalGuests
+          - maxAge
+          - minAge
+          - percentId
+          - rph
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeAdditionalGuestAmountsBoolExp
+  operand:
+    object:
+      type: RoomtypeAdditionalGuestAmounts
+      comparableFields:
+        - fieldName: ageBucket
+          booleanExpressionType: TextBoolExp
+        - fieldName: ageQualifyingCode
+          booleanExpressionType: RoomtypeRoomtypeAgeQualifyingCodeBoolExp
+        - fieldName: ageTimeUnit
+          booleanExpressionType: RoomtypeRoomtypeTimeUnitBoolExp
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guestRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxAdditionalGuests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxAge
+          booleanExpressionType: Int4BoolExp
+        - fieldName: minAge
+          booleanExpressionType: Int4BoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: RoomtypeRoomtypeAdditionalDetailTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeAdditionalGuestAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeAdditionalGuestAmountsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeAdditionalGuestAmounts
+      aggregatableFields:
+        - fieldName: ageBucket
+          aggregateExpression: TextAggExp
+        - fieldName: ageQualifyingCode
+          aggregateExpression: RoomtypeRoomtypeAgeQualifyingCodeAggExp
+        - fieldName: ageTimeUnit
+          aggregateExpression: RoomtypeRoomtypeTimeUnitAggExp
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: guestRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxAdditionalGuests
+          aggregateExpression: Int4AggExp
+        - fieldName: maxAge
+          aggregateExpression: Int4AggExp
+        - fieldName: minAge
+          aggregateExpression: Int4AggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: RoomtypeRoomtypeAdditionalDetailTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeAdditionalGuestAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeAdditionalGuestAmountsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeAdditionalGuestAmounts
+      orderableFields:
+        - fieldName: ageBucket
+          orderByExpression: String1OrderByExp
+        - fieldName: ageQualifyingCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: ageTimeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: guestRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxAdditionalGuests
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxAge
+          orderByExpression: Int32OrderByExp
+        - fieldName: minAge
+          orderByExpression: Int32OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeAdditionalGuestAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeAdditionalGuestAmounts
+  objectType: RoomtypeAdditionalGuestAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_additional_guest_amounts
+  filterExpressionType: RoomtypeAdditionalGuestAmountsBoolExp
+  aggregateExpression: RoomtypeAdditionalGuestAmountsAggExp
+  orderByExpression: RoomtypeAdditionalGuestAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeAdditionalGuestAmounts
+      subscription:
+        rootField: roomtypeAdditionalGuestAmounts
+    selectUniques:
+      - queryRootField: roomtypeAdditionalGuestAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeAdditionalGuestAmountsById
+    filterInputTypeName: RoomtypeAdditionalGuestAmountsFilterInput
+    aggregate:
+      queryRootField: roomtypeAdditionalGuestAmountsAggregate
+      subscription:
+        rootField: roomtypeAdditionalGuestAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeAdditionalGuestAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestaurantTextItemsTextItemDescriptionsByIdResponse
+  description: Responses from the
+    'delete_restaurant_text_items_text_item_descriptions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantTextItemsTextItemDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestaurantTextItemsTextItemDescriptionsByIdResponse
+    inputTypeName: DeleteRestaurantTextItemsTextItemDescriptionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restaurant_text_items_text_item_descriptions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestaurantTextItemsTextItemDescriptionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestaurantTextItemsTextItemDescriptionsById
+  outputType: DeleteRestaurantTextItemsTextItemDescriptionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestaurantTextItemsTextItemDescriptionsBoolExp
+      description: Delete permission predicate over the
+        'restaurant_text_items_text_item_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restaurant_text_items_text_item_descriptions_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestaurantTextItemsTextItemDescriptionsById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'restaurant_text_items_text_item_descriptions' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestaurantTextItemsTextItemDescriptionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

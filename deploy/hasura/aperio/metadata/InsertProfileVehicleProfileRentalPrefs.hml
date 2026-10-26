@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefsObject
+  fields:
+    - name: gasPrePay
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: smokingAllowed
+      type: Boolean_1
+  graphql:
+    typeName: InsertProfileVehicleProfileRentalPrefsObject
+    inputTypeName: InsertProfileVehicleProfileRentalPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_profile_rental_prefs_object
+      fieldMapping:
+        gasPrePay:
+          column:
+            name: gas_pre_pay
+        id:
+          column:
+            name: id
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        preferLevel:
+          column:
+            name: prefer_level
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehicleProfileRentalPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - gasPrePay
+          - id
+          - prefCollectionId
+          - preferLevel
+          - shareMarketInd
+          - shareSynchInd
+          - smokingAllowed
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefsResponse
+  description: Responses from the 'insert_profile_vehicle_profile_rental_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehicleProfileRentalPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileVehicleProfileRentalPrefsResponse
+    inputTypeName: InsertProfileVehicleProfileRentalPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_profile_rental_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehicleProfileRentalPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefs
+  outputType: InsertProfileVehicleProfileRentalPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileVehicleProfileRentalPrefsObject!]!"
+    - name: postCheck
+      type: ProfileVehicleProfileRentalPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_vehicle_profile_rental_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_vehicle_profile_rental_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileVehicleProfileRentalPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_vehicle_profile_rental_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileVehicleProfileRentalPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

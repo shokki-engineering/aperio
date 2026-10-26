@@ -1,0 +1,235 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAirlinePrefSsrPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: airlineVendorPrefRphs
+      type: "[String_1]"
+    - name: defaultStatusCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: lookupKey
+      type: String_1
+    - name: partySize
+      type: Int32
+    - name: preferLevel
+      type: Enum
+    - name: remark
+      type: String_1
+    - name: ssrCode
+      type: String_1
+    - name: transferActionType
+      type: Enum
+    - name: vendorCode
+      type: String_1
+  graphql:
+    typeName: ProfileAirlinePrefSsrPrefs
+    inputTypeName: ProfileAirlinePrefSsrPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_airline_pref_ssr_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        airlineVendorPrefRphs:
+          column:
+            name: airline_vendor_pref_rphs
+        defaultStatusCode:
+          column:
+            name: default_status_code
+        id:
+          column:
+            name: id
+        lookupKey:
+          column:
+            name: lookup_key
+        partySize:
+          column:
+            name: party_size
+        preferLevel:
+          column:
+            name: prefer_level
+        remark:
+          column:
+            name: remark
+        ssrCode:
+          column:
+            name: ssr_code
+        transferActionType:
+          column:
+            name: transfer_action_type
+        vendorCode:
+          column:
+            name: vendor_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAirlinePrefSsrPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - airlineVendorPrefRphs
+          - defaultStatusCode
+          - id
+          - lookupKey
+          - partySize
+          - preferLevel
+          - remark
+          - ssrCode
+          - transferActionType
+          - vendorCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAirlinePrefSsrPrefsBoolExp
+  operand:
+    object:
+      type: ProfileAirlinePrefSsrPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultStatusCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lookupKey
+          booleanExpressionType: TextBoolExp
+        - fieldName: partySize
+          booleanExpressionType: Int4BoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: ssrCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: transferActionType
+          booleanExpressionType: ProfileTransferActionBoolExp
+        - fieldName: vendorCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAirlinePrefSsrPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAirlinePrefSsrPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAirlinePrefSsrPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultStatusCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lookupKey
+          aggregateExpression: TextAggExp
+        - fieldName: partySize
+          aggregateExpression: Int4AggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: ssrCode
+          aggregateExpression: TextAggExp
+        - fieldName: transferActionType
+          aggregateExpression: ProfileTransferActionAggExp
+        - fieldName: vendorCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAirlinePrefSsrPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAirlinePrefSsrPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAirlinePrefSsrPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultStatusCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lookupKey
+          orderByExpression: String1OrderByExp
+        - fieldName: partySize
+          orderByExpression: Int32OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: ssrCode
+          orderByExpression: String1OrderByExp
+        - fieldName: transferActionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: vendorCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAirlinePrefSsrPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAirlinePrefSsrPrefs
+  objectType: ProfileAirlinePrefSsrPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_airline_pref_ssr_prefs
+  filterExpressionType: ProfileAirlinePrefSsrPrefsBoolExp
+  aggregateExpression: ProfileAirlinePrefSsrPrefsAggExp
+  orderByExpression: ProfileAirlinePrefSsrPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAirlinePrefSsrPrefs
+      subscription:
+        rootField: profileAirlinePrefSsrPrefs
+    selectUniques:
+      - queryRootField: profileAirlinePrefSsrPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAirlinePrefSsrPrefsById
+    filterInputTypeName: ProfileAirlinePrefSsrPrefsFilterInput
+    aggregate:
+      queryRootField: profileAirlinePrefSsrPrefsAggregate
+      subscription:
+        rootField: profileAirlinePrefSsrPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAirlinePrefSsrPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

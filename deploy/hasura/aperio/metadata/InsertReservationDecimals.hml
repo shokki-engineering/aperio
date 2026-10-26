@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertReservationDecimalsObject
+    inputTypeName: InsertReservationDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationDecimalsResponse
+  description: Responses from the 'insert_reservation_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationDecimalsResponse
+    inputTypeName: InsertReservationDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationDecimals
+  outputType: InsertReservationDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationDecimalsObject!]!"
+    - name: postCheck
+      type: ReservationDecimalsBoolExp
+      description: Insert permission predicate over the 'reservation_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationDecimals
+    rootFieldKind: Mutation
+  description: Insert into the reservation_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

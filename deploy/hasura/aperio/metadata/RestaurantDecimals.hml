@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RestaurantDecimals
+    inputTypeName: RestaurantDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantDecimalsBoolExp
+  operand:
+    object:
+      type: RestaurantDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantDecimals
+  objectType: RestaurantDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_decimals
+  filterExpressionType: RestaurantDecimalsBoolExp
+  aggregateExpression: RestaurantDecimalsAggExp
+  orderByExpression: RestaurantDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantDecimals
+      subscription:
+        rootField: restaurantDecimals
+    selectUniques:
+      - queryRootField: restaurantDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantDecimalsById
+    filterInputTypeName: RestaurantDecimalsFilterInput
+    aggregate:
+      queryRootField: restaurantDecimalsAggregate
+      subscription:
+        rootField: restaurantDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

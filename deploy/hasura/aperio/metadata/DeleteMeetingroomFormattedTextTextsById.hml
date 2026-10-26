@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingroomFormattedTextTextsByIdResponse
+  description: Responses from the 'delete_meetingroom_formatted_text_texts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomFormattedTextTexts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingroomFormattedTextTextsByIdResponse
+    inputTypeName: DeleteMeetingroomFormattedTextTextsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingroom_formatted_text_texts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingroomFormattedTextTextsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingroomFormattedTextTextsById
+  outputType: DeleteMeetingroomFormattedTextTextsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingroomFormattedTextTextsBoolExp
+      description: Delete permission predicate over the
+        'meetingroom_formatted_text_texts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingroom_formatted_text_texts_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingroomFormattedTextTextsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingroom_formatted_text_texts' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingroomFormattedTextTextsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,141 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingroomTextItemsId
+  description: Update the 'id' column in the 'meetingroom_text_items' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingroomTextItemsId
+    inputTypeName: UpdateColumnMeetingroomTextItemsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingroom_text_items_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingroomTextItemsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingroomTextItemsByIdUpdateColumns
+  description: Update the columns of the 'meetingroom_text_items' collection
+  fields:
+    - name: id
+      type: UpdateColumnMeetingroomTextItemsId
+      description: Update the 'id' column in the 'meetingroom_text_items' collection.
+  graphql:
+    typeName: UpdateMeetingroomTextItemsByIdUpdateColumns
+    inputTypeName: UpdateMeetingroomTextItemsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingroom_text_items_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingroomTextItemsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingroomTextItemsByIdResponse
+  description: Responses from the 'update_meetingroom_text_items_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomTextItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingroomTextItemsByIdResponse
+    inputTypeName: UpdateMeetingroomTextItemsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingroom_text_items_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingroomTextItemsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingroomTextItemsById
+  outputType: UpdateMeetingroomTextItemsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingroomTextItemsBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingroom_text_items' collection
+    - name: preCheck
+      type: MeetingroomTextItemsBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingroom_text_items' collection
+    - name: updateColumns
+      type: UpdateMeetingroomTextItemsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingroom_text_items_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingroomTextItemsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingroom_text_items' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingroomTextItemsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

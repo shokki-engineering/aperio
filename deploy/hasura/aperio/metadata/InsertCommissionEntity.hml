@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionEntityObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: taxInclusiveIndicator
+      type: Boolean_1
+  graphql:
+    typeName: InsertCommissionEntityObject
+    inputTypeName: InsertCommissionEntityObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_entity_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+        taxInclusiveIndicator:
+          column:
+            name: tax_inclusive_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionEntityObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+          - taxInclusiveIndicator
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionEntityResponse
+  description: Responses from the 'insert_commission_entity' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionEntity!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCommissionEntityResponse
+    inputTypeName: InsertCommissionEntityResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_entity_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionEntityResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCommissionEntity
+  outputType: InsertCommissionEntityResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCommissionEntityObject!]!"
+    - name: postCheck
+      type: CommissionEntityBoolExp
+      description: Insert permission predicate over the 'commission_entity' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_commission_entity
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCommissionEntity
+    rootFieldKind: Mutation
+  description: Insert into the commission_entity table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCommissionEntity
+  permissions:
+    - role: admin
+      allowExecution: true
+

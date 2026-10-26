@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportFunctionSpaceRequirementsObject
+  fields:
+    - name: functionSpaceInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: requirement
+      type: Enum
+  graphql:
+    typeName: InsertEventreportFunctionSpaceRequirementsObject
+    inputTypeName: InsertEventreportFunctionSpaceRequirementsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_function_space_requirements_object
+      fieldMapping:
+        functionSpaceInfoId:
+          column:
+            name: function_space_info_id
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        requirement:
+          column:
+            name: requirement
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportFunctionSpaceRequirementsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - functionSpaceInfoId
+          - id
+          - quantity
+          - requirement
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportFunctionSpaceRequirementsResponse
+  description: Responses from the 'insert_eventreport_function_space_requirements' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportFunctionSpaceRequirements!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportFunctionSpaceRequirementsResponse
+    inputTypeName: InsertEventreportFunctionSpaceRequirementsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_function_space_requirements_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportFunctionSpaceRequirementsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportFunctionSpaceRequirements
+  outputType: InsertEventreportFunctionSpaceRequirementsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportFunctionSpaceRequirementsObject!]!"
+    - name: postCheck
+      type: EventreportFunctionSpaceRequirementsBoolExp
+      description: Insert permission predicate over the
+        'eventreport_function_space_requirements' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_function_space_requirements
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportFunctionSpaceRequirements
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_function_space_requirements table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportFunctionSpaceRequirements
+  permissions:
+    - role: admin
+      allowExecution: true
+

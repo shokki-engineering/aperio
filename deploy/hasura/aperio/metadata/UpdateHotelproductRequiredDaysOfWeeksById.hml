@@ -1,0 +1,183 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductRequiredDaysOfWeeksId
+  description: Update the 'id' column in the 'hotelproduct_required_days_of_weeks'
+    collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductRequiredDaysOfWeeksId
+    inputTypeName: UpdateColumnHotelproductRequiredDaysOfWeeksIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_required_days_of_weeks_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductRequiredDaysOfWeeksId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductRequiredDaysOfWeeksWeekdays
+  description: Update the 'weekdays' column in the
+    'hotelproduct_required_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductRequiredDaysOfWeeksWeekdays
+    inputTypeName: UpdateColumnHotelproductRequiredDaysOfWeeksWeekdaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_required_days_of_weeks_weekdays
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductRequiredDaysOfWeeksWeekdays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelproductRequiredDaysOfWeeksByIdUpdateColumns
+  description: Update the columns of the 'hotelproduct_required_days_of_weeks' collection
+  fields:
+    - name: id
+      type: UpdateColumnHotelproductRequiredDaysOfWeeksId
+      description: Update the 'id' column in the 'hotelproduct_required_days_of_weeks'
+        collection.
+    - name: weekdays
+      type: UpdateColumnHotelproductRequiredDaysOfWeeksWeekdays
+      description: Update the 'weekdays' column in the
+        'hotelproduct_required_days_of_weeks' collection.
+  graphql:
+    typeName: UpdateHotelproductRequiredDaysOfWeeksByIdUpdateColumns
+    inputTypeName: UpdateHotelproductRequiredDaysOfWeeksByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotelproduct_required_days_of_weeks_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelproductRequiredDaysOfWeeksByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelproductRequiredDaysOfWeeksByIdResponse
+  description: Responses from the
+    'update_hotelproduct_required_days_of_weeks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductRequiredDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelproductRequiredDaysOfWeeksByIdResponse
+    inputTypeName: UpdateHotelproductRequiredDaysOfWeeksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotelproduct_required_days_of_weeks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelproductRequiredDaysOfWeeksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelproductRequiredDaysOfWeeksById
+  outputType: UpdateHotelproductRequiredDaysOfWeeksByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelproductRequiredDaysOfWeeksBoolExp
+      description: Update permission post-condition predicate over the
+        'hotelproduct_required_days_of_weeks' collection
+    - name: preCheck
+      type: HotelproductRequiredDaysOfWeeksBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotelproduct_required_days_of_weeks' collection
+    - name: updateColumns
+      type: UpdateHotelproductRequiredDaysOfWeeksByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotelproduct_required_days_of_weeks_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelproductRequiredDaysOfWeeksById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotelproduct_required_days_of_weeks'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelproductRequiredDaysOfWeeksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelDateTimeSpansObject
+  fields:
+    - name: dateWindowRangeId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endDateWindowId
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: hotelInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: startDateWindowId
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertHotelDateTimeSpansObject
+    inputTypeName: InsertHotelDateTimeSpansObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_date_time_spans_object
+      fieldMapping:
+        dateWindowRangeId:
+          column:
+            name: date_window_range_id
+        duration:
+          column:
+            name: duration
+        endDateWindowId:
+          column:
+            name: end_date_window_id
+        endId:
+          column:
+            name: end_id
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        startDateWindowId:
+          column:
+            name: start_date_window_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelDateTimeSpansObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateWindowRangeId
+          - duration
+          - endDateWindowId
+          - endId
+          - hotelInfoId
+          - id
+          - startDateWindowId
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelDateTimeSpansResponse
+  description: Responses from the 'insert_hotel_date_time_spans' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelDateTimeSpans!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelDateTimeSpansResponse
+    inputTypeName: InsertHotelDateTimeSpansResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_date_time_spans_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelDateTimeSpansResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelDateTimeSpans
+  outputType: InsertHotelDateTimeSpansResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelDateTimeSpansObject!]!"
+    - name: postCheck
+      type: HotelDateTimeSpansBoolExp
+      description: Insert permission predicate over the 'hotel_date_time_spans' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_date_time_spans
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelDateTimeSpans
+    rootFieldKind: Mutation
+  description: Insert into the hotel_date_time_spans table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelDateTimeSpans
+  permissions:
+    - role: admin
+      allowExecution: true
+

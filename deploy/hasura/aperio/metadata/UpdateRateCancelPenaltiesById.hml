@@ -1,0 +1,186 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateCancelPenaltiesCancelPolicyIndicator
+  description: Update the 'cancel_policy_indicator' column in the
+    'rate_cancel_penalties' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateCancelPenaltiesCancelPolicyIndicator
+    inputTypeName: UpdateColumnRateCancelPenaltiesCancelPolicyIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_cancel_penalties_cancel_policy_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateCancelPenaltiesCancelPolicyIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateCancelPenaltiesId
+  description: Update the 'id' column in the 'rate_cancel_penalties' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateCancelPenaltiesId
+    inputTypeName: UpdateColumnRateCancelPenaltiesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_cancel_penalties_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateCancelPenaltiesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateCancelPenaltiesByIdUpdateColumns
+  description: Update the columns of the 'rate_cancel_penalties' collection
+  fields:
+    - name: cancelPolicyIndicator
+      type: UpdateColumnRateCancelPenaltiesCancelPolicyIndicator
+      description: Update the 'cancel_policy_indicator' column in the
+        'rate_cancel_penalties' collection.
+    - name: id
+      type: UpdateColumnRateCancelPenaltiesId
+      description: Update the 'id' column in the 'rate_cancel_penalties' collection.
+  graphql:
+    typeName: UpdateRateCancelPenaltiesByIdUpdateColumns
+    inputTypeName: UpdateRateCancelPenaltiesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_cancel_penalties_by_id_update_columns
+      fieldMapping:
+        cancelPolicyIndicator:
+          column:
+            name: cancel_policy_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateCancelPenaltiesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelPolicyIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateCancelPenaltiesByIdResponse
+  description: Responses from the 'update_rate_cancel_penalties_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateCancelPenalties!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateCancelPenaltiesByIdResponse
+    inputTypeName: UpdateRateCancelPenaltiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_cancel_penalties_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateCancelPenaltiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateCancelPenaltiesById
+  outputType: UpdateRateCancelPenaltiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateCancelPenaltiesBoolExp
+      description: Update permission post-condition predicate over the
+        'rate_cancel_penalties' collection
+    - name: preCheck
+      type: RateCancelPenaltiesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rate_cancel_penalties' collection
+    - name: updateColumns
+      type: UpdateRateCancelPenaltiesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rate_cancel_penalties_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateCancelPenaltiesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rate_cancel_penalties' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateCancelPenaltiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

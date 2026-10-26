@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionPrepaidAmountsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertCommissionPrepaidAmountsObject
+    inputTypeName: InsertCommissionPrepaidAmountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_prepaid_amounts_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionPrepaidAmountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionPrepaidAmountsResponse
+  description: Responses from the 'insert_commission_prepaid_amounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionPrepaidAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCommissionPrepaidAmountsResponse
+    inputTypeName: InsertCommissionPrepaidAmountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_prepaid_amounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionPrepaidAmountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCommissionPrepaidAmounts
+  outputType: InsertCommissionPrepaidAmountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCommissionPrepaidAmountsObject!]!"
+    - name: postCheck
+      type: CommissionPrepaidAmountsBoolExp
+      description: Insert permission predicate over the 'commission_prepaid_amounts'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_commission_prepaid_amounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCommissionPrepaidAmounts
+    rootFieldKind: Mutation
+  description: Insert into the commission_prepaid_amounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCommissionPrepaidAmounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

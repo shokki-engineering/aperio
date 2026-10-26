@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyCheckoutChargesObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: nightCount
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: policyId
+      type: String_1!
+    - name: stayBalance
+      type: Boolean_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: InsertPolicyCheckoutChargesObject
+    inputTypeName: InsertPolicyCheckoutChargesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_checkout_charges_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        codeDetail:
+          column:
+            name: code_detail
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        nightCount:
+          column:
+            name: night_count
+        percentId:
+          column:
+            name: percent_id
+        policyId:
+          column:
+            name: policy_id
+        stayBalance:
+          column:
+            name: stay_balance
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyCheckoutChargesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - codeDetail
+          - existsCode
+          - id
+          - nightCount
+          - percentId
+          - policyId
+          - stayBalance
+          - type
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyCheckoutChargesResponse
+  description: Responses from the 'insert_policy_checkout_charges' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyCheckoutCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyCheckoutChargesResponse
+    inputTypeName: InsertPolicyCheckoutChargesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_checkout_charges_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyCheckoutChargesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyCheckoutCharges
+  outputType: InsertPolicyCheckoutChargesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyCheckoutChargesObject!]!"
+    - name: postCheck
+      type: PolicyCheckoutChargesBoolExp
+      description: Insert permission predicate over the 'policy_checkout_charges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_checkout_charges
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyCheckoutCharges
+    rootFieldKind: Mutation
+  description: Insert into the policy_checkout_charges table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyCheckoutCharges
+  permissions:
+    - role: admin
+      allowExecution: true
+

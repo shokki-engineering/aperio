@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationTextItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationTextItems
+    inputTypeName: ReservationTextItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_text_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationTextItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationTextItemsBoolExp
+  operand:
+    object:
+      type: ReservationTextItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationTextItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationTextItemsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationTextItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationTextItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationTextItemsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationTextItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationTextItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationTextItems
+  objectType: ReservationTextItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_text_items
+  filterExpressionType: ReservationTextItemsBoolExp
+  aggregateExpression: ReservationTextItemsAggExp
+  orderByExpression: ReservationTextItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationTextItems
+      subscription:
+        rootField: reservationTextItems
+    selectUniques:
+      - queryRootField: reservationTextItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationTextItemsById
+    filterInputTypeName: ReservationTextItemsFilterInput
+    aggregate:
+      queryRootField: reservationTextItemsAggregate
+      subscription:
+        rootField: reservationTextItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationTextItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

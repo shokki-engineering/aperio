@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductCashesObject
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertHotelproductCashesObject
+    inputTypeName: InsertHotelproductCashesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_cashes_object
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductCashesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductCashesResponse
+  description: Responses from the 'insert_hotelproduct_cashes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductCashesResponse
+    inputTypeName: InsertHotelproductCashesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_cashes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductCashesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductCashes
+  outputType: InsertHotelproductCashesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductCashesObject!]!"
+    - name: postCheck
+      type: HotelproductCashesBoolExp
+      description: Insert permission predicate over the 'hotelproduct_cashes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_cashes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductCashes
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_cashes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductCashes
+  permissions:
+    - role: admin
+      allowExecution: true
+

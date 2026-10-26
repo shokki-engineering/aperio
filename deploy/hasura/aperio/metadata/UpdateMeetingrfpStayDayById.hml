@@ -1,0 +1,303 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStayDayDayNumber
+  description: Update the 'day_number' column in the 'meetingrfp_stay_day' collection
+  fields:
+    - name: set
+      type: Int32!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStayDayDayNumber
+    inputTypeName: UpdateColumnMeetingrfpStayDayDayNumberInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_stay_day_day_number
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStayDayDayNumber
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStayDayGuestQuantity
+  description: Update the 'guest_quantity' column in the 'meetingrfp_stay_day' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStayDayGuestQuantity
+    inputTypeName: UpdateColumnMeetingrfpStayDayGuestQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_stay_day_guest_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStayDayGuestQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStayDayId
+  description: Update the 'id' column in the 'meetingrfp_stay_day' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStayDayId
+    inputTypeName: UpdateColumnMeetingrfpStayDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_stay_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStayDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStayDayStayDaysId
+  description: Update the 'stay_days_id' column in the 'meetingrfp_stay_day' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStayDayStayDaysId
+    inputTypeName: UpdateColumnMeetingrfpStayDayStayDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_stay_day_stay_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStayDayStayDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStayDayTotalUnitCount
+  description: Update the 'total_unit_count' column in the 'meetingrfp_stay_day' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStayDayTotalUnitCount
+    inputTypeName: UpdateColumnMeetingrfpStayDayTotalUnitCountInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_stay_day_total_unit_count
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStayDayTotalUnitCount
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpStayDayByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_stay_day' collection
+  fields:
+    - name: dayNumber
+      type: UpdateColumnMeetingrfpStayDayDayNumber
+      description: Update the 'day_number' column in the 'meetingrfp_stay_day' collection.
+    - name: guestQuantity
+      type: UpdateColumnMeetingrfpStayDayGuestQuantity
+      description: Update the 'guest_quantity' column in the 'meetingrfp_stay_day'
+        collection.
+    - name: id
+      type: UpdateColumnMeetingrfpStayDayId
+      description: Update the 'id' column in the 'meetingrfp_stay_day' collection.
+    - name: stayDaysId
+      type: UpdateColumnMeetingrfpStayDayStayDaysId
+      description: Update the 'stay_days_id' column in the 'meetingrfp_stay_day' collection.
+    - name: totalUnitCount
+      type: UpdateColumnMeetingrfpStayDayTotalUnitCount
+      description: Update the 'total_unit_count' column in the 'meetingrfp_stay_day'
+        collection.
+  graphql:
+    typeName: UpdateMeetingrfpStayDayByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpStayDayByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_stay_day_by_id_update_columns
+      fieldMapping:
+        dayNumber:
+          column:
+            name: day_number
+        guestQuantity:
+          column:
+            name: guest_quantity
+        id:
+          column:
+            name: id
+        stayDaysId:
+          column:
+            name: stay_days_id
+        totalUnitCount:
+          column:
+            name: total_unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpStayDayByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayNumber
+          - guestQuantity
+          - id
+          - stayDaysId
+          - totalUnitCount
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpStayDayByIdResponse
+  description: Responses from the 'update_meetingrfp_stay_day_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpStayDay!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpStayDayByIdResponse
+    inputTypeName: UpdateMeetingrfpStayDayByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_stay_day_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpStayDayByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpStayDayById
+  outputType: UpdateMeetingrfpStayDayByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpStayDayBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_stay_day' collection
+    - name: preCheck
+      type: MeetingrfpStayDayBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_stay_day' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpStayDayByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_stay_day_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpStayDayById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_stay_day' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpStayDayById
+  permissions:
+    - role: admin
+      allowExecution: true
+

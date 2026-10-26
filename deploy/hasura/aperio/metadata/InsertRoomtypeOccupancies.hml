@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeOccupanciesObject
+  fields:
+    - name: ageBucket
+      type: String_1
+    - name: ageQualifyingCode
+      type: Enum
+    - name: ageTimeUnit
+      type: Enum
+    - name: guestRoomId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: maxAge
+      type: Int32
+    - name: maxOccupancy
+      type: Int32
+    - name: minAge
+      type: Int32
+    - name: minOccupancy
+      type: Int32
+  graphql:
+    typeName: InsertRoomtypeOccupanciesObject
+    inputTypeName: InsertRoomtypeOccupanciesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_occupancies_object
+      fieldMapping:
+        ageBucket:
+          column:
+            name: age_bucket
+        ageQualifyingCode:
+          column:
+            name: age_qualifying_code
+        ageTimeUnit:
+          column:
+            name: age_time_unit
+        guestRoomId:
+          column:
+            name: guest_room_id
+        id:
+          column:
+            name: id
+        maxAge:
+          column:
+            name: max_age
+        maxOccupancy:
+          column:
+            name: max_occupancy
+        minAge:
+          column:
+            name: min_age
+        minOccupancy:
+          column:
+            name: min_occupancy
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeOccupanciesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - ageBucket
+          - ageQualifyingCode
+          - ageTimeUnit
+          - guestRoomId
+          - id
+          - maxAge
+          - maxOccupancy
+          - minAge
+          - minOccupancy
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeOccupanciesResponse
+  description: Responses from the 'insert_roomtype_occupancies' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeOccupancies!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeOccupanciesResponse
+    inputTypeName: InsertRoomtypeOccupanciesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_occupancies_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeOccupanciesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeOccupancies
+  outputType: InsertRoomtypeOccupanciesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeOccupanciesObject!]!"
+    - name: postCheck
+      type: RoomtypeOccupanciesBoolExp
+      description: Insert permission predicate over the 'roomtype_occupancies' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_occupancies
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeOccupancies
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_occupancies table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeOccupancies
+  permissions:
+    - role: admin
+      allowExecution: true
+

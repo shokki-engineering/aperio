@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyMoneysCurrencyCode
+  description: Update the 'currency_code' column in the 'policy_moneys' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyMoneysCurrencyCode
+    inputTypeName: UpdateColumnPolicyMoneysCurrencyCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_moneys_currency_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyMoneysCurrencyCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyMoneysId
+  description: Update the 'id' column in the 'policy_moneys' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyMoneysId
+    inputTypeName: UpdateColumnPolicyMoneysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_moneys_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyMoneysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyMoneysNanoUnits
+  description: Update the 'nano_units' column in the 'policy_moneys' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyMoneysNanoUnits
+    inputTypeName: UpdateColumnPolicyMoneysNanoUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_moneys_nano_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyMoneysNanoUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyMoneysUnits
+  description: Update the 'units' column in the 'policy_moneys' collection
+  fields:
+    - name: set
+      type: Int64
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyMoneysUnits
+    inputTypeName: UpdateColumnPolicyMoneysUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_moneys_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyMoneysUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyMoneysByIdUpdateColumns
+  description: Update the columns of the 'policy_moneys' collection
+  fields:
+    - name: currencyCode
+      type: UpdateColumnPolicyMoneysCurrencyCode
+      description: Update the 'currency_code' column in the 'policy_moneys' collection.
+    - name: id
+      type: UpdateColumnPolicyMoneysId
+      description: Update the 'id' column in the 'policy_moneys' collection.
+    - name: nanoUnits
+      type: UpdateColumnPolicyMoneysNanoUnits
+      description: Update the 'nano_units' column in the 'policy_moneys' collection.
+    - name: units
+      type: UpdateColumnPolicyMoneysUnits
+      description: Update the 'units' column in the 'policy_moneys' collection.
+  graphql:
+    typeName: UpdatePolicyMoneysByIdUpdateColumns
+    inputTypeName: UpdatePolicyMoneysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_moneys_by_id_update_columns
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyMoneysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyMoneysByIdResponse
+  description: Responses from the 'update_policy_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePolicyMoneysByIdResponse
+    inputTypeName: UpdatePolicyMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePolicyMoneysById
+  outputType: UpdatePolicyMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: PolicyMoneysBoolExp
+      description: Update permission post-condition predicate over the 'policy_moneys'
+        collection
+    - name: preCheck
+      type: PolicyMoneysBoolExp
+      description: Update permission pre-condition predicate over the 'policy_moneys'
+        collection
+    - name: updateColumns
+      type: UpdatePolicyMoneysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_policy_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePolicyMoneysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'policy_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePolicyMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertTransientrfpAddressPrefsObject
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: InsertTransientrfpAddressPrefsObject
+    inputTypeName: InsertTransientrfpAddressPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_transientrfp_address_prefs_object
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertTransientrfpAddressPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertTransientrfpAddressPrefsResponse
+  description: Responses from the 'insert_transientrfp_address_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[TransientrfpAddressPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertTransientrfpAddressPrefsResponse
+    inputTypeName: InsertTransientrfpAddressPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_transientrfp_address_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertTransientrfpAddressPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertTransientrfpAddressPrefs
+  outputType: InsertTransientrfpAddressPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertTransientrfpAddressPrefsObject!]!"
+    - name: postCheck
+      type: TransientrfpAddressPrefsBoolExp
+      description: Insert permission predicate over the 'transientrfp_address_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_transientrfp_address_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertTransientrfpAddressPrefs
+    rootFieldKind: Mutation
+  description: Insert into the transientrfp_address_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertTransientrfpAddressPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

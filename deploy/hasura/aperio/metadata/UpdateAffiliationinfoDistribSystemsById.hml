@@ -1,0 +1,188 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoDistribSystemsDistribSystemId
+  description: Update the 'distrib_system_id' column in the
+    'affiliationinfo_distrib_systems' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoDistribSystemsDistribSystemId
+    inputTypeName: UpdateColumnAffiliationinfoDistribSystemsDistribSystemIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_distrib_systems_distrib_system_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoDistribSystemsDistribSystemId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoDistribSystemsId
+  description: Update the 'id' column in the 'affiliationinfo_distrib_systems' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoDistribSystemsId
+    inputTypeName: UpdateColumnAffiliationinfoDistribSystemsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_distrib_systems_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoDistribSystemsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoDistribSystemsByIdUpdateColumns
+  description: Update the columns of the 'affiliationinfo_distrib_systems' collection
+  fields:
+    - name: distribSystemId
+      type: UpdateColumnAffiliationinfoDistribSystemsDistribSystemId
+      description: Update the 'distrib_system_id' column in the
+        'affiliationinfo_distrib_systems' collection.
+    - name: id
+      type: UpdateColumnAffiliationinfoDistribSystemsId
+      description: Update the 'id' column in the 'affiliationinfo_distrib_systems'
+        collection.
+  graphql:
+    typeName: UpdateAffiliationinfoDistribSystemsByIdUpdateColumns
+    inputTypeName: UpdateAffiliationinfoDistribSystemsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_distrib_systems_by_id_update_columns
+      fieldMapping:
+        distribSystemId:
+          column:
+            name: distrib_system_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoDistribSystemsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - distribSystemId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoDistribSystemsByIdResponse
+  description: Responses from the 'update_affiliationinfo_distrib_systems_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoDistribSystems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateAffiliationinfoDistribSystemsByIdResponse
+    inputTypeName: UpdateAffiliationinfoDistribSystemsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_distrib_systems_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoDistribSystemsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateAffiliationinfoDistribSystemsById
+  outputType: UpdateAffiliationinfoDistribSystemsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: AffiliationinfoDistribSystemsBoolExp
+      description: Update permission post-condition predicate over the
+        'affiliationinfo_distrib_systems' collection
+    - name: preCheck
+      type: AffiliationinfoDistribSystemsBoolExp
+      description: Update permission pre-condition predicate over the
+        'affiliationinfo_distrib_systems' collection
+    - name: updateColumns
+      type: UpdateAffiliationinfoDistribSystemsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_affiliationinfo_distrib_systems_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateAffiliationinfoDistribSystemsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'affiliationinfo_distrib_systems' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateAffiliationinfoDistribSystemsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

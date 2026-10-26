@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanMealsIncludedsObject
+  fields:
+    - name: breakfast
+      type: Boolean_1
+    - name: dinner
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: lunch
+      type: Boolean_1
+    - name: mealPlanCodes
+      type: String_1
+    - name: mealPlanIndicator
+      type: Boolean_1
+  graphql:
+    typeName: InsertRateplanMealsIncludedsObject
+    inputTypeName: InsertRateplanMealsIncludedsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_meals_includeds_object
+      fieldMapping:
+        breakfast:
+          column:
+            name: breakfast
+        dinner:
+          column:
+            name: dinner
+        id:
+          column:
+            name: id
+        lunch:
+          column:
+            name: lunch
+        mealPlanCodes:
+          column:
+            name: meal_plan_codes
+        mealPlanIndicator:
+          column:
+            name: meal_plan_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanMealsIncludedsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - breakfast
+          - dinner
+          - id
+          - lunch
+          - mealPlanCodes
+          - mealPlanIndicator
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanMealsIncludedsResponse
+  description: Responses from the 'insert_rateplan_meals_includeds' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanMealsIncludeds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanMealsIncludedsResponse
+    inputTypeName: InsertRateplanMealsIncludedsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_meals_includeds_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanMealsIncludedsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanMealsIncludeds
+  outputType: InsertRateplanMealsIncludedsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanMealsIncludedsObject!]!"
+    - name: postCheck
+      type: RateplanMealsIncludedsBoolExp
+      description: Insert permission predicate over the 'rateplan_meals_includeds'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_meals_includeds
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanMealsIncludeds
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_meals_includeds table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanMealsIncludeds
+  permissions:
+    - role: admin
+      allowExecution: true
+

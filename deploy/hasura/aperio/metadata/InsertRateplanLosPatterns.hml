@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanLosPatternsObject
+  fields:
+    - name: fullPatternLos
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRateplanLosPatternsObject
+    inputTypeName: InsertRateplanLosPatternsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_los_patterns_object
+      fieldMapping:
+        fullPatternLos:
+          column:
+            name: full_pattern_los
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanLosPatternsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fullPatternLos
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanLosPatternsResponse
+  description: Responses from the 'insert_rateplan_los_patterns' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanLosPatterns!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanLosPatternsResponse
+    inputTypeName: InsertRateplanLosPatternsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_los_patterns_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanLosPatternsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanLosPatterns
+  outputType: InsertRateplanLosPatternsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanLosPatternsObject!]!"
+    - name: postCheck
+      type: RateplanLosPatternsBoolExp
+      description: Insert permission predicate over the 'rateplan_los_patterns' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_los_patterns
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanLosPatterns
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_los_patterns table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanLosPatterns
+  permissions:
+    - role: admin
+      allowExecution: true
+

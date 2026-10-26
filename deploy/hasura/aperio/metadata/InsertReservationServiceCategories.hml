@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationServiceCategoriesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: required
+      type: Boolean_1
+    - name: serviceCatetoryCode
+      type: String_1!
+    - name: servicesId
+      type: String_1!
+  graphql:
+    typeName: InsertReservationServiceCategoriesObject
+    inputTypeName: InsertReservationServiceCategoriesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_service_categories_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        required:
+          column:
+            name: required
+        serviceCatetoryCode:
+          column:
+            name: service_catetory_code
+        servicesId:
+          column:
+            name: services_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationServiceCategoriesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - required
+          - serviceCatetoryCode
+          - servicesId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationServiceCategoriesResponse
+  description: Responses from the 'insert_reservation_service_categories' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationServiceCategories!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationServiceCategoriesResponse
+    inputTypeName: InsertReservationServiceCategoriesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_service_categories_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationServiceCategoriesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationServiceCategories
+  outputType: InsertReservationServiceCategoriesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationServiceCategoriesObject!]!"
+    - name: postCheck
+      type: ReservationServiceCategoriesBoolExp
+      description: Insert permission predicate over the
+        'reservation_service_categories' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_service_categories
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationServiceCategories
+    rootFieldKind: Mutation
+  description: Insert into the reservation_service_categories table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationServiceCategories
+  permissions:
+    - role: admin
+      allowExecution: true
+

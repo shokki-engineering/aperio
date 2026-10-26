@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportLargestFunctionSpacesObject
+  fields:
+    - name: attendanceQuantity
+      type: Int32
+    - name: audioVisualCodes
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: roomSetupCode
+      type: Enum
+    - name: twentyFourHourHold
+      type: Boolean_1
+  graphql:
+    typeName: InsertEventreportLargestFunctionSpacesObject
+    inputTypeName: InsertEventreportLargestFunctionSpacesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_largest_function_spaces_object
+      fieldMapping:
+        attendanceQuantity:
+          column:
+            name: attendance_quantity
+        audioVisualCodes:
+          column:
+            name: audio_visual_codes
+        id:
+          column:
+            name: id
+        roomSetupCode:
+          column:
+            name: room_setup_code
+        twentyFourHourHold:
+          column:
+            name: twenty_four_hour_hold
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportLargestFunctionSpacesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendanceQuantity
+          - audioVisualCodes
+          - id
+          - roomSetupCode
+          - twentyFourHourHold
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportLargestFunctionSpacesResponse
+  description: Responses from the 'insert_eventreport_largest_function_spaces' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportLargestFunctionSpaces!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportLargestFunctionSpacesResponse
+    inputTypeName: InsertEventreportLargestFunctionSpacesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_largest_function_spaces_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportLargestFunctionSpacesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportLargestFunctionSpaces
+  outputType: InsertEventreportLargestFunctionSpacesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportLargestFunctionSpacesObject!]!"
+    - name: postCheck
+      type: EventreportLargestFunctionSpacesBoolExp
+      description: Insert permission predicate over the
+        'eventreport_largest_function_spaces' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_largest_function_spaces
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportLargestFunctionSpaces
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_largest_function_spaces table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportLargestFunctionSpaces
+  permissions:
+    - role: admin
+      allowExecution: true
+

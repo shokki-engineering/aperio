@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationFlatCommissions
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationFlatCommissions
+    inputTypeName: ReservationFlatCommissionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_flat_commissions
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationFlatCommissions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationFlatCommissionsBoolExp
+  operand:
+    object:
+      type: ReservationFlatCommissions
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationFlatCommissionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationFlatCommissionsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationFlatCommissions
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationFlatCommissionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationFlatCommissionsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationFlatCommissions
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationFlatCommissionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationFlatCommissions
+  objectType: ReservationFlatCommissions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_flat_commissions
+  filterExpressionType: ReservationFlatCommissionsBoolExp
+  aggregateExpression: ReservationFlatCommissionsAggExp
+  orderByExpression: ReservationFlatCommissionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationFlatCommissions
+      subscription:
+        rootField: reservationFlatCommissions
+    selectUniques:
+      - queryRootField: reservationFlatCommissionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationFlatCommissionsById
+    filterInputTypeName: ReservationFlatCommissionsFilterInput
+    aggregate:
+      queryRootField: reservationFlatCommissionsAggregate
+      subscription:
+        rootField: reservationFlatCommissionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationFlatCommissions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

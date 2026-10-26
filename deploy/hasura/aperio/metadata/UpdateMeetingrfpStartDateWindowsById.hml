@@ -1,0 +1,268 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStartDateWindowsDow
+  description: Update the 'dow' column in the 'meetingrfp_start_date_windows' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStartDateWindowsDow
+    inputTypeName: UpdateColumnMeetingrfpStartDateWindowsDowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_start_date_windows_dow
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStartDateWindowsDow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStartDateWindowsEarliestId
+  description: Update the 'earliest_id' column in the
+    'meetingrfp_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStartDateWindowsEarliestId
+    inputTypeName: UpdateColumnMeetingrfpStartDateWindowsEarliestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_start_date_windows_earliest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStartDateWindowsEarliestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStartDateWindowsId
+  description: Update the 'id' column in the 'meetingrfp_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStartDateWindowsId
+    inputTypeName: UpdateColumnMeetingrfpStartDateWindowsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_start_date_windows_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStartDateWindowsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpStartDateWindowsLatestId
+  description: Update the 'latest_id' column in the
+    'meetingrfp_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpStartDateWindowsLatestId
+    inputTypeName: UpdateColumnMeetingrfpStartDateWindowsLatestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_start_date_windows_latest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpStartDateWindowsLatestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpStartDateWindowsByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_start_date_windows' collection
+  fields:
+    - name: dow
+      type: UpdateColumnMeetingrfpStartDateWindowsDow
+      description: Update the 'dow' column in the 'meetingrfp_start_date_windows'
+        collection.
+    - name: earliestId
+      type: UpdateColumnMeetingrfpStartDateWindowsEarliestId
+      description: Update the 'earliest_id' column in the
+        'meetingrfp_start_date_windows' collection.
+    - name: id
+      type: UpdateColumnMeetingrfpStartDateWindowsId
+      description: Update the 'id' column in the 'meetingrfp_start_date_windows' collection.
+    - name: latestId
+      type: UpdateColumnMeetingrfpStartDateWindowsLatestId
+      description: Update the 'latest_id' column in the
+        'meetingrfp_start_date_windows' collection.
+  graphql:
+    typeName: UpdateMeetingrfpStartDateWindowsByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpStartDateWindowsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_start_date_windows_by_id_update_columns
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpStartDateWindowsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpStartDateWindowsByIdResponse
+  description: Responses from the 'update_meetingrfp_start_date_windows_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpStartDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpStartDateWindowsByIdResponse
+    inputTypeName: UpdateMeetingrfpStartDateWindowsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_start_date_windows_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpStartDateWindowsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpStartDateWindowsById
+  outputType: UpdateMeetingrfpStartDateWindowsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpStartDateWindowsBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_start_date_windows' collection
+    - name: preCheck
+      type: MeetingrfpStartDateWindowsBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_start_date_windows' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpStartDateWindowsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_start_date_windows_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpStartDateWindowsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_start_date_windows' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpStartDateWindowsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

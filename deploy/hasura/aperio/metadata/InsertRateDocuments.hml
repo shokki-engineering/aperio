@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateDocumentsObject
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRateDocumentsObject
+    inputTypeName: InsertRateDocumentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_documents_object
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateDocumentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateDocumentsResponse
+  description: Responses from the 'insert_rate_documents' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateDocumentsResponse
+    inputTypeName: InsertRateDocumentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_documents_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateDocumentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateDocuments
+  outputType: InsertRateDocumentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateDocumentsObject!]!"
+    - name: postCheck
+      type: RateDocumentsBoolExp
+      description: Insert permission predicate over the 'rate_documents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rate_documents
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateDocuments
+    rootFieldKind: Mutation
+  description: Insert into the rate_documents table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateDocuments
+  permissions:
+    - role: admin
+      allowExecution: true
+

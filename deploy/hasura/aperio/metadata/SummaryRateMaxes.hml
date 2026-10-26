@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: SummaryRateMaxes
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: SummaryRateMaxes
+    inputTypeName: SummaryRateMaxesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: summary_rate_maxes
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: SummaryRateMaxes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SummaryRateMaxesBoolExp
+  operand:
+    object:
+      type: SummaryRateMaxes
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SummaryRateMaxesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: SummaryRateMaxesAggExp
+  operand:
+    object:
+      aggregatedType: SummaryRateMaxes
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: SummaryRateMaxesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: SummaryRateMaxesOrderByExp
+  operand:
+    object:
+      orderedType: SummaryRateMaxes
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: SummaryRateMaxesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: SummaryRateMaxes
+  objectType: SummaryRateMaxes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: summary_rate_maxes
+  filterExpressionType: SummaryRateMaxesBoolExp
+  aggregateExpression: SummaryRateMaxesAggExp
+  orderByExpression: SummaryRateMaxesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: summaryRateMaxes
+      subscription:
+        rootField: summaryRateMaxes
+    selectUniques:
+      - queryRootField: summaryRateMaxesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: summaryRateMaxesById
+    filterInputTypeName: SummaryRateMaxesFilterInput
+    aggregate:
+      queryRootField: summaryRateMaxesAggregate
+      subscription:
+        rootField: summaryRateMaxesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: SummaryRateMaxes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

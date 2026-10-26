@@ -1,0 +1,187 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleLosPatternsFullPatternLos
+  description: Update the 'full_pattern_los' column in the
+    'bookingrule_los_patterns' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleLosPatternsFullPatternLos
+    inputTypeName: UpdateColumnBookingruleLosPatternsFullPatternLosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_los_patterns_full_pattern_los
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleLosPatternsFullPatternLos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleLosPatternsId
+  description: Update the 'id' column in the 'bookingrule_los_patterns' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleLosPatternsId
+    inputTypeName: UpdateColumnBookingruleLosPatternsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_los_patterns_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleLosPatternsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleLosPatternsByIdUpdateColumns
+  description: Update the columns of the 'bookingrule_los_patterns' collection
+  fields:
+    - name: fullPatternLos
+      type: UpdateColumnBookingruleLosPatternsFullPatternLos
+      description: Update the 'full_pattern_los' column in the
+        'bookingrule_los_patterns' collection.
+    - name: id
+      type: UpdateColumnBookingruleLosPatternsId
+      description: Update the 'id' column in the 'bookingrule_los_patterns' collection.
+  graphql:
+    typeName: UpdateBookingruleLosPatternsByIdUpdateColumns
+    inputTypeName: UpdateBookingruleLosPatternsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_los_patterns_by_id_update_columns
+      fieldMapping:
+        fullPatternLos:
+          column:
+            name: full_pattern_los
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleLosPatternsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fullPatternLos
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleLosPatternsByIdResponse
+  description: Responses from the 'update_bookingrule_los_patterns_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleLosPatterns!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateBookingruleLosPatternsByIdResponse
+    inputTypeName: UpdateBookingruleLosPatternsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_los_patterns_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleLosPatternsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateBookingruleLosPatternsById
+  outputType: UpdateBookingruleLosPatternsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: BookingruleLosPatternsBoolExp
+      description: Update permission post-condition predicate over the
+        'bookingrule_los_patterns' collection
+    - name: preCheck
+      type: BookingruleLosPatternsBoolExp
+      description: Update permission pre-condition predicate over the
+        'bookingrule_los_patterns' collection
+    - name: updateColumns
+      type: UpdateBookingruleLosPatternsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_bookingrule_los_patterns_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateBookingruleLosPatternsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'bookingrule_los_patterns' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateBookingruleLosPatternsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

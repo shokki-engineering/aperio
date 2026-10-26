@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanUpgradeTos
+  fields:
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: invCodeApplication
+      type: Enum
+    - name: invType
+      type: String_1
+    - name: invTypeCode
+      type: String_1
+    - name: room
+      type: Boolean_1
+  graphql:
+    typeName: RateplanUpgradeTos
+    inputTypeName: RateplanUpgradeTosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_upgrade_tos
+      fieldMapping:
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        invCodeApplication:
+          column:
+            name: inv_code_application
+        invType:
+          column:
+            name: inv_type
+        invTypeCode:
+          column:
+            name: inv_type_code
+        room:
+          column:
+            name: room
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanUpgradeTos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - invCode
+          - invCodeApplication
+          - invType
+          - invTypeCode
+          - room
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanUpgradeTosBoolExp
+  operand:
+    object:
+      type: RateplanUpgradeTos
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCodeApplication
+          booleanExpressionType: RateplanRateplanInvCodeApplicationBoolExp
+        - fieldName: invType
+          booleanExpressionType: TextBoolExp
+        - fieldName: invTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: room
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanUpgradeTosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanUpgradeTosAggExp
+  operand:
+    object:
+      aggregatedType: RateplanUpgradeTos
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invCode
+          aggregateExpression: TextAggExp
+        - fieldName: invCodeApplication
+          aggregateExpression: RateplanRateplanInvCodeApplicationAggExp
+        - fieldName: invType
+          aggregateExpression: TextAggExp
+        - fieldName: invTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: room
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanUpgradeTosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanUpgradeTosOrderByExp
+  operand:
+    object:
+      orderedType: RateplanUpgradeTos
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invCode
+          orderByExpression: String1OrderByExp
+        - fieldName: invCodeApplication
+          orderByExpression: EnumOrderByExp
+        - fieldName: invType
+          orderByExpression: String1OrderByExp
+        - fieldName: invTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: room
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanUpgradeTosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanUpgradeTos
+  objectType: RateplanUpgradeTos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_upgrade_tos
+  filterExpressionType: RateplanUpgradeTosBoolExp
+  aggregateExpression: RateplanUpgradeTosAggExp
+  orderByExpression: RateplanUpgradeTosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanUpgradeTos
+      subscription:
+        rootField: rateplanUpgradeTos
+    selectUniques:
+      - queryRootField: rateplanUpgradeTosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanUpgradeTosById
+    filterInputTypeName: RateplanUpgradeTosFilterInput
+    aggregate:
+      queryRootField: rateplanUpgradeTosAggregate
+      subscription:
+        rootField: rateplanUpgradeTosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanUpgradeTos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

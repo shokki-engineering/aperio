@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportRoomSetups
+  fields:
+    - name: id
+      type: String_1!
+    - name: roomSetupCode
+      type: Enum
+    - name: setupQuantity
+      type: Int32
+  graphql:
+    typeName: EventreportRoomSetups
+    inputTypeName: EventreportRoomSetupsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_room_setups
+      fieldMapping:
+        id:
+          column:
+            name: id
+        roomSetupCode:
+          column:
+            name: room_setup_code
+        setupQuantity:
+          column:
+            name: setup_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportRoomSetups
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - roomSetupCode
+          - setupQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportRoomSetupsBoolExp
+  operand:
+    object:
+      type: EventreportRoomSetups
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomSetupCode
+          booleanExpressionType: EventreportEventreportMeetingRoomFormatCodeBoolExp
+        - fieldName: setupQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportRoomSetupsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportRoomSetupsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportRoomSetups
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomSetupCode
+          aggregateExpression: EventreportEventreportMeetingRoomFormatCodeAggExp
+        - fieldName: setupQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportRoomSetupsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportRoomSetupsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportRoomSetups
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomSetupCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: setupQuantity
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportRoomSetupsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportRoomSetups
+  objectType: EventreportRoomSetups
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_room_setups
+  filterExpressionType: EventreportRoomSetupsBoolExp
+  aggregateExpression: EventreportRoomSetupsAggExp
+  orderByExpression: EventreportRoomSetupsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportRoomSetups
+      subscription:
+        rootField: eventreportRoomSetups
+    selectUniques:
+      - queryRootField: eventreportRoomSetupsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportRoomSetupsById
+    filterInputTypeName: EventreportRoomSetupsFilterInput
+    aggregate:
+      queryRootField: eventreportRoomSetupsAggregate
+      subscription:
+        rootField: eventreportRoomSetupsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportRoomSetups
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

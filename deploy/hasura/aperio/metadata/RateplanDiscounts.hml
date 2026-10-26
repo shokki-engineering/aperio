@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanDiscounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnitCode
+      type: Enum
+    - name: discountPattern
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nightsDiscounted
+      type: Int32
+    - name: nightsRequired
+      type: Int32
+    - name: percentId
+      type: String_1
+  graphql:
+    typeName: RateplanDiscounts
+    inputTypeName: RateplanDiscountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_discounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnitCode:
+          column:
+            name: charge_unit_code
+        discountPattern:
+          column:
+            name: discount_pattern
+        id:
+          column:
+            name: id
+        nightsDiscounted:
+          column:
+            name: nights_discounted
+        nightsRequired:
+          column:
+            name: nights_required
+        percentId:
+          column:
+            name: percent_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanDiscounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnitCode
+          - discountPattern
+          - id
+          - nightsDiscounted
+          - nightsRequired
+          - percentId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanDiscountsBoolExp
+  operand:
+    object:
+      type: RateplanDiscounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chargeUnitCode
+          booleanExpressionType: RateplanRateplanChargeTypeBoolExp
+        - fieldName: discountPattern
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nightsDiscounted
+          booleanExpressionType: Int4BoolExp
+        - fieldName: nightsRequired
+          booleanExpressionType: Int4BoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanDiscountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanDiscountsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanDiscounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: chargeUnitCode
+          aggregateExpression: RateplanRateplanChargeTypeAggExp
+        - fieldName: discountPattern
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nightsDiscounted
+          aggregateExpression: Int4AggExp
+        - fieldName: nightsRequired
+          aggregateExpression: Int4AggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanDiscountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanDiscountsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanDiscounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: chargeUnitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: discountPattern
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nightsDiscounted
+          orderByExpression: Int32OrderByExp
+        - fieldName: nightsRequired
+          orderByExpression: Int32OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanDiscountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanDiscounts
+  objectType: RateplanDiscounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_discounts
+  filterExpressionType: RateplanDiscountsBoolExp
+  aggregateExpression: RateplanDiscountsAggExp
+  orderByExpression: RateplanDiscountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanDiscounts
+      subscription:
+        rootField: rateplanDiscounts
+    selectUniques:
+      - queryRootField: rateplanDiscountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanDiscountsById
+    filterInputTypeName: RateplanDiscountsFilterInput
+    aggregate:
+      queryRootField: rateplanDiscountsAggregate
+      subscription:
+        rootField: rateplanDiscountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanDiscounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

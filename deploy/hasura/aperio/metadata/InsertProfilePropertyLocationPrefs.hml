@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePropertyLocationPrefsObject
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: propertyLocationType
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfilePropertyLocationPrefsObject
+    inputTypeName: InsertProfilePropertyLocationPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_property_location_prefs_object
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        propertyLocationType:
+          column:
+            name: property_location_type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePropertyLocationPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - propertyLocationType
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePropertyLocationPrefsResponse
+  description: Responses from the 'insert_profile_property_location_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePropertyLocationPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePropertyLocationPrefsResponse
+    inputTypeName: InsertProfilePropertyLocationPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_property_location_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePropertyLocationPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePropertyLocationPrefs
+  outputType: InsertProfilePropertyLocationPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePropertyLocationPrefsObject!]!"
+    - name: postCheck
+      type: ProfilePropertyLocationPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_property_location_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_property_location_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePropertyLocationPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_property_location_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePropertyLocationPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

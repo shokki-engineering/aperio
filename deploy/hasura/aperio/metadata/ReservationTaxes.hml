@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationTaxes
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationTaxes
+    inputTypeName: ReservationTaxesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_taxes
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationTaxes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationTaxesBoolExp
+  operand:
+    object:
+      type: ReservationTaxes
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationTaxesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationTaxesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationTaxes
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationTaxesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationTaxesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationTaxes
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationTaxesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationTaxes
+  objectType: ReservationTaxes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_taxes
+  filterExpressionType: ReservationTaxesBoolExp
+  aggregateExpression: ReservationTaxesAggExp
+  orderByExpression: ReservationTaxesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationTaxes
+      subscription:
+        rootField: reservationTaxes
+    selectUniques:
+      - queryRootField: reservationTaxesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationTaxesById
+    filterInputTypeName: ReservationTaxesFilterInput
+    aggregate:
+      queryRootField: reservationTaxesAggregate
+      subscription:
+        rootField: reservationTaxesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationTaxes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpTelephones
+  fields:
+    - name: areaCityCode
+      type: String_1
+    - name: contactPersonId
+      type: String_1!
+    - name: countryAccessCode
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: extension
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: phoneLocationType
+      type: Enum
+    - name: phoneNumber
+      type: String_1!
+    - name: phoneTechType
+      type: Enum
+    - name: phoneUseType
+      type: Enum
+    - name: pin
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: MeetingrfpTelephones
+    inputTypeName: MeetingrfpTelephonesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_telephones
+      fieldMapping:
+        areaCityCode:
+          column:
+            name: area_city_code
+        contactPersonId:
+          column:
+            name: contact_person_id
+        countryAccessCode:
+          column:
+            name: country_access_code
+        defaultValue:
+          column:
+            name: default_value
+        extension:
+          column:
+            name: extension
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        phoneLocationType:
+          column:
+            name: phone_location_type
+        phoneNumber:
+          column:
+            name: phone_number
+        phoneTechType:
+          column:
+            name: phone_tech_type
+        phoneUseType:
+          column:
+            name: phone_use_type
+        pin:
+          column:
+            name: pin
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpTelephones
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaCityCode
+          - contactPersonId
+          - countryAccessCode
+          - defaultValue
+          - extension
+          - formatted
+          - id
+          - phoneLocationType
+          - phoneNumber
+          - phoneTechType
+          - phoneUseType
+          - pin
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpTelephonesBoolExp
+  operand:
+    object:
+      type: MeetingrfpTelephones
+      comparableFields:
+        - fieldName: areaCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryAccessCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneLocationType
+          booleanExpressionType: MeetingrfpMeetingrfpPhoneLocationTypeBoolExp
+        - fieldName: phoneNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneTechType
+          booleanExpressionType: MeetingrfpMeetingrfpPhoneTechnologyTypeBoolExp
+        - fieldName: phoneUseType
+          booleanExpressionType: MeetingrfpMeetingrfpPhoneUseTypeBoolExp
+        - fieldName: pin
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: MeetingrfpContactPersonTelephoneShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: MeetingrfpContactPersonTelephoneShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpTelephonesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpTelephonesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpTelephones
+      aggregatableFields:
+        - fieldName: areaCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: countryAccessCode
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: phoneLocationType
+          aggregateExpression: MeetingrfpMeetingrfpPhoneLocationTypeAggExp
+        - fieldName: phoneNumber
+          aggregateExpression: TextAggExp
+        - fieldName: phoneTechType
+          aggregateExpression: MeetingrfpMeetingrfpPhoneTechnologyTypeAggExp
+        - fieldName: phoneUseType
+          aggregateExpression: MeetingrfpMeetingrfpPhoneUseTypeAggExp
+        - fieldName: pin
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: MeetingrfpContactPersonTelephoneShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: MeetingrfpContactPersonTelephoneShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpTelephonesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpTelephonesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpTelephones
+      orderableFields:
+        - fieldName: areaCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: countryAccessCode
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneLocationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneTechType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneUseType
+          orderByExpression: EnumOrderByExp
+        - fieldName: pin
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpTelephonesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpTelephones
+  objectType: MeetingrfpTelephones
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_telephones
+  filterExpressionType: MeetingrfpTelephonesBoolExp
+  aggregateExpression: MeetingrfpTelephonesAggExp
+  orderByExpression: MeetingrfpTelephonesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpTelephones
+      subscription:
+        rootField: meetingrfpTelephones
+    selectUniques:
+      - queryRootField: meetingrfpTelephonesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpTelephonesById
+    filterInputTypeName: MeetingrfpTelephonesFilterInput
+    aggregate:
+      queryRootField: meetingrfpTelephonesAggregate
+      subscription:
+        rootField: meetingrfpTelephonesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpTelephones
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

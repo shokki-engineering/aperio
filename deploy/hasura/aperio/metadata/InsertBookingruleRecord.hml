@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleRecordObject
+  fields:
+    - name: absoluteDeadlineId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: offsetDropPoint
+      type: Enum
+    - name: offsetTimeUnit
+      type: Enum
+    - name: offsetUnitMultiplier
+      type: Int32
+  graphql:
+    typeName: InsertBookingruleRecordObject
+    inputTypeName: InsertBookingruleRecordObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_record_object
+      fieldMapping:
+        absoluteDeadlineId:
+          column:
+            name: absolute_deadline_id
+        id:
+          column:
+            name: id
+        offsetDropPoint:
+          column:
+            name: offset_drop_point
+        offsetTimeUnit:
+          column:
+            name: offset_time_unit
+        offsetUnitMultiplier:
+          column:
+            name: offset_unit_multiplier
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleRecordObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteDeadlineId
+          - id
+          - offsetDropPoint
+          - offsetTimeUnit
+          - offsetUnitMultiplier
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleRecordResponse
+  description: Responses from the 'insert_bookingrule_record' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleRecord!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleRecordResponse
+    inputTypeName: InsertBookingruleRecordResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_record_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleRecordResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleRecord
+  outputType: InsertBookingruleRecordResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleRecordObject!]!"
+    - name: postCheck
+      type: BookingruleRecordBoolExp
+      description: Insert permission predicate over the 'bookingrule_record' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_record
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleRecord
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_record table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleRecord
+  permissions:
+    - role: admin
+      allowExecution: true
+

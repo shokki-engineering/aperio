@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanFreeUpgradesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: upgradeBookingCode
+      type: String_1
+    - name: upgradeSourceId
+      type: String_1
+    - name: upgradeTargetId
+      type: String_1
+  graphql:
+    typeName: InsertRateplanFreeUpgradesObject
+    inputTypeName: InsertRateplanFreeUpgradesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_free_upgrades_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        upgradeBookingCode:
+          column:
+            name: upgrade_booking_code
+        upgradeSourceId:
+          column:
+            name: upgrade_source_id
+        upgradeTargetId:
+          column:
+            name: upgrade_target_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanFreeUpgradesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - upgradeBookingCode
+          - upgradeSourceId
+          - upgradeTargetId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanFreeUpgradesResponse
+  description: Responses from the 'insert_rateplan_free_upgrades' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanFreeUpgrades!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanFreeUpgradesResponse
+    inputTypeName: InsertRateplanFreeUpgradesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_free_upgrades_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanFreeUpgradesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanFreeUpgrades
+  outputType: InsertRateplanFreeUpgradesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanFreeUpgradesObject!]!"
+    - name: postCheck
+      type: RateplanFreeUpgradesBoolExp
+      description: Insert permission predicate over the 'rateplan_free_upgrades' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_free_upgrades
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanFreeUpgrades
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_free_upgrades table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanFreeUpgrades
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationViewershipProfiles
+  fields:
+    - name: id
+      type: String_1!
+    - name: profileId
+      type: String_1!
+    - name: viewershipId
+      type: String_1!
+  graphql:
+    typeName: ReservationViewershipProfiles
+    inputTypeName: ReservationViewershipProfilesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_viewership_profiles
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profileId:
+          column:
+            name: profile_id
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationViewershipProfiles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profileId
+          - viewershipId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationViewershipProfilesBoolExp
+  operand:
+    object:
+      type: ReservationViewershipProfiles
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: profileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationViewershipProfilesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationViewershipProfilesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationViewershipProfiles
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: profileId
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationViewershipProfilesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationViewershipProfilesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationViewershipProfiles
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: profileId
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationViewershipProfilesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationViewershipProfiles
+  objectType: ReservationViewershipProfiles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_viewership_profiles
+  filterExpressionType: ReservationViewershipProfilesBoolExp
+  aggregateExpression: ReservationViewershipProfilesAggExp
+  orderByExpression: ReservationViewershipProfilesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationViewershipProfiles
+      subscription:
+        rootField: reservationViewershipProfiles
+    selectUniques:
+      - queryRootField: reservationViewershipProfilesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationViewershipProfilesById
+    filterInputTypeName: ReservationViewershipProfilesFilterInput
+    aggregate:
+      queryRootField: reservationViewershipProfilesAggregate
+      subscription:
+        rootField: reservationViewershipProfilesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationViewershipProfiles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

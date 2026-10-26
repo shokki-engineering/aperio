@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoDistribSystemsObject
+  fields:
+    - name: distribSystemId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertAffiliationinfoDistribSystemsObject
+    inputTypeName: InsertAffiliationinfoDistribSystemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_distrib_systems_object
+      fieldMapping:
+        distribSystemId:
+          column:
+            name: distrib_system_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoDistribSystemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - distribSystemId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoDistribSystemsResponse
+  description: Responses from the 'insert_affiliationinfo_distrib_systems' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoDistribSystems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoDistribSystemsResponse
+    inputTypeName: InsertAffiliationinfoDistribSystemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_distrib_systems_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoDistribSystemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoDistribSystems
+  outputType: InsertAffiliationinfoDistribSystemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoDistribSystemsObject!]!"
+    - name: postCheck
+      type: AffiliationinfoDistribSystemsBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_distrib_systems' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_distrib_systems
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoDistribSystems
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_distrib_systems table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoDistribSystems
+  permissions:
+    - role: admin
+      allowExecution: true
+

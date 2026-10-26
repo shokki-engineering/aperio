@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanFlatCommissionsByIdResponse
+  description: Responses from the 'delete_rateplan_flat_commissions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanFlatCommissions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanFlatCommissionsByIdResponse
+    inputTypeName: DeleteRateplanFlatCommissionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_flat_commissions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanFlatCommissionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanFlatCommissionsById
+  outputType: DeleteRateplanFlatCommissionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanFlatCommissionsBoolExp
+      description: Delete permission predicate over the 'rateplan_flat_commissions'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_flat_commissions_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanFlatCommissionsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_flat_commissions' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanFlatCommissionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

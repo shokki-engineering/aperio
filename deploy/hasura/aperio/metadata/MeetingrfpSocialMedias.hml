@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpSocialMedias
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferredContact
+      type: Boolean_1
+    - name: shareMarketInd
+      type: Enum
+    - name: type
+      type: String_1!
+    - name: userDisplayName
+      type: String_1!
+  graphql:
+    typeName: MeetingrfpSocialMedias
+    inputTypeName: MeetingrfpSocialMediasInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_social_medias
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        id:
+          column:
+            name: id
+        preferredContact:
+          column:
+            name: preferred_contact
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        type:
+          column:
+            name: type
+        userDisplayName:
+          column:
+            name: user_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpSocialMedias
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - id
+          - preferredContact
+          - shareMarketInd
+          - type
+          - userDisplayName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpSocialMediasBoolExp
+  operand:
+    object:
+      type: MeetingrfpSocialMedias
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferredContact
+          booleanExpressionType: BoolBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: MeetingrfpMeetingrfpSocialMediaShareMarketIndBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: userDisplayName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpSocialMediasBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpSocialMediasAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpSocialMedias
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferredContact
+          aggregateExpression: BoolAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: MeetingrfpMeetingrfpSocialMediaShareMarketIndAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: userDisplayName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpSocialMediasAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpSocialMediasOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpSocialMedias
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferredContact
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: userDisplayName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpSocialMediasOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpSocialMedias
+  objectType: MeetingrfpSocialMedias
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_social_medias
+  filterExpressionType: MeetingrfpSocialMediasBoolExp
+  aggregateExpression: MeetingrfpSocialMediasAggExp
+  orderByExpression: MeetingrfpSocialMediasOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpSocialMedias
+      subscription:
+        rootField: meetingrfpSocialMedias
+    selectUniques:
+      - queryRootField: meetingrfpSocialMediasById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpSocialMediasById
+    filterInputTypeName: MeetingrfpSocialMediasFilterInput
+    aggregate:
+      queryRootField: meetingrfpSocialMediasAggregate
+      subscription:
+        rootField: meetingrfpSocialMediasAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpSocialMedias
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

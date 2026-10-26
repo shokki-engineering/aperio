@@ -1,0 +1,140 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestaurantVideoItemsVideoItemDescriptionsObject
+  fields:
+    - name: caption
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+    - name: videoItemId
+      type: String_1!
+  graphql:
+    typeName: InsertRestaurantVideoItemsVideoItemDescriptionsObject
+    inputTypeName: InsertRestaurantVideoItemsVideoItemDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restaurant_video_items_video_item_descriptions_object
+      fieldMapping:
+        caption:
+          column:
+            name: caption
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+        videoItemId:
+          column:
+            name: video_item_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestaurantVideoItemsVideoItemDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - caption
+          - formatted
+          - id
+          - languageCode
+          - textFormat
+          - value
+          - videoItemId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestaurantVideoItemsVideoItemDescriptionsResponse
+  description: Responses from the
+    'insert_restaurant_video_items_video_item_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantVideoItemsVideoItemDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestaurantVideoItemsVideoItemDescriptionsResponse
+    inputTypeName: InsertRestaurantVideoItemsVideoItemDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restaurant_video_items_video_item_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestaurantVideoItemsVideoItemDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestaurantVideoItemsVideoItemDescriptions
+  outputType: InsertRestaurantVideoItemsVideoItemDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestaurantVideoItemsVideoItemDescriptionsObject!]!"
+    - name: postCheck
+      type: RestaurantVideoItemsVideoItemDescriptionsBoolExp
+      description: Insert permission predicate over the
+        'restaurant_video_items_video_item_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restaurant_video_items_video_item_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestaurantVideoItemsVideoItemDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the restaurant_video_items_video_item_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestaurantVideoItemsVideoItemDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

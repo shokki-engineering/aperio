@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EnvironmentalimpactCarbonFootprints
+  fields:
+    - name: carbonUomId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: meetingEvent
+      type: Int32
+    - name: nonCarbonMeasure
+      type: Boolean_1
+    - name: nonCarbonMeasureDesc
+      type: String_1
+    - name: roomNight
+      type: Int32
+    - name: weatherNormalized
+      type: Int32
+  graphql:
+    typeName: EnvironmentalimpactCarbonFootprints
+    inputTypeName: EnvironmentalimpactCarbonFootprintsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: environmentalimpact_carbon_footprints
+      fieldMapping:
+        carbonUomId:
+          column:
+            name: carbon_uom_id
+        id:
+          column:
+            name: id
+        meetingEvent:
+          column:
+            name: meeting_event
+        nonCarbonMeasure:
+          column:
+            name: non_carbon_measure
+        nonCarbonMeasureDesc:
+          column:
+            name: non_carbon_measure_desc
+        roomNight:
+          column:
+            name: room_night
+        weatherNormalized:
+          column:
+            name: weather_normalized
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EnvironmentalimpactCarbonFootprints
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - carbonUomId
+          - id
+          - meetingEvent
+          - nonCarbonMeasure
+          - nonCarbonMeasureDesc
+          - roomNight
+          - weatherNormalized
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EnvironmentalimpactCarbonFootprintsBoolExp
+  operand:
+    object:
+      type: EnvironmentalimpactCarbonFootprints
+      comparableFields:
+        - fieldName: carbonUomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingEvent
+          booleanExpressionType: Int4BoolExp
+        - fieldName: nonCarbonMeasure
+          booleanExpressionType: BoolBoolExp
+        - fieldName: nonCarbonMeasureDesc
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomNight
+          booleanExpressionType: Int4BoolExp
+        - fieldName: weatherNormalized
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EnvironmentalimpactCarbonFootprintsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EnvironmentalimpactCarbonFootprintsAggExp
+  operand:
+    object:
+      aggregatedType: EnvironmentalimpactCarbonFootprints
+      aggregatableFields:
+        - fieldName: carbonUomId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: meetingEvent
+          aggregateExpression: Int4AggExp
+        - fieldName: nonCarbonMeasure
+          aggregateExpression: BoolAggExp
+        - fieldName: nonCarbonMeasureDesc
+          aggregateExpression: TextAggExp
+        - fieldName: roomNight
+          aggregateExpression: Int4AggExp
+        - fieldName: weatherNormalized
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EnvironmentalimpactCarbonFootprintsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EnvironmentalimpactCarbonFootprintsOrderByExp
+  operand:
+    object:
+      orderedType: EnvironmentalimpactCarbonFootprints
+      orderableFields:
+        - fieldName: carbonUomId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingEvent
+          orderByExpression: Int32OrderByExp
+        - fieldName: nonCarbonMeasure
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: nonCarbonMeasureDesc
+          orderByExpression: String1OrderByExp
+        - fieldName: roomNight
+          orderByExpression: Int32OrderByExp
+        - fieldName: weatherNormalized
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EnvironmentalimpactCarbonFootprintsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EnvironmentalimpactCarbonFootprints
+  objectType: EnvironmentalimpactCarbonFootprints
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: environmentalimpact_carbon_footprints
+  filterExpressionType: EnvironmentalimpactCarbonFootprintsBoolExp
+  aggregateExpression: EnvironmentalimpactCarbonFootprintsAggExp
+  orderByExpression: EnvironmentalimpactCarbonFootprintsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: environmentalimpactCarbonFootprints
+      subscription:
+        rootField: environmentalimpactCarbonFootprints
+    selectUniques:
+      - queryRootField: environmentalimpactCarbonFootprintsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: environmentalimpactCarbonFootprintsById
+    filterInputTypeName: EnvironmentalimpactCarbonFootprintsFilterInput
+    aggregate:
+      queryRootField: environmentalimpactCarbonFootprintsAggregate
+      subscription:
+        rootField: environmentalimpactCarbonFootprintsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EnvironmentalimpactCarbonFootprints
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

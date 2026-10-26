@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleDecimals
+    inputTypeName: BookingruleDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleDecimalsBoolExp
+  operand:
+    object:
+      type: BookingruleDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleDecimals
+  objectType: BookingruleDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_decimals
+  filterExpressionType: BookingruleDecimalsBoolExp
+  aggregateExpression: BookingruleDecimalsAggExp
+  orderByExpression: BookingruleDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleDecimals
+      subscription:
+        rootField: bookingruleDecimals
+    selectUniques:
+      - queryRootField: bookingruleDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleDecimalsById
+    filterInputTypeName: BookingruleDecimalsFilterInput
+    aggregate:
+      queryRootField: bookingruleDecimalsAggregate
+      subscription:
+        rootField: bookingruleDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

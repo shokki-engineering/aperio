@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomImageItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertMeetingroomImageItemsObject
+    inputTypeName: InsertMeetingroomImageItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_image_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomImageItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomImageItemsResponse
+  description: Responses from the 'insert_meetingroom_image_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomImageItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingroomImageItemsResponse
+    inputTypeName: InsertMeetingroomImageItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_image_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomImageItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingroomImageItems
+  outputType: InsertMeetingroomImageItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingroomImageItemsObject!]!"
+    - name: postCheck
+      type: MeetingroomImageItemsBoolExp
+      description: Insert permission predicate over the 'meetingroom_image_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingroom_image_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingroomImageItems
+    rootFieldKind: Mutation
+  description: Insert into the meetingroom_image_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingroomImageItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

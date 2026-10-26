@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileSecuritiesObject
+  fields:
+    - name: accessType
+      type: Enum
+    - name: accessingOrganizationId
+      type: String_1
+    - name: accessingOrganizationType
+      type: Enum
+    - name: agreementsId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: transferAction
+      type: Enum
+  graphql:
+    typeName: InsertProfileSecuritiesObject
+    inputTypeName: InsertProfileSecuritiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_securities_object
+      fieldMapping:
+        accessType:
+          column:
+            name: access_type
+        accessingOrganizationId:
+          column:
+            name: accessing_organization_id
+        accessingOrganizationType:
+          column:
+            name: accessing_organization_type
+        agreementsId:
+          column:
+            name: agreements_id
+        id:
+          column:
+            name: id
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileSecuritiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessType
+          - accessingOrganizationId
+          - accessingOrganizationType
+          - agreementsId
+          - id
+          - transferAction
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileSecuritiesResponse
+  description: Responses from the 'insert_profile_securities' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileSecurities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileSecuritiesResponse
+    inputTypeName: InsertProfileSecuritiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_securities_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileSecuritiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileSecurities
+  outputType: InsertProfileSecuritiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileSecuritiesObject!]!"
+    - name: postCheck
+      type: ProfileSecuritiesBoolExp
+      description: Insert permission predicate over the 'profile_securities' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_securities
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileSecurities
+    rootFieldKind: Mutation
+  description: Insert into the profile_securities table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileSecurities
+  permissions:
+    - role: admin
+      allowExecution: true
+

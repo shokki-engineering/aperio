@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanDecimals
+    inputTypeName: RateplanDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanDecimalsBoolExp
+  operand:
+    object:
+      type: RateplanDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanDecimals
+  objectType: RateplanDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_decimals
+  filterExpressionType: RateplanDecimalsBoolExp
+  aggregateExpression: RateplanDecimalsAggExp
+  orderByExpression: RateplanDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanDecimals
+      subscription:
+        rootField: rateplanDecimals
+    selectUniques:
+      - queryRootField: rateplanDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanDecimalsById
+    filterInputTypeName: RateplanDecimalsFilterInput
+    aggregate:
+      queryRootField: rateplanDecimalsAggregate
+      subscription:
+        rootField: rateplanDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

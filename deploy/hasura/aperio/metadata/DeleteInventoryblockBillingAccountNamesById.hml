@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryblockBillingAccountNamesByIdResponse
+  description: Responses from the
+    'delete_inventoryblock_billing_account_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockBillingAccountNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryblockBillingAccountNamesByIdResponse
+    inputTypeName: DeleteInventoryblockBillingAccountNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventoryblock_billing_account_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryblockBillingAccountNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryblockBillingAccountNamesById
+  outputType: DeleteInventoryblockBillingAccountNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryblockBillingAccountNamesBoolExp
+      description: Delete permission predicate over the
+        'inventoryblock_billing_account_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventoryblock_billing_account_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryblockBillingAccountNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'inventoryblock_billing_account_names'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryblockBillingAccountNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateMiscChargeOrdersByIdResponse
+  description: Responses from the 'delete_rate_misc_charge_orders_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateMiscChargeOrders!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateMiscChargeOrdersByIdResponse
+    inputTypeName: DeleteRateMiscChargeOrdersByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rate_misc_charge_orders_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateMiscChargeOrdersByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateMiscChargeOrdersById
+  outputType: DeleteRateMiscChargeOrdersByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateMiscChargeOrdersBoolExp
+      description: Delete permission predicate over the 'rate_misc_charge_orders' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rate_misc_charge_orders_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateMiscChargeOrdersById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rate_misc_charge_orders' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateMiscChargeOrdersById
+  permissions:
+    - role: admin
+      allowExecution: true
+

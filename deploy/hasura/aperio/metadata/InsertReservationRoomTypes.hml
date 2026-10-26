@@ -1,0 +1,264 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomTypesObject
+  fields:
+    - name: alternate
+      type: Boolean_1
+    - name: bedTypeCodes
+      type: String_1
+    - name: composite
+      type: Boolean_1
+    - name: config
+      type: String_1
+    - name: converted
+      type: Boolean_1
+    - name: floor
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: invBlockCode
+      type: String_1
+    - name: nonSmoking
+      type: Boolean_1
+    - name: promotionCode
+      type: String_1
+    - name: promotionVendorCodes
+      type: "[String_1]"
+    - name: quantity
+      type: Int32
+    - name: reqdGuaranteeType
+      type: String_1
+    - name: room
+      type: Boolean_1
+    - name: roomArchitectureCode
+      type: Enum
+    - name: roomCategory
+      type: Enum
+    - name: roomClassificationCode
+      type: Enum
+    - name: roomDescriptionId
+      type: String_1
+    - name: roomGender
+      type: Enum
+    - name: roomId
+      type: String_1
+    - name: roomLocationCode
+      type: Enum
+    - name: roomStayId
+      type: String_1!
+    - name: roomType
+      type: String_1
+    - name: roomTypeCode
+      type: String_1
+    - name: roomViewCode
+      type: Enum
+    - name: sharedRoom
+      type: Boolean_1
+    - name: sizeMeasurement
+      type: String_1
+    - name: unitCount
+      type: Int32
+  graphql:
+    typeName: InsertReservationRoomTypesObject
+    inputTypeName: InsertReservationRoomTypesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_types_object
+      fieldMapping:
+        alternate:
+          column:
+            name: alternate
+        bedTypeCodes:
+          column:
+            name: bed_type_codes
+        composite:
+          column:
+            name: composite
+        config:
+          column:
+            name: config
+        converted:
+          column:
+            name: converted
+        floor:
+          column:
+            name: floor
+        id:
+          column:
+            name: id
+        invBlockCode:
+          column:
+            name: inv_block_code
+        nonSmoking:
+          column:
+            name: non_smoking
+        promotionCode:
+          column:
+            name: promotion_code
+        promotionVendorCodes:
+          column:
+            name: promotion_vendor_codes
+        quantity:
+          column:
+            name: quantity
+        reqdGuaranteeType:
+          column:
+            name: reqd_guarantee_type
+        room:
+          column:
+            name: room
+        roomArchitectureCode:
+          column:
+            name: room_architecture_code
+        roomCategory:
+          column:
+            name: room_category
+        roomClassificationCode:
+          column:
+            name: room_classification_code
+        roomDescriptionId:
+          column:
+            name: room_description_id
+        roomGender:
+          column:
+            name: room_gender
+        roomId:
+          column:
+            name: room_id
+        roomLocationCode:
+          column:
+            name: room_location_code
+        roomStayId:
+          column:
+            name: room_stay_id
+        roomType:
+          column:
+            name: room_type
+        roomTypeCode:
+          column:
+            name: room_type_code
+        roomViewCode:
+          column:
+            name: room_view_code
+        sharedRoom:
+          column:
+            name: shared_room
+        sizeMeasurement:
+          column:
+            name: size_measurement
+        unitCount:
+          column:
+            name: unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomTypesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - alternate
+          - bedTypeCodes
+          - composite
+          - config
+          - converted
+          - floor
+          - id
+          - invBlockCode
+          - nonSmoking
+          - promotionCode
+          - promotionVendorCodes
+          - quantity
+          - reqdGuaranteeType
+          - room
+          - roomArchitectureCode
+          - roomCategory
+          - roomClassificationCode
+          - roomDescriptionId
+          - roomGender
+          - roomId
+          - roomLocationCode
+          - roomStayId
+          - roomType
+          - roomTypeCode
+          - roomViewCode
+          - sharedRoom
+          - sizeMeasurement
+          - unitCount
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomTypesResponse
+  description: Responses from the 'insert_reservation_room_types' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRoomTypes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRoomTypesResponse
+    inputTypeName: InsertReservationRoomTypesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_types_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomTypesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRoomTypes
+  outputType: InsertReservationRoomTypesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRoomTypesObject!]!"
+    - name: postCheck
+      type: ReservationRoomTypesBoolExp
+      description: Insert permission predicate over the 'reservation_room_types' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_room_types
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRoomTypes
+    rootFieldKind: Mutation
+  description: Insert into the reservation_room_types table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRoomTypes
+  permissions:
+    - role: admin
+      allowExecution: true
+

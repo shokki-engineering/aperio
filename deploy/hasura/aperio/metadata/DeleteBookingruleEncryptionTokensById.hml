@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteBookingruleEncryptionTokensByIdResponse
+  description: Responses from the 'delete_bookingrule_encryption_tokens_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleEncryptionTokens!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteBookingruleEncryptionTokensByIdResponse
+    inputTypeName: DeleteBookingruleEncryptionTokensByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_bookingrule_encryption_tokens_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteBookingruleEncryptionTokensByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteBookingruleEncryptionTokensById
+  outputType: DeleteBookingruleEncryptionTokensByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: BookingruleEncryptionTokensBoolExp
+      description: Delete permission predicate over the
+        'bookingrule_encryption_tokens' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_bookingrule_encryption_tokens_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteBookingruleEncryptionTokensById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'bookingrule_encryption_tokens' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteBookingruleEncryptionTokensById
+  permissions:
+    - role: admin
+      allowExecution: true
+

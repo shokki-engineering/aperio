@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportExhibitorInfosObject
+  fields:
+    - name: domesticQuantity
+      type: Int32
+    - name: exhibitorQuantity
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: internationalQuantity
+      type: Int32
+    - name: noShowQuantity
+      type: Int32
+    - name: onsiteRegisteredQuantity
+      type: Int32
+    - name: preRegisteredQuantity
+      type: Int32
+    - name: quantityType
+      type: Enum
+    - name: totalQuantity
+      type: Int32
+  graphql:
+    typeName: InsertEventreportExhibitorInfosObject
+    inputTypeName: InsertEventreportExhibitorInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_exhibitor_infos_object
+      fieldMapping:
+        domesticQuantity:
+          column:
+            name: domestic_quantity
+        exhibitorQuantity:
+          column:
+            name: exhibitor_quantity
+        id:
+          column:
+            name: id
+        internationalQuantity:
+          column:
+            name: international_quantity
+        noShowQuantity:
+          column:
+            name: no_show_quantity
+        onsiteRegisteredQuantity:
+          column:
+            name: onsite_registered_quantity
+        preRegisteredQuantity:
+          column:
+            name: pre_registered_quantity
+        quantityType:
+          column:
+            name: quantity_type
+        totalQuantity:
+          column:
+            name: total_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportExhibitorInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - domesticQuantity
+          - exhibitorQuantity
+          - id
+          - internationalQuantity
+          - noShowQuantity
+          - onsiteRegisteredQuantity
+          - preRegisteredQuantity
+          - quantityType
+          - totalQuantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportExhibitorInfosResponse
+  description: Responses from the 'insert_eventreport_exhibitor_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportExhibitorInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportExhibitorInfosResponse
+    inputTypeName: InsertEventreportExhibitorInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_exhibitor_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportExhibitorInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportExhibitorInfos
+  outputType: InsertEventreportExhibitorInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportExhibitorInfosObject!]!"
+    - name: postCheck
+      type: EventreportExhibitorInfosBoolExp
+      description: Insert permission predicate over the 'eventreport_exhibitor_infos'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_exhibitor_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportExhibitorInfos
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_exhibitor_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportExhibitorInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

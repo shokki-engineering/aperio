@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileThreeDomainSecuritiesGatewayId
+  description: Update the 'gateway_id' column in the
+    'profile_three_domain_securities' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileThreeDomainSecuritiesGatewayId
+    inputTypeName: UpdateColumnProfileThreeDomainSecuritiesGatewayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_three_domain_securities_gateway_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileThreeDomainSecuritiesGatewayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileThreeDomainSecuritiesId
+  description: Update the 'id' column in the 'profile_three_domain_securities' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileThreeDomainSecuritiesId
+    inputTypeName: UpdateColumnProfileThreeDomainSecuritiesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_three_domain_securities_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileThreeDomainSecuritiesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileThreeDomainSecuritiesResultsId
+  description: Update the 'results_id' column in the
+    'profile_three_domain_securities' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileThreeDomainSecuritiesResultsId
+    inputTypeName: UpdateColumnProfileThreeDomainSecuritiesResultsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_three_domain_securities_results_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileThreeDomainSecuritiesResultsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileThreeDomainSecuritiesByIdUpdateColumns
+  description: Update the columns of the 'profile_three_domain_securities' collection
+  fields:
+    - name: gatewayId
+      type: UpdateColumnProfileThreeDomainSecuritiesGatewayId
+      description: Update the 'gateway_id' column in the
+        'profile_three_domain_securities' collection.
+    - name: id
+      type: UpdateColumnProfileThreeDomainSecuritiesId
+      description: Update the 'id' column in the 'profile_three_domain_securities'
+        collection.
+    - name: resultsId
+      type: UpdateColumnProfileThreeDomainSecuritiesResultsId
+      description: Update the 'results_id' column in the
+        'profile_three_domain_securities' collection.
+  graphql:
+    typeName: UpdateProfileThreeDomainSecuritiesByIdUpdateColumns
+    inputTypeName: UpdateProfileThreeDomainSecuritiesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_three_domain_securities_by_id_update_columns
+      fieldMapping:
+        gatewayId:
+          column:
+            name: gateway_id
+        id:
+          column:
+            name: id
+        resultsId:
+          column:
+            name: results_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileThreeDomainSecuritiesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - gatewayId
+          - id
+          - resultsId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileThreeDomainSecuritiesByIdResponse
+  description: Responses from the 'update_profile_three_domain_securities_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileThreeDomainSecurities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileThreeDomainSecuritiesByIdResponse
+    inputTypeName: UpdateProfileThreeDomainSecuritiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_three_domain_securities_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileThreeDomainSecuritiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileThreeDomainSecuritiesById
+  outputType: UpdateProfileThreeDomainSecuritiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileThreeDomainSecuritiesBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_three_domain_securities' collection
+    - name: preCheck
+      type: ProfileThreeDomainSecuritiesBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_three_domain_securities' collection
+    - name: updateColumns
+      type: UpdateProfileThreeDomainSecuritiesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_three_domain_securities_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileThreeDomainSecuritiesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_three_domain_securities' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileThreeDomainSecuritiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

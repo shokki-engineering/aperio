@@ -1,0 +1,445 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommissionResource
+  fields:
+    - name: amountId
+      type: String_1
+    - name: bookingSource
+      type: String_1
+    - name: commissionOriginatorCode
+      type: String_1
+    - name: confirmationId
+      type: String_1
+    - name: confirmationOriginatorCode
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: marketCode
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: originalBookingDayId
+      type: String_1
+    - name: payeeAddressId
+      type: String_1
+    - name: payeeId
+      type: String_1
+    - name: preferredPaymentCurrency
+      type: String_1
+    - name: profileCertificationId
+      type: String_1
+    - name: promotionCode
+      type: String_1
+    - name: reservationId
+      type: String_1
+    - name: roomCount
+      type: Int32
+    - name: roomInventoryCode
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: CommissionResource
+    inputTypeName: CommissionResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: commission_resource
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        bookingSource:
+          column:
+            name: booking_source
+        commissionOriginatorCode:
+          column:
+            name: commission_originator_code
+        confirmationId:
+          column:
+            name: confirmation_id
+        confirmationOriginatorCode:
+          column:
+            name: confirmation_originator_code
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        marketCode:
+          column:
+            name: market_code
+        name:
+          column:
+            name: name
+        originalBookingDayId:
+          column:
+            name: original_booking_day_id
+        payeeAddressId:
+          column:
+            name: payee_address_id
+        payeeId:
+          column:
+            name: payee_id
+        preferredPaymentCurrency:
+          column:
+            name: preferred_payment_currency
+        profileCertificationId:
+          column:
+            name: profile_certification_id
+        promotionCode:
+          column:
+            name: promotion_code
+        reservationId:
+          column:
+            name: reservation_id
+        roomCount:
+          column:
+            name: room_count
+        roomInventoryCode:
+          column:
+            name: room_inventory_code
+        startId:
+          column:
+            name: start_id
+        uid:
+          column:
+            name: uid
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommissionResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - bookingSource
+          - commissionOriginatorCode
+          - confirmationId
+          - confirmationOriginatorCode
+          - createTime
+          - deleteTime
+          - duration
+          - endId
+          - etag
+          - expireTime
+          - hotelId
+          - id
+          - marketCode
+          - name
+          - originalBookingDayId
+          - payeeAddressId
+          - payeeId
+          - preferredPaymentCurrency
+          - profileCertificationId
+          - promotionCode
+          - reservationId
+          - roomCount
+          - roomInventoryCode
+          - startId
+          - uid
+          - uniqueIdId
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CommissionResourceBoolExp
+  operand:
+    object:
+      type: CommissionResource
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bookingSource
+          booleanExpressionType: TextBoolExp
+        - fieldName: commissionOriginatorCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: confirmationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: confirmationOriginatorCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: hotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: marketCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalBookingDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: payeeAddressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: payeeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferredPaymentCurrency
+          booleanExpressionType: TextBoolExp
+        - fieldName: profileCertificationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: promotionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: reservationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: roomInventoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: uniqueIdId
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CommissionResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CommissionResourceAggExp
+  operand:
+    object:
+      aggregatedType: CommissionResource
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: bookingSource
+          aggregateExpression: TextAggExp
+        - fieldName: commissionOriginatorCode
+          aggregateExpression: TextAggExp
+        - fieldName: confirmationId
+          aggregateExpression: TextAggExp
+        - fieldName: confirmationOriginatorCode
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: hotelId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: marketCode
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: originalBookingDayId
+          aggregateExpression: TextAggExp
+        - fieldName: payeeAddressId
+          aggregateExpression: TextAggExp
+        - fieldName: payeeId
+          aggregateExpression: TextAggExp
+        - fieldName: preferredPaymentCurrency
+          aggregateExpression: TextAggExp
+        - fieldName: profileCertificationId
+          aggregateExpression: TextAggExp
+        - fieldName: promotionCode
+          aggregateExpression: TextAggExp
+        - fieldName: reservationId
+          aggregateExpression: TextAggExp
+        - fieldName: roomCount
+          aggregateExpression: Int4AggExp
+        - fieldName: roomInventoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: uniqueIdId
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CommissionResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CommissionResourceOrderByExp
+  operand:
+    object:
+      orderedType: CommissionResource
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: bookingSource
+          orderByExpression: String1OrderByExp
+        - fieldName: commissionOriginatorCode
+          orderByExpression: String1OrderByExp
+        - fieldName: confirmationId
+          orderByExpression: String1OrderByExp
+        - fieldName: confirmationOriginatorCode
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: hotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: marketCode
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: originalBookingDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: payeeAddressId
+          orderByExpression: String1OrderByExp
+        - fieldName: payeeId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferredPaymentCurrency
+          orderByExpression: String1OrderByExp
+        - fieldName: profileCertificationId
+          orderByExpression: String1OrderByExp
+        - fieldName: promotionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: reservationId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: roomInventoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: uniqueIdId
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CommissionResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CommissionResource
+  objectType: CommissionResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: commission_resource
+  filterExpressionType: CommissionResourceBoolExp
+  aggregateExpression: CommissionResourceAggExp
+  orderByExpression: CommissionResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: commissionResource
+      subscription:
+        rootField: commissionResource
+    selectUniques:
+      - queryRootField: commissionResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: commissionResourceById
+    filterInputTypeName: CommissionResourceFilterInput
+    aggregate:
+      queryRootField: commissionResourceAggregate
+      subscription:
+        rootField: commissionResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CommissionResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

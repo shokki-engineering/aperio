@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RestaurantCharges
+    inputTypeName: RestaurantChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantChargesBoolExp
+  operand:
+    object:
+      type: RestaurantCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantChargesAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantChargesOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantCharges
+  objectType: RestaurantCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_charges
+  filterExpressionType: RestaurantChargesBoolExp
+  aggregateExpression: RestaurantChargesAggExp
+  orderByExpression: RestaurantChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantCharges
+      subscription:
+        rootField: restaurantCharges
+    selectUniques:
+      - queryRootField: restaurantChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantChargesById
+    filterInputTypeName: RestaurantChargesFilterInput
+    aggregate:
+      queryRootField: restaurantChargesAggregate
+      subscription:
+        rootField: restaurantChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

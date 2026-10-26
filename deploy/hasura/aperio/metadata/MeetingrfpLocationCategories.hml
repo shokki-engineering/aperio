@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpLocationCategories
+  fields:
+    - name: id
+      type: String_1!
+    - name: locationId
+      type: String_1
+    - name: preferenceId
+      type: String_1!
+  graphql:
+    typeName: MeetingrfpLocationCategories
+    inputTypeName: MeetingrfpLocationCategoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_location_categories
+      fieldMapping:
+        id:
+          column:
+            name: id
+        locationId:
+          column:
+            name: location_id
+        preferenceId:
+          column:
+            name: preference_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpLocationCategories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - locationId
+          - preferenceId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpLocationCategoriesBoolExp
+  operand:
+    object:
+      type: MeetingrfpLocationCategories
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferenceId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpLocationCategoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpLocationCategoriesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpLocationCategories
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationId
+          aggregateExpression: TextAggExp
+        - fieldName: preferenceId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpLocationCategoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpLocationCategoriesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpLocationCategories
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferenceId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpLocationCategoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpLocationCategories
+  objectType: MeetingrfpLocationCategories
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_location_categories
+  filterExpressionType: MeetingrfpLocationCategoriesBoolExp
+  aggregateExpression: MeetingrfpLocationCategoriesAggExp
+  orderByExpression: MeetingrfpLocationCategoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpLocationCategories
+      subscription:
+        rootField: meetingrfpLocationCategories
+    selectUniques:
+      - queryRootField: meetingrfpLocationCategoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpLocationCategoriesById
+    filterInputTypeName: MeetingrfpLocationCategoriesFilterInput
+    aggregate:
+      queryRootField: meetingrfpLocationCategoriesAggregate
+      subscription:
+        rootField: meetingrfpLocationCategoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpLocationCategories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

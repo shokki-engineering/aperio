@@ -1,0 +1,269 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportStartDateWindowsDow
+  description: Update the 'dow' column in the 'eventreport_start_date_windows' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportStartDateWindowsDow
+    inputTypeName: UpdateColumnEventreportStartDateWindowsDowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_start_date_windows_dow
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportStartDateWindowsDow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportStartDateWindowsEarliestId
+  description: Update the 'earliest_id' column in the
+    'eventreport_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportStartDateWindowsEarliestId
+    inputTypeName: UpdateColumnEventreportStartDateWindowsEarliestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_start_date_windows_earliest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportStartDateWindowsEarliestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportStartDateWindowsId
+  description: Update the 'id' column in the 'eventreport_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportStartDateWindowsId
+    inputTypeName: UpdateColumnEventreportStartDateWindowsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_start_date_windows_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportStartDateWindowsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportStartDateWindowsLatestId
+  description: Update the 'latest_id' column in the
+    'eventreport_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportStartDateWindowsLatestId
+    inputTypeName: UpdateColumnEventreportStartDateWindowsLatestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_start_date_windows_latest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportStartDateWindowsLatestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportStartDateWindowsByIdUpdateColumns
+  description: Update the columns of the 'eventreport_start_date_windows' collection
+  fields:
+    - name: dow
+      type: UpdateColumnEventreportStartDateWindowsDow
+      description: Update the 'dow' column in the 'eventreport_start_date_windows'
+        collection.
+    - name: earliestId
+      type: UpdateColumnEventreportStartDateWindowsEarliestId
+      description: Update the 'earliest_id' column in the
+        'eventreport_start_date_windows' collection.
+    - name: id
+      type: UpdateColumnEventreportStartDateWindowsId
+      description: Update the 'id' column in the 'eventreport_start_date_windows'
+        collection.
+    - name: latestId
+      type: UpdateColumnEventreportStartDateWindowsLatestId
+      description: Update the 'latest_id' column in the
+        'eventreport_start_date_windows' collection.
+  graphql:
+    typeName: UpdateEventreportStartDateWindowsByIdUpdateColumns
+    inputTypeName: UpdateEventreportStartDateWindowsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_start_date_windows_by_id_update_columns
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportStartDateWindowsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportStartDateWindowsByIdResponse
+  description: Responses from the 'update_eventreport_start_date_windows_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportStartDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventreportStartDateWindowsByIdResponse
+    inputTypeName: UpdateEventreportStartDateWindowsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_start_date_windows_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportStartDateWindowsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventreportStartDateWindowsById
+  outputType: UpdateEventreportStartDateWindowsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventreportStartDateWindowsBoolExp
+      description: Update permission post-condition predicate over the
+        'eventreport_start_date_windows' collection
+    - name: preCheck
+      type: EventreportStartDateWindowsBoolExp
+      description: Update permission pre-condition predicate over the
+        'eventreport_start_date_windows' collection
+    - name: updateColumns
+      type: UpdateEventreportStartDateWindowsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_eventreport_start_date_windows_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventreportStartDateWindowsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'eventreport_start_date_windows' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventreportStartDateWindowsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

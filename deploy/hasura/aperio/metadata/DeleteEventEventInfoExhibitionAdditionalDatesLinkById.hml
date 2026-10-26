@@ -1,0 +1,76 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventEventInfoExhibitionAdditionalDatesLinkByIdResponse
+  description: Responses from the
+    'delete_event_event_info_exhibition_additional_dates_link_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventEventInfoExhibitionAdditionalDatesLink!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventEventInfoExhibitionAdditionalDatesLinkByIdResponse
+    inputTypeName: DeleteEventEventInfoExhibitionAdditionalDatesLinkByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_event_event_info_exhibition_additional_dates_link_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventEventInfoExhibitionAdditionalDatesLinkByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventEventInfoExhibitionAdditionalDatesLinkById
+  outputType: DeleteEventEventInfoExhibitionAdditionalDatesLinkByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventEventInfoExhibitionAdditionalDatesLinkBoolExp
+      description: Delete permission predicate over the
+        'event_event_info_exhibition_additional_dates_link' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_event_event_info_exhibition_additional_dates_link_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventEventInfoExhibitionAdditionalDatesLinkById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'event_event_info_exhibition_additional_dates_link' collection using the
+    'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventEventInfoExhibitionAdditionalDatesLinkById
+  permissions:
+    - role: admin
+      allowExecution: true
+

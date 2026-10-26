@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ReservationDecimals
+    inputTypeName: ReservationDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationDecimalsBoolExp
+  operand:
+    object:
+      type: ReservationDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationDecimals
+  objectType: ReservationDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_decimals
+  filterExpressionType: ReservationDecimalsBoolExp
+  aggregateExpression: ReservationDecimalsAggExp
+  orderByExpression: ReservationDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationDecimals
+      subscription:
+        rootField: reservationDecimals
+    selectUniques:
+      - queryRootField: reservationDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationDecimalsById
+    filterInputTypeName: ReservationDecimalsFilterInput
+    aggregate:
+      queryRootField: reservationDecimalsAggregate
+      subscription:
+        rootField: reservationDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

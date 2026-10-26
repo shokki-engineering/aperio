@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeUniqueIdsObject
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeUniqueIdsObject
+    inputTypeName: InsertRoomtypeUniqueIdsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_unique_ids_object
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeUniqueIdsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeUniqueIdsResponse
+  description: Responses from the 'insert_roomtype_unique_ids' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeUniqueIds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeUniqueIdsResponse
+    inputTypeName: InsertRoomtypeUniqueIdsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_unique_ids_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeUniqueIdsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeUniqueIds
+  outputType: InsertRoomtypeUniqueIdsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeUniqueIdsObject!]!"
+    - name: postCheck
+      type: RoomtypeUniqueIdsBoolExp
+      description: Insert permission predicate over the 'roomtype_unique_ids' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_unique_ids
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeUniqueIds
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_unique_ids table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeUniqueIds
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAreainfoTimeOfDaysByIdResponse
+  description: Responses from the 'delete_areainfo_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAreainfoTimeOfDaysByIdResponse
+    inputTypeName: DeleteAreainfoTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_areainfo_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAreainfoTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAreainfoTimeOfDaysById
+  outputType: DeleteAreainfoTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AreainfoTimeOfDaysBoolExp
+      description: Delete permission predicate over the 'areainfo_time_of_days' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_areainfo_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAreainfoTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'areainfo_time_of_days' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAreainfoTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

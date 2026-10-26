@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductBldgRoomsObject
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductBldgRoomsObject
+    inputTypeName: InsertHotelproductBldgRoomsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_bldg_rooms_object
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductBldgRoomsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductBldgRoomsResponse
+  description: Responses from the 'insert_hotelproduct_bldg_rooms' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductBldgRoomsResponse
+    inputTypeName: InsertHotelproductBldgRoomsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_bldg_rooms_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductBldgRoomsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductBldgRooms
+  outputType: InsertHotelproductBldgRoomsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductBldgRoomsObject!]!"
+    - name: postCheck
+      type: HotelproductBldgRoomsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_bldg_rooms' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_bldg_rooms
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductBldgRooms
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_bldg_rooms table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductBldgRooms
+  permissions:
+    - role: admin
+      allowExecution: true
+

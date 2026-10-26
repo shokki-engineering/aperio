@@ -1,0 +1,249 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockDatesDay
+  description: Update the 'day' column in the 'inventoryblock_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockDatesDay
+    inputTypeName: UpdateColumnInventoryblockDatesDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_dates_day
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockDatesDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockDatesId
+  description: Update the 'id' column in the 'inventoryblock_dates' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockDatesId
+    inputTypeName: UpdateColumnInventoryblockDatesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_dates_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockDatesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockDatesMonth
+  description: Update the 'month' column in the 'inventoryblock_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockDatesMonth
+    inputTypeName: UpdateColumnInventoryblockDatesMonthInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_dates_month
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockDatesMonth
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockDatesYear
+  description: Update the 'year' column in the 'inventoryblock_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockDatesYear
+    inputTypeName: UpdateColumnInventoryblockDatesYearInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_dates_year
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockDatesYear
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockDatesByIdUpdateColumns
+  description: Update the columns of the 'inventoryblock_dates' collection
+  fields:
+    - name: day
+      type: UpdateColumnInventoryblockDatesDay
+      description: Update the 'day' column in the 'inventoryblock_dates' collection.
+    - name: id
+      type: UpdateColumnInventoryblockDatesId
+      description: Update the 'id' column in the 'inventoryblock_dates' collection.
+    - name: month
+      type: UpdateColumnInventoryblockDatesMonth
+      description: Update the 'month' column in the 'inventoryblock_dates' collection.
+    - name: year
+      type: UpdateColumnInventoryblockDatesYear
+      description: Update the 'year' column in the 'inventoryblock_dates' collection.
+  graphql:
+    typeName: UpdateInventoryblockDatesByIdUpdateColumns
+    inputTypeName: UpdateInventoryblockDatesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_dates_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockDatesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockDatesByIdResponse
+  description: Responses from the 'update_inventoryblock_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateInventoryblockDatesByIdResponse
+    inputTypeName: UpdateInventoryblockDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateInventoryblockDatesById
+  outputType: UpdateInventoryblockDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: InventoryblockDatesBoolExp
+      description: Update permission post-condition predicate over the
+        'inventoryblock_dates' collection
+    - name: preCheck
+      type: InventoryblockDatesBoolExp
+      description: Update permission pre-condition predicate over the
+        'inventoryblock_dates' collection
+    - name: updateColumns
+      type: UpdateInventoryblockDatesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_inventoryblock_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateInventoryblockDatesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'inventoryblock_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateInventoryblockDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

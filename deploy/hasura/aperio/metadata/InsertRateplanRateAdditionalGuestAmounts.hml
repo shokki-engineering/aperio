@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanRateAdditionalGuestAmountsObject
+  fields:
+    - name: ageBucket
+      type: String_1
+    - name: ageQualifyingCode
+      type: Enum
+    - name: ageTimeUnit
+      type: Enum
+    - name: amountId
+      type: String_1
+    - name: code
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: maxAdditionalGuests
+      type: Int32
+    - name: maxAge
+      type: Int32
+    - name: minAge
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: rateId
+      type: String_1!
+    - name: taxInclusive
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: InsertRateplanRateAdditionalGuestAmountsObject
+    inputTypeName: InsertRateplanRateAdditionalGuestAmountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_rate_additional_guest_amounts_object
+      fieldMapping:
+        ageBucket:
+          column:
+            name: age_bucket
+        ageQualifyingCode:
+          column:
+            name: age_qualifying_code
+        ageTimeUnit:
+          column:
+            name: age_time_unit
+        amountId:
+          column:
+            name: amount_id
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        maxAdditionalGuests:
+          column:
+            name: max_additional_guests
+        maxAge:
+          column:
+            name: max_age
+        minAge:
+          column:
+            name: min_age
+        percentId:
+          column:
+            name: percent_id
+        rateId:
+          column:
+            name: rate_id
+        taxInclusive:
+          column:
+            name: tax_inclusive
+        taxesId:
+          column:
+            name: taxes_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanRateAdditionalGuestAmountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - ageBucket
+          - ageQualifyingCode
+          - ageTimeUnit
+          - amountId
+          - code
+          - id
+          - maxAdditionalGuests
+          - maxAge
+          - minAge
+          - percentId
+          - rateId
+          - taxInclusive
+          - taxesId
+          - type
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanRateAdditionalGuestAmountsResponse
+  description: Responses from the 'insert_rateplan_rate_additional_guest_amounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanRateAdditionalGuestAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanRateAdditionalGuestAmountsResponse
+    inputTypeName: InsertRateplanRateAdditionalGuestAmountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_rate_additional_guest_amounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanRateAdditionalGuestAmountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanRateAdditionalGuestAmounts
+  outputType: InsertRateplanRateAdditionalGuestAmountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanRateAdditionalGuestAmountsObject!]!"
+    - name: postCheck
+      type: RateplanRateAdditionalGuestAmountsBoolExp
+      description: Insert permission predicate over the
+        'rateplan_rate_additional_guest_amounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_rate_additional_guest_amounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanRateAdditionalGuestAmounts
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_rate_additional_guest_amounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanRateAdditionalGuestAmounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

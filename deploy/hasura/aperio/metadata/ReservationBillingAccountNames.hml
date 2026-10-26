@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationBillingAccountNames
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: contactDisplayName
+      type: String_1
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ReservationBillingAccountNames
+    inputTypeName: ReservationBillingAccountNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_billing_account_names
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        contactDisplayName:
+          column:
+            name: contact_display_name
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationBillingAccountNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - contactDisplayName
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationBillingAccountNamesBoolExp
+  operand:
+    object:
+      type: ReservationBillingAccountNames
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: ReservationReservationTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationBillingAccountNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationBillingAccountNamesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationBillingAccountNames
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: contactDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: ReservationReservationTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationBillingAccountNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationBillingAccountNamesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationBillingAccountNames
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: contactDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationBillingAccountNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationBillingAccountNames
+  objectType: ReservationBillingAccountNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_billing_account_names
+  filterExpressionType: ReservationBillingAccountNamesBoolExp
+  aggregateExpression: ReservationBillingAccountNamesAggExp
+  orderByExpression: ReservationBillingAccountNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationBillingAccountNames
+      subscription:
+        rootField: reservationBillingAccountNames
+    selectUniques:
+      - queryRootField: reservationBillingAccountNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationBillingAccountNamesById
+    filterInputTypeName: ReservationBillingAccountNamesFilterInput
+    aggregate:
+      queryRootField: reservationBillingAccountNamesAggregate
+      subscription:
+        rootField: reservationBillingAccountNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationBillingAccountNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

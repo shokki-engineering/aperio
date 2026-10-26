@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleSignatureOnFilesObject
+  fields:
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: signatureOnFile
+      type: Boolean_1
+  graphql:
+    typeName: InsertBookingruleSignatureOnFilesObject
+    inputTypeName: InsertBookingruleSignatureOnFilesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_signature_on_files_object
+      fieldMapping:
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        signatureOnFile:
+          column:
+            name: signature_on_file
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleSignatureOnFilesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - signatureOnFile
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleSignatureOnFilesResponse
+  description: Responses from the 'insert_bookingrule_signature_on_files' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleSignatureOnFiles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleSignatureOnFilesResponse
+    inputTypeName: InsertBookingruleSignatureOnFilesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_signature_on_files_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleSignatureOnFilesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleSignatureOnFiles
+  outputType: InsertBookingruleSignatureOnFilesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleSignatureOnFilesObject!]!"
+    - name: postCheck
+      type: BookingruleSignatureOnFilesBoolExp
+      description: Insert permission predicate over the
+        'bookingrule_signature_on_files' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_signature_on_files
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleSignatureOnFiles
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_signature_on_files table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleSignatureOnFiles
+  permissions:
+    - role: admin
+      allowExecution: true
+

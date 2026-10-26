@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationSourcePositionsObject
+  fields:
+    - name: altitude
+      type: String_1
+    - name: altitudeUnitCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: latitude
+      type: String_1
+    - name: longitude
+      type: String_1
+    - name: positionAccuracyCode
+      type: Enum
+  graphql:
+    typeName: InsertReservationSourcePositionsObject
+    inputTypeName: InsertReservationSourcePositionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_source_positions_object
+      fieldMapping:
+        altitude:
+          column:
+            name: altitude
+        altitudeUnitCode:
+          column:
+            name: altitude_unit_code
+        id:
+          column:
+            name: id
+        latitude:
+          column:
+            name: latitude
+        longitude:
+          column:
+            name: longitude
+        positionAccuracyCode:
+          column:
+            name: position_accuracy_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationSourcePositionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - altitude
+          - altitudeUnitCode
+          - id
+          - latitude
+          - longitude
+          - positionAccuracyCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationSourcePositionsResponse
+  description: Responses from the 'insert_reservation_source_positions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationSourcePositions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationSourcePositionsResponse
+    inputTypeName: InsertReservationSourcePositionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_source_positions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationSourcePositionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationSourcePositions
+  outputType: InsertReservationSourcePositionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationSourcePositionsObject!]!"
+    - name: postCheck
+      type: ReservationSourcePositionsBoolExp
+      description: Insert permission predicate over the 'reservation_source_positions'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_source_positions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationSourcePositions
+    rootFieldKind: Mutation
+  description: Insert into the reservation_source_positions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationSourcePositions
+  permissions:
+    - role: admin
+      allowExecution: true
+

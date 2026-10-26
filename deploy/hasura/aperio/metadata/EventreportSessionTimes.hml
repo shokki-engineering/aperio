@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportSessionTimes
+  fields:
+    - name: endClockId
+      type: String_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: startClockId
+      type: String_1
+  graphql:
+    typeName: EventreportSessionTimes
+    inputTypeName: EventreportSessionTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_session_times
+      fieldMapping:
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        id:
+          column:
+            name: id
+        startClockId:
+          column:
+            name: start_clock_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportSessionTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - endClockId
+          - eventDayFunctionId
+          - id
+          - startClockId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportSessionTimesBoolExp
+  operand:
+    object:
+      type: EventreportSessionTimes
+      comparableFields:
+        - fieldName: endClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayFunctionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startClockId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportSessionTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportSessionTimesAggExp
+  operand:
+    object:
+      aggregatedType: EventreportSessionTimes
+      aggregatableFields:
+        - fieldName: endClockId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayFunctionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startClockId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportSessionTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportSessionTimesOrderByExp
+  operand:
+    object:
+      orderedType: EventreportSessionTimes
+      orderableFields:
+        - fieldName: endClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayFunctionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startClockId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportSessionTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportSessionTimes
+  objectType: EventreportSessionTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_session_times
+  filterExpressionType: EventreportSessionTimesBoolExp
+  aggregateExpression: EventreportSessionTimesAggExp
+  orderByExpression: EventreportSessionTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportSessionTimes
+      subscription:
+        rootField: eventreportSessionTimes
+    selectUniques:
+      - queryRootField: eventreportSessionTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportSessionTimesById
+    filterInputTypeName: EventreportSessionTimesFilterInput
+    aggregate:
+      queryRootField: eventreportSessionTimesAggregate
+      subscription:
+        rootField: eventreportSessionTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportSessionTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

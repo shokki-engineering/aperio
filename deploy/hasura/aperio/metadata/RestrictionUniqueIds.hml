@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestrictionUniqueIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: RestrictionUniqueIds
+    inputTypeName: RestrictionUniqueIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restriction_unique_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestrictionUniqueIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestrictionUniqueIdsBoolExp
+  operand:
+    object:
+      type: RestrictionUniqueIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: RestrictionRestrictionUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestrictionUniqueIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestrictionUniqueIdsAggExp
+  operand:
+    object:
+      aggregatedType: RestrictionUniqueIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: RestrictionRestrictionUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestrictionUniqueIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestrictionUniqueIdsOrderByExp
+  operand:
+    object:
+      orderedType: RestrictionUniqueIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestrictionUniqueIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestrictionUniqueIds
+  objectType: RestrictionUniqueIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restriction_unique_ids
+  filterExpressionType: RestrictionUniqueIdsBoolExp
+  aggregateExpression: RestrictionUniqueIdsAggExp
+  orderByExpression: RestrictionUniqueIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restrictionUniqueIds
+      subscription:
+        rootField: restrictionUniqueIds
+    selectUniques:
+      - queryRootField: restrictionUniqueIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restrictionUniqueIdsById
+    filterInputTypeName: RestrictionUniqueIdsFilterInput
+    aggregate:
+      queryRootField: restrictionUniqueIdsAggregate
+      subscription:
+        rootField: restrictionUniqueIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestrictionUniqueIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationLocationCodesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: locationCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: InsertReservationLocationCodesObject
+    inputTypeName: InsertReservationLocationCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_location_codes_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        locationCodesInclusive:
+          column:
+            name: location_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationLocationCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - locationCodesInclusive
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationLocationCodesResponse
+  description: Responses from the 'insert_reservation_location_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationLocationCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationLocationCodesResponse
+    inputTypeName: InsertReservationLocationCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_location_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationLocationCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationLocationCodes
+  outputType: InsertReservationLocationCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationLocationCodesObject!]!"
+    - name: postCheck
+      type: ReservationLocationCodesBoolExp
+      description: Insert permission predicate over the 'reservation_location_codes'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_location_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationLocationCodes
+    rootFieldKind: Mutation
+  description: Insert into the reservation_location_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationLocationCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

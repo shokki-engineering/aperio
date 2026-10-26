@@ -1,0 +1,268 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpDateOrDateTimesDateTime
+  description: Update the 'date_time' column in the
+    'meetingrfp_date_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpDateOrDateTimesDateTime
+    inputTypeName: UpdateColumnMeetingrfpDateOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_date_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpDateOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpDateOrDateTimesDayId
+  description: Update the 'day_id' column in the 'meetingrfp_date_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpDateOrDateTimesDayId
+    inputTypeName: UpdateColumnMeetingrfpDateOrDateTimesDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_date_or_date_times_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpDateOrDateTimesDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpDateOrDateTimesId
+  description: Update the 'id' column in the 'meetingrfp_date_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpDateOrDateTimesId
+    inputTypeName: UpdateColumnMeetingrfpDateOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_date_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpDateOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpDateOrDateTimesValueCase
+  description: Update the 'value_case' column in the
+    'meetingrfp_date_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpDateOrDateTimesValueCase
+    inputTypeName: UpdateColumnMeetingrfpDateOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_date_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpDateOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpDateOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_date_or_date_times' collection
+  fields:
+    - name: dateTime
+      type: UpdateColumnMeetingrfpDateOrDateTimesDateTime
+      description: Update the 'date_time' column in the
+        'meetingrfp_date_or_date_times' collection.
+    - name: dayId
+      type: UpdateColumnMeetingrfpDateOrDateTimesDayId
+      description: Update the 'day_id' column in the 'meetingrfp_date_or_date_times'
+        collection.
+    - name: id
+      type: UpdateColumnMeetingrfpDateOrDateTimesId
+      description: Update the 'id' column in the 'meetingrfp_date_or_date_times' collection.
+    - name: valueCase
+      type: UpdateColumnMeetingrfpDateOrDateTimesValueCase
+      description: Update the 'value_case' column in the
+        'meetingrfp_date_or_date_times' collection.
+  graphql:
+    typeName: UpdateMeetingrfpDateOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpDateOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_date_or_date_times_by_id_update_columns
+      fieldMapping:
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpDateOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpDateOrDateTimesByIdResponse
+  description: Responses from the 'update_meetingrfp_date_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpDateOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpDateOrDateTimesByIdResponse
+    inputTypeName: UpdateMeetingrfpDateOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_date_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpDateOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpDateOrDateTimesById
+  outputType: UpdateMeetingrfpDateOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpDateOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_date_or_date_times' collection
+    - name: preCheck
+      type: MeetingrfpDateOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_date_or_date_times' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpDateOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_date_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpDateOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_date_or_date_times' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpDateOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

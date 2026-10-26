@@ -1,0 +1,156 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductRatePlansObject
+  fields:
+    - name: baseOccupancy
+      type: Int32
+    - name: currencyCode
+      type: String_1
+    - name: hotelProductId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: paymentCollection
+      type: Enum
+    - name: ratePlanCode
+      type: String_1
+    - name: ratePlanDisplayName
+      type: String_1
+    - name: ratePlanType
+      type: Enum
+    - name: sellDateRangeId
+      type: String_1
+    - name: stayDateRangeId
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductRatePlansObject
+    inputTypeName: InsertHotelproductRatePlansObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_rate_plans_object
+      fieldMapping:
+        baseOccupancy:
+          column:
+            name: base_occupancy
+        currencyCode:
+          column:
+            name: currency_code
+        hotelProductId:
+          column:
+            name: hotel_product_id
+        id:
+          column:
+            name: id
+        paymentCollection:
+          column:
+            name: payment_collection
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        ratePlanDisplayName:
+          column:
+            name: rate_plan_display_name
+        ratePlanType:
+          column:
+            name: rate_plan_type
+        sellDateRangeId:
+          column:
+            name: sell_date_range_id
+        stayDateRangeId:
+          column:
+            name: stay_date_range_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductRatePlansObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - baseOccupancy
+          - currencyCode
+          - hotelProductId
+          - id
+          - paymentCollection
+          - ratePlanCode
+          - ratePlanDisplayName
+          - ratePlanType
+          - sellDateRangeId
+          - stayDateRangeId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductRatePlansResponse
+  description: Responses from the 'insert_hotelproduct_rate_plans' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductRatePlans!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductRatePlansResponse
+    inputTypeName: InsertHotelproductRatePlansResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_rate_plans_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductRatePlansResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductRatePlans
+  outputType: InsertHotelproductRatePlansResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductRatePlansObject!]!"
+    - name: postCheck
+      type: HotelproductRatePlansBoolExp
+      description: Insert permission predicate over the 'hotelproduct_rate_plans' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_rate_plans
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductRatePlans
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_rate_plans table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductRatePlans
+  permissions:
+    - role: admin
+      allowExecution: true
+

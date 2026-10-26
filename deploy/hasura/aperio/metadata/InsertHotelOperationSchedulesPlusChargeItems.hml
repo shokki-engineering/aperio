@@ -1,0 +1,134 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelOperationSchedulesPlusChargeItemsObject
+  fields:
+    - name: displayName
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: serviceId
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertHotelOperationSchedulesPlusChargeItemsObject
+    inputTypeName: InsertHotelOperationSchedulesPlusChargeItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_operation_schedules_plus_charge_items_object
+      fieldMapping:
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        serviceId:
+          column:
+            name: service_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelOperationSchedulesPlusChargeItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - displayName
+          - duration
+          - endId
+          - id
+          - serviceId
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelOperationSchedulesPlusChargeItemsResponse
+  description: Responses from the
+    'insert_hotel_operation_schedules_plus_charge_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelOperationSchedulesPlusChargeItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelOperationSchedulesPlusChargeItemsResponse
+    inputTypeName: InsertHotelOperationSchedulesPlusChargeItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_operation_schedules_plus_charge_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelOperationSchedulesPlusChargeItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelOperationSchedulesPlusChargeItems
+  outputType: InsertHotelOperationSchedulesPlusChargeItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelOperationSchedulesPlusChargeItemsObject!]!"
+    - name: postCheck
+      type: HotelOperationSchedulesPlusChargeItemsBoolExp
+      description: Insert permission predicate over the
+        'hotel_operation_schedules_plus_charge_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_operation_schedules_plus_charge_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelOperationSchedulesPlusChargeItems
+    rootFieldKind: Mutation
+  description: Insert into the hotel_operation_schedules_plus_charge_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelOperationSchedulesPlusChargeItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

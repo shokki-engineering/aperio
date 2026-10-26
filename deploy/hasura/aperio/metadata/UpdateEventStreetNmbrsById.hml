@@ -1,0 +1,343 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStreetNmbrsId
+  description: Update the 'id' column in the 'event_street_nmbrs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStreetNmbrsId
+    inputTypeName: UpdateColumnEventStreetNmbrsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_street_nmbrs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStreetNmbrsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStreetNmbrsPoBox
+  description: Update the 'po_box' column in the 'event_street_nmbrs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStreetNmbrsPoBox
+    inputTypeName: UpdateColumnEventStreetNmbrsPoBoxInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_street_nmbrs_po_box
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStreetNmbrsPoBox
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStreetNmbrsRuralRouteNmbr
+  description: Update the 'rural_route_nmbr' column in the 'event_street_nmbrs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStreetNmbrsRuralRouteNmbr
+    inputTypeName: UpdateColumnEventStreetNmbrsRuralRouteNmbrInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_street_nmbrs_rural_route_nmbr
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStreetNmbrsRuralRouteNmbr
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStreetNmbrsStreetDirection
+  description: Update the 'street_direction' column in the 'event_street_nmbrs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStreetNmbrsStreetDirection
+    inputTypeName: UpdateColumnEventStreetNmbrsStreetDirectionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_street_nmbrs_street_direction
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStreetNmbrsStreetDirection
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStreetNmbrsStreetNmbrSuffix
+  description: Update the 'street_nmbr_suffix' column in the 'event_street_nmbrs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStreetNmbrsStreetNmbrSuffix
+    inputTypeName: UpdateColumnEventStreetNmbrsStreetNmbrSuffixInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_street_nmbrs_street_nmbr_suffix
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStreetNmbrsStreetNmbrSuffix
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStreetNmbrsValue
+  description: Update the 'value' column in the 'event_street_nmbrs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStreetNmbrsValue
+    inputTypeName: UpdateColumnEventStreetNmbrsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_street_nmbrs_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStreetNmbrsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventStreetNmbrsByIdUpdateColumns
+  description: Update the columns of the 'event_street_nmbrs' collection
+  fields:
+    - name: id
+      type: UpdateColumnEventStreetNmbrsId
+      description: Update the 'id' column in the 'event_street_nmbrs' collection.
+    - name: poBox
+      type: UpdateColumnEventStreetNmbrsPoBox
+      description: Update the 'po_box' column in the 'event_street_nmbrs' collection.
+    - name: ruralRouteNmbr
+      type: UpdateColumnEventStreetNmbrsRuralRouteNmbr
+      description: Update the 'rural_route_nmbr' column in the 'event_street_nmbrs'
+        collection.
+    - name: streetDirection
+      type: UpdateColumnEventStreetNmbrsStreetDirection
+      description: Update the 'street_direction' column in the 'event_street_nmbrs'
+        collection.
+    - name: streetNmbrSuffix
+      type: UpdateColumnEventStreetNmbrsStreetNmbrSuffix
+      description: Update the 'street_nmbr_suffix' column in the 'event_street_nmbrs'
+        collection.
+    - name: value
+      type: UpdateColumnEventStreetNmbrsValue
+      description: Update the 'value' column in the 'event_street_nmbrs' collection.
+  graphql:
+    typeName: UpdateEventStreetNmbrsByIdUpdateColumns
+    inputTypeName: UpdateEventStreetNmbrsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_street_nmbrs_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        poBox:
+          column:
+            name: po_box
+        ruralRouteNmbr:
+          column:
+            name: rural_route_nmbr
+        streetDirection:
+          column:
+            name: street_direction
+        streetNmbrSuffix:
+          column:
+            name: street_nmbr_suffix
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventStreetNmbrsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - poBox
+          - ruralRouteNmbr
+          - streetDirection
+          - streetNmbrSuffix
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventStreetNmbrsByIdResponse
+  description: Responses from the 'update_event_street_nmbrs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventStreetNmbrs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventStreetNmbrsByIdResponse
+    inputTypeName: UpdateEventStreetNmbrsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_street_nmbrs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventStreetNmbrsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventStreetNmbrsById
+  outputType: UpdateEventStreetNmbrsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventStreetNmbrsBoolExp
+      description: Update permission post-condition predicate over the
+        'event_street_nmbrs' collection
+    - name: preCheck
+      type: EventStreetNmbrsBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_street_nmbrs' collection
+    - name: updateColumns
+      type: UpdateEventStreetNmbrsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_street_nmbrs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventStreetNmbrsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_street_nmbrs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventStreetNmbrsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

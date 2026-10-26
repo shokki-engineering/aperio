@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleDateOrTimeOrDateTimesClockId
+  description: Update the 'clock_id' column in the
+    'bookingrule_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesClockId
+    inputTypeName: UpdateColumnBookingruleDateOrTimeOrDateTimesClockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_date_or_time_or_date_times_clock_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesClockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleDateOrTimeOrDateTimesDateTime
+  description: Update the 'date_time' column in the
+    'bookingrule_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesDateTime
+    inputTypeName: UpdateColumnBookingruleDateOrTimeOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_date_or_time_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleDateOrTimeOrDateTimesDayId
+  description: Update the 'day_id' column in the
+    'bookingrule_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesDayId
+    inputTypeName: UpdateColumnBookingruleDateOrTimeOrDateTimesDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_date_or_time_or_date_times_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleDateOrTimeOrDateTimesId
+  description: Update the 'id' column in the
+    'bookingrule_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesId
+    inputTypeName: UpdateColumnBookingruleDateOrTimeOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_date_or_time_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleDateOrTimeOrDateTimesValueCase
+  description: Update the 'value_case' column in the
+    'bookingrule_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesValueCase
+    inputTypeName: UpdateColumnBookingruleDateOrTimeOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_date_or_time_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleDateOrTimeOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleDateOrTimeOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'bookingrule_date_or_time_or_date_times' collection
+  fields:
+    - name: clockId
+      type: UpdateColumnBookingruleDateOrTimeOrDateTimesClockId
+      description: Update the 'clock_id' column in the
+        'bookingrule_date_or_time_or_date_times' collection.
+    - name: dateTime
+      type: UpdateColumnBookingruleDateOrTimeOrDateTimesDateTime
+      description: Update the 'date_time' column in the
+        'bookingrule_date_or_time_or_date_times' collection.
+    - name: dayId
+      type: UpdateColumnBookingruleDateOrTimeOrDateTimesDayId
+      description: Update the 'day_id' column in the
+        'bookingrule_date_or_time_or_date_times' collection.
+    - name: id
+      type: UpdateColumnBookingruleDateOrTimeOrDateTimesId
+      description: Update the 'id' column in the
+        'bookingrule_date_or_time_or_date_times' collection.
+    - name: valueCase
+      type: UpdateColumnBookingruleDateOrTimeOrDateTimesValueCase
+      description: Update the 'value_case' column in the
+        'bookingrule_date_or_time_or_date_times' collection.
+  graphql:
+    typeName: UpdateBookingruleDateOrTimeOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdateBookingruleDateOrTimeOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_date_or_time_or_date_times_by_id_update_columns
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleDateOrTimeOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleDateOrTimeOrDateTimesByIdResponse
+  description: Responses from the
+    'update_bookingrule_date_or_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleDateOrTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateBookingruleDateOrTimeOrDateTimesByIdResponse
+    inputTypeName: UpdateBookingruleDateOrTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_date_or_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleDateOrTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateBookingruleDateOrTimeOrDateTimesById
+  outputType: UpdateBookingruleDateOrTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: BookingruleDateOrTimeOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'bookingrule_date_or_time_or_date_times' collection
+    - name: preCheck
+      type: BookingruleDateOrTimeOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'bookingrule_date_or_time_or_date_times' collection
+    - name: updateColumns
+      type: UpdateBookingruleDateOrTimeOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_bookingrule_date_or_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateBookingruleDateOrTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'bookingrule_date_or_time_or_date_times'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateBookingruleDateOrTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

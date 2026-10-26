@@ -1,0 +1,249 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryDatesDay
+  description: Update the 'day' column in the 'inventory_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryDatesDay
+    inputTypeName: UpdateColumnInventoryDatesDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventory_dates_day
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryDatesDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryDatesId
+  description: Update the 'id' column in the 'inventory_dates' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryDatesId
+    inputTypeName: UpdateColumnInventoryDatesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventory_dates_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryDatesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryDatesMonth
+  description: Update the 'month' column in the 'inventory_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryDatesMonth
+    inputTypeName: UpdateColumnInventoryDatesMonthInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventory_dates_month
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryDatesMonth
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryDatesYear
+  description: Update the 'year' column in the 'inventory_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryDatesYear
+    inputTypeName: UpdateColumnInventoryDatesYearInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventory_dates_year
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryDatesYear
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryDatesByIdUpdateColumns
+  description: Update the columns of the 'inventory_dates' collection
+  fields:
+    - name: day
+      type: UpdateColumnInventoryDatesDay
+      description: Update the 'day' column in the 'inventory_dates' collection.
+    - name: id
+      type: UpdateColumnInventoryDatesId
+      description: Update the 'id' column in the 'inventory_dates' collection.
+    - name: month
+      type: UpdateColumnInventoryDatesMonth
+      description: Update the 'month' column in the 'inventory_dates' collection.
+    - name: year
+      type: UpdateColumnInventoryDatesYear
+      description: Update the 'year' column in the 'inventory_dates' collection.
+  graphql:
+    typeName: UpdateInventoryDatesByIdUpdateColumns
+    inputTypeName: UpdateInventoryDatesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventory_dates_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryDatesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryDatesByIdResponse
+  description: Responses from the 'update_inventory_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateInventoryDatesByIdResponse
+    inputTypeName: UpdateInventoryDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventory_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateInventoryDatesById
+  outputType: UpdateInventoryDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: InventoryDatesBoolExp
+      description: Update permission post-condition predicate over the
+        'inventory_dates' collection
+    - name: preCheck
+      type: InventoryDatesBoolExp
+      description: Update permission pre-condition predicate over the
+        'inventory_dates' collection
+    - name: updateColumns
+      type: UpdateInventoryDatesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_inventory_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateInventoryDatesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'inventory_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateInventoryDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

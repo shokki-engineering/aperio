@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportHousingInfos
+  fields:
+    - name: hotelQuantity
+      type: Int32
+    - name: housingProviderCode
+      type: Enum
+    - name: housingProviderDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: peakRoomNightQuantity
+      type: Int32
+    - name: sleepingRoomsIndicator
+      type: Boolean_1
+  graphql:
+    typeName: EventreportHousingInfos
+    inputTypeName: EventreportHousingInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_housing_infos
+      fieldMapping:
+        hotelQuantity:
+          column:
+            name: hotel_quantity
+        housingProviderCode:
+          column:
+            name: housing_provider_code
+        housingProviderDisplayName:
+          column:
+            name: housing_provider_display_name
+        id:
+          column:
+            name: id
+        peakRoomNightQuantity:
+          column:
+            name: peak_room_night_quantity
+        sleepingRoomsIndicator:
+          column:
+            name: sleeping_rooms_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportHousingInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelQuantity
+          - housingProviderCode
+          - housingProviderDisplayName
+          - id
+          - peakRoomNightQuantity
+          - sleepingRoomsIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportHousingInfosBoolExp
+  operand:
+    object:
+      type: EventreportHousingInfos
+      comparableFields:
+        - fieldName: hotelQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: housingProviderCode
+          booleanExpressionType: EventreportDestinationServiceProviderTypeBoolExp
+        - fieldName: housingProviderDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: peakRoomNightQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: sleepingRoomsIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportHousingInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportHousingInfosAggExp
+  operand:
+    object:
+      aggregatedType: EventreportHousingInfos
+      aggregatableFields:
+        - fieldName: hotelQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: housingProviderCode
+          aggregateExpression: EventreportDestinationServiceProviderTypeAggExp
+        - fieldName: housingProviderDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: peakRoomNightQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: sleepingRoomsIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportHousingInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportHousingInfosOrderByExp
+  operand:
+    object:
+      orderedType: EventreportHousingInfos
+      orderableFields:
+        - fieldName: hotelQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: housingProviderCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: housingProviderDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: peakRoomNightQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: sleepingRoomsIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportHousingInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportHousingInfos
+  objectType: EventreportHousingInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_housing_infos
+  filterExpressionType: EventreportHousingInfosBoolExp
+  aggregateExpression: EventreportHousingInfosAggExp
+  orderByExpression: EventreportHousingInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportHousingInfos
+      subscription:
+        rootField: eventreportHousingInfos
+    selectUniques:
+      - queryRootField: eventreportHousingInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportHousingInfosById
+    filterInputTypeName: EventreportHousingInfosFilterInput
+    aggregate:
+      queryRootField: eventreportHousingInfosAggregate
+      subscription:
+        rootField: eventreportHousingInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportHousingInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

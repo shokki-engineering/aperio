@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockEmployeeInfosObject
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: employeeId
+      type: String_1
+    - name: employeeLevel
+      type: String_1
+    - name: employeeStatus
+      type: Enum
+    - name: employeeTitle
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertInventoryblockEmployeeInfosObject
+    inputTypeName: InsertInventoryblockEmployeeInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_employee_infos_object
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        employeeId:
+          column:
+            name: employee_id
+        employeeLevel:
+          column:
+            name: employee_level
+        employeeStatus:
+          column:
+            name: employee_status
+        employeeTitle:
+          column:
+            name: employee_title
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockEmployeeInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - employeeId
+          - employeeLevel
+          - employeeStatus
+          - employeeTitle
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockEmployeeInfosResponse
+  description: Responses from the 'insert_inventoryblock_employee_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockEmployeeInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockEmployeeInfosResponse
+    inputTypeName: InsertInventoryblockEmployeeInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_employee_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockEmployeeInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockEmployeeInfos
+  outputType: InsertInventoryblockEmployeeInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockEmployeeInfosObject!]!"
+    - name: postCheck
+      type: InventoryblockEmployeeInfosBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_employee_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_employee_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockEmployeeInfos
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_employee_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockEmployeeInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

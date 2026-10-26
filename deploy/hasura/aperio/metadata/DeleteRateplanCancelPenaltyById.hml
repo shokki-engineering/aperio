@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanCancelPenaltyByIdResponse
+  description: Responses from the 'delete_rateplan_cancel_penalty_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanCancelPenalty!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanCancelPenaltyByIdResponse
+    inputTypeName: DeleteRateplanCancelPenaltyByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_cancel_penalty_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanCancelPenaltyByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanCancelPenaltyById
+  outputType: DeleteRateplanCancelPenaltyByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanCancelPenaltyBoolExp
+      description: Delete permission predicate over the 'rateplan_cancel_penalty' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_cancel_penalty_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanCancelPenaltyById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_cancel_penalty' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanCancelPenaltyById
+  permissions:
+    - role: admin
+      allowExecution: true
+

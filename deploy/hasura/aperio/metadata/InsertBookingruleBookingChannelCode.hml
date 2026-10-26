@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleBookingChannelCodeObject
+  fields:
+    - name: bookingChannelCodesId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: restrictedDisplayIndicator
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleBookingChannelCodeObject
+    inputTypeName: InsertBookingruleBookingChannelCodeObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_booking_channel_code_object
+      fieldMapping:
+        bookingChannelCodesId:
+          column:
+            name: booking_channel_codes_id
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleBookingChannelCodeObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingChannelCodesId
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleBookingChannelCodeResponse
+  description: Responses from the 'insert_bookingrule_booking_channel_code' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleBookingChannelCode!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleBookingChannelCodeResponse
+    inputTypeName: InsertBookingruleBookingChannelCodeResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_booking_channel_code_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleBookingChannelCodeResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleBookingChannelCode
+  outputType: InsertBookingruleBookingChannelCodeResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleBookingChannelCodeObject!]!"
+    - name: postCheck
+      type: BookingruleBookingChannelCodeBoolExp
+      description: Insert permission predicate over the
+        'bookingrule_booking_channel_code' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_booking_channel_code
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleBookingChannelCode
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_booking_channel_code table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleBookingChannelCode
+  permissions:
+    - role: admin
+      allowExecution: true
+

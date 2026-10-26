@@ -1,0 +1,349 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSourcePositionsAltitude
+  description: Update the 'altitude' column in the 'reservation_source_positions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSourcePositionsAltitude
+    inputTypeName: UpdateColumnReservationSourcePositionsAltitudeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_source_positions_altitude
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSourcePositionsAltitude
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSourcePositionsAltitudeUnitCode
+  description: Update the 'altitude_unit_code' column in the
+    'reservation_source_positions' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSourcePositionsAltitudeUnitCode
+    inputTypeName: UpdateColumnReservationSourcePositionsAltitudeUnitCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_source_positions_altitude_unit_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSourcePositionsAltitudeUnitCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSourcePositionsId
+  description: Update the 'id' column in the 'reservation_source_positions' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSourcePositionsId
+    inputTypeName: UpdateColumnReservationSourcePositionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_source_positions_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSourcePositionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSourcePositionsLatitude
+  description: Update the 'latitude' column in the 'reservation_source_positions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSourcePositionsLatitude
+    inputTypeName: UpdateColumnReservationSourcePositionsLatitudeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_source_positions_latitude
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSourcePositionsLatitude
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSourcePositionsLongitude
+  description: Update the 'longitude' column in the 'reservation_source_positions'
+    collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSourcePositionsLongitude
+    inputTypeName: UpdateColumnReservationSourcePositionsLongitudeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_source_positions_longitude
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSourcePositionsLongitude
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSourcePositionsPositionAccuracyCode
+  description: Update the 'position_accuracy_code' column in the
+    'reservation_source_positions' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSourcePositionsPositionAccuracyCode
+    inputTypeName: UpdateColumnReservationSourcePositionsPositionAccuracyCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_source_positions_position_accuracy_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSourcePositionsPositionAccuracyCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationSourcePositionsByIdUpdateColumns
+  description: Update the columns of the 'reservation_source_positions' collection
+  fields:
+    - name: altitude
+      type: UpdateColumnReservationSourcePositionsAltitude
+      description: Update the 'altitude' column in the 'reservation_source_positions'
+        collection.
+    - name: altitudeUnitCode
+      type: UpdateColumnReservationSourcePositionsAltitudeUnitCode
+      description: Update the 'altitude_unit_code' column in the
+        'reservation_source_positions' collection.
+    - name: id
+      type: UpdateColumnReservationSourcePositionsId
+      description: Update the 'id' column in the 'reservation_source_positions' collection.
+    - name: latitude
+      type: UpdateColumnReservationSourcePositionsLatitude
+      description: Update the 'latitude' column in the 'reservation_source_positions'
+        collection.
+    - name: longitude
+      type: UpdateColumnReservationSourcePositionsLongitude
+      description: Update the 'longitude' column in the 'reservation_source_positions'
+        collection.
+    - name: positionAccuracyCode
+      type: UpdateColumnReservationSourcePositionsPositionAccuracyCode
+      description: Update the 'position_accuracy_code' column in the
+        'reservation_source_positions' collection.
+  graphql:
+    typeName: UpdateReservationSourcePositionsByIdUpdateColumns
+    inputTypeName: UpdateReservationSourcePositionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_source_positions_by_id_update_columns
+      fieldMapping:
+        altitude:
+          column:
+            name: altitude
+        altitudeUnitCode:
+          column:
+            name: altitude_unit_code
+        id:
+          column:
+            name: id
+        latitude:
+          column:
+            name: latitude
+        longitude:
+          column:
+            name: longitude
+        positionAccuracyCode:
+          column:
+            name: position_accuracy_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationSourcePositionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - altitude
+          - altitudeUnitCode
+          - id
+          - latitude
+          - longitude
+          - positionAccuracyCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationSourcePositionsByIdResponse
+  description: Responses from the 'update_reservation_source_positions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationSourcePositions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationSourcePositionsByIdResponse
+    inputTypeName: UpdateReservationSourcePositionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_source_positions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationSourcePositionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationSourcePositionsById
+  outputType: UpdateReservationSourcePositionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationSourcePositionsBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_source_positions' collection
+    - name: preCheck
+      type: ReservationSourcePositionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_source_positions' collection
+    - name: updateColumns
+      type: UpdateReservationSourcePositionsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_source_positions_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationSourcePositionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_source_positions' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationSourcePositionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

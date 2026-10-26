@@ -1,0 +1,409 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRatePlans
+  fields:
+    - name: availabilityStatus
+      type: Enum
+    - name: availableQuantity
+      type: Int32
+    - name: bookingCode
+      type: String_1
+    - name: cancelPenaltiesId
+      type: String_1
+    - name: commissionId
+      type: String_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idRequired
+      type: Boolean_1
+    - name: marketCode
+      type: String_1
+    - name: mealsIncludedId
+      type: String_1
+    - name: modificationFeeId
+      type: String_1
+    - name: prepaidIndicator
+      type: Boolean_1
+    - name: priceViewable
+      type: Boolean_1
+    - name: qualificationType
+      type: Enum
+    - name: rateIndicator
+      type: Enum
+    - name: ratePlanCode
+      type: String_1
+    - name: ratePlanDescriptionId
+      type: String_1
+    - name: ratePlanDisplayName
+      type: String_1
+    - name: ratePlanId
+      type: String_1
+    - name: ratePlanInclusionsId
+      type: String_1
+    - name: ratePlanType
+      type: Enum
+    - name: restrictionStatusId
+      type: String_1
+    - name: roomStayId
+      type: String_1!
+  graphql:
+    typeName: ReservationRatePlans
+    inputTypeName: ReservationRatePlansInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_rate_plans
+      fieldMapping:
+        availabilityStatus:
+          column:
+            name: availability_status
+        availableQuantity:
+          column:
+            name: available_quantity
+        bookingCode:
+          column:
+            name: booking_code
+        cancelPenaltiesId:
+          column:
+            name: cancel_penalties_id
+        commissionId:
+          column:
+            name: commission_id
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        idRequired:
+          column:
+            name: id_required
+        marketCode:
+          column:
+            name: market_code
+        mealsIncludedId:
+          column:
+            name: meals_included_id
+        modificationFeeId:
+          column:
+            name: modification_fee_id
+        prepaidIndicator:
+          column:
+            name: prepaid_indicator
+        priceViewable:
+          column:
+            name: price_viewable
+        qualificationType:
+          column:
+            name: qualification_type
+        rateIndicator:
+          column:
+            name: rate_indicator
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        ratePlanDescriptionId:
+          column:
+            name: rate_plan_description_id
+        ratePlanDisplayName:
+          column:
+            name: rate_plan_display_name
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        ratePlanInclusionsId:
+          column:
+            name: rate_plan_inclusions_id
+        ratePlanType:
+          column:
+            name: rate_plan_type
+        restrictionStatusId:
+          column:
+            name: restriction_status_id
+        roomStayId:
+          column:
+            name: room_stay_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRatePlans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - availabilityStatus
+          - availableQuantity
+          - bookingCode
+          - cancelPenaltiesId
+          - commissionId
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - idRequired
+          - marketCode
+          - mealsIncludedId
+          - modificationFeeId
+          - prepaidIndicator
+          - priceViewable
+          - qualificationType
+          - rateIndicator
+          - ratePlanCode
+          - ratePlanDescriptionId
+          - ratePlanDisplayName
+          - ratePlanId
+          - ratePlanInclusionsId
+          - ratePlanType
+          - restrictionStatusId
+          - roomStayId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRatePlansBoolExp
+  operand:
+    object:
+      type: ReservationRatePlans
+      comparableFields:
+        - fieldName: availabilityStatus
+          booleanExpressionType: ReservationRateIndicatorBoolExp
+        - fieldName: availableQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: bookingCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: cancelPenaltiesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commissionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idRequired
+          booleanExpressionType: BoolBoolExp
+        - fieldName: marketCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: mealsIncludedId
+          booleanExpressionType: TextBoolExp
+        - fieldName: modificationFeeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: prepaidIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: priceViewable
+          booleanExpressionType: BoolBoolExp
+        - fieldName: qualificationType
+          booleanExpressionType: ReservationReservationDocumentTypeBoolExp
+        - fieldName: rateIndicator
+          booleanExpressionType: ReservationRateIndicatorBoolExp
+        - fieldName: ratePlanCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanDescriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanInclusionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanType
+          booleanExpressionType: ReservationReservationRatePlanTypeBoolExp
+        - fieldName: restrictionStatusId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomStayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRatePlansBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRatePlansAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRatePlans
+      aggregatableFields:
+        - fieldName: availabilityStatus
+          aggregateExpression: ReservationRateIndicatorAggExp
+        - fieldName: availableQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: bookingCode
+          aggregateExpression: TextAggExp
+        - fieldName: cancelPenaltiesId
+          aggregateExpression: TextAggExp
+        - fieldName: commissionId
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idRequired
+          aggregateExpression: BoolAggExp
+        - fieldName: marketCode
+          aggregateExpression: TextAggExp
+        - fieldName: mealsIncludedId
+          aggregateExpression: TextAggExp
+        - fieldName: modificationFeeId
+          aggregateExpression: TextAggExp
+        - fieldName: prepaidIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: priceViewable
+          aggregateExpression: BoolAggExp
+        - fieldName: qualificationType
+          aggregateExpression: ReservationReservationDocumentTypeAggExp
+        - fieldName: rateIndicator
+          aggregateExpression: ReservationRateIndicatorAggExp
+        - fieldName: ratePlanCode
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanDescriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanId
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanInclusionsId
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanType
+          aggregateExpression: ReservationReservationRatePlanTypeAggExp
+        - fieldName: restrictionStatusId
+          aggregateExpression: TextAggExp
+        - fieldName: roomStayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRatePlansAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRatePlansOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRatePlans
+      orderableFields:
+        - fieldName: availabilityStatus
+          orderByExpression: EnumOrderByExp
+        - fieldName: availableQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: bookingCode
+          orderByExpression: String1OrderByExp
+        - fieldName: cancelPenaltiesId
+          orderByExpression: String1OrderByExp
+        - fieldName: commissionId
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idRequired
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: marketCode
+          orderByExpression: String1OrderByExp
+        - fieldName: mealsIncludedId
+          orderByExpression: String1OrderByExp
+        - fieldName: modificationFeeId
+          orderByExpression: String1OrderByExp
+        - fieldName: prepaidIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: priceViewable
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: qualificationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: rateIndicator
+          orderByExpression: EnumOrderByExp
+        - fieldName: ratePlanCode
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanDescriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanId
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanInclusionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanType
+          orderByExpression: EnumOrderByExp
+        - fieldName: restrictionStatusId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomStayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRatePlansOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRatePlans
+  objectType: ReservationRatePlans
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_rate_plans
+  filterExpressionType: ReservationRatePlansBoolExp
+  aggregateExpression: ReservationRatePlansAggExp
+  orderByExpression: ReservationRatePlansOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRatePlans
+      subscription:
+        rootField: reservationRatePlans
+    selectUniques:
+      - queryRootField: reservationRatePlansById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRatePlansById
+    filterInputTypeName: ReservationRatePlansFilterInput
+    aggregate:
+      queryRootField: reservationRatePlansAggregate
+      subscription:
+        rootField: reservationRatePlansAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRatePlans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

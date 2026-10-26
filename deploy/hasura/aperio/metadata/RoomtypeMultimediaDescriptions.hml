@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeMultimediaDescriptions
+  fields:
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: RoomtypeMultimediaDescriptions
+    inputTypeName: RoomtypeMultimediaDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_multimedia_descriptions
+      fieldMapping:
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeMultimediaDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - lastUpdateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeMultimediaDescriptionsBoolExp
+  operand:
+    object:
+      type: RoomtypeMultimediaDescriptions
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeMultimediaDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeMultimediaDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeMultimediaDescriptions
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeMultimediaDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeMultimediaDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeMultimediaDescriptions
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeMultimediaDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeMultimediaDescriptions
+  objectType: RoomtypeMultimediaDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_multimedia_descriptions
+  filterExpressionType: RoomtypeMultimediaDescriptionsBoolExp
+  aggregateExpression: RoomtypeMultimediaDescriptionsAggExp
+  orderByExpression: RoomtypeMultimediaDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeMultimediaDescriptions
+      subscription:
+        rootField: roomtypeMultimediaDescriptions
+    selectUniques:
+      - queryRootField: roomtypeMultimediaDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeMultimediaDescriptionsById
+    filterInputTypeName: RoomtypeMultimediaDescriptionsFilterInput
+    aggregate:
+      queryRootField: roomtypeMultimediaDescriptionsAggregate
+      subscription:
+        rootField: roomtypeMultimediaDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeMultimediaDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

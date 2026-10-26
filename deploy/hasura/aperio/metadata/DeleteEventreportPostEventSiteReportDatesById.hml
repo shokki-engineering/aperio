@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventreportPostEventSiteReportDatesByIdResponse
+  description: Responses from the
+    'delete_eventreport_post_event_site_report_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportPostEventSiteReportDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventreportPostEventSiteReportDatesByIdResponse
+    inputTypeName: DeleteEventreportPostEventSiteReportDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_eventreport_post_event_site_report_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventreportPostEventSiteReportDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventreportPostEventSiteReportDatesById
+  outputType: DeleteEventreportPostEventSiteReportDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventreportPostEventSiteReportDatesBoolExp
+      description: Delete permission predicate over the
+        'eventreport_post_event_site_report_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_eventreport_post_event_site_report_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventreportPostEventSiteReportDatesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'eventreport_post_event_site_report_dates'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventreportPostEventSiteReportDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

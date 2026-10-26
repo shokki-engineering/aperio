@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RoomtypeDocuments
+    inputTypeName: RoomtypeDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeDocumentsBoolExp
+  operand:
+    object:
+      type: RoomtypeDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: RoomtypeRoomtypeDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: RoomtypeRoomtypeDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeDocuments
+  objectType: RoomtypeDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_documents
+  filterExpressionType: RoomtypeDocumentsBoolExp
+  aggregateExpression: RoomtypeDocumentsAggExp
+  orderByExpression: RoomtypeDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeDocuments
+      subscription:
+        rootField: roomtypeDocuments
+    selectUniques:
+      - queryRootField: roomtypeDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeDocumentsById
+    filterInputTypeName: RoomtypeDocumentsFilterInput
+    aggregate:
+      queryRootField: roomtypeDocumentsAggregate
+      subscription:
+        rootField: roomtypeDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

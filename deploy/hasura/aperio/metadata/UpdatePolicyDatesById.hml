@@ -1,0 +1,249 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyDatesDay
+  description: Update the 'day' column in the 'policy_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyDatesDay
+    inputTypeName: UpdateColumnPolicyDatesDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_dates_day
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyDatesDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyDatesId
+  description: Update the 'id' column in the 'policy_dates' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyDatesId
+    inputTypeName: UpdateColumnPolicyDatesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_dates_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyDatesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyDatesMonth
+  description: Update the 'month' column in the 'policy_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyDatesMonth
+    inputTypeName: UpdateColumnPolicyDatesMonthInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_dates_month
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyDatesMonth
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyDatesYear
+  description: Update the 'year' column in the 'policy_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyDatesYear
+    inputTypeName: UpdateColumnPolicyDatesYearInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_dates_year
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyDatesYear
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyDatesByIdUpdateColumns
+  description: Update the columns of the 'policy_dates' collection
+  fields:
+    - name: day
+      type: UpdateColumnPolicyDatesDay
+      description: Update the 'day' column in the 'policy_dates' collection.
+    - name: id
+      type: UpdateColumnPolicyDatesId
+      description: Update the 'id' column in the 'policy_dates' collection.
+    - name: month
+      type: UpdateColumnPolicyDatesMonth
+      description: Update the 'month' column in the 'policy_dates' collection.
+    - name: year
+      type: UpdateColumnPolicyDatesYear
+      description: Update the 'year' column in the 'policy_dates' collection.
+  graphql:
+    typeName: UpdatePolicyDatesByIdUpdateColumns
+    inputTypeName: UpdatePolicyDatesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_dates_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyDatesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyDatesByIdResponse
+  description: Responses from the 'update_policy_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePolicyDatesByIdResponse
+    inputTypeName: UpdatePolicyDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePolicyDatesById
+  outputType: UpdatePolicyDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: PolicyDatesBoolExp
+      description: Update permission post-condition predicate over the 'policy_dates'
+        collection
+    - name: preCheck
+      type: PolicyDatesBoolExp
+      description: Update permission pre-condition predicate over the 'policy_dates'
+        collection
+    - name: updateColumns
+      type: UpdatePolicyDatesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_policy_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePolicyDatesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'policy_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePolicyDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyGroupPolicies
+  fields:
+    - name: contractCurrency
+      type: String_1
+    - name: contractLanguage
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: localDmcRole
+      type: Enum
+    - name: maxGroupSize
+      type: Int32
+    - name: policyId
+      type: String_1!
+  graphql:
+    typeName: PolicyGroupPolicies
+    inputTypeName: PolicyGroupPoliciesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_group_policies
+      fieldMapping:
+        contractCurrency:
+          column:
+            name: contract_currency
+        contractLanguage:
+          column:
+            name: contract_language
+        id:
+          column:
+            name: id
+        localDmcRole:
+          column:
+            name: local_dmc_role
+        maxGroupSize:
+          column:
+            name: max_group_size
+        policyId:
+          column:
+            name: policy_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyGroupPolicies
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contractCurrency
+          - contractLanguage
+          - id
+          - localDmcRole
+          - maxGroupSize
+          - policyId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyGroupPoliciesBoolExp
+  operand:
+    object:
+      type: PolicyGroupPolicies
+      comparableFields:
+        - fieldName: contractCurrency
+          booleanExpressionType: TextBoolExp
+        - fieldName: contractLanguage
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: localDmcRole
+          booleanExpressionType: PolicyLocalDmcRoleBoolExp
+        - fieldName: maxGroupSize
+          booleanExpressionType: Int4BoolExp
+        - fieldName: policyId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyGroupPoliciesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyGroupPoliciesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyGroupPolicies
+      aggregatableFields:
+        - fieldName: contractCurrency
+          aggregateExpression: TextAggExp
+        - fieldName: contractLanguage
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: localDmcRole
+          aggregateExpression: PolicyLocalDmcRoleAggExp
+        - fieldName: maxGroupSize
+          aggregateExpression: Int4AggExp
+        - fieldName: policyId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyGroupPoliciesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyGroupPoliciesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyGroupPolicies
+      orderableFields:
+        - fieldName: contractCurrency
+          orderByExpression: String1OrderByExp
+        - fieldName: contractLanguage
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: localDmcRole
+          orderByExpression: EnumOrderByExp
+        - fieldName: maxGroupSize
+          orderByExpression: Int32OrderByExp
+        - fieldName: policyId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyGroupPoliciesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyGroupPolicies
+  objectType: PolicyGroupPolicies
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_group_policies
+  filterExpressionType: PolicyGroupPoliciesBoolExp
+  aggregateExpression: PolicyGroupPoliciesAggExp
+  orderByExpression: PolicyGroupPoliciesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyGroupPolicies
+      subscription:
+        rootField: policyGroupPolicies
+    selectUniques:
+      - queryRootField: policyGroupPoliciesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyGroupPoliciesById
+    filterInputTypeName: PolicyGroupPoliciesFilterInput
+    aggregate:
+      queryRootField: policyGroupPoliciesAggregate
+      subscription:
+        rootField: policyGroupPoliciesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyGroupPolicies
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

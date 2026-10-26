@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpLocationCategoriesId
+  description: Update the 'id' column in the 'meetingrfp_location_categories' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpLocationCategoriesId
+    inputTypeName: UpdateColumnMeetingrfpLocationCategoriesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_location_categories_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpLocationCategoriesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpLocationCategoriesLocationId
+  description: Update the 'location_id' column in the
+    'meetingrfp_location_categories' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpLocationCategoriesLocationId
+    inputTypeName: UpdateColumnMeetingrfpLocationCategoriesLocationIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_location_categories_location_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpLocationCategoriesLocationId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpLocationCategoriesPreferenceId
+  description: Update the 'preference_id' column in the
+    'meetingrfp_location_categories' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpLocationCategoriesPreferenceId
+    inputTypeName: UpdateColumnMeetingrfpLocationCategoriesPreferenceIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_location_categories_preference_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpLocationCategoriesPreferenceId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpLocationCategoriesByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_location_categories' collection
+  fields:
+    - name: id
+      type: UpdateColumnMeetingrfpLocationCategoriesId
+      description: Update the 'id' column in the 'meetingrfp_location_categories'
+        collection.
+    - name: locationId
+      type: UpdateColumnMeetingrfpLocationCategoriesLocationId
+      description: Update the 'location_id' column in the
+        'meetingrfp_location_categories' collection.
+    - name: preferenceId
+      type: UpdateColumnMeetingrfpLocationCategoriesPreferenceId
+      description: Update the 'preference_id' column in the
+        'meetingrfp_location_categories' collection.
+  graphql:
+    typeName: UpdateMeetingrfpLocationCategoriesByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpLocationCategoriesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_location_categories_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        locationId:
+          column:
+            name: location_id
+        preferenceId:
+          column:
+            name: preference_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpLocationCategoriesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - locationId
+          - preferenceId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpLocationCategoriesByIdResponse
+  description: Responses from the 'update_meetingrfp_location_categories_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpLocationCategories!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpLocationCategoriesByIdResponse
+    inputTypeName: UpdateMeetingrfpLocationCategoriesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_location_categories_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpLocationCategoriesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpLocationCategoriesById
+  outputType: UpdateMeetingrfpLocationCategoriesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpLocationCategoriesBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_location_categories' collection
+    - name: preCheck
+      type: MeetingrfpLocationCategoriesBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_location_categories' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpLocationCategoriesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_location_categories_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpLocationCategoriesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_location_categories' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpLocationCategoriesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehMakeModelsObject
+  fields:
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: modelYear
+      type: String_1
+    - name: name
+      type: String_1!
+  graphql:
+    typeName: InsertProfileVehMakeModelsObject
+    inputTypeName: InsertProfileVehMakeModelsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_veh_make_models_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        modelYear:
+          column:
+            name: model_year
+        name:
+          column:
+            name: name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehMakeModelsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - modelYear
+          - name
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehMakeModelsResponse
+  description: Responses from the 'insert_profile_veh_make_models' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehMakeModels!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileVehMakeModelsResponse
+    inputTypeName: InsertProfileVehMakeModelsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_veh_make_models_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehMakeModelsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileVehMakeModels
+  outputType: InsertProfileVehMakeModelsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileVehMakeModelsObject!]!"
+    - name: postCheck
+      type: ProfileVehMakeModelsBoolExp
+      description: Insert permission predicate over the 'profile_veh_make_models' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_veh_make_models
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileVehMakeModels
+    rootFieldKind: Mutation
+  description: Insert into the profile_veh_make_models table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileVehMakeModels
+  permissions:
+    - role: admin
+      allowExecution: true
+

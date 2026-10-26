@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantTransportations
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnit
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: included
+      type: Boolean_1
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: notificationRequired
+      type: String_1
+    - name: operationSchedulesId
+      type: String_1
+    - name: relativePositionId
+      type: String_1!
+    - name: transportationCode
+      type: Enum
+    - name: typicalTravelDuration
+      type: String_1
+  graphql:
+    typeName: RestaurantTransportations
+    inputTypeName: RestaurantTransportationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_transportations
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnit:
+          column:
+            name: charge_unit
+        codeDetail:
+          column:
+            name: code_detail
+        description:
+          column:
+            name: description
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        included:
+          column:
+            name: included
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        notificationRequired:
+          column:
+            name: notification_required
+        operationSchedulesId:
+          column:
+            name: operation_schedules_id
+        relativePositionId:
+          column:
+            name: relative_position_id
+        transportationCode:
+          column:
+            name: transportation_code
+        typicalTravelDuration:
+          column:
+            name: typical_travel_duration
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantTransportations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnit
+          - codeDetail
+          - description
+          - descriptiveText
+          - existsCode
+          - id
+          - included
+          - multimediaDescriptionsId
+          - notificationRequired
+          - operationSchedulesId
+          - relativePositionId
+          - transportationCode
+          - typicalTravelDuration
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantTransportationsBoolExp
+  operand:
+    object:
+      type: RestaurantTransportations
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chargeUnit
+          booleanExpressionType: RestaurantRestaurantChargeTypeBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: RestaurantRestaurantOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: included
+          booleanExpressionType: BoolBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: notificationRequired
+          booleanExpressionType: TextBoolExp
+        - fieldName: operationSchedulesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: relativePositionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: transportationCode
+          booleanExpressionType: RestaurantRestaurantTransportationCodeBoolExp
+        - fieldName: typicalTravelDuration
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantTransportationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantTransportationsAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantTransportations
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: chargeUnit
+          aggregateExpression: RestaurantRestaurantChargeTypeAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: RestaurantRestaurantOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: included
+          aggregateExpression: BoolAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: notificationRequired
+          aggregateExpression: TextAggExp
+        - fieldName: operationSchedulesId
+          aggregateExpression: TextAggExp
+        - fieldName: relativePositionId
+          aggregateExpression: TextAggExp
+        - fieldName: transportationCode
+          aggregateExpression: RestaurantRestaurantTransportationCodeAggExp
+        - fieldName: typicalTravelDuration
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantTransportationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantTransportationsOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantTransportations
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: chargeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: included
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: notificationRequired
+          orderByExpression: String1OrderByExp
+        - fieldName: operationSchedulesId
+          orderByExpression: String1OrderByExp
+        - fieldName: relativePositionId
+          orderByExpression: String1OrderByExp
+        - fieldName: transportationCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: typicalTravelDuration
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantTransportationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantTransportations
+  objectType: RestaurantTransportations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_transportations
+  filterExpressionType: RestaurantTransportationsBoolExp
+  aggregateExpression: RestaurantTransportationsAggExp
+  orderByExpression: RestaurantTransportationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantTransportations
+      subscription:
+        rootField: restaurantTransportations
+    selectUniques:
+      - queryRootField: restaurantTransportationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantTransportationsById
+    filterInputTypeName: RestaurantTransportationsFilterInput
+    aggregate:
+      queryRootField: restaurantTransportationsAggregate
+      subscription:
+        rootField: restaurantTransportationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantTransportations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

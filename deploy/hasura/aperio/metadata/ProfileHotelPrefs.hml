@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileHotelPrefs
+  fields:
+    - name: hotelGuestType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: ratePlanCode
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: smokingAllowed
+      type: Boolean_1
+  graphql:
+    typeName: ProfileHotelPrefs
+    inputTypeName: ProfileHotelPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_hotel_prefs
+      fieldMapping:
+        hotelGuestType:
+          column:
+            name: hotel_guest_type
+        id:
+          column:
+            name: id
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        preferLevel:
+          column:
+            name: prefer_level
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileHotelPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelGuestType
+          - id
+          - prefCollectionId
+          - preferLevel
+          - ratePlanCode
+          - shareMarketInd
+          - shareSynchInd
+          - smokingAllowed
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileHotelPrefsBoolExp
+  operand:
+    object:
+      type: ProfileHotelPrefs
+      comparableFields:
+        - fieldName: hotelGuestType
+          booleanExpressionType: ProfileHotelGuestTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: prefCollectionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: ratePlanCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: smokingAllowed
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileHotelPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileHotelPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileHotelPrefs
+      aggregatableFields:
+        - fieldName: hotelGuestType
+          aggregateExpression: ProfileHotelGuestTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: prefCollectionId
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: ratePlanCode
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: smokingAllowed
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileHotelPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileHotelPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileHotelPrefs
+      orderableFields:
+        - fieldName: hotelGuestType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: prefCollectionId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: ratePlanCode
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: smokingAllowed
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileHotelPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileHotelPrefs
+  objectType: ProfileHotelPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_hotel_prefs
+  filterExpressionType: ProfileHotelPrefsBoolExp
+  aggregateExpression: ProfileHotelPrefsAggExp
+  orderByExpression: ProfileHotelPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileHotelPrefs
+      subscription:
+        rootField: profileHotelPrefs
+    selectUniques:
+      - queryRootField: profileHotelPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileHotelPrefsById
+    filterInputTypeName: ProfileHotelPrefsFilterInput
+    aggregate:
+      queryRootField: profileHotelPrefsAggregate
+      subscription:
+        rootField: profileHotelPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileHotelPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

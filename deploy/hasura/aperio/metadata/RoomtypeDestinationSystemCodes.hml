@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeDestinationSystemCodes
+  fields:
+    - name: chainRateCodeCrossRef
+      type: String_1
+    - name: chainRateLevelCrossRef
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: roomTypeId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RoomtypeDestinationSystemCodes
+    inputTypeName: RoomtypeDestinationSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_destination_system_codes
+      fieldMapping:
+        chainRateCodeCrossRef:
+          column:
+            name: chain_rate_code_cross_ref
+        chainRateLevelCrossRef:
+          column:
+            name: chain_rate_level_cross_ref
+        id:
+          column:
+            name: id
+        roomTypeId:
+          column:
+            name: room_type_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeDestinationSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainRateCodeCrossRef
+          - chainRateLevelCrossRef
+          - id
+          - roomTypeId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeDestinationSystemCodesBoolExp
+  operand:
+    object:
+      type: RoomtypeDestinationSystemCodes
+      comparableFields:
+        - fieldName: chainRateCodeCrossRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainRateLevelCrossRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeDestinationSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeDestinationSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeDestinationSystemCodes
+      aggregatableFields:
+        - fieldName: chainRateCodeCrossRef
+          aggregateExpression: TextAggExp
+        - fieldName: chainRateLevelCrossRef
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeDestinationSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeDestinationSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeDestinationSystemCodes
+      orderableFields:
+        - fieldName: chainRateCodeCrossRef
+          orderByExpression: String1OrderByExp
+        - fieldName: chainRateLevelCrossRef
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeDestinationSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeDestinationSystemCodes
+  objectType: RoomtypeDestinationSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_destination_system_codes
+  filterExpressionType: RoomtypeDestinationSystemCodesBoolExp
+  aggregateExpression: RoomtypeDestinationSystemCodesAggExp
+  orderByExpression: RoomtypeDestinationSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeDestinationSystemCodes
+      subscription:
+        rootField: roomtypeDestinationSystemCodes
+    selectUniques:
+      - queryRootField: roomtypeDestinationSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeDestinationSystemCodesById
+    filterInputTypeName: RoomtypeDestinationSystemCodesFilterInput
+    aggregate:
+      queryRootField: roomtypeDestinationSystemCodesAggregate
+      subscription:
+        rootField: roomtypeDestinationSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeDestinationSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

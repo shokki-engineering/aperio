@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileEmails
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: emailType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: paymentCardId
+      type: String_1!
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: textFormat
+      type: Enum
+    - name: valid
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileEmails
+    inputTypeName: ProfileEmailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_emails
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        emailType:
+          column:
+            name: email_type
+        id:
+          column:
+            name: id
+        paymentCardId:
+          column:
+            name: payment_card_id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        textFormat:
+          column:
+            name: text_format
+        valid:
+          column:
+            name: valid
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileEmails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - emailType
+          - id
+          - paymentCardId
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - textFormat
+          - valid
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileEmailsBoolExp
+  operand:
+    object:
+      type: ProfileEmails
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: emailType
+          booleanExpressionType: ProfileProfileEmailAddressTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentCardId
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: ProfileCustomerEmailTextFormatBoolExp
+        - fieldName: valid
+          booleanExpressionType: BoolBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileEmailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileEmailsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileEmails
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: emailType
+          aggregateExpression: ProfileProfileEmailAddressTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: paymentCardId
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: textFormat
+          aggregateExpression: ProfileCustomerEmailTextFormatAggExp
+        - fieldName: valid
+          aggregateExpression: BoolAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileEmailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileEmailsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileEmails
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: emailType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentCardId
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: valid
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileEmailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileEmails
+  objectType: ProfileEmails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_emails
+  filterExpressionType: ProfileEmailsBoolExp
+  aggregateExpression: ProfileEmailsAggExp
+  orderByExpression: ProfileEmailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileEmails
+      subscription:
+        rootField: profileEmails
+    selectUniques:
+      - queryRootField: profileEmailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileEmailsById
+    filterInputTypeName: ProfileEmailsFilterInput
+    aggregate:
+      queryRootField: profileEmailsAggregate
+      subscription:
+        rootField: profileEmailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileEmails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

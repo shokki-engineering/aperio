@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockFormattedTextTextsObject
+  fields:
+    - name: blockDescriptionId
+      type: String_1!
+    - name: commentId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertInventoryblockFormattedTextTextsObject
+    inputTypeName: InsertInventoryblockFormattedTextTextsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_formatted_text_texts_object
+      fieldMapping:
+        blockDescriptionId:
+          column:
+            name: block_description_id
+        commentId:
+          column:
+            name: comment_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockFormattedTextTextsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - blockDescriptionId
+          - commentId
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockFormattedTextTextsResponse
+  description: Responses from the 'insert_inventoryblock_formatted_text_texts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockFormattedTextTexts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockFormattedTextTextsResponse
+    inputTypeName: InsertInventoryblockFormattedTextTextsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_formatted_text_texts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockFormattedTextTextsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockFormattedTextTexts
+  outputType: InsertInventoryblockFormattedTextTextsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockFormattedTextTextsObject!]!"
+    - name: postCheck
+      type: InventoryblockFormattedTextTextsBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_formatted_text_texts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_formatted_text_texts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockFormattedTextTexts
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_formatted_text_texts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockFormattedTextTexts
+  permissions:
+    - role: admin
+      allowExecution: true
+

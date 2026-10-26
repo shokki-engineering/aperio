@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantTaxes
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RestaurantTaxes
+    inputTypeName: RestaurantTaxesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_taxes
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantTaxes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantTaxesBoolExp
+  operand:
+    object:
+      type: RestaurantTaxes
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantTaxesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantTaxesAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantTaxes
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantTaxesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantTaxesOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantTaxes
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantTaxesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantTaxes
+  objectType: RestaurantTaxes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_taxes
+  filterExpressionType: RestaurantTaxesBoolExp
+  aggregateExpression: RestaurantTaxesAggExp
+  orderByExpression: RestaurantTaxesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantTaxes
+      subscription:
+        rootField: restaurantTaxes
+    selectUniques:
+      - queryRootField: restaurantTaxesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantTaxesById
+    filterInputTypeName: RestaurantTaxesFilterInput
+    aggregate:
+      queryRootField: restaurantTaxesAggregate
+      subscription:
+        rootField: restaurantTaxesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantTaxes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

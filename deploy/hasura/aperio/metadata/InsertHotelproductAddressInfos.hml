@@ -1,0 +1,211 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductAddressInfosObject
+  fields:
+    - name: addressLines
+      type: "[String_1]"
+    - name: cityDisplayName
+      type: String_1
+    - name: contactPersonId
+      type: String_1!
+    - name: countryDisplayNameId
+      type: String_1
+    - name: county
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: postalCode
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: stateProvId
+      type: String_1
+    - name: streetNmbrId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: useType
+      type: Enum
+    - name: valid
+      type: Boolean_1
+  graphql:
+    typeName: InsertHotelproductAddressInfosObject
+    inputTypeName: InsertHotelproductAddressInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_address_infos_object
+      fieldMapping:
+        addressLines:
+          column:
+            name: address_lines
+        cityDisplayName:
+          column:
+            name: city_display_name
+        contactPersonId:
+          column:
+            name: contact_person_id
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        county:
+          column:
+            name: county
+        defaultValue:
+          column:
+            name: default_value
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        postalCode:
+          column:
+            name: postal_code
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        stateProvId:
+          column:
+            name: state_prov_id
+        streetNmbrId:
+          column:
+            name: street_nmbr_id
+        type:
+          column:
+            name: type
+        useType:
+          column:
+            name: use_type
+        valid:
+          column:
+            name: valid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductAddressInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressLines
+          - cityDisplayName
+          - contactPersonId
+          - countryDisplayNameId
+          - county
+          - defaultValue
+          - formatted
+          - id
+          - languageCode
+          - postalCode
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - stateProvId
+          - streetNmbrId
+          - type
+          - useType
+          - valid
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductAddressInfosResponse
+  description: Responses from the 'insert_hotelproduct_address_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductAddressInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductAddressInfosResponse
+    inputTypeName: InsertHotelproductAddressInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_address_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductAddressInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductAddressInfos
+  outputType: InsertHotelproductAddressInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductAddressInfosObject!]!"
+    - name: postCheck
+      type: HotelproductAddressInfosBoolExp
+      description: Insert permission predicate over the 'hotelproduct_address_infos'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_address_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductAddressInfos
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_address_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductAddressInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

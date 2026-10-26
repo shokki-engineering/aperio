@@ -1,0 +1,110 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeTimeOfDaysObject
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: InsertRoomtypeTimeOfDaysObject
+    inputTypeName: InsertRoomtypeTimeOfDaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_time_of_days_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeTimeOfDaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeTimeOfDaysResponse
+  description: Responses from the 'insert_roomtype_time_of_days' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeTimeOfDaysResponse
+    inputTypeName: InsertRoomtypeTimeOfDaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_time_of_days_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeTimeOfDaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeTimeOfDays
+  outputType: InsertRoomtypeTimeOfDaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeTimeOfDaysObject!]!"
+    - name: postCheck
+      type: RoomtypeTimeOfDaysBoolExp
+      description: Insert permission predicate over the 'roomtype_time_of_days' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_time_of_days
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeTimeOfDays
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_time_of_days table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeTimeOfDays
+  permissions:
+    - role: admin
+      allowExecution: true
+

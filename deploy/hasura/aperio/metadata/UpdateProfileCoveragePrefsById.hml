@@ -1,0 +1,305 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCoveragePrefsCode
+  description: Update the 'code' column in the 'profile_coverage_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCoveragePrefsCode
+    inputTypeName: UpdateColumnProfileCoveragePrefsCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_coverage_prefs_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCoveragePrefsCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCoveragePrefsCoverageType
+  description: Update the 'coverage_type' column in the 'profile_coverage_prefs' collection
+  fields:
+    - name: set
+      type: Enum!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCoveragePrefsCoverageType
+    inputTypeName: UpdateColumnProfileCoveragePrefsCoverageTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_coverage_prefs_coverage_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCoveragePrefsCoverageType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCoveragePrefsId
+  description: Update the 'id' column in the 'profile_coverage_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCoveragePrefsId
+    inputTypeName: UpdateColumnProfileCoveragePrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_coverage_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCoveragePrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCoveragePrefsPreferLevel
+  description: Update the 'prefer_level' column in the 'profile_coverage_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCoveragePrefsPreferLevel
+    inputTypeName: UpdateColumnProfileCoveragePrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_coverage_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCoveragePrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCoveragePrefsVehicleProfileRentalPrefId
+  description: Update the 'vehicle_profile_rental_pref_id' column in the
+    'profile_coverage_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCoveragePrefsVehicleProfileRentalPrefId
+    inputTypeName: UpdateColumnProfileCoveragePrefsVehicleProfileRentalPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_coverage_prefs_vehicle_profile_rental_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCoveragePrefsVehicleProfileRentalPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileCoveragePrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_coverage_prefs' collection
+  fields:
+    - name: code
+      type: UpdateColumnProfileCoveragePrefsCode
+      description: Update the 'code' column in the 'profile_coverage_prefs' collection.
+    - name: coverageType
+      type: UpdateColumnProfileCoveragePrefsCoverageType
+      description: Update the 'coverage_type' column in the 'profile_coverage_prefs'
+        collection.
+    - name: id
+      type: UpdateColumnProfileCoveragePrefsId
+      description: Update the 'id' column in the 'profile_coverage_prefs' collection.
+    - name: preferLevel
+      type: UpdateColumnProfileCoveragePrefsPreferLevel
+      description: Update the 'prefer_level' column in the 'profile_coverage_prefs'
+        collection.
+    - name: vehicleProfileRentalPrefId
+      type: UpdateColumnProfileCoveragePrefsVehicleProfileRentalPrefId
+      description: Update the 'vehicle_profile_rental_pref_id' column in the
+        'profile_coverage_prefs' collection.
+  graphql:
+    typeName: UpdateProfileCoveragePrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileCoveragePrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_coverage_prefs_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        coverageType:
+          column:
+            name: coverage_type
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileCoveragePrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - coverageType
+          - id
+          - preferLevel
+          - vehicleProfileRentalPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileCoveragePrefsByIdResponse
+  description: Responses from the 'update_profile_coverage_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCoveragePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileCoveragePrefsByIdResponse
+    inputTypeName: UpdateProfileCoveragePrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_coverage_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileCoveragePrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileCoveragePrefsById
+  outputType: UpdateProfileCoveragePrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileCoveragePrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_coverage_prefs' collection
+    - name: preCheck
+      type: ProfileCoveragePrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_coverage_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileCoveragePrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_coverage_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileCoveragePrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_coverage_prefs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileCoveragePrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

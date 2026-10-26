@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpBldgRooms
+  fields:
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: MeetingrfpBldgRooms
+    inputTypeName: MeetingrfpBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_bldg_rooms
+      fieldMapping:
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpBldgRoomsBoolExp
+  operand:
+    object:
+      type: MeetingrfpBldgRooms
+      comparableFields:
+        - fieldName: addressInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpBldgRooms
+      aggregatableFields:
+        - fieldName: addressInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpBldgRooms
+      orderableFields:
+        - fieldName: addressInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpBldgRooms
+  objectType: MeetingrfpBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_bldg_rooms
+  filterExpressionType: MeetingrfpBldgRoomsBoolExp
+  aggregateExpression: MeetingrfpBldgRoomsAggExp
+  orderByExpression: MeetingrfpBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpBldgRooms
+      subscription:
+        rootField: meetingrfpBldgRooms
+    selectUniques:
+      - queryRootField: meetingrfpBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpBldgRoomsById
+    filterInputTypeName: MeetingrfpBldgRoomsFilterInput
+    aggregate:
+      queryRootField: meetingrfpBldgRoomsAggregate
+      subscription:
+        rootField: meetingrfpBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingrfpRfpIdsByIdResponse
+  description: Responses from the 'delete_meetingrfp_rfp_ids_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpRfpIds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingrfpRfpIdsByIdResponse
+    inputTypeName: DeleteMeetingrfpRfpIdsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingrfp_rfp_ids_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingrfpRfpIdsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingrfpRfpIdsById
+  outputType: DeleteMeetingrfpRfpIdsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingrfpRfpIdsBoolExp
+      description: Delete permission predicate over the 'meetingrfp_rfp_ids' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingrfp_rfp_ids_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingrfpRfpIdsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingrfp_rfp_ids' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingrfpRfpIdsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

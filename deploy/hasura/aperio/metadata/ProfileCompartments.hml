@@ -1,0 +1,153 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileCompartments
+  fields:
+    - name: extension
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: number
+      type: String_1
+    - name: position
+      type: Enum
+    - name: value
+      type: Enum
+  graphql:
+    typeName: ProfileCompartments
+    inputTypeName: ProfileCompartmentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_compartments
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileCompartments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - extension
+          - id
+          - number
+          - position
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileCompartmentsBoolExp
+  operand:
+    object:
+      type: ProfileCompartments
+      comparableFields:
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: number
+          booleanExpressionType: TextBoolExp
+        - fieldName: position
+          booleanExpressionType: ProfileCompartmentPositionBoolExp
+        - fieldName: value
+          booleanExpressionType: ProfileCompartmentTypeEnumBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileCompartmentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileCompartmentsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileCompartments
+      aggregatableFields:
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: number
+          aggregateExpression: TextAggExp
+        - fieldName: position
+          aggregateExpression: ProfileCompartmentPositionAggExp
+        - fieldName: value
+          aggregateExpression: ProfileCompartmentTypeEnumAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileCompartmentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileCompartmentsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileCompartments
+      orderableFields:
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: number
+          orderByExpression: String1OrderByExp
+        - fieldName: position
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileCompartmentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileCompartments
+  objectType: ProfileCompartments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_compartments
+  filterExpressionType: ProfileCompartmentsBoolExp
+  aggregateExpression: ProfileCompartmentsAggExp
+  orderByExpression: ProfileCompartmentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileCompartments
+      subscription:
+        rootField: profileCompartments
+    selectUniques:
+      - queryRootField: profileCompartmentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileCompartmentsById
+    filterInputTypeName: ProfileCompartmentsFilterInput
+    aggregate:
+      queryRootField: profileCompartmentsAggregate
+      subscription:
+        rootField: profileCompartmentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileCompartments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

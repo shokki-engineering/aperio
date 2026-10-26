@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanGuaranteeAcceptedsByIdResponse
+  description: Responses from the 'delete_rateplan_guarantee_accepteds_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanGuaranteeAccepteds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanGuaranteeAcceptedsByIdResponse
+    inputTypeName: DeleteRateplanGuaranteeAcceptedsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_guarantee_accepteds_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanGuaranteeAcceptedsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanGuaranteeAcceptedsById
+  outputType: DeleteRateplanGuaranteeAcceptedsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanGuaranteeAcceptedsBoolExp
+      description: Delete permission predicate over the 'rateplan_guarantee_accepteds'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_guarantee_accepteds_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanGuaranteeAcceptedsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_guarantee_accepteds' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanGuaranteeAcceptedsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

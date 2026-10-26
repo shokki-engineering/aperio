@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanSystemCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: systemCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: RateplanSystemCodes
+    inputTypeName: RateplanSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_system_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        systemCodesInclusive:
+          column:
+            name: system_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - systemCodesInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanSystemCodesBoolExp
+  operand:
+    object:
+      type: RateplanSystemCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: systemCodesInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanSystemCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: systemCodesInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanSystemCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: systemCodesInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanSystemCodes
+  objectType: RateplanSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_system_codes
+  filterExpressionType: RateplanSystemCodesBoolExp
+  aggregateExpression: RateplanSystemCodesAggExp
+  orderByExpression: RateplanSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanSystemCodes
+      subscription:
+        rootField: rateplanSystemCodes
+    selectUniques:
+      - queryRootField: rateplanSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanSystemCodesById
+    filterInputTypeName: RateplanSystemCodesFilterInput
+    aggregate:
+      queryRootField: rateplanSystemCodesAggregate
+      subscription:
+        rootField: rateplanSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

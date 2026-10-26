@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanShoulders
+  fields:
+    - name: id
+      type: String_1!
+    - name: postShoulderEndId
+      type: String_1
+    - name: postShoulderSellLimit
+      type: Int32
+    - name: preShoulderSellLimit
+      type: Int32
+    - name: preShoulderStartId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: shoulderRph
+      type: String_1
+  graphql:
+    typeName: RateplanShoulders
+    inputTypeName: RateplanShouldersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_shoulders
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postShoulderEndId:
+          column:
+            name: post_shoulder_end_id
+        postShoulderSellLimit:
+          column:
+            name: post_shoulder_sell_limit
+        preShoulderSellLimit:
+          column:
+            name: pre_shoulder_sell_limit
+        preShoulderStartId:
+          column:
+            name: pre_shoulder_start_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        shoulderRph:
+          column:
+            name: shoulder_rph
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanShoulders
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postShoulderEndId
+          - postShoulderSellLimit
+          - preShoulderSellLimit
+          - preShoulderStartId
+          - ratePlanId
+          - shoulderRph
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanShouldersBoolExp
+  operand:
+    object:
+      type: RateplanShoulders
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: postShoulderEndId
+          booleanExpressionType: TextBoolExp
+        - fieldName: postShoulderSellLimit
+          booleanExpressionType: Int4BoolExp
+        - fieldName: preShoulderSellLimit
+          booleanExpressionType: Int4BoolExp
+        - fieldName: preShoulderStartId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: shoulderRph
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanShouldersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanShouldersAggExp
+  operand:
+    object:
+      aggregatedType: RateplanShoulders
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: postShoulderEndId
+          aggregateExpression: TextAggExp
+        - fieldName: postShoulderSellLimit
+          aggregateExpression: Int4AggExp
+        - fieldName: preShoulderSellLimit
+          aggregateExpression: Int4AggExp
+        - fieldName: preShoulderStartId
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanId
+          aggregateExpression: TextAggExp
+        - fieldName: shoulderRph
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanShouldersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanShouldersOrderByExp
+  operand:
+    object:
+      orderedType: RateplanShoulders
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: postShoulderEndId
+          orderByExpression: String1OrderByExp
+        - fieldName: postShoulderSellLimit
+          orderByExpression: Int32OrderByExp
+        - fieldName: preShoulderSellLimit
+          orderByExpression: Int32OrderByExp
+        - fieldName: preShoulderStartId
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanId
+          orderByExpression: String1OrderByExp
+        - fieldName: shoulderRph
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanShouldersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanShoulders
+  objectType: RateplanShoulders
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_shoulders
+  filterExpressionType: RateplanShouldersBoolExp
+  aggregateExpression: RateplanShouldersAggExp
+  orderByExpression: RateplanShouldersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanShoulders
+      subscription:
+        rootField: rateplanShoulders
+    selectUniques:
+      - queryRootField: rateplanShouldersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanShouldersById
+    filterInputTypeName: RateplanShouldersFilterInput
+    aggregate:
+      queryRootField: rateplanShouldersAggregate
+      subscription:
+        rootField: rateplanShouldersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanShoulders
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

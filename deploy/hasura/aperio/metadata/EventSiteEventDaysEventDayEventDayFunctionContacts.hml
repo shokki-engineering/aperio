@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayEventDayFunctionContacts
+  fields:
+    - name: birthDayId
+      type: String_1
+    - name: communicationMethodCode
+      type: Enum
+    - name: contactType
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentDistribMethodCode
+      type: Enum
+    - name: emergencyFlag
+      type: Boolean_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: personDisplayNameId
+      type: String_1
+    - name: relation
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: EventSiteEventDaysEventDayEventDayFunctionContacts
+    inputTypeName: EventSiteEventDaysEventDayEventDayFunctionContactsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_site_event_days_event_day_event_day_function_contacts
+      fieldMapping:
+        birthDayId:
+          column:
+            name: birth_day_id
+        communicationMethodCode:
+          column:
+            name: communication_method_code
+        contactType:
+          column:
+            name: contact_type
+        defaultValue:
+          column:
+            name: default_value
+        documentDistribMethodCode:
+          column:
+            name: document_distrib_method_code
+        emergencyFlag:
+          column:
+            name: emergency_flag
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        id:
+          column:
+            name: id
+        personDisplayNameId:
+          column:
+            name: person_display_name_id
+        relation:
+          column:
+            name: relation
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventSiteEventDaysEventDayEventDayFunctionContacts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - birthDayId
+          - communicationMethodCode
+          - contactType
+          - defaultValue
+          - documentDistribMethodCode
+          - emergencyFlag
+          - eventDayFunctionId
+          - id
+          - personDisplayNameId
+          - relation
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayEventDayFunctionContactsBoolExp
+  operand:
+    object:
+      type: EventSiteEventDaysEventDayEventDayFunctionContacts
+      comparableFields:
+        - fieldName: birthDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: communicationMethodCode
+          booleanExpressionType: EventEventDistributionTypeBoolExp
+        - fieldName: contactType
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentDistribMethodCode
+          booleanExpressionType: EventEventDistributionTypeBoolExp
+        - fieldName: emergencyFlag
+          booleanExpressionType: BoolBoolExp
+        - fieldName: eventDayFunctionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: personDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: relation
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: EventEventContactShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: EventEventContactShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventSiteEventDaysEventDayEventDayFunctionContactsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayEventDayFunctionContactsAggExp
+  operand:
+    object:
+      aggregatedType: EventSiteEventDaysEventDayEventDayFunctionContacts
+      aggregatableFields:
+        - fieldName: birthDayId
+          aggregateExpression: TextAggExp
+        - fieldName: communicationMethodCode
+          aggregateExpression: EventEventDistributionTypeAggExp
+        - fieldName: contactType
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentDistribMethodCode
+          aggregateExpression: EventEventDistributionTypeAggExp
+        - fieldName: emergencyFlag
+          aggregateExpression: BoolAggExp
+        - fieldName: eventDayFunctionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: personDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: relation
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: EventEventContactShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: EventEventContactShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventSiteEventDaysEventDayEventDayFunctionContactsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayEventDayFunctionContactsOrderByExp
+  operand:
+    object:
+      orderedType: EventSiteEventDaysEventDayEventDayFunctionContacts
+      orderableFields:
+        - fieldName: birthDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: communicationMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: contactType
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentDistribMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: emergencyFlag
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: eventDayFunctionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: personDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: relation
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventSiteEventDaysEventDayEventDayFunctionContactsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventSiteEventDaysEventDayEventDayFunctionContacts
+  objectType: EventSiteEventDaysEventDayEventDayFunctionContacts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_site_event_days_event_day_event_day_function_contacts
+  filterExpressionType: EventSiteEventDaysEventDayEventDayFunctionContactsBoolExp
+  aggregateExpression: EventSiteEventDaysEventDayEventDayFunctionContactsAggExp
+  orderByExpression: EventSiteEventDaysEventDayEventDayFunctionContactsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventSiteEventDaysEventDayEventDayFunctionContacts
+      subscription:
+        rootField: eventSiteEventDaysEventDayEventDayFunctionContacts
+    selectUniques:
+      - queryRootField: eventSiteEventDaysEventDayEventDayFunctionContactsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventSiteEventDaysEventDayEventDayFunctionContactsById
+    filterInputTypeName: EventSiteEventDaysEventDayEventDayFunctionContactsFilterInput
+    aggregate:
+      queryRootField: eventSiteEventDaysEventDayEventDayFunctionContactsAggregate
+      subscription:
+        rootField: eventSiteEventDaysEventDayEventDayFunctionContactsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventSiteEventDaysEventDayEventDayFunctionContacts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

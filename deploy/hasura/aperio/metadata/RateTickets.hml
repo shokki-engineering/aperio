@@ -1,0 +1,235 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateTickets
+  fields:
+    - name: checkInhibitorType
+      type: Enum
+    - name: couponRphs
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: originalIssueDayId
+      type: String_1
+    - name: originalIssueIata
+      type: String_1
+    - name: originalIssuePlace
+      type: String_1
+    - name: originalPaymentForm
+      type: String_1
+    - name: originalTicketNumber
+      type: String_1
+    - name: rerouteReason
+      type: String_1
+    - name: reroutingType
+      type: Enum
+    - name: ticketNumber
+      type: String_1
+  graphql:
+    typeName: RateTickets
+    inputTypeName: RateTicketsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_tickets
+      fieldMapping:
+        checkInhibitorType:
+          column:
+            name: check_inhibitor_type
+        couponRphs:
+          column:
+            name: coupon_rphs
+        id:
+          column:
+            name: id
+        originalIssueDayId:
+          column:
+            name: original_issue_day_id
+        originalIssueIata:
+          column:
+            name: original_issue_iata
+        originalIssuePlace:
+          column:
+            name: original_issue_place
+        originalPaymentForm:
+          column:
+            name: original_payment_form
+        originalTicketNumber:
+          column:
+            name: original_ticket_number
+        rerouteReason:
+          column:
+            name: reroute_reason
+        reroutingType:
+          column:
+            name: rerouting_type
+        ticketNumber:
+          column:
+            name: ticket_number
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateTickets
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkInhibitorType
+          - couponRphs
+          - id
+          - originalIssueDayId
+          - originalIssueIata
+          - originalIssuePlace
+          - originalPaymentForm
+          - originalTicketNumber
+          - rerouteReason
+          - reroutingType
+          - ticketNumber
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateTicketsBoolExp
+  operand:
+    object:
+      type: RateTickets
+      comparableFields:
+        - fieldName: checkInhibitorType
+          booleanExpressionType: RateRateCheckInhibitorTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalIssueDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalIssueIata
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalIssuePlace
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalPaymentForm
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalTicketNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: rerouteReason
+          booleanExpressionType: TextBoolExp
+        - fieldName: reroutingType
+          booleanExpressionType: RateRateReroutingTypeBoolExp
+        - fieldName: ticketNumber
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateTicketsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateTicketsAggExp
+  operand:
+    object:
+      aggregatedType: RateTickets
+      aggregatableFields:
+        - fieldName: checkInhibitorType
+          aggregateExpression: RateRateCheckInhibitorTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: originalIssueDayId
+          aggregateExpression: TextAggExp
+        - fieldName: originalIssueIata
+          aggregateExpression: TextAggExp
+        - fieldName: originalIssuePlace
+          aggregateExpression: TextAggExp
+        - fieldName: originalPaymentForm
+          aggregateExpression: TextAggExp
+        - fieldName: originalTicketNumber
+          aggregateExpression: TextAggExp
+        - fieldName: rerouteReason
+          aggregateExpression: TextAggExp
+        - fieldName: reroutingType
+          aggregateExpression: RateRateReroutingTypeAggExp
+        - fieldName: ticketNumber
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateTicketsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateTicketsOrderByExp
+  operand:
+    object:
+      orderedType: RateTickets
+      orderableFields:
+        - fieldName: checkInhibitorType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: originalIssueDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: originalIssueIata
+          orderByExpression: String1OrderByExp
+        - fieldName: originalIssuePlace
+          orderByExpression: String1OrderByExp
+        - fieldName: originalPaymentForm
+          orderByExpression: String1OrderByExp
+        - fieldName: originalTicketNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: rerouteReason
+          orderByExpression: String1OrderByExp
+        - fieldName: reroutingType
+          orderByExpression: EnumOrderByExp
+        - fieldName: ticketNumber
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateTicketsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateTickets
+  objectType: RateTickets
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_tickets
+  filterExpressionType: RateTicketsBoolExp
+  aggregateExpression: RateTicketsAggExp
+  orderByExpression: RateTicketsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateTickets
+      subscription:
+        rootField: rateTickets
+    selectUniques:
+      - queryRootField: rateTicketsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateTicketsById
+    filterInputTypeName: RateTicketsFilterInput
+    aggregate:
+      queryRootField: rateTicketsAggregate
+      subscription:
+        rootField: rateTicketsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateTickets
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

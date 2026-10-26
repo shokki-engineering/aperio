@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOtherSrvcPrefsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: otherSrvcDisplayName
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: travelPurpose
+      type: Enum
+  graphql:
+    typeName: InsertProfileOtherSrvcPrefsObject
+    inputTypeName: InsertProfileOtherSrvcPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_other_srvc_prefs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        otherSrvcDisplayName:
+          column:
+            name: other_srvc_display_name
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        preferLevel:
+          column:
+            name: prefer_level
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        travelPurpose:
+          column:
+            name: travel_purpose
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOtherSrvcPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - otherSrvcDisplayName
+          - prefCollectionId
+          - preferLevel
+          - shareMarketInd
+          - shareSynchInd
+          - travelPurpose
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOtherSrvcPrefsResponse
+  description: Responses from the 'insert_profile_other_srvc_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileOtherSrvcPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileOtherSrvcPrefsResponse
+    inputTypeName: InsertProfileOtherSrvcPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_other_srvc_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOtherSrvcPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileOtherSrvcPrefs
+  outputType: InsertProfileOtherSrvcPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileOtherSrvcPrefsObject!]!"
+    - name: postCheck
+      type: ProfileOtherSrvcPrefsBoolExp
+      description: Insert permission predicate over the 'profile_other_srvc_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_other_srvc_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileOtherSrvcPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_other_srvc_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileOtherSrvcPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

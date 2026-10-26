@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTicketDistribPrefsObject
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: commonPrefId
+      type: String_1!
+    - name: distribType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: remark
+      type: String_1
+    - name: ticketingMoment
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileTicketDistribPrefsObject
+    inputTypeName: InsertProfileTicketDistribPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_ticket_distrib_prefs_object
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        commonPrefId:
+          column:
+            name: common_pref_id
+        distribType:
+          column:
+            name: distrib_type
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        remark:
+          column:
+            name: remark
+        ticketingMoment:
+          column:
+            name: ticketing_moment
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTicketDistribPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - commonPrefId
+          - distribType
+          - id
+          - preferLevel
+          - railPrefId
+          - remark
+          - ticketingMoment
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTicketDistribPrefsResponse
+  description: Responses from the 'insert_profile_ticket_distrib_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileTicketDistribPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileTicketDistribPrefsResponse
+    inputTypeName: InsertProfileTicketDistribPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_ticket_distrib_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTicketDistribPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileTicketDistribPrefs
+  outputType: InsertProfileTicketDistribPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileTicketDistribPrefsObject!]!"
+    - name: postCheck
+      type: ProfileTicketDistribPrefsBoolExp
+      description: Insert permission predicate over the 'profile_ticket_distrib_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_ticket_distrib_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileTicketDistribPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_ticket_distrib_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileTicketDistribPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

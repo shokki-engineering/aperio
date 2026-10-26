@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestrictionLosPatternsByIdResponse
+  description: Responses from the 'delete_restriction_los_patterns_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionLosPatterns!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestrictionLosPatternsByIdResponse
+    inputTypeName: DeleteRestrictionLosPatternsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restriction_los_patterns_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestrictionLosPatternsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestrictionLosPatternsById
+  outputType: DeleteRestrictionLosPatternsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestrictionLosPatternsBoolExp
+      description: Delete permission predicate over the 'restriction_los_patterns'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restriction_los_patterns_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestrictionLosPatternsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'restriction_los_patterns' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestrictionLosPatternsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpPreferences
+  fields:
+    - name: commentsId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: meetingRfpId
+      type: String_1!
+  graphql:
+    typeName: MeetingrfpPreferences
+    inputTypeName: MeetingrfpPreferencesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_preferences
+      fieldMapping:
+        commentsId:
+          column:
+            name: comments_id
+        id:
+          column:
+            name: id
+        meetingRfpId:
+          column:
+            name: meeting_rfp_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpPreferences
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentsId
+          - id
+          - meetingRfpId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpPreferencesBoolExp
+  operand:
+    object:
+      type: MeetingrfpPreferences
+      comparableFields:
+        - fieldName: commentsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRfpId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpPreferencesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpPreferencesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpPreferences
+      aggregatableFields:
+        - fieldName: commentsId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRfpId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpPreferencesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpPreferencesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpPreferences
+      orderableFields:
+        - fieldName: commentsId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRfpId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpPreferencesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpPreferences
+  objectType: MeetingrfpPreferences
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_preferences
+  filterExpressionType: MeetingrfpPreferencesBoolExp
+  aggregateExpression: MeetingrfpPreferencesAggExp
+  orderByExpression: MeetingrfpPreferencesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpPreferences
+      subscription:
+        rootField: meetingrfpPreferences
+    selectUniques:
+      - queryRootField: meetingrfpPreferencesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpPreferencesById
+    filterInputTypeName: MeetingrfpPreferencesFilterInput
+    aggregate:
+      queryRootField: meetingrfpPreferencesAggregate
+      subscription:
+        rootField: meetingrfpPreferencesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpPreferences
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCashes
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanCashes
+    inputTypeName: RateplanCashesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_cashes
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCashes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCashesBoolExp
+  operand:
+    object:
+      type: RateplanCashes
+      comparableFields:
+        - fieldName: cashIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCashesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCashesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCashes
+      aggregatableFields:
+        - fieldName: cashIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCashesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCashesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCashes
+      orderableFields:
+        - fieldName: cashIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCashesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCashes
+  objectType: RateplanCashes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_cashes
+  filterExpressionType: RateplanCashesBoolExp
+  aggregateExpression: RateplanCashesAggExp
+  orderByExpression: RateplanCashesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCashes
+      subscription:
+        rootField: rateplanCashes
+    selectUniques:
+      - queryRootField: rateplanCashesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCashesById
+    filterInputTypeName: RateplanCashesFilterInput
+    aggregate:
+      queryRootField: rateplanCashesAggregate
+      subscription:
+        rootField: rateplanCashesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCashes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

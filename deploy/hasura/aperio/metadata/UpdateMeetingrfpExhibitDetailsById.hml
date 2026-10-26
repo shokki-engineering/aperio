@@ -1,0 +1,228 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpExhibitDetailsExhibitTypeCode
+  description: Update the 'exhibit_type_code' column in the
+    'meetingrfp_exhibit_details' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpExhibitDetailsExhibitTypeCode
+    inputTypeName: UpdateColumnMeetingrfpExhibitDetailsExhibitTypeCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_exhibit_details_exhibit_type_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpExhibitDetailsExhibitTypeCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpExhibitDetailsExhibitionId
+  description: Update the 'exhibition_id' column in the
+    'meetingrfp_exhibit_details' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpExhibitDetailsExhibitionId
+    inputTypeName: UpdateColumnMeetingrfpExhibitDetailsExhibitionIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_exhibit_details_exhibition_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpExhibitDetailsExhibitionId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpExhibitDetailsId
+  description: Update the 'id' column in the 'meetingrfp_exhibit_details' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpExhibitDetailsId
+    inputTypeName: UpdateColumnMeetingrfpExhibitDetailsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_exhibit_details_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpExhibitDetailsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpExhibitDetailsByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_exhibit_details' collection
+  fields:
+    - name: exhibitTypeCode
+      type: UpdateColumnMeetingrfpExhibitDetailsExhibitTypeCode
+      description: Update the 'exhibit_type_code' column in the
+        'meetingrfp_exhibit_details' collection.
+    - name: exhibitionId
+      type: UpdateColumnMeetingrfpExhibitDetailsExhibitionId
+      description: Update the 'exhibition_id' column in the
+        'meetingrfp_exhibit_details' collection.
+    - name: id
+      type: UpdateColumnMeetingrfpExhibitDetailsId
+      description: Update the 'id' column in the 'meetingrfp_exhibit_details' collection.
+  graphql:
+    typeName: UpdateMeetingrfpExhibitDetailsByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpExhibitDetailsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_exhibit_details_by_id_update_columns
+      fieldMapping:
+        exhibitTypeCode:
+          column:
+            name: exhibit_type_code
+        exhibitionId:
+          column:
+            name: exhibition_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpExhibitDetailsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - exhibitTypeCode
+          - exhibitionId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpExhibitDetailsByIdResponse
+  description: Responses from the 'update_meetingrfp_exhibit_details_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpExhibitDetails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpExhibitDetailsByIdResponse
+    inputTypeName: UpdateMeetingrfpExhibitDetailsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_exhibit_details_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpExhibitDetailsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpExhibitDetailsById
+  outputType: UpdateMeetingrfpExhibitDetailsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpExhibitDetailsBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_exhibit_details' collection
+    - name: preCheck
+      type: MeetingrfpExhibitDetailsBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_exhibit_details' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpExhibitDetailsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_exhibit_details_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpExhibitDetailsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_exhibit_details' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpExhibitDetailsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

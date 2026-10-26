@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeStateProvsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeStateProvsObject
+    inputTypeName: InsertRoomtypeStateProvsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_state_provs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeStateProvsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeStateProvsResponse
+  description: Responses from the 'insert_roomtype_state_provs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeStateProvs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeStateProvsResponse
+    inputTypeName: InsertRoomtypeStateProvsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_state_provs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeStateProvsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeStateProvs
+  outputType: InsertRoomtypeStateProvsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeStateProvsObject!]!"
+    - name: postCheck
+      type: RoomtypeStateProvsBoolExp
+      description: Insert permission predicate over the 'roomtype_state_provs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_state_provs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeStateProvs
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_state_provs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeStateProvs
+  permissions:
+    - role: admin
+      allowExecution: true
+

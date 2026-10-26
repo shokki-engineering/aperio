@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationWrittenConfInsts
+  fields:
+    - name: address
+      type: String_1
+    - name: addresseeDisplayName
+      type: String_1
+    - name: confirm
+      type: Boolean_1
+    - name: emailId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: languageId
+      type: String_1
+    - name: supplementalDataId
+      type: String_1
+    - name: telephone
+      type: String_1
+  graphql:
+    typeName: ReservationWrittenConfInsts
+    inputTypeName: ReservationWrittenConfInstsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_written_conf_insts
+      fieldMapping:
+        address:
+          column:
+            name: address
+        addresseeDisplayName:
+          column:
+            name: addressee_display_name
+        confirm:
+          column:
+            name: confirm
+        emailId:
+          column:
+            name: email_id
+        id:
+          column:
+            name: id
+        languageId:
+          column:
+            name: language_id
+        supplementalDataId:
+          column:
+            name: supplemental_data_id
+        telephone:
+          column:
+            name: telephone
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationWrittenConfInsts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - address
+          - addresseeDisplayName
+          - confirm
+          - emailId
+          - id
+          - languageId
+          - supplementalDataId
+          - telephone
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationWrittenConfInstsBoolExp
+  operand:
+    object:
+      type: ReservationWrittenConfInsts
+      comparableFields:
+        - fieldName: address
+          booleanExpressionType: TextBoolExp
+        - fieldName: addresseeDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: confirm
+          booleanExpressionType: BoolBoolExp
+        - fieldName: emailId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageId
+          booleanExpressionType: TextBoolExp
+        - fieldName: supplementalDataId
+          booleanExpressionType: TextBoolExp
+        - fieldName: telephone
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationWrittenConfInstsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationWrittenConfInstsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationWrittenConfInsts
+      aggregatableFields:
+        - fieldName: address
+          aggregateExpression: TextAggExp
+        - fieldName: addresseeDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: confirm
+          aggregateExpression: BoolAggExp
+        - fieldName: emailId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageId
+          aggregateExpression: TextAggExp
+        - fieldName: supplementalDataId
+          aggregateExpression: TextAggExp
+        - fieldName: telephone
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationWrittenConfInstsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationWrittenConfInstsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationWrittenConfInsts
+      orderableFields:
+        - fieldName: address
+          orderByExpression: String1OrderByExp
+        - fieldName: addresseeDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: confirm
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: emailId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageId
+          orderByExpression: String1OrderByExp
+        - fieldName: supplementalDataId
+          orderByExpression: String1OrderByExp
+        - fieldName: telephone
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationWrittenConfInstsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationWrittenConfInsts
+  objectType: ReservationWrittenConfInsts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_written_conf_insts
+  filterExpressionType: ReservationWrittenConfInstsBoolExp
+  aggregateExpression: ReservationWrittenConfInstsAggExp
+  orderByExpression: ReservationWrittenConfInstsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationWrittenConfInsts
+      subscription:
+        rootField: reservationWrittenConfInsts
+    selectUniques:
+      - queryRootField: reservationWrittenConfInstsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationWrittenConfInstsById
+    filterInputTypeName: ReservationWrittenConfInstsFilterInput
+    aggregate:
+      queryRootField: reservationWrittenConfInstsAggregate
+      subscription:
+        rootField: reservationWrittenConfInstsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationWrittenConfInsts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

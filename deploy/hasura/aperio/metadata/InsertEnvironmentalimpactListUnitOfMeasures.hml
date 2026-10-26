@@ -1,0 +1,164 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEnvironmentalimpactListUnitOfMeasuresObject
+  fields:
+    - name: code
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptionDetail
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: removal
+      type: Boolean_1
+    - name: resourceDisplayName
+      type: String_1
+    - name: resourceUri
+      type: String_1
+    - name: sourceDisplayName
+      type: String_1
+    - name: sourceUri
+      type: String_1
+    - name: uniqueId
+      type: String_1
+    - name: value
+      type: Enum
+  graphql:
+    typeName: InsertEnvironmentalimpactListUnitOfMeasuresObject
+    inputTypeName: InsertEnvironmentalimpactListUnitOfMeasuresObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_environmentalimpact_list_unit_of_measures_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        descriptionDetail:
+          column:
+            name: description_detail
+        id:
+          column:
+            name: id
+        removal:
+          column:
+            name: removal
+        resourceDisplayName:
+          column:
+            name: resource_display_name
+        resourceUri:
+          column:
+            name: resource_uri
+        sourceDisplayName:
+          column:
+            name: source_display_name
+        sourceUri:
+          column:
+            name: source_uri
+        uniqueId:
+          column:
+            name: unique_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEnvironmentalimpactListUnitOfMeasuresObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - description
+          - descriptionDetail
+          - id
+          - removal
+          - resourceDisplayName
+          - resourceUri
+          - sourceDisplayName
+          - sourceUri
+          - uniqueId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEnvironmentalimpactListUnitOfMeasuresResponse
+  description: Responses from the
+    'insert_environmentalimpact_list_unit_of_measures' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EnvironmentalimpactListUnitOfMeasures!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEnvironmentalimpactListUnitOfMeasuresResponse
+    inputTypeName: InsertEnvironmentalimpactListUnitOfMeasuresResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_environmentalimpact_list_unit_of_measures_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEnvironmentalimpactListUnitOfMeasuresResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEnvironmentalimpactListUnitOfMeasures
+  outputType: InsertEnvironmentalimpactListUnitOfMeasuresResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEnvironmentalimpactListUnitOfMeasuresObject!]!"
+    - name: postCheck
+      type: EnvironmentalimpactListUnitOfMeasuresBoolExp
+      description: Insert permission predicate over the
+        'environmentalimpact_list_unit_of_measures' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_environmentalimpact_list_unit_of_measures
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEnvironmentalimpactListUnitOfMeasures
+    rootFieldKind: Mutation
+  description: Insert into the environmentalimpact_list_unit_of_measures table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEnvironmentalimpactListUnitOfMeasures
+  permissions:
+    - role: admin
+      allowExecution: true
+

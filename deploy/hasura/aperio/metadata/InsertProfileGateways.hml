@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileGatewaysObject
+  fields:
+    - name: authenticationVerificationValueId
+      type: String_1
+    - name: eci
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: merchantId
+      type: String_1
+    - name: processorId
+      type: String_1
+    - name: transactionPasswordId
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertProfileGatewaysObject
+    inputTypeName: InsertProfileGatewaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_gateways_object
+      fieldMapping:
+        authenticationVerificationValueId:
+          column:
+            name: authentication_verification_value_id
+        eci:
+          column:
+            name: eci
+        id:
+          column:
+            name: id
+        merchantId:
+          column:
+            name: merchant_id
+        processorId:
+          column:
+            name: processor_id
+        transactionPasswordId:
+          column:
+            name: transaction_password_id
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileGatewaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - authenticationVerificationValueId
+          - eci
+          - id
+          - merchantId
+          - processorId
+          - transactionPasswordId
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileGatewaysResponse
+  description: Responses from the 'insert_profile_gateways' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileGateways!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileGatewaysResponse
+    inputTypeName: InsertProfileGatewaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_gateways_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileGatewaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileGateways
+  outputType: InsertProfileGatewaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileGatewaysObject!]!"
+    - name: postCheck
+      type: ProfileGatewaysBoolExp
+      description: Insert permission predicate over the 'profile_gateways' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_gateways
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileGateways
+    rootFieldKind: Mutation
+  description: Insert into the profile_gateways table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileGateways
+  permissions:
+    - role: admin
+      allowExecution: true
+

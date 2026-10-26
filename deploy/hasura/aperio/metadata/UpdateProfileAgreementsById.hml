@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAgreementsContractInfoId
+  description: Update the 'contract_info_id' column in the 'profile_agreements' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAgreementsContractInfoId
+    inputTypeName: UpdateColumnProfileAgreementsContractInfoIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_agreements_contract_info_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAgreementsContractInfoId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAgreementsId
+  description: Update the 'id' column in the 'profile_agreements' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAgreementsId
+    inputTypeName: UpdateColumnProfileAgreementsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_agreements_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAgreementsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAgreementsShareMarketInd
+  description: Update the 'share_market_ind' column in the 'profile_agreements' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAgreementsShareMarketInd
+    inputTypeName: UpdateColumnProfileAgreementsShareMarketIndInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_agreements_share_market_ind
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAgreementsShareMarketInd
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAgreementsShareSynchInd
+  description: Update the 'share_synch_ind' column in the 'profile_agreements' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAgreementsShareSynchInd
+    inputTypeName: UpdateColumnProfileAgreementsShareSynchIndInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_agreements_share_synch_ind
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAgreementsShareSynchInd
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAgreementsByIdUpdateColumns
+  description: Update the columns of the 'profile_agreements' collection
+  fields:
+    - name: contractInfoId
+      type: UpdateColumnProfileAgreementsContractInfoId
+      description: Update the 'contract_info_id' column in the 'profile_agreements'
+        collection.
+    - name: id
+      type: UpdateColumnProfileAgreementsId
+      description: Update the 'id' column in the 'profile_agreements' collection.
+    - name: shareMarketInd
+      type: UpdateColumnProfileAgreementsShareMarketInd
+      description: Update the 'share_market_ind' column in the 'profile_agreements'
+        collection.
+    - name: shareSynchInd
+      type: UpdateColumnProfileAgreementsShareSynchInd
+      description: Update the 'share_synch_ind' column in the 'profile_agreements'
+        collection.
+  graphql:
+    typeName: UpdateProfileAgreementsByIdUpdateColumns
+    inputTypeName: UpdateProfileAgreementsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_agreements_by_id_update_columns
+      fieldMapping:
+        contractInfoId:
+          column:
+            name: contract_info_id
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAgreementsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contractInfoId
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAgreementsByIdResponse
+  description: Responses from the 'update_profile_agreements_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAgreements!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileAgreementsByIdResponse
+    inputTypeName: UpdateProfileAgreementsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_agreements_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAgreementsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileAgreementsById
+  outputType: UpdateProfileAgreementsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileAgreementsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_agreements' collection
+    - name: preCheck
+      type: ProfileAgreementsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_agreements' collection
+    - name: updateColumns
+      type: UpdateProfileAgreementsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_agreements_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileAgreementsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_agreements' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileAgreementsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

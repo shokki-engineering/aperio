@@ -1,0 +1,247 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductPersonNames
+  fields:
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+  graphql:
+    typeName: HotelproductPersonNames
+    inputTypeName: HotelproductPersonNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_person_names
+      fieldMapping:
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductPersonNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductPersonNamesBoolExp
+  operand:
+    object:
+      type: HotelproductPersonNames
+      comparableFields:
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameType
+          booleanExpressionType: HotelproductHotelproductNameTypeBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: HotelproductHotelproductAcceptedPaymentShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: HotelproductHotelproductAcceptedPaymentShareSynchIndBoolExp
+        - fieldName: surname
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnamePrefix
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductPersonNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductPersonNamesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductPersonNames
+      aggregatableFields:
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: nameType
+          aggregateExpression: HotelproductHotelproductNameTypeAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: HotelproductHotelproductAcceptedPaymentShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: HotelproductHotelproductAcceptedPaymentShareSynchIndAggExp
+        - fieldName: surname
+          aggregateExpression: TextAggExp
+        - fieldName: surnamePrefix
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductPersonNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductPersonNamesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductPersonNames
+      orderableFields:
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: nameType
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: surname
+          orderByExpression: String1OrderByExp
+        - fieldName: surnamePrefix
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductPersonNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductPersonNames
+  objectType: HotelproductPersonNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_person_names
+  filterExpressionType: HotelproductPersonNamesBoolExp
+  aggregateExpression: HotelproductPersonNamesAggExp
+  orderByExpression: HotelproductPersonNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductPersonNames
+      subscription:
+        rootField: hotelproductPersonNames
+    selectUniques:
+      - queryRootField: hotelproductPersonNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductPersonNamesById
+    filterInputTypeName: HotelproductPersonNamesFilterInput
+    aggregate:
+      queryRootField: hotelproductPersonNamesAggregate
+      subscription:
+        rootField: hotelproductPersonNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductPersonNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

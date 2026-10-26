@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelDescriptions
+  fields:
+    - name: descriptiveText
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: multimediaDescriptionsId
+      type: String_1
+  graphql:
+    typeName: HotelDescriptions
+    inputTypeName: HotelDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_descriptions
+      fieldMapping:
+        descriptiveText:
+          column:
+            name: descriptive_text
+        id:
+          column:
+            name: id
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptiveText
+          - id
+          - multimediaDescriptionsId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelDescriptionsBoolExp
+  operand:
+    object:
+      type: HotelDescriptions
+      comparableFields:
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: HotelDescriptions
+      aggregatableFields:
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: HotelDescriptions
+      orderableFields:
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelDescriptions
+  objectType: HotelDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_descriptions
+  filterExpressionType: HotelDescriptionsBoolExp
+  aggregateExpression: HotelDescriptionsAggExp
+  orderByExpression: HotelDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelDescriptions
+      subscription:
+        rootField: hotelDescriptions
+    selectUniques:
+      - queryRootField: hotelDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelDescriptionsById
+    filterInputTypeName: HotelDescriptionsFilterInput
+    aggregate:
+      queryRootField: hotelDescriptionsAggregate
+      subscription:
+        rootField: hotelDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

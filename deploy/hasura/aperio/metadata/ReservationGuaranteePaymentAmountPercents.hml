@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationGuaranteePaymentAmountPercents
+  fields:
+    - name: amountId
+      type: String_1
+    - name: applyAs
+      type: Enum
+    - name: basisType
+      type: Enum
+    - name: feesInclusive
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: nightCount
+      type: Int32
+    - name: overriddenAmountIndicator
+      type: Boolean_1
+    - name: percentId
+      type: String_1
+    - name: taxInclusive
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+  graphql:
+    typeName: ReservationGuaranteePaymentAmountPercents
+    inputTypeName: ReservationGuaranteePaymentAmountPercentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_guarantee_payment_amount_percents
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        applyAs:
+          column:
+            name: apply_as
+        basisType:
+          column:
+            name: basis_type
+        feesInclusive:
+          column:
+            name: fees_inclusive
+        id:
+          column:
+            name: id
+        nightCount:
+          column:
+            name: night_count
+        overriddenAmountIndicator:
+          column:
+            name: overridden_amount_indicator
+        percentId:
+          column:
+            name: percent_id
+        taxInclusive:
+          column:
+            name: tax_inclusive
+        taxesId:
+          column:
+            name: taxes_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationGuaranteePaymentAmountPercents
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - applyAs
+          - basisType
+          - feesInclusive
+          - id
+          - nightCount
+          - overriddenAmountIndicator
+          - percentId
+          - taxInclusive
+          - taxesId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationGuaranteePaymentAmountPercentsBoolExp
+  operand:
+    object:
+      type: ReservationGuaranteePaymentAmountPercents
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: applyAs
+          booleanExpressionType: ReservationReservationApplyAsBoolExp
+        - fieldName: basisType
+          booleanExpressionType: ReservationReservationBasisTypeBoolExp
+        - fieldName: feesInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nightCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: overriddenAmountIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationGuaranteePaymentAmountPercentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationGuaranteePaymentAmountPercentsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationGuaranteePaymentAmountPercents
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: applyAs
+          aggregateExpression: ReservationReservationApplyAsAggExp
+        - fieldName: basisType
+          aggregateExpression: ReservationReservationBasisTypeAggExp
+        - fieldName: feesInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nightCount
+          aggregateExpression: Int4AggExp
+        - fieldName: overriddenAmountIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: taxInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationGuaranteePaymentAmountPercentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationGuaranteePaymentAmountPercentsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationGuaranteePaymentAmountPercents
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: applyAs
+          orderByExpression: EnumOrderByExp
+        - fieldName: basisType
+          orderByExpression: EnumOrderByExp
+        - fieldName: feesInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nightCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: overriddenAmountIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationGuaranteePaymentAmountPercentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationGuaranteePaymentAmountPercents
+  objectType: ReservationGuaranteePaymentAmountPercents
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_guarantee_payment_amount_percents
+  filterExpressionType: ReservationGuaranteePaymentAmountPercentsBoolExp
+  aggregateExpression: ReservationGuaranteePaymentAmountPercentsAggExp
+  orderByExpression: ReservationGuaranteePaymentAmountPercentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationGuaranteePaymentAmountPercents
+      subscription:
+        rootField: reservationGuaranteePaymentAmountPercents
+    selectUniques:
+      - queryRootField: reservationGuaranteePaymentAmountPercentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationGuaranteePaymentAmountPercentsById
+    filterInputTypeName: ReservationGuaranteePaymentAmountPercentsFilterInput
+    aggregate:
+      queryRootField: reservationGuaranteePaymentAmountPercentsAggregate
+      subscription:
+        rootField: reservationGuaranteePaymentAmountPercentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationGuaranteePaymentAmountPercents
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

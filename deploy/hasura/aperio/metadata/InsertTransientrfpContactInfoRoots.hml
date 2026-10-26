@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertTransientrfpContactInfoRootsObject
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: contactProfileId
+      type: String_1
+    - name: contactProfileType
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: location
+      type: Enum
+    - name: transientRfpId
+      type: String_1!
+  graphql:
+    typeName: InsertTransientrfpContactInfoRootsObject
+    inputTypeName: InsertTransientrfpContactInfoRootsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_transientrfp_contact_info_roots_object
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        contactProfileId:
+          column:
+            name: contact_profile_id
+        contactProfileType:
+          column:
+            name: contact_profile_type
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        location:
+          column:
+            name: location
+        transientRfpId:
+          column:
+            name: transient_rfp_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertTransientrfpContactInfoRootsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - contactProfileId
+          - contactProfileType
+          - id
+          - lastUpdateTime
+          - location
+          - transientRfpId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertTransientrfpContactInfoRootsResponse
+  description: Responses from the 'insert_transientrfp_contact_info_roots' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[TransientrfpContactInfoRoots!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertTransientrfpContactInfoRootsResponse
+    inputTypeName: InsertTransientrfpContactInfoRootsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_transientrfp_contact_info_roots_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertTransientrfpContactInfoRootsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertTransientrfpContactInfoRoots
+  outputType: InsertTransientrfpContactInfoRootsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertTransientrfpContactInfoRootsObject!]!"
+    - name: postCheck
+      type: TransientrfpContactInfoRootsBoolExp
+      description: Insert permission predicate over the
+        'transientrfp_contact_info_roots' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_transientrfp_contact_info_roots
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertTransientrfpContactInfoRoots
+    rootFieldKind: Mutation
+  description: Insert into the transientrfp_contact_info_roots table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertTransientrfpContactInfoRoots
+  permissions:
+    - role: admin
+      allowExecution: true
+

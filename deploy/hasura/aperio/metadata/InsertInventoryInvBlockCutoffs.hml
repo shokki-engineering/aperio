@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryInvBlockCutoffsObject
+  fields:
+    - name: absoluteCutoffId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: offsetCalculationMode
+      type: Enum
+    - name: offsetDuration
+      type: String_1
+  graphql:
+    typeName: InsertInventoryInvBlockCutoffsObject
+    inputTypeName: InsertInventoryInvBlockCutoffsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventory_inv_block_cutoffs_object
+      fieldMapping:
+        absoluteCutoffId:
+          column:
+            name: absolute_cutoff_id
+        id:
+          column:
+            name: id
+        offsetCalculationMode:
+          column:
+            name: offset_calculation_mode
+        offsetDuration:
+          column:
+            name: offset_duration
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryInvBlockCutoffsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteCutoffId
+          - id
+          - offsetCalculationMode
+          - offsetDuration
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryInvBlockCutoffsResponse
+  description: Responses from the 'insert_inventory_inv_block_cutoffs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryInvBlockCutoffs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryInvBlockCutoffsResponse
+    inputTypeName: InsertInventoryInvBlockCutoffsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventory_inv_block_cutoffs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryInvBlockCutoffsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryInvBlockCutoffs
+  outputType: InsertInventoryInvBlockCutoffsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryInvBlockCutoffsObject!]!"
+    - name: postCheck
+      type: InventoryInvBlockCutoffsBoolExp
+      description: Insert permission predicate over the 'inventory_inv_block_cutoffs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventory_inv_block_cutoffs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryInvBlockCutoffs
+    rootFieldKind: Mutation
+  description: Insert into the inventory_inv_block_cutoffs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryInvBlockCutoffs
+  permissions:
+    - role: admin
+      allowExecution: true
+

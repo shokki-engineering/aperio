@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyPetsPoliciesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: petsAllowedCode
+      type: Enum
+  graphql:
+    typeName: InsertPolicyPetsPoliciesObject
+    inputTypeName: InsertPolicyPetsPoliciesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_pets_policies_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        petsAllowedCode:
+          column:
+            name: pets_allowed_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyPetsPoliciesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - petsAllowedCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyPetsPoliciesResponse
+  description: Responses from the 'insert_policy_pets_policies' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyPetsPolicies!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyPetsPoliciesResponse
+    inputTypeName: InsertPolicyPetsPoliciesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_pets_policies_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyPetsPoliciesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyPetsPolicies
+  outputType: InsertPolicyPetsPoliciesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyPetsPoliciesObject!]!"
+    - name: postCheck
+      type: PolicyPetsPoliciesBoolExp
+      description: Insert permission predicate over the 'policy_pets_policies' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_pets_policies
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyPetsPolicies
+    rootFieldKind: Mutation
+  description: Insert into the policy_pets_policies table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyPetsPolicies
+  permissions:
+    - role: admin
+      allowExecution: true
+

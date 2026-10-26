@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventreportDocuments
+    inputTypeName: EventreportDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportDocumentsBoolExp
+  operand:
+    object:
+      type: EventreportDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: EventreportEventreportDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: EventreportEventreportDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportDocuments
+  objectType: EventreportDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_documents
+  filterExpressionType: EventreportDocumentsBoolExp
+  aggregateExpression: EventreportDocumentsAggExp
+  orderByExpression: EventreportDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportDocuments
+      subscription:
+        rootField: eventreportDocuments
+    selectUniques:
+      - queryRootField: eventreportDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportDocumentsById
+    filterInputTypeName: EventreportDocumentsFilterInput
+    aggregate:
+      queryRootField: eventreportDocumentsAggregate
+      subscription:
+        rootField: eventreportDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportTaxExemptInfos
+  fields:
+    - name: id
+      type: String_1!
+    - name: postEventSiteReportId
+      type: String_1!
+    - name: taxExemptId
+      type: String_1
+    - name: taxExemptIndicator
+      type: Boolean_1
+    - name: taxExemptType
+      type: Enum
+  graphql:
+    typeName: EventreportTaxExemptInfos
+    inputTypeName: EventreportTaxExemptInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_tax_exempt_infos
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postEventSiteReportId:
+          column:
+            name: post_event_site_report_id
+        taxExemptId:
+          column:
+            name: tax_exempt_id
+        taxExemptIndicator:
+          column:
+            name: tax_exempt_indicator
+        taxExemptType:
+          column:
+            name: tax_exempt_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportTaxExemptInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postEventSiteReportId
+          - taxExemptId
+          - taxExemptIndicator
+          - taxExemptType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportTaxExemptInfosBoolExp
+  operand:
+    object:
+      type: EventreportTaxExemptInfos
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: postEventSiteReportId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxExemptId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxExemptIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxExemptType
+          booleanExpressionType: EventreportEventreportTaxExemptTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportTaxExemptInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportTaxExemptInfosAggExp
+  operand:
+    object:
+      aggregatedType: EventreportTaxExemptInfos
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: postEventSiteReportId
+          aggregateExpression: TextAggExp
+        - fieldName: taxExemptId
+          aggregateExpression: TextAggExp
+        - fieldName: taxExemptIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: taxExemptType
+          aggregateExpression: EventreportEventreportTaxExemptTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportTaxExemptInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportTaxExemptInfosOrderByExp
+  operand:
+    object:
+      orderedType: EventreportTaxExemptInfos
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: postEventSiteReportId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxExemptId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxExemptIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxExemptType
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportTaxExemptInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportTaxExemptInfos
+  objectType: EventreportTaxExemptInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_tax_exempt_infos
+  filterExpressionType: EventreportTaxExemptInfosBoolExp
+  aggregateExpression: EventreportTaxExemptInfosAggExp
+  orderByExpression: EventreportTaxExemptInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportTaxExemptInfos
+      subscription:
+        rootField: eventreportTaxExemptInfos
+    selectUniques:
+      - queryRootField: eventreportTaxExemptInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportTaxExemptInfosById
+    filterInputTypeName: EventreportTaxExemptInfosFilterInput
+    aggregate:
+      queryRootField: eventreportTaxExemptInfosAggregate
+      subscription:
+        rootField: eventreportTaxExemptInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportTaxExemptInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,304 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanBldgRoomsAddressId
+  description: Update the 'address_id' column in the 'rateplan_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanBldgRoomsAddressId
+    inputTypeName: UpdateColumnRateplanBldgRoomsAddressIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_bldg_rooms_address_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanBldgRoomsAddressId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanBldgRoomsAddressInfoId
+  description: Update the 'address_info_id' column in the 'rateplan_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanBldgRoomsAddressInfoId
+    inputTypeName: UpdateColumnRateplanBldgRoomsAddressInfoIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_bldg_rooms_address_info_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanBldgRoomsAddressInfoId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanBldgRoomsBldgNameIndicator
+  description: Update the 'bldg_name_indicator' column in the
+    'rateplan_bldg_rooms' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanBldgRoomsBldgNameIndicator
+    inputTypeName: UpdateColumnRateplanBldgRoomsBldgNameIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_bldg_rooms_bldg_name_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanBldgRoomsBldgNameIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanBldgRoomsId
+  description: Update the 'id' column in the 'rateplan_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanBldgRoomsId
+    inputTypeName: UpdateColumnRateplanBldgRoomsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_bldg_rooms_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanBldgRoomsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanBldgRoomsValue
+  description: Update the 'value' column in the 'rateplan_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanBldgRoomsValue
+    inputTypeName: UpdateColumnRateplanBldgRoomsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_bldg_rooms_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanBldgRoomsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanBldgRoomsByIdUpdateColumns
+  description: Update the columns of the 'rateplan_bldg_rooms' collection
+  fields:
+    - name: addressId
+      type: UpdateColumnRateplanBldgRoomsAddressId
+      description: Update the 'address_id' column in the 'rateplan_bldg_rooms' collection.
+    - name: addressInfoId
+      type: UpdateColumnRateplanBldgRoomsAddressInfoId
+      description: Update the 'address_info_id' column in the 'rateplan_bldg_rooms'
+        collection.
+    - name: bldgNameIndicator
+      type: UpdateColumnRateplanBldgRoomsBldgNameIndicator
+      description: Update the 'bldg_name_indicator' column in the
+        'rateplan_bldg_rooms' collection.
+    - name: id
+      type: UpdateColumnRateplanBldgRoomsId
+      description: Update the 'id' column in the 'rateplan_bldg_rooms' collection.
+    - name: value
+      type: UpdateColumnRateplanBldgRoomsValue
+      description: Update the 'value' column in the 'rateplan_bldg_rooms' collection.
+  graphql:
+    typeName: UpdateRateplanBldgRoomsByIdUpdateColumns
+    inputTypeName: UpdateRateplanBldgRoomsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_bldg_rooms_by_id_update_columns
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanBldgRoomsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanBldgRoomsByIdResponse
+  description: Responses from the 'update_rateplan_bldg_rooms_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanBldgRoomsByIdResponse
+    inputTypeName: UpdateRateplanBldgRoomsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_bldg_rooms_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanBldgRoomsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanBldgRoomsById
+  outputType: UpdateRateplanBldgRoomsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanBldgRoomsBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_bldg_rooms' collection
+    - name: preCheck
+      type: RateplanBldgRoomsBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_bldg_rooms' collection
+    - name: updateColumns
+      type: UpdateRateplanBldgRoomsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_bldg_rooms_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanBldgRoomsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_bldg_rooms' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanBldgRoomsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

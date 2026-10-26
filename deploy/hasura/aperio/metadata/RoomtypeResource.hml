@@ -1,0 +1,565 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeResource
+  fields:
+    - name: codeContext
+      type: String_1
+    - name: composite
+      type: Boolean_1
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: descriptionId
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: guestRoomId
+      type: String_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: invCodeApplication
+      type: Enum
+    - name: invGroupingCode
+      type: String_1
+    - name: invStatusType
+      type: Enum
+    - name: invType
+      type: String_1
+    - name: languageCode
+      type: String_1
+    - name: maxAdultOccupancy
+      type: Int32
+    - name: maxChildOccupancy
+      type: Int32
+    - name: maxOccupancy
+      type: Int32
+    - name: minOccupancy
+      type: Int32
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: nonsmokingQuantity
+      type: Int32
+    - name: orderSequence
+      type: Int32
+    - name: otaUid
+      type: String_1
+    - name: quality
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: rph
+      type: String_1
+    - name: sort
+      type: Int32
+    - name: startId
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: RoomtypeResource
+    inputTypeName: RoomtypeResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_resource
+      fieldMapping:
+        codeContext:
+          column:
+            name: code_context
+        composite:
+          column:
+            name: composite
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        descriptionId:
+          column:
+            name: description_id
+        descriptiveText:
+          column:
+            name: descriptive_text
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        guestRoomId:
+          column:
+            name: guest_room_id
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        invCodeApplication:
+          column:
+            name: inv_code_application
+        invGroupingCode:
+          column:
+            name: inv_grouping_code
+        invStatusType:
+          column:
+            name: inv_status_type
+        invType:
+          column:
+            name: inv_type
+        languageCode:
+          column:
+            name: language_code
+        maxAdultOccupancy:
+          column:
+            name: max_adult_occupancy
+        maxChildOccupancy:
+          column:
+            name: max_child_occupancy
+        maxOccupancy:
+          column:
+            name: max_occupancy
+        minOccupancy:
+          column:
+            name: min_occupancy
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        name:
+          column:
+            name: name
+        nonsmokingQuantity:
+          column:
+            name: nonsmoking_quantity
+        orderSequence:
+          column:
+            name: order_sequence
+        otaUid:
+          column:
+            name: ota_uid
+        quality:
+          column:
+            name: quality
+        quantity:
+          column:
+            name: quantity
+        rph:
+          column:
+            name: rph
+        sort:
+          column:
+            name: sort
+        startId:
+          column:
+            name: start_id
+        uid:
+          column:
+            name: uid
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        updateTime:
+          column:
+            name: update_time
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeContext
+          - composite
+          - createTime
+          - deleteTime
+          - descriptionId
+          - descriptiveText
+          - displayName
+          - duration
+          - endId
+          - etag
+          - expireTime
+          - guestRoomId
+          - hotelId
+          - id
+          - invCode
+          - invCodeApplication
+          - invGroupingCode
+          - invStatusType
+          - invType
+          - languageCode
+          - maxAdultOccupancy
+          - maxChildOccupancy
+          - maxOccupancy
+          - minOccupancy
+          - multimediaDescriptionsId
+          - name
+          - nonsmokingQuantity
+          - orderSequence
+          - otaUid
+          - quality
+          - quantity
+          - rph
+          - sort
+          - startId
+          - uid
+          - uniqueIdId
+          - updateTime
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeResourceBoolExp
+  operand:
+    object:
+      type: RoomtypeResource
+      comparableFields:
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: composite
+          booleanExpressionType: BoolBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: guestRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCodeApplication
+          booleanExpressionType: RoomtypeRoomtypeInvCodeApplicationBoolExp
+        - fieldName: invGroupingCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: invStatusType
+          booleanExpressionType: RoomtypeRoomtypeInvStatusTypeBoolExp
+        - fieldName: invType
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxAdultOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxChildOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: minOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: nonsmokingQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: orderSequence
+          booleanExpressionType: Int4BoolExp
+        - fieldName: otaUid
+          booleanExpressionType: TextBoolExp
+        - fieldName: quality
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: uniqueIdId
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeResourceAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeResource
+      aggregatableFields:
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: composite
+          aggregateExpression: BoolAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: guestRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invCode
+          aggregateExpression: TextAggExp
+        - fieldName: invCodeApplication
+          aggregateExpression: RoomtypeRoomtypeInvCodeApplicationAggExp
+        - fieldName: invGroupingCode
+          aggregateExpression: TextAggExp
+        - fieldName: invStatusType
+          aggregateExpression: RoomtypeRoomtypeInvStatusTypeAggExp
+        - fieldName: invType
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: maxAdultOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: maxChildOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: maxOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: minOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: nonsmokingQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: orderSequence
+          aggregateExpression: Int4AggExp
+        - fieldName: otaUid
+          aggregateExpression: TextAggExp
+        - fieldName: quality
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: uniqueIdId
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeResourceOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeResource
+      orderableFields:
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: composite
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: guestRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invCode
+          orderByExpression: String1OrderByExp
+        - fieldName: invCodeApplication
+          orderByExpression: EnumOrderByExp
+        - fieldName: invGroupingCode
+          orderByExpression: String1OrderByExp
+        - fieldName: invStatusType
+          orderByExpression: EnumOrderByExp
+        - fieldName: invType
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: maxAdultOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxChildOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: minOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: nonsmokingQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: orderSequence
+          orderByExpression: Int32OrderByExp
+        - fieldName: otaUid
+          orderByExpression: String1OrderByExp
+        - fieldName: quality
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: uniqueIdId
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeResource
+  objectType: RoomtypeResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_resource
+  filterExpressionType: RoomtypeResourceBoolExp
+  aggregateExpression: RoomtypeResourceAggExp
+  orderByExpression: RoomtypeResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeResource
+      subscription:
+        rootField: roomtypeResource
+    selectUniques:
+      - queryRootField: roomtypeResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeResourceById
+    filterInputTypeName: RoomtypeResourceFilterInput
+    aggregate:
+      queryRootField: roomtypeResourceAggregate
+      subscription:
+        rootField: roomtypeResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryOffSells
+  fields:
+    - name: id
+      type: String_1!
+    - name: offSellValueId
+      type: String_1
+    - name: offSellValueType
+      type: Enum
+  graphql:
+    typeName: InventoryOffSells
+    inputTypeName: InventoryOffSellsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventory_off_sells
+      fieldMapping:
+        id:
+          column:
+            name: id
+        offSellValueId:
+          column:
+            name: off_sell_value_id
+        offSellValueType:
+          column:
+            name: off_sell_value_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryOffSells
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - offSellValueId
+          - offSellValueType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryOffSellsBoolExp
+  operand:
+    object:
+      type: InventoryOffSells
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offSellValueId
+          booleanExpressionType: TextBoolExp
+        - fieldName: offSellValueType
+          booleanExpressionType: InventoryOffSellValueTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryOffSellsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryOffSellsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryOffSells
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offSellValueId
+          aggregateExpression: TextAggExp
+        - fieldName: offSellValueType
+          aggregateExpression: InventoryOffSellValueTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryOffSellsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryOffSellsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryOffSells
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offSellValueId
+          orderByExpression: String1OrderByExp
+        - fieldName: offSellValueType
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryOffSellsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryOffSells
+  objectType: InventoryOffSells
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventory_off_sells
+  filterExpressionType: InventoryOffSellsBoolExp
+  aggregateExpression: InventoryOffSellsAggExp
+  orderByExpression: InventoryOffSellsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryOffSells
+      subscription:
+        rootField: inventoryOffSells
+    selectUniques:
+      - queryRootField: inventoryOffSellsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryOffSellsById
+    filterInputTypeName: InventoryOffSellsFilterInput
+    aggregate:
+      queryRootField: inventoryOffSellsAggregate
+      subscription:
+        rootField: inventoryOffSellsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryOffSells
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

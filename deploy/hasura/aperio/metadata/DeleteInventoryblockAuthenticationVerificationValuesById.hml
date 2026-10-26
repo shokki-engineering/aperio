@@ -1,0 +1,76 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryblockAuthenticationVerificationValuesByIdResponse
+  description: Responses from the
+    'delete_inventoryblock_authentication_verification_values_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockAuthenticationVerificationValues!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryblockAuthenticationVerificationValuesByIdResponse
+    inputTypeName: DeleteInventoryblockAuthenticationVerificationValuesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventoryblock_authentication_verification_values_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryblockAuthenticationVerificationValuesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryblockAuthenticationVerificationValuesById
+  outputType: DeleteInventoryblockAuthenticationVerificationValuesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryblockAuthenticationVerificationValuesBoolExp
+      description: Delete permission predicate over the
+        'inventoryblock_authentication_verification_values' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventoryblock_authentication_verification_values_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryblockAuthenticationVerificationValuesById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'inventoryblock_authentication_verification_values' collection using the
+    'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryblockAuthenticationVerificationValuesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

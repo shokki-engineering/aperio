@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventDateOrMonthDaysDayId
+  description: Update the 'day_id' column in the 'event_date_or_month_days' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventDateOrMonthDaysDayId
+    inputTypeName: UpdateColumnEventDateOrMonthDaysDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_date_or_month_days_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventDateOrMonthDaysDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventDateOrMonthDaysId
+  description: Update the 'id' column in the 'event_date_or_month_days' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventDateOrMonthDaysId
+    inputTypeName: UpdateColumnEventDateOrMonthDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_date_or_month_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventDateOrMonthDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventDateOrMonthDaysMonthDay
+  description: Update the 'month_day' column in the 'event_date_or_month_days' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventDateOrMonthDaysMonthDay
+    inputTypeName: UpdateColumnEventDateOrMonthDaysMonthDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_date_or_month_days_month_day
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventDateOrMonthDaysMonthDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventDateOrMonthDaysValueCase
+  description: Update the 'value_case' column in the 'event_date_or_month_days' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventDateOrMonthDaysValueCase
+    inputTypeName: UpdateColumnEventDateOrMonthDaysValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_date_or_month_days_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventDateOrMonthDaysValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventDateOrMonthDaysByIdUpdateColumns
+  description: Update the columns of the 'event_date_or_month_days' collection
+  fields:
+    - name: dayId
+      type: UpdateColumnEventDateOrMonthDaysDayId
+      description: Update the 'day_id' column in the 'event_date_or_month_days' collection.
+    - name: id
+      type: UpdateColumnEventDateOrMonthDaysId
+      description: Update the 'id' column in the 'event_date_or_month_days' collection.
+    - name: monthDay
+      type: UpdateColumnEventDateOrMonthDaysMonthDay
+      description: Update the 'month_day' column in the 'event_date_or_month_days'
+        collection.
+    - name: valueCase
+      type: UpdateColumnEventDateOrMonthDaysValueCase
+      description: Update the 'value_case' column in the 'event_date_or_month_days'
+        collection.
+  graphql:
+    typeName: UpdateEventDateOrMonthDaysByIdUpdateColumns
+    inputTypeName: UpdateEventDateOrMonthDaysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_date_or_month_days_by_id_update_columns
+      fieldMapping:
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        monthDay:
+          column:
+            name: month_day
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventDateOrMonthDaysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayId
+          - id
+          - monthDay
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventDateOrMonthDaysByIdResponse
+  description: Responses from the 'update_event_date_or_month_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventDateOrMonthDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventDateOrMonthDaysByIdResponse
+    inputTypeName: UpdateEventDateOrMonthDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_date_or_month_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventDateOrMonthDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventDateOrMonthDaysById
+  outputType: UpdateEventDateOrMonthDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventDateOrMonthDaysBoolExp
+      description: Update permission post-condition predicate over the
+        'event_date_or_month_days' collection
+    - name: preCheck
+      type: EventDateOrMonthDaysBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_date_or_month_days' collection
+    - name: updateColumns
+      type: UpdateEventDateOrMonthDaysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_date_or_month_days_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventDateOrMonthDaysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_date_or_month_days' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventDateOrMonthDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicySignatureOnFilesObject
+  fields:
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: signatureOnFile
+      type: Boolean_1
+  graphql:
+    typeName: InsertPolicySignatureOnFilesObject
+    inputTypeName: InsertPolicySignatureOnFilesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_signature_on_files_object
+      fieldMapping:
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        signatureOnFile:
+          column:
+            name: signature_on_file
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicySignatureOnFilesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - signatureOnFile
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicySignatureOnFilesResponse
+  description: Responses from the 'insert_policy_signature_on_files' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicySignatureOnFiles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicySignatureOnFilesResponse
+    inputTypeName: InsertPolicySignatureOnFilesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_signature_on_files_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicySignatureOnFilesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicySignatureOnFiles
+  outputType: InsertPolicySignatureOnFilesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicySignatureOnFilesObject!]!"
+    - name: postCheck
+      type: PolicySignatureOnFilesBoolExp
+      description: Insert permission predicate over the 'policy_signature_on_files'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_signature_on_files
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicySignatureOnFiles
+    rootFieldKind: Mutation
+  description: Insert into the policy_signature_on_files table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicySignatureOnFiles
+  permissions:
+    - role: admin
+      allowExecution: true
+

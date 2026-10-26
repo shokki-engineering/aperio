@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOffersObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: memberPreferencesId
+      type: String_1!
+    - name: type
+      type: Enum
+  graphql:
+    typeName: InsertProfileOffersObject
+    inputTypeName: InsertProfileOffersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_offers_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        memberPreferencesId:
+          column:
+            name: member_preferences_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOffersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - memberPreferencesId
+          - type
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOffersResponse
+  description: Responses from the 'insert_profile_offers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileOffers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileOffersResponse
+    inputTypeName: InsertProfileOffersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_offers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOffersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileOffers
+  outputType: InsertProfileOffersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileOffersObject!]!"
+    - name: postCheck
+      type: ProfileOffersBoolExp
+      description: Insert permission predicate over the 'profile_offers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_offers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileOffers
+    rootFieldKind: Mutation
+  description: Insert into the profile_offers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileOffers
+  permissions:
+    - role: admin
+      allowExecution: true
+

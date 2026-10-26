@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleRequiredDaysOfWeeks
+  fields:
+    - name: id
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: BookingruleRequiredDaysOfWeeks
+    inputTypeName: BookingruleRequiredDaysOfWeeksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_required_days_of_weeks
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleRequiredDaysOfWeeks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleRequiredDaysOfWeeksBoolExp
+  operand:
+    object:
+      type: BookingruleRequiredDaysOfWeeks
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleRequiredDaysOfWeeksBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleRequiredDaysOfWeeksAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleRequiredDaysOfWeeks
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleRequiredDaysOfWeeksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleRequiredDaysOfWeeksOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleRequiredDaysOfWeeks
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleRequiredDaysOfWeeksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleRequiredDaysOfWeeks
+  objectType: BookingruleRequiredDaysOfWeeks
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_required_days_of_weeks
+  filterExpressionType: BookingruleRequiredDaysOfWeeksBoolExp
+  aggregateExpression: BookingruleRequiredDaysOfWeeksAggExp
+  orderByExpression: BookingruleRequiredDaysOfWeeksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleRequiredDaysOfWeeks
+      subscription:
+        rootField: bookingruleRequiredDaysOfWeeks
+    selectUniques:
+      - queryRootField: bookingruleRequiredDaysOfWeeksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleRequiredDaysOfWeeksById
+    filterInputTypeName: BookingruleRequiredDaysOfWeeksFilterInput
+    aggregate:
+      queryRootField: bookingruleRequiredDaysOfWeeksAggregate
+      subscription:
+        rootField: bookingruleRequiredDaysOfWeeksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleRequiredDaysOfWeeks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

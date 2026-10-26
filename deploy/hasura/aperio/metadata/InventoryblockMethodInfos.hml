@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockMethodInfos
+  fields:
+    - name: billingInstructionId
+      type: String_1
+    - name: billingType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: reservationMethodCode
+      type: Enum
+    - name: signFoodAndBev
+      type: Boolean_1
+  graphql:
+    typeName: InventoryblockMethodInfos
+    inputTypeName: InventoryblockMethodInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_method_infos
+      fieldMapping:
+        billingInstructionId:
+          column:
+            name: billing_instruction_id
+        billingType:
+          column:
+            name: billing_type
+        id:
+          column:
+            name: id
+        reservationMethodCode:
+          column:
+            name: reservation_method_code
+        signFoodAndBev:
+          column:
+            name: sign_food_and_bev
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockMethodInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingInstructionId
+          - billingType
+          - id
+          - reservationMethodCode
+          - signFoodAndBev
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockMethodInfosBoolExp
+  operand:
+    object:
+      type: InventoryblockMethodInfos
+      comparableFields:
+        - fieldName: billingInstructionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: billingType
+          booleanExpressionType: InventoryblockBillingTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: reservationMethodCode
+          booleanExpressionType: InventoryblockInventoryblockReservationMethodCodeBoolExp
+        - fieldName: signFoodAndBev
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockMethodInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockMethodInfosAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockMethodInfos
+      aggregatableFields:
+        - fieldName: billingInstructionId
+          aggregateExpression: TextAggExp
+        - fieldName: billingType
+          aggregateExpression: InventoryblockBillingTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: reservationMethodCode
+          aggregateExpression: InventoryblockInventoryblockReservationMethodCodeAggExp
+        - fieldName: signFoodAndBev
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockMethodInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockMethodInfosOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockMethodInfos
+      orderableFields:
+        - fieldName: billingInstructionId
+          orderByExpression: String1OrderByExp
+        - fieldName: billingType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: reservationMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: signFoodAndBev
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockMethodInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockMethodInfos
+  objectType: InventoryblockMethodInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_method_infos
+  filterExpressionType: InventoryblockMethodInfosBoolExp
+  aggregateExpression: InventoryblockMethodInfosAggExp
+  orderByExpression: InventoryblockMethodInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockMethodInfos
+      subscription:
+        rootField: inventoryblockMethodInfos
+    selectUniques:
+      - queryRootField: inventoryblockMethodInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockMethodInfosById
+    filterInputTypeName: InventoryblockMethodInfosFilterInput
+    aggregate:
+      queryRootField: inventoryblockMethodInfosAggregate
+      subscription:
+        rootField: inventoryblockMethodInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockMethodInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

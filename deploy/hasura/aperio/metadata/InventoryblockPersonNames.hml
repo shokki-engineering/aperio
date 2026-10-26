@@ -1,0 +1,247 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockPersonNames
+  fields:
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+  graphql:
+    typeName: InventoryblockPersonNames
+    inputTypeName: InventoryblockPersonNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_person_names
+      fieldMapping:
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockPersonNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockPersonNamesBoolExp
+  operand:
+    object:
+      type: InventoryblockPersonNames
+      comparableFields:
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameType
+          booleanExpressionType: InventoryblockInventoryblockNameTypeBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareSynchIndBoolExp
+        - fieldName: surname
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnamePrefix
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockPersonNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockPersonNamesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockPersonNames
+      aggregatableFields:
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: nameType
+          aggregateExpression: InventoryblockInventoryblockNameTypeAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareSynchIndAggExp
+        - fieldName: surname
+          aggregateExpression: TextAggExp
+        - fieldName: surnamePrefix
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockPersonNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockPersonNamesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockPersonNames
+      orderableFields:
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: nameType
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: surname
+          orderByExpression: String1OrderByExp
+        - fieldName: surnamePrefix
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockPersonNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockPersonNames
+  objectType: InventoryblockPersonNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_person_names
+  filterExpressionType: InventoryblockPersonNamesBoolExp
+  aggregateExpression: InventoryblockPersonNamesAggExp
+  orderByExpression: InventoryblockPersonNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockPersonNames
+      subscription:
+        rootField: inventoryblockPersonNames
+    selectUniques:
+      - queryRootField: inventoryblockPersonNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockPersonNamesById
+    filterInputTypeName: InventoryblockPersonNamesFilterInput
+    aggregate:
+      queryRootField: inventoryblockPersonNamesAggregate
+      subscription:
+        rootField: inventoryblockPersonNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockPersonNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

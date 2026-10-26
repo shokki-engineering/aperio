@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileSecurityFeaturePrefsObject
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileSecurityFeaturePrefsObject
+    inputTypeName: InsertProfileSecurityFeaturePrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_security_feature_prefs_object
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileSecurityFeaturePrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileSecurityFeaturePrefsResponse
+  description: Responses from the 'insert_profile_security_feature_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileSecurityFeaturePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileSecurityFeaturePrefsResponse
+    inputTypeName: InsertProfileSecurityFeaturePrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_security_feature_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileSecurityFeaturePrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileSecurityFeaturePrefs
+  outputType: InsertProfileSecurityFeaturePrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileSecurityFeaturePrefsObject!]!"
+    - name: postCheck
+      type: ProfileSecurityFeaturePrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_security_feature_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_security_feature_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileSecurityFeaturePrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_security_feature_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileSecurityFeaturePrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

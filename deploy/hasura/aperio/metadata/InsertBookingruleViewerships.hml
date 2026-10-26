@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleViewershipsObject
+  fields:
+    - name: bookingChannelCodesId
+      type: String_1
+    - name: bookingRulesItemId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: locationCodesId
+      type: String_1
+    - name: systemCodesId
+      type: String_1
+    - name: viewOnly
+      type: Boolean_1
+    - name: viewershipCodesId
+      type: String_1
+    - name: viewershipRph
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleViewershipsObject
+    inputTypeName: InsertBookingruleViewershipsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_viewerships_object
+      fieldMapping:
+        bookingChannelCodesId:
+          column:
+            name: booking_channel_codes_id
+        bookingRulesItemId:
+          column:
+            name: booking_rules_item_id
+        id:
+          column:
+            name: id
+        locationCodesId:
+          column:
+            name: location_codes_id
+        systemCodesId:
+          column:
+            name: system_codes_id
+        viewOnly:
+          column:
+            name: view_only
+        viewershipCodesId:
+          column:
+            name: viewership_codes_id
+        viewershipRph:
+          column:
+            name: viewership_rph
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleViewershipsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingChannelCodesId
+          - bookingRulesItemId
+          - id
+          - locationCodesId
+          - systemCodesId
+          - viewOnly
+          - viewershipCodesId
+          - viewershipRph
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleViewershipsResponse
+  description: Responses from the 'insert_bookingrule_viewerships' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleViewerships!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleViewershipsResponse
+    inputTypeName: InsertBookingruleViewershipsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_viewerships_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleViewershipsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleViewerships
+  outputType: InsertBookingruleViewershipsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleViewershipsObject!]!"
+    - name: postCheck
+      type: BookingruleViewershipsBoolExp
+      description: Insert permission predicate over the 'bookingrule_viewerships' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_viewerships
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleViewerships
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_viewerships table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleViewerships
+  permissions:
+    - role: admin
+      allowExecution: true
+

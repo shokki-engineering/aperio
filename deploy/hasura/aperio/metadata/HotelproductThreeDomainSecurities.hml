@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductThreeDomainSecurities
+  fields:
+    - name: gatewayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: resultsId
+      type: String_1
+  graphql:
+    typeName: HotelproductThreeDomainSecurities
+    inputTypeName: HotelproductThreeDomainSecuritiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_three_domain_securities
+      fieldMapping:
+        gatewayId:
+          column:
+            name: gateway_id
+        id:
+          column:
+            name: id
+        resultsId:
+          column:
+            name: results_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductThreeDomainSecurities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - gatewayId
+          - id
+          - resultsId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductThreeDomainSecuritiesBoolExp
+  operand:
+    object:
+      type: HotelproductThreeDomainSecurities
+      comparableFields:
+        - fieldName: gatewayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: resultsId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductThreeDomainSecuritiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductThreeDomainSecuritiesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductThreeDomainSecurities
+      aggregatableFields:
+        - fieldName: gatewayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: resultsId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductThreeDomainSecuritiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductThreeDomainSecuritiesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductThreeDomainSecurities
+      orderableFields:
+        - fieldName: gatewayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: resultsId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductThreeDomainSecuritiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductThreeDomainSecurities
+  objectType: HotelproductThreeDomainSecurities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_three_domain_securities
+  filterExpressionType: HotelproductThreeDomainSecuritiesBoolExp
+  aggregateExpression: HotelproductThreeDomainSecuritiesAggExp
+  orderByExpression: HotelproductThreeDomainSecuritiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductThreeDomainSecurities
+      subscription:
+        rootField: hotelproductThreeDomainSecurities
+    selectUniques:
+      - queryRootField: hotelproductThreeDomainSecuritiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductThreeDomainSecuritiesById
+    filterInputTypeName: HotelproductThreeDomainSecuritiesFilterInput
+    aggregate:
+      queryRootField: hotelproductThreeDomainSecuritiesAggregate
+      subscription:
+        rootField: hotelproductThreeDomainSecuritiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductThreeDomainSecurities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

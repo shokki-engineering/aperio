@@ -1,0 +1,325 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelInfos
+  fields:
+    - name: areaWeather
+      type: String_1
+    - name: categoryCodesId
+      type: String_1
+    - name: daylightSavingIndicator
+      type: Boolean_1
+    - name: descriptionsId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: hotelDisplayNameId
+      type: String_1
+    - name: hotelStatus
+      type: String_1
+    - name: hotelStatusCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: interfaceCompliance
+      type: String_1
+    - name: iso9000Certified
+      type: Boolean_1
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: pmsSystem
+      type: String_1
+    - name: positionId
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: taxId
+      type: String_1
+    - name: whenBuilt
+      type: String_1
+  graphql:
+    typeName: HotelInfos
+    inputTypeName: HotelInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_infos
+      fieldMapping:
+        areaWeather:
+          column:
+            name: area_weather
+        categoryCodesId:
+          column:
+            name: category_codes_id
+        daylightSavingIndicator:
+          column:
+            name: daylight_saving_indicator
+        descriptionsId:
+          column:
+            name: descriptions_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        hotelDisplayNameId:
+          column:
+            name: hotel_display_name_id
+        hotelStatus:
+          column:
+            name: hotel_status
+        hotelStatusCode:
+          column:
+            name: hotel_status_code
+        id:
+          column:
+            name: id
+        interfaceCompliance:
+          column:
+            name: interface_compliance
+        iso9000Certified:
+          column:
+            name: iso9000_certified
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        pmsSystem:
+          column:
+            name: pms_system
+        positionId:
+          column:
+            name: position_id
+        startId:
+          column:
+            name: start_id
+        taxId:
+          column:
+            name: tax_id
+        whenBuilt:
+          column:
+            name: when_built
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaWeather
+          - categoryCodesId
+          - daylightSavingIndicator
+          - descriptionsId
+          - duration
+          - endId
+          - hotelDisplayNameId
+          - hotelStatus
+          - hotelStatusCode
+          - id
+          - interfaceCompliance
+          - iso9000Certified
+          - lastUpdateTime
+          - pmsSystem
+          - positionId
+          - startId
+          - taxId
+          - whenBuilt
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelInfosBoolExp
+  operand:
+    object:
+      type: HotelInfos
+      comparableFields:
+        - fieldName: areaWeather
+          booleanExpressionType: TextBoolExp
+        - fieldName: categoryCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: daylightSavingIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: descriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelStatus
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelStatusCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: interfaceCompliance
+          booleanExpressionType: TextBoolExp
+        - fieldName: iso9000Certified
+          booleanExpressionType: BoolBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: pmsSystem
+          booleanExpressionType: TextBoolExp
+        - fieldName: positionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxId
+          booleanExpressionType: TextBoolExp
+        - fieldName: whenBuilt
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelInfosAggExp
+  operand:
+    object:
+      aggregatedType: HotelInfos
+      aggregatableFields:
+        - fieldName: areaWeather
+          aggregateExpression: TextAggExp
+        - fieldName: categoryCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: daylightSavingIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: descriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelStatus
+          aggregateExpression: TextAggExp
+        - fieldName: hotelStatusCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: interfaceCompliance
+          aggregateExpression: TextAggExp
+        - fieldName: iso9000Certified
+          aggregateExpression: BoolAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: pmsSystem
+          aggregateExpression: TextAggExp
+        - fieldName: positionId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: taxId
+          aggregateExpression: TextAggExp
+        - fieldName: whenBuilt
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelInfosOrderByExp
+  operand:
+    object:
+      orderedType: HotelInfos
+      orderableFields:
+        - fieldName: areaWeather
+          orderByExpression: String1OrderByExp
+        - fieldName: categoryCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: daylightSavingIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: descriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelStatus
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelStatusCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: interfaceCompliance
+          orderByExpression: String1OrderByExp
+        - fieldName: iso9000Certified
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: pmsSystem
+          orderByExpression: String1OrderByExp
+        - fieldName: positionId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxId
+          orderByExpression: String1OrderByExp
+        - fieldName: whenBuilt
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelInfos
+  objectType: HotelInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_infos
+  filterExpressionType: HotelInfosBoolExp
+  aggregateExpression: HotelInfosAggExp
+  orderByExpression: HotelInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelInfos
+      subscription:
+        rootField: hotelInfos
+    selectUniques:
+      - queryRootField: hotelInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelInfosById
+    filterInputTypeName: HotelInfosFilterInput
+    aggregate:
+      queryRootField: hotelInfosAggregate
+      subscription:
+        rootField: hotelInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

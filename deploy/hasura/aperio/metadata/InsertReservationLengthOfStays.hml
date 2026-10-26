@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationLengthOfStaysObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: length
+      type: Int32
+    - name: lengthsOfStayId
+      type: String_1!
+    - name: losPatternId
+      type: String_1
+    - name: minMaxMessageType
+      type: Enum
+    - name: openStatusIndicator
+      type: Boolean_1
+    - name: timeUnit
+      type: Enum
+  graphql:
+    typeName: InsertReservationLengthOfStaysObject
+    inputTypeName: InsertReservationLengthOfStaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_length_of_stays_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        length:
+          column:
+            name: length
+        lengthsOfStayId:
+          column:
+            name: lengths_of_stay_id
+        losPatternId:
+          column:
+            name: los_pattern_id
+        minMaxMessageType:
+          column:
+            name: min_max_message_type
+        openStatusIndicator:
+          column:
+            name: open_status_indicator
+        timeUnit:
+          column:
+            name: time_unit
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationLengthOfStaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - length
+          - lengthsOfStayId
+          - losPatternId
+          - minMaxMessageType
+          - openStatusIndicator
+          - timeUnit
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationLengthOfStaysResponse
+  description: Responses from the 'insert_reservation_length_of_stays' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationLengthOfStays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationLengthOfStaysResponse
+    inputTypeName: InsertReservationLengthOfStaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_length_of_stays_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationLengthOfStaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationLengthOfStays
+  outputType: InsertReservationLengthOfStaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationLengthOfStaysObject!]!"
+    - name: postCheck
+      type: ReservationLengthOfStaysBoolExp
+      description: Insert permission predicate over the 'reservation_length_of_stays'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_length_of_stays
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationLengthOfStays
+    rootFieldKind: Mutation
+  description: Insert into the reservation_length_of_stays table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationLengthOfStays
+  permissions:
+    - role: admin
+      allowExecution: true
+

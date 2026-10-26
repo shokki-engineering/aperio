@@ -1,0 +1,187 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationViewershipCodesId
+  description: Update the 'id' column in the 'reservation_viewership_codes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationViewershipCodesId
+    inputTypeName: UpdateColumnReservationViewershipCodesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_viewership_codes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationViewershipCodesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationViewershipCodesViewershipCode
+  description: Update the 'viewership_code' column in the
+    'reservation_viewership_codes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationViewershipCodesViewershipCode
+    inputTypeName: UpdateColumnReservationViewershipCodesViewershipCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_viewership_codes_viewership_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationViewershipCodesViewershipCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationViewershipCodesByIdUpdateColumns
+  description: Update the columns of the 'reservation_viewership_codes' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationViewershipCodesId
+      description: Update the 'id' column in the 'reservation_viewership_codes' collection.
+    - name: viewershipCode
+      type: UpdateColumnReservationViewershipCodesViewershipCode
+      description: Update the 'viewership_code' column in the
+        'reservation_viewership_codes' collection.
+  graphql:
+    typeName: UpdateReservationViewershipCodesByIdUpdateColumns
+    inputTypeName: UpdateReservationViewershipCodesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_viewership_codes_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        viewershipCode:
+          column:
+            name: viewership_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationViewershipCodesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - viewershipCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationViewershipCodesByIdResponse
+  description: Responses from the 'update_reservation_viewership_codes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationViewershipCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationViewershipCodesByIdResponse
+    inputTypeName: UpdateReservationViewershipCodesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_viewership_codes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationViewershipCodesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationViewershipCodesById
+  outputType: UpdateReservationViewershipCodesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationViewershipCodesBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_viewership_codes' collection
+    - name: preCheck
+      type: ReservationViewershipCodesBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_viewership_codes' collection
+    - name: updateColumns
+      type: UpdateReservationViewershipCodesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_viewership_codes_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationViewershipCodesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_viewership_codes' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationViewershipCodesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,153 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryTimeOfDays
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: InventoryTimeOfDays
+    inputTypeName: InventoryTimeOfDaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventory_time_of_days
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryTimeOfDays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryTimeOfDaysBoolExp
+  operand:
+    object:
+      type: InventoryTimeOfDays
+      comparableFields:
+        - fieldName: hour
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: minute
+          booleanExpressionType: Int4BoolExp
+        - fieldName: nanosecond
+          booleanExpressionType: Int4BoolExp
+        - fieldName: second
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryTimeOfDaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryTimeOfDaysAggExp
+  operand:
+    object:
+      aggregatedType: InventoryTimeOfDays
+      aggregatableFields:
+        - fieldName: hour
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: minute
+          aggregateExpression: Int4AggExp
+        - fieldName: nanosecond
+          aggregateExpression: Int4AggExp
+        - fieldName: second
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryTimeOfDaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryTimeOfDaysOrderByExp
+  operand:
+    object:
+      orderedType: InventoryTimeOfDays
+      orderableFields:
+        - fieldName: hour
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: minute
+          orderByExpression: Int32OrderByExp
+        - fieldName: nanosecond
+          orderByExpression: Int32OrderByExp
+        - fieldName: second
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryTimeOfDaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryTimeOfDays
+  objectType: InventoryTimeOfDays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventory_time_of_days
+  filterExpressionType: InventoryTimeOfDaysBoolExp
+  aggregateExpression: InventoryTimeOfDaysAggExp
+  orderByExpression: InventoryTimeOfDaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryTimeOfDays
+      subscription:
+        rootField: inventoryTimeOfDays
+    selectUniques:
+      - queryRootField: inventoryTimeOfDaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryTimeOfDaysById
+    filterInputTypeName: InventoryTimeOfDaysFilterInput
+    aggregate:
+      queryRootField: inventoryTimeOfDaysAggregate
+      subscription:
+        rootField: inventoryTimeOfDaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryTimeOfDays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

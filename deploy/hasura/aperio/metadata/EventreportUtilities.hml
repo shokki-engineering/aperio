@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportUtilities
+  fields:
+    - name: amountId
+      type: String_1
+    - name: code
+      type: Enum
+    - name: description
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: serviceId
+      type: String_1!
+    - name: telecommunicationCode
+      type: Enum
+  graphql:
+    typeName: EventreportUtilities
+    inputTypeName: EventreportUtilitiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_utilities
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        quantity:
+          column:
+            name: quantity
+        serviceId:
+          column:
+            name: service_id
+        telecommunicationCode:
+          column:
+            name: telecommunication_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportUtilities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - code
+          - description
+          - id
+          - name
+          - quantity
+          - serviceId
+          - telecommunicationCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportUtilitiesBoolExp
+  operand:
+    object:
+      type: EventreportUtilities
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: EventreportEventreportUtilityServiceCodeBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: serviceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: telecommunicationCode
+          booleanExpressionType: EventreportEventreportBusinessSrvcTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportUtilitiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportUtilitiesAggExp
+  operand:
+    object:
+      aggregatedType: EventreportUtilities
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: EventreportEventreportUtilityServiceCodeAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: serviceId
+          aggregateExpression: TextAggExp
+        - fieldName: telecommunicationCode
+          aggregateExpression: EventreportEventreportBusinessSrvcTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportUtilitiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportUtilitiesOrderByExp
+  operand:
+    object:
+      orderedType: EventreportUtilities
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: serviceId
+          orderByExpression: String1OrderByExp
+        - fieldName: telecommunicationCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportUtilitiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportUtilities
+  objectType: EventreportUtilities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_utilities
+  filterExpressionType: EventreportUtilitiesBoolExp
+  aggregateExpression: EventreportUtilitiesAggExp
+  orderByExpression: EventreportUtilitiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportUtilities
+      subscription:
+        rootField: eventreportUtilities
+    selectUniques:
+      - queryRootField: eventreportUtilitiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportUtilitiesById
+    filterInputTypeName: EventreportUtilitiesFilterInput
+    aggregate:
+      queryRootField: eventreportUtilitiesAggregate
+      subscription:
+        rootField: eventreportUtilitiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportUtilities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

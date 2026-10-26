@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAreainfoCountryNamesByIdResponse
+  description: Responses from the 'delete_areainfo_country_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAreainfoCountryNamesByIdResponse
+    inputTypeName: DeleteAreainfoCountryNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_areainfo_country_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAreainfoCountryNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAreainfoCountryNamesById
+  outputType: DeleteAreainfoCountryNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AreainfoCountryNamesBoolExp
+      description: Delete permission predicate over the 'areainfo_country_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_areainfo_country_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAreainfoCountryNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'areainfo_country_names' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAreainfoCountryNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

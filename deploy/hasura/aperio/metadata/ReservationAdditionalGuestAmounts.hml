@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationAdditionalGuestAmounts
+  fields:
+    - name: id
+      type: String_1!
+    - name: postTaxAmountId
+      type: String_1
+    - name: preTaxAmountId
+      type: String_1
+  graphql:
+    typeName: ReservationAdditionalGuestAmounts
+    inputTypeName: ReservationAdditionalGuestAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_additional_guest_amounts
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationAdditionalGuestAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postTaxAmountId
+          - preTaxAmountId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationAdditionalGuestAmountsBoolExp
+  operand:
+    object:
+      type: ReservationAdditionalGuestAmounts
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: postTaxAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preTaxAmountId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationAdditionalGuestAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationAdditionalGuestAmountsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationAdditionalGuestAmounts
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: postTaxAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: preTaxAmountId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationAdditionalGuestAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationAdditionalGuestAmountsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationAdditionalGuestAmounts
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: postTaxAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: preTaxAmountId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationAdditionalGuestAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationAdditionalGuestAmounts
+  objectType: ReservationAdditionalGuestAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_additional_guest_amounts
+  filterExpressionType: ReservationAdditionalGuestAmountsBoolExp
+  aggregateExpression: ReservationAdditionalGuestAmountsAggExp
+  orderByExpression: ReservationAdditionalGuestAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationAdditionalGuestAmounts
+      subscription:
+        rootField: reservationAdditionalGuestAmounts
+    selectUniques:
+      - queryRootField: reservationAdditionalGuestAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationAdditionalGuestAmountsById
+    filterInputTypeName: ReservationAdditionalGuestAmountsFilterInput
+    aggregate:
+      queryRootField: reservationAdditionalGuestAmountsAggregate
+      subscription:
+        rootField: reservationAdditionalGuestAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationAdditionalGuestAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

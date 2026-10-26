@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanSystemCodesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: systemCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: InsertRateplanSystemCodesObject
+    inputTypeName: InsertRateplanSystemCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_system_codes_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        systemCodesInclusive:
+          column:
+            name: system_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanSystemCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - systemCodesInclusive
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanSystemCodesResponse
+  description: Responses from the 'insert_rateplan_system_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanSystemCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanSystemCodesResponse
+    inputTypeName: InsertRateplanSystemCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_system_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanSystemCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanSystemCodes
+  outputType: InsertRateplanSystemCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanSystemCodesObject!]!"
+    - name: postCheck
+      type: RateplanSystemCodesBoolExp
+      description: Insert permission predicate over the 'rateplan_system_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_system_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanSystemCodes
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_system_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanSystemCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

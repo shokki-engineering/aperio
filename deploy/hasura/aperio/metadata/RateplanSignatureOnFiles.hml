@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanSignatureOnFiles
+  fields:
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: signatureOnFile
+      type: Boolean_1
+  graphql:
+    typeName: RateplanSignatureOnFiles
+    inputTypeName: RateplanSignatureOnFilesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_signature_on_files
+      fieldMapping:
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        signatureOnFile:
+          column:
+            name: signature_on_file
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanSignatureOnFiles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - signatureOnFile
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanSignatureOnFilesBoolExp
+  operand:
+    object:
+      type: RateplanSignatureOnFiles
+      comparableFields:
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: signatureOnFile
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanSignatureOnFilesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanSignatureOnFilesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanSignatureOnFiles
+      aggregatableFields:
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: signatureOnFile
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanSignatureOnFilesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanSignatureOnFilesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanSignatureOnFiles
+      orderableFields:
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: signatureOnFile
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanSignatureOnFilesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanSignatureOnFiles
+  objectType: RateplanSignatureOnFiles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_signature_on_files
+  filterExpressionType: RateplanSignatureOnFilesBoolExp
+  aggregateExpression: RateplanSignatureOnFilesAggExp
+  orderByExpression: RateplanSignatureOnFilesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanSignatureOnFiles
+      subscription:
+        rootField: rateplanSignatureOnFiles
+    selectUniques:
+      - queryRootField: rateplanSignatureOnFilesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanSignatureOnFilesById
+    filterInputTypeName: RateplanSignatureOnFilesFilterInput
+    aggregate:
+      queryRootField: rateplanSignatureOnFilesAggregate
+      subscription:
+        rootField: rateplanSignatureOnFilesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanSignatureOnFiles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

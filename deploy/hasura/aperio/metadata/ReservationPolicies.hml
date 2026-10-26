@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationPolicies
+  fields:
+    - name: checkOutClockId
+      type: String_1
+    - name: checkinClockId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationPolicies
+    inputTypeName: ReservationPoliciesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_policies
+      fieldMapping:
+        checkOutClockId:
+          column:
+            name: check_out_clock_id
+        checkinClockId:
+          column:
+            name: checkin_clock_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationPolicies
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkOutClockId
+          - checkinClockId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationPoliciesBoolExp
+  operand:
+    object:
+      type: ReservationPolicies
+      comparableFields:
+        - fieldName: checkOutClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: checkinClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationPoliciesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationPoliciesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationPolicies
+      aggregatableFields:
+        - fieldName: checkOutClockId
+          aggregateExpression: TextAggExp
+        - fieldName: checkinClockId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationPoliciesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationPoliciesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationPolicies
+      orderableFields:
+        - fieldName: checkOutClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: checkinClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationPoliciesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationPolicies
+  objectType: ReservationPolicies
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_policies
+  filterExpressionType: ReservationPoliciesBoolExp
+  aggregateExpression: ReservationPoliciesAggExp
+  orderByExpression: ReservationPoliciesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationPolicies
+      subscription:
+        rootField: reservationPolicies
+    selectUniques:
+      - queryRootField: reservationPoliciesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationPoliciesById
+    filterInputTypeName: ReservationPoliciesFilterInput
+    aggregate:
+      queryRootField: reservationPoliciesAggregate
+      subscription:
+        rootField: reservationPoliciesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationPolicies
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

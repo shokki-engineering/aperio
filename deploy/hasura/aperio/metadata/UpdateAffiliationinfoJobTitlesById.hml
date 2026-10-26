@@ -1,0 +1,264 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoJobTitlesId
+  description: Update the 'id' column in the 'affiliationinfo_job_titles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoJobTitlesId
+    inputTypeName: UpdateColumnAffiliationinfoJobTitlesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_job_titles_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoJobTitlesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoJobTitlesNameId
+  description: Update the 'name_id' column in the 'affiliationinfo_job_titles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoJobTitlesNameId
+    inputTypeName: UpdateColumnAffiliationinfoJobTitlesNameIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_job_titles_name_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoJobTitlesNameId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoJobTitlesType
+  description: Update the 'type' column in the 'affiliationinfo_job_titles' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoJobTitlesType
+    inputTypeName: UpdateColumnAffiliationinfoJobTitlesTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_job_titles_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoJobTitlesType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoJobTitlesValue
+  description: Update the 'value' column in the 'affiliationinfo_job_titles' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoJobTitlesValue
+    inputTypeName: UpdateColumnAffiliationinfoJobTitlesValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_job_titles_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoJobTitlesValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoJobTitlesByIdUpdateColumns
+  description: Update the columns of the 'affiliationinfo_job_titles' collection
+  fields:
+    - name: id
+      type: UpdateColumnAffiliationinfoJobTitlesId
+      description: Update the 'id' column in the 'affiliationinfo_job_titles' collection.
+    - name: nameId
+      type: UpdateColumnAffiliationinfoJobTitlesNameId
+      description: Update the 'name_id' column in the 'affiliationinfo_job_titles'
+        collection.
+    - name: type
+      type: UpdateColumnAffiliationinfoJobTitlesType
+      description: Update the 'type' column in the 'affiliationinfo_job_titles' collection.
+    - name: value
+      type: UpdateColumnAffiliationinfoJobTitlesValue
+      description: Update the 'value' column in the 'affiliationinfo_job_titles' collection.
+  graphql:
+    typeName: UpdateAffiliationinfoJobTitlesByIdUpdateColumns
+    inputTypeName: UpdateAffiliationinfoJobTitlesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_job_titles_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        nameId:
+          column:
+            name: name_id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoJobTitlesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - nameId
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoJobTitlesByIdResponse
+  description: Responses from the 'update_affiliationinfo_job_titles_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoJobTitles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateAffiliationinfoJobTitlesByIdResponse
+    inputTypeName: UpdateAffiliationinfoJobTitlesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_job_titles_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoJobTitlesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateAffiliationinfoJobTitlesById
+  outputType: UpdateAffiliationinfoJobTitlesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: AffiliationinfoJobTitlesBoolExp
+      description: Update permission post-condition predicate over the
+        'affiliationinfo_job_titles' collection
+    - name: preCheck
+      type: AffiliationinfoJobTitlesBoolExp
+      description: Update permission pre-condition predicate over the
+        'affiliationinfo_job_titles' collection
+    - name: updateColumns
+      type: UpdateAffiliationinfoJobTitlesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_affiliationinfo_job_titles_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateAffiliationinfoJobTitlesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'affiliationinfo_job_titles' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateAffiliationinfoJobTitlesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

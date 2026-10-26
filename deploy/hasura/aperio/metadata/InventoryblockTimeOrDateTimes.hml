@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockTimeOrDateTimes
+  fields:
+    - name: clockId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: InventoryblockTimeOrDateTimes
+    inputTypeName: InventoryblockTimeOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_time_or_date_times
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockTimeOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockTimeOrDateTimesBoolExp
+  operand:
+    object:
+      type: InventoryblockTimeOrDateTimes
+      comparableFields:
+        - fieldName: clockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: InventoryblockInventoryblockTimeOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockTimeOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockTimeOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockTimeOrDateTimes
+      aggregatableFields:
+        - fieldName: clockId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: InventoryblockInventoryblockTimeOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockTimeOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockTimeOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockTimeOrDateTimes
+      orderableFields:
+        - fieldName: clockId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockTimeOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockTimeOrDateTimes
+  objectType: InventoryblockTimeOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_time_or_date_times
+  filterExpressionType: InventoryblockTimeOrDateTimesBoolExp
+  aggregateExpression: InventoryblockTimeOrDateTimesAggExp
+  orderByExpression: InventoryblockTimeOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockTimeOrDateTimes
+      subscription:
+        rootField: inventoryblockTimeOrDateTimes
+    selectUniques:
+      - queryRootField: inventoryblockTimeOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockTimeOrDateTimesById
+    filterInputTypeName: InventoryblockTimeOrDateTimesFilterInput
+    aggregate:
+      queryRootField: inventoryblockTimeOrDateTimesAggregate
+      subscription:
+        rootField: inventoryblockTimeOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockTimeOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

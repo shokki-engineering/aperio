@@ -1,0 +1,309 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileRoomLocationPrefsHotelPrefId
+  description: Update the 'hotel_pref_id' column in the
+    'profile_room_location_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileRoomLocationPrefsHotelPrefId
+    inputTypeName: UpdateColumnProfileRoomLocationPrefsHotelPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_room_location_prefs_hotel_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileRoomLocationPrefsHotelPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileRoomLocationPrefsId
+  description: Update the 'id' column in the 'profile_room_location_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileRoomLocationPrefsId
+    inputTypeName: UpdateColumnProfileRoomLocationPrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_room_location_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileRoomLocationPrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileRoomLocationPrefsPreferLevel
+  description: Update the 'prefer_level' column in the
+    'profile_room_location_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileRoomLocationPrefsPreferLevel
+    inputTypeName: UpdateColumnProfileRoomLocationPrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_room_location_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileRoomLocationPrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileRoomLocationPrefsRoomLocationType
+  description: Update the 'room_location_type' column in the
+    'profile_room_location_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileRoomLocationPrefsRoomLocationType
+    inputTypeName: UpdateColumnProfileRoomLocationPrefsRoomLocationTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_room_location_prefs_room_location_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileRoomLocationPrefsRoomLocationType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileRoomLocationPrefsValue
+  description: Update the 'value' column in the 'profile_room_location_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileRoomLocationPrefsValue
+    inputTypeName: UpdateColumnProfileRoomLocationPrefsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_room_location_prefs_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileRoomLocationPrefsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileRoomLocationPrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_room_location_prefs' collection
+  fields:
+    - name: hotelPrefId
+      type: UpdateColumnProfileRoomLocationPrefsHotelPrefId
+      description: Update the 'hotel_pref_id' column in the
+        'profile_room_location_prefs' collection.
+    - name: id
+      type: UpdateColumnProfileRoomLocationPrefsId
+      description: Update the 'id' column in the 'profile_room_location_prefs' collection.
+    - name: preferLevel
+      type: UpdateColumnProfileRoomLocationPrefsPreferLevel
+      description: Update the 'prefer_level' column in the
+        'profile_room_location_prefs' collection.
+    - name: roomLocationType
+      type: UpdateColumnProfileRoomLocationPrefsRoomLocationType
+      description: Update the 'room_location_type' column in the
+        'profile_room_location_prefs' collection.
+    - name: value
+      type: UpdateColumnProfileRoomLocationPrefsValue
+      description: Update the 'value' column in the 'profile_room_location_prefs'
+        collection.
+  graphql:
+    typeName: UpdateProfileRoomLocationPrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileRoomLocationPrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_room_location_prefs_by_id_update_columns
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        roomLocationType:
+          column:
+            name: room_location_type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileRoomLocationPrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - roomLocationType
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileRoomLocationPrefsByIdResponse
+  description: Responses from the 'update_profile_room_location_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileRoomLocationPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileRoomLocationPrefsByIdResponse
+    inputTypeName: UpdateProfileRoomLocationPrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_room_location_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileRoomLocationPrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileRoomLocationPrefsById
+  outputType: UpdateProfileRoomLocationPrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileRoomLocationPrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_room_location_prefs' collection
+    - name: preCheck
+      type: ProfileRoomLocationPrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_room_location_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileRoomLocationPrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_room_location_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileRoomLocationPrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_room_location_prefs' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileRoomLocationPrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: MeetingrfpDecimals
+    inputTypeName: MeetingrfpDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpDecimalsBoolExp
+  operand:
+    object:
+      type: MeetingrfpDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpDecimals
+  objectType: MeetingrfpDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_decimals
+  filterExpressionType: MeetingrfpDecimalsBoolExp
+  aggregateExpression: MeetingrfpDecimalsAggExp
+  orderByExpression: MeetingrfpDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpDecimals
+      subscription:
+        rootField: meetingrfpDecimals
+    selectUniques:
+      - queryRootField: meetingrfpDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpDecimalsById
+    filterInputTypeName: MeetingrfpDecimalsFilterInput
+    aggregate:
+      queryRootField: meetingrfpDecimalsAggregate
+      subscription:
+        rootField: meetingrfpDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

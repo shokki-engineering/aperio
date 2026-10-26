@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTripPurposesObject
+  fields:
+    - name: code
+      type: String_1
+    - name: companyInfoId
+      type: String_1!
+    - name: description
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertProfileTripPurposesObject
+    inputTypeName: InsertProfileTripPurposesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_trip_purposes_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        companyInfoId:
+          column:
+            name: company_info_id
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTripPurposesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - companyInfoId
+          - description
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTripPurposesResponse
+  description: Responses from the 'insert_profile_trip_purposes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileTripPurposes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileTripPurposesResponse
+    inputTypeName: InsertProfileTripPurposesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_trip_purposes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTripPurposesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileTripPurposes
+  outputType: InsertProfileTripPurposesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileTripPurposesObject!]!"
+    - name: postCheck
+      type: ProfileTripPurposesBoolExp
+      description: Insert permission predicate over the 'profile_trip_purposes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_trip_purposes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileTripPurposes
+    rootFieldKind: Mutation
+  description: Insert into the profile_trip_purposes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileTripPurposes
+  permissions:
+    - role: admin
+      allowExecution: true
+

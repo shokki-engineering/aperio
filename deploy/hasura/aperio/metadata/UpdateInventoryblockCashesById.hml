@@ -1,0 +1,185 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockCashesCashIndicator
+  description: Update the 'cash_indicator' column in the 'inventoryblock_cashes' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockCashesCashIndicator
+    inputTypeName: UpdateColumnInventoryblockCashesCashIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_cashes_cash_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockCashesCashIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockCashesId
+  description: Update the 'id' column in the 'inventoryblock_cashes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockCashesId
+    inputTypeName: UpdateColumnInventoryblockCashesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_cashes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockCashesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockCashesByIdUpdateColumns
+  description: Update the columns of the 'inventoryblock_cashes' collection
+  fields:
+    - name: cashIndicator
+      type: UpdateColumnInventoryblockCashesCashIndicator
+      description: Update the 'cash_indicator' column in the 'inventoryblock_cashes'
+        collection.
+    - name: id
+      type: UpdateColumnInventoryblockCashesId
+      description: Update the 'id' column in the 'inventoryblock_cashes' collection.
+  graphql:
+    typeName: UpdateInventoryblockCashesByIdUpdateColumns
+    inputTypeName: UpdateInventoryblockCashesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_cashes_by_id_update_columns
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockCashesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockCashesByIdResponse
+  description: Responses from the 'update_inventoryblock_cashes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateInventoryblockCashesByIdResponse
+    inputTypeName: UpdateInventoryblockCashesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_cashes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockCashesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateInventoryblockCashesById
+  outputType: UpdateInventoryblockCashesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: InventoryblockCashesBoolExp
+      description: Update permission post-condition predicate over the
+        'inventoryblock_cashes' collection
+    - name: preCheck
+      type: InventoryblockCashesBoolExp
+      description: Update permission pre-condition predicate over the
+        'inventoryblock_cashes' collection
+    - name: updateColumns
+      type: UpdateInventoryblockCashesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_inventoryblock_cashes_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateInventoryblockCashesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'inventoryblock_cashes' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateInventoryblockCashesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpStayDayRooms
+  fields:
+    - name: amountId
+      type: String_1
+    - name: commentId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: roomTypeRequirement
+      type: String_1
+    - name: stayDayId
+      type: String_1!
+    - name: unitCount
+      type: Int32
+  graphql:
+    typeName: MeetingrfpStayDayRooms
+    inputTypeName: MeetingrfpStayDayRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_stay_day_rooms
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        commentId:
+          column:
+            name: comment_id
+        id:
+          column:
+            name: id
+        roomTypeRequirement:
+          column:
+            name: room_type_requirement
+        stayDayId:
+          column:
+            name: stay_day_id
+        unitCount:
+          column:
+            name: unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpStayDayRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - commentId
+          - id
+          - roomTypeRequirement
+          - stayDayId
+          - unitCount
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpStayDayRoomsBoolExp
+  operand:
+    object:
+      type: MeetingrfpStayDayRooms
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeRequirement
+          booleanExpressionType: TextBoolExp
+        - fieldName: stayDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCount
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpStayDayRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpStayDayRoomsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpStayDayRooms
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeRequirement
+          aggregateExpression: TextAggExp
+        - fieldName: stayDayId
+          aggregateExpression: TextAggExp
+        - fieldName: unitCount
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpStayDayRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpStayDayRoomsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpStayDayRooms
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeRequirement
+          orderByExpression: String1OrderByExp
+        - fieldName: stayDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCount
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpStayDayRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpStayDayRooms
+  objectType: MeetingrfpStayDayRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_stay_day_rooms
+  filterExpressionType: MeetingrfpStayDayRoomsBoolExp
+  aggregateExpression: MeetingrfpStayDayRoomsAggExp
+  orderByExpression: MeetingrfpStayDayRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpStayDayRooms
+      subscription:
+        rootField: meetingrfpStayDayRooms
+    selectUniques:
+      - queryRootField: meetingrfpStayDayRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpStayDayRoomsById
+    filterInputTypeName: MeetingrfpStayDayRoomsFilterInput
+    aggregate:
+      queryRootField: meetingrfpStayDayRoomsAggregate
+      subscription:
+        rootField: meetingrfpStayDayRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpStayDayRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

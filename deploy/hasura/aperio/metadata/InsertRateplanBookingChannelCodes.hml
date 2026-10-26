@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanBookingChannelCodesObject
+  fields:
+    - name: channelCodesInclusive
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRateplanBookingChannelCodesObject
+    inputTypeName: InsertRateplanBookingChannelCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_booking_channel_codes_object
+      fieldMapping:
+        channelCodesInclusive:
+          column:
+            name: channel_codes_inclusive
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanBookingChannelCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - channelCodesInclusive
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanBookingChannelCodesResponse
+  description: Responses from the 'insert_rateplan_booking_channel_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanBookingChannelCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanBookingChannelCodesResponse
+    inputTypeName: InsertRateplanBookingChannelCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_booking_channel_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanBookingChannelCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanBookingChannelCodes
+  outputType: InsertRateplanBookingChannelCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanBookingChannelCodesObject!]!"
+    - name: postCheck
+      type: RateplanBookingChannelCodesBoolExp
+      description: Insert permission predicate over the
+        'rateplan_booking_channel_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_booking_channel_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanBookingChannelCodes
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_booking_channel_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanBookingChannelCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

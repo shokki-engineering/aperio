@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEnvironmentalimpactListPowersByIdResponse
+  description: Responses from the 'delete_environmentalimpact_list_powers_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EnvironmentalimpactListPowers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEnvironmentalimpactListPowersByIdResponse
+    inputTypeName: DeleteEnvironmentalimpactListPowersByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_environmentalimpact_list_powers_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEnvironmentalimpactListPowersByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEnvironmentalimpactListPowersById
+  outputType: DeleteEnvironmentalimpactListPowersByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EnvironmentalimpactListPowersBoolExp
+      description: Delete permission predicate over the
+        'environmentalimpact_list_powers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_environmentalimpact_list_powers_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEnvironmentalimpactListPowersById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'environmentalimpact_list_powers' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEnvironmentalimpactListPowersById
+  permissions:
+    - role: admin
+      allowExecution: true
+

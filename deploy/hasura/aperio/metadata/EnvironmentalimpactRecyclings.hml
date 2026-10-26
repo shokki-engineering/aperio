@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EnvironmentalimpactRecyclings
+  fields:
+    - name: activeProgram
+      type: Boolean_1
+    - name: detailsId
+      type: String_1
+    - name: ecologicalDishware
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EnvironmentalimpactRecyclings
+    inputTypeName: EnvironmentalimpactRecyclingsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: environmentalimpact_recyclings
+      fieldMapping:
+        activeProgram:
+          column:
+            name: active_program
+        detailsId:
+          column:
+            name: details_id
+        ecologicalDishware:
+          column:
+            name: ecological_dishware
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EnvironmentalimpactRecyclings
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - activeProgram
+          - detailsId
+          - ecologicalDishware
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EnvironmentalimpactRecyclingsBoolExp
+  operand:
+    object:
+      type: EnvironmentalimpactRecyclings
+      comparableFields:
+        - fieldName: activeProgram
+          booleanExpressionType: BoolBoolExp
+        - fieldName: detailsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ecologicalDishware
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EnvironmentalimpactRecyclingsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EnvironmentalimpactRecyclingsAggExp
+  operand:
+    object:
+      aggregatedType: EnvironmentalimpactRecyclings
+      aggregatableFields:
+        - fieldName: activeProgram
+          aggregateExpression: BoolAggExp
+        - fieldName: detailsId
+          aggregateExpression: TextAggExp
+        - fieldName: ecologicalDishware
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EnvironmentalimpactRecyclingsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EnvironmentalimpactRecyclingsOrderByExp
+  operand:
+    object:
+      orderedType: EnvironmentalimpactRecyclings
+      orderableFields:
+        - fieldName: activeProgram
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: detailsId
+          orderByExpression: String1OrderByExp
+        - fieldName: ecologicalDishware
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EnvironmentalimpactRecyclingsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EnvironmentalimpactRecyclings
+  objectType: EnvironmentalimpactRecyclings
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: environmentalimpact_recyclings
+  filterExpressionType: EnvironmentalimpactRecyclingsBoolExp
+  aggregateExpression: EnvironmentalimpactRecyclingsAggExp
+  orderByExpression: EnvironmentalimpactRecyclingsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: environmentalimpactRecyclings
+      subscription:
+        rootField: environmentalimpactRecyclings
+    selectUniques:
+      - queryRootField: environmentalimpactRecyclingsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: environmentalimpactRecyclingsById
+    filterInputTypeName: EnvironmentalimpactRecyclingsFilterInput
+    aggregate:
+      queryRootField: environmentalimpactRecyclingsAggregate
+      subscription:
+        rootField: environmentalimpactRecyclingsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EnvironmentalimpactRecyclings
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

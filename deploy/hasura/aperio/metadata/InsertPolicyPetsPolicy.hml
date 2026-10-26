@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyPetsPolicyObject
+  fields:
+    - name: chargeCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: maxPetQuantity
+      type: Int32
+    - name: minUnitQuantityId
+      type: String_1
+    - name: nonRefundableFeeId
+      type: String_1
+    - name: petsPoliciesId
+      type: String_1!
+    - name: petsPolicyCode
+      type: String_1
+    - name: refundableDepositId
+      type: String_1
+    - name: restriction
+      type: Boolean_1
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+  graphql:
+    typeName: InsertPolicyPetsPolicyObject
+    inputTypeName: InsertPolicyPetsPolicyObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_pets_policy_object
+      fieldMapping:
+        chargeCode:
+          column:
+            name: charge_code
+        id:
+          column:
+            name: id
+        maxPetQuantity:
+          column:
+            name: max_pet_quantity
+        minUnitQuantityId:
+          column:
+            name: min_unit_quantity_id
+        nonRefundableFeeId:
+          column:
+            name: non_refundable_fee_id
+        petsPoliciesId:
+          column:
+            name: pets_policies_id
+        petsPolicyCode:
+          column:
+            name: pets_policy_code
+        refundableDepositId:
+          column:
+            name: refundable_deposit_id
+        restriction:
+          column:
+            name: restriction
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyPetsPolicyObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chargeCode
+          - id
+          - maxPetQuantity
+          - minUnitQuantityId
+          - nonRefundableFeeId
+          - petsPoliciesId
+          - petsPolicyCode
+          - refundableDepositId
+          - restriction
+          - unit
+          - unitCode
+          - unitQuantityId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyPetsPolicyResponse
+  description: Responses from the 'insert_policy_pets_policy' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyPetsPolicy!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyPetsPolicyResponse
+    inputTypeName: InsertPolicyPetsPolicyResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_pets_policy_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyPetsPolicyResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyPetsPolicy
+  outputType: InsertPolicyPetsPolicyResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyPetsPolicyObject!]!"
+    - name: postCheck
+      type: PolicyPetsPolicyBoolExp
+      description: Insert permission predicate over the 'policy_pets_policy' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_pets_policy
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyPetsPolicy
+    rootFieldKind: Mutation
+  description: Insert into the policy_pets_policy table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyPetsPolicy
+  permissions:
+    - role: admin
+      allowExecution: true
+

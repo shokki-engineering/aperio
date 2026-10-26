@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanRestrictionStatus
+  fields:
+    - name: id
+      type: String_1!
+    - name: restriction
+      type: Enum
+    - name: sellThroughOpenIndicator
+      type: Boolean_1
+    - name: status
+      type: Enum
+  graphql:
+    typeName: RateplanRestrictionStatus
+    inputTypeName: RateplanRestrictionStatusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_restriction_status
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanRestrictionStatus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanRestrictionStatusBoolExp
+  operand:
+    object:
+      type: RateplanRestrictionStatus
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restriction
+          booleanExpressionType: RateplanRateplanRestrictionBoolExp
+        - fieldName: sellThroughOpenIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: status
+          booleanExpressionType: RateplanRateplanAvailabilityBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanRestrictionStatusBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanRestrictionStatusAggExp
+  operand:
+    object:
+      aggregatedType: RateplanRestrictionStatus
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restriction
+          aggregateExpression: RateplanRateplanRestrictionAggExp
+        - fieldName: sellThroughOpenIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: status
+          aggregateExpression: RateplanRateplanAvailabilityAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanRestrictionStatusAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanRestrictionStatusOrderByExp
+  operand:
+    object:
+      orderedType: RateplanRestrictionStatus
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restriction
+          orderByExpression: EnumOrderByExp
+        - fieldName: sellThroughOpenIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: status
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanRestrictionStatusOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanRestrictionStatus
+  objectType: RateplanRestrictionStatus
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_restriction_status
+  filterExpressionType: RateplanRestrictionStatusBoolExp
+  aggregateExpression: RateplanRestrictionStatusAggExp
+  orderByExpression: RateplanRestrictionStatusOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanRestrictionStatus
+      subscription:
+        rootField: rateplanRestrictionStatus
+    selectUniques:
+      - queryRootField: rateplanRestrictionStatusById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanRestrictionStatusById
+    filterInputTypeName: RateplanRestrictionStatusFilterInput
+    aggregate:
+      queryRootField: rateplanRestrictionStatusAggregate
+      subscription:
+        rootField: rateplanRestrictionStatusAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanRestrictionStatus
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

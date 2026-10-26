@@ -1,0 +1,154 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventSiteEventDaysEventDayEventDayFunctionServicesObject
+  fields:
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: endClockId
+      type: String_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: locationDisplayName
+      type: String_1
+    - name: provider
+      type: Enum
+    - name: providerDisplayName
+      type: String_1
+    - name: startClockId
+      type: String_1
+  graphql:
+    typeName: InsertEventSiteEventDaysEventDayEventDayFunctionServicesObject
+    inputTypeName: InsertEventSiteEventDaysEventDayEventDayFunctionServicesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_site_event_days_event_day_event_day_function_services_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        id:
+          column:
+            name: id
+        locationDisplayName:
+          column:
+            name: location_display_name
+        provider:
+          column:
+            name: provider
+        providerDisplayName:
+          column:
+            name: provider_display_name
+        startClockId:
+          column:
+            name: start_clock_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventSiteEventDaysEventDayEventDayFunctionServicesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeDetail
+          - endClockId
+          - eventDayFunctionId
+          - id
+          - locationDisplayName
+          - provider
+          - providerDisplayName
+          - startClockId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventSiteEventDaysEventDayEventDayFunctionServicesResponse
+  description: Responses from the
+    'insert_event_site_event_days_event_day_event_day_function_services'
+    procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventSiteEventDaysEventDayEventDayFunctionServices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventSiteEventDaysEventDayEventDayFunctionServicesResponse
+    inputTypeName: InsertEventSiteEventDaysEventDayEventDayFunctionServicesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_site_event_days_event_day_event_day_function_services_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventSiteEventDaysEventDayEventDayFunctionServicesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventSiteEventDaysEventDayEventDayFunctionServices
+  outputType: InsertEventSiteEventDaysEventDayEventDayFunctionServicesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventSiteEventDaysEventDayEventDayFunctionServicesObject!]!"
+    - name: postCheck
+      type: EventSiteEventDaysEventDayEventDayFunctionServicesBoolExp
+      description: Insert permission predicate over the
+        'event_site_event_days_event_day_event_day_function_services' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_site_event_days_event_day_event_day_function_services
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventSiteEventDaysEventDayEventDayFunctionServices
+    rootFieldKind: Mutation
+  description: Insert into the
+    event_site_event_days_event_day_event_day_function_services table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventSiteEventDaysEventDayEventDayFunctionServices
+  permissions:
+    - role: admin
+      allowExecution: true
+

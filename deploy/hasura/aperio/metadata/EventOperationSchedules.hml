@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventOperationSchedules
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: EventOperationSchedules
+    inputTypeName: EventOperationSchedulesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_operation_schedules
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventOperationSchedules
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventOperationSchedulesBoolExp
+  operand:
+    object:
+      type: EventOperationSchedules
+      comparableFields:
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventOperationSchedulesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventOperationSchedulesAggExp
+  operand:
+    object:
+      aggregatedType: EventOperationSchedules
+      aggregatableFields:
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventOperationSchedulesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventOperationSchedulesOrderByExp
+  operand:
+    object:
+      orderedType: EventOperationSchedules
+      orderableFields:
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventOperationSchedulesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventOperationSchedules
+  objectType: EventOperationSchedules
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_operation_schedules
+  filterExpressionType: EventOperationSchedulesBoolExp
+  aggregateExpression: EventOperationSchedulesAggExp
+  orderByExpression: EventOperationSchedulesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventOperationSchedules
+      subscription:
+        rootField: eventOperationSchedules
+    selectUniques:
+      - queryRootField: eventOperationSchedulesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventOperationSchedulesById
+    filterInputTypeName: EventOperationSchedulesFilterInput
+    aggregate:
+      queryRootField: eventOperationSchedulesAggregate
+      subscription:
+        rootField: eventOperationSchedulesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventOperationSchedules
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

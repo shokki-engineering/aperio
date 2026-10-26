@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanLengthsOfStays
+  fields:
+    - name: arrivalDateBased
+      type: Boolean_1
+    - name: fixedPatternLength
+      type: Int32
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanLengthsOfStays
+    inputTypeName: RateplanLengthsOfStaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_lengths_of_stays
+      fieldMapping:
+        arrivalDateBased:
+          column:
+            name: arrival_date_based
+        fixedPatternLength:
+          column:
+            name: fixed_pattern_length
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanLengthsOfStays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - arrivalDateBased
+          - fixedPatternLength
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanLengthsOfStaysBoolExp
+  operand:
+    object:
+      type: RateplanLengthsOfStays
+      comparableFields:
+        - fieldName: arrivalDateBased
+          booleanExpressionType: BoolBoolExp
+        - fieldName: fixedPatternLength
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanLengthsOfStaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanLengthsOfStaysAggExp
+  operand:
+    object:
+      aggregatedType: RateplanLengthsOfStays
+      aggregatableFields:
+        - fieldName: arrivalDateBased
+          aggregateExpression: BoolAggExp
+        - fieldName: fixedPatternLength
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanLengthsOfStaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanLengthsOfStaysOrderByExp
+  operand:
+    object:
+      orderedType: RateplanLengthsOfStays
+      orderableFields:
+        - fieldName: arrivalDateBased
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: fixedPatternLength
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanLengthsOfStaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanLengthsOfStays
+  objectType: RateplanLengthsOfStays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_lengths_of_stays
+  filterExpressionType: RateplanLengthsOfStaysBoolExp
+  aggregateExpression: RateplanLengthsOfStaysAggExp
+  orderByExpression: RateplanLengthsOfStaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanLengthsOfStays
+      subscription:
+        rootField: rateplanLengthsOfStays
+    selectUniques:
+      - queryRootField: rateplanLengthsOfStaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanLengthsOfStaysById
+    filterInputTypeName: RateplanLengthsOfStaysFilterInput
+    aggregate:
+      queryRootField: rateplanLengthsOfStaysAggregate
+      subscription:
+        rootField: rateplanLengthsOfStaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanLengthsOfStays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

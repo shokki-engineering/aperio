@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteStatisticreportCountCategorySummariesByIdResponse
+  description: Responses from the
+    'delete_statisticreport_count_category_summaries_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StatisticreportCountCategorySummaries!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteStatisticreportCountCategorySummariesByIdResponse
+    inputTypeName: DeleteStatisticreportCountCategorySummariesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_statisticreport_count_category_summaries_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteStatisticreportCountCategorySummariesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteStatisticreportCountCategorySummariesById
+  outputType: DeleteStatisticreportCountCategorySummariesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: StatisticreportCountCategorySummariesBoolExp
+      description: Delete permission predicate over the
+        'statisticreport_count_category_summaries' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_statisticreport_count_category_summaries_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteStatisticreportCountCategorySummariesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'statisticreport_count_category_summaries'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteStatisticreportCountCategorySummariesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

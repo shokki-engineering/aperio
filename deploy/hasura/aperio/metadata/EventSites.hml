@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventSites
+  fields:
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: eventDaysId
+      type: String_1
+    - name: eventId
+      type: String_1!
+    - name: headquarterHotelIndicator
+      type: Boolean_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: primaryFacilityIndicator
+      type: Boolean_1
+    - name: shippingReceivingDetailsId
+      type: String_1
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: EventSites
+    inputTypeName: EventSitesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_sites
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        eventDaysId:
+          column:
+            name: event_days_id
+        eventId:
+          column:
+            name: event_id
+        headquarterHotelIndicator:
+          column:
+            name: headquarter_hotel_indicator
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        id:
+          column:
+            name: id
+        primaryFacilityIndicator:
+          column:
+            name: primary_facility_indicator
+        shippingReceivingDetailsId:
+          column:
+            name: shipping_receiving_details_id
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventSites
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - eventDaysId
+          - eventId
+          - headquarterHotelIndicator
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - id
+          - primaryFacilityIndicator
+          - shippingReceivingDetailsId
+          - ttIcode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventSitesBoolExp
+  operand:
+    object:
+      type: EventSites
+      comparableFields:
+        - fieldName: areaId
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDaysId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventId
+          booleanExpressionType: TextBoolExp
+        - fieldName: headquarterHotelIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: hotelCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCodeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: primaryFacilityIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: shippingReceivingDetailsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ttIcode
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventSitesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventSitesAggExp
+  operand:
+    object:
+      aggregatedType: EventSites
+      aggregatableFields:
+        - fieldName: areaId
+          aggregateExpression: TextAggExp
+        - fieldName: brandCode
+          aggregateExpression: TextAggExp
+        - fieldName: brandDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: chainCode
+          aggregateExpression: TextAggExp
+        - fieldName: chainDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: eventDaysId
+          aggregateExpression: TextAggExp
+        - fieldName: eventId
+          aggregateExpression: TextAggExp
+        - fieldName: headquarterHotelIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: hotelCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCodeContext
+          aggregateExpression: TextAggExp
+        - fieldName: hotelDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: primaryFacilityIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: shippingReceivingDetailsId
+          aggregateExpression: TextAggExp
+        - fieldName: ttIcode
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventSitesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventSitesOrderByExp
+  operand:
+    object:
+      orderedType: EventSites
+      orderableFields:
+        - fieldName: areaId
+          orderByExpression: String1OrderByExp
+        - fieldName: brandCode
+          orderByExpression: String1OrderByExp
+        - fieldName: brandDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: chainCode
+          orderByExpression: String1OrderByExp
+        - fieldName: chainDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDaysId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventId
+          orderByExpression: String1OrderByExp
+        - fieldName: headquarterHotelIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: hotelCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCodeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: primaryFacilityIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: shippingReceivingDetailsId
+          orderByExpression: String1OrderByExp
+        - fieldName: ttIcode
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventSitesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventSites
+  objectType: EventSites
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_sites
+  filterExpressionType: EventSitesBoolExp
+  aggregateExpression: EventSitesAggExp
+  orderByExpression: EventSitesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventSites
+      subscription:
+        rootField: eventSites
+    selectUniques:
+      - queryRootField: eventSitesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventSitesById
+    filterInputTypeName: EventSitesFilterInput
+    aggregate:
+      queryRootField: eventSitesAggregate
+      subscription:
+        rootField: eventSitesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventSites
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

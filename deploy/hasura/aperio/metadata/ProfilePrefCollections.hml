@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfilePrefCollections
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferencesId
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: travelPurpose
+      type: Enum
+  graphql:
+    typeName: ProfilePrefCollections
+    inputTypeName: ProfilePrefCollectionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_pref_collections
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferencesId:
+          column:
+            name: preferences_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        travelPurpose:
+          column:
+            name: travel_purpose
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfilePrefCollections
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferencesId
+          - shareMarketInd
+          - shareSynchInd
+          - travelPurpose
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfilePrefCollectionsBoolExp
+  operand:
+    object:
+      type: ProfilePrefCollections
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferencesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: travelPurpose
+          booleanExpressionType: ProfileTravelPurposeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfilePrefCollectionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfilePrefCollectionsAggExp
+  operand:
+    object:
+      aggregatedType: ProfilePrefCollections
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferencesId
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: travelPurpose
+          aggregateExpression: ProfileTravelPurposeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfilePrefCollectionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfilePrefCollectionsOrderByExp
+  operand:
+    object:
+      orderedType: ProfilePrefCollections
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferencesId
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: travelPurpose
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfilePrefCollectionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfilePrefCollections
+  objectType: ProfilePrefCollections
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_pref_collections
+  filterExpressionType: ProfilePrefCollectionsBoolExp
+  aggregateExpression: ProfilePrefCollectionsAggExp
+  orderByExpression: ProfilePrefCollectionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profilePrefCollections
+      subscription:
+        rootField: profilePrefCollections
+    selectUniques:
+      - queryRootField: profilePrefCollectionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profilePrefCollectionsById
+    filterInputTypeName: ProfilePrefCollectionsFilterInput
+    aggregate:
+      queryRootField: profilePrefCollectionsAggregate
+      subscription:
+        rootField: profilePrefCollectionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfilePrefCollections
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

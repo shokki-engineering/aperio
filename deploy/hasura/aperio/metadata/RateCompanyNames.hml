@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateCompanyNames
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateCompanyNames
+    inputTypeName: RateCompanyNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_company_names
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateCompanyNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateCompanyNamesBoolExp
+  operand:
+    object:
+      type: RateCompanyNames
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: RateRateTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateCompanyNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateCompanyNamesAggExp
+  operand:
+    object:
+      aggregatedType: RateCompanyNames
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: RateRateTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateCompanyNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateCompanyNamesOrderByExp
+  operand:
+    object:
+      orderedType: RateCompanyNames
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateCompanyNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateCompanyNames
+  objectType: RateCompanyNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_company_names
+  filterExpressionType: RateCompanyNamesBoolExp
+  aggregateExpression: RateCompanyNamesAggExp
+  orderByExpression: RateCompanyNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateCompanyNames
+      subscription:
+        rootField: rateCompanyNames
+    selectUniques:
+      - queryRootField: rateCompanyNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateCompanyNamesById
+    filterInputTypeName: RateCompanyNamesFilterInput
+    aggregate:
+      queryRootField: rateCompanyNamesAggregate
+      subscription:
+        rootField: rateCompanyNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateCompanyNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleViewershipCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: viewershipCode
+      type: String_1!
+  graphql:
+    typeName: BookingruleViewershipCodes
+    inputTypeName: BookingruleViewershipCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_viewership_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        viewershipCode:
+          column:
+            name: viewership_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleViewershipCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - viewershipCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleViewershipCodesBoolExp
+  operand:
+    object:
+      type: BookingruleViewershipCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleViewershipCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleViewershipCodesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleViewershipCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleViewershipCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleViewershipCodesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleViewershipCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleViewershipCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleViewershipCodes
+  objectType: BookingruleViewershipCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_viewership_codes
+  filterExpressionType: BookingruleViewershipCodesBoolExp
+  aggregateExpression: BookingruleViewershipCodesAggExp
+  orderByExpression: BookingruleViewershipCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleViewershipCodes
+      subscription:
+        rootField: bookingruleViewershipCodes
+    selectUniques:
+      - queryRootField: bookingruleViewershipCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleViewershipCodesById
+    filterInputTypeName: BookingruleViewershipCodesFilterInput
+    aggregate:
+      queryRootField: bookingruleViewershipCodesAggregate
+      subscription:
+        rootField: bookingruleViewershipCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleViewershipCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

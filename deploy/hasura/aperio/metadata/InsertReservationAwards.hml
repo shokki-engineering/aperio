@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationAwardsObject
+  fields:
+    - name: basicPropertyInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: provider
+      type: String_1
+    - name: rating
+      type: String_1
+  graphql:
+    typeName: InsertReservationAwardsObject
+    inputTypeName: InsertReservationAwardsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_awards_object
+      fieldMapping:
+        basicPropertyInfoId:
+          column:
+            name: basic_property_info_id
+        id:
+          column:
+            name: id
+        provider:
+          column:
+            name: provider
+        rating:
+          column:
+            name: rating
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationAwardsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - basicPropertyInfoId
+          - id
+          - provider
+          - rating
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationAwardsResponse
+  description: Responses from the 'insert_reservation_awards' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationAwards!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationAwardsResponse
+    inputTypeName: InsertReservationAwardsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_awards_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationAwardsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationAwards
+  outputType: InsertReservationAwardsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationAwardsObject!]!"
+    - name: postCheck
+      type: ReservationAwardsBoolExp
+      description: Insert permission predicate over the 'reservation_awards' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_awards
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationAwards
+    rootFieldKind: Mutation
+  description: Insert into the reservation_awards table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationAwards
+  permissions:
+    - role: admin
+      allowExecution: true
+

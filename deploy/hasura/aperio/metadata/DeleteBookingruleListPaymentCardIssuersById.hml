@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteBookingruleListPaymentCardIssuersByIdResponse
+  description: Responses from the
+    'delete_bookingrule_list_payment_card_issuers_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleListPaymentCardIssuers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteBookingruleListPaymentCardIssuersByIdResponse
+    inputTypeName: DeleteBookingruleListPaymentCardIssuersByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_bookingrule_list_payment_card_issuers_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteBookingruleListPaymentCardIssuersByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteBookingruleListPaymentCardIssuersById
+  outputType: DeleteBookingruleListPaymentCardIssuersByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: BookingruleListPaymentCardIssuersBoolExp
+      description: Delete permission predicate over the
+        'bookingrule_list_payment_card_issuers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_bookingrule_list_payment_card_issuers_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteBookingruleListPaymentCardIssuersById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'bookingrule_list_payment_card_issuers'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteBookingruleListPaymentCardIssuersById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: rph
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsObject
+    inputTypeName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_profile_rental_pref_payment_form_prefs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        rph:
+          column:
+            name: rph
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - rph
+          - vehicleProfileRentalPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsResponse
+  description: Responses from the
+    'insert_profile_vehicle_profile_rental_pref_payment_form_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehicleProfileRentalPrefPaymentFormPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsResponse
+    inputTypeName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_profile_rental_pref_payment_form_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefPaymentFormPrefs
+  outputType: InsertProfileVehicleProfileRentalPrefPaymentFormPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileVehicleProfileRentalPrefPaymentFormPrefsObject!]!"
+    - name: postCheck
+      type: ProfileVehicleProfileRentalPrefPaymentFormPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_vehicle_profile_rental_pref_payment_form_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_vehicle_profile_rental_pref_payment_form_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileVehicleProfileRentalPrefPaymentFormPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_vehicle_profile_rental_pref_payment_form_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileVehicleProfileRentalPrefPaymentFormPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

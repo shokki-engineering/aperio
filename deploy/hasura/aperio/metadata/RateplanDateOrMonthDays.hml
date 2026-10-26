@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanDateOrMonthDays
+  fields:
+    - name: dayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: monthDay
+      type: String_1
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: RateplanDateOrMonthDays
+    inputTypeName: RateplanDateOrMonthDaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_date_or_month_days
+      fieldMapping:
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        monthDay:
+          column:
+            name: month_day
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanDateOrMonthDays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayId
+          - id
+          - monthDay
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanDateOrMonthDaysBoolExp
+  operand:
+    object:
+      type: RateplanDateOrMonthDays
+      comparableFields:
+        - fieldName: dayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: monthDay
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: RateplanRateplanDateOrMonthDayValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanDateOrMonthDaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanDateOrMonthDaysAggExp
+  operand:
+    object:
+      aggregatedType: RateplanDateOrMonthDays
+      aggregatableFields:
+        - fieldName: dayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: monthDay
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: RateplanRateplanDateOrMonthDayValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanDateOrMonthDaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanDateOrMonthDaysOrderByExp
+  operand:
+    object:
+      orderedType: RateplanDateOrMonthDays
+      orderableFields:
+        - fieldName: dayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: monthDay
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanDateOrMonthDaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanDateOrMonthDays
+  objectType: RateplanDateOrMonthDays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_date_or_month_days
+  filterExpressionType: RateplanDateOrMonthDaysBoolExp
+  aggregateExpression: RateplanDateOrMonthDaysAggExp
+  orderByExpression: RateplanDateOrMonthDaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanDateOrMonthDays
+      subscription:
+        rootField: rateplanDateOrMonthDays
+    selectUniques:
+      - queryRootField: rateplanDateOrMonthDaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanDateOrMonthDaysById
+    filterInputTypeName: RateplanDateOrMonthDaysFilterInput
+    aggregate:
+      queryRootField: rateplanDateOrMonthDaysAggregate
+      subscription:
+        rootField: rateplanDateOrMonthDaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanDateOrMonthDays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

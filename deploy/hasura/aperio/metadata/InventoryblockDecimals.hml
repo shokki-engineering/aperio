@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InventoryblockDecimals
+    inputTypeName: InventoryblockDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockDecimalsBoolExp
+  operand:
+    object:
+      type: InventoryblockDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockDecimals
+  objectType: InventoryblockDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_decimals
+  filterExpressionType: InventoryblockDecimalsBoolExp
+  aggregateExpression: InventoryblockDecimalsAggExp
+  orderByExpression: InventoryblockDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockDecimals
+      subscription:
+        rootField: inventoryblockDecimals
+    selectUniques:
+      - queryRootField: inventoryblockDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockDecimalsById
+    filterInputTypeName: InventoryblockDecimalsFilterInput
+    aggregate:
+      queryRootField: inventoryblockDecimalsAggregate
+      subscription:
+        rootField: inventoryblockDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

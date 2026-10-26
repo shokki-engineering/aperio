@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportEventDayFunctions
+  fields:
+    - name: attendeeQuantity
+      type: Int32
+    - name: audioVisualsId
+      type: String_1
+    - name: endClockId
+      type: String_1
+    - name: eventDayId
+      type: String_1!
+    - name: exhibitionIndicator
+      type: Boolean_1
+    - name: foodAndBeveragesId
+      type: String_1
+    - name: functionDisplayName
+      type: String_1
+    - name: functionType
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: locationDisplayName
+      type: String_1
+    - name: locationId
+      type: String_1
+    - name: postIndicator
+      type: Boolean_1
+    - name: reKeyIndicator
+      type: Boolean_1
+    - name: requiredKeyQuantity
+      type: Int32
+    - name: roomSetupId
+      type: String_1
+    - name: startClockId
+      type: String_1
+    - name: twentyFourHourHold
+      type: Boolean_1
+  graphql:
+    typeName: EventreportEventDayFunctions
+    inputTypeName: EventreportEventDayFunctionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_event_day_functions
+      fieldMapping:
+        attendeeQuantity:
+          column:
+            name: attendee_quantity
+        audioVisualsId:
+          column:
+            name: audio_visuals_id
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayId:
+          column:
+            name: event_day_id
+        exhibitionIndicator:
+          column:
+            name: exhibition_indicator
+        foodAndBeveragesId:
+          column:
+            name: food_and_beverages_id
+        functionDisplayName:
+          column:
+            name: function_display_name
+        functionType:
+          column:
+            name: function_type
+        id:
+          column:
+            name: id
+        locationDisplayName:
+          column:
+            name: location_display_name
+        locationId:
+          column:
+            name: location_id
+        postIndicator:
+          column:
+            name: post_indicator
+        reKeyIndicator:
+          column:
+            name: re_key_indicator
+        requiredKeyQuantity:
+          column:
+            name: required_key_quantity
+        roomSetupId:
+          column:
+            name: room_setup_id
+        startClockId:
+          column:
+            name: start_clock_id
+        twentyFourHourHold:
+          column:
+            name: twenty_four_hour_hold
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportEventDayFunctions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeQuantity
+          - audioVisualsId
+          - endClockId
+          - eventDayId
+          - exhibitionIndicator
+          - foodAndBeveragesId
+          - functionDisplayName
+          - functionType
+          - id
+          - locationDisplayName
+          - locationId
+          - postIndicator
+          - reKeyIndicator
+          - requiredKeyQuantity
+          - roomSetupId
+          - startClockId
+          - twentyFourHourHold
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportEventDayFunctionsBoolExp
+  operand:
+    object:
+      type: EventreportEventDayFunctions
+      comparableFields:
+        - fieldName: attendeeQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: audioVisualsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: endClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: exhibitionIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: foodAndBeveragesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: functionDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: functionType
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: postIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: reKeyIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: requiredKeyQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: roomSetupId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: twentyFourHourHold
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportEventDayFunctionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportEventDayFunctionsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportEventDayFunctions
+      aggregatableFields:
+        - fieldName: attendeeQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: audioVisualsId
+          aggregateExpression: TextAggExp
+        - fieldName: endClockId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayId
+          aggregateExpression: TextAggExp
+        - fieldName: exhibitionIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: foodAndBeveragesId
+          aggregateExpression: TextAggExp
+        - fieldName: functionDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: functionType
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: locationId
+          aggregateExpression: TextAggExp
+        - fieldName: postIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: reKeyIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: requiredKeyQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: roomSetupId
+          aggregateExpression: TextAggExp
+        - fieldName: startClockId
+          aggregateExpression: TextAggExp
+        - fieldName: twentyFourHourHold
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportEventDayFunctionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportEventDayFunctionsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportEventDayFunctions
+      orderableFields:
+        - fieldName: attendeeQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: audioVisualsId
+          orderByExpression: String1OrderByExp
+        - fieldName: endClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: exhibitionIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: foodAndBeveragesId
+          orderByExpression: String1OrderByExp
+        - fieldName: functionDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: functionType
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: locationId
+          orderByExpression: String1OrderByExp
+        - fieldName: postIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: reKeyIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: requiredKeyQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: roomSetupId
+          orderByExpression: String1OrderByExp
+        - fieldName: startClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: twentyFourHourHold
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportEventDayFunctionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportEventDayFunctions
+  objectType: EventreportEventDayFunctions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_event_day_functions
+  filterExpressionType: EventreportEventDayFunctionsBoolExp
+  aggregateExpression: EventreportEventDayFunctionsAggExp
+  orderByExpression: EventreportEventDayFunctionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportEventDayFunctions
+      subscription:
+        rootField: eventreportEventDayFunctions
+    selectUniques:
+      - queryRootField: eventreportEventDayFunctionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportEventDayFunctionsById
+    filterInputTypeName: EventreportEventDayFunctionsFilterInput
+    aggregate:
+      queryRootField: eventreportEventDayFunctionsAggregate
+      subscription:
+        rootField: eventreportEventDayFunctionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportEventDayFunctions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

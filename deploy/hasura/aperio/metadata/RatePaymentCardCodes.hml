@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RatePaymentCardCodes
+  fields:
+    - name: cardCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: text
+      type: String_1
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: RatePaymentCardCodes
+    inputTypeName: RatePaymentCardCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_payment_card_codes
+      fieldMapping:
+        cardCode:
+          column:
+            name: card_code
+        id:
+          column:
+            name: id
+        text:
+          column:
+            name: text
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RatePaymentCardCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cardCode
+          - id
+          - text
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RatePaymentCardCodesBoolExp
+  operand:
+    object:
+      type: RatePaymentCardCodes
+      comparableFields:
+        - fieldName: cardCode
+          booleanExpressionType: RateRateCardCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: RateRatePaymentCardCodeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RatePaymentCardCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RatePaymentCardCodesAggExp
+  operand:
+    object:
+      aggregatedType: RatePaymentCardCodes
+      aggregatableFields:
+        - fieldName: cardCode
+          aggregateExpression: RateRateCardCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: RateRatePaymentCardCodeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RatePaymentCardCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RatePaymentCardCodesOrderByExp
+  operand:
+    object:
+      orderedType: RatePaymentCardCodes
+      orderableFields:
+        - fieldName: cardCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RatePaymentCardCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RatePaymentCardCodes
+  objectType: RatePaymentCardCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_payment_card_codes
+  filterExpressionType: RatePaymentCardCodesBoolExp
+  aggregateExpression: RatePaymentCardCodesAggExp
+  orderByExpression: RatePaymentCardCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: ratePaymentCardCodes
+      subscription:
+        rootField: ratePaymentCardCodes
+    selectUniques:
+      - queryRootField: ratePaymentCardCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: ratePaymentCardCodesById
+    filterInputTypeName: RatePaymentCardCodesFilterInput
+    aggregate:
+      queryRootField: ratePaymentCardCodesAggregate
+      subscription:
+        rootField: ratePaymentCardCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RatePaymentCardCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileCompanyNamePrefs
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: otherSrvcPrefId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileCompanyNamePrefs
+    inputTypeName: ProfileCompanyNamePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_company_name_prefs
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        otherSrvcPrefId:
+          column:
+            name: other_srvc_pref_id
+        preferLevel:
+          column:
+            name: prefer_level
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileCompanyNamePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - department
+          - division
+          - hotelPrefId
+          - id
+          - otherSrvcPrefId
+          - preferLevel
+          - regionCode
+          - travelSector
+          - value
+          - vehicleProfileRentalPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileCompanyNamePrefsBoolExp
+  operand:
+    object:
+      type: ProfileCompanyNamePrefs
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: otherSrvcPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: ProfileProfileTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleProfileRentalPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileCompanyNamePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileCompanyNamePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileCompanyNamePrefs
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: otherSrvcPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: ProfileProfileTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleProfileRentalPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileCompanyNamePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileCompanyNamePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileCompanyNamePrefs
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: otherSrvcPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleProfileRentalPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileCompanyNamePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileCompanyNamePrefs
+  objectType: ProfileCompanyNamePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_company_name_prefs
+  filterExpressionType: ProfileCompanyNamePrefsBoolExp
+  aggregateExpression: ProfileCompanyNamePrefsAggExp
+  orderByExpression: ProfileCompanyNamePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileCompanyNamePrefs
+      subscription:
+        rootField: profileCompanyNamePrefs
+    selectUniques:
+      - queryRootField: profileCompanyNamePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileCompanyNamePrefsById
+    filterInputTypeName: ProfileCompanyNamePrefsFilterInput
+    aggregate:
+      queryRootField: profileCompanyNamePrefsAggregate
+      subscription:
+        rootField: profileCompanyNamePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileCompanyNamePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileContactPersons
+  fields:
+    - name: birthDayId
+      type: String_1
+    - name: communicationMethodCode
+      type: Enum
+    - name: companyInfoId
+      type: String_1!
+    - name: contactType
+      type: String_1
+    - name: customerId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentDistribMethodCode
+      type: Enum
+    - name: emergencyFlag
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: personDisplayNameId
+      type: String_1
+    - name: relation
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: ProfileContactPersons
+    inputTypeName: ProfileContactPersonsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_contact_persons
+      fieldMapping:
+        birthDayId:
+          column:
+            name: birth_day_id
+        communicationMethodCode:
+          column:
+            name: communication_method_code
+        companyInfoId:
+          column:
+            name: company_info_id
+        contactType:
+          column:
+            name: contact_type
+        customerId:
+          column:
+            name: customer_id
+        defaultValue:
+          column:
+            name: default_value
+        documentDistribMethodCode:
+          column:
+            name: document_distrib_method_code
+        emergencyFlag:
+          column:
+            name: emergency_flag
+        id:
+          column:
+            name: id
+        personDisplayNameId:
+          column:
+            name: person_display_name_id
+        relation:
+          column:
+            name: relation
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileContactPersons
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - birthDayId
+          - communicationMethodCode
+          - companyInfoId
+          - contactType
+          - customerId
+          - defaultValue
+          - documentDistribMethodCode
+          - emergencyFlag
+          - id
+          - personDisplayNameId
+          - relation
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileContactPersonsBoolExp
+  operand:
+    object:
+      type: ProfileContactPersons
+      comparableFields:
+        - fieldName: birthDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: communicationMethodCode
+          booleanExpressionType: ProfileProfileDistributionTypeBoolExp
+        - fieldName: companyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactType
+          booleanExpressionType: TextBoolExp
+        - fieldName: customerId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentDistribMethodCode
+          booleanExpressionType: ProfileProfileDistributionTypeBoolExp
+        - fieldName: emergencyFlag
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: personDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: relation
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileContactPersonsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileContactPersonsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileContactPersons
+      aggregatableFields:
+        - fieldName: birthDayId
+          aggregateExpression: TextAggExp
+        - fieldName: communicationMethodCode
+          aggregateExpression: ProfileProfileDistributionTypeAggExp
+        - fieldName: companyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: contactType
+          aggregateExpression: TextAggExp
+        - fieldName: customerId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentDistribMethodCode
+          aggregateExpression: ProfileProfileDistributionTypeAggExp
+        - fieldName: emergencyFlag
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: personDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: relation
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileContactPersonsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileContactPersonsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileContactPersons
+      orderableFields:
+        - fieldName: birthDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: communicationMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: companyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactType
+          orderByExpression: String1OrderByExp
+        - fieldName: customerId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentDistribMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: emergencyFlag
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: personDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: relation
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileContactPersonsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileContactPersons
+  objectType: ProfileContactPersons
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_contact_persons
+  filterExpressionType: ProfileContactPersonsBoolExp
+  aggregateExpression: ProfileContactPersonsAggExp
+  orderByExpression: ProfileContactPersonsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileContactPersons
+      subscription:
+        rootField: profileContactPersons
+    selectUniques:
+      - queryRootField: profileContactPersonsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileContactPersonsById
+    filterInputTypeName: ProfileContactPersonsFilterInput
+    aggregate:
+      queryRootField: profileContactPersonsAggregate
+      subscription:
+        rootField: profileContactPersonsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileContactPersons
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

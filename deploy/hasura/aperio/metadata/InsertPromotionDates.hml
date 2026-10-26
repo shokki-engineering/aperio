@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPromotionDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertPromotionDatesObject
+    inputTypeName: InsertPromotionDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_promotion_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPromotionDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPromotionDatesResponse
+  description: Responses from the 'insert_promotion_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PromotionDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPromotionDatesResponse
+    inputTypeName: InsertPromotionDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_promotion_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPromotionDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPromotionDates
+  outputType: InsertPromotionDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPromotionDatesObject!]!"
+    - name: postCheck
+      type: PromotionDatesBoolExp
+      description: Insert permission predicate over the 'promotion_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_promotion_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPromotionDates
+    rootFieldKind: Mutation
+  description: Insert into the promotion_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPromotionDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

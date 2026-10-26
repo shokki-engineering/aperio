@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoutingHopsObject
+  fields:
+    - name: comment
+      type: String_1
+    - name: data
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: localRefId
+      type: String_1
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: sequenceNmbr
+      type: Int32
+    - name: systemCode
+      type: String_1
+    - name: timeStampTime
+      type: Timestamptz
+  graphql:
+    typeName: InsertReservationRoutingHopsObject
+    inputTypeName: InsertReservationRoutingHopsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_routing_hops_object
+      fieldMapping:
+        comment:
+          column:
+            name: comment
+        data:
+          column:
+            name: data
+        id:
+          column:
+            name: id
+        localRefId:
+          column:
+            name: local_ref_id
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        sequenceNmbr:
+          column:
+            name: sequence_nmbr
+        systemCode:
+          column:
+            name: system_code
+        timeStampTime:
+          column:
+            name: time_stamp_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoutingHopsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - comment
+          - data
+          - id
+          - localRefId
+          - resGlobalInfoId
+          - sequenceNmbr
+          - systemCode
+          - timeStampTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoutingHopsResponse
+  description: Responses from the 'insert_reservation_routing_hops' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRoutingHops!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRoutingHopsResponse
+    inputTypeName: InsertReservationRoutingHopsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_routing_hops_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoutingHopsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRoutingHops
+  outputType: InsertReservationRoutingHopsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRoutingHopsObject!]!"
+    - name: postCheck
+      type: ReservationRoutingHopsBoolExp
+      description: Insert permission predicate over the 'reservation_routing_hops'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_routing_hops
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRoutingHops
+    rootFieldKind: Mutation
+  description: Insert into the reservation_routing_hops table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRoutingHops
+  permissions:
+    - role: admin
+      allowExecution: true
+

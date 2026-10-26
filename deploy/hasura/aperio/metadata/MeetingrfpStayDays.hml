@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpStayDays
+  fields:
+    - name: firstStayWeekday
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: MeetingrfpStayDays
+    inputTypeName: MeetingrfpStayDaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_stay_days
+      fieldMapping:
+        firstStayWeekday:
+          column:
+            name: first_stay_weekday
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpStayDays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - firstStayWeekday
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpStayDaysBoolExp
+  operand:
+    object:
+      type: MeetingrfpStayDays
+      comparableFields:
+        - fieldName: firstStayWeekday
+          booleanExpressionType: MeetingrfpMeetingrfpDayOfWeekBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpStayDaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpStayDaysAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpStayDays
+      aggregatableFields:
+        - fieldName: firstStayWeekday
+          aggregateExpression: MeetingrfpMeetingrfpDayOfWeekAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpStayDaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpStayDaysOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpStayDays
+      orderableFields:
+        - fieldName: firstStayWeekday
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpStayDaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpStayDays
+  objectType: MeetingrfpStayDays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_stay_days
+  filterExpressionType: MeetingrfpStayDaysBoolExp
+  aggregateExpression: MeetingrfpStayDaysAggExp
+  orderByExpression: MeetingrfpStayDaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpStayDays
+      subscription:
+        rootField: meetingrfpStayDays
+    selectUniques:
+      - queryRootField: meetingrfpStayDaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpStayDaysById
+    filterInputTypeName: MeetingrfpStayDaysFilterInput
+    aggregate:
+      queryRootField: meetingrfpStayDaysAggregate
+      subscription:
+        rootField: meetingrfpStayDaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpStayDays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

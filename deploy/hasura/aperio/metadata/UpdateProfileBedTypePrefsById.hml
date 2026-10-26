@@ -1,0 +1,303 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBedTypePrefsBedType
+  description: Update the 'bed_type' column in the 'profile_bed_type_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBedTypePrefsBedType
+    inputTypeName: UpdateColumnProfileBedTypePrefsBedTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bed_type_prefs_bed_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBedTypePrefsBedType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBedTypePrefsHotelPrefId
+  description: Update the 'hotel_pref_id' column in the 'profile_bed_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBedTypePrefsHotelPrefId
+    inputTypeName: UpdateColumnProfileBedTypePrefsHotelPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bed_type_prefs_hotel_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBedTypePrefsHotelPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBedTypePrefsId
+  description: Update the 'id' column in the 'profile_bed_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBedTypePrefsId
+    inputTypeName: UpdateColumnProfileBedTypePrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bed_type_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBedTypePrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBedTypePrefsPreferLevel
+  description: Update the 'prefer_level' column in the 'profile_bed_type_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBedTypePrefsPreferLevel
+    inputTypeName: UpdateColumnProfileBedTypePrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bed_type_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBedTypePrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBedTypePrefsValue
+  description: Update the 'value' column in the 'profile_bed_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBedTypePrefsValue
+    inputTypeName: UpdateColumnProfileBedTypePrefsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bed_type_prefs_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBedTypePrefsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileBedTypePrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_bed_type_prefs' collection
+  fields:
+    - name: bedType
+      type: UpdateColumnProfileBedTypePrefsBedType
+      description: Update the 'bed_type' column in the 'profile_bed_type_prefs' collection.
+    - name: hotelPrefId
+      type: UpdateColumnProfileBedTypePrefsHotelPrefId
+      description: Update the 'hotel_pref_id' column in the 'profile_bed_type_prefs'
+        collection.
+    - name: id
+      type: UpdateColumnProfileBedTypePrefsId
+      description: Update the 'id' column in the 'profile_bed_type_prefs' collection.
+    - name: preferLevel
+      type: UpdateColumnProfileBedTypePrefsPreferLevel
+      description: Update the 'prefer_level' column in the 'profile_bed_type_prefs'
+        collection.
+    - name: value
+      type: UpdateColumnProfileBedTypePrefsValue
+      description: Update the 'value' column in the 'profile_bed_type_prefs' collection.
+  graphql:
+    typeName: UpdateProfileBedTypePrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileBedTypePrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_bed_type_prefs_by_id_update_columns
+      fieldMapping:
+        bedType:
+          column:
+            name: bed_type
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileBedTypePrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bedType
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileBedTypePrefsByIdResponse
+  description: Responses from the 'update_profile_bed_type_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileBedTypePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileBedTypePrefsByIdResponse
+    inputTypeName: UpdateProfileBedTypePrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_bed_type_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileBedTypePrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileBedTypePrefsById
+  outputType: UpdateProfileBedTypePrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileBedTypePrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_bed_type_prefs' collection
+    - name: preCheck
+      type: ProfileBedTypePrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_bed_type_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileBedTypePrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_bed_type_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileBedTypePrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_bed_type_prefs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileBedTypePrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

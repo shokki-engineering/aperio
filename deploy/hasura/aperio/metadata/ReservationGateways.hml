@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationGateways
+  fields:
+    - name: authenticationVerificationValueId
+      type: String_1
+    - name: eci
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: merchantId
+      type: String_1
+    - name: processorId
+      type: String_1
+    - name: transactionPasswordId
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: ReservationGateways
+    inputTypeName: ReservationGatewaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_gateways
+      fieldMapping:
+        authenticationVerificationValueId:
+          column:
+            name: authentication_verification_value_id
+        eci:
+          column:
+            name: eci
+        id:
+          column:
+            name: id
+        merchantId:
+          column:
+            name: merchant_id
+        processorId:
+          column:
+            name: processor_id
+        transactionPasswordId:
+          column:
+            name: transaction_password_id
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationGateways
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - authenticationVerificationValueId
+          - eci
+          - id
+          - merchantId
+          - processorId
+          - transactionPasswordId
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationGatewaysBoolExp
+  operand:
+    object:
+      type: ReservationGateways
+      comparableFields:
+        - fieldName: authenticationVerificationValueId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eci
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: merchantId
+          booleanExpressionType: TextBoolExp
+        - fieldName: processorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: transactionPasswordId
+          booleanExpressionType: TextBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationGatewaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationGatewaysAggExp
+  operand:
+    object:
+      aggregatedType: ReservationGateways
+      aggregatableFields:
+        - fieldName: authenticationVerificationValueId
+          aggregateExpression: TextAggExp
+        - fieldName: eci
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: merchantId
+          aggregateExpression: TextAggExp
+        - fieldName: processorId
+          aggregateExpression: TextAggExp
+        - fieldName: transactionPasswordId
+          aggregateExpression: TextAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationGatewaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationGatewaysOrderByExp
+  operand:
+    object:
+      orderedType: ReservationGateways
+      orderableFields:
+        - fieldName: authenticationVerificationValueId
+          orderByExpression: String1OrderByExp
+        - fieldName: eci
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: merchantId
+          orderByExpression: String1OrderByExp
+        - fieldName: processorId
+          orderByExpression: String1OrderByExp
+        - fieldName: transactionPasswordId
+          orderByExpression: String1OrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationGatewaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationGateways
+  objectType: ReservationGateways
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_gateways
+  filterExpressionType: ReservationGatewaysBoolExp
+  aggregateExpression: ReservationGatewaysAggExp
+  orderByExpression: ReservationGatewaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationGateways
+      subscription:
+        rootField: reservationGateways
+    selectUniques:
+      - queryRootField: reservationGatewaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationGatewaysById
+    filterInputTypeName: ReservationGatewaysFilterInput
+    aggregate:
+      queryRootField: reservationGatewaysAggregate
+      subscription:
+        rootField: reservationGatewaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationGateways
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

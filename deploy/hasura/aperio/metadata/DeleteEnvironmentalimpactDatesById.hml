@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEnvironmentalimpactDatesByIdResponse
+  description: Responses from the 'delete_environmentalimpact_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EnvironmentalimpactDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEnvironmentalimpactDatesByIdResponse
+    inputTypeName: DeleteEnvironmentalimpactDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_environmentalimpact_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEnvironmentalimpactDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEnvironmentalimpactDatesById
+  outputType: DeleteEnvironmentalimpactDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EnvironmentalimpactDatesBoolExp
+      description: Delete permission predicate over the 'environmentalimpact_dates'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_environmentalimpact_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEnvironmentalimpactDatesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'environmentalimpact_dates' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEnvironmentalimpactDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommissionCountryNames
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: CommissionCountryNames
+    inputTypeName: CommissionCountryNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: commission_country_names
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommissionCountryNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CommissionCountryNamesBoolExp
+  operand:
+    object:
+      type: CommissionCountryNames
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CommissionCountryNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CommissionCountryNamesAggExp
+  operand:
+    object:
+      aggregatedType: CommissionCountryNames
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CommissionCountryNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CommissionCountryNamesOrderByExp
+  operand:
+    object:
+      orderedType: CommissionCountryNames
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CommissionCountryNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CommissionCountryNames
+  objectType: CommissionCountryNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: commission_country_names
+  filterExpressionType: CommissionCountryNamesBoolExp
+  aggregateExpression: CommissionCountryNamesAggExp
+  orderByExpression: CommissionCountryNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: commissionCountryNames
+      subscription:
+        rootField: commissionCountryNames
+    selectUniques:
+      - queryRootField: commissionCountryNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: commissionCountryNamesById
+    filterInputTypeName: CommissionCountryNamesFilterInput
+    aggregate:
+      queryRootField: commissionCountryNamesAggregate
+      subscription:
+        rootField: commissionCountryNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CommissionCountryNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

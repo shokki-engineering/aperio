@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileEquipmentPrefs
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileEquipmentPrefs
+    inputTypeName: ProfileEquipmentPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_equipment_prefs
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileEquipmentPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - preferLevel
+          - railPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileEquipmentPrefsBoolExp
+  operand:
+    object:
+      type: ProfileEquipmentPrefs
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: railPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileEquipmentPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileEquipmentPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileEquipmentPrefs
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: railPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileEquipmentPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileEquipmentPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileEquipmentPrefs
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: railPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileEquipmentPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileEquipmentPrefs
+  objectType: ProfileEquipmentPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_equipment_prefs
+  filterExpressionType: ProfileEquipmentPrefsBoolExp
+  aggregateExpression: ProfileEquipmentPrefsAggExp
+  orderByExpression: ProfileEquipmentPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileEquipmentPrefs
+      subscription:
+        rootField: profileEquipmentPrefs
+    selectUniques:
+      - queryRootField: profileEquipmentPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileEquipmentPrefsById
+    filterInputTypeName: ProfileEquipmentPrefsFilterInput
+    aggregate:
+      queryRootField: profileEquipmentPrefsAggregate
+      subscription:
+        rootField: profileEquipmentPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileEquipmentPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductArrivalDaysOfWeeks
+  fields:
+    - name: id
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: HotelproductArrivalDaysOfWeeks
+    inputTypeName: HotelproductArrivalDaysOfWeeksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_arrival_days_of_weeks
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductArrivalDaysOfWeeks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductArrivalDaysOfWeeksBoolExp
+  operand:
+    object:
+      type: HotelproductArrivalDaysOfWeeks
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductArrivalDaysOfWeeksBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductArrivalDaysOfWeeksAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductArrivalDaysOfWeeks
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductArrivalDaysOfWeeksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductArrivalDaysOfWeeksOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductArrivalDaysOfWeeks
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductArrivalDaysOfWeeksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductArrivalDaysOfWeeks
+  objectType: HotelproductArrivalDaysOfWeeks
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_arrival_days_of_weeks
+  filterExpressionType: HotelproductArrivalDaysOfWeeksBoolExp
+  aggregateExpression: HotelproductArrivalDaysOfWeeksAggExp
+  orderByExpression: HotelproductArrivalDaysOfWeeksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductArrivalDaysOfWeeks
+      subscription:
+        rootField: hotelproductArrivalDaysOfWeeks
+    selectUniques:
+      - queryRootField: hotelproductArrivalDaysOfWeeksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductArrivalDaysOfWeeksById
+    filterInputTypeName: HotelproductArrivalDaysOfWeeksFilterInput
+    aggregate:
+      queryRootField: hotelproductArrivalDaysOfWeeksAggregate
+      subscription:
+        rootField: hotelproductArrivalDaysOfWeeksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductArrivalDaysOfWeeks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

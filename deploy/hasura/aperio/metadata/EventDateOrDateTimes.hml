@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventDateOrDateTimes
+  fields:
+    - name: dateTime
+      type: Timestamptz
+    - name: dayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: EventDateOrDateTimes
+    inputTypeName: EventDateOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_date_or_date_times
+      fieldMapping:
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventDateOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventDateOrDateTimesBoolExp
+  operand:
+    object:
+      type: EventDateOrDateTimes
+      comparableFields:
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: EventEventDateOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventDateOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventDateOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: EventDateOrDateTimes
+      aggregatableFields:
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: EventEventDateOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventDateOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventDateOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: EventDateOrDateTimes
+      orderableFields:
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventDateOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventDateOrDateTimes
+  objectType: EventDateOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_date_or_date_times
+  filterExpressionType: EventDateOrDateTimesBoolExp
+  aggregateExpression: EventDateOrDateTimesAggExp
+  orderByExpression: EventDateOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventDateOrDateTimes
+      subscription:
+        rootField: eventDateOrDateTimes
+    selectUniques:
+      - queryRootField: eventDateOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventDateOrDateTimesById
+    filterInputTypeName: EventDateOrDateTimesFilterInput
+    aggregate:
+      queryRootField: eventDateOrDateTimesAggregate
+      subscription:
+        rootField: eventDateOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventDateOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantDates
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: RestaurantDates
+    inputTypeName: RestaurantDatesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_dates
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantDates
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantDatesBoolExp
+  operand:
+    object:
+      type: RestaurantDates
+      comparableFields:
+        - fieldName: day
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: month
+          booleanExpressionType: Int4BoolExp
+        - fieldName: year
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantDatesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantDatesAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantDates
+      aggregatableFields:
+        - fieldName: day
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: month
+          aggregateExpression: Int4AggExp
+        - fieldName: year
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantDatesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantDatesOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantDates
+      orderableFields:
+        - fieldName: day
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: month
+          orderByExpression: Int32OrderByExp
+        - fieldName: year
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantDatesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantDates
+  objectType: RestaurantDates
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_dates
+  filterExpressionType: RestaurantDatesBoolExp
+  aggregateExpression: RestaurantDatesAggExp
+  orderByExpression: RestaurantDatesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantDates
+      subscription:
+        rootField: restaurantDates
+    selectUniques:
+      - queryRootField: restaurantDatesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantDatesById
+    filterInputTypeName: RestaurantDatesFilterInput
+    aggregate:
+      queryRootField: restaurantDatesAggregate
+      subscription:
+        rootField: restaurantDatesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantDates
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

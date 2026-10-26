@@ -1,0 +1,421 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomVideoFormats
+  fields:
+    - name: applicableEndId
+      type: String_1
+    - name: applicableStartId
+      type: String_1
+    - name: author
+      type: String_1
+    - name: bitRate
+      type: Int32
+    - name: contentId
+      type: String_1
+    - name: copyrightEndId
+      type: String_1
+    - name: copyrightNotice
+      type: String_1
+    - name: copyrightOwner
+      type: String_1
+    - name: copyrightStartId
+      type: String_1
+    - name: effectiveEndId
+      type: String_1
+    - name: effectiveStartId
+      type: String_1
+    - name: fileDisplayName
+      type: String_1
+    - name: fileSize
+      type: Int32
+    - name: format
+      type: Enum
+    - name: height
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: length
+      type: Int32
+    - name: recordId
+      type: String_1
+    - name: sourceId
+      type: String_1
+    - name: streamingSource
+      type: String_1
+    - name: title
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: uri
+      type: String_1
+    - name: videoItemId
+      type: String_1!
+    - name: width
+      type: Int32
+  graphql:
+    typeName: MeetingroomVideoFormats
+    inputTypeName: MeetingroomVideoFormatsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_video_formats
+      fieldMapping:
+        applicableEndId:
+          column:
+            name: applicable_end_id
+        applicableStartId:
+          column:
+            name: applicable_start_id
+        author:
+          column:
+            name: author
+        bitRate:
+          column:
+            name: bit_rate
+        contentId:
+          column:
+            name: content_id
+        copyrightEndId:
+          column:
+            name: copyright_end_id
+        copyrightNotice:
+          column:
+            name: copyright_notice
+        copyrightOwner:
+          column:
+            name: copyright_owner
+        copyrightStartId:
+          column:
+            name: copyright_start_id
+        effectiveEndId:
+          column:
+            name: effective_end_id
+        effectiveStartId:
+          column:
+            name: effective_start_id
+        fileDisplayName:
+          column:
+            name: file_display_name
+        fileSize:
+          column:
+            name: file_size
+        format:
+          column:
+            name: format
+        height:
+          column:
+            name: height
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        length:
+          column:
+            name: length
+        recordId:
+          column:
+            name: record_id
+        sourceId:
+          column:
+            name: source_id
+        streamingSource:
+          column:
+            name: streaming_source
+        title:
+          column:
+            name: title
+        unitCode:
+          column:
+            name: unit_code
+        uri:
+          column:
+            name: uri
+        videoItemId:
+          column:
+            name: video_item_id
+        width:
+          column:
+            name: width
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomVideoFormats
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicableEndId
+          - applicableStartId
+          - author
+          - bitRate
+          - contentId
+          - copyrightEndId
+          - copyrightNotice
+          - copyrightOwner
+          - copyrightStartId
+          - effectiveEndId
+          - effectiveStartId
+          - fileDisplayName
+          - fileSize
+          - format
+          - height
+          - id
+          - languageCode
+          - length
+          - recordId
+          - sourceId
+          - streamingSource
+          - title
+          - unitCode
+          - uri
+          - videoItemId
+          - width
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomVideoFormatsBoolExp
+  operand:
+    object:
+      type: MeetingroomVideoFormats
+      comparableFields:
+        - fieldName: applicableEndId
+          booleanExpressionType: TextBoolExp
+        - fieldName: applicableStartId
+          booleanExpressionType: TextBoolExp
+        - fieldName: author
+          booleanExpressionType: TextBoolExp
+        - fieldName: bitRate
+          booleanExpressionType: Int4BoolExp
+        - fieldName: contentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: copyrightEndId
+          booleanExpressionType: TextBoolExp
+        - fieldName: copyrightNotice
+          booleanExpressionType: TextBoolExp
+        - fieldName: copyrightOwner
+          booleanExpressionType: TextBoolExp
+        - fieldName: copyrightStartId
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveEndId
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveStartId
+          booleanExpressionType: TextBoolExp
+        - fieldName: fileDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: fileSize
+          booleanExpressionType: Int4BoolExp
+        - fieldName: format
+          booleanExpressionType: MeetingroomMeetingroomContentFormatCodeBoolExp
+        - fieldName: height
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: length
+          booleanExpressionType: Int4BoolExp
+        - fieldName: recordId
+          booleanExpressionType: TextBoolExp
+        - fieldName: sourceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: streamingSource
+          booleanExpressionType: TextBoolExp
+        - fieldName: title
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: MeetingroomMeetingroomUnitOfMeasureCodeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+        - fieldName: videoItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: width
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomVideoFormatsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomVideoFormatsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomVideoFormats
+      aggregatableFields:
+        - fieldName: applicableEndId
+          aggregateExpression: TextAggExp
+        - fieldName: applicableStartId
+          aggregateExpression: TextAggExp
+        - fieldName: author
+          aggregateExpression: TextAggExp
+        - fieldName: bitRate
+          aggregateExpression: Int4AggExp
+        - fieldName: contentId
+          aggregateExpression: TextAggExp
+        - fieldName: copyrightEndId
+          aggregateExpression: TextAggExp
+        - fieldName: copyrightNotice
+          aggregateExpression: TextAggExp
+        - fieldName: copyrightOwner
+          aggregateExpression: TextAggExp
+        - fieldName: copyrightStartId
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveEndId
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveStartId
+          aggregateExpression: TextAggExp
+        - fieldName: fileDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: fileSize
+          aggregateExpression: Int4AggExp
+        - fieldName: format
+          aggregateExpression: MeetingroomMeetingroomContentFormatCodeAggExp
+        - fieldName: height
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: length
+          aggregateExpression: Int4AggExp
+        - fieldName: recordId
+          aggregateExpression: TextAggExp
+        - fieldName: sourceId
+          aggregateExpression: TextAggExp
+        - fieldName: streamingSource
+          aggregateExpression: TextAggExp
+        - fieldName: title
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: MeetingroomMeetingroomUnitOfMeasureCodeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+        - fieldName: videoItemId
+          aggregateExpression: TextAggExp
+        - fieldName: width
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomVideoFormatsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomVideoFormatsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomVideoFormats
+      orderableFields:
+        - fieldName: applicableEndId
+          orderByExpression: String1OrderByExp
+        - fieldName: applicableStartId
+          orderByExpression: String1OrderByExp
+        - fieldName: author
+          orderByExpression: String1OrderByExp
+        - fieldName: bitRate
+          orderByExpression: Int32OrderByExp
+        - fieldName: contentId
+          orderByExpression: String1OrderByExp
+        - fieldName: copyrightEndId
+          orderByExpression: String1OrderByExp
+        - fieldName: copyrightNotice
+          orderByExpression: String1OrderByExp
+        - fieldName: copyrightOwner
+          orderByExpression: String1OrderByExp
+        - fieldName: copyrightStartId
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveEndId
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveStartId
+          orderByExpression: String1OrderByExp
+        - fieldName: fileDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: fileSize
+          orderByExpression: Int32OrderByExp
+        - fieldName: format
+          orderByExpression: EnumOrderByExp
+        - fieldName: height
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: length
+          orderByExpression: Int32OrderByExp
+        - fieldName: recordId
+          orderByExpression: String1OrderByExp
+        - fieldName: sourceId
+          orderByExpression: String1OrderByExp
+        - fieldName: streamingSource
+          orderByExpression: String1OrderByExp
+        - fieldName: title
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+        - fieldName: videoItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: width
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomVideoFormatsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomVideoFormats
+  objectType: MeetingroomVideoFormats
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_video_formats
+  filterExpressionType: MeetingroomVideoFormatsBoolExp
+  aggregateExpression: MeetingroomVideoFormatsAggExp
+  orderByExpression: MeetingroomVideoFormatsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomVideoFormats
+      subscription:
+        rootField: meetingroomVideoFormats
+    selectUniques:
+      - queryRootField: meetingroomVideoFormatsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomVideoFormatsById
+    filterInputTypeName: MeetingroomVideoFormatsFilterInput
+    aggregate:
+      queryRootField: meetingroomVideoFormatsAggregate
+      subscription:
+        rootField: meetingroomVideoFormatsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomVideoFormats
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

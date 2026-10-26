@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: StatisticreportDateOrTimeOrDateTimes
+  fields:
+    - name: clockId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: dayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: StatisticreportDateOrTimeOrDateTimes
+    inputTypeName: StatisticreportDateOrTimeOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: statisticreport_date_or_time_or_date_times
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: StatisticreportDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: StatisticreportDateOrTimeOrDateTimesBoolExp
+  operand:
+    object:
+      type: StatisticreportDateOrTimeOrDateTimes
+      comparableFields:
+        - fieldName: clockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: StatisticreportStatisticreportDateOrTimeOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: StatisticreportDateOrTimeOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: StatisticreportDateOrTimeOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: StatisticreportDateOrTimeOrDateTimes
+      aggregatableFields:
+        - fieldName: clockId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: StatisticreportStatisticreportDateOrTimeOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: StatisticreportDateOrTimeOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: StatisticreportDateOrTimeOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: StatisticreportDateOrTimeOrDateTimes
+      orderableFields:
+        - fieldName: clockId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: StatisticreportDateOrTimeOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: StatisticreportDateOrTimeOrDateTimes
+  objectType: StatisticreportDateOrTimeOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: statisticreport_date_or_time_or_date_times
+  filterExpressionType: StatisticreportDateOrTimeOrDateTimesBoolExp
+  aggregateExpression: StatisticreportDateOrTimeOrDateTimesAggExp
+  orderByExpression: StatisticreportDateOrTimeOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: statisticreportDateOrTimeOrDateTimes
+      subscription:
+        rootField: statisticreportDateOrTimeOrDateTimes
+    selectUniques:
+      - queryRootField: statisticreportDateOrTimeOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: statisticreportDateOrTimeOrDateTimesById
+    filterInputTypeName: StatisticreportDateOrTimeOrDateTimesFilterInput
+    aggregate:
+      queryRootField: statisticreportDateOrTimeOrDateTimesAggregate
+      subscription:
+        rootField: statisticreportDateOrTimeOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: StatisticreportDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

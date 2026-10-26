@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionUniqueIdsObject
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertCommissionUniqueIdsObject
+    inputTypeName: InsertCommissionUniqueIdsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_unique_ids_object
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionUniqueIdsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionUniqueIdsResponse
+  description: Responses from the 'insert_commission_unique_ids' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionUniqueIds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCommissionUniqueIdsResponse
+    inputTypeName: InsertCommissionUniqueIdsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_unique_ids_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionUniqueIdsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCommissionUniqueIds
+  outputType: InsertCommissionUniqueIdsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCommissionUniqueIdsObject!]!"
+    - name: postCheck
+      type: CommissionUniqueIdsBoolExp
+      description: Insert permission predicate over the 'commission_unique_ids' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_commission_unique_ids
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCommissionUniqueIds
+    rootFieldKind: Mutation
+  description: Insert into the commission_unique_ids table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCommissionUniqueIds
+  permissions:
+    - role: admin
+      allowExecution: true
+

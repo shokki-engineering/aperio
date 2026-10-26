@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanCommissionPayableAmountsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRateplanCommissionPayableAmountsObject
+    inputTypeName: InsertRateplanCommissionPayableAmountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_commission_payable_amounts_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanCommissionPayableAmountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanCommissionPayableAmountsResponse
+  description: Responses from the 'insert_rateplan_commission_payable_amounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanCommissionPayableAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanCommissionPayableAmountsResponse
+    inputTypeName: InsertRateplanCommissionPayableAmountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_commission_payable_amounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanCommissionPayableAmountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanCommissionPayableAmounts
+  outputType: InsertRateplanCommissionPayableAmountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanCommissionPayableAmountsObject!]!"
+    - name: postCheck
+      type: RateplanCommissionPayableAmountsBoolExp
+      description: Insert permission predicate over the
+        'rateplan_commission_payable_amounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_commission_payable_amounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanCommissionPayableAmounts
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_commission_payable_amounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanCommissionPayableAmounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

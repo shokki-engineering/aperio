@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestaurantTextItemByIdResponse
+  description: Responses from the 'delete_restaurant_text_item_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantTextItem!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestaurantTextItemByIdResponse
+    inputTypeName: DeleteRestaurantTextItemByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restaurant_text_item_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestaurantTextItemByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestaurantTextItemById
+  outputType: DeleteRestaurantTextItemByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestaurantTextItemBoolExp
+      description: Delete permission predicate over the 'restaurant_text_item' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restaurant_text_item_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestaurantTextItemById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'restaurant_text_item' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestaurantTextItemById
+  permissions:
+    - role: admin
+      allowExecution: true
+

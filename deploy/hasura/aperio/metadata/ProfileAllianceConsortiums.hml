@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAllianceConsortiums
+  fields:
+    - name: agreementsId
+      type: String_1!
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ProfileAllianceConsortiums
+    inputTypeName: ProfileAllianceConsortiumsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_alliance_consortiums
+      fieldMapping:
+        agreementsId:
+          column:
+            name: agreements_id
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAllianceConsortiums
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - agreementsId
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAllianceConsortiumsBoolExp
+  operand:
+    object:
+      type: ProfileAllianceConsortiums
+      comparableFields:
+        - fieldName: agreementsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAllianceConsortiumsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAllianceConsortiumsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAllianceConsortiums
+      aggregatableFields:
+        - fieldName: agreementsId
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAllianceConsortiumsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAllianceConsortiumsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAllianceConsortiums
+      orderableFields:
+        - fieldName: agreementsId
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAllianceConsortiumsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAllianceConsortiums
+  objectType: ProfileAllianceConsortiums
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_alliance_consortiums
+  filterExpressionType: ProfileAllianceConsortiumsBoolExp
+  aggregateExpression: ProfileAllianceConsortiumsAggExp
+  orderByExpression: ProfileAllianceConsortiumsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAllianceConsortiums
+      subscription:
+        rootField: profileAllianceConsortiums
+    selectUniques:
+      - queryRootField: profileAllianceConsortiumsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAllianceConsortiumsById
+    filterInputTypeName: ProfileAllianceConsortiumsFilterInput
+    aggregate:
+      queryRootField: profileAllianceConsortiumsAggregate
+      subscription:
+        rootField: profileAllianceConsortiumsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAllianceConsortiums
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

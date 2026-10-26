@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeUniqueIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: RoomtypeUniqueIds
+    inputTypeName: RoomtypeUniqueIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_unique_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeUniqueIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeUniqueIdsBoolExp
+  operand:
+    object:
+      type: RoomtypeUniqueIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: RoomtypeRoomtypeUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeUniqueIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeUniqueIdsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeUniqueIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: RoomtypeRoomtypeUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeUniqueIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeUniqueIdsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeUniqueIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeUniqueIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeUniqueIds
+  objectType: RoomtypeUniqueIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_unique_ids
+  filterExpressionType: RoomtypeUniqueIdsBoolExp
+  aggregateExpression: RoomtypeUniqueIdsAggExp
+  orderByExpression: RoomtypeUniqueIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeUniqueIds
+      subscription:
+        rootField: roomtypeUniqueIds
+    selectUniques:
+      - queryRootField: roomtypeUniqueIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeUniqueIdsById
+    filterInputTypeName: RoomtypeUniqueIdsFilterInput
+    aggregate:
+      queryRootField: roomtypeUniqueIdsAggregate
+      subscription:
+        rootField: roomtypeUniqueIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeUniqueIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

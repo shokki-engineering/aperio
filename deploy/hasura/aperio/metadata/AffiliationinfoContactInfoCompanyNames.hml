@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoContactInfoCompanyNames
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoContactInfoCompanyNames
+    inputTypeName: AffiliationinfoContactInfoCompanyNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_contact_info_company_names
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoContactInfoCompanyNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoContactInfoCompanyNamesBoolExp
+  operand:
+    object:
+      type: AffiliationinfoContactInfoCompanyNames
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: AffiliationinfoAffiliationinfoTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoContactInfoCompanyNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoContactInfoCompanyNamesAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoContactInfoCompanyNames
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: AffiliationinfoAffiliationinfoTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoContactInfoCompanyNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoContactInfoCompanyNamesOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoContactInfoCompanyNames
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoContactInfoCompanyNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoContactInfoCompanyNames
+  objectType: AffiliationinfoContactInfoCompanyNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_contact_info_company_names
+  filterExpressionType: AffiliationinfoContactInfoCompanyNamesBoolExp
+  aggregateExpression: AffiliationinfoContactInfoCompanyNamesAggExp
+  orderByExpression: AffiliationinfoContactInfoCompanyNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoContactInfoCompanyNames
+      subscription:
+        rootField: affiliationinfoContactInfoCompanyNames
+    selectUniques:
+      - queryRootField: affiliationinfoContactInfoCompanyNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoContactInfoCompanyNamesById
+    filterInputTypeName: AffiliationinfoContactInfoCompanyNamesFilterInput
+    aggregate:
+      queryRootField: affiliationinfoContactInfoCompanyNamesAggregate
+      subscription:
+        rootField: affiliationinfoContactInfoCompanyNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoContactInfoCompanyNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

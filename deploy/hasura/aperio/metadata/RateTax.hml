@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateTax
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeFrequency
+      type: Enum
+    - name: chargeFrequencyExempt
+      type: Int32
+    - name: chargeUnit
+      type: Enum
+    - name: chargeUnitExempt
+      type: Int32
+    - name: code
+      type: Enum
+    - name: duration
+      type: String_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: maxChargeFrequencyApplies
+      type: Int32
+    - name: maxChargeUnitApplies
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: sequenceNbr
+      type: Int32
+    - name: taxesId
+      type: String_1!
+    - name: type
+      type: Enum
+  graphql:
+    typeName: RateTax
+    inputTypeName: RateTaxInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_tax
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeFrequency:
+          column:
+            name: charge_frequency
+        chargeFrequencyExempt:
+          column:
+            name: charge_frequency_exempt
+        chargeUnit:
+          column:
+            name: charge_unit
+        chargeUnitExempt:
+          column:
+            name: charge_unit_exempt
+        code:
+          column:
+            name: code
+        duration:
+          column:
+            name: duration
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        maxChargeFrequencyApplies:
+          column:
+            name: max_charge_frequency_applies
+        maxChargeUnitApplies:
+          column:
+            name: max_charge_unit_applies
+        percentId:
+          column:
+            name: percent_id
+        sequenceNbr:
+          column:
+            name: sequence_nbr
+        taxesId:
+          column:
+            name: taxes_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateTax
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeFrequency
+          - chargeFrequencyExempt
+          - chargeUnit
+          - chargeUnitExempt
+          - code
+          - duration
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - maxChargeFrequencyApplies
+          - maxChargeUnitApplies
+          - percentId
+          - sequenceNbr
+          - taxesId
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateTaxBoolExp
+  operand:
+    object:
+      type: RateTax
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chargeFrequency
+          booleanExpressionType: RateRateChargeTypeBoolExp
+        - fieldName: chargeFrequencyExempt
+          booleanExpressionType: Int4BoolExp
+        - fieldName: chargeUnit
+          booleanExpressionType: RateRateChargeTypeBoolExp
+        - fieldName: chargeUnitExempt
+          booleanExpressionType: Int4BoolExp
+        - fieldName: code
+          booleanExpressionType: RateRateFeeTaxTypeBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxChargeFrequencyApplies
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxChargeUnitApplies
+          booleanExpressionType: Int4BoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: sequenceNbr
+          booleanExpressionType: Int4BoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: RateRateAmountDeterminationBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateTaxBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateTaxAggExp
+  operand:
+    object:
+      aggregatedType: RateTax
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: chargeFrequency
+          aggregateExpression: RateRateChargeTypeAggExp
+        - fieldName: chargeFrequencyExempt
+          aggregateExpression: Int4AggExp
+        - fieldName: chargeUnit
+          aggregateExpression: RateRateChargeTypeAggExp
+        - fieldName: chargeUnitExempt
+          aggregateExpression: Int4AggExp
+        - fieldName: code
+          aggregateExpression: RateRateFeeTaxTypeAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxChargeFrequencyApplies
+          aggregateExpression: Int4AggExp
+        - fieldName: maxChargeUnitApplies
+          aggregateExpression: Int4AggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: sequenceNbr
+          aggregateExpression: Int4AggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: RateRateAmountDeterminationAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateTaxAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateTaxOrderByExp
+  operand:
+    object:
+      orderedType: RateTax
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: chargeFrequency
+          orderByExpression: EnumOrderByExp
+        - fieldName: chargeFrequencyExempt
+          orderByExpression: Int32OrderByExp
+        - fieldName: chargeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: chargeUnitExempt
+          orderByExpression: Int32OrderByExp
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxChargeFrequencyApplies
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxChargeUnitApplies
+          orderByExpression: Int32OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: sequenceNbr
+          orderByExpression: Int32OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateTaxOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateTax
+  objectType: RateTax
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_tax
+  filterExpressionType: RateTaxBoolExp
+  aggregateExpression: RateTaxAggExp
+  orderByExpression: RateTaxOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateTax
+      subscription:
+        rootField: rateTax
+    selectUniques:
+      - queryRootField: rateTaxById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateTaxById
+    filterInputTypeName: RateTaxFilterInput
+    aggregate:
+      queryRootField: rateTaxAggregate
+      subscription:
+        rootField: rateTaxAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateTax
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

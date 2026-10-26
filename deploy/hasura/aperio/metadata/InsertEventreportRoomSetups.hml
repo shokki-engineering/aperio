@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportRoomSetupsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: roomSetupCode
+      type: Enum
+    - name: setupQuantity
+      type: Int32
+  graphql:
+    typeName: InsertEventreportRoomSetupsObject
+    inputTypeName: InsertEventreportRoomSetupsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_room_setups_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        roomSetupCode:
+          column:
+            name: room_setup_code
+        setupQuantity:
+          column:
+            name: setup_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportRoomSetupsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - roomSetupCode
+          - setupQuantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportRoomSetupsResponse
+  description: Responses from the 'insert_eventreport_room_setups' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportRoomSetups!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportRoomSetupsResponse
+    inputTypeName: InsertEventreportRoomSetupsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_room_setups_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportRoomSetupsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportRoomSetups
+  outputType: InsertEventreportRoomSetupsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportRoomSetupsObject!]!"
+    - name: postCheck
+      type: EventreportRoomSetupsBoolExp
+      description: Insert permission predicate over the 'eventreport_room_setups' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_room_setups
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportRoomSetups
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_room_setups table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportRoomSetups
+  permissions:
+    - role: admin
+      allowExecution: true
+

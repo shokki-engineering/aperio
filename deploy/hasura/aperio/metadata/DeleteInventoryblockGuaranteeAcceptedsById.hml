@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryblockGuaranteeAcceptedsByIdResponse
+  description: Responses from the
+    'delete_inventoryblock_guarantee_accepteds_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockGuaranteeAccepteds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryblockGuaranteeAcceptedsByIdResponse
+    inputTypeName: DeleteInventoryblockGuaranteeAcceptedsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventoryblock_guarantee_accepteds_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryblockGuaranteeAcceptedsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryblockGuaranteeAcceptedsById
+  outputType: DeleteInventoryblockGuaranteeAcceptedsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryblockGuaranteeAcceptedsBoolExp
+      description: Delete permission predicate over the
+        'inventoryblock_guarantee_accepteds' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventoryblock_guarantee_accepteds_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryblockGuaranteeAcceptedsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'inventoryblock_guarantee_accepteds'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryblockGuaranteeAcceptedsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

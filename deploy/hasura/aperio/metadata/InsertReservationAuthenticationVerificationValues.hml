@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationAuthenticationVerificationValuesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: plainText
+      type: String_1
+    - name: secureId
+      type: String_1
+    - name: secureOrPlainTextCase
+      type: Enum
+  graphql:
+    typeName: InsertReservationAuthenticationVerificationValuesObject
+    inputTypeName: InsertReservationAuthenticationVerificationValuesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_authentication_verification_values_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        plainText:
+          column:
+            name: plain_text
+        secureId:
+          column:
+            name: secure_id
+        secureOrPlainTextCase:
+          column:
+            name: secure_or_plain_text_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationAuthenticationVerificationValuesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - plainText
+          - secureId
+          - secureOrPlainTextCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationAuthenticationVerificationValuesResponse
+  description: Responses from the
+    'insert_reservation_authentication_verification_values' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationAuthenticationVerificationValues!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationAuthenticationVerificationValuesResponse
+    inputTypeName: InsertReservationAuthenticationVerificationValuesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_authentication_verification_values_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationAuthenticationVerificationValuesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationAuthenticationVerificationValues
+  outputType: InsertReservationAuthenticationVerificationValuesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationAuthenticationVerificationValuesObject!]!"
+    - name: postCheck
+      type: ReservationAuthenticationVerificationValuesBoolExp
+      description: Insert permission predicate over the
+        'reservation_authentication_verification_values' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_authentication_verification_values
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationAuthenticationVerificationValues
+    rootFieldKind: Mutation
+  description: Insert into the reservation_authentication_verification_values table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      allowExecution: true
+

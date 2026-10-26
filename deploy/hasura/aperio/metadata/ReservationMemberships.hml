@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationMemberships
+  fields:
+    - name: accountId
+      type: String_1
+    - name: bonusCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: pointsEarned
+      type: Int32
+    - name: programCode
+      type: String_1
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: roomStayId
+      type: String_1!
+    - name: serviceDetailsId
+      type: String_1!
+    - name: travelSector
+      type: Enum
+  graphql:
+    typeName: ReservationMemberships
+    inputTypeName: ReservationMembershipsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_memberships
+      fieldMapping:
+        accountId:
+          column:
+            name: account_id
+        bonusCode:
+          column:
+            name: bonus_code
+        id:
+          column:
+            name: id
+        pointsEarned:
+          column:
+            name: points_earned
+        programCode:
+          column:
+            name: program_code
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        roomStayId:
+          column:
+            name: room_stay_id
+        serviceDetailsId:
+          column:
+            name: service_details_id
+        travelSector:
+          column:
+            name: travel_sector
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationMemberships
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accountId
+          - bonusCode
+          - id
+          - pointsEarned
+          - programCode
+          - resGlobalInfoId
+          - roomStayId
+          - serviceDetailsId
+          - travelSector
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationMembershipsBoolExp
+  operand:
+    object:
+      type: ReservationMemberships
+      comparableFields:
+        - fieldName: accountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bonusCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: pointsEarned
+          booleanExpressionType: Int4BoolExp
+        - fieldName: programCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGlobalInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomStayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceDetailsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: ReservationReservationTravelSectorBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationMembershipsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationMembershipsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationMemberships
+      aggregatableFields:
+        - fieldName: accountId
+          aggregateExpression: TextAggExp
+        - fieldName: bonusCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: pointsEarned
+          aggregateExpression: Int4AggExp
+        - fieldName: programCode
+          aggregateExpression: TextAggExp
+        - fieldName: resGlobalInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: roomStayId
+          aggregateExpression: TextAggExp
+        - fieldName: serviceDetailsId
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: ReservationReservationTravelSectorAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationMembershipsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationMembershipsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationMemberships
+      orderableFields:
+        - fieldName: accountId
+          orderByExpression: String1OrderByExp
+        - fieldName: bonusCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: pointsEarned
+          orderByExpression: Int32OrderByExp
+        - fieldName: programCode
+          orderByExpression: String1OrderByExp
+        - fieldName: resGlobalInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomStayId
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceDetailsId
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationMembershipsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationMemberships
+  objectType: ReservationMemberships
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_memberships
+  filterExpressionType: ReservationMembershipsBoolExp
+  aggregateExpression: ReservationMembershipsAggExp
+  orderByExpression: ReservationMembershipsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationMemberships
+      subscription:
+        rootField: reservationMemberships
+    selectUniques:
+      - queryRootField: reservationMembershipsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationMembershipsById
+    filterInputTypeName: ReservationMembershipsFilterInput
+    aggregate:
+      queryRootField: reservationMembershipsAggregate
+      subscription:
+        rootField: reservationMembershipsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationMemberships
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

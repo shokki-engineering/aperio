@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanMeetingRoom
+  fields:
+    - name: access
+      type: String_1
+    - name: dedicatedIndicator
+      type: Boolean_1
+    - name: dimensionId
+      type: String_1
+    - name: featured
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: irregular
+      type: Boolean_1
+    - name: meetingRoomCapacity
+      type: Int32
+    - name: meetingRoomLevel
+      type: String_1
+    - name: meetingRoomTypeCode
+      type: Enum
+    - name: meetingRoomsId
+      type: String_1!
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: propertySystemDisplayName
+      type: String_1
+    - name: roomDisplayName
+      type: String_1
+    - name: sort
+      type: Int32
+  graphql:
+    typeName: RateplanMeetingRoom
+    inputTypeName: RateplanMeetingRoomInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_meeting_room
+      fieldMapping:
+        access:
+          column:
+            name: access
+        dedicatedIndicator:
+          column:
+            name: dedicated_indicator
+        dimensionId:
+          column:
+            name: dimension_id
+        featured:
+          column:
+            name: featured
+        id:
+          column:
+            name: id
+        irregular:
+          column:
+            name: irregular
+        meetingRoomCapacity:
+          column:
+            name: meeting_room_capacity
+        meetingRoomLevel:
+          column:
+            name: meeting_room_level
+        meetingRoomTypeCode:
+          column:
+            name: meeting_room_type_code
+        meetingRoomsId:
+          column:
+            name: meeting_rooms_id
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        propertySystemDisplayName:
+          column:
+            name: property_system_display_name
+        roomDisplayName:
+          column:
+            name: room_display_name
+        sort:
+          column:
+            name: sort
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanMeetingRoom
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - access
+          - dedicatedIndicator
+          - dimensionId
+          - featured
+          - id
+          - irregular
+          - meetingRoomCapacity
+          - meetingRoomLevel
+          - meetingRoomTypeCode
+          - meetingRoomsId
+          - multimediaDescriptionsId
+          - propertySystemDisplayName
+          - roomDisplayName
+          - sort
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanMeetingRoomBoolExp
+  operand:
+    object:
+      type: RateplanMeetingRoom
+      comparableFields:
+        - fieldName: access
+          booleanExpressionType: TextBoolExp
+        - fieldName: dedicatedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: dimensionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: featured
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: irregular
+          booleanExpressionType: BoolBoolExp
+        - fieldName: meetingRoomCapacity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: meetingRoomLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRoomTypeCode
+          booleanExpressionType: RateplanRateplanMeetingRoomFormatCodeBoolExp
+        - fieldName: meetingRoomsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: propertySystemDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanMeetingRoomBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanMeetingRoomAggExp
+  operand:
+    object:
+      aggregatedType: RateplanMeetingRoom
+      aggregatableFields:
+        - fieldName: access
+          aggregateExpression: TextAggExp
+        - fieldName: dedicatedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: dimensionId
+          aggregateExpression: TextAggExp
+        - fieldName: featured
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: irregular
+          aggregateExpression: BoolAggExp
+        - fieldName: meetingRoomCapacity
+          aggregateExpression: Int4AggExp
+        - fieldName: meetingRoomLevel
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRoomTypeCode
+          aggregateExpression: RateplanRateplanMeetingRoomFormatCodeAggExp
+        - fieldName: meetingRoomsId
+          aggregateExpression: TextAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: propertySystemDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: roomDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanMeetingRoomAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanMeetingRoomOrderByExp
+  operand:
+    object:
+      orderedType: RateplanMeetingRoom
+      orderableFields:
+        - fieldName: access
+          orderByExpression: String1OrderByExp
+        - fieldName: dedicatedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: dimensionId
+          orderByExpression: String1OrderByExp
+        - fieldName: featured
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: irregular
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: meetingRoomCapacity
+          orderByExpression: Int32OrderByExp
+        - fieldName: meetingRoomLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRoomTypeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: meetingRoomsId
+          orderByExpression: String1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: propertySystemDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: roomDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanMeetingRoomOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanMeetingRoom
+  objectType: RateplanMeetingRoom
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_meeting_room
+  filterExpressionType: RateplanMeetingRoomBoolExp
+  aggregateExpression: RateplanMeetingRoomAggExp
+  orderByExpression: RateplanMeetingRoomOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanMeetingRoom
+      subscription:
+        rootField: rateplanMeetingRoom
+    selectUniques:
+      - queryRootField: rateplanMeetingRoomById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanMeetingRoomById
+    filterInputTypeName: RateplanMeetingRoomFilterInput
+    aggregate:
+      queryRootField: rateplanMeetingRoomAggregate
+      subscription:
+        rootField: rateplanMeetingRoomAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanMeetingRoom
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

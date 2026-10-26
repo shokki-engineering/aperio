@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteReservationResultsByIdResponse
+  description: Responses from the 'delete_reservation_results_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationResults!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteReservationResultsByIdResponse
+    inputTypeName: DeleteReservationResultsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_reservation_results_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteReservationResultsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteReservationResultsById
+  outputType: DeleteReservationResultsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ReservationResultsBoolExp
+      description: Delete permission predicate over the 'reservation_results' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_reservation_results_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteReservationResultsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'reservation_results' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteReservationResultsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

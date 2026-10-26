@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationCancelPenalties
+  fields:
+    - name: cancelPolicyIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationCancelPenalties
+    inputTypeName: ReservationCancelPenaltiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_cancel_penalties
+      fieldMapping:
+        cancelPolicyIndicator:
+          column:
+            name: cancel_policy_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationCancelPenalties
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelPolicyIndicator
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationCancelPenaltiesBoolExp
+  operand:
+    object:
+      type: ReservationCancelPenalties
+      comparableFields:
+        - fieldName: cancelPolicyIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationCancelPenaltiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationCancelPenaltiesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationCancelPenalties
+      aggregatableFields:
+        - fieldName: cancelPolicyIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationCancelPenaltiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationCancelPenaltiesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationCancelPenalties
+      orderableFields:
+        - fieldName: cancelPolicyIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationCancelPenaltiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationCancelPenalties
+  objectType: ReservationCancelPenalties
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_cancel_penalties
+  filterExpressionType: ReservationCancelPenaltiesBoolExp
+  aggregateExpression: ReservationCancelPenaltiesAggExp
+  orderByExpression: ReservationCancelPenaltiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationCancelPenalties
+      subscription:
+        rootField: reservationCancelPenalties
+    selectUniques:
+      - queryRootField: reservationCancelPenaltiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationCancelPenaltiesById
+    filterInputTypeName: ReservationCancelPenaltiesFilterInput
+    aggregate:
+      queryRootField: reservationCancelPenaltiesAggregate
+      subscription:
+        rootField: reservationCancelPenaltiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationCancelPenalties
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

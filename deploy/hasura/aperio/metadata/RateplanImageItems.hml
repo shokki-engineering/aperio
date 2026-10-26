@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanImageItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanImageItems
+    inputTypeName: RateplanImageItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_image_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanImageItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanImageItemsBoolExp
+  operand:
+    object:
+      type: RateplanImageItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanImageItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanImageItemsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanImageItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanImageItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanImageItemsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanImageItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanImageItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanImageItems
+  objectType: RateplanImageItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_image_items
+  filterExpressionType: RateplanImageItemsBoolExp
+  aggregateExpression: RateplanImageItemsAggExp
+  orderByExpression: RateplanImageItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanImageItems
+      subscription:
+        rootField: rateplanImageItems
+    selectUniques:
+      - queryRootField: rateplanImageItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanImageItemsById
+    filterInputTypeName: RateplanImageItemsFilterInput
+    aggregate:
+      queryRootField: rateplanImageItemsAggregate
+      subscription:
+        rootField: rateplanImageItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanImageItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventreportTotalRoomPickUpsByIdResponse
+  description: Responses from the 'delete_eventreport_total_room_pick_ups_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportTotalRoomPickUps!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventreportTotalRoomPickUpsByIdResponse
+    inputTypeName: DeleteEventreportTotalRoomPickUpsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_eventreport_total_room_pick_ups_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventreportTotalRoomPickUpsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventreportTotalRoomPickUpsById
+  outputType: DeleteEventreportTotalRoomPickUpsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventreportTotalRoomPickUpsBoolExp
+      description: Delete permission predicate over the
+        'eventreport_total_room_pick_ups' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_eventreport_total_room_pick_ups_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventreportTotalRoomPickUpsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'eventreport_total_room_pick_ups' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventreportTotalRoomPickUpsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

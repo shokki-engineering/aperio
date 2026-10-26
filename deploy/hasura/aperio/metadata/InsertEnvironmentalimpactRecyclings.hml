@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEnvironmentalimpactRecyclingsObject
+  fields:
+    - name: activeProgram
+      type: Boolean_1
+    - name: detailsId
+      type: String_1
+    - name: ecologicalDishware
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertEnvironmentalimpactRecyclingsObject
+    inputTypeName: InsertEnvironmentalimpactRecyclingsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_environmentalimpact_recyclings_object
+      fieldMapping:
+        activeProgram:
+          column:
+            name: active_program
+        detailsId:
+          column:
+            name: details_id
+        ecologicalDishware:
+          column:
+            name: ecological_dishware
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEnvironmentalimpactRecyclingsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - activeProgram
+          - detailsId
+          - ecologicalDishware
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEnvironmentalimpactRecyclingsResponse
+  description: Responses from the 'insert_environmentalimpact_recyclings' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EnvironmentalimpactRecyclings!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEnvironmentalimpactRecyclingsResponse
+    inputTypeName: InsertEnvironmentalimpactRecyclingsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_environmentalimpact_recyclings_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEnvironmentalimpactRecyclingsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEnvironmentalimpactRecyclings
+  outputType: InsertEnvironmentalimpactRecyclingsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEnvironmentalimpactRecyclingsObject!]!"
+    - name: postCheck
+      type: EnvironmentalimpactRecyclingsBoolExp
+      description: Insert permission predicate over the
+        'environmentalimpact_recyclings' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_environmentalimpact_recyclings
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEnvironmentalimpactRecyclings
+    rootFieldKind: Mutation
+  description: Insert into the environmentalimpact_recyclings table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEnvironmentalimpactRecyclings
+  permissions:
+    - role: admin
+      allowExecution: true
+

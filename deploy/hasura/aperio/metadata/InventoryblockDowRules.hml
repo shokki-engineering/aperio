@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockDowRules
+  fields:
+    - name: dowTypeCode
+      type: Enum
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: invBlockRoomId
+      type: String_1!
+    - name: ratePlanId
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InventoryblockDowRules
+    inputTypeName: InventoryblockDowRulesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_dow_rules
+      fieldMapping:
+        dowTypeCode:
+          column:
+            name: dow_type_code
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        invBlockRoomId:
+          column:
+            name: inv_block_room_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        startId:
+          column:
+            name: start_id
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockDowRules
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dowTypeCode
+          - duration
+          - endId
+          - id
+          - invBlockRoomId
+          - ratePlanId
+          - startId
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockDowRulesBoolExp
+  operand:
+    object:
+      type: InventoryblockDowRules
+      comparableFields:
+        - fieldName: dowTypeCode
+          booleanExpressionType: InventoryblockDowTypeCodeBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invBlockRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockDowRulesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockDowRulesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockDowRules
+      aggregatableFields:
+        - fieldName: dowTypeCode
+          aggregateExpression: InventoryblockDowTypeCodeAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invBlockRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockDowRulesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockDowRulesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockDowRules
+      orderableFields:
+        - fieldName: dowTypeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invBlockRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockDowRulesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockDowRules
+  objectType: InventoryblockDowRules
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_dow_rules
+  filterExpressionType: InventoryblockDowRulesBoolExp
+  aggregateExpression: InventoryblockDowRulesAggExp
+  orderByExpression: InventoryblockDowRulesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockDowRules
+      subscription:
+        rootField: inventoryblockDowRules
+    selectUniques:
+      - queryRootField: inventoryblockDowRulesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockDowRulesById
+    filterInputTypeName: InventoryblockDowRulesFilterInput
+    aggregate:
+      queryRootField: inventoryblockDowRulesAggregate
+      subscription:
+        rootField: inventoryblockDowRulesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockDowRules
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

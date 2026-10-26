@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileFoodSrvcPrefsObject
+  fields:
+    - name: foodSrvcType
+      type: Enum
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileFoodSrvcPrefsObject
+    inputTypeName: InsertProfileFoodSrvcPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_food_srvc_prefs_object
+      fieldMapping:
+        foodSrvcType:
+          column:
+            name: food_srvc_type
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileFoodSrvcPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - foodSrvcType
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileFoodSrvcPrefsResponse
+  description: Responses from the 'insert_profile_food_srvc_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileFoodSrvcPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileFoodSrvcPrefsResponse
+    inputTypeName: InsertProfileFoodSrvcPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_food_srvc_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileFoodSrvcPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileFoodSrvcPrefs
+  outputType: InsertProfileFoodSrvcPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileFoodSrvcPrefsObject!]!"
+    - name: postCheck
+      type: ProfileFoodSrvcPrefsBoolExp
+      description: Insert permission predicate over the 'profile_food_srvc_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_food_srvc_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileFoodSrvcPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_food_srvc_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileFoodSrvcPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

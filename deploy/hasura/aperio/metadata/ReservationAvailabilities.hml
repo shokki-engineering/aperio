@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationAvailabilities
+  fields:
+    - name: availabilityStatus
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: roomRateId
+      type: String_1!
+  graphql:
+    typeName: ReservationAvailabilities
+    inputTypeName: ReservationAvailabilitiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_availabilities
+      fieldMapping:
+        availabilityStatus:
+          column:
+            name: availability_status
+        id:
+          column:
+            name: id
+        roomRateId:
+          column:
+            name: room_rate_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationAvailabilities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - availabilityStatus
+          - id
+          - roomRateId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationAvailabilitiesBoolExp
+  operand:
+    object:
+      type: ReservationAvailabilities
+      comparableFields:
+        - fieldName: availabilityStatus
+          booleanExpressionType: ReservationRateIndicatorBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomRateId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationAvailabilitiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationAvailabilitiesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationAvailabilities
+      aggregatableFields:
+        - fieldName: availabilityStatus
+          aggregateExpression: ReservationRateIndicatorAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomRateId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationAvailabilitiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationAvailabilitiesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationAvailabilities
+      orderableFields:
+        - fieldName: availabilityStatus
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomRateId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationAvailabilitiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationAvailabilities
+  objectType: ReservationAvailabilities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_availabilities
+  filterExpressionType: ReservationAvailabilitiesBoolExp
+  aggregateExpression: ReservationAvailabilitiesAggExp
+  orderByExpression: ReservationAvailabilitiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationAvailabilities
+      subscription:
+        rootField: reservationAvailabilities
+    selectUniques:
+      - queryRootField: reservationAvailabilitiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationAvailabilitiesById
+    filterInputTypeName: ReservationAvailabilitiesFilterInput
+    aggregate:
+      queryRootField: reservationAvailabilitiesAggregate
+      subscription:
+        rootField: reservationAvailabilitiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationAvailabilities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

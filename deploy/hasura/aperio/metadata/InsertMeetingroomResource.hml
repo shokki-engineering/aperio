@@ -1,0 +1,222 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomResourceObject
+  fields:
+    - name: access
+      type: String_1
+    - name: createTime
+      type: Timestamptz
+    - name: dedicatedIndicator
+      type: Boolean_1
+    - name: deleteTime
+      type: Timestamptz
+    - name: dimensionId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: featured
+      type: Boolean_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: irregular
+      type: Boolean_1
+    - name: meetingRoomCapacity
+      type: Int32
+    - name: meetingRoomLevel
+      type: String_1
+    - name: meetingRoomTypeCode
+      type: Enum
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: propertySystemDisplayName
+      type: String_1
+    - name: roomDisplayName
+      type: String_1
+    - name: sort
+      type: Int32
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertMeetingroomResourceObject
+    inputTypeName: InsertMeetingroomResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_resource_object
+      fieldMapping:
+        access:
+          column:
+            name: access
+        createTime:
+          column:
+            name: create_time
+        dedicatedIndicator:
+          column:
+            name: dedicated_indicator
+        deleteTime:
+          column:
+            name: delete_time
+        dimensionId:
+          column:
+            name: dimension_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        featured:
+          column:
+            name: featured
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        irregular:
+          column:
+            name: irregular
+        meetingRoomCapacity:
+          column:
+            name: meeting_room_capacity
+        meetingRoomLevel:
+          column:
+            name: meeting_room_level
+        meetingRoomTypeCode:
+          column:
+            name: meeting_room_type_code
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        name:
+          column:
+            name: name
+        propertySystemDisplayName:
+          column:
+            name: property_system_display_name
+        roomDisplayName:
+          column:
+            name: room_display_name
+        sort:
+          column:
+            name: sort
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - access
+          - createTime
+          - dedicatedIndicator
+          - deleteTime
+          - dimensionId
+          - etag
+          - expireTime
+          - featured
+          - hotelId
+          - id
+          - irregular
+          - meetingRoomCapacity
+          - meetingRoomLevel
+          - meetingRoomTypeCode
+          - multimediaDescriptionsId
+          - name
+          - propertySystemDisplayName
+          - roomDisplayName
+          - sort
+          - uid
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomResourceResponse
+  description: Responses from the 'insert_meetingroom_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingroomResourceResponse
+    inputTypeName: InsertMeetingroomResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingroomResource
+  outputType: InsertMeetingroomResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingroomResourceObject!]!"
+    - name: postCheck
+      type: MeetingroomResourceBoolExp
+      description: Insert permission predicate over the 'meetingroom_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingroom_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingroomResource
+    rootFieldKind: Mutation
+  description: Insert into the meetingroom_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingroomResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

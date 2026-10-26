@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpFunctionSpaceReqs
+  fields:
+    - name: ceilingHeightId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: largestRoomSpace
+      type: Int32
+    - name: meetingRoomFormatCode
+      type: Enum
+    - name: minBreakoutRoomQuantity
+      type: Int32
+    - name: minOccupancy
+      type: Int32
+    - name: unit
+      type: String_1
+  graphql:
+    typeName: MeetingrfpFunctionSpaceReqs
+    inputTypeName: MeetingrfpFunctionSpaceReqsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_function_space_reqs
+      fieldMapping:
+        ceilingHeightId:
+          column:
+            name: ceiling_height_id
+        id:
+          column:
+            name: id
+        largestRoomSpace:
+          column:
+            name: largest_room_space
+        meetingRoomFormatCode:
+          column:
+            name: meeting_room_format_code
+        minBreakoutRoomQuantity:
+          column:
+            name: min_breakout_room_quantity
+        minOccupancy:
+          column:
+            name: min_occupancy
+        unit:
+          column:
+            name: unit
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpFunctionSpaceReqs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - ceilingHeightId
+          - id
+          - largestRoomSpace
+          - meetingRoomFormatCode
+          - minBreakoutRoomQuantity
+          - minOccupancy
+          - unit
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpFunctionSpaceReqsBoolExp
+  operand:
+    object:
+      type: MeetingrfpFunctionSpaceReqs
+      comparableFields:
+        - fieldName: ceilingHeightId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: largestRoomSpace
+          booleanExpressionType: Int4BoolExp
+        - fieldName: meetingRoomFormatCode
+          booleanExpressionType: MeetingrfpMeetingrfpMeetingRoomFormatCodeBoolExp
+        - fieldName: minBreakoutRoomQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: minOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: unit
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpFunctionSpaceReqsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpFunctionSpaceReqsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpFunctionSpaceReqs
+      aggregatableFields:
+        - fieldName: ceilingHeightId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: largestRoomSpace
+          aggregateExpression: Int4AggExp
+        - fieldName: meetingRoomFormatCode
+          aggregateExpression: MeetingrfpMeetingrfpMeetingRoomFormatCodeAggExp
+        - fieldName: minBreakoutRoomQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: minOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: unit
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpFunctionSpaceReqsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpFunctionSpaceReqsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpFunctionSpaceReqs
+      orderableFields:
+        - fieldName: ceilingHeightId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: largestRoomSpace
+          orderByExpression: Int32OrderByExp
+        - fieldName: meetingRoomFormatCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: minBreakoutRoomQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: minOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: unit
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpFunctionSpaceReqsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpFunctionSpaceReqs
+  objectType: MeetingrfpFunctionSpaceReqs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_function_space_reqs
+  filterExpressionType: MeetingrfpFunctionSpaceReqsBoolExp
+  aggregateExpression: MeetingrfpFunctionSpaceReqsAggExp
+  orderByExpression: MeetingrfpFunctionSpaceReqsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpFunctionSpaceReqs
+      subscription:
+        rootField: meetingrfpFunctionSpaceReqs
+    selectUniques:
+      - queryRootField: meetingrfpFunctionSpaceReqsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpFunctionSpaceReqsById
+    filterInputTypeName: MeetingrfpFunctionSpaceReqsFilterInput
+    aggregate:
+      queryRootField: meetingrfpFunctionSpaceReqsAggregate
+      subscription:
+        rootField: meetingrfpFunctionSpaceReqsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpFunctionSpaceReqs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

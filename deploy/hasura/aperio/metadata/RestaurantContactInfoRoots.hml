@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantContactInfoRoots
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: contactProfileId
+      type: String_1
+    - name: contactProfileType
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: location
+      type: Enum
+    - name: restaurantId
+      type: String_1!
+  graphql:
+    typeName: RestaurantContactInfoRoots
+    inputTypeName: RestaurantContactInfoRootsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_contact_info_roots
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        contactProfileId:
+          column:
+            name: contact_profile_id
+        contactProfileType:
+          column:
+            name: contact_profile_type
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        location:
+          column:
+            name: location
+        restaurantId:
+          column:
+            name: restaurant_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantContactInfoRoots
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - contactProfileId
+          - contactProfileType
+          - id
+          - lastUpdateTime
+          - location
+          - restaurantId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantContactInfoRootsBoolExp
+  operand:
+    object:
+      type: RestaurantContactInfoRoots
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactProfileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactProfileType
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: location
+          booleanExpressionType: RestaurantRestaurantContactLocationBoolExp
+        - fieldName: restaurantId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantContactInfoRootsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantContactInfoRootsAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantContactInfoRoots
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: contactProfileId
+          aggregateExpression: TextAggExp
+        - fieldName: contactProfileType
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: location
+          aggregateExpression: RestaurantRestaurantContactLocationAggExp
+        - fieldName: restaurantId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantContactInfoRootsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantContactInfoRootsOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantContactInfoRoots
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactProfileId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactProfileType
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: location
+          orderByExpression: EnumOrderByExp
+        - fieldName: restaurantId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantContactInfoRootsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantContactInfoRoots
+  objectType: RestaurantContactInfoRoots
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_contact_info_roots
+  filterExpressionType: RestaurantContactInfoRootsBoolExp
+  aggregateExpression: RestaurantContactInfoRootsAggExp
+  orderByExpression: RestaurantContactInfoRootsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantContactInfoRoots
+      subscription:
+        rootField: restaurantContactInfoRoots
+    selectUniques:
+      - queryRootField: restaurantContactInfoRootsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantContactInfoRootsById
+    filterInputTypeName: RestaurantContactInfoRootsFilterInput
+    aggregate:
+      queryRootField: restaurantContactInfoRootsAggregate
+      subscription:
+        rootField: restaurantContactInfoRootsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantContactInfoRoots
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

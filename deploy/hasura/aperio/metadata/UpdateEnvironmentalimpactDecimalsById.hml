@@ -1,0 +1,179 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEnvironmentalimpactDecimalsId
+  description: Update the 'id' column in the 'environmentalimpact_decimals' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEnvironmentalimpactDecimalsId
+    inputTypeName: UpdateColumnEnvironmentalimpactDecimalsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_environmentalimpact_decimals_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEnvironmentalimpactDecimalsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEnvironmentalimpactDecimalsValue
+  description: Update the 'value' column in the 'environmentalimpact_decimals' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEnvironmentalimpactDecimalsValue
+    inputTypeName: UpdateColumnEnvironmentalimpactDecimalsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_environmentalimpact_decimals_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEnvironmentalimpactDecimalsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEnvironmentalimpactDecimalsByIdUpdateColumns
+  description: Update the columns of the 'environmentalimpact_decimals' collection
+  fields:
+    - name: id
+      type: UpdateColumnEnvironmentalimpactDecimalsId
+      description: Update the 'id' column in the 'environmentalimpact_decimals' collection.
+    - name: value
+      type: UpdateColumnEnvironmentalimpactDecimalsValue
+      description: Update the 'value' column in the 'environmentalimpact_decimals'
+        collection.
+  graphql:
+    typeName: UpdateEnvironmentalimpactDecimalsByIdUpdateColumns
+    inputTypeName: UpdateEnvironmentalimpactDecimalsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_environmentalimpact_decimals_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEnvironmentalimpactDecimalsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEnvironmentalimpactDecimalsByIdResponse
+  description: Responses from the 'update_environmentalimpact_decimals_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EnvironmentalimpactDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEnvironmentalimpactDecimalsByIdResponse
+    inputTypeName: UpdateEnvironmentalimpactDecimalsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_environmentalimpact_decimals_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEnvironmentalimpactDecimalsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEnvironmentalimpactDecimalsById
+  outputType: UpdateEnvironmentalimpactDecimalsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EnvironmentalimpactDecimalsBoolExp
+      description: Update permission post-condition predicate over the
+        'environmentalimpact_decimals' collection
+    - name: preCheck
+      type: EnvironmentalimpactDecimalsBoolExp
+      description: Update permission pre-condition predicate over the
+        'environmentalimpact_decimals' collection
+    - name: updateColumns
+      type: UpdateEnvironmentalimpactDecimalsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_environmentalimpact_decimals_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEnvironmentalimpactDecimalsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'environmentalimpact_decimals' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEnvironmentalimpactDecimalsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

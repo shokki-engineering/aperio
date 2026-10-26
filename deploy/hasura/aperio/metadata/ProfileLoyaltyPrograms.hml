@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileLoyaltyPrograms
+  fields:
+    - name: companyInfoId
+      type: String_1!
+    - name: employerId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: loyaltyLevel
+      type: String_1
+    - name: primaryLoyaltyIndicator
+      type: Boolean_1
+    - name: programCode
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: singleVendorInd
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileLoyaltyPrograms
+    inputTypeName: ProfileLoyaltyProgramsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_loyalty_programs
+      fieldMapping:
+        companyInfoId:
+          column:
+            name: company_info_id
+        employerId:
+          column:
+            name: employer_id
+        id:
+          column:
+            name: id
+        loyaltyLevel:
+          column:
+            name: loyalty_level
+        primaryLoyaltyIndicator:
+          column:
+            name: primary_loyalty_indicator
+        programCode:
+          column:
+            name: program_code
+        rph:
+          column:
+            name: rph
+        singleVendorInd:
+          column:
+            name: single_vendor_ind
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileLoyaltyPrograms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyInfoId
+          - employerId
+          - id
+          - loyaltyLevel
+          - primaryLoyaltyIndicator
+          - programCode
+          - rph
+          - singleVendorInd
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileLoyaltyProgramsBoolExp
+  operand:
+    object:
+      type: ProfileLoyaltyPrograms
+      comparableFields:
+        - fieldName: companyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: employerId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: loyaltyLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: primaryLoyaltyIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: programCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: singleVendorInd
+          booleanExpressionType: ProfileLoyaltyProgramSingleVendorIndBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileLoyaltyProgramsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileLoyaltyProgramsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileLoyaltyPrograms
+      aggregatableFields:
+        - fieldName: companyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: employerId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: loyaltyLevel
+          aggregateExpression: TextAggExp
+        - fieldName: primaryLoyaltyIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: programCode
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: singleVendorInd
+          aggregateExpression: ProfileLoyaltyProgramSingleVendorIndAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileLoyaltyProgramsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileLoyaltyProgramsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileLoyaltyPrograms
+      orderableFields:
+        - fieldName: companyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: employerId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: loyaltyLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: primaryLoyaltyIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: programCode
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: singleVendorInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileLoyaltyProgramsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileLoyaltyPrograms
+  objectType: ProfileLoyaltyPrograms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_loyalty_programs
+  filterExpressionType: ProfileLoyaltyProgramsBoolExp
+  aggregateExpression: ProfileLoyaltyProgramsAggExp
+  orderByExpression: ProfileLoyaltyProgramsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileLoyaltyPrograms
+      subscription:
+        rootField: profileLoyaltyPrograms
+    selectUniques:
+      - queryRootField: profileLoyaltyProgramsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileLoyaltyProgramsById
+    filterInputTypeName: ProfileLoyaltyProgramsFilterInput
+    aggregate:
+      queryRootField: profileLoyaltyProgramsAggregate
+      subscription:
+        rootField: profileLoyaltyProgramsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileLoyaltyPrograms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

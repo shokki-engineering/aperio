@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductDocumentsObject
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertHotelproductDocumentsObject
+    inputTypeName: InsertHotelproductDocumentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_documents_object
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductDocumentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductDocumentsResponse
+  description: Responses from the 'insert_hotelproduct_documents' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductDocumentsResponse
+    inputTypeName: InsertHotelproductDocumentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_documents_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductDocumentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductDocuments
+  outputType: InsertHotelproductDocumentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductDocumentsObject!]!"
+    - name: postCheck
+      type: HotelproductDocumentsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_documents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_documents
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductDocuments
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_documents table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductDocuments
+  permissions:
+    - role: admin
+      allowExecution: true
+

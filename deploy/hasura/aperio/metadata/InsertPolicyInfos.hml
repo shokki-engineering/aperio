@@ -1,0 +1,186 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyInfosObject
+  fields:
+    - name: acceptedGuestType
+      type: Enum
+    - name: checkOutId
+      type: String_1
+    - name: checkinId
+      type: String_1
+    - name: defaultTaxServiceInclusive
+      type: Boolean_1
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: internetGuaranteeRequired
+      type: Boolean_1
+    - name: kidsStayFree
+      type: Boolean_1
+    - name: maxChildAge
+      type: Int32
+    - name: minGuestAge
+      type: Int32
+    - name: minRecommendedGuestAge
+      type: Int32
+    - name: roomGuaranteeLateArrv
+      type: Boolean_1
+    - name: totalGuestCount
+      type: Int32
+    - name: usualStayFreeChildPerAdult
+      type: Int32
+    - name: usualStayFreeCutoffAge
+      type: Int32
+  graphql:
+    typeName: InsertPolicyInfosObject
+    inputTypeName: InsertPolicyInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_infos_object
+      fieldMapping:
+        acceptedGuestType:
+          column:
+            name: accepted_guest_type
+        checkOutId:
+          column:
+            name: check_out_id
+        checkinId:
+          column:
+            name: checkin_id
+        defaultTaxServiceInclusive:
+          column:
+            name: default_tax_service_inclusive
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        internetGuaranteeRequired:
+          column:
+            name: internet_guarantee_required
+        kidsStayFree:
+          column:
+            name: kids_stay_free
+        maxChildAge:
+          column:
+            name: max_child_age
+        minGuestAge:
+          column:
+            name: min_guest_age
+        minRecommendedGuestAge:
+          column:
+            name: min_recommended_guest_age
+        roomGuaranteeLateArrv:
+          column:
+            name: room_guarantee_late_arrv
+        totalGuestCount:
+          column:
+            name: total_guest_count
+        usualStayFreeChildPerAdult:
+          column:
+            name: usual_stay_free_child_per_adult
+        usualStayFreeCutoffAge:
+          column:
+            name: usual_stay_free_cutoff_age
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acceptedGuestType
+          - checkOutId
+          - checkinId
+          - defaultTaxServiceInclusive
+          - descriptionId
+          - id
+          - internetGuaranteeRequired
+          - kidsStayFree
+          - maxChildAge
+          - minGuestAge
+          - minRecommendedGuestAge
+          - roomGuaranteeLateArrv
+          - totalGuestCount
+          - usualStayFreeChildPerAdult
+          - usualStayFreeCutoffAge
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyInfosResponse
+  description: Responses from the 'insert_policy_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyInfosResponse
+    inputTypeName: InsertPolicyInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyInfos
+  outputType: InsertPolicyInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyInfosObject!]!"
+    - name: postCheck
+      type: PolicyInfosBoolExp
+      description: Insert permission predicate over the 'policy_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyInfos
+    rootFieldKind: Mutation
+  description: Insert into the policy_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

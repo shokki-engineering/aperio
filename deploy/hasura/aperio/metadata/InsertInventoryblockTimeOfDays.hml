@@ -1,0 +1,111 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockTimeOfDaysObject
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: InsertInventoryblockTimeOfDaysObject
+    inputTypeName: InsertInventoryblockTimeOfDaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_time_of_days_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockTimeOfDaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockTimeOfDaysResponse
+  description: Responses from the 'insert_inventoryblock_time_of_days' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockTimeOfDaysResponse
+    inputTypeName: InsertInventoryblockTimeOfDaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_time_of_days_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockTimeOfDaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockTimeOfDays
+  outputType: InsertInventoryblockTimeOfDaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockTimeOfDaysObject!]!"
+    - name: postCheck
+      type: InventoryblockTimeOfDaysBoolExp
+      description: Insert permission predicate over the 'inventoryblock_time_of_days'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_time_of_days
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockTimeOfDays
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_time_of_days table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockTimeOfDays
+  permissions:
+    - role: admin
+      allowExecution: true
+

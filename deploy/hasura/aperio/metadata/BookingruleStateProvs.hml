@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleStateProvs
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleStateProvs
+    inputTypeName: BookingruleStateProvsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_state_provs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleStateProvs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleStateProvsBoolExp
+  operand:
+    object:
+      type: BookingruleStateProvs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: stateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleStateProvsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleStateProvsAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleStateProvs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: stateCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleStateProvsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleStateProvsOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleStateProvs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: stateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleStateProvsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleStateProvs
+  objectType: BookingruleStateProvs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_state_provs
+  filterExpressionType: BookingruleStateProvsBoolExp
+  aggregateExpression: BookingruleStateProvsAggExp
+  orderByExpression: BookingruleStateProvsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleStateProvs
+      subscription:
+        rootField: bookingruleStateProvs
+    selectUniques:
+      - queryRootField: bookingruleStateProvsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleStateProvsById
+    filterInputTypeName: BookingruleStateProvsFilterInput
+    aggregate:
+      queryRootField: bookingruleStateProvsAggregate
+      subscription:
+        rootField: bookingruleStateProvsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleStateProvs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

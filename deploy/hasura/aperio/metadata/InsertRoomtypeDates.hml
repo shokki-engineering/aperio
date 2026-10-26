@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertRoomtypeDatesObject
+    inputTypeName: InsertRoomtypeDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDatesResponse
+  description: Responses from the 'insert_roomtype_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeDatesResponse
+    inputTypeName: InsertRoomtypeDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeDates
+  outputType: InsertRoomtypeDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeDatesObject!]!"
+    - name: postCheck
+      type: RoomtypeDatesBoolExp
+      description: Insert permission predicate over the 'roomtype_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeDates
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

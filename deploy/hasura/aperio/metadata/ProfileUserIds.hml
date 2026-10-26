@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileUserIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: pinNumber
+      type: String_1
+    - name: profileId
+      type: String_1!
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: ProfileUserIds
+    inputTypeName: ProfileUserIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_user_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        pinNumber:
+          column:
+            name: pin_number
+        profileId:
+          column:
+            name: profile_id
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileUserIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - pinNumber
+          - profileId
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileUserIdsBoolExp
+  operand:
+    object:
+      type: ProfileUserIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: pinNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: profileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ProfileProfileUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileUserIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileUserIdsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileUserIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: pinNumber
+          aggregateExpression: TextAggExp
+        - fieldName: profileId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ProfileProfileUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileUserIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileUserIdsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileUserIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: pinNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: profileId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileUserIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileUserIds
+  objectType: ProfileUserIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_user_ids
+  filterExpressionType: ProfileUserIdsBoolExp
+  aggregateExpression: ProfileUserIdsAggExp
+  orderByExpression: ProfileUserIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileUserIds
+      subscription:
+        rootField: profileUserIds
+    selectUniques:
+      - queryRootField: profileUserIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileUserIdsById
+    filterInputTypeName: ProfileUserIdsFilterInput
+    aggregate:
+      queryRootField: profileUserIdsAggregate
+      subscription:
+        rootField: profileUserIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileUserIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

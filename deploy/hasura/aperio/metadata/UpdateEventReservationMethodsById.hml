@@ -1,0 +1,226 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventReservationMethodsCode
+  description: Update the 'code' column in the 'event_reservation_methods' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventReservationMethodsCode
+    inputTypeName: UpdateColumnEventReservationMethodsCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_reservation_methods_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventReservationMethodsCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventReservationMethodsId
+  description: Update the 'id' column in the 'event_reservation_methods' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventReservationMethodsId
+    inputTypeName: UpdateColumnEventReservationMethodsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_reservation_methods_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventReservationMethodsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventReservationMethodsRoomBlockId
+  description: Update the 'room_block_id' column in the
+    'event_reservation_methods' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventReservationMethodsRoomBlockId
+    inputTypeName: UpdateColumnEventReservationMethodsRoomBlockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_reservation_methods_room_block_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventReservationMethodsRoomBlockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventReservationMethodsByIdUpdateColumns
+  description: Update the columns of the 'event_reservation_methods' collection
+  fields:
+    - name: code
+      type: UpdateColumnEventReservationMethodsCode
+      description: Update the 'code' column in the 'event_reservation_methods' collection.
+    - name: id
+      type: UpdateColumnEventReservationMethodsId
+      description: Update the 'id' column in the 'event_reservation_methods' collection.
+    - name: roomBlockId
+      type: UpdateColumnEventReservationMethodsRoomBlockId
+      description: Update the 'room_block_id' column in the
+        'event_reservation_methods' collection.
+  graphql:
+    typeName: UpdateEventReservationMethodsByIdUpdateColumns
+    inputTypeName: UpdateEventReservationMethodsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_reservation_methods_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        roomBlockId:
+          column:
+            name: room_block_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventReservationMethodsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - roomBlockId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventReservationMethodsByIdResponse
+  description: Responses from the 'update_event_reservation_methods_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventReservationMethods!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventReservationMethodsByIdResponse
+    inputTypeName: UpdateEventReservationMethodsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_reservation_methods_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventReservationMethodsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventReservationMethodsById
+  outputType: UpdateEventReservationMethodsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventReservationMethodsBoolExp
+      description: Update permission post-condition predicate over the
+        'event_reservation_methods' collection
+    - name: preCheck
+      type: EventReservationMethodsBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_reservation_methods' collection
+    - name: updateColumns
+      type: UpdateEventReservationMethodsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_reservation_methods_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventReservationMethodsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_reservation_methods' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventReservationMethodsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

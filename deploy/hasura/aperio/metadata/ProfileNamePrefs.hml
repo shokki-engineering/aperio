@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileNamePrefs
+  fields:
+    - name: commonPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: personDisplayNameId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: uniqueIdId
+      type: String_1!
+  graphql:
+    typeName: ProfileNamePrefs
+    inputTypeName: ProfileNamePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_name_prefs
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        id:
+          column:
+            name: id
+        personDisplayNameId:
+          column:
+            name: person_display_name_id
+        preferLevel:
+          column:
+            name: prefer_level
+        uniqueIdId:
+          column:
+            name: unique_id_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileNamePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - id
+          - personDisplayNameId
+          - preferLevel
+          - uniqueIdId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileNamePrefsBoolExp
+  operand:
+    object:
+      type: ProfileNamePrefs
+      comparableFields:
+        - fieldName: commonPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: personDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: uniqueIdId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileNamePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileNamePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileNamePrefs
+      aggregatableFields:
+        - fieldName: commonPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: personDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: uniqueIdId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileNamePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileNamePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileNamePrefs
+      orderableFields:
+        - fieldName: commonPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: personDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: uniqueIdId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileNamePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileNamePrefs
+  objectType: ProfileNamePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_name_prefs
+  filterExpressionType: ProfileNamePrefsBoolExp
+  aggregateExpression: ProfileNamePrefsAggExp
+  orderByExpression: ProfileNamePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileNamePrefs
+      subscription:
+        rootField: profileNamePrefs
+    selectUniques:
+      - queryRootField: profileNamePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileNamePrefsById
+    filterInputTypeName: ProfileNamePrefsFilterInput
+    aggregate:
+      queryRootField: profileNamePrefsAggregate
+      subscription:
+        rootField: profileNamePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileNamePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

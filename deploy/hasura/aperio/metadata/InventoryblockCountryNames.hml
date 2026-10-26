@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockCountryNames
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InventoryblockCountryNames
+    inputTypeName: InventoryblockCountryNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_country_names
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockCountryNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockCountryNamesBoolExp
+  operand:
+    object:
+      type: InventoryblockCountryNames
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockCountryNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockCountryNamesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockCountryNames
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockCountryNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockCountryNamesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockCountryNames
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockCountryNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockCountryNames
+  objectType: InventoryblockCountryNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_country_names
+  filterExpressionType: InventoryblockCountryNamesBoolExp
+  aggregateExpression: InventoryblockCountryNamesAggExp
+  orderByExpression: InventoryblockCountryNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockCountryNames
+      subscription:
+        rootField: inventoryblockCountryNames
+    selectUniques:
+      - queryRootField: inventoryblockCountryNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockCountryNamesById
+    filterInputTypeName: InventoryblockCountryNamesFilterInput
+    aggregate:
+      queryRootField: inventoryblockCountryNamesAggregate
+      subscription:
+        rootField: inventoryblockCountryNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockCountryNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

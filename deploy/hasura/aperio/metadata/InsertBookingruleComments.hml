@@ -1,0 +1,180 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleCommentsObject
+  fields:
+    - name: acceptableGuaranteeId
+      type: String_1!
+    - name: commentOriginatorCode
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: guestViewable
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertBookingruleCommentsObject
+    inputTypeName: InsertBookingruleCommentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_comments_object
+      fieldMapping:
+        acceptableGuaranteeId:
+          column:
+            name: acceptable_guarantee_id
+        commentOriginatorCode:
+          column:
+            name: comment_originator_code
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        guestViewable:
+          column:
+            name: guest_viewable
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleCommentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acceptableGuaranteeId
+          - commentOriginatorCode
+          - createDateTime
+          - creatorId
+          - displayName
+          - guestViewable
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleCommentsResponse
+  description: Responses from the 'insert_bookingrule_comments' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleComments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleCommentsResponse
+    inputTypeName: InsertBookingruleCommentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_comments_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleCommentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleComments
+  outputType: InsertBookingruleCommentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleCommentsObject!]!"
+    - name: postCheck
+      type: BookingruleCommentsBoolExp
+      description: Insert permission predicate over the 'bookingrule_comments' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_comments
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleComments
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_comments table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleComments
+  permissions:
+    - role: admin
+      allowExecution: true
+

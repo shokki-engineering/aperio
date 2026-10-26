@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingrfpDateOrTimeOrDateTimesByIdResponse
+  description: Responses from the
+    'delete_meetingrfp_date_or_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpDateOrTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingrfpDateOrTimeOrDateTimesByIdResponse
+    inputTypeName: DeleteMeetingrfpDateOrTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingrfp_date_or_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingrfpDateOrTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingrfpDateOrTimeOrDateTimesById
+  outputType: DeleteMeetingrfpDateOrTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingrfpDateOrTimeOrDateTimesBoolExp
+      description: Delete permission predicate over the
+        'meetingrfp_date_or_time_or_date_times' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingrfp_date_or_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingrfpDateOrTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingrfp_date_or_time_or_date_times'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingrfpDateOrTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

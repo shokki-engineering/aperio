@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockPrepaidAmountsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertInventoryblockPrepaidAmountsObject
+    inputTypeName: InsertInventoryblockPrepaidAmountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_prepaid_amounts_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockPrepaidAmountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockPrepaidAmountsResponse
+  description: Responses from the 'insert_inventoryblock_prepaid_amounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockPrepaidAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockPrepaidAmountsResponse
+    inputTypeName: InsertInventoryblockPrepaidAmountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_prepaid_amounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockPrepaidAmountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockPrepaidAmounts
+  outputType: InsertInventoryblockPrepaidAmountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockPrepaidAmountsObject!]!"
+    - name: postCheck
+      type: InventoryblockPrepaidAmountsBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_prepaid_amounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_prepaid_amounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockPrepaidAmounts
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_prepaid_amounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockPrepaidAmounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

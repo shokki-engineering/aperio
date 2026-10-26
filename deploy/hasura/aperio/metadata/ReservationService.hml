@@ -1,0 +1,337 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationService
+  fields:
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: inclusive
+      type: Boolean_1
+    - name: instance
+      type: String_1
+    - name: inventoryBlockCode
+      type: String_1
+    - name: priceGuaranteed
+      type: Boolean_1
+    - name: quantity
+      type: Int32
+    - name: ratePlanCode
+      type: String_1
+    - name: requestedIndicator
+      type: Boolean_1
+    - name: required
+      type: Boolean_1
+    - name: reservationStatusType
+      type: Enum
+    - name: serviceCategoryCode
+      type: String_1
+    - name: serviceDetailsId
+      type: String_1
+    - name: serviceInventoryCode
+      type: String_1
+    - name: servicePricingType
+      type: Enum
+    - name: serviceRph
+      type: String_1
+    - name: servicesId
+      type: String_1!
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: ReservationService
+    inputTypeName: ReservationServiceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_service
+      fieldMapping:
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        inclusive:
+          column:
+            name: inclusive
+        instance:
+          column:
+            name: instance
+        inventoryBlockCode:
+          column:
+            name: inventory_block_code
+        priceGuaranteed:
+          column:
+            name: price_guaranteed
+        quantity:
+          column:
+            name: quantity
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        requestedIndicator:
+          column:
+            name: requested_indicator
+        required:
+          column:
+            name: required
+        reservationStatusType:
+          column:
+            name: reservation_status_type
+        serviceCategoryCode:
+          column:
+            name: service_category_code
+        serviceDetailsId:
+          column:
+            name: service_details_id
+        serviceInventoryCode:
+          column:
+            name: service_inventory_code
+        servicePricingType:
+          column:
+            name: service_pricing_type
+        serviceRph:
+          column:
+            name: service_rph
+        servicesId:
+          column:
+            name: services_id
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationService
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - idContext
+          - inclusive
+          - instance
+          - inventoryBlockCode
+          - priceGuaranteed
+          - quantity
+          - ratePlanCode
+          - requestedIndicator
+          - required
+          - reservationStatusType
+          - serviceCategoryCode
+          - serviceDetailsId
+          - serviceInventoryCode
+          - servicePricingType
+          - serviceRph
+          - servicesId
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationServiceBoolExp
+  operand:
+    object:
+      type: ReservationService
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: inclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: inventoryBlockCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: priceGuaranteed
+          booleanExpressionType: BoolBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: ratePlanCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: requestedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: required
+          booleanExpressionType: BoolBoolExp
+        - fieldName: reservationStatusType
+          booleanExpressionType: ReservationPmsReservationStateBoolExp
+        - fieldName: serviceCategoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceDetailsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceInventoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: servicePricingType
+          booleanExpressionType: ReservationPricingBoolExp
+        - fieldName: serviceRph
+          booleanExpressionType: TextBoolExp
+        - fieldName: servicesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ReservationReservationUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationServiceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationServiceAggExp
+  operand:
+    object:
+      aggregatedType: ReservationService
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: inclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: inventoryBlockCode
+          aggregateExpression: TextAggExp
+        - fieldName: priceGuaranteed
+          aggregateExpression: BoolAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: ratePlanCode
+          aggregateExpression: TextAggExp
+        - fieldName: requestedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: required
+          aggregateExpression: BoolAggExp
+        - fieldName: reservationStatusType
+          aggregateExpression: ReservationPmsReservationStateAggExp
+        - fieldName: serviceCategoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: serviceDetailsId
+          aggregateExpression: TextAggExp
+        - fieldName: serviceInventoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: servicePricingType
+          aggregateExpression: ReservationPricingAggExp
+        - fieldName: serviceRph
+          aggregateExpression: TextAggExp
+        - fieldName: servicesId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ReservationReservationUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationServiceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationServiceOrderByExp
+  operand:
+    object:
+      orderedType: ReservationService
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: inclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: inventoryBlockCode
+          orderByExpression: String1OrderByExp
+        - fieldName: priceGuaranteed
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: ratePlanCode
+          orderByExpression: String1OrderByExp
+        - fieldName: requestedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: required
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: reservationStatusType
+          orderByExpression: EnumOrderByExp
+        - fieldName: serviceCategoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceDetailsId
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceInventoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: servicePricingType
+          orderByExpression: EnumOrderByExp
+        - fieldName: serviceRph
+          orderByExpression: String1OrderByExp
+        - fieldName: servicesId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationServiceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationService
+  objectType: ReservationService
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_service
+  filterExpressionType: ReservationServiceBoolExp
+  aggregateExpression: ReservationServiceAggExp
+  orderByExpression: ReservationServiceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationService
+      subscription:
+        rootField: reservationService
+    selectUniques:
+      - queryRootField: reservationServiceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationServiceById
+    filterInputTypeName: ReservationServiceFilterInput
+    aggregate:
+      queryRootField: reservationServiceAggregate
+      subscription:
+        rootField: reservationServiceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationService
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

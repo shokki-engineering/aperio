@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVehTypes
+  fields:
+    - name: doorCount
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: vehicleCategory
+      type: Enum!
+  graphql:
+    typeName: ProfileVehTypes
+    inputTypeName: ProfileVehTypesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_veh_types
+      fieldMapping:
+        doorCount:
+          column:
+            name: door_count
+        id:
+          column:
+            name: id
+        vehicleCategory:
+          column:
+            name: vehicle_category
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVehTypes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - doorCount
+          - id
+          - vehicleCategory
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVehTypesBoolExp
+  operand:
+    object:
+      type: ProfileVehTypes
+      comparableFields:
+        - fieldName: doorCount
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleCategory
+          booleanExpressionType: ProfileVehicleCategoryBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVehTypesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVehTypesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVehTypes
+      aggregatableFields:
+        - fieldName: doorCount
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleCategory
+          aggregateExpression: ProfileVehicleCategoryAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVehTypesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVehTypesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVehTypes
+      orderableFields:
+        - fieldName: doorCount
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleCategory
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVehTypesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVehTypes
+  objectType: ProfileVehTypes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_veh_types
+  filterExpressionType: ProfileVehTypesBoolExp
+  aggregateExpression: ProfileVehTypesAggExp
+  orderByExpression: ProfileVehTypesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVehTypes
+      subscription:
+        rootField: profileVehTypes
+    selectUniques:
+      - queryRootField: profileVehTypesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVehTypesById
+    filterInputTypeName: ProfileVehTypesFilterInput
+    aggregate:
+      queryRootField: profileVehTypesAggregate
+      subscription:
+        rootField: profileVehTypesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVehTypes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanInclusions
+  fields:
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: serviceFeeInclusive
+      type: Boolean_1
+    - name: taxInclusive
+      type: Boolean_1
+  graphql:
+    typeName: RateplanInclusions
+    inputTypeName: RateplanInclusionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_inclusions
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        serviceFeeInclusive:
+          column:
+            name: service_fee_inclusive
+        taxInclusive:
+          column:
+            name: tax_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanInclusions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - id
+          - serviceFeeInclusive
+          - taxInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanInclusionsBoolExp
+  operand:
+    object:
+      type: RateplanInclusions
+      comparableFields:
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceFeeInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanInclusionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanInclusionsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanInclusions
+      aggregatableFields:
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: serviceFeeInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: taxInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanInclusionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanInclusionsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanInclusions
+      orderableFields:
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceFeeInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanInclusionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanInclusions
+  objectType: RateplanInclusions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_inclusions
+  filterExpressionType: RateplanInclusionsBoolExp
+  aggregateExpression: RateplanInclusionsAggExp
+  orderByExpression: RateplanInclusionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanInclusions
+      subscription:
+        rootField: rateplanInclusions
+    selectUniques:
+      - queryRootField: rateplanInclusionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanInclusionsById
+    filterInputTypeName: RateplanInclusionsFilterInput
+    aggregate:
+      queryRootField: rateplanInclusionsAggregate
+      subscription:
+        rootField: rateplanInclusionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanInclusions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

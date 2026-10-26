@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeDateOrTimeOrDateTimes
+  fields:
+    - name: clockId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: dayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: RoomtypeDateOrTimeOrDateTimes
+    inputTypeName: RoomtypeDateOrTimeOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_date_or_time_or_date_times
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeDateOrTimeOrDateTimesBoolExp
+  operand:
+    object:
+      type: RoomtypeDateOrTimeOrDateTimes
+      comparableFields:
+        - fieldName: clockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: RoomtypeRoomtypeDateOrTimeOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeDateOrTimeOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeDateOrTimeOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeDateOrTimeOrDateTimes
+      aggregatableFields:
+        - fieldName: clockId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: RoomtypeRoomtypeDateOrTimeOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeDateOrTimeOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeDateOrTimeOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeDateOrTimeOrDateTimes
+      orderableFields:
+        - fieldName: clockId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeDateOrTimeOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeDateOrTimeOrDateTimes
+  objectType: RoomtypeDateOrTimeOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_date_or_time_or_date_times
+  filterExpressionType: RoomtypeDateOrTimeOrDateTimesBoolExp
+  aggregateExpression: RoomtypeDateOrTimeOrDateTimesAggExp
+  orderByExpression: RoomtypeDateOrTimeOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeDateOrTimeOrDateTimes
+      subscription:
+        rootField: roomtypeDateOrTimeOrDateTimes
+    selectUniques:
+      - queryRootField: roomtypeDateOrTimeOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeDateOrTimeOrDateTimesById
+    filterInputTypeName: RoomtypeDateOrTimeOrDateTimesFilterInput
+    aggregate:
+      queryRootField: roomtypeDateOrTimeOrDateTimesAggregate
+      subscription:
+        rootField: roomtypeDateOrTimeOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

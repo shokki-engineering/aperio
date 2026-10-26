@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockInvBlockRoomRatePlanMethodInfos
+  fields:
+    - name: billingType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: ratePlanId
+      type: String_1!
+    - name: reservationMethodCode
+      type: Enum
+    - name: signFoodAndBev
+      type: Boolean_1
+  graphql:
+    typeName: InventoryblockInvBlockRoomRatePlanMethodInfos
+    inputTypeName: InventoryblockInvBlockRoomRatePlanMethodInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_inv_block_room_rate_plan_method_infos
+      fieldMapping:
+        billingType:
+          column:
+            name: billing_type
+        id:
+          column:
+            name: id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        reservationMethodCode:
+          column:
+            name: reservation_method_code
+        signFoodAndBev:
+          column:
+            name: sign_food_and_bev
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockInvBlockRoomRatePlanMethodInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingType
+          - id
+          - ratePlanId
+          - reservationMethodCode
+          - signFoodAndBev
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockInvBlockRoomRatePlanMethodInfosBoolExp
+  operand:
+    object:
+      type: InventoryblockInvBlockRoomRatePlanMethodInfos
+      comparableFields:
+        - fieldName: billingType
+          booleanExpressionType: InventoryblockBillingTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: reservationMethodCode
+          booleanExpressionType: InventoryblockInventoryblockReservationMethodCodeBoolExp
+        - fieldName: signFoodAndBev
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockInvBlockRoomRatePlanMethodInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockInvBlockRoomRatePlanMethodInfosAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockInvBlockRoomRatePlanMethodInfos
+      aggregatableFields:
+        - fieldName: billingType
+          aggregateExpression: InventoryblockBillingTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanId
+          aggregateExpression: TextAggExp
+        - fieldName: reservationMethodCode
+          aggregateExpression: InventoryblockInventoryblockReservationMethodCodeAggExp
+        - fieldName: signFoodAndBev
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockInvBlockRoomRatePlanMethodInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockInvBlockRoomRatePlanMethodInfosOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockInvBlockRoomRatePlanMethodInfos
+      orderableFields:
+        - fieldName: billingType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanId
+          orderByExpression: String1OrderByExp
+        - fieldName: reservationMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: signFoodAndBev
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockInvBlockRoomRatePlanMethodInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockInvBlockRoomRatePlanMethodInfos
+  objectType: InventoryblockInvBlockRoomRatePlanMethodInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_inv_block_room_rate_plan_method_infos
+  filterExpressionType: InventoryblockInvBlockRoomRatePlanMethodInfosBoolExp
+  aggregateExpression: InventoryblockInvBlockRoomRatePlanMethodInfosAggExp
+  orderByExpression: InventoryblockInvBlockRoomRatePlanMethodInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockInvBlockRoomRatePlanMethodInfos
+      subscription:
+        rootField: inventoryblockInvBlockRoomRatePlanMethodInfos
+    selectUniques:
+      - queryRootField: inventoryblockInvBlockRoomRatePlanMethodInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockInvBlockRoomRatePlanMethodInfosById
+    filterInputTypeName: InventoryblockInvBlockRoomRatePlanMethodInfosFilterInput
+    aggregate:
+      queryRootField: inventoryblockInvBlockRoomRatePlanMethodInfosAggregate
+      subscription:
+        rootField: inventoryblockInvBlockRoomRatePlanMethodInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockInvBlockRoomRatePlanMethodInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

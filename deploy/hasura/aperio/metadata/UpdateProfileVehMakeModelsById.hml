@@ -1,0 +1,263 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehMakeModelsCode
+  description: Update the 'code' column in the 'profile_veh_make_models' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehMakeModelsCode
+    inputTypeName: UpdateColumnProfileVehMakeModelsCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_make_models_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehMakeModelsCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehMakeModelsId
+  description: Update the 'id' column in the 'profile_veh_make_models' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehMakeModelsId
+    inputTypeName: UpdateColumnProfileVehMakeModelsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_make_models_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehMakeModelsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehMakeModelsModelYear
+  description: Update the 'model_year' column in the 'profile_veh_make_models' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehMakeModelsModelYear
+    inputTypeName: UpdateColumnProfileVehMakeModelsModelYearInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_make_models_model_year
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehMakeModelsModelYear
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehMakeModelsName
+  description: Update the 'name' column in the 'profile_veh_make_models' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehMakeModelsName
+    inputTypeName: UpdateColumnProfileVehMakeModelsNameInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_make_models_name
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehMakeModelsName
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileVehMakeModelsByIdUpdateColumns
+  description: Update the columns of the 'profile_veh_make_models' collection
+  fields:
+    - name: code
+      type: UpdateColumnProfileVehMakeModelsCode
+      description: Update the 'code' column in the 'profile_veh_make_models' collection.
+    - name: id
+      type: UpdateColumnProfileVehMakeModelsId
+      description: Update the 'id' column in the 'profile_veh_make_models' collection.
+    - name: modelYear
+      type: UpdateColumnProfileVehMakeModelsModelYear
+      description: Update the 'model_year' column in the 'profile_veh_make_models'
+        collection.
+    - name: name
+      type: UpdateColumnProfileVehMakeModelsName
+      description: Update the 'name' column in the 'profile_veh_make_models' collection.
+  graphql:
+    typeName: UpdateProfileVehMakeModelsByIdUpdateColumns
+    inputTypeName: UpdateProfileVehMakeModelsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_veh_make_models_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        modelYear:
+          column:
+            name: model_year
+        name:
+          column:
+            name: name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileVehMakeModelsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - modelYear
+          - name
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileVehMakeModelsByIdResponse
+  description: Responses from the 'update_profile_veh_make_models_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehMakeModels!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileVehMakeModelsByIdResponse
+    inputTypeName: UpdateProfileVehMakeModelsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_veh_make_models_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileVehMakeModelsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileVehMakeModelsById
+  outputType: UpdateProfileVehMakeModelsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileVehMakeModelsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_veh_make_models' collection
+    - name: preCheck
+      type: ProfileVehMakeModelsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_veh_make_models' collection
+    - name: updateColumns
+      type: UpdateProfileVehMakeModelsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_veh_make_models_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileVehMakeModelsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_veh_make_models' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileVehMakeModelsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

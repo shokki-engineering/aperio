@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleResultsObject
+  fields:
+    - name: cavv
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: paResStatus
+      type: String_1
+    - name: signatureVerfication
+      type: String_1
+    - name: transactionId
+      type: String_1
+    - name: xid
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleResultsObject
+    inputTypeName: InsertBookingruleResultsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_results_object
+      fieldMapping:
+        cavv:
+          column:
+            name: cavv
+        id:
+          column:
+            name: id
+        paResStatus:
+          column:
+            name: pa_res_status
+        signatureVerfication:
+          column:
+            name: signature_verfication
+        transactionId:
+          column:
+            name: transaction_id
+        xid:
+          column:
+            name: xid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleResultsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cavv
+          - id
+          - paResStatus
+          - signatureVerfication
+          - transactionId
+          - xid
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleResultsResponse
+  description: Responses from the 'insert_bookingrule_results' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleResults!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleResultsResponse
+    inputTypeName: InsertBookingruleResultsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_results_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleResultsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleResults
+  outputType: InsertBookingruleResultsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleResultsObject!]!"
+    - name: postCheck
+      type: BookingruleResultsBoolExp
+      description: Insert permission predicate over the 'bookingrule_results' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_results
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleResults
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_results table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleResults
+  permissions:
+    - role: admin
+      allowExecution: true
+

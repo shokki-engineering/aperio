@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoCountryNamesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertAffiliationinfoCountryNamesObject
+    inputTypeName: InsertAffiliationinfoCountryNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_country_names_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoCountryNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoCountryNamesResponse
+  description: Responses from the 'insert_affiliationinfo_country_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoCountryNamesResponse
+    inputTypeName: InsertAffiliationinfoCountryNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_country_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoCountryNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoCountryNames
+  outputType: InsertAffiliationinfoCountryNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoCountryNamesObject!]!"
+    - name: postCheck
+      type: AffiliationinfoCountryNamesBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_country_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_country_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoCountryNames
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_country_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoCountryNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

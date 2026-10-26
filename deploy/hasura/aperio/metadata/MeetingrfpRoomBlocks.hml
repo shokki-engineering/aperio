@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpRoomBlocks
+  fields:
+    - name: commentsId
+      type: String_1
+    - name: concessionsIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: peakRoomNightQuantity
+      type: Int32
+    - name: stayDaysId
+      type: String_1
+    - name: totalRoomNightQuantity
+      type: Int32
+  graphql:
+    typeName: MeetingrfpRoomBlocks
+    inputTypeName: MeetingrfpRoomBlocksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_room_blocks
+      fieldMapping:
+        commentsId:
+          column:
+            name: comments_id
+        concessionsIndicator:
+          column:
+            name: concessions_indicator
+        id:
+          column:
+            name: id
+        peakRoomNightQuantity:
+          column:
+            name: peak_room_night_quantity
+        stayDaysId:
+          column:
+            name: stay_days_id
+        totalRoomNightQuantity:
+          column:
+            name: total_room_night_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpRoomBlocks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentsId
+          - concessionsIndicator
+          - id
+          - peakRoomNightQuantity
+          - stayDaysId
+          - totalRoomNightQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpRoomBlocksBoolExp
+  operand:
+    object:
+      type: MeetingrfpRoomBlocks
+      comparableFields:
+        - fieldName: commentsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: concessionsIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: peakRoomNightQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: stayDaysId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalRoomNightQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpRoomBlocksBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpRoomBlocksAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpRoomBlocks
+      aggregatableFields:
+        - fieldName: commentsId
+          aggregateExpression: TextAggExp
+        - fieldName: concessionsIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: peakRoomNightQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: stayDaysId
+          aggregateExpression: TextAggExp
+        - fieldName: totalRoomNightQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpRoomBlocksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpRoomBlocksOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpRoomBlocks
+      orderableFields:
+        - fieldName: commentsId
+          orderByExpression: String1OrderByExp
+        - fieldName: concessionsIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: peakRoomNightQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: stayDaysId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalRoomNightQuantity
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpRoomBlocksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpRoomBlocks
+  objectType: MeetingrfpRoomBlocks
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_room_blocks
+  filterExpressionType: MeetingrfpRoomBlocksBoolExp
+  aggregateExpression: MeetingrfpRoomBlocksAggExp
+  orderByExpression: MeetingrfpRoomBlocksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpRoomBlocks
+      subscription:
+        rootField: meetingrfpRoomBlocks
+    selectUniques:
+      - queryRootField: meetingrfpRoomBlocksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpRoomBlocksById
+    filterInputTypeName: MeetingrfpRoomBlocksFilterInput
+    aggregate:
+      queryRootField: meetingrfpRoomBlocksAggregate
+      subscription:
+        rootField: meetingrfpRoomBlocksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpRoomBlocks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

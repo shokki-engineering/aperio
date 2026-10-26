@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationHotelAdditionalCharges
+  fields:
+    - name: id
+      type: String_1!
+    - name: postTaxAmountId
+      type: String_1
+    - name: preTaxAmountId
+      type: String_1
+  graphql:
+    typeName: ReservationHotelAdditionalCharges
+    inputTypeName: ReservationHotelAdditionalChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_hotel_additional_charges
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationHotelAdditionalCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postTaxAmountId
+          - preTaxAmountId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationHotelAdditionalChargesBoolExp
+  operand:
+    object:
+      type: ReservationHotelAdditionalCharges
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: postTaxAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preTaxAmountId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationHotelAdditionalChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationHotelAdditionalChargesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationHotelAdditionalCharges
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: postTaxAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: preTaxAmountId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationHotelAdditionalChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationHotelAdditionalChargesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationHotelAdditionalCharges
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: postTaxAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: preTaxAmountId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationHotelAdditionalChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationHotelAdditionalCharges
+  objectType: ReservationHotelAdditionalCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_hotel_additional_charges
+  filterExpressionType: ReservationHotelAdditionalChargesBoolExp
+  aggregateExpression: ReservationHotelAdditionalChargesAggExp
+  orderByExpression: ReservationHotelAdditionalChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationHotelAdditionalCharges
+      subscription:
+        rootField: reservationHotelAdditionalCharges
+    selectUniques:
+      - queryRootField: reservationHotelAdditionalChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationHotelAdditionalChargesById
+    filterInputTypeName: ReservationHotelAdditionalChargesFilterInput
+    aggregate:
+      queryRootField: reservationHotelAdditionalChargesAggregate
+      subscription:
+        rootField: reservationHotelAdditionalChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationHotelAdditionalCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,391 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileCustomerCustLoyalties
+  fields:
+    - name: allianceLoyaltyLevelDisplayName
+      type: String_1
+    - name: customerId
+      type: String_1!
+    - name: customerType
+      type: String_1
+    - name: customerValue
+      type: String_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusiveIndicator
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: loyalLevel
+      type: String_1
+    - name: loyalLevelCode
+      type: Int32
+    - name: memberPreferencesId
+      type: String_1
+    - name: membershipId
+      type: String_1
+    - name: password
+      type: String_1
+    - name: primaryLoyaltyIndicator
+      type: Boolean_1
+    - name: programId
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: securityInfoId
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: signupDayId
+      type: String_1
+    - name: singleVendorInd
+      type: Enum
+    - name: travelSector
+      type: Enum
+    - name: vendorCodes
+      type: "[String_1]"
+  graphql:
+    typeName: ProfileCustomerCustLoyalties
+    inputTypeName: ProfileCustomerCustLoyaltiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_customer_cust_loyalties
+      fieldMapping:
+        allianceLoyaltyLevelDisplayName:
+          column:
+            name: alliance_loyalty_level_display_name
+        customerId:
+          column:
+            name: customer_id
+        customerType:
+          column:
+            name: customer_type
+        customerValue:
+          column:
+            name: customer_value
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusiveIndicator:
+          column:
+            name: expire_date_exclusive_indicator
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        loyalLevel:
+          column:
+            name: loyal_level
+        loyalLevelCode:
+          column:
+            name: loyal_level_code
+        memberPreferencesId:
+          column:
+            name: member_preferences_id
+        membershipId:
+          column:
+            name: membership_id
+        password:
+          column:
+            name: password
+        primaryLoyaltyIndicator:
+          column:
+            name: primary_loyalty_indicator
+        programId:
+          column:
+            name: program_id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        securityInfoId:
+          column:
+            name: security_info_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        signupDayId:
+          column:
+            name: signup_day_id
+        singleVendorInd:
+          column:
+            name: single_vendor_ind
+        travelSector:
+          column:
+            name: travel_sector
+        vendorCodes:
+          column:
+            name: vendor_codes
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileCustomerCustLoyalties
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - allianceLoyaltyLevelDisplayName
+          - customerId
+          - customerType
+          - customerValue
+          - effectiveDayId
+          - expireDateExclusiveIndicator
+          - expireDayId
+          - id
+          - loyalLevel
+          - loyalLevelCode
+          - memberPreferencesId
+          - membershipId
+          - password
+          - primaryLoyaltyIndicator
+          - programId
+          - remark
+          - rph
+          - securityInfoId
+          - shareMarketInd
+          - shareSynchInd
+          - signupDayId
+          - singleVendorInd
+          - travelSector
+          - vendorCodes
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileCustomerCustLoyaltiesBoolExp
+  operand:
+    object:
+      type: ProfileCustomerCustLoyalties
+      comparableFields:
+        - fieldName: allianceLoyaltyLevelDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: customerId
+          booleanExpressionType: TextBoolExp
+        - fieldName: customerType
+          booleanExpressionType: TextBoolExp
+        - fieldName: customerValue
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusiveIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: loyalLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: loyalLevelCode
+          booleanExpressionType: Int4BoolExp
+        - fieldName: memberPreferencesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: membershipId
+          booleanExpressionType: TextBoolExp
+        - fieldName: password
+          booleanExpressionType: TextBoolExp
+        - fieldName: primaryLoyaltyIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: programId
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: securityInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileProfilePaymentCardCustLoyaltyShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileProfilePaymentCardCustLoyaltyShareSynchIndBoolExp
+        - fieldName: signupDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: singleVendorInd
+          booleanExpressionType: ProfilePaymentCardCustLoyaltySingleVendorIndBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: ProfileProfileTravelSectorBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileCustomerCustLoyaltiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileCustomerCustLoyaltiesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileCustomerCustLoyalties
+      aggregatableFields:
+        - fieldName: allianceLoyaltyLevelDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: customerId
+          aggregateExpression: TextAggExp
+        - fieldName: customerType
+          aggregateExpression: TextAggExp
+        - fieldName: customerValue
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusiveIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: loyalLevel
+          aggregateExpression: TextAggExp
+        - fieldName: loyalLevelCode
+          aggregateExpression: Int4AggExp
+        - fieldName: memberPreferencesId
+          aggregateExpression: TextAggExp
+        - fieldName: membershipId
+          aggregateExpression: TextAggExp
+        - fieldName: password
+          aggregateExpression: TextAggExp
+        - fieldName: primaryLoyaltyIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: programId
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: securityInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileProfilePaymentCardCustLoyaltyShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileProfilePaymentCardCustLoyaltyShareSynchIndAggExp
+        - fieldName: signupDayId
+          aggregateExpression: TextAggExp
+        - fieldName: singleVendorInd
+          aggregateExpression: ProfilePaymentCardCustLoyaltySingleVendorIndAggExp
+        - fieldName: travelSector
+          aggregateExpression: ProfileProfileTravelSectorAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileCustomerCustLoyaltiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileCustomerCustLoyaltiesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileCustomerCustLoyalties
+      orderableFields:
+        - fieldName: allianceLoyaltyLevelDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: customerId
+          orderByExpression: String1OrderByExp
+        - fieldName: customerType
+          orderByExpression: String1OrderByExp
+        - fieldName: customerValue
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusiveIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: loyalLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: loyalLevelCode
+          orderByExpression: Int32OrderByExp
+        - fieldName: memberPreferencesId
+          orderByExpression: String1OrderByExp
+        - fieldName: membershipId
+          orderByExpression: String1OrderByExp
+        - fieldName: password
+          orderByExpression: String1OrderByExp
+        - fieldName: primaryLoyaltyIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: programId
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: securityInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: signupDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: singleVendorInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileCustomerCustLoyaltiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileCustomerCustLoyalties
+  objectType: ProfileCustomerCustLoyalties
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_customer_cust_loyalties
+  filterExpressionType: ProfileCustomerCustLoyaltiesBoolExp
+  aggregateExpression: ProfileCustomerCustLoyaltiesAggExp
+  orderByExpression: ProfileCustomerCustLoyaltiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileCustomerCustLoyalties
+      subscription:
+        rootField: profileCustomerCustLoyalties
+    selectUniques:
+      - queryRootField: profileCustomerCustLoyaltiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileCustomerCustLoyaltiesById
+    filterInputTypeName: ProfileCustomerCustLoyaltiesFilterInput
+    aggregate:
+      queryRootField: profileCustomerCustLoyaltiesAggregate
+      subscription:
+        rootField: profileCustomerCustLoyaltiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileCustomerCustLoyalties
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

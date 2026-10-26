@@ -1,0 +1,141 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventTextItemsId
+  description: Update the 'id' column in the 'event_text_items' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventTextItemsId
+    inputTypeName: UpdateColumnEventTextItemsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_text_items_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventTextItemsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventTextItemsByIdUpdateColumns
+  description: Update the columns of the 'event_text_items' collection
+  fields:
+    - name: id
+      type: UpdateColumnEventTextItemsId
+      description: Update the 'id' column in the 'event_text_items' collection.
+  graphql:
+    typeName: UpdateEventTextItemsByIdUpdateColumns
+    inputTypeName: UpdateEventTextItemsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_text_items_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventTextItemsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventTextItemsByIdResponse
+  description: Responses from the 'update_event_text_items_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventTextItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventTextItemsByIdResponse
+    inputTypeName: UpdateEventTextItemsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_text_items_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventTextItemsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventTextItemsById
+  outputType: UpdateEventTextItemsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventTextItemsBoolExp
+      description: Update permission post-condition predicate over the
+        'event_text_items' collection
+    - name: preCheck
+      type: EventTextItemsBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_text_items' collection
+    - name: updateColumns
+      type: UpdateEventTextItemsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_text_items_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventTextItemsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_text_items' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventTextItemsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

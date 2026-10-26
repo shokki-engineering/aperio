@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanVideoItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanVideoItems
+    inputTypeName: RateplanVideoItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_video_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanVideoItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanVideoItemsBoolExp
+  operand:
+    object:
+      type: RateplanVideoItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanVideoItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanVideoItemsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanVideoItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanVideoItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanVideoItemsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanVideoItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanVideoItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanVideoItems
+  objectType: RateplanVideoItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_video_items
+  filterExpressionType: RateplanVideoItemsBoolExp
+  aggregateExpression: RateplanVideoItemsAggExp
+  orderByExpression: RateplanVideoItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanVideoItems
+      subscription:
+        rootField: rateplanVideoItems
+    selectUniques:
+      - queryRootField: rateplanVideoItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanVideoItemsById
+    filterInputTypeName: RateplanVideoItemsFilterInput
+    aggregate:
+      queryRootField: rateplanVideoItemsAggregate
+      subscription:
+        rootField: rateplanVideoItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanVideoItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

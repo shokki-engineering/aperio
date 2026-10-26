@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileBerthDetails
+  fields:
+    - name: id
+      type: String_1!
+    - name: number
+      type: String_1
+    - name: position
+      type: Enum
+    - name: value
+      type: Enum
+  graphql:
+    typeName: ProfileBerthDetails
+    inputTypeName: ProfileBerthDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_berth_details
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileBerthDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - number
+          - position
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileBerthDetailsBoolExp
+  operand:
+    object:
+      type: ProfileBerthDetails
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: number
+          booleanExpressionType: TextBoolExp
+        - fieldName: position
+          booleanExpressionType: ProfileBerthPositionBoolExp
+        - fieldName: value
+          booleanExpressionType: ProfileBerthAccommodationBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileBerthDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileBerthDetailsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileBerthDetails
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: number
+          aggregateExpression: TextAggExp
+        - fieldName: position
+          aggregateExpression: ProfileBerthPositionAggExp
+        - fieldName: value
+          aggregateExpression: ProfileBerthAccommodationAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileBerthDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileBerthDetailsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileBerthDetails
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: number
+          orderByExpression: String1OrderByExp
+        - fieldName: position
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileBerthDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileBerthDetails
+  objectType: ProfileBerthDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_berth_details
+  filterExpressionType: ProfileBerthDetailsBoolExp
+  aggregateExpression: ProfileBerthDetailsAggExp
+  orderByExpression: ProfileBerthDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileBerthDetails
+      subscription:
+        rootField: profileBerthDetails
+    selectUniques:
+      - queryRootField: profileBerthDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileBerthDetailsById
+    filterInputTypeName: ProfileBerthDetailsFilterInput
+    aggregate:
+      queryRootField: profileBerthDetailsAggregate
+      subscription:
+        rootField: profileBerthDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileBerthDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

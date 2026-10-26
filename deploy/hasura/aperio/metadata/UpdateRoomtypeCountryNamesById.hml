@@ -1,0 +1,224 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRoomtypeCountryNamesId
+  description: Update the 'id' column in the 'roomtype_country_names' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRoomtypeCountryNamesId
+    inputTypeName: UpdateColumnRoomtypeCountryNamesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_roomtype_country_names_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRoomtypeCountryNamesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRoomtypeCountryNamesRegionCode
+  description: Update the 'region_code' column in the 'roomtype_country_names' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRoomtypeCountryNamesRegionCode
+    inputTypeName: UpdateColumnRoomtypeCountryNamesRegionCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_roomtype_country_names_region_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRoomtypeCountryNamesRegionCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRoomtypeCountryNamesValue
+  description: Update the 'value' column in the 'roomtype_country_names' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRoomtypeCountryNamesValue
+    inputTypeName: UpdateColumnRoomtypeCountryNamesValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_roomtype_country_names_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRoomtypeCountryNamesValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRoomtypeCountryNamesByIdUpdateColumns
+  description: Update the columns of the 'roomtype_country_names' collection
+  fields:
+    - name: id
+      type: UpdateColumnRoomtypeCountryNamesId
+      description: Update the 'id' column in the 'roomtype_country_names' collection.
+    - name: regionCode
+      type: UpdateColumnRoomtypeCountryNamesRegionCode
+      description: Update the 'region_code' column in the 'roomtype_country_names'
+        collection.
+    - name: value
+      type: UpdateColumnRoomtypeCountryNamesValue
+      description: Update the 'value' column in the 'roomtype_country_names' collection.
+  graphql:
+    typeName: UpdateRoomtypeCountryNamesByIdUpdateColumns
+    inputTypeName: UpdateRoomtypeCountryNamesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_roomtype_country_names_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRoomtypeCountryNamesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRoomtypeCountryNamesByIdResponse
+  description: Responses from the 'update_roomtype_country_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRoomtypeCountryNamesByIdResponse
+    inputTypeName: UpdateRoomtypeCountryNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_roomtype_country_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRoomtypeCountryNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRoomtypeCountryNamesById
+  outputType: UpdateRoomtypeCountryNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RoomtypeCountryNamesBoolExp
+      description: Update permission post-condition predicate over the
+        'roomtype_country_names' collection
+    - name: preCheck
+      type: RoomtypeCountryNamesBoolExp
+      description: Update permission pre-condition predicate over the
+        'roomtype_country_names' collection
+    - name: updateColumns
+      type: UpdateRoomtypeCountryNamesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_roomtype_country_names_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRoomtypeCountryNamesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'roomtype_country_names' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRoomtypeCountryNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

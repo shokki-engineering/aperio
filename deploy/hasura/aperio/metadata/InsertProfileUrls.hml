@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileUrlsObject
+  fields:
+    - name: companyInfoId
+      type: String_1!
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileUrlsObject
+    inputTypeName: InsertProfileUrlsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_urls_object
+      fieldMapping:
+        companyInfoId:
+          column:
+            name: company_info_id
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileUrlsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyInfoId
+          - contactPersonId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileUrlsResponse
+  description: Responses from the 'insert_profile_urls' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileUrlsResponse
+    inputTypeName: InsertProfileUrlsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_urls_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileUrlsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileUrls
+  outputType: InsertProfileUrlsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileUrlsObject!]!"
+    - name: postCheck
+      type: ProfileUrlsBoolExp
+      description: Insert permission predicate over the 'profile_urls' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_urls
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileUrls
+    rootFieldKind: Mutation
+  description: Insert into the profile_urls table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileUrls
+  permissions:
+    - role: admin
+      allowExecution: true
+

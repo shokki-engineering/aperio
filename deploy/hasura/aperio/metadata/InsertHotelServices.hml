@@ -1,0 +1,210 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelServicesObject
+  fields:
+    - name: availableAllGuests
+      type: Boolean_1
+    - name: businessServiceCode
+      type: Enum
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: contactId
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: featured
+      type: Boolean_1
+    - name: hotelInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: included
+      type: Boolean_1
+    - name: invCode
+      type: String_1
+    - name: mealPlanCode
+      type: String_1
+    - name: meetingRoomCode
+      type: Enum
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: relativePositionId
+      type: String_1
+    - name: sort
+      type: Int32
+  graphql:
+    typeName: InsertHotelServicesObject
+    inputTypeName: InsertHotelServicesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_services_object
+      fieldMapping:
+        availableAllGuests:
+          column:
+            name: available_all_guests
+        businessServiceCode:
+          column:
+            name: business_service_code
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        contactId:
+          column:
+            name: contact_id
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        featured:
+          column:
+            name: featured
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        included:
+          column:
+            name: included
+        invCode:
+          column:
+            name: inv_code
+        mealPlanCode:
+          column:
+            name: meal_plan_code
+        meetingRoomCode:
+          column:
+            name: meeting_room_code
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        quantity:
+          column:
+            name: quantity
+        relativePositionId:
+          column:
+            name: relative_position_id
+        sort:
+          column:
+            name: sort
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelServicesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - availableAllGuests
+          - businessServiceCode
+          - code
+          - codeDetail
+          - contactId
+          - descriptiveText
+          - existsCode
+          - featured
+          - hotelInfoId
+          - id
+          - included
+          - invCode
+          - mealPlanCode
+          - meetingRoomCode
+          - multimediaDescriptionsId
+          - proximityCode
+          - quantity
+          - relativePositionId
+          - sort
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelServicesResponse
+  description: Responses from the 'insert_hotel_services' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelServices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelServicesResponse
+    inputTypeName: InsertHotelServicesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_services_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelServicesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelServices
+  outputType: InsertHotelServicesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelServicesObject!]!"
+    - name: postCheck
+      type: HotelServicesBoolExp
+      description: Insert permission predicate over the 'hotel_services' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_services
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelServices
+    rootFieldKind: Mutation
+  description: Insert into the hotel_services table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelServices
+  permissions:
+    - role: admin
+      allowExecution: true
+

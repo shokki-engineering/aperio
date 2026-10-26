@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanImageFormatsByIdResponse
+  description: Responses from the 'delete_rateplan_image_formats_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanImageFormats!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanImageFormatsByIdResponse
+    inputTypeName: DeleteRateplanImageFormatsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_image_formats_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanImageFormatsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanImageFormatsById
+  outputType: DeleteRateplanImageFormatsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanImageFormatsBoolExp
+      description: Delete permission predicate over the 'rateplan_image_formats' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_image_formats_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanImageFormatsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_image_formats' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanImageFormatsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

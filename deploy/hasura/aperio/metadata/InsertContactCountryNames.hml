@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertContactCountryNamesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertContactCountryNamesObject
+    inputTypeName: InsertContactCountryNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_contact_country_names_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertContactCountryNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertContactCountryNamesResponse
+  description: Responses from the 'insert_contact_country_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ContactCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertContactCountryNamesResponse
+    inputTypeName: InsertContactCountryNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_contact_country_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertContactCountryNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertContactCountryNames
+  outputType: InsertContactCountryNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertContactCountryNamesObject!]!"
+    - name: postCheck
+      type: ContactCountryNamesBoolExp
+      description: Insert permission predicate over the 'contact_country_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_contact_country_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertContactCountryNames
+    rootFieldKind: Mutation
+  description: Insert into the contact_country_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertContactCountryNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

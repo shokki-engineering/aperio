@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPrefFareRestrictPrefsObject
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: fareRestriction
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: refundable
+      type: Boolean_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertProfileRailPrefFareRestrictPrefsObject
+    inputTypeName: InsertProfileRailPrefFareRestrictPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_pref_fare_restrict_prefs_object
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        fareRestriction:
+          column:
+            name: fare_restriction
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        refundable:
+          column:
+            name: refundable
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPrefFareRestrictPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - fareRestriction
+          - id
+          - preferLevel
+          - railPrefId
+          - refundable
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPrefFareRestrictPrefsResponse
+  description: Responses from the 'insert_profile_rail_pref_fare_restrict_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileRailPrefFareRestrictPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileRailPrefFareRestrictPrefsResponse
+    inputTypeName: InsertProfileRailPrefFareRestrictPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_pref_fare_restrict_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPrefFareRestrictPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileRailPrefFareRestrictPrefs
+  outputType: InsertProfileRailPrefFareRestrictPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileRailPrefFareRestrictPrefsObject!]!"
+    - name: postCheck
+      type: ProfileRailPrefFareRestrictPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_rail_pref_fare_restrict_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_rail_pref_fare_restrict_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileRailPrefFareRestrictPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_rail_pref_fare_restrict_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileRailPrefFareRestrictPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

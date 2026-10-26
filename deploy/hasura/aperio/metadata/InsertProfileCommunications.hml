@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCommunicationsObject
+  fields:
+    - name: distribType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: offerId
+      type: String_1!
+  graphql:
+    typeName: InsertProfileCommunicationsObject
+    inputTypeName: InsertProfileCommunicationsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_communications_object
+      fieldMapping:
+        distribType:
+          column:
+            name: distrib_type
+        id:
+          column:
+            name: id
+        offerId:
+          column:
+            name: offer_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCommunicationsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - distribType
+          - id
+          - offerId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCommunicationsResponse
+  description: Responses from the 'insert_profile_communications' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCommunications!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileCommunicationsResponse
+    inputTypeName: InsertProfileCommunicationsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_communications_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCommunicationsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileCommunications
+  outputType: InsertProfileCommunicationsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileCommunicationsObject!]!"
+    - name: postCheck
+      type: ProfileCommunicationsBoolExp
+      description: Insert permission predicate over the 'profile_communications' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_communications
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileCommunications
+    rootFieldKind: Mutation
+  description: Insert into the profile_communications table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileCommunications
+  permissions:
+    - role: admin
+      allowExecution: true
+

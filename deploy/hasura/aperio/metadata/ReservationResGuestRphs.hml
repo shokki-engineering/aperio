@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationResGuestRphs
+  fields:
+    - name: billingInstructionCodeId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: rph
+      type: String_1!
+  graphql:
+    typeName: ReservationResGuestRphs
+    inputTypeName: ReservationResGuestRphsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_res_guest_rphs
+      fieldMapping:
+        billingInstructionCodeId:
+          column:
+            name: billing_instruction_code_id
+        id:
+          column:
+            name: id
+        rph:
+          column:
+            name: rph
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationResGuestRphs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingInstructionCodeId
+          - id
+          - rph
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationResGuestRphsBoolExp
+  operand:
+    object:
+      type: ReservationResGuestRphs
+      comparableFields:
+        - fieldName: billingInstructionCodeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationResGuestRphsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationResGuestRphsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationResGuestRphs
+      aggregatableFields:
+        - fieldName: billingInstructionCodeId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationResGuestRphsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationResGuestRphsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationResGuestRphs
+      orderableFields:
+        - fieldName: billingInstructionCodeId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationResGuestRphsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationResGuestRphs
+  objectType: ReservationResGuestRphs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_res_guest_rphs
+  filterExpressionType: ReservationResGuestRphsBoolExp
+  aggregateExpression: ReservationResGuestRphsAggExp
+  orderByExpression: ReservationResGuestRphsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationResGuestRphs
+      subscription:
+        rootField: reservationResGuestRphs
+    selectUniques:
+      - queryRootField: reservationResGuestRphsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationResGuestRphsById
+    filterInputTypeName: ReservationResGuestRphsFilterInput
+    aggregate:
+      queryRootField: reservationResGuestRphsAggregate
+      subscription:
+        rootField: reservationResGuestRphsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationResGuestRphs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

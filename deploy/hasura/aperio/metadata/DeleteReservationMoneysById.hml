@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteReservationMoneysByIdResponse
+  description: Responses from the 'delete_reservation_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteReservationMoneysByIdResponse
+    inputTypeName: DeleteReservationMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_reservation_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteReservationMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteReservationMoneysById
+  outputType: DeleteReservationMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ReservationMoneysBoolExp
+      description: Delete permission predicate over the 'reservation_moneys' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_reservation_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteReservationMoneysById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'reservation_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteReservationMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

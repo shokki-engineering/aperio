@@ -1,0 +1,247 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationPersonNames
+  fields:
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+  graphql:
+    typeName: ReservationPersonNames
+    inputTypeName: ReservationPersonNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_person_names
+      fieldMapping:
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationPersonNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationPersonNamesBoolExp
+  operand:
+    object:
+      type: ReservationPersonNames
+      comparableFields:
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameType
+          booleanExpressionType: ReservationReservationNameTypeBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ReservationRatePlanGuaranteeGuaranteeAcceptedShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ReservationRatePlanGuaranteeGuaranteeAcceptedShareSynchIndBoolExp
+        - fieldName: surname
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnamePrefix
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationPersonNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationPersonNamesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationPersonNames
+      aggregatableFields:
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: nameType
+          aggregateExpression: ReservationReservationNameTypeAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ReservationRatePlanGuaranteeGuaranteeAcceptedShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ReservationRatePlanGuaranteeGuaranteeAcceptedShareSynchIndAggExp
+        - fieldName: surname
+          aggregateExpression: TextAggExp
+        - fieldName: surnamePrefix
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationPersonNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationPersonNamesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationPersonNames
+      orderableFields:
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: nameType
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: surname
+          orderByExpression: String1OrderByExp
+        - fieldName: surnamePrefix
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationPersonNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationPersonNames
+  objectType: ReservationPersonNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_person_names
+  filterExpressionType: ReservationPersonNamesBoolExp
+  aggregateExpression: ReservationPersonNamesAggExp
+  orderByExpression: ReservationPersonNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationPersonNames
+      subscription:
+        rootField: reservationPersonNames
+    selectUniques:
+      - queryRootField: reservationPersonNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationPersonNamesById
+    filterInputTypeName: ReservationPersonNamesFilterInput
+    aggregate:
+      queryRootField: reservationPersonNamesAggregate
+      subscription:
+        rootField: reservationPersonNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationPersonNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

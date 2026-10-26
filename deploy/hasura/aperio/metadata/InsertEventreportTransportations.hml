@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportTransportationsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnit
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: included
+      type: Boolean_1
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: notificationRequired
+      type: String_1
+    - name: operationSchedulesId
+      type: String_1
+    - name: postEventSiteReportId
+      type: String_1!
+    - name: transportationCode
+      type: Enum
+    - name: typicalTravelDuration
+      type: String_1
+  graphql:
+    typeName: InsertEventreportTransportationsObject
+    inputTypeName: InsertEventreportTransportationsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_transportations_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnit:
+          column:
+            name: charge_unit
+        codeDetail:
+          column:
+            name: code_detail
+        description:
+          column:
+            name: description
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        included:
+          column:
+            name: included
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        notificationRequired:
+          column:
+            name: notification_required
+        operationSchedulesId:
+          column:
+            name: operation_schedules_id
+        postEventSiteReportId:
+          column:
+            name: post_event_site_report_id
+        transportationCode:
+          column:
+            name: transportation_code
+        typicalTravelDuration:
+          column:
+            name: typical_travel_duration
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportTransportationsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnit
+          - codeDetail
+          - description
+          - descriptiveText
+          - existsCode
+          - id
+          - included
+          - multimediaDescriptionsId
+          - notificationRequired
+          - operationSchedulesId
+          - postEventSiteReportId
+          - transportationCode
+          - typicalTravelDuration
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportTransportationsResponse
+  description: Responses from the 'insert_eventreport_transportations' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportTransportations!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportTransportationsResponse
+    inputTypeName: InsertEventreportTransportationsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_transportations_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportTransportationsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportTransportations
+  outputType: InsertEventreportTransportationsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportTransportationsObject!]!"
+    - name: postCheck
+      type: EventreportTransportationsBoolExp
+      description: Insert permission predicate over the 'eventreport_transportations'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_transportations
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportTransportations
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_transportations table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportTransportations
+  permissions:
+    - role: admin
+      allowExecution: true
+

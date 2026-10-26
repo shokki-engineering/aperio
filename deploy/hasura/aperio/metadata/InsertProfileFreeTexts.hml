@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileFreeTextsObject
+  fields:
+    - name: employerId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileFreeTextsObject
+    inputTypeName: InsertProfileFreeTextsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_free_texts_object
+      fieldMapping:
+        employerId:
+          column:
+            name: employer_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileFreeTextsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - employerId
+          - id
+          - languageCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileFreeTextsResponse
+  description: Responses from the 'insert_profile_free_texts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileFreeTexts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileFreeTextsResponse
+    inputTypeName: InsertProfileFreeTextsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_free_texts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileFreeTextsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileFreeTexts
+  outputType: InsertProfileFreeTextsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileFreeTextsObject!]!"
+    - name: postCheck
+      type: ProfileFreeTextsBoolExp
+      description: Insert permission predicate over the 'profile_free_texts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_free_texts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileFreeTexts
+    rootFieldKind: Mutation
+  description: Insert into the profile_free_texts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileFreeTexts
+  permissions:
+    - role: admin
+      allowExecution: true
+

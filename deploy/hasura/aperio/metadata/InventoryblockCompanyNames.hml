@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockCompanyNames
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: contactPersonId
+      type: String_1!
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InventoryblockCompanyNames
+    inputTypeName: InventoryblockCompanyNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_company_names
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        contactPersonId:
+          column:
+            name: contact_person_id
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockCompanyNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - contactPersonId
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockCompanyNamesBoolExp
+  operand:
+    object:
+      type: InventoryblockCompanyNames
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: InventoryblockInventoryblockTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockCompanyNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockCompanyNamesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockCompanyNames
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: InventoryblockInventoryblockTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockCompanyNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockCompanyNamesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockCompanyNames
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockCompanyNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockCompanyNames
+  objectType: InventoryblockCompanyNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_company_names
+  filterExpressionType: InventoryblockCompanyNamesBoolExp
+  aggregateExpression: InventoryblockCompanyNamesAggExp
+  orderByExpression: InventoryblockCompanyNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockCompanyNames
+      subscription:
+        rootField: inventoryblockCompanyNames
+    selectUniques:
+      - queryRootField: inventoryblockCompanyNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockCompanyNamesById
+    filterInputTypeName: InventoryblockCompanyNamesFilterInput
+    aggregate:
+      queryRootField: inventoryblockCompanyNamesAggregate
+      subscription:
+        rootField: inventoryblockCompanyNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockCompanyNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

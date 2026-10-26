@@ -1,0 +1,224 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehTypesDoorCount
+  description: Update the 'door_count' column in the 'profile_veh_types' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehTypesDoorCount
+    inputTypeName: UpdateColumnProfileVehTypesDoorCountInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_types_door_count
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehTypesDoorCount
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehTypesId
+  description: Update the 'id' column in the 'profile_veh_types' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehTypesId
+    inputTypeName: UpdateColumnProfileVehTypesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_types_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehTypesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehTypesVehicleCategory
+  description: Update the 'vehicle_category' column in the 'profile_veh_types' collection
+  fields:
+    - name: set
+      type: Enum!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehTypesVehicleCategory
+    inputTypeName: UpdateColumnProfileVehTypesVehicleCategoryInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_veh_types_vehicle_category
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehTypesVehicleCategory
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileVehTypesByIdUpdateColumns
+  description: Update the columns of the 'profile_veh_types' collection
+  fields:
+    - name: doorCount
+      type: UpdateColumnProfileVehTypesDoorCount
+      description: Update the 'door_count' column in the 'profile_veh_types' collection.
+    - name: id
+      type: UpdateColumnProfileVehTypesId
+      description: Update the 'id' column in the 'profile_veh_types' collection.
+    - name: vehicleCategory
+      type: UpdateColumnProfileVehTypesVehicleCategory
+      description: Update the 'vehicle_category' column in the 'profile_veh_types'
+        collection.
+  graphql:
+    typeName: UpdateProfileVehTypesByIdUpdateColumns
+    inputTypeName: UpdateProfileVehTypesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_veh_types_by_id_update_columns
+      fieldMapping:
+        doorCount:
+          column:
+            name: door_count
+        id:
+          column:
+            name: id
+        vehicleCategory:
+          column:
+            name: vehicle_category
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileVehTypesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - doorCount
+          - id
+          - vehicleCategory
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileVehTypesByIdResponse
+  description: Responses from the 'update_profile_veh_types_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehTypes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileVehTypesByIdResponse
+    inputTypeName: UpdateProfileVehTypesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_veh_types_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileVehTypesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileVehTypesById
+  outputType: UpdateProfileVehTypesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileVehTypesBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_veh_types' collection
+    - name: preCheck
+      type: ProfileVehTypesBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_veh_types' collection
+    - name: updateColumns
+      type: UpdateProfileVehTypesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_veh_types_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileVehTypesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_veh_types' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileVehTypesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

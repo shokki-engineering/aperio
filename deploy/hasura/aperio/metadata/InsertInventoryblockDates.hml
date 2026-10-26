@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertInventoryblockDatesObject
+    inputTypeName: InsertInventoryblockDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockDatesResponse
+  description: Responses from the 'insert_inventoryblock_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockDatesResponse
+    inputTypeName: InsertInventoryblockDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockDates
+  outputType: InsertInventoryblockDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockDatesObject!]!"
+    - name: postCheck
+      type: InventoryblockDatesBoolExp
+      description: Insert permission predicate over the 'inventoryblock_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockDates
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

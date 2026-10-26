@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelStreetNmbrs
+  fields:
+    - name: id
+      type: String_1!
+    - name: poBox
+      type: String_1
+    - name: ruralRouteNmbr
+      type: String_1
+    - name: streetDirection
+      type: String_1
+    - name: streetNmbrSuffix
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelStreetNmbrs
+    inputTypeName: HotelStreetNmbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_street_nmbrs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        poBox:
+          column:
+            name: po_box
+        ruralRouteNmbr:
+          column:
+            name: rural_route_nmbr
+        streetDirection:
+          column:
+            name: street_direction
+        streetNmbrSuffix:
+          column:
+            name: street_nmbr_suffix
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelStreetNmbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - poBox
+          - ruralRouteNmbr
+          - streetDirection
+          - streetNmbrSuffix
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelStreetNmbrsBoolExp
+  operand:
+    object:
+      type: HotelStreetNmbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: poBox
+          booleanExpressionType: TextBoolExp
+        - fieldName: ruralRouteNmbr
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetDirection
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetNmbrSuffix
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelStreetNmbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelStreetNmbrsAggExp
+  operand:
+    object:
+      aggregatedType: HotelStreetNmbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: poBox
+          aggregateExpression: TextAggExp
+        - fieldName: ruralRouteNmbr
+          aggregateExpression: TextAggExp
+        - fieldName: streetDirection
+          aggregateExpression: TextAggExp
+        - fieldName: streetNmbrSuffix
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelStreetNmbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelStreetNmbrsOrderByExp
+  operand:
+    object:
+      orderedType: HotelStreetNmbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: poBox
+          orderByExpression: String1OrderByExp
+        - fieldName: ruralRouteNmbr
+          orderByExpression: String1OrderByExp
+        - fieldName: streetDirection
+          orderByExpression: String1OrderByExp
+        - fieldName: streetNmbrSuffix
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelStreetNmbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelStreetNmbrs
+  objectType: HotelStreetNmbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_street_nmbrs
+  filterExpressionType: HotelStreetNmbrsBoolExp
+  aggregateExpression: HotelStreetNmbrsAggExp
+  orderByExpression: HotelStreetNmbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelStreetNmbrs
+      subscription:
+        rootField: hotelStreetNmbrs
+    selectUniques:
+      - queryRootField: hotelStreetNmbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelStreetNmbrsById
+    filterInputTypeName: HotelStreetNmbrsFilterInput
+    aggregate:
+      queryRootField: hotelStreetNmbrsAggregate
+      subscription:
+        rootField: hotelStreetNmbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelStreetNmbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

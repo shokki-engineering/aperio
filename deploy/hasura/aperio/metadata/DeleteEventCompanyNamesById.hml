@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventCompanyNamesByIdResponse
+  description: Responses from the 'delete_event_company_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventCompanyNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventCompanyNamesByIdResponse
+    inputTypeName: DeleteEventCompanyNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_event_company_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventCompanyNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventCompanyNamesById
+  outputType: DeleteEventCompanyNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventCompanyNamesBoolExp
+      description: Delete permission predicate over the 'event_company_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_event_company_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventCompanyNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'event_company_names' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventCompanyNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

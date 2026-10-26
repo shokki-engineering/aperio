@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRateplanDecimalsObject
+    inputTypeName: InsertRateplanDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanDecimalsResponse
+  description: Responses from the 'insert_rateplan_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanDecimalsResponse
+    inputTypeName: InsertRateplanDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanDecimals
+  outputType: InsertRateplanDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanDecimalsObject!]!"
+    - name: postCheck
+      type: RateplanDecimalsBoolExp
+      description: Insert permission predicate over the 'rateplan_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanDecimals
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

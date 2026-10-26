@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationMoneysCurrencyCode
+  description: Update the 'currency_code' column in the 'reservation_moneys' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationMoneysCurrencyCode
+    inputTypeName: UpdateColumnReservationMoneysCurrencyCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_moneys_currency_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationMoneysCurrencyCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationMoneysId
+  description: Update the 'id' column in the 'reservation_moneys' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationMoneysId
+    inputTypeName: UpdateColumnReservationMoneysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_moneys_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationMoneysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationMoneysNanoUnits
+  description: Update the 'nano_units' column in the 'reservation_moneys' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationMoneysNanoUnits
+    inputTypeName: UpdateColumnReservationMoneysNanoUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_moneys_nano_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationMoneysNanoUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationMoneysUnits
+  description: Update the 'units' column in the 'reservation_moneys' collection
+  fields:
+    - name: set
+      type: Int64
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationMoneysUnits
+    inputTypeName: UpdateColumnReservationMoneysUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_moneys_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationMoneysUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationMoneysByIdUpdateColumns
+  description: Update the columns of the 'reservation_moneys' collection
+  fields:
+    - name: currencyCode
+      type: UpdateColumnReservationMoneysCurrencyCode
+      description: Update the 'currency_code' column in the 'reservation_moneys' collection.
+    - name: id
+      type: UpdateColumnReservationMoneysId
+      description: Update the 'id' column in the 'reservation_moneys' collection.
+    - name: nanoUnits
+      type: UpdateColumnReservationMoneysNanoUnits
+      description: Update the 'nano_units' column in the 'reservation_moneys' collection.
+    - name: units
+      type: UpdateColumnReservationMoneysUnits
+      description: Update the 'units' column in the 'reservation_moneys' collection.
+  graphql:
+    typeName: UpdateReservationMoneysByIdUpdateColumns
+    inputTypeName: UpdateReservationMoneysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_moneys_by_id_update_columns
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationMoneysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationMoneysByIdResponse
+  description: Responses from the 'update_reservation_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationMoneysByIdResponse
+    inputTypeName: UpdateReservationMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationMoneysById
+  outputType: UpdateReservationMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationMoneysBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_moneys' collection
+    - name: preCheck
+      type: ReservationMoneysBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_moneys' collection
+    - name: updateColumns
+      type: UpdateReservationMoneysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationMoneysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

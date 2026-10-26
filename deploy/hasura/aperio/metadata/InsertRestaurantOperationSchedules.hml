@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestaurantOperationSchedulesObject
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertRestaurantOperationSchedulesObject
+    inputTypeName: InsertRestaurantOperationSchedulesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restaurant_operation_schedules_object
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestaurantOperationSchedulesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestaurantOperationSchedulesResponse
+  description: Responses from the 'insert_restaurant_operation_schedules' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantOperationSchedules!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestaurantOperationSchedulesResponse
+    inputTypeName: InsertRestaurantOperationSchedulesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restaurant_operation_schedules_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestaurantOperationSchedulesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestaurantOperationSchedules
+  outputType: InsertRestaurantOperationSchedulesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestaurantOperationSchedulesObject!]!"
+    - name: postCheck
+      type: RestaurantOperationSchedulesBoolExp
+      description: Insert permission predicate over the
+        'restaurant_operation_schedules' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restaurant_operation_schedules
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestaurantOperationSchedules
+    rootFieldKind: Mutation
+  description: Insert into the restaurant_operation_schedules table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestaurantOperationSchedules
+  permissions:
+    - role: admin
+      allowExecution: true
+

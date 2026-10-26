@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoContactInfoRoots
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: contactProfileId
+      type: String_1
+    - name: contactProfileType
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: location
+      type: Enum
+    - name: otherHotelId
+      type: String_1!
+  graphql:
+    typeName: AreainfoContactInfoRoots
+    inputTypeName: AreainfoContactInfoRootsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_contact_info_roots
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        contactProfileId:
+          column:
+            name: contact_profile_id
+        contactProfileType:
+          column:
+            name: contact_profile_type
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        location:
+          column:
+            name: location
+        otherHotelId:
+          column:
+            name: other_hotel_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoContactInfoRoots
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - contactProfileId
+          - contactProfileType
+          - id
+          - lastUpdateTime
+          - location
+          - otherHotelId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoContactInfoRootsBoolExp
+  operand:
+    object:
+      type: AreainfoContactInfoRoots
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactProfileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactProfileType
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: location
+          booleanExpressionType: AreainfoAreainfoContactLocationBoolExp
+        - fieldName: otherHotelId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoContactInfoRootsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoContactInfoRootsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoContactInfoRoots
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: contactProfileId
+          aggregateExpression: TextAggExp
+        - fieldName: contactProfileType
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: location
+          aggregateExpression: AreainfoAreainfoContactLocationAggExp
+        - fieldName: otherHotelId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoContactInfoRootsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoContactInfoRootsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoContactInfoRoots
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactProfileId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactProfileType
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: location
+          orderByExpression: EnumOrderByExp
+        - fieldName: otherHotelId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoContactInfoRootsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoContactInfoRoots
+  objectType: AreainfoContactInfoRoots
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_contact_info_roots
+  filterExpressionType: AreainfoContactInfoRootsBoolExp
+  aggregateExpression: AreainfoContactInfoRootsAggExp
+  orderByExpression: AreainfoContactInfoRootsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoContactInfoRoots
+      subscription:
+        rootField: areainfoContactInfoRoots
+    selectUniques:
+      - queryRootField: areainfoContactInfoRootsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoContactInfoRootsById
+    filterInputTypeName: AreainfoContactInfoRootsFilterInput
+    aggregate:
+      queryRootField: areainfoContactInfoRootsAggregate
+      subscription:
+        rootField: areainfoContactInfoRootsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoContactInfoRoots
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelGuestRoomInfosObject
+  fields:
+    - name: categoryCodesId
+      type: String_1!
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: quantity
+      type: Int32
+  graphql:
+    typeName: InsertHotelGuestRoomInfosObject
+    inputTypeName: InsertHotelGuestRoomInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_guest_room_infos_object
+      fieldMapping:
+        categoryCodesId:
+          column:
+            name: category_codes_id
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        quantity:
+          column:
+            name: quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelGuestRoomInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - categoryCodesId
+          - code
+          - codeDetail
+          - descriptiveText
+          - existsCode
+          - id
+          - multimediaDescriptionsId
+          - quantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelGuestRoomInfosResponse
+  description: Responses from the 'insert_hotel_guest_room_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelGuestRoomInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelGuestRoomInfosResponse
+    inputTypeName: InsertHotelGuestRoomInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_guest_room_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelGuestRoomInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelGuestRoomInfos
+  outputType: InsertHotelGuestRoomInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelGuestRoomInfosObject!]!"
+    - name: postCheck
+      type: HotelGuestRoomInfosBoolExp
+      description: Insert permission predicate over the 'hotel_guest_room_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_guest_room_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelGuestRoomInfos
+    rootFieldKind: Mutation
+  description: Insert into the hotel_guest_room_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelGuestRoomInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

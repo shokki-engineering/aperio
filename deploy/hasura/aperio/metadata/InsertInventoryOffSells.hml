@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryOffSellsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: offSellValueId
+      type: String_1
+    - name: offSellValueType
+      type: Enum
+  graphql:
+    typeName: InsertInventoryOffSellsObject
+    inputTypeName: InsertInventoryOffSellsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventory_off_sells_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        offSellValueId:
+          column:
+            name: off_sell_value_id
+        offSellValueType:
+          column:
+            name: off_sell_value_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryOffSellsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - offSellValueId
+          - offSellValueType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryOffSellsResponse
+  description: Responses from the 'insert_inventory_off_sells' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryOffSells!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryOffSellsResponse
+    inputTypeName: InsertInventoryOffSellsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventory_off_sells_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryOffSellsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryOffSells
+  outputType: InsertInventoryOffSellsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryOffSellsObject!]!"
+    - name: postCheck
+      type: InventoryOffSellsBoolExp
+      description: Insert permission predicate over the 'inventory_off_sells' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventory_off_sells
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryOffSells
+    rootFieldKind: Mutation
+  description: Insert into the inventory_off_sells table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryOffSells
+  permissions:
+    - role: admin
+      allowExecution: true
+

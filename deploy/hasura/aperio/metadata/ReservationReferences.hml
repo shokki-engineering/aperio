@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationReferences
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: ReservationReferences
+    inputTypeName: ReservationReferencesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_references
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        dateTime:
+          column:
+            name: date_time
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationReferences
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - dateTime
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationReferencesBoolExp
+  operand:
+    object:
+      type: ReservationReferences
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ReservationReservationUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationReferencesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationReferencesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationReferences
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ReservationReservationUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationReferencesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationReferencesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationReferences
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationReferencesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationReferences
+  objectType: ReservationReferences
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_references
+  filterExpressionType: ReservationReferencesBoolExp
+  aggregateExpression: ReservationReferencesAggExp
+  orderByExpression: ReservationReferencesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationReferences
+      subscription:
+        rootField: reservationReferences
+    selectUniques:
+      - queryRootField: reservationReferencesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationReferencesById
+    filterInputTypeName: ReservationReferencesFilterInput
+    aggregate:
+      queryRootField: reservationReferencesAggregate
+      subscription:
+        rootField: reservationReferencesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationReferences
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

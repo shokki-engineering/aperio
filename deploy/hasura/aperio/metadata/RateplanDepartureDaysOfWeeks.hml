@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanDepartureDaysOfWeeks
+  fields:
+    - name: id
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: RateplanDepartureDaysOfWeeks
+    inputTypeName: RateplanDepartureDaysOfWeeksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_departure_days_of_weeks
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanDepartureDaysOfWeeks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanDepartureDaysOfWeeksBoolExp
+  operand:
+    object:
+      type: RateplanDepartureDaysOfWeeks
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanDepartureDaysOfWeeksBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanDepartureDaysOfWeeksAggExp
+  operand:
+    object:
+      aggregatedType: RateplanDepartureDaysOfWeeks
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanDepartureDaysOfWeeksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanDepartureDaysOfWeeksOrderByExp
+  operand:
+    object:
+      orderedType: RateplanDepartureDaysOfWeeks
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanDepartureDaysOfWeeksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanDepartureDaysOfWeeks
+  objectType: RateplanDepartureDaysOfWeeks
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_departure_days_of_weeks
+  filterExpressionType: RateplanDepartureDaysOfWeeksBoolExp
+  aggregateExpression: RateplanDepartureDaysOfWeeksAggExp
+  orderByExpression: RateplanDepartureDaysOfWeeksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanDepartureDaysOfWeeks
+      subscription:
+        rootField: rateplanDepartureDaysOfWeeks
+    selectUniques:
+      - queryRootField: rateplanDepartureDaysOfWeeksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanDepartureDaysOfWeeksById
+    filterInputTypeName: RateplanDepartureDaysOfWeeksFilterInput
+    aggregate:
+      queryRootField: rateplanDepartureDaysOfWeeksAggregate
+      subscription:
+        rootField: rateplanDepartureDaysOfWeeksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanDepartureDaysOfWeeks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

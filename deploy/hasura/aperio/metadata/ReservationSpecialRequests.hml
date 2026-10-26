@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationSpecialRequests
+  fields:
+    - name: codeContext
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: requestCode
+      type: String_1
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: resGuestId
+      type: String_1!
+    - name: roomStayId
+      type: String_1!
+    - name: serviceDetailsId
+      type: String_1!
+    - name: unitCount
+      type: Int32
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: ReservationSpecialRequests
+    inputTypeName: ReservationSpecialRequestsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_special_requests
+      fieldMapping:
+        codeContext:
+          column:
+            name: code_context
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        requestCode:
+          column:
+            name: request_code
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        resGuestId:
+          column:
+            name: res_guest_id
+        roomStayId:
+          column:
+            name: room_stay_id
+        serviceDetailsId:
+          column:
+            name: service_details_id
+        unitCount:
+          column:
+            name: unit_count
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationSpecialRequests
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeContext
+          - createDateTime
+          - creatorId
+          - displayName
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - requestCode
+          - resGlobalInfoId
+          - resGuestId
+          - roomStayId
+          - serviceDetailsId
+          - unitCount
+          - uris
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationSpecialRequestsBoolExp
+  operand:
+    object:
+      type: ReservationSpecialRequests
+      comparableFields:
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: requestCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGlobalInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGuestId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomStayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceDetailsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCount
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationSpecialRequestsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationSpecialRequestsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationSpecialRequests
+      aggregatableFields:
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: requestCode
+          aggregateExpression: TextAggExp
+        - fieldName: resGlobalInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: resGuestId
+          aggregateExpression: TextAggExp
+        - fieldName: roomStayId
+          aggregateExpression: TextAggExp
+        - fieldName: serviceDetailsId
+          aggregateExpression: TextAggExp
+        - fieldName: unitCount
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationSpecialRequestsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationSpecialRequestsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationSpecialRequests
+      orderableFields:
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: requestCode
+          orderByExpression: String1OrderByExp
+        - fieldName: resGlobalInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: resGuestId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomStayId
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceDetailsId
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCount
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationSpecialRequestsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationSpecialRequests
+  objectType: ReservationSpecialRequests
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_special_requests
+  filterExpressionType: ReservationSpecialRequestsBoolExp
+  aggregateExpression: ReservationSpecialRequestsAggExp
+  orderByExpression: ReservationSpecialRequestsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationSpecialRequests
+      subscription:
+        rootField: reservationSpecialRequests
+    selectUniques:
+      - queryRootField: reservationSpecialRequestsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationSpecialRequestsById
+    filterInputTypeName: ReservationSpecialRequestsFilterInput
+    aggregate:
+      queryRootField: reservationSpecialRequestsAggregate
+      subscription:
+        rootField: reservationSpecialRequestsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationSpecialRequests
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

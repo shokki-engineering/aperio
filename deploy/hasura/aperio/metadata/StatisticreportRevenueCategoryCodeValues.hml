@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: StatisticreportRevenueCategoryCodeValues
+  fields:
+    - name: id
+      type: String_1!
+    - name: revenueCategoryCode
+      type: Enum
+    - name: text
+      type: String_1
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: StatisticreportRevenueCategoryCodeValues
+    inputTypeName: StatisticreportRevenueCategoryCodeValuesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: statisticreport_revenue_category_code_values
+      fieldMapping:
+        id:
+          column:
+            name: id
+        revenueCategoryCode:
+          column:
+            name: revenue_category_code
+        text:
+          column:
+            name: text
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: StatisticreportRevenueCategoryCodeValues
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - revenueCategoryCode
+          - text
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: StatisticreportRevenueCategoryCodeValuesBoolExp
+  operand:
+    object:
+      type: StatisticreportRevenueCategoryCodeValues
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: revenueCategoryCode
+          booleanExpressionType: StatisticreportStatisticreportRevenueCategoryCodeBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: StatisticreportRevenueCategoryCodeValueValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: StatisticreportRevenueCategoryCodeValuesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: StatisticreportRevenueCategoryCodeValuesAggExp
+  operand:
+    object:
+      aggregatedType: StatisticreportRevenueCategoryCodeValues
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: revenueCategoryCode
+          aggregateExpression: StatisticreportStatisticreportRevenueCategoryCodeAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: StatisticreportRevenueCategoryCodeValueValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: StatisticreportRevenueCategoryCodeValuesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: StatisticreportRevenueCategoryCodeValuesOrderByExp
+  operand:
+    object:
+      orderedType: StatisticreportRevenueCategoryCodeValues
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: revenueCategoryCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: StatisticreportRevenueCategoryCodeValuesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: StatisticreportRevenueCategoryCodeValues
+  objectType: StatisticreportRevenueCategoryCodeValues
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: statisticreport_revenue_category_code_values
+  filterExpressionType: StatisticreportRevenueCategoryCodeValuesBoolExp
+  aggregateExpression: StatisticreportRevenueCategoryCodeValuesAggExp
+  orderByExpression: StatisticreportRevenueCategoryCodeValuesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: statisticreportRevenueCategoryCodeValues
+      subscription:
+        rootField: statisticreportRevenueCategoryCodeValues
+    selectUniques:
+      - queryRootField: statisticreportRevenueCategoryCodeValuesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: statisticreportRevenueCategoryCodeValuesById
+    filterInputTypeName: StatisticreportRevenueCategoryCodeValuesFilterInput
+    aggregate:
+      queryRootField: statisticreportRevenueCategoryCodeValuesAggregate
+      subscription:
+        rootField: statisticreportRevenueCategoryCodeValuesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: StatisticreportRevenueCategoryCodeValues
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

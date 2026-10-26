@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAssociatedSuppliersObject
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+  graphql:
+    typeName: InsertProfileAssociatedSuppliersObject
+    inputTypeName: InsertProfileAssociatedSuppliersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_associated_suppliers_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAssociatedSuppliersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - id
+          - regionCode
+          - travelSector
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAssociatedSuppliersResponse
+  description: Responses from the 'insert_profile_associated_suppliers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAssociatedSuppliers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileAssociatedSuppliersResponse
+    inputTypeName: InsertProfileAssociatedSuppliersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_associated_suppliers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAssociatedSuppliersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileAssociatedSuppliers
+  outputType: InsertProfileAssociatedSuppliersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileAssociatedSuppliersObject!]!"
+    - name: postCheck
+      type: ProfileAssociatedSuppliersBoolExp
+      description: Insert permission predicate over the 'profile_associated_suppliers'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_associated_suppliers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileAssociatedSuppliers
+    rootFieldKind: Mutation
+  description: Insert into the profile_associated_suppliers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileAssociatedSuppliers
+  permissions:
+    - role: admin
+      allowExecution: true
+

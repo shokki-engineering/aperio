@@ -1,0 +1,175 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileFlightTypePrefsObject
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: backhaulIndicator
+      type: Boolean_1
+    - name: directAndNonStopOnly
+      type: Boolean_1
+    - name: excludeTrain
+      type: Boolean_1
+    - name: flightType
+      type: Enum
+    - name: groundTransportIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: maxConnections
+      type: Int32
+    - name: nonScheduledFltInfo
+      type: Enum
+    - name: nonStopsOnly
+      type: Boolean_1
+    - name: onlineConnectionsOnly
+      type: Boolean_1
+    - name: preferLevel
+      type: Enum
+    - name: routingType
+      type: Enum
+  graphql:
+    typeName: InsertProfileFlightTypePrefsObject
+    inputTypeName: InsertProfileFlightTypePrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_flight_type_prefs_object
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        backhaulIndicator:
+          column:
+            name: backhaul_indicator
+        directAndNonStopOnly:
+          column:
+            name: direct_and_non_stop_only
+        excludeTrain:
+          column:
+            name: exclude_train
+        flightType:
+          column:
+            name: flight_type
+        groundTransportIndicator:
+          column:
+            name: ground_transport_indicator
+        id:
+          column:
+            name: id
+        maxConnections:
+          column:
+            name: max_connections
+        nonScheduledFltInfo:
+          column:
+            name: non_scheduled_flt_info
+        nonStopsOnly:
+          column:
+            name: non_stops_only
+        onlineConnectionsOnly:
+          column:
+            name: online_connections_only
+        preferLevel:
+          column:
+            name: prefer_level
+        routingType:
+          column:
+            name: routing_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileFlightTypePrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - backhaulIndicator
+          - directAndNonStopOnly
+          - excludeTrain
+          - flightType
+          - groundTransportIndicator
+          - id
+          - maxConnections
+          - nonScheduledFltInfo
+          - nonStopsOnly
+          - onlineConnectionsOnly
+          - preferLevel
+          - routingType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileFlightTypePrefsResponse
+  description: Responses from the 'insert_profile_flight_type_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileFlightTypePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileFlightTypePrefsResponse
+    inputTypeName: InsertProfileFlightTypePrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_flight_type_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileFlightTypePrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileFlightTypePrefs
+  outputType: InsertProfileFlightTypePrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileFlightTypePrefsObject!]!"
+    - name: postCheck
+      type: ProfileFlightTypePrefsBoolExp
+      description: Insert permission predicate over the 'profile_flight_type_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_flight_type_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileFlightTypePrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_flight_type_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileFlightTypePrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

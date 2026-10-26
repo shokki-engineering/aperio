@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingroomTextItemByIdResponse
+  description: Responses from the 'delete_meetingroom_text_item_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomTextItem!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingroomTextItemByIdResponse
+    inputTypeName: DeleteMeetingroomTextItemByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingroom_text_item_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingroomTextItemByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingroomTextItemById
+  outputType: DeleteMeetingroomTextItemByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingroomTextItemBoolExp
+      description: Delete permission predicate over the 'meetingroom_text_item' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingroom_text_item_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingroomTextItemById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingroom_text_item' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingroomTextItemById
+  permissions:
+    - role: admin
+      allowExecution: true
+

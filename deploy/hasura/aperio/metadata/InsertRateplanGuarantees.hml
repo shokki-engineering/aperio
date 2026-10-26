@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanGuaranteesObject
+  fields:
+    - name: deadlineId
+      type: String_1
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: rateId
+      type: String_1!
+    - name: retributionType
+      type: Enum
+  graphql:
+    typeName: InsertRateplanGuaranteesObject
+    inputTypeName: InsertRateplanGuaranteesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_guarantees_object
+      fieldMapping:
+        deadlineId:
+          column:
+            name: deadline_id
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        rateId:
+          column:
+            name: rate_id
+        retributionType:
+          column:
+            name: retribution_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanGuaranteesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - deadlineId
+          - guaranteeCode
+          - guaranteeType
+          - holdClockId
+          - id
+          - rateId
+          - retributionType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanGuaranteesResponse
+  description: Responses from the 'insert_rateplan_guarantees' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanGuarantees!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanGuaranteesResponse
+    inputTypeName: InsertRateplanGuaranteesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_guarantees_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanGuaranteesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanGuarantees
+  outputType: InsertRateplanGuaranteesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanGuaranteesObject!]!"
+    - name: postCheck
+      type: RateplanGuaranteesBoolExp
+      description: Insert permission predicate over the 'rateplan_guarantees' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_guarantees
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanGuarantees
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_guarantees table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanGuarantees
+  permissions:
+    - role: admin
+      allowExecution: true
+

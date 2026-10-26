@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDepartureDaysOfWeeksId
+  description: Update the 'id' column in the 'rateplan_departure_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDepartureDaysOfWeeksId
+    inputTypeName: UpdateColumnRateplanDepartureDaysOfWeeksIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_departure_days_of_weeks_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDepartureDaysOfWeeksId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDepartureDaysOfWeeksWeekdays
+  description: Update the 'weekdays' column in the
+    'rateplan_departure_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDepartureDaysOfWeeksWeekdays
+    inputTypeName: UpdateColumnRateplanDepartureDaysOfWeeksWeekdaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_departure_days_of_weeks_weekdays
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDepartureDaysOfWeeksWeekdays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanDepartureDaysOfWeeksByIdUpdateColumns
+  description: Update the columns of the 'rateplan_departure_days_of_weeks' collection
+  fields:
+    - name: id
+      type: UpdateColumnRateplanDepartureDaysOfWeeksId
+      description: Update the 'id' column in the 'rateplan_departure_days_of_weeks'
+        collection.
+    - name: weekdays
+      type: UpdateColumnRateplanDepartureDaysOfWeeksWeekdays
+      description: Update the 'weekdays' column in the
+        'rateplan_departure_days_of_weeks' collection.
+  graphql:
+    typeName: UpdateRateplanDepartureDaysOfWeeksByIdUpdateColumns
+    inputTypeName: UpdateRateplanDepartureDaysOfWeeksByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_departure_days_of_weeks_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanDepartureDaysOfWeeksByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanDepartureDaysOfWeeksByIdResponse
+  description: Responses from the 'update_rateplan_departure_days_of_weeks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanDepartureDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanDepartureDaysOfWeeksByIdResponse
+    inputTypeName: UpdateRateplanDepartureDaysOfWeeksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_departure_days_of_weeks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanDepartureDaysOfWeeksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanDepartureDaysOfWeeksById
+  outputType: UpdateRateplanDepartureDaysOfWeeksByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanDepartureDaysOfWeeksBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_departure_days_of_weeks' collection
+    - name: preCheck
+      type: RateplanDepartureDaysOfWeeksBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_departure_days_of_weeks' collection
+    - name: updateColumns
+      type: UpdateRateplanDepartureDaysOfWeeksByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_departure_days_of_weeks_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanDepartureDaysOfWeeksById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_departure_days_of_weeks' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanDepartureDaysOfWeeksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoMoneysObject
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: InsertAreainfoMoneysObject
+    inputTypeName: InsertAreainfoMoneysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_moneys_object
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoMoneysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoMoneysResponse
+  description: Responses from the 'insert_areainfo_moneys' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoMoneysResponse
+    inputTypeName: InsertAreainfoMoneysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_moneys_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoMoneysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoMoneys
+  outputType: InsertAreainfoMoneysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoMoneysObject!]!"
+    - name: postCheck
+      type: AreainfoMoneysBoolExp
+      description: Insert permission predicate over the 'areainfo_moneys' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_moneys
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoMoneys
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_moneys table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoMoneys
+  permissions:
+    - role: admin
+      allowExecution: true
+

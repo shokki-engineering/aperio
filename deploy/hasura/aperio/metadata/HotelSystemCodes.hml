@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelSystemCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: systemCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: HotelSystemCodes
+    inputTypeName: HotelSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_system_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        systemCodesInclusive:
+          column:
+            name: system_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - systemCodesInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelSystemCodesBoolExp
+  operand:
+    object:
+      type: HotelSystemCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: systemCodesInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: HotelSystemCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: systemCodesInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: HotelSystemCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: systemCodesInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelSystemCodes
+  objectType: HotelSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_system_codes
+  filterExpressionType: HotelSystemCodesBoolExp
+  aggregateExpression: HotelSystemCodesAggExp
+  orderByExpression: HotelSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelSystemCodes
+      subscription:
+        rootField: hotelSystemCodes
+    selectUniques:
+      - queryRootField: hotelSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelSystemCodesById
+    filterInputTypeName: HotelSystemCodesFilterInput
+    aggregate:
+      queryRootField: hotelSystemCodesAggregate
+      subscription:
+        rootField: hotelSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: rph
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsObject
+    inputTypeName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_profile_rental_pref_loyalty_prefs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        rph:
+          column:
+            name: rph
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - rph
+          - vehicleProfileRentalPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsResponse
+  description: Responses from the
+    'insert_profile_vehicle_profile_rental_pref_loyalty_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehicleProfileRentalPrefLoyaltyPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsResponse
+    inputTypeName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_profile_rental_pref_loyalty_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileVehicleProfileRentalPrefLoyaltyPrefs
+  outputType: InsertProfileVehicleProfileRentalPrefLoyaltyPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileVehicleProfileRentalPrefLoyaltyPrefsObject!]!"
+    - name: postCheck
+      type: ProfileVehicleProfileRentalPrefLoyaltyPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_vehicle_profile_rental_pref_loyalty_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_vehicle_profile_rental_pref_loyalty_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileVehicleProfileRentalPrefLoyaltyPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_vehicle_profile_rental_pref_loyalty_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileVehicleProfileRentalPrefLoyaltyPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

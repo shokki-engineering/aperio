@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationTextItemsTextItemDescriptions
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: textFormat
+      type: Enum
+    - name: textItemId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ReservationTextItemsTextItemDescriptions
+    inputTypeName: ReservationTextItemsTextItemDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_text_items_text_item_descriptions
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        textFormat:
+          column:
+            name: text_format
+        textItemId:
+          column:
+            name: text_item_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - textFormat
+          - textItemId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationTextItemsTextItemDescriptionsBoolExp
+  operand:
+    object:
+      type: ReservationTextItemsTextItemDescriptions
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: textFormat
+          booleanExpressionType: ReservationReservationFormattedTextTextTextFormatBoolExp
+        - fieldName: textItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationTextItemsTextItemDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationTextItemsTextItemDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationTextItemsTextItemDescriptions
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: textFormat
+          aggregateExpression: ReservationReservationFormattedTextTextTextFormatAggExp
+        - fieldName: textItemId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationTextItemsTextItemDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationTextItemsTextItemDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationTextItemsTextItemDescriptions
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: textItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationTextItemsTextItemDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationTextItemsTextItemDescriptions
+  objectType: ReservationTextItemsTextItemDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_text_items_text_item_descriptions
+  filterExpressionType: ReservationTextItemsTextItemDescriptionsBoolExp
+  aggregateExpression: ReservationTextItemsTextItemDescriptionsAggExp
+  orderByExpression: ReservationTextItemsTextItemDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationTextItemsTextItemDescriptions
+      subscription:
+        rootField: reservationTextItemsTextItemDescriptions
+    selectUniques:
+      - queryRootField: reservationTextItemsTextItemDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationTextItemsTextItemDescriptionsById
+    filterInputTypeName: ReservationTextItemsTextItemDescriptionsFilterInput
+    aggregate:
+      queryRootField: reservationTextItemsTextItemDescriptionsAggregate
+      subscription:
+        rootField: reservationTextItemsTextItemDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpMoneys
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: MeetingrfpMoneys
+    inputTypeName: MeetingrfpMoneysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_moneys
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpMoneys
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpMoneysBoolExp
+  operand:
+    object:
+      type: MeetingrfpMoneys
+      comparableFields:
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nanoUnits
+          booleanExpressionType: Int4BoolExp
+        - fieldName: units
+          booleanExpressionType: Int8BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpMoneysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpMoneysAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpMoneys
+      aggregatableFields:
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nanoUnits
+          aggregateExpression: Int4AggExp
+        - fieldName: units
+          aggregateExpression: Int8AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpMoneysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpMoneysOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpMoneys
+      orderableFields:
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nanoUnits
+          orderByExpression: Int32OrderByExp
+        - fieldName: units
+          orderByExpression: Int64OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpMoneysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpMoneys
+  objectType: MeetingrfpMoneys
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_moneys
+  filterExpressionType: MeetingrfpMoneysBoolExp
+  aggregateExpression: MeetingrfpMoneysAggExp
+  orderByExpression: MeetingrfpMoneysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpMoneys
+      subscription:
+        rootField: meetingrfpMoneys
+    selectUniques:
+      - queryRootField: meetingrfpMoneysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpMoneysById
+    filterInputTypeName: MeetingrfpMoneysFilterInput
+    aggregate:
+      queryRootField: meetingrfpMoneysAggregate
+      subscription:
+        rootField: meetingrfpMoneysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpMoneys
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

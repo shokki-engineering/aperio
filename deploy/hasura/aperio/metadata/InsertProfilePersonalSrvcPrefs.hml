@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePersonalSrvcPrefsObject
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfilePersonalSrvcPrefsObject
+    inputTypeName: InsertProfilePersonalSrvcPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_personal_srvc_prefs_object
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePersonalSrvcPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePersonalSrvcPrefsResponse
+  description: Responses from the 'insert_profile_personal_srvc_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePersonalSrvcPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePersonalSrvcPrefsResponse
+    inputTypeName: InsertProfilePersonalSrvcPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_personal_srvc_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePersonalSrvcPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePersonalSrvcPrefs
+  outputType: InsertProfilePersonalSrvcPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePersonalSrvcPrefsObject!]!"
+    - name: postCheck
+      type: ProfilePersonalSrvcPrefsBoolExp
+      description: Insert permission predicate over the 'profile_personal_srvc_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_personal_srvc_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePersonalSrvcPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_personal_srvc_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePersonalSrvcPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

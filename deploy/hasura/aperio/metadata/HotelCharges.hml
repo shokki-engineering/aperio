@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: HotelCharges
+    inputTypeName: HotelChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelChargesBoolExp
+  operand:
+    object:
+      type: HotelCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelChargesAggExp
+  operand:
+    object:
+      aggregatedType: HotelCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelChargesOrderByExp
+  operand:
+    object:
+      orderedType: HotelCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelCharges
+  objectType: HotelCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_charges
+  filterExpressionType: HotelChargesBoolExp
+  aggregateExpression: HotelChargesAggExp
+  orderByExpression: HotelChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelCharges
+      subscription:
+        rootField: hotelCharges
+    selectUniques:
+      - queryRootField: hotelChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelChargesById
+    filterInputTypeName: HotelChargesFilterInput
+    aggregate:
+      queryRootField: hotelChargesAggregate
+      subscription:
+        rootField: hotelChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

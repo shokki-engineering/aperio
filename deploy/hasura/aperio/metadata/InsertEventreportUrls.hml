@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportUrlsObject
+  fields:
+    - name: contactId
+      type: String_1!
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: eventContactId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertEventreportUrlsObject
+    inputTypeName: InsertEventreportUrlsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_urls_object
+      fieldMapping:
+        contactId:
+          column:
+            name: contact_id
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        eventContactId:
+          column:
+            name: event_contact_id
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportUrlsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactId
+          - contactPersonId
+          - defaultValue
+          - eventContactId
+          - id
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportUrlsResponse
+  description: Responses from the 'insert_eventreport_urls' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportUrlsResponse
+    inputTypeName: InsertEventreportUrlsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_urls_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportUrlsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportUrls
+  outputType: InsertEventreportUrlsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportUrlsObject!]!"
+    - name: postCheck
+      type: EventreportUrlsBoolExp
+      description: Insert permission predicate over the 'eventreport_urls' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_urls
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportUrls
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_urls table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportUrls
+  permissions:
+    - role: admin
+      allowExecution: true
+

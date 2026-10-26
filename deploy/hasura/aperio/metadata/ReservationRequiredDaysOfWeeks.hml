@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRequiredDaysOfWeeks
+  fields:
+    - name: id
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: ReservationRequiredDaysOfWeeks
+    inputTypeName: ReservationRequiredDaysOfWeeksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_required_days_of_weeks
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRequiredDaysOfWeeks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRequiredDaysOfWeeksBoolExp
+  operand:
+    object:
+      type: ReservationRequiredDaysOfWeeks
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRequiredDaysOfWeeksBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRequiredDaysOfWeeksAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRequiredDaysOfWeeks
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRequiredDaysOfWeeksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRequiredDaysOfWeeksOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRequiredDaysOfWeeks
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRequiredDaysOfWeeksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRequiredDaysOfWeeks
+  objectType: ReservationRequiredDaysOfWeeks
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_required_days_of_weeks
+  filterExpressionType: ReservationRequiredDaysOfWeeksBoolExp
+  aggregateExpression: ReservationRequiredDaysOfWeeksAggExp
+  orderByExpression: ReservationRequiredDaysOfWeeksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRequiredDaysOfWeeks
+      subscription:
+        rootField: reservationRequiredDaysOfWeeks
+    selectUniques:
+      - queryRootField: reservationRequiredDaysOfWeeksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRequiredDaysOfWeeksById
+    filterInputTypeName: ReservationRequiredDaysOfWeeksFilterInput
+    aggregate:
+      queryRootField: reservationRequiredDaysOfWeeksAggregate
+      subscription:
+        rootField: reservationRequiredDaysOfWeeksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRequiredDaysOfWeeks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

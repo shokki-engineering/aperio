@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileMealPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: beverage
+      type: String_1
+    - name: commonPrefId
+      type: String_1!
+    - name: favoriteFood
+      type: String_1
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: mealType
+      type: Enum
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileMealPrefs
+    inputTypeName: ProfileMealPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_meal_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        beverage:
+          column:
+            name: beverage
+        commonPrefId:
+          column:
+            name: common_pref_id
+        favoriteFood:
+          column:
+            name: favorite_food
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        mealType:
+          column:
+            name: meal_type
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileMealPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - beverage
+          - commonPrefId
+          - favoriteFood
+          - hotelPrefId
+          - id
+          - mealType
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileMealPrefsBoolExp
+  operand:
+    object:
+      type: ProfileMealPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: beverage
+          booleanExpressionType: TextBoolExp
+        - fieldName: commonPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: favoriteFood
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: mealType
+          booleanExpressionType: ProfileMealBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileMealPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileMealPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileMealPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: beverage
+          aggregateExpression: TextAggExp
+        - fieldName: commonPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: favoriteFood
+          aggregateExpression: TextAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: mealType
+          aggregateExpression: ProfileMealAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileMealPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileMealPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileMealPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: beverage
+          orderByExpression: String1OrderByExp
+        - fieldName: commonPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: favoriteFood
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: mealType
+          orderByExpression: EnumOrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileMealPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileMealPrefs
+  objectType: ProfileMealPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_meal_prefs
+  filterExpressionType: ProfileMealPrefsBoolExp
+  aggregateExpression: ProfileMealPrefsAggExp
+  orderByExpression: ProfileMealPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileMealPrefs
+      subscription:
+        rootField: profileMealPrefs
+    selectUniques:
+      - queryRootField: profileMealPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileMealPrefsById
+    filterInputTypeName: ProfileMealPrefsFilterInput
+    aggregate:
+      queryRootField: profileMealPrefsAggregate
+      subscription:
+        rootField: profileMealPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileMealPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

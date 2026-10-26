@@ -1,0 +1,225 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelNamesLinkHotelShortDisplayName
+  description: Update the 'hotel_short_display_name' column in the
+    'hotel_names_link' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelNamesLinkHotelShortDisplayName
+    inputTypeName: UpdateColumnHotelNamesLinkHotelShortDisplayNameInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_names_link_hotel_short_display_name
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelNamesLinkHotelShortDisplayName
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelNamesLinkId
+  description: Update the 'id' column in the 'hotel_names_link' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelNamesLinkId
+    inputTypeName: UpdateColumnHotelNamesLinkIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_names_link_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelNamesLinkId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelNamesLinkValue
+  description: Update the 'value' column in the 'hotel_names_link' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelNamesLinkValue
+    inputTypeName: UpdateColumnHotelNamesLinkValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_names_link_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelNamesLinkValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelNamesLinkByIdUpdateColumns
+  description: Update the columns of the 'hotel_names_link' collection
+  fields:
+    - name: hotelShortDisplayName
+      type: UpdateColumnHotelNamesLinkHotelShortDisplayName
+      description: Update the 'hotel_short_display_name' column in the
+        'hotel_names_link' collection.
+    - name: id
+      type: UpdateColumnHotelNamesLinkId
+      description: Update the 'id' column in the 'hotel_names_link' collection.
+    - name: value
+      type: UpdateColumnHotelNamesLinkValue
+      description: Update the 'value' column in the 'hotel_names_link' collection.
+  graphql:
+    typeName: UpdateHotelNamesLinkByIdUpdateColumns
+    inputTypeName: UpdateHotelNamesLinkByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_names_link_by_id_update_columns
+      fieldMapping:
+        hotelShortDisplayName:
+          column:
+            name: hotel_short_display_name
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelNamesLinkByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelShortDisplayName
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelNamesLinkByIdResponse
+  description: Responses from the 'update_hotel_names_link_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelNamesLink!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelNamesLinkByIdResponse
+    inputTypeName: UpdateHotelNamesLinkByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_names_link_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelNamesLinkByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelNamesLinkById
+  outputType: UpdateHotelNamesLinkByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelNamesLinkBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_names_link' collection
+    - name: preCheck
+      type: HotelNamesLinkBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_names_link' collection
+    - name: updateColumns
+      type: UpdateHotelNamesLinkByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_names_link_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelNamesLinkById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_names_link' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelNamesLinkById
+  permissions:
+    - role: admin
+      allowExecution: true
+

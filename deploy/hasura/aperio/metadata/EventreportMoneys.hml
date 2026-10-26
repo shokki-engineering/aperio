@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportMoneys
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: EventreportMoneys
+    inputTypeName: EventreportMoneysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_moneys
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportMoneys
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportMoneysBoolExp
+  operand:
+    object:
+      type: EventreportMoneys
+      comparableFields:
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nanoUnits
+          booleanExpressionType: Int4BoolExp
+        - fieldName: units
+          booleanExpressionType: Int8BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportMoneysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportMoneysAggExp
+  operand:
+    object:
+      aggregatedType: EventreportMoneys
+      aggregatableFields:
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nanoUnits
+          aggregateExpression: Int4AggExp
+        - fieldName: units
+          aggregateExpression: Int8AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportMoneysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportMoneysOrderByExp
+  operand:
+    object:
+      orderedType: EventreportMoneys
+      orderableFields:
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nanoUnits
+          orderByExpression: Int32OrderByExp
+        - fieldName: units
+          orderByExpression: Int64OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportMoneysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportMoneys
+  objectType: EventreportMoneys
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_moneys
+  filterExpressionType: EventreportMoneysBoolExp
+  aggregateExpression: EventreportMoneysAggExp
+  orderByExpression: EventreportMoneysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportMoneys
+      subscription:
+        rootField: eventreportMoneys
+    selectUniques:
+      - queryRootField: eventreportMoneysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportMoneysById
+    filterInputTypeName: EventreportMoneysFilterInput
+    aggregate:
+      queryRootField: eventreportMoneysAggregate
+      subscription:
+        rootField: eventreportMoneysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportMoneys
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

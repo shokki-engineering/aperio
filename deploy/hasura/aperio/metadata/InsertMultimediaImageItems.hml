@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMultimediaImageItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertMultimediaImageItemsObject
+    inputTypeName: InsertMultimediaImageItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_multimedia_image_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMultimediaImageItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMultimediaImageItemsResponse
+  description: Responses from the 'insert_multimedia_image_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MultimediaImageItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMultimediaImageItemsResponse
+    inputTypeName: InsertMultimediaImageItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_multimedia_image_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMultimediaImageItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMultimediaImageItems
+  outputType: InsertMultimediaImageItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMultimediaImageItemsObject!]!"
+    - name: postCheck
+      type: MultimediaImageItemsBoolExp
+      description: Insert permission predicate over the 'multimedia_image_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_multimedia_image_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMultimediaImageItems
+    rootFieldKind: Mutation
+  description: Insert into the multimedia_image_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMultimediaImageItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

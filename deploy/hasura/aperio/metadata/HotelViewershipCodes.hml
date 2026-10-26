@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelViewershipCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: viewershipCode
+      type: String_1!
+  graphql:
+    typeName: HotelViewershipCodes
+    inputTypeName: HotelViewershipCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_viewership_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        viewershipCode:
+          column:
+            name: viewership_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelViewershipCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - viewershipCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelViewershipCodesBoolExp
+  operand:
+    object:
+      type: HotelViewershipCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelViewershipCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelViewershipCodesAggExp
+  operand:
+    object:
+      aggregatedType: HotelViewershipCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelViewershipCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelViewershipCodesOrderByExp
+  operand:
+    object:
+      orderedType: HotelViewershipCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelViewershipCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelViewershipCodes
+  objectType: HotelViewershipCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_viewership_codes
+  filterExpressionType: HotelViewershipCodesBoolExp
+  aggregateExpression: HotelViewershipCodesAggExp
+  orderByExpression: HotelViewershipCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelViewershipCodes
+      subscription:
+        rootField: hotelViewershipCodes
+    selectUniques:
+      - queryRootField: hotelViewershipCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelViewershipCodesById
+    filterInputTypeName: HotelViewershipCodesFilterInput
+    aggregate:
+      queryRootField: hotelViewershipCodesAggregate
+      subscription:
+        rootField: hotelViewershipCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelViewershipCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

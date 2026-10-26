@@ -1,0 +1,311 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDateOrTimeOrDateTimesClockId
+  description: Update the 'clock_id' column in the
+    'rate_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDateOrTimeOrDateTimesClockId
+    inputTypeName: UpdateColumnRateDateOrTimeOrDateTimesClockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_date_or_time_or_date_times_clock_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDateOrTimeOrDateTimesClockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDateOrTimeOrDateTimesDateTime
+  description: Update the 'date_time' column in the
+    'rate_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDateOrTimeOrDateTimesDateTime
+    inputTypeName: UpdateColumnRateDateOrTimeOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_date_or_time_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDateOrTimeOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDateOrTimeOrDateTimesDayId
+  description: Update the 'day_id' column in the 'rate_date_or_time_or_date_times'
+    collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDateOrTimeOrDateTimesDayId
+    inputTypeName: UpdateColumnRateDateOrTimeOrDateTimesDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_date_or_time_or_date_times_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDateOrTimeOrDateTimesDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDateOrTimeOrDateTimesId
+  description: Update the 'id' column in the 'rate_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDateOrTimeOrDateTimesId
+    inputTypeName: UpdateColumnRateDateOrTimeOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_date_or_time_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDateOrTimeOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDateOrTimeOrDateTimesValueCase
+  description: Update the 'value_case' column in the
+    'rate_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDateOrTimeOrDateTimesValueCase
+    inputTypeName: UpdateColumnRateDateOrTimeOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_date_or_time_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDateOrTimeOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateDateOrTimeOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'rate_date_or_time_or_date_times' collection
+  fields:
+    - name: clockId
+      type: UpdateColumnRateDateOrTimeOrDateTimesClockId
+      description: Update the 'clock_id' column in the
+        'rate_date_or_time_or_date_times' collection.
+    - name: dateTime
+      type: UpdateColumnRateDateOrTimeOrDateTimesDateTime
+      description: Update the 'date_time' column in the
+        'rate_date_or_time_or_date_times' collection.
+    - name: dayId
+      type: UpdateColumnRateDateOrTimeOrDateTimesDayId
+      description: Update the 'day_id' column in the 'rate_date_or_time_or_date_times'
+        collection.
+    - name: id
+      type: UpdateColumnRateDateOrTimeOrDateTimesId
+      description: Update the 'id' column in the 'rate_date_or_time_or_date_times'
+        collection.
+    - name: valueCase
+      type: UpdateColumnRateDateOrTimeOrDateTimesValueCase
+      description: Update the 'value_case' column in the
+        'rate_date_or_time_or_date_times' collection.
+  graphql:
+    typeName: UpdateRateDateOrTimeOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdateRateDateOrTimeOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_date_or_time_or_date_times_by_id_update_columns
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateDateOrTimeOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateDateOrTimeOrDateTimesByIdResponse
+  description: Responses from the 'update_rate_date_or_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateDateOrTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateDateOrTimeOrDateTimesByIdResponse
+    inputTypeName: UpdateRateDateOrTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_date_or_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateDateOrTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateDateOrTimeOrDateTimesById
+  outputType: UpdateRateDateOrTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateDateOrTimeOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'rate_date_or_time_or_date_times' collection
+    - name: preCheck
+      type: RateDateOrTimeOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rate_date_or_time_or_date_times' collection
+    - name: updateColumns
+      type: UpdateRateDateOrTimeOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rate_date_or_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateDateOrTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rate_date_or_time_or_date_times' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateDateOrTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventFoodAndBeverages
+  fields:
+    - name: id
+      type: String_1!
+    - name: provider
+      type: Enum
+    - name: providerDisplayName
+      type: String_1
+  graphql:
+    typeName: EventFoodAndBeverages
+    inputTypeName: EventFoodAndBeveragesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_food_and_beverages
+      fieldMapping:
+        id:
+          column:
+            name: id
+        provider:
+          column:
+            name: provider
+        providerDisplayName:
+          column:
+            name: provider_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventFoodAndBeverages
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - provider
+          - providerDisplayName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventFoodAndBeveragesBoolExp
+  operand:
+    object:
+      type: EventFoodAndBeverages
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: provider
+          booleanExpressionType: EventEventProviderBoolExp
+        - fieldName: providerDisplayName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventFoodAndBeveragesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventFoodAndBeveragesAggExp
+  operand:
+    object:
+      aggregatedType: EventFoodAndBeverages
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: provider
+          aggregateExpression: EventEventProviderAggExp
+        - fieldName: providerDisplayName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventFoodAndBeveragesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventFoodAndBeveragesOrderByExp
+  operand:
+    object:
+      orderedType: EventFoodAndBeverages
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: provider
+          orderByExpression: EnumOrderByExp
+        - fieldName: providerDisplayName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventFoodAndBeveragesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventFoodAndBeverages
+  objectType: EventFoodAndBeverages
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_food_and_beverages
+  filterExpressionType: EventFoodAndBeveragesBoolExp
+  aggregateExpression: EventFoodAndBeveragesAggExp
+  orderByExpression: EventFoodAndBeveragesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventFoodAndBeverages
+      subscription:
+        rootField: eventFoodAndBeverages
+    selectUniques:
+      - queryRootField: eventFoodAndBeveragesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventFoodAndBeveragesById
+    filterInputTypeName: EventFoodAndBeveragesFilterInput
+    aggregate:
+      queryRootField: eventFoodAndBeveragesAggregate
+      subscription:
+        rootField: eventFoodAndBeveragesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventFoodAndBeverages
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

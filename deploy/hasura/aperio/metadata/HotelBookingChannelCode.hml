@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelBookingChannelCode
+  fields:
+    - name: bookingChannelCodesId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: restrictedDisplayIndicator
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelBookingChannelCode
+    inputTypeName: HotelBookingChannelCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_booking_channel_code
+      fieldMapping:
+        bookingChannelCodesId:
+          column:
+            name: booking_channel_codes_id
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelBookingChannelCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingChannelCodesId
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelBookingChannelCodeBoolExp
+  operand:
+    object:
+      type: HotelBookingChannelCode
+      comparableFields:
+        - fieldName: bookingChannelCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restrictedDisplayIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelBookingChannelCodeBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelBookingChannelCodeAggExp
+  operand:
+    object:
+      aggregatedType: HotelBookingChannelCode
+      aggregatableFields:
+        - fieldName: bookingChannelCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restrictedDisplayIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelBookingChannelCodeAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelBookingChannelCodeOrderByExp
+  operand:
+    object:
+      orderedType: HotelBookingChannelCode
+      orderableFields:
+        - fieldName: bookingChannelCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restrictedDisplayIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelBookingChannelCodeOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelBookingChannelCode
+  objectType: HotelBookingChannelCode
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_booking_channel_code
+  filterExpressionType: HotelBookingChannelCodeBoolExp
+  aggregateExpression: HotelBookingChannelCodeAggExp
+  orderByExpression: HotelBookingChannelCodeOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelBookingChannelCode
+      subscription:
+        rootField: hotelBookingChannelCode
+    selectUniques:
+      - queryRootField: hotelBookingChannelCodeById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelBookingChannelCodeById
+    filterInputTypeName: HotelBookingChannelCodeFilterInput
+    aggregate:
+      queryRootField: hotelBookingChannelCodeAggregate
+      subscription:
+        rootField: hotelBookingChannelCodeAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelBookingChannelCode
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

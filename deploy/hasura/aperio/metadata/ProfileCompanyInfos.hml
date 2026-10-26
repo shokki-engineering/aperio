@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileCompanyInfos
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: decimalPlaces
+      type: Int32
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ProfileCompanyInfos
+    inputTypeName: ProfileCompanyInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_company_infos
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        decimalPlaces:
+          column:
+            name: decimal_places
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileCompanyInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - decimalPlaces
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileCompanyInfosBoolExp
+  operand:
+    object:
+      type: ProfileCompanyInfos
+      comparableFields:
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: decimalPlaces
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileCompanyInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileCompanyInfosAggExp
+  operand:
+    object:
+      aggregatedType: ProfileCompanyInfos
+      aggregatableFields:
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: decimalPlaces
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileCompanyInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileCompanyInfosOrderByExp
+  operand:
+    object:
+      orderedType: ProfileCompanyInfos
+      orderableFields:
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: decimalPlaces
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileCompanyInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileCompanyInfos
+  objectType: ProfileCompanyInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_company_infos
+  filterExpressionType: ProfileCompanyInfosBoolExp
+  aggregateExpression: ProfileCompanyInfosAggExp
+  orderByExpression: ProfileCompanyInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileCompanyInfos
+      subscription:
+        rootField: profileCompanyInfos
+    selectUniques:
+      - queryRootField: profileCompanyInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileCompanyInfosById
+    filterInputTypeName: ProfileCompanyInfosFilterInput
+    aggregate:
+      queryRootField: profileCompanyInfosAggregate
+      subscription:
+        rootField: profileCompanyInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileCompanyInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

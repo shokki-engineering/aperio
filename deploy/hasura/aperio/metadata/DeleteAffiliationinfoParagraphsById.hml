@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAffiliationinfoParagraphsByIdResponse
+  description: Responses from the 'delete_affiliationinfo_paragraphs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoParagraphs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAffiliationinfoParagraphsByIdResponse
+    inputTypeName: DeleteAffiliationinfoParagraphsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_affiliationinfo_paragraphs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAffiliationinfoParagraphsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAffiliationinfoParagraphsById
+  outputType: DeleteAffiliationinfoParagraphsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AffiliationinfoParagraphsBoolExp
+      description: Delete permission predicate over the 'affiliationinfo_paragraphs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_affiliationinfo_paragraphs_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAffiliationinfoParagraphsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'affiliationinfo_paragraphs' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAffiliationinfoParagraphsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

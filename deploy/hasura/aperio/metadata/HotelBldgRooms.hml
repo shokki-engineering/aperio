@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelBldgRooms
+  fields:
+    - name: addressItemId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelBldgRooms
+    inputTypeName: HotelBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_bldg_rooms
+      fieldMapping:
+        addressItemId:
+          column:
+            name: address_item_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressItemId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelBldgRoomsBoolExp
+  operand:
+    object:
+      type: HotelBldgRooms
+      comparableFields:
+        - fieldName: addressItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: HotelBldgRooms
+      aggregatableFields:
+        - fieldName: addressItemId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: HotelBldgRooms
+      orderableFields:
+        - fieldName: addressItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelBldgRooms
+  objectType: HotelBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_bldg_rooms
+  filterExpressionType: HotelBldgRoomsBoolExp
+  aggregateExpression: HotelBldgRoomsAggExp
+  orderByExpression: HotelBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelBldgRooms
+      subscription:
+        rootField: hotelBldgRooms
+    selectUniques:
+      - queryRootField: hotelBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelBldgRoomsById
+    filterInputTypeName: HotelBldgRoomsFilterInput
+    aggregate:
+      queryRootField: hotelBldgRoomsAggregate
+      subscription:
+        rootField: hotelBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

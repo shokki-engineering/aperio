@@ -1,0 +1,310 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePrefCollectionsId
+  description: Update the 'id' column in the 'profile_pref_collections' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePrefCollectionsId
+    inputTypeName: UpdateColumnProfilePrefCollectionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_pref_collections_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePrefCollectionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePrefCollectionsPreferencesId
+  description: Update the 'preferences_id' column in the
+    'profile_pref_collections' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePrefCollectionsPreferencesId
+    inputTypeName: UpdateColumnProfilePrefCollectionsPreferencesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_pref_collections_preferences_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePrefCollectionsPreferencesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePrefCollectionsShareMarketInd
+  description: Update the 'share_market_ind' column in the
+    'profile_pref_collections' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePrefCollectionsShareMarketInd
+    inputTypeName: UpdateColumnProfilePrefCollectionsShareMarketIndInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_pref_collections_share_market_ind
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePrefCollectionsShareMarketInd
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePrefCollectionsShareSynchInd
+  description: Update the 'share_synch_ind' column in the
+    'profile_pref_collections' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePrefCollectionsShareSynchInd
+    inputTypeName: UpdateColumnProfilePrefCollectionsShareSynchIndInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_pref_collections_share_synch_ind
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePrefCollectionsShareSynchInd
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePrefCollectionsTravelPurpose
+  description: Update the 'travel_purpose' column in the
+    'profile_pref_collections' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePrefCollectionsTravelPurpose
+    inputTypeName: UpdateColumnProfilePrefCollectionsTravelPurposeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_pref_collections_travel_purpose
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePrefCollectionsTravelPurpose
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePrefCollectionsByIdUpdateColumns
+  description: Update the columns of the 'profile_pref_collections' collection
+  fields:
+    - name: id
+      type: UpdateColumnProfilePrefCollectionsId
+      description: Update the 'id' column in the 'profile_pref_collections' collection.
+    - name: preferencesId
+      type: UpdateColumnProfilePrefCollectionsPreferencesId
+      description: Update the 'preferences_id' column in the
+        'profile_pref_collections' collection.
+    - name: shareMarketInd
+      type: UpdateColumnProfilePrefCollectionsShareMarketInd
+      description: Update the 'share_market_ind' column in the
+        'profile_pref_collections' collection.
+    - name: shareSynchInd
+      type: UpdateColumnProfilePrefCollectionsShareSynchInd
+      description: Update the 'share_synch_ind' column in the
+        'profile_pref_collections' collection.
+    - name: travelPurpose
+      type: UpdateColumnProfilePrefCollectionsTravelPurpose
+      description: Update the 'travel_purpose' column in the
+        'profile_pref_collections' collection.
+  graphql:
+    typeName: UpdateProfilePrefCollectionsByIdUpdateColumns
+    inputTypeName: UpdateProfilePrefCollectionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_pref_collections_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferencesId:
+          column:
+            name: preferences_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        travelPurpose:
+          column:
+            name: travel_purpose
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePrefCollectionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferencesId
+          - shareMarketInd
+          - shareSynchInd
+          - travelPurpose
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePrefCollectionsByIdResponse
+  description: Responses from the 'update_profile_pref_collections_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePrefCollections!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfilePrefCollectionsByIdResponse
+    inputTypeName: UpdateProfilePrefCollectionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_pref_collections_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePrefCollectionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfilePrefCollectionsById
+  outputType: UpdateProfilePrefCollectionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfilePrefCollectionsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_pref_collections' collection
+    - name: preCheck
+      type: ProfilePrefCollectionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_pref_collections' collection
+    - name: updateColumns
+      type: UpdateProfilePrefCollectionsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_pref_collections_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfilePrefCollectionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_pref_collections' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfilePrefCollectionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

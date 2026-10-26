@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRatePlanInclusions
+  fields:
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: serviceFeeInclusive
+      type: Boolean_1
+    - name: taxInclusive
+      type: Boolean_1
+  graphql:
+    typeName: ReservationRatePlanInclusions
+    inputTypeName: ReservationRatePlanInclusionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_rate_plan_inclusions
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        serviceFeeInclusive:
+          column:
+            name: service_fee_inclusive
+        taxInclusive:
+          column:
+            name: tax_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRatePlanInclusions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - id
+          - serviceFeeInclusive
+          - taxInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRatePlanInclusionsBoolExp
+  operand:
+    object:
+      type: ReservationRatePlanInclusions
+      comparableFields:
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceFeeInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRatePlanInclusionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRatePlanInclusionsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRatePlanInclusions
+      aggregatableFields:
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: serviceFeeInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: taxInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRatePlanInclusionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRatePlanInclusionsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRatePlanInclusions
+      orderableFields:
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceFeeInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRatePlanInclusionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRatePlanInclusions
+  objectType: ReservationRatePlanInclusions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_rate_plan_inclusions
+  filterExpressionType: ReservationRatePlanInclusionsBoolExp
+  aggregateExpression: ReservationRatePlanInclusionsAggExp
+  orderByExpression: ReservationRatePlanInclusionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRatePlanInclusions
+      subscription:
+        rootField: reservationRatePlanInclusions
+    selectUniques:
+      - queryRootField: reservationRatePlanInclusionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRatePlanInclusionsById
+    filterInputTypeName: ReservationRatePlanInclusionsFilterInput
+    aggregate:
+      queryRootField: reservationRatePlanInclusionsAggregate
+      subscription:
+        rootField: reservationRatePlanInclusionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRatePlanInclusions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

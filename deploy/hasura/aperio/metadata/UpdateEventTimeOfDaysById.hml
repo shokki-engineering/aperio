@@ -1,0 +1,285 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventTimeOfDaysHour
+  description: Update the 'hour' column in the 'event_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventTimeOfDaysHour
+    inputTypeName: UpdateColumnEventTimeOfDaysHourInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_time_of_days_hour
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventTimeOfDaysHour
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventTimeOfDaysId
+  description: Update the 'id' column in the 'event_time_of_days' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventTimeOfDaysId
+    inputTypeName: UpdateColumnEventTimeOfDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_time_of_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventTimeOfDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventTimeOfDaysMinute
+  description: Update the 'minute' column in the 'event_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventTimeOfDaysMinute
+    inputTypeName: UpdateColumnEventTimeOfDaysMinuteInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_time_of_days_minute
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventTimeOfDaysMinute
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventTimeOfDaysNanosecond
+  description: Update the 'nanosecond' column in the 'event_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventTimeOfDaysNanosecond
+    inputTypeName: UpdateColumnEventTimeOfDaysNanosecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_time_of_days_nanosecond
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventTimeOfDaysNanosecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventTimeOfDaysSecond
+  description: Update the 'second' column in the 'event_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventTimeOfDaysSecond
+    inputTypeName: UpdateColumnEventTimeOfDaysSecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_time_of_days_second
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventTimeOfDaysSecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventTimeOfDaysByIdUpdateColumns
+  description: Update the columns of the 'event_time_of_days' collection
+  fields:
+    - name: hour
+      type: UpdateColumnEventTimeOfDaysHour
+      description: Update the 'hour' column in the 'event_time_of_days' collection.
+    - name: id
+      type: UpdateColumnEventTimeOfDaysId
+      description: Update the 'id' column in the 'event_time_of_days' collection.
+    - name: minute
+      type: UpdateColumnEventTimeOfDaysMinute
+      description: Update the 'minute' column in the 'event_time_of_days' collection.
+    - name: nanosecond
+      type: UpdateColumnEventTimeOfDaysNanosecond
+      description: Update the 'nanosecond' column in the 'event_time_of_days' collection.
+    - name: second
+      type: UpdateColumnEventTimeOfDaysSecond
+      description: Update the 'second' column in the 'event_time_of_days' collection.
+  graphql:
+    typeName: UpdateEventTimeOfDaysByIdUpdateColumns
+    inputTypeName: UpdateEventTimeOfDaysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_time_of_days_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventTimeOfDaysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventTimeOfDaysByIdResponse
+  description: Responses from the 'update_event_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventTimeOfDaysByIdResponse
+    inputTypeName: UpdateEventTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventTimeOfDaysById
+  outputType: UpdateEventTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventTimeOfDaysBoolExp
+      description: Update permission post-condition predicate over the
+        'event_time_of_days' collection
+    - name: preCheck
+      type: EventTimeOfDaysBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_time_of_days' collection
+    - name: updateColumns
+      type: UpdateEventTimeOfDaysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_time_of_days' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoUrls
+  fields:
+    - name: contactInfoId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoUrls
+    inputTypeName: AffiliationinfoUrlsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_urls
+      fieldMapping:
+        contactInfoId:
+          column:
+            name: contact_info_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoUrls
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactInfoId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoUrlsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoUrls
+      comparableFields:
+        - fieldName: contactInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoUrlsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoUrlsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoUrls
+      aggregatableFields:
+        - fieldName: contactInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoUrlsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoUrlsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoUrls
+      orderableFields:
+        - fieldName: contactInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoUrlsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoUrls
+  objectType: AffiliationinfoUrls
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_urls
+  filterExpressionType: AffiliationinfoUrlsBoolExp
+  aggregateExpression: AffiliationinfoUrlsAggExp
+  orderByExpression: AffiliationinfoUrlsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoUrls
+      subscription:
+        rootField: affiliationinfoUrls
+    selectUniques:
+      - queryRootField: affiliationinfoUrlsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoUrlsById
+    filterInputTypeName: AffiliationinfoUrlsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoUrlsAggregate
+      subscription:
+        rootField: affiliationinfoUrlsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoUrls
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

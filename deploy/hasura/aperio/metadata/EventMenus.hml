@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventMenus
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnit
+      type: String_1
+    - name: foodAndBeverageId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+    - name: quantityId
+      type: String_1
+  graphql:
+    typeName: EventMenus
+    inputTypeName: EventMenusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_menus
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnit:
+          column:
+            name: charge_unit
+        foodAndBeverageId:
+          column:
+            name: food_and_beverage_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        quantityId:
+          column:
+            name: quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventMenus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnit
+          - foodAndBeverageId
+          - id
+          - name
+          - quantityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventMenusBoolExp
+  operand:
+    object:
+      type: EventMenus
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chargeUnit
+          booleanExpressionType: TextBoolExp
+        - fieldName: foodAndBeverageId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventMenusBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventMenusAggExp
+  operand:
+    object:
+      aggregatedType: EventMenus
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: chargeUnit
+          aggregateExpression: TextAggExp
+        - fieldName: foodAndBeverageId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: quantityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventMenusAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventMenusOrderByExp
+  operand:
+    object:
+      orderedType: EventMenus
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: chargeUnit
+          orderByExpression: String1OrderByExp
+        - fieldName: foodAndBeverageId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: quantityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventMenusOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventMenus
+  objectType: EventMenus
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_menus
+  filterExpressionType: EventMenusBoolExp
+  aggregateExpression: EventMenusAggExp
+  orderByExpression: EventMenusOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventMenus
+      subscription:
+        rootField: eventMenus
+    selectUniques:
+      - queryRootField: eventMenusById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventMenusById
+    filterInputTypeName: EventMenusFilterInput
+    aggregate:
+      queryRootField: eventMenusAggregate
+      subscription:
+        rootField: eventMenusAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventMenus
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

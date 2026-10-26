@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantUrls
+  fields:
+    - name: contactInfoRootId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RestaurantUrls
+    inputTypeName: RestaurantUrlsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_urls
+      fieldMapping:
+        contactInfoRootId:
+          column:
+            name: contact_info_root_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantUrls
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactInfoRootId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantUrlsBoolExp
+  operand:
+    object:
+      type: RestaurantUrls
+      comparableFields:
+        - fieldName: contactInfoRootId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantUrlsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantUrlsAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantUrls
+      aggregatableFields:
+        - fieldName: contactInfoRootId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantUrlsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantUrlsOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantUrls
+      orderableFields:
+        - fieldName: contactInfoRootId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantUrlsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantUrls
+  objectType: RestaurantUrls
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_urls
+  filterExpressionType: RestaurantUrlsBoolExp
+  aggregateExpression: RestaurantUrlsAggExp
+  orderByExpression: RestaurantUrlsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantUrls
+      subscription:
+        rootField: restaurantUrls
+    selectUniques:
+      - queryRootField: restaurantUrlsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantUrlsById
+    filterInputTypeName: RestaurantUrlsFilterInput
+    aggregate:
+      queryRootField: restaurantUrlsAggregate
+      subscription:
+        rootField: restaurantUrlsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantUrls
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

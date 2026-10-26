@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateBldgRooms
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateBldgRooms
+    inputTypeName: RateBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_bldg_rooms
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateBldgRoomsBoolExp
+  operand:
+    object:
+      type: RateBldgRooms
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: addressInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: RateBldgRooms
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: addressInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: RateBldgRooms
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: addressInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateBldgRooms
+  objectType: RateBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_bldg_rooms
+  filterExpressionType: RateBldgRoomsBoolExp
+  aggregateExpression: RateBldgRoomsAggExp
+  orderByExpression: RateBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateBldgRooms
+      subscription:
+        rootField: rateBldgRooms
+    selectUniques:
+      - queryRootField: rateBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateBldgRoomsById
+    filterInputTypeName: RateBldgRoomsFilterInput
+    aggregate:
+      queryRootField: rateBldgRoomsAggregate
+      subscription:
+        rootField: rateBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

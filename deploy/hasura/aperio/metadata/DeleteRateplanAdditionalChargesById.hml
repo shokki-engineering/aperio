@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanAdditionalChargesByIdResponse
+  description: Responses from the 'delete_rateplan_additional_charges_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanAdditionalCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanAdditionalChargesByIdResponse
+    inputTypeName: DeleteRateplanAdditionalChargesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_additional_charges_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanAdditionalChargesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanAdditionalChargesById
+  outputType: DeleteRateplanAdditionalChargesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanAdditionalChargesBoolExp
+      description: Delete permission predicate over the 'rateplan_additional_charges'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_additional_charges_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanAdditionalChargesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_additional_charges' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanAdditionalChargesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteTransientrfpJobTitlesByIdResponse
+  description: Responses from the 'delete_transientrfp_job_titles_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[TransientrfpJobTitles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteTransientrfpJobTitlesByIdResponse
+    inputTypeName: DeleteTransientrfpJobTitlesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_transientrfp_job_titles_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteTransientrfpJobTitlesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteTransientrfpJobTitlesById
+  outputType: DeleteTransientrfpJobTitlesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: TransientrfpJobTitlesBoolExp
+      description: Delete permission predicate over the 'transientrfp_job_titles' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_transientrfp_job_titles_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteTransientrfpJobTitlesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'transientrfp_job_titles' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteTransientrfpJobTitlesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

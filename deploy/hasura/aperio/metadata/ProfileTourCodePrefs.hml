@@ -1,0 +1,199 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileTourCodePrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: airlineVendorPrefRphs
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: passengerTypeCode
+      type: String_1
+    - name: staffTourCodeInfoId
+      type: String_1
+    - name: tourCodeInfoId
+      type: String_1
+    - name: tourCodeInfoOrStaffTourCodeInfoCase
+      type: Enum
+    - name: transferAction
+      type: Enum
+  graphql:
+    typeName: ProfileTourCodePrefs
+    inputTypeName: ProfileTourCodePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_tour_code_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        airlineVendorPrefRphs:
+          column:
+            name: airline_vendor_pref_rphs
+        id:
+          column:
+            name: id
+        passengerTypeCode:
+          column:
+            name: passenger_type_code
+        staffTourCodeInfoId:
+          column:
+            name: staff_tour_code_info_id
+        tourCodeInfoId:
+          column:
+            name: tour_code_info_id
+        tourCodeInfoOrStaffTourCodeInfoCase:
+          column:
+            name: tour_code_info_or_staff_tour_code_info_case
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileTourCodePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - airlineVendorPrefRphs
+          - id
+          - passengerTypeCode
+          - staffTourCodeInfoId
+          - tourCodeInfoId
+          - tourCodeInfoOrStaffTourCodeInfoCase
+          - transferAction
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileTourCodePrefsBoolExp
+  operand:
+    object:
+      type: ProfileTourCodePrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: passengerTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: staffTourCodeInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: tourCodeInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: tourCodeInfoOrStaffTourCodeInfoCase
+          booleanExpressionType: ProfileTourCodePrefTourCodeInfoOrStaffTourCodeInfoCaseBoolExp
+        - fieldName: transferAction
+          booleanExpressionType: ProfileTransferActionBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileTourCodePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileTourCodePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileTourCodePrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: passengerTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: staffTourCodeInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: tourCodeInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: tourCodeInfoOrStaffTourCodeInfoCase
+          aggregateExpression: ProfileTourCodePrefTourCodeInfoOrStaffTourCodeInfoCaseAggExp
+        - fieldName: transferAction
+          aggregateExpression: ProfileTransferActionAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileTourCodePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileTourCodePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileTourCodePrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: passengerTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: staffTourCodeInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: tourCodeInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: tourCodeInfoOrStaffTourCodeInfoCase
+          orderByExpression: EnumOrderByExp
+        - fieldName: transferAction
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileTourCodePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileTourCodePrefs
+  objectType: ProfileTourCodePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_tour_code_prefs
+  filterExpressionType: ProfileTourCodePrefsBoolExp
+  aggregateExpression: ProfileTourCodePrefsAggExp
+  orderByExpression: ProfileTourCodePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileTourCodePrefs
+      subscription:
+        rootField: profileTourCodePrefs
+    selectUniques:
+      - queryRootField: profileTourCodePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileTourCodePrefsById
+    filterInputTypeName: ProfileTourCodePrefsFilterInput
+    aggregate:
+      queryRootField: profileTourCodePrefsAggregate
+      subscription:
+        rootField: profileTourCodePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileTourCodePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanUniqueIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+    - name: viewershipId
+      type: String_1!
+  graphql:
+    typeName: RateplanUniqueIds
+    inputTypeName: RateplanUniqueIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_unique_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanUniqueIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+          - viewershipId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanUniqueIdsBoolExp
+  operand:
+    object:
+      type: RateplanUniqueIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: RateplanRateplanUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanUniqueIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanUniqueIdsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanUniqueIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: RateplanRateplanUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanUniqueIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanUniqueIdsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanUniqueIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanUniqueIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanUniqueIds
+  objectType: RateplanUniqueIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_unique_ids
+  filterExpressionType: RateplanUniqueIdsBoolExp
+  aggregateExpression: RateplanUniqueIdsAggExp
+  orderByExpression: RateplanUniqueIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanUniqueIds
+      subscription:
+        rootField: rateplanUniqueIds
+    selectUniques:
+      - queryRootField: rateplanUniqueIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanUniqueIdsById
+    filterInputTypeName: RateplanUniqueIdsFilterInput
+    aggregate:
+      queryRootField: rateplanUniqueIdsAggregate
+      subscription:
+        rootField: rateplanUniqueIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanUniqueIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

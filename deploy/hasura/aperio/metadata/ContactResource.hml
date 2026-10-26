@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ContactResource
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: contactProfileType
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: location
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: ContactResource
+    inputTypeName: ContactResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: contact_resource
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        contactProfileType:
+          column:
+            name: contact_profile_type
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        location:
+          column:
+            name: location
+        name:
+          column:
+            name: name
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ContactResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - contactProfileType
+          - createTime
+          - deleteTime
+          - etag
+          - expireTime
+          - hotelId
+          - id
+          - location
+          - name
+          - uid
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ContactResourceBoolExp
+  operand:
+    object:
+      type: ContactResource
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactProfileType
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: hotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: location
+          booleanExpressionType: ContactContactContactLocationBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ContactResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ContactResourceAggExp
+  operand:
+    object:
+      aggregatedType: ContactResource
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: contactProfileType
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: hotelId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: location
+          aggregateExpression: ContactContactContactLocationAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ContactResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ContactResourceOrderByExp
+  operand:
+    object:
+      orderedType: ContactResource
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactProfileType
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: hotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: location
+          orderByExpression: EnumOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ContactResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ContactResource
+  objectType: ContactResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: contact_resource
+  filterExpressionType: ContactResourceBoolExp
+  aggregateExpression: ContactResourceAggExp
+  orderByExpression: ContactResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: contactResource
+      subscription:
+        rootField: contactResource
+    selectUniques:
+      - queryRootField: contactResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: contactResourceById
+    filterInputTypeName: ContactResourceFilterInput
+    aggregate:
+      queryRootField: contactResourceAggregate
+      subscription:
+        rootField: contactResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ContactResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationStartDateWindowsObject
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: InsertReservationStartDateWindowsObject
+    inputTypeName: InsertReservationStartDateWindowsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_start_date_windows_object
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationStartDateWindowsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationStartDateWindowsResponse
+  description: Responses from the 'insert_reservation_start_date_windows' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationStartDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationStartDateWindowsResponse
+    inputTypeName: InsertReservationStartDateWindowsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_start_date_windows_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationStartDateWindowsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationStartDateWindows
+  outputType: InsertReservationStartDateWindowsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationStartDateWindowsObject!]!"
+    - name: postCheck
+      type: ReservationStartDateWindowsBoolExp
+      description: Insert permission predicate over the
+        'reservation_start_date_windows' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_start_date_windows
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationStartDateWindows
+    rootFieldKind: Mutation
+  description: Insert into the reservation_start_date_windows table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationStartDateWindows
+  permissions:
+    - role: admin
+      allowExecution: true
+

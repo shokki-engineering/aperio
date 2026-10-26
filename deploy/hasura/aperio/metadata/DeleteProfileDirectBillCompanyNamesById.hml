@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteProfileDirectBillCompanyNamesByIdResponse
+  description: Responses from the 'delete_profile_direct_bill_company_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileDirectBillCompanyNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteProfileDirectBillCompanyNamesByIdResponse
+    inputTypeName: DeleteProfileDirectBillCompanyNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_profile_direct_bill_company_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteProfileDirectBillCompanyNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteProfileDirectBillCompanyNamesById
+  outputType: DeleteProfileDirectBillCompanyNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ProfileDirectBillCompanyNamesBoolExp
+      description: Delete permission predicate over the
+        'profile_direct_bill_company_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_profile_direct_bill_company_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteProfileDirectBillCompanyNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'profile_direct_bill_company_names'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteProfileDirectBillCompanyNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

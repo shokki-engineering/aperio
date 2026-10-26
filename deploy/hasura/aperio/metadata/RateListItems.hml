@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateListItems
+  fields:
+    - name: commentId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateListItems
+    inputTypeName: RateListItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_list_items
+      fieldMapping:
+        commentId:
+          column:
+            name: comment_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateListItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentId
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateListItemsBoolExp
+  operand:
+    object:
+      type: RateListItems
+      comparableFields:
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: RateRateFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateListItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateListItemsAggExp
+  operand:
+    object:
+      aggregatedType: RateListItems
+      aggregatableFields:
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: RateRateFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateListItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateListItemsOrderByExp
+  operand:
+    object:
+      orderedType: RateListItems
+      orderableFields:
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateListItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateListItems
+  objectType: RateListItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_list_items
+  filterExpressionType: RateListItemsBoolExp
+  aggregateExpression: RateListItemsAggExp
+  orderByExpression: RateListItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateListItems
+      subscription:
+        rootField: rateListItems
+    selectUniques:
+      - queryRootField: rateListItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateListItemsById
+    filterInputTypeName: RateListItemsFilterInput
+    aggregate:
+      queryRootField: rateListItemsAggregate
+      subscription:
+        rootField: rateListItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateListItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

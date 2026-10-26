@@ -1,0 +1,310 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateGuaranteeDeadlinesAbsoluteDeadlineId
+  description: Update the 'absolute_deadline_id' column in the
+    'rate_guarantee_deadlines' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateGuaranteeDeadlinesAbsoluteDeadlineId
+    inputTypeName: UpdateColumnRateGuaranteeDeadlinesAbsoluteDeadlineIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_guarantee_deadlines_absolute_deadline_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateGuaranteeDeadlinesAbsoluteDeadlineId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateGuaranteeDeadlinesId
+  description: Update the 'id' column in the 'rate_guarantee_deadlines' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateGuaranteeDeadlinesId
+    inputTypeName: UpdateColumnRateGuaranteeDeadlinesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_guarantee_deadlines_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateGuaranteeDeadlinesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateGuaranteeDeadlinesOffsetDropPoint
+  description: Update the 'offset_drop_point' column in the
+    'rate_guarantee_deadlines' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateGuaranteeDeadlinesOffsetDropPoint
+    inputTypeName: UpdateColumnRateGuaranteeDeadlinesOffsetDropPointInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_guarantee_deadlines_offset_drop_point
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateGuaranteeDeadlinesOffsetDropPoint
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateGuaranteeDeadlinesOffsetTimeUnit
+  description: Update the 'offset_time_unit' column in the
+    'rate_guarantee_deadlines' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateGuaranteeDeadlinesOffsetTimeUnit
+    inputTypeName: UpdateColumnRateGuaranteeDeadlinesOffsetTimeUnitInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_guarantee_deadlines_offset_time_unit
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateGuaranteeDeadlinesOffsetTimeUnit
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateGuaranteeDeadlinesOffsetUnitMultiplier
+  description: Update the 'offset_unit_multiplier' column in the
+    'rate_guarantee_deadlines' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateGuaranteeDeadlinesOffsetUnitMultiplier
+    inputTypeName: UpdateColumnRateGuaranteeDeadlinesOffsetUnitMultiplierInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_guarantee_deadlines_offset_unit_multiplier
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateGuaranteeDeadlinesOffsetUnitMultiplier
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateGuaranteeDeadlinesByIdUpdateColumns
+  description: Update the columns of the 'rate_guarantee_deadlines' collection
+  fields:
+    - name: absoluteDeadlineId
+      type: UpdateColumnRateGuaranteeDeadlinesAbsoluteDeadlineId
+      description: Update the 'absolute_deadline_id' column in the
+        'rate_guarantee_deadlines' collection.
+    - name: id
+      type: UpdateColumnRateGuaranteeDeadlinesId
+      description: Update the 'id' column in the 'rate_guarantee_deadlines' collection.
+    - name: offsetDropPoint
+      type: UpdateColumnRateGuaranteeDeadlinesOffsetDropPoint
+      description: Update the 'offset_drop_point' column in the
+        'rate_guarantee_deadlines' collection.
+    - name: offsetTimeUnit
+      type: UpdateColumnRateGuaranteeDeadlinesOffsetTimeUnit
+      description: Update the 'offset_time_unit' column in the
+        'rate_guarantee_deadlines' collection.
+    - name: offsetUnitMultiplier
+      type: UpdateColumnRateGuaranteeDeadlinesOffsetUnitMultiplier
+      description: Update the 'offset_unit_multiplier' column in the
+        'rate_guarantee_deadlines' collection.
+  graphql:
+    typeName: UpdateRateGuaranteeDeadlinesByIdUpdateColumns
+    inputTypeName: UpdateRateGuaranteeDeadlinesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_guarantee_deadlines_by_id_update_columns
+      fieldMapping:
+        absoluteDeadlineId:
+          column:
+            name: absolute_deadline_id
+        id:
+          column:
+            name: id
+        offsetDropPoint:
+          column:
+            name: offset_drop_point
+        offsetTimeUnit:
+          column:
+            name: offset_time_unit
+        offsetUnitMultiplier:
+          column:
+            name: offset_unit_multiplier
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateGuaranteeDeadlinesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteDeadlineId
+          - id
+          - offsetDropPoint
+          - offsetTimeUnit
+          - offsetUnitMultiplier
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateGuaranteeDeadlinesByIdResponse
+  description: Responses from the 'update_rate_guarantee_deadlines_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateGuaranteeDeadlines!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateGuaranteeDeadlinesByIdResponse
+    inputTypeName: UpdateRateGuaranteeDeadlinesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_guarantee_deadlines_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateGuaranteeDeadlinesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateGuaranteeDeadlinesById
+  outputType: UpdateRateGuaranteeDeadlinesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateGuaranteeDeadlinesBoolExp
+      description: Update permission post-condition predicate over the
+        'rate_guarantee_deadlines' collection
+    - name: preCheck
+      type: RateGuaranteeDeadlinesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rate_guarantee_deadlines' collection
+    - name: updateColumns
+      type: UpdateRateGuaranteeDeadlinesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rate_guarantee_deadlines_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateGuaranteeDeadlinesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rate_guarantee_deadlines' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateGuaranteeDeadlinesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

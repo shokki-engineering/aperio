@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportPostEventSiteReportDatesObject
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertEventreportPostEventSiteReportDatesObject
+    inputTypeName: InsertEventreportPostEventSiteReportDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_post_event_site_report_dates_object
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportPostEventSiteReportDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportPostEventSiteReportDatesResponse
+  description: Responses from the
+    'insert_eventreport_post_event_site_report_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportPostEventSiteReportDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportPostEventSiteReportDatesResponse
+    inputTypeName: InsertEventreportPostEventSiteReportDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_post_event_site_report_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportPostEventSiteReportDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportPostEventSiteReportDates
+  outputType: InsertEventreportPostEventSiteReportDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportPostEventSiteReportDatesObject!]!"
+    - name: postCheck
+      type: EventreportPostEventSiteReportDatesBoolExp
+      description: Insert permission predicate over the
+        'eventreport_post_event_site_report_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_post_event_site_report_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportPostEventSiteReportDates
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_post_event_site_report_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportPostEventSiteReportDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

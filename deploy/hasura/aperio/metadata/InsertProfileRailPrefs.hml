@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPrefsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railTicketType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: smokingAllowed
+      type: Boolean_1
+  graphql:
+    typeName: InsertProfileRailPrefsObject
+    inputTypeName: InsertProfileRailPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_prefs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        preferLevel:
+          column:
+            name: prefer_level
+        railTicketType:
+          column:
+            name: rail_ticket_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - prefCollectionId
+          - preferLevel
+          - railTicketType
+          - shareMarketInd
+          - shareSynchInd
+          - smokingAllowed
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPrefsResponse
+  description: Responses from the 'insert_profile_rail_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileRailPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileRailPrefsResponse
+    inputTypeName: InsertProfileRailPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileRailPrefs
+  outputType: InsertProfileRailPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileRailPrefsObject!]!"
+    - name: postCheck
+      type: ProfileRailPrefsBoolExp
+      description: Insert permission predicate over the 'profile_rail_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_rail_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileRailPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_rail_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileRailPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

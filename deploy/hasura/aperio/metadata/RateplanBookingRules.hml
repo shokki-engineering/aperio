@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanBookingRules
+  fields:
+    - name: id
+      type: String_1!
+    - name: inventoryInfoId
+      type: String_1
+  graphql:
+    typeName: RateplanBookingRules
+    inputTypeName: RateplanBookingRulesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_booking_rules
+      fieldMapping:
+        id:
+          column:
+            name: id
+        inventoryInfoId:
+          column:
+            name: inventory_info_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanBookingRules
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - inventoryInfoId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanBookingRulesBoolExp
+  operand:
+    object:
+      type: RateplanBookingRules
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: inventoryInfoId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanBookingRulesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanBookingRulesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanBookingRules
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: inventoryInfoId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanBookingRulesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanBookingRulesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanBookingRules
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: inventoryInfoId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanBookingRulesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanBookingRules
+  objectType: RateplanBookingRules
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_booking_rules
+  filterExpressionType: RateplanBookingRulesBoolExp
+  aggregateExpression: RateplanBookingRulesAggExp
+  orderByExpression: RateplanBookingRulesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanBookingRules
+      subscription:
+        rootField: rateplanBookingRules
+    selectUniques:
+      - queryRootField: rateplanBookingRulesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanBookingRulesById
+    filterInputTypeName: RateplanBookingRulesFilterInput
+    aggregate:
+      queryRootField: rateplanBookingRulesAggregate
+      subscription:
+        rootField: rateplanBookingRulesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanBookingRules
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

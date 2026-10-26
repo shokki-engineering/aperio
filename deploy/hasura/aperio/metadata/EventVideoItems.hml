@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventVideoItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventVideoItems
+    inputTypeName: EventVideoItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_video_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventVideoItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventVideoItemsBoolExp
+  operand:
+    object:
+      type: EventVideoItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventVideoItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventVideoItemsAggExp
+  operand:
+    object:
+      aggregatedType: EventVideoItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventVideoItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventVideoItemsOrderByExp
+  operand:
+    object:
+      orderedType: EventVideoItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventVideoItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventVideoItems
+  objectType: EventVideoItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_video_items
+  filterExpressionType: EventVideoItemsBoolExp
+  aggregateExpression: EventVideoItemsAggExp
+  orderByExpression: EventVideoItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventVideoItems
+      subscription:
+        rootField: eventVideoItems
+    selectUniques:
+      - queryRootField: eventVideoItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventVideoItemsById
+    filterInputTypeName: EventVideoItemsFilterInput
+    aggregate:
+      queryRootField: eventVideoItemsAggregate
+      subscription:
+        rootField: eventVideoItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventVideoItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

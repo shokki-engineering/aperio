@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationOperationSchedules
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: ReservationOperationSchedules
+    inputTypeName: ReservationOperationSchedulesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_operation_schedules
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationOperationSchedules
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationOperationSchedulesBoolExp
+  operand:
+    object:
+      type: ReservationOperationSchedules
+      comparableFields:
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationOperationSchedulesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationOperationSchedulesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationOperationSchedules
+      aggregatableFields:
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationOperationSchedulesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationOperationSchedulesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationOperationSchedules
+      orderableFields:
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationOperationSchedulesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationOperationSchedules
+  objectType: ReservationOperationSchedules
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_operation_schedules
+  filterExpressionType: ReservationOperationSchedulesBoolExp
+  aggregateExpression: ReservationOperationSchedulesAggExp
+  orderByExpression: ReservationOperationSchedulesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationOperationSchedules
+      subscription:
+        rootField: reservationOperationSchedules
+    selectUniques:
+      - queryRootField: reservationOperationSchedulesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationOperationSchedulesById
+    filterInputTypeName: ReservationOperationSchedulesFilterInput
+    aggregate:
+      queryRootField: reservationOperationSchedulesAggregate
+      subscription:
+        rootField: reservationOperationSchedulesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationOperationSchedules
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

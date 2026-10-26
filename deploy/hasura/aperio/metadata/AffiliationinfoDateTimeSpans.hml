@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoDateTimeSpans
+  fields:
+    - name: dateWindowRangeId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endDateWindowId
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: loyalProgramId
+      type: String_1!
+    - name: startDateWindowId
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoDateTimeSpans
+    inputTypeName: AffiliationinfoDateTimeSpansInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_date_time_spans
+      fieldMapping:
+        dateWindowRangeId:
+          column:
+            name: date_window_range_id
+        duration:
+          column:
+            name: duration
+        endDateWindowId:
+          column:
+            name: end_date_window_id
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        loyalProgramId:
+          column:
+            name: loyal_program_id
+        startDateWindowId:
+          column:
+            name: start_date_window_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoDateTimeSpans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateWindowRangeId
+          - duration
+          - endDateWindowId
+          - endId
+          - id
+          - loyalProgramId
+          - startDateWindowId
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoDateTimeSpansBoolExp
+  operand:
+    object:
+      type: AffiliationinfoDateTimeSpans
+      comparableFields:
+        - fieldName: dateWindowRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: loyalProgramId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoDateTimeSpansBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoDateTimeSpansAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoDateTimeSpans
+      aggregatableFields:
+        - fieldName: dateWindowRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: loyalProgramId
+          aggregateExpression: TextAggExp
+        - fieldName: startDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoDateTimeSpansAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoDateTimeSpansOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoDateTimeSpans
+      orderableFields:
+        - fieldName: dateWindowRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: loyalProgramId
+          orderByExpression: String1OrderByExp
+        - fieldName: startDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoDateTimeSpansOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoDateTimeSpans
+  objectType: AffiliationinfoDateTimeSpans
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_date_time_spans
+  filterExpressionType: AffiliationinfoDateTimeSpansBoolExp
+  aggregateExpression: AffiliationinfoDateTimeSpansAggExp
+  orderByExpression: AffiliationinfoDateTimeSpansOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoDateTimeSpans
+      subscription:
+        rootField: affiliationinfoDateTimeSpans
+    selectUniques:
+      - queryRootField: affiliationinfoDateTimeSpansById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoDateTimeSpansById
+    filterInputTypeName: AffiliationinfoDateTimeSpansFilterInput
+    aggregate:
+      queryRootField: affiliationinfoDateTimeSpansAggregate
+      subscription:
+        rootField: affiliationinfoDateTimeSpansAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoDateTimeSpans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

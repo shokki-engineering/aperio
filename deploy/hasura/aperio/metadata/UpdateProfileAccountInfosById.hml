@@ -1,0 +1,346 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccountInfosClientReference
+  description: Update the 'client_reference' column in the 'profile_account_infos'
+    collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccountInfosClientReference
+    inputTypeName: UpdateColumnProfileAccountInfosClientReferenceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_account_infos_client_reference
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccountInfosClientReference
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccountInfosCompanyNumber
+  description: Update the 'company_number' column in the 'profile_account_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccountInfosCompanyNumber
+    inputTypeName: UpdateColumnProfileAccountInfosCompanyNumberInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_account_infos_company_number
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccountInfosCompanyNumber
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccountInfosCostCenter
+  description: Update the 'cost_center' column in the 'profile_account_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccountInfosCostCenter
+    inputTypeName: UpdateColumnProfileAccountInfosCostCenterInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_account_infos_cost_center
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccountInfosCostCenter
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccountInfosId
+  description: Update the 'id' column in the 'profile_account_infos' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccountInfosId
+    inputTypeName: UpdateColumnProfileAccountInfosIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_account_infos_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccountInfosId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccountInfosNumber
+  description: Update the 'number' column in the 'profile_account_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccountInfosNumber
+    inputTypeName: UpdateColumnProfileAccountInfosNumberInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_account_infos_number
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccountInfosNumber
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccountInfosTaxRegistrationDetailsId
+  description: Update the 'tax_registration_details_id' column in the
+    'profile_account_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccountInfosTaxRegistrationDetailsId
+    inputTypeName: UpdateColumnProfileAccountInfosTaxRegistrationDetailsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_account_infos_tax_registration_details_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccountInfosTaxRegistrationDetailsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAccountInfosByIdUpdateColumns
+  description: Update the columns of the 'profile_account_infos' collection
+  fields:
+    - name: clientReference
+      type: UpdateColumnProfileAccountInfosClientReference
+      description: Update the 'client_reference' column in the 'profile_account_infos'
+        collection.
+    - name: companyNumber
+      type: UpdateColumnProfileAccountInfosCompanyNumber
+      description: Update the 'company_number' column in the 'profile_account_infos'
+        collection.
+    - name: costCenter
+      type: UpdateColumnProfileAccountInfosCostCenter
+      description: Update the 'cost_center' column in the 'profile_account_infos'
+        collection.
+    - name: id
+      type: UpdateColumnProfileAccountInfosId
+      description: Update the 'id' column in the 'profile_account_infos' collection.
+    - name: number
+      type: UpdateColumnProfileAccountInfosNumber
+      description: Update the 'number' column in the 'profile_account_infos' collection.
+    - name: taxRegistrationDetailsId
+      type: UpdateColumnProfileAccountInfosTaxRegistrationDetailsId
+      description: Update the 'tax_registration_details_id' column in the
+        'profile_account_infos' collection.
+  graphql:
+    typeName: UpdateProfileAccountInfosByIdUpdateColumns
+    inputTypeName: UpdateProfileAccountInfosByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_account_infos_by_id_update_columns
+      fieldMapping:
+        clientReference:
+          column:
+            name: client_reference
+        companyNumber:
+          column:
+            name: company_number
+        costCenter:
+          column:
+            name: cost_center
+        id:
+          column:
+            name: id
+        number:
+          column:
+            name: number
+        taxRegistrationDetailsId:
+          column:
+            name: tax_registration_details_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAccountInfosByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clientReference
+          - companyNumber
+          - costCenter
+          - id
+          - number
+          - taxRegistrationDetailsId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAccountInfosByIdResponse
+  description: Responses from the 'update_profile_account_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAccountInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileAccountInfosByIdResponse
+    inputTypeName: UpdateProfileAccountInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_account_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAccountInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileAccountInfosById
+  outputType: UpdateProfileAccountInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileAccountInfosBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_account_infos' collection
+    - name: preCheck
+      type: ProfileAccountInfosBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_account_infos' collection
+    - name: updateColumns
+      type: UpdateProfileAccountInfosByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_account_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileAccountInfosById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_account_infos' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileAccountInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

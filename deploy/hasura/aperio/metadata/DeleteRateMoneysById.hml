@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateMoneysByIdResponse
+  description: Responses from the 'delete_rate_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateMoneysByIdResponse
+    inputTypeName: DeleteRateMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rate_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateMoneysById
+  outputType: DeleteRateMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateMoneysBoolExp
+      description: Delete permission predicate over the 'rate_moneys' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rate_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateMoneysById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rate_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

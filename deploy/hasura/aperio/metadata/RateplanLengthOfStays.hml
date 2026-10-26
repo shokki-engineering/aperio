@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanLengthOfStays
+  fields:
+    - name: id
+      type: String_1!
+    - name: length
+      type: Int32
+    - name: lengthsOfStayId
+      type: String_1!
+    - name: losPatternId
+      type: String_1
+    - name: minMaxMessageType
+      type: Enum
+    - name: openStatusIndicator
+      type: Boolean_1
+    - name: timeUnit
+      type: Enum
+  graphql:
+    typeName: RateplanLengthOfStays
+    inputTypeName: RateplanLengthOfStaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_length_of_stays
+      fieldMapping:
+        id:
+          column:
+            name: id
+        length:
+          column:
+            name: length
+        lengthsOfStayId:
+          column:
+            name: lengths_of_stay_id
+        losPatternId:
+          column:
+            name: los_pattern_id
+        minMaxMessageType:
+          column:
+            name: min_max_message_type
+        openStatusIndicator:
+          column:
+            name: open_status_indicator
+        timeUnit:
+          column:
+            name: time_unit
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanLengthOfStays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - length
+          - lengthsOfStayId
+          - losPatternId
+          - minMaxMessageType
+          - openStatusIndicator
+          - timeUnit
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanLengthOfStaysBoolExp
+  operand:
+    object:
+      type: RateplanLengthOfStays
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: length
+          booleanExpressionType: Int4BoolExp
+        - fieldName: lengthsOfStayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: losPatternId
+          booleanExpressionType: TextBoolExp
+        - fieldName: minMaxMessageType
+          booleanExpressionType: RateplanRateplanMinMaxMessageTypeBoolExp
+        - fieldName: openStatusIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: timeUnit
+          booleanExpressionType: RateplanRateplanTimeUnitBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanLengthOfStaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanLengthOfStaysAggExp
+  operand:
+    object:
+      aggregatedType: RateplanLengthOfStays
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: length
+          aggregateExpression: Int4AggExp
+        - fieldName: lengthsOfStayId
+          aggregateExpression: TextAggExp
+        - fieldName: losPatternId
+          aggregateExpression: TextAggExp
+        - fieldName: minMaxMessageType
+          aggregateExpression: RateplanRateplanMinMaxMessageTypeAggExp
+        - fieldName: openStatusIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: timeUnit
+          aggregateExpression: RateplanRateplanTimeUnitAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanLengthOfStaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanLengthOfStaysOrderByExp
+  operand:
+    object:
+      orderedType: RateplanLengthOfStays
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: length
+          orderByExpression: Int32OrderByExp
+        - fieldName: lengthsOfStayId
+          orderByExpression: String1OrderByExp
+        - fieldName: losPatternId
+          orderByExpression: String1OrderByExp
+        - fieldName: minMaxMessageType
+          orderByExpression: EnumOrderByExp
+        - fieldName: openStatusIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: timeUnit
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanLengthOfStaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanLengthOfStays
+  objectType: RateplanLengthOfStays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_length_of_stays
+  filterExpressionType: RateplanLengthOfStaysBoolExp
+  aggregateExpression: RateplanLengthOfStaysAggExp
+  orderByExpression: RateplanLengthOfStaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanLengthOfStays
+      subscription:
+        rootField: rateplanLengthOfStays
+    selectUniques:
+      - queryRootField: rateplanLengthOfStaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanLengthOfStaysById
+    filterInputTypeName: RateplanLengthOfStaysFilterInput
+    aggregate:
+      queryRootField: rateplanLengthOfStaysAggregate
+      subscription:
+        rootField: rateplanLengthOfStaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanLengthOfStays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

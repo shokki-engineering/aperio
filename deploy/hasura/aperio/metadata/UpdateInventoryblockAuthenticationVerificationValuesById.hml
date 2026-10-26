@@ -1,0 +1,274 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockAuthenticationVerificationValuesId
+  description: Update the 'id' column in the
+    'inventoryblock_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesId
+    inputTypeName: UpdateColumnInventoryblockAuthenticationVerificationValuesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_authentication_verification_values_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockAuthenticationVerificationValuesPlainText
+  description: Update the 'plain_text' column in the
+    'inventoryblock_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesPlainText
+    inputTypeName: UpdateColumnInventoryblockAuthenticationVerificationValuesPlainTextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_authentication_verification_values_plain_text
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesPlainText
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureId
+  description: Update the 'secure_id' column in the
+    'inventoryblock_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureId
+    inputTypeName: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_authentication_verification_values_secure_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureOrPlainTextCase
+  description: Update the 'secure_or_plain_text_case' column in the
+    'inventoryblock_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureOrPlainTextCase
+    inputTypeName: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureOrPlainTextCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_authentication_verification_values_secure_or_plain_text_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureOrPlainTextCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockAuthenticationVerificationValuesByIdUpdateColumns
+  description: Update the columns of the
+    'inventoryblock_authentication_verification_values' collection
+  fields:
+    - name: id
+      type: UpdateColumnInventoryblockAuthenticationVerificationValuesId
+      description: Update the 'id' column in the
+        'inventoryblock_authentication_verification_values' collection.
+    - name: plainText
+      type: UpdateColumnInventoryblockAuthenticationVerificationValuesPlainText
+      description: Update the 'plain_text' column in the
+        'inventoryblock_authentication_verification_values' collection.
+    - name: secureId
+      type: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureId
+      description: Update the 'secure_id' column in the
+        'inventoryblock_authentication_verification_values' collection.
+    - name: secureOrPlainTextCase
+      type: UpdateColumnInventoryblockAuthenticationVerificationValuesSecureOrPlainTextCase
+      description: Update the 'secure_or_plain_text_case' column in the
+        'inventoryblock_authentication_verification_values' collection.
+  graphql:
+    typeName: UpdateInventoryblockAuthenticationVerificationValuesByIdUpdateColumns
+    inputTypeName: UpdateInventoryblockAuthenticationVerificationValuesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_authentication_verification_values_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        plainText:
+          column:
+            name: plain_text
+        secureId:
+          column:
+            name: secure_id
+        secureOrPlainTextCase:
+          column:
+            name: secure_or_plain_text_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockAuthenticationVerificationValuesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - plainText
+          - secureId
+          - secureOrPlainTextCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockAuthenticationVerificationValuesByIdResponse
+  description: Responses from the
+    'update_inventoryblock_authentication_verification_values_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockAuthenticationVerificationValues!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateInventoryblockAuthenticationVerificationValuesByIdResponse
+    inputTypeName: UpdateInventoryblockAuthenticationVerificationValuesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_authentication_verification_values_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockAuthenticationVerificationValuesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateInventoryblockAuthenticationVerificationValuesById
+  outputType: UpdateInventoryblockAuthenticationVerificationValuesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: InventoryblockAuthenticationVerificationValuesBoolExp
+      description: Update permission post-condition predicate over the
+        'inventoryblock_authentication_verification_values' collection
+    - name: preCheck
+      type: InventoryblockAuthenticationVerificationValuesBoolExp
+      description: Update permission pre-condition predicate over the
+        'inventoryblock_authentication_verification_values' collection
+    - name: updateColumns
+      type: UpdateInventoryblockAuthenticationVerificationValuesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_inventoryblock_authentication_verification_values_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateInventoryblockAuthenticationVerificationValuesById
+    rootFieldKind: Mutation
+  description: Update any row on the
+    'inventoryblock_authentication_verification_values' collection using the
+    'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateInventoryblockAuthenticationVerificationValuesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

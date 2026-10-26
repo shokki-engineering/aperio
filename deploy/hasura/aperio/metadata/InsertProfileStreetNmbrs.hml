@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileStreetNmbrsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: poBox
+      type: String_1
+    - name: ruralRouteNmbr
+      type: String_1
+    - name: streetDirection
+      type: String_1
+    - name: streetNmbrSuffix
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileStreetNmbrsObject
+    inputTypeName: InsertProfileStreetNmbrsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_street_nmbrs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        poBox:
+          column:
+            name: po_box
+        ruralRouteNmbr:
+          column:
+            name: rural_route_nmbr
+        streetDirection:
+          column:
+            name: street_direction
+        streetNmbrSuffix:
+          column:
+            name: street_nmbr_suffix
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileStreetNmbrsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - poBox
+          - ruralRouteNmbr
+          - streetDirection
+          - streetNmbrSuffix
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileStreetNmbrsResponse
+  description: Responses from the 'insert_profile_street_nmbrs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileStreetNmbrs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileStreetNmbrsResponse
+    inputTypeName: InsertProfileStreetNmbrsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_street_nmbrs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileStreetNmbrsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileStreetNmbrs
+  outputType: InsertProfileStreetNmbrsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileStreetNmbrsObject!]!"
+    - name: postCheck
+      type: ProfileStreetNmbrsBoolExp
+      description: Insert permission predicate over the 'profile_street_nmbrs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_street_nmbrs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileStreetNmbrs
+    rootFieldKind: Mutation
+  description: Insert into the profile_street_nmbrs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileStreetNmbrs
+  permissions:
+    - role: admin
+      allowExecution: true
+

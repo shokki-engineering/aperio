@@ -1,0 +1,180 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportLocationsObject
+  fields:
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: cityDisplayName
+      type: String_1
+    - name: countryDisplayNameId
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: stateProvId
+      type: String_1
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: InsertEventreportLocationsObject
+    inputTypeName: InsertEventreportLocationsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_locations_object
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        cityDisplayName:
+          column:
+            name: city_display_name
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        id:
+          column:
+            name: id
+        stateProvId:
+          column:
+            name: state_prov_id
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportLocationsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - cityDisplayName
+          - countryDisplayNameId
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - id
+          - stateProvId
+          - ttIcode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportLocationsResponse
+  description: Responses from the 'insert_eventreport_locations' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportLocations!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportLocationsResponse
+    inputTypeName: InsertEventreportLocationsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_locations_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportLocationsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportLocations
+  outputType: InsertEventreportLocationsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportLocationsObject!]!"
+    - name: postCheck
+      type: EventreportLocationsBoolExp
+      description: Insert permission predicate over the 'eventreport_locations' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_locations
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportLocations
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_locations table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportLocations
+  permissions:
+    - role: admin
+      allowExecution: true
+

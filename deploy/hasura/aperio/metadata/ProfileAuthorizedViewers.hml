@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAuthorizedViewers
+  fields:
+    - name: commentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: viewerCode
+      type: String_1
+  graphql:
+    typeName: ProfileAuthorizedViewers
+    inputTypeName: ProfileAuthorizedViewersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_authorized_viewers
+      fieldMapping:
+        commentId:
+          column:
+            name: comment_id
+        id:
+          column:
+            name: id
+        viewerCode:
+          column:
+            name: viewer_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAuthorizedViewers
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentId
+          - id
+          - viewerCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAuthorizedViewersBoolExp
+  operand:
+    object:
+      type: ProfileAuthorizedViewers
+      comparableFields:
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewerCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAuthorizedViewersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAuthorizedViewersAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAuthorizedViewers
+      aggregatableFields:
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: viewerCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAuthorizedViewersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAuthorizedViewersOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAuthorizedViewers
+      orderableFields:
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: viewerCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAuthorizedViewersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAuthorizedViewers
+  objectType: ProfileAuthorizedViewers
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_authorized_viewers
+  filterExpressionType: ProfileAuthorizedViewersBoolExp
+  aggregateExpression: ProfileAuthorizedViewersAggExp
+  orderByExpression: ProfileAuthorizedViewersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAuthorizedViewers
+      subscription:
+        rootField: profileAuthorizedViewers
+    selectUniques:
+      - queryRootField: profileAuthorizedViewersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAuthorizedViewersById
+    filterInputTypeName: ProfileAuthorizedViewersFilterInput
+    aggregate:
+      queryRootField: profileAuthorizedViewersAggregate
+      subscription:
+        rootField: profileAuthorizedViewersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAuthorizedViewers
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

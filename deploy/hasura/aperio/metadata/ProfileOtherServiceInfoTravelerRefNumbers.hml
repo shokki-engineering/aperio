@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileOtherServiceInfoTravelerRefNumbers
+  fields:
+    - name: id
+      type: String_1!
+    - name: otherServiceInfoId
+      type: String_1!
+    - name: rph
+      type: String_1
+    - name: surnameRefNumber
+      type: String_1
+  graphql:
+    typeName: ProfileOtherServiceInfoTravelerRefNumbers
+    inputTypeName: ProfileOtherServiceInfoTravelerRefNumbersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_other_service_info_traveler_ref_numbers
+      fieldMapping:
+        id:
+          column:
+            name: id
+        otherServiceInfoId:
+          column:
+            name: other_service_info_id
+        rph:
+          column:
+            name: rph
+        surnameRefNumber:
+          column:
+            name: surname_ref_number
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileOtherServiceInfoTravelerRefNumbers
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - otherServiceInfoId
+          - rph
+          - surnameRefNumber
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileOtherServiceInfoTravelerRefNumbersBoolExp
+  operand:
+    object:
+      type: ProfileOtherServiceInfoTravelerRefNumbers
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: otherServiceInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnameRefNumber
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileOtherServiceInfoTravelerRefNumbersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileOtherServiceInfoTravelerRefNumbersAggExp
+  operand:
+    object:
+      aggregatedType: ProfileOtherServiceInfoTravelerRefNumbers
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: otherServiceInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: surnameRefNumber
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileOtherServiceInfoTravelerRefNumbersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileOtherServiceInfoTravelerRefNumbersOrderByExp
+  operand:
+    object:
+      orderedType: ProfileOtherServiceInfoTravelerRefNumbers
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: otherServiceInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: surnameRefNumber
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileOtherServiceInfoTravelerRefNumbersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileOtherServiceInfoTravelerRefNumbers
+  objectType: ProfileOtherServiceInfoTravelerRefNumbers
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_other_service_info_traveler_ref_numbers
+  filterExpressionType: ProfileOtherServiceInfoTravelerRefNumbersBoolExp
+  aggregateExpression: ProfileOtherServiceInfoTravelerRefNumbersAggExp
+  orderByExpression: ProfileOtherServiceInfoTravelerRefNumbersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileOtherServiceInfoTravelerRefNumbers
+      subscription:
+        rootField: profileOtherServiceInfoTravelerRefNumbers
+    selectUniques:
+      - queryRootField: profileOtherServiceInfoTravelerRefNumbersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileOtherServiceInfoTravelerRefNumbersById
+    filterInputTypeName: ProfileOtherServiceInfoTravelerRefNumbersFilterInput
+    aggregate:
+      queryRootField: profileOtherServiceInfoTravelerRefNumbersAggregate
+      subscription:
+        rootField: profileOtherServiceInfoTravelerRefNumbersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileOtherServiceInfoTravelerRefNumbers
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

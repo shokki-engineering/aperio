@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoBldgRooms
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoBldgRooms
+    inputTypeName: AffiliationinfoBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_bldg_rooms
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoBldgRoomsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoBldgRooms
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoBldgRooms
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoBldgRooms
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoBldgRooms
+  objectType: AffiliationinfoBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_bldg_rooms
+  filterExpressionType: AffiliationinfoBldgRoomsBoolExp
+  aggregateExpression: AffiliationinfoBldgRoomsAggExp
+  orderByExpression: AffiliationinfoBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoBldgRooms
+      subscription:
+        rootField: affiliationinfoBldgRooms
+    selectUniques:
+      - queryRootField: affiliationinfoBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoBldgRoomsById
+    filterInputTypeName: AffiliationinfoBldgRoomsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoBldgRoomsAggregate
+      subscription:
+        rootField: affiliationinfoBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

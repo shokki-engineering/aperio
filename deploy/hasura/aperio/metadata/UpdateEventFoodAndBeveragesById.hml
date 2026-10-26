@@ -1,0 +1,227 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventFoodAndBeveragesId
+  description: Update the 'id' column in the 'event_food_and_beverages' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventFoodAndBeveragesId
+    inputTypeName: UpdateColumnEventFoodAndBeveragesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_food_and_beverages_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventFoodAndBeveragesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventFoodAndBeveragesProvider
+  description: Update the 'provider' column in the 'event_food_and_beverages' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventFoodAndBeveragesProvider
+    inputTypeName: UpdateColumnEventFoodAndBeveragesProviderInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_food_and_beverages_provider
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventFoodAndBeveragesProvider
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventFoodAndBeveragesProviderDisplayName
+  description: Update the 'provider_display_name' column in the
+    'event_food_and_beverages' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventFoodAndBeveragesProviderDisplayName
+    inputTypeName: UpdateColumnEventFoodAndBeveragesProviderDisplayNameInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_food_and_beverages_provider_display_name
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventFoodAndBeveragesProviderDisplayName
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventFoodAndBeveragesByIdUpdateColumns
+  description: Update the columns of the 'event_food_and_beverages' collection
+  fields:
+    - name: id
+      type: UpdateColumnEventFoodAndBeveragesId
+      description: Update the 'id' column in the 'event_food_and_beverages' collection.
+    - name: provider
+      type: UpdateColumnEventFoodAndBeveragesProvider
+      description: Update the 'provider' column in the 'event_food_and_beverages'
+        collection.
+    - name: providerDisplayName
+      type: UpdateColumnEventFoodAndBeveragesProviderDisplayName
+      description: Update the 'provider_display_name' column in the
+        'event_food_and_beverages' collection.
+  graphql:
+    typeName: UpdateEventFoodAndBeveragesByIdUpdateColumns
+    inputTypeName: UpdateEventFoodAndBeveragesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_food_and_beverages_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        provider:
+          column:
+            name: provider
+        providerDisplayName:
+          column:
+            name: provider_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventFoodAndBeveragesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - provider
+          - providerDisplayName
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventFoodAndBeveragesByIdResponse
+  description: Responses from the 'update_event_food_and_beverages_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventFoodAndBeverages!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventFoodAndBeveragesByIdResponse
+    inputTypeName: UpdateEventFoodAndBeveragesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_food_and_beverages_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventFoodAndBeveragesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventFoodAndBeveragesById
+  outputType: UpdateEventFoodAndBeveragesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventFoodAndBeveragesBoolExp
+      description: Update permission post-condition predicate over the
+        'event_food_and_beverages' collection
+    - name: preCheck
+      type: EventFoodAndBeveragesBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_food_and_beverages' collection
+    - name: updateColumns
+      type: UpdateEventFoodAndBeveragesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_food_and_beverages_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventFoodAndBeveragesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_food_and_beverages' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventFoodAndBeveragesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRecreations
+  fields:
+    - name: basicPropertyInfoId
+      type: String_1!
+    - name: code
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationRecreations
+    inputTypeName: ReservationRecreationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_recreations
+      fieldMapping:
+        basicPropertyInfoId:
+          column:
+            name: basic_property_info_id
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRecreations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - basicPropertyInfoId
+          - code
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRecreationsBoolExp
+  operand:
+    object:
+      type: ReservationRecreations
+      comparableFields:
+        - fieldName: basicPropertyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: ReservationReservationRecreationSrvcTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRecreationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRecreationsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRecreations
+      aggregatableFields:
+        - fieldName: basicPropertyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: ReservationReservationRecreationSrvcTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRecreationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRecreationsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRecreations
+      orderableFields:
+        - fieldName: basicPropertyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRecreationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRecreations
+  objectType: ReservationRecreations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_recreations
+  filterExpressionType: ReservationRecreationsBoolExp
+  aggregateExpression: ReservationRecreationsAggExp
+  orderByExpression: ReservationRecreationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRecreations
+      subscription:
+        rootField: reservationRecreations
+    selectUniques:
+      - queryRootField: reservationRecreationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRecreationsById
+    filterInputTypeName: ReservationRecreationsFilterInput
+    aggregate:
+      queryRootField: reservationRecreationsAggregate
+      subscription:
+        rootField: reservationRecreationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRecreations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

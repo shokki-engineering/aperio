@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportUtilitiesObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: code
+      type: Enum
+    - name: description
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: serviceId
+      type: String_1!
+    - name: telecommunicationCode
+      type: Enum
+  graphql:
+    typeName: InsertEventreportUtilitiesObject
+    inputTypeName: InsertEventreportUtilitiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_utilities_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        quantity:
+          column:
+            name: quantity
+        serviceId:
+          column:
+            name: service_id
+        telecommunicationCode:
+          column:
+            name: telecommunication_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportUtilitiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - code
+          - description
+          - id
+          - name
+          - quantity
+          - serviceId
+          - telecommunicationCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportUtilitiesResponse
+  description: Responses from the 'insert_eventreport_utilities' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportUtilities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportUtilitiesResponse
+    inputTypeName: InsertEventreportUtilitiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_utilities_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportUtilitiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportUtilities
+  outputType: InsertEventreportUtilitiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportUtilitiesObject!]!"
+    - name: postCheck
+      type: EventreportUtilitiesBoolExp
+      description: Insert permission predicate over the 'eventreport_utilities' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_utilities
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportUtilities
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_utilities table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportUtilities
+  permissions:
+    - role: admin
+      allowExecution: true
+

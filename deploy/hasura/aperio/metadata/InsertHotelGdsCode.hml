@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelGdsCodeObject
+  fields:
+    - name: chainCode
+      type: String_1
+    - name: gdsCodesId
+      type: String_1!
+    - name: gdsDisplayName
+      type: String_1!
+    - name: gdsPropertyCode
+      type: String_1
+    - name: gdsPropertyLongDisplayName
+      type: String_1
+    - name: gdsPropertyShortDisplayName
+      type: String_1
+    - name: gdsRoomTypeCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: loadGdsIndicator
+      type: Boolean_1
+  graphql:
+    typeName: InsertHotelGdsCodeObject
+    inputTypeName: InsertHotelGdsCodeObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_gds_code_object
+      fieldMapping:
+        chainCode:
+          column:
+            name: chain_code
+        gdsCodesId:
+          column:
+            name: gds_codes_id
+        gdsDisplayName:
+          column:
+            name: gds_display_name
+        gdsPropertyCode:
+          column:
+            name: gds_property_code
+        gdsPropertyLongDisplayName:
+          column:
+            name: gds_property_long_display_name
+        gdsPropertyShortDisplayName:
+          column:
+            name: gds_property_short_display_name
+        gdsRoomTypeCode:
+          column:
+            name: gds_room_type_code
+        id:
+          column:
+            name: id
+        loadGdsIndicator:
+          column:
+            name: load_gds_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelGdsCodeObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainCode
+          - gdsCodesId
+          - gdsDisplayName
+          - gdsPropertyCode
+          - gdsPropertyLongDisplayName
+          - gdsPropertyShortDisplayName
+          - gdsRoomTypeCode
+          - id
+          - loadGdsIndicator
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelGdsCodeResponse
+  description: Responses from the 'insert_hotel_gds_code' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelGdsCode!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelGdsCodeResponse
+    inputTypeName: InsertHotelGdsCodeResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_gds_code_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelGdsCodeResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelGdsCode
+  outputType: InsertHotelGdsCodeResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelGdsCodeObject!]!"
+    - name: postCheck
+      type: HotelGdsCodeBoolExp
+      description: Insert permission predicate over the 'hotel_gds_code' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_gds_code
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelGdsCode
+    rootFieldKind: Mutation
+  description: Insert into the hotel_gds_code table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelGdsCode
+  permissions:
+    - role: admin
+      allowExecution: true
+

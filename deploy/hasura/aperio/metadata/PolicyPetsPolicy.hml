@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyPetsPolicy
+  fields:
+    - name: chargeCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: maxPetQuantity
+      type: Int32
+    - name: minUnitQuantityId
+      type: String_1
+    - name: nonRefundableFeeId
+      type: String_1
+    - name: petsPoliciesId
+      type: String_1!
+    - name: petsPolicyCode
+      type: String_1
+    - name: refundableDepositId
+      type: String_1
+    - name: restriction
+      type: Boolean_1
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+  graphql:
+    typeName: PolicyPetsPolicy
+    inputTypeName: PolicyPetsPolicyInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_pets_policy
+      fieldMapping:
+        chargeCode:
+          column:
+            name: charge_code
+        id:
+          column:
+            name: id
+        maxPetQuantity:
+          column:
+            name: max_pet_quantity
+        minUnitQuantityId:
+          column:
+            name: min_unit_quantity_id
+        nonRefundableFeeId:
+          column:
+            name: non_refundable_fee_id
+        petsPoliciesId:
+          column:
+            name: pets_policies_id
+        petsPolicyCode:
+          column:
+            name: pets_policy_code
+        refundableDepositId:
+          column:
+            name: refundable_deposit_id
+        restriction:
+          column:
+            name: restriction
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyPetsPolicy
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chargeCode
+          - id
+          - maxPetQuantity
+          - minUnitQuantityId
+          - nonRefundableFeeId
+          - petsPoliciesId
+          - petsPolicyCode
+          - refundableDepositId
+          - restriction
+          - unit
+          - unitCode
+          - unitQuantityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyPetsPolicyBoolExp
+  operand:
+    object:
+      type: PolicyPetsPolicy
+      comparableFields:
+        - fieldName: chargeCode
+          booleanExpressionType: PolicyPolicyChargeTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxPetQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: minUnitQuantityId
+          booleanExpressionType: TextBoolExp
+        - fieldName: nonRefundableFeeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: petsPoliciesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: petsPolicyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: refundableDepositId
+          booleanExpressionType: TextBoolExp
+        - fieldName: restriction
+          booleanExpressionType: BoolBoolExp
+        - fieldName: unit
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: PolicyPolicyUnitOfMeasureCodeBoolExp
+        - fieldName: unitQuantityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyPetsPolicyBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyPetsPolicyAggExp
+  operand:
+    object:
+      aggregatedType: PolicyPetsPolicy
+      aggregatableFields:
+        - fieldName: chargeCode
+          aggregateExpression: PolicyPolicyChargeTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxPetQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: minUnitQuantityId
+          aggregateExpression: TextAggExp
+        - fieldName: nonRefundableFeeId
+          aggregateExpression: TextAggExp
+        - fieldName: petsPoliciesId
+          aggregateExpression: TextAggExp
+        - fieldName: petsPolicyCode
+          aggregateExpression: TextAggExp
+        - fieldName: refundableDepositId
+          aggregateExpression: TextAggExp
+        - fieldName: restriction
+          aggregateExpression: BoolAggExp
+        - fieldName: unit
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: PolicyPolicyUnitOfMeasureCodeAggExp
+        - fieldName: unitQuantityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyPetsPolicyAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyPetsPolicyOrderByExp
+  operand:
+    object:
+      orderedType: PolicyPetsPolicy
+      orderableFields:
+        - fieldName: chargeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxPetQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: minUnitQuantityId
+          orderByExpression: String1OrderByExp
+        - fieldName: nonRefundableFeeId
+          orderByExpression: String1OrderByExp
+        - fieldName: petsPoliciesId
+          orderByExpression: String1OrderByExp
+        - fieldName: petsPolicyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: refundableDepositId
+          orderByExpression: String1OrderByExp
+        - fieldName: restriction
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: unit
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unitQuantityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyPetsPolicyOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyPetsPolicy
+  objectType: PolicyPetsPolicy
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_pets_policy
+  filterExpressionType: PolicyPetsPolicyBoolExp
+  aggregateExpression: PolicyPetsPolicyAggExp
+  orderByExpression: PolicyPetsPolicyOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyPetsPolicy
+      subscription:
+        rootField: policyPetsPolicy
+    selectUniques:
+      - queryRootField: policyPetsPolicyById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyPetsPolicyById
+    filterInputTypeName: PolicyPetsPolicyFilterInput
+    aggregate:
+      queryRootField: policyPetsPolicyAggregate
+      subscription:
+        rootField: policyPetsPolicyAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyPetsPolicy
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyCountryNamesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertPolicyCountryNamesObject
+    inputTypeName: InsertPolicyCountryNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_country_names_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyCountryNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyCountryNamesResponse
+  description: Responses from the 'insert_policy_country_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyCountryNamesResponse
+    inputTypeName: InsertPolicyCountryNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_country_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyCountryNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyCountryNames
+  outputType: InsertPolicyCountryNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyCountryNamesObject!]!"
+    - name: postCheck
+      type: PolicyCountryNamesBoolExp
+      description: Insert permission predicate over the 'policy_country_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_country_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyCountryNames
+    rootFieldKind: Mutation
+  description: Insert into the policy_country_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyCountryNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

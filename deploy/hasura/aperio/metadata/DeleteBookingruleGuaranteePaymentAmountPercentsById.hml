@@ -1,0 +1,76 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteBookingruleGuaranteePaymentAmountPercentsByIdResponse
+  description: Responses from the
+    'delete_bookingrule_guarantee_payment_amount_percents_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleGuaranteePaymentAmountPercents!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteBookingruleGuaranteePaymentAmountPercentsByIdResponse
+    inputTypeName: DeleteBookingruleGuaranteePaymentAmountPercentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_bookingrule_guarantee_payment_amount_percents_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteBookingruleGuaranteePaymentAmountPercentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteBookingruleGuaranteePaymentAmountPercentsById
+  outputType: DeleteBookingruleGuaranteePaymentAmountPercentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: BookingruleGuaranteePaymentAmountPercentsBoolExp
+      description: Delete permission predicate over the
+        'bookingrule_guarantee_payment_amount_percents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_bookingrule_guarantee_payment_amount_percents_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteBookingruleGuaranteePaymentAmountPercentsById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'bookingrule_guarantee_payment_amount_percents' collection using the 'id'
+    key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteBookingruleGuaranteePaymentAmountPercentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

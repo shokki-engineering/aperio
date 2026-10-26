@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportPostEventSiteReportsObject
+  fields:
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: currencyCode
+      type: String_1
+    - name: decimalPlaces
+      type: Int32
+    - name: eventDatesId
+      type: String_1
+    - name: eventDaysId
+      type: String_1
+    - name: eventReportId
+      type: String_1!
+    - name: headquarterHotelIndicator
+      type: Boolean_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: locationCategoryCode
+      type: String_1
+    - name: primaryFacilityIndicator
+      type: Boolean_1
+    - name: propertyTypeCode
+      type: Enum
+    - name: responseTypeId
+      type: String_1
+    - name: roomBlocksId
+      type: String_1
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: InsertEventreportPostEventSiteReportsObject
+    inputTypeName: InsertEventreportPostEventSiteReportsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_post_event_site_reports_object
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        currencyCode:
+          column:
+            name: currency_code
+        decimalPlaces:
+          column:
+            name: decimal_places
+        eventDatesId:
+          column:
+            name: event_dates_id
+        eventDaysId:
+          column:
+            name: event_days_id
+        eventReportId:
+          column:
+            name: event_report_id
+        headquarterHotelIndicator:
+          column:
+            name: headquarter_hotel_indicator
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        id:
+          column:
+            name: id
+        locationCategoryCode:
+          column:
+            name: location_category_code
+        primaryFacilityIndicator:
+          column:
+            name: primary_facility_indicator
+        propertyTypeCode:
+          column:
+            name: property_type_code
+        responseTypeId:
+          column:
+            name: response_type_id
+        roomBlocksId:
+          column:
+            name: room_blocks_id
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportPostEventSiteReportsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - currencyCode
+          - decimalPlaces
+          - eventDatesId
+          - eventDaysId
+          - eventReportId
+          - headquarterHotelIndicator
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - id
+          - locationCategoryCode
+          - primaryFacilityIndicator
+          - propertyTypeCode
+          - responseTypeId
+          - roomBlocksId
+          - ttIcode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportPostEventSiteReportsResponse
+  description: Responses from the 'insert_eventreport_post_event_site_reports' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportPostEventSiteReports!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportPostEventSiteReportsResponse
+    inputTypeName: InsertEventreportPostEventSiteReportsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_post_event_site_reports_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportPostEventSiteReportsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportPostEventSiteReports
+  outputType: InsertEventreportPostEventSiteReportsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportPostEventSiteReportsObject!]!"
+    - name: postCheck
+      type: EventreportPostEventSiteReportsBoolExp
+      description: Insert permission predicate over the
+        'eventreport_post_event_site_reports' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_post_event_site_reports
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportPostEventSiteReports
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_post_event_site_reports table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportPostEventSiteReports
+  permissions:
+    - role: admin
+      allowExecution: true
+

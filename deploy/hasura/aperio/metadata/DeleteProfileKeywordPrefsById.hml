@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteProfileKeywordPrefsByIdResponse
+  description: Responses from the 'delete_profile_keyword_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileKeywordPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteProfileKeywordPrefsByIdResponse
+    inputTypeName: DeleteProfileKeywordPrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_profile_keyword_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteProfileKeywordPrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteProfileKeywordPrefsById
+  outputType: DeleteProfileKeywordPrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ProfileKeywordPrefsBoolExp
+      description: Delete permission predicate over the 'profile_keyword_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_profile_keyword_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteProfileKeywordPrefsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'profile_keyword_prefs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteProfileKeywordPrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

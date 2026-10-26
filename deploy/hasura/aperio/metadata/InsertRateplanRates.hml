@@ -1,0 +1,324 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanRatesObject
+  fields:
+    - name: additionalChargesId
+      type: String_1
+    - name: adjustUpIndicator
+      type: Boolean_1
+    - name: adjustedAmountId
+      type: String_1
+    - name: adjustedPercentageId
+      type: String_1
+    - name: ageBucket
+      type: String_1
+    - name: ageQualifyingCode
+      type: Enum
+    - name: ageTimeUnit
+      type: Enum
+    - name: baseRatePlanCode
+      type: String_1
+    - name: cancelPoliciesId
+      type: String_1
+    - name: ceilingAmountId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: extraNightIndicator
+      type: Boolean_1
+    - name: floorAmountId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: invCodeApplication
+      type: Enum
+    - name: invType
+      type: String_1
+    - name: invTypeCode
+      type: String_1
+    - name: maxAge
+      type: Int32
+    - name: maxGuestApplicable
+      type: Int32
+    - name: maxLos
+      type: String_1
+    - name: mealsIncludedId
+      type: String_1
+    - name: minAge
+      type: Int32
+    - name: minGuestApplicable
+      type: Int32
+    - name: minLos
+      type: String_1
+    - name: rateDescriptionId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: rateTier
+      type: String_1
+    - name: rateTimeUnit
+      type: Enum
+    - name: room
+      type: Boolean_1
+    - name: startId
+      type: String_1
+    - name: status
+      type: Enum
+    - name: stayoverWeekday
+      type: Enum
+    - name: uniqueIdId
+      type: String_1
+    - name: unitCount
+      type: Int32
+    - name: unitMultiplier
+      type: Int32
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertRateplanRatesObject
+    inputTypeName: InsertRateplanRatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_rates_object
+      fieldMapping:
+        additionalChargesId:
+          column:
+            name: additional_charges_id
+        adjustUpIndicator:
+          column:
+            name: adjust_up_indicator
+        adjustedAmountId:
+          column:
+            name: adjusted_amount_id
+        adjustedPercentageId:
+          column:
+            name: adjusted_percentage_id
+        ageBucket:
+          column:
+            name: age_bucket
+        ageQualifyingCode:
+          column:
+            name: age_qualifying_code
+        ageTimeUnit:
+          column:
+            name: age_time_unit
+        baseRatePlanCode:
+          column:
+            name: base_rate_plan_code
+        cancelPoliciesId:
+          column:
+            name: cancel_policies_id
+        ceilingAmountId:
+          column:
+            name: ceiling_amount_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        extraNightIndicator:
+          column:
+            name: extra_night_indicator
+        floorAmountId:
+          column:
+            name: floor_amount_id
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        invCodeApplication:
+          column:
+            name: inv_code_application
+        invType:
+          column:
+            name: inv_type
+        invTypeCode:
+          column:
+            name: inv_type_code
+        maxAge:
+          column:
+            name: max_age
+        maxGuestApplicable:
+          column:
+            name: max_guest_applicable
+        maxLos:
+          column:
+            name: max_los
+        mealsIncludedId:
+          column:
+            name: meals_included_id
+        minAge:
+          column:
+            name: min_age
+        minGuestApplicable:
+          column:
+            name: min_guest_applicable
+        minLos:
+          column:
+            name: min_los
+        rateDescriptionId:
+          column:
+            name: rate_description_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        rateTier:
+          column:
+            name: rate_tier
+        rateTimeUnit:
+          column:
+            name: rate_time_unit
+        room:
+          column:
+            name: room
+        startId:
+          column:
+            name: start_id
+        status:
+          column:
+            name: status
+        stayoverWeekday:
+          column:
+            name: stayover_weekday
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        unitCount:
+          column:
+            name: unit_count
+        unitMultiplier:
+          column:
+            name: unit_multiplier
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanRatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalChargesId
+          - adjustUpIndicator
+          - adjustedAmountId
+          - adjustedPercentageId
+          - ageBucket
+          - ageQualifyingCode
+          - ageTimeUnit
+          - baseRatePlanCode
+          - cancelPoliciesId
+          - ceilingAmountId
+          - duration
+          - endId
+          - extraNightIndicator
+          - floorAmountId
+          - id
+          - invCode
+          - invCodeApplication
+          - invType
+          - invTypeCode
+          - maxAge
+          - maxGuestApplicable
+          - maxLos
+          - mealsIncludedId
+          - minAge
+          - minGuestApplicable
+          - minLos
+          - rateDescriptionId
+          - ratePlanId
+          - rateTier
+          - rateTimeUnit
+          - room
+          - startId
+          - status
+          - stayoverWeekday
+          - uniqueIdId
+          - unitCount
+          - unitMultiplier
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanRatesResponse
+  description: Responses from the 'insert_rateplan_rates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanRates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanRatesResponse
+    inputTypeName: InsertRateplanRatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_rates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanRatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanRates
+  outputType: InsertRateplanRatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanRatesObject!]!"
+    - name: postCheck
+      type: RateplanRatesBoolExp
+      description: Insert permission predicate over the 'rateplan_rates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_rates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanRates
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_rates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanRates
+  permissions:
+    - role: admin
+      allowExecution: true
+

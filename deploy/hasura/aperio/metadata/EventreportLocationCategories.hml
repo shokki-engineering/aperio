@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportLocationCategories
+  fields:
+    - name: dateId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: locationId
+      type: String_1
+  graphql:
+    typeName: EventreportLocationCategories
+    inputTypeName: EventreportLocationCategoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_location_categories
+      fieldMapping:
+        dateId:
+          column:
+            name: date_id
+        id:
+          column:
+            name: id
+        locationId:
+          column:
+            name: location_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportLocationCategories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateId
+          - id
+          - locationId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportLocationCategoriesBoolExp
+  operand:
+    object:
+      type: EventreportLocationCategories
+      comparableFields:
+        - fieldName: dateId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportLocationCategoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportLocationCategoriesAggExp
+  operand:
+    object:
+      aggregatedType: EventreportLocationCategories
+      aggregatableFields:
+        - fieldName: dateId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportLocationCategoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportLocationCategoriesOrderByExp
+  operand:
+    object:
+      orderedType: EventreportLocationCategories
+      orderableFields:
+        - fieldName: dateId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportLocationCategoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportLocationCategories
+  objectType: EventreportLocationCategories
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_location_categories
+  filterExpressionType: EventreportLocationCategoriesBoolExp
+  aggregateExpression: EventreportLocationCategoriesAggExp
+  orderByExpression: EventreportLocationCategoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportLocationCategories
+      subscription:
+        rootField: eventreportLocationCategories
+    selectUniques:
+      - queryRootField: eventreportLocationCategoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportLocationCategoriesById
+    filterInputTypeName: EventreportLocationCategoriesFilterInput
+    aggregate:
+      queryRootField: eventreportLocationCategoriesAggregate
+      subscription:
+        rootField: eventreportLocationCategoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportLocationCategories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

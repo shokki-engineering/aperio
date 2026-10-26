@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoStateProvsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertAreainfoStateProvsObject
+    inputTypeName: InsertAreainfoStateProvsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_state_provs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoStateProvsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoStateProvsResponse
+  description: Responses from the 'insert_areainfo_state_provs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoStateProvs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoStateProvsResponse
+    inputTypeName: InsertAreainfoStateProvsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_state_provs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoStateProvsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoStateProvs
+  outputType: InsertAreainfoStateProvsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoStateProvsObject!]!"
+    - name: postCheck
+      type: AreainfoStateProvsBoolExp
+      description: Insert permission predicate over the 'areainfo_state_provs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_state_provs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoStateProvs
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_state_provs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoStateProvs
+  permissions:
+    - role: admin
+      allowExecution: true
+

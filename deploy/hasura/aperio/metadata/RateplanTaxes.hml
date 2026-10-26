@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanTaxes
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanTaxes
+    inputTypeName: RateplanTaxesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_taxes
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanTaxes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanTaxesBoolExp
+  operand:
+    object:
+      type: RateplanTaxes
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanTaxesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanTaxesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanTaxes
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanTaxesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanTaxesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanTaxes
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanTaxesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanTaxes
+  objectType: RateplanTaxes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_taxes
+  filterExpressionType: RateplanTaxesBoolExp
+  aggregateExpression: RateplanTaxesAggExp
+  orderByExpression: RateplanTaxesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanTaxes
+      subscription:
+        rootField: rateplanTaxes
+    selectUniques:
+      - queryRootField: rateplanTaxesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanTaxesById
+    filterInputTypeName: RateplanTaxesFilterInput
+    aggregate:
+      queryRootField: rateplanTaxesAggregate
+      subscription:
+        rootField: rateplanTaxesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanTaxes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

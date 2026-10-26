@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockTaxInfos
+  fields:
+    - name: id
+      type: String_1!
+    - name: taxId
+      type: String_1
+    - name: taxReason
+      type: String_1
+    - name: taxType
+      type: Enum
+  graphql:
+    typeName: InventoryblockTaxInfos
+    inputTypeName: InventoryblockTaxInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_tax_infos
+      fieldMapping:
+        id:
+          column:
+            name: id
+        taxId:
+          column:
+            name: tax_id
+        taxReason:
+          column:
+            name: tax_reason
+        taxType:
+          column:
+            name: tax_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockTaxInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - taxId
+          - taxReason
+          - taxType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockTaxInfosBoolExp
+  operand:
+    object:
+      type: InventoryblockTaxInfos
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxReason
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxType
+          booleanExpressionType: InventoryblockTaxTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockTaxInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockTaxInfosAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockTaxInfos
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: taxId
+          aggregateExpression: TextAggExp
+        - fieldName: taxReason
+          aggregateExpression: TextAggExp
+        - fieldName: taxType
+          aggregateExpression: InventoryblockTaxTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockTaxInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockTaxInfosOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockTaxInfos
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: taxId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxReason
+          orderByExpression: String1OrderByExp
+        - fieldName: taxType
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockTaxInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockTaxInfos
+  objectType: InventoryblockTaxInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_tax_infos
+  filterExpressionType: InventoryblockTaxInfosBoolExp
+  aggregateExpression: InventoryblockTaxInfosAggExp
+  orderByExpression: InventoryblockTaxInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockTaxInfos
+      subscription:
+        rootField: inventoryblockTaxInfos
+    selectUniques:
+      - queryRootField: inventoryblockTaxInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockTaxInfosById
+    filterInputTypeName: InventoryblockTaxInfosFilterInput
+    aggregate:
+      queryRootField: inventoryblockTaxInfosAggregate
+      subscription:
+        rootField: inventoryblockTaxInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockTaxInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

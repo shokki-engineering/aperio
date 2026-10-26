@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockBldgRooms
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InventoryblockBldgRooms
+    inputTypeName: InventoryblockBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_bldg_rooms
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockBldgRoomsBoolExp
+  operand:
+    object:
+      type: InventoryblockBldgRooms
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: addressInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockBldgRooms
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: addressInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockBldgRooms
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: addressInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockBldgRooms
+  objectType: InventoryblockBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_bldg_rooms
+  filterExpressionType: InventoryblockBldgRoomsBoolExp
+  aggregateExpression: InventoryblockBldgRoomsAggExp
+  orderByExpression: InventoryblockBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockBldgRooms
+      subscription:
+        rootField: inventoryblockBldgRooms
+    selectUniques:
+      - queryRootField: inventoryblockBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockBldgRoomsById
+    filterInputTypeName: InventoryblockBldgRoomsFilterInput
+    aggregate:
+      queryRootField: inventoryblockBldgRoomsAggregate
+      subscription:
+        rootField: inventoryblockBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

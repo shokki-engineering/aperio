@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanOfferOfferRuleInventories
+  fields:
+    - name: applicableIndicator
+      type: Boolean_1!
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: invCodeApplication
+      type: Enum
+    - name: invType
+      type: String_1
+    - name: invTypeCode
+      type: String_1
+    - name: offerRuleId
+      type: String_1!
+    - name: room
+      type: Boolean_1
+  graphql:
+    typeName: RateplanOfferOfferRuleInventories
+    inputTypeName: RateplanOfferOfferRuleInventoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_offer_offer_rule_inventories
+      fieldMapping:
+        applicableIndicator:
+          column:
+            name: applicable_indicator
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        invCodeApplication:
+          column:
+            name: inv_code_application
+        invType:
+          column:
+            name: inv_type
+        invTypeCode:
+          column:
+            name: inv_type_code
+        offerRuleId:
+          column:
+            name: offer_rule_id
+        room:
+          column:
+            name: room
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanOfferOfferRuleInventories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicableIndicator
+          - id
+          - invCode
+          - invCodeApplication
+          - invType
+          - invTypeCode
+          - offerRuleId
+          - room
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanOfferOfferRuleInventoriesBoolExp
+  operand:
+    object:
+      type: RateplanOfferOfferRuleInventories
+      comparableFields:
+        - fieldName: applicableIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCodeApplication
+          booleanExpressionType: RateplanRateplanInvCodeApplicationBoolExp
+        - fieldName: invType
+          booleanExpressionType: TextBoolExp
+        - fieldName: invTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: offerRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: room
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanOfferOfferRuleInventoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanOfferOfferRuleInventoriesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanOfferOfferRuleInventories
+      aggregatableFields:
+        - fieldName: applicableIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invCode
+          aggregateExpression: TextAggExp
+        - fieldName: invCodeApplication
+          aggregateExpression: RateplanRateplanInvCodeApplicationAggExp
+        - fieldName: invType
+          aggregateExpression: TextAggExp
+        - fieldName: invTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: offerRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: room
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanOfferOfferRuleInventoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanOfferOfferRuleInventoriesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanOfferOfferRuleInventories
+      orderableFields:
+        - fieldName: applicableIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invCode
+          orderByExpression: String1OrderByExp
+        - fieldName: invCodeApplication
+          orderByExpression: EnumOrderByExp
+        - fieldName: invType
+          orderByExpression: String1OrderByExp
+        - fieldName: invTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: offerRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: room
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanOfferOfferRuleInventoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanOfferOfferRuleInventories
+  objectType: RateplanOfferOfferRuleInventories
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_offer_offer_rule_inventories
+  filterExpressionType: RateplanOfferOfferRuleInventoriesBoolExp
+  aggregateExpression: RateplanOfferOfferRuleInventoriesAggExp
+  orderByExpression: RateplanOfferOfferRuleInventoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanOfferOfferRuleInventories
+      subscription:
+        rootField: rateplanOfferOfferRuleInventories
+    selectUniques:
+      - queryRootField: rateplanOfferOfferRuleInventoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanOfferOfferRuleInventoriesById
+    filterInputTypeName: RateplanOfferOfferRuleInventoriesFilterInput
+    aggregate:
+      queryRootField: rateplanOfferOfferRuleInventoriesAggregate
+      subscription:
+        rootField: rateplanOfferOfferRuleInventoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanOfferOfferRuleInventories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

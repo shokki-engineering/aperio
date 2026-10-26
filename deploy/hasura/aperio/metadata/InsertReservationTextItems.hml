@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationTextItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertReservationTextItemsObject
+    inputTypeName: InsertReservationTextItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_text_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationTextItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationTextItemsResponse
+  description: Responses from the 'insert_reservation_text_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationTextItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationTextItemsResponse
+    inputTypeName: InsertReservationTextItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_text_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationTextItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationTextItems
+  outputType: InsertReservationTextItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationTextItemsObject!]!"
+    - name: postCheck
+      type: ReservationTextItemsBoolExp
+      description: Insert permission predicate over the 'reservation_text_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_text_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationTextItems
+    rootFieldKind: Mutation
+  description: Insert into the reservation_text_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationTextItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

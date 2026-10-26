@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelRelativePositions
+  fields:
+    - name: approximateDistance
+      type: Boolean_1
+    - name: direction
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: distance
+      type: String_1
+    - name: facilityDirection
+      type: Enum
+    - name: hotelInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: indexPointCode
+      type: Enum
+    - name: nearest
+      type: Boolean_1
+    - name: positionAccuracy
+      type: Enum
+    - name: primaryIndicator
+      type: Boolean_1
+    - name: unitCode
+      type: Enum
+  graphql:
+    typeName: HotelRelativePositions
+    inputTypeName: HotelRelativePositionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_relative_positions
+      fieldMapping:
+        approximateDistance:
+          column:
+            name: approximate_distance
+        direction:
+          column:
+            name: direction
+        displayName:
+          column:
+            name: display_name
+        distance:
+          column:
+            name: distance
+        facilityDirection:
+          column:
+            name: facility_direction
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        indexPointCode:
+          column:
+            name: index_point_code
+        nearest:
+          column:
+            name: nearest
+        positionAccuracy:
+          column:
+            name: position_accuracy
+        primaryIndicator:
+          column:
+            name: primary_indicator
+        unitCode:
+          column:
+            name: unit_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelRelativePositions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - approximateDistance
+          - direction
+          - displayName
+          - distance
+          - facilityDirection
+          - hotelInfoId
+          - id
+          - indexPointCode
+          - nearest
+          - positionAccuracy
+          - primaryIndicator
+          - unitCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelRelativePositionsBoolExp
+  operand:
+    object:
+      type: HotelRelativePositions
+      comparableFields:
+        - fieldName: approximateDistance
+          booleanExpressionType: BoolBoolExp
+        - fieldName: direction
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: distance
+          booleanExpressionType: TextBoolExp
+        - fieldName: facilityDirection
+          booleanExpressionType: HotelHotelToFromBoolExp
+        - fieldName: hotelInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: indexPointCode
+          booleanExpressionType: HotelHotelIndexPointCodeBoolExp
+        - fieldName: nearest
+          booleanExpressionType: BoolBoolExp
+        - fieldName: positionAccuracy
+          booleanExpressionType: HotelHotelPositionAccuracyBoolExp
+        - fieldName: primaryIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: HotelHotelUnitOfMeasureCodeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelRelativePositionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelRelativePositionsAggExp
+  operand:
+    object:
+      aggregatedType: HotelRelativePositions
+      aggregatableFields:
+        - fieldName: approximateDistance
+          aggregateExpression: BoolAggExp
+        - fieldName: direction
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: distance
+          aggregateExpression: TextAggExp
+        - fieldName: facilityDirection
+          aggregateExpression: HotelHotelToFromAggExp
+        - fieldName: hotelInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: indexPointCode
+          aggregateExpression: HotelHotelIndexPointCodeAggExp
+        - fieldName: nearest
+          aggregateExpression: BoolAggExp
+        - fieldName: positionAccuracy
+          aggregateExpression: HotelHotelPositionAccuracyAggExp
+        - fieldName: primaryIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: unitCode
+          aggregateExpression: HotelHotelUnitOfMeasureCodeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelRelativePositionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelRelativePositionsOrderByExp
+  operand:
+    object:
+      orderedType: HotelRelativePositions
+      orderableFields:
+        - fieldName: approximateDistance
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: direction
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: distance
+          orderByExpression: String1OrderByExp
+        - fieldName: facilityDirection
+          orderByExpression: EnumOrderByExp
+        - fieldName: hotelInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: indexPointCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: nearest
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: positionAccuracy
+          orderByExpression: EnumOrderByExp
+        - fieldName: primaryIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelRelativePositionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelRelativePositions
+  objectType: HotelRelativePositions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_relative_positions
+  filterExpressionType: HotelRelativePositionsBoolExp
+  aggregateExpression: HotelRelativePositionsAggExp
+  orderByExpression: HotelRelativePositionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelRelativePositions
+      subscription:
+        rootField: hotelRelativePositions
+    selectUniques:
+      - queryRootField: hotelRelativePositionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelRelativePositionsById
+    filterInputTypeName: HotelRelativePositionsFilterInput
+    aggregate:
+      queryRootField: hotelRelativePositionsAggregate
+      subscription:
+        rootField: hotelRelativePositionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelRelativePositions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

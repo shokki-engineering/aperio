@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteBookingruleDateOrTimeOrDateTimesByIdResponse
+  description: Responses from the
+    'delete_bookingrule_date_or_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleDateOrTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteBookingruleDateOrTimeOrDateTimesByIdResponse
+    inputTypeName: DeleteBookingruleDateOrTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_bookingrule_date_or_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteBookingruleDateOrTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteBookingruleDateOrTimeOrDateTimesById
+  outputType: DeleteBookingruleDateOrTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: BookingruleDateOrTimeOrDateTimesBoolExp
+      description: Delete permission predicate over the
+        'bookingrule_date_or_time_or_date_times' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_bookingrule_date_or_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteBookingruleDateOrTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'bookingrule_date_or_time_or_date_times'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteBookingruleDateOrTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

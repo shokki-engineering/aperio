@@ -1,0 +1,231 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationHotelAdditionalChargesId
+  description: Update the 'id' column in the
+    'reservation_hotel_additional_charges' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationHotelAdditionalChargesId
+    inputTypeName: UpdateColumnReservationHotelAdditionalChargesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_hotel_additional_charges_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationHotelAdditionalChargesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationHotelAdditionalChargesPostTaxAmountId
+  description: Update the 'post_tax_amount_id' column in the
+    'reservation_hotel_additional_charges' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationHotelAdditionalChargesPostTaxAmountId
+    inputTypeName: UpdateColumnReservationHotelAdditionalChargesPostTaxAmountIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_hotel_additional_charges_post_tax_amount_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationHotelAdditionalChargesPostTaxAmountId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationHotelAdditionalChargesPreTaxAmountId
+  description: Update the 'pre_tax_amount_id' column in the
+    'reservation_hotel_additional_charges' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationHotelAdditionalChargesPreTaxAmountId
+    inputTypeName: UpdateColumnReservationHotelAdditionalChargesPreTaxAmountIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_hotel_additional_charges_pre_tax_amount_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationHotelAdditionalChargesPreTaxAmountId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationHotelAdditionalChargesByIdUpdateColumns
+  description: Update the columns of the 'reservation_hotel_additional_charges' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationHotelAdditionalChargesId
+      description: Update the 'id' column in the
+        'reservation_hotel_additional_charges' collection.
+    - name: postTaxAmountId
+      type: UpdateColumnReservationHotelAdditionalChargesPostTaxAmountId
+      description: Update the 'post_tax_amount_id' column in the
+        'reservation_hotel_additional_charges' collection.
+    - name: preTaxAmountId
+      type: UpdateColumnReservationHotelAdditionalChargesPreTaxAmountId
+      description: Update the 'pre_tax_amount_id' column in the
+        'reservation_hotel_additional_charges' collection.
+  graphql:
+    typeName: UpdateReservationHotelAdditionalChargesByIdUpdateColumns
+    inputTypeName: UpdateReservationHotelAdditionalChargesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_hotel_additional_charges_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationHotelAdditionalChargesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postTaxAmountId
+          - preTaxAmountId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationHotelAdditionalChargesByIdResponse
+  description: Responses from the
+    'update_reservation_hotel_additional_charges_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationHotelAdditionalCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationHotelAdditionalChargesByIdResponse
+    inputTypeName: UpdateReservationHotelAdditionalChargesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_hotel_additional_charges_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationHotelAdditionalChargesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationHotelAdditionalChargesById
+  outputType: UpdateReservationHotelAdditionalChargesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationHotelAdditionalChargesBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_hotel_additional_charges' collection
+    - name: preCheck
+      type: ReservationHotelAdditionalChargesBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_hotel_additional_charges' collection
+    - name: updateColumns
+      type: UpdateReservationHotelAdditionalChargesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_hotel_additional_charges_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationHotelAdditionalChargesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_hotel_additional_charges'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationHotelAdditionalChargesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

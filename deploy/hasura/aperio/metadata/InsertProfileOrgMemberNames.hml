@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOrgMemberNamesObject
+  fields:
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: level
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+    - name: title
+      type: String_1
+  graphql:
+    typeName: InsertProfileOrgMemberNamesObject
+    inputTypeName: InsertProfileOrgMemberNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_org_member_names_object
+      fieldMapping:
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        level:
+          column:
+            name: level
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+        title:
+          column:
+            name: title
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOrgMemberNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - level
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+          - title
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOrgMemberNamesResponse
+  description: Responses from the 'insert_profile_org_member_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileOrgMemberNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileOrgMemberNamesResponse
+    inputTypeName: InsertProfileOrgMemberNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_org_member_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOrgMemberNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileOrgMemberNames
+  outputType: InsertProfileOrgMemberNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileOrgMemberNamesObject!]!"
+    - name: postCheck
+      type: ProfileOrgMemberNamesBoolExp
+      description: Insert permission predicate over the 'profile_org_member_names'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_org_member_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileOrgMemberNames
+    rootFieldKind: Mutation
+  description: Insert into the profile_org_member_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileOrgMemberNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

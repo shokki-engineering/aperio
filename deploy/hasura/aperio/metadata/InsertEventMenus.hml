@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventMenusObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnit
+      type: String_1
+    - name: foodAndBeverageId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+    - name: quantityId
+      type: String_1
+  graphql:
+    typeName: InsertEventMenusObject
+    inputTypeName: InsertEventMenusObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_menus_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnit:
+          column:
+            name: charge_unit
+        foodAndBeverageId:
+          column:
+            name: food_and_beverage_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        quantityId:
+          column:
+            name: quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventMenusObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnit
+          - foodAndBeverageId
+          - id
+          - name
+          - quantityId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventMenusResponse
+  description: Responses from the 'insert_event_menus' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventMenus!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventMenusResponse
+    inputTypeName: InsertEventMenusResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_menus_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventMenusResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventMenus
+  outputType: InsertEventMenusResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventMenusObject!]!"
+    - name: postCheck
+      type: EventMenusBoolExp
+      description: Insert permission predicate over the 'event_menus' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_menus
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventMenus
+    rootFieldKind: Mutation
+  description: Insert into the event_menus table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventMenus
+  permissions:
+    - role: admin
+      allowExecution: true
+

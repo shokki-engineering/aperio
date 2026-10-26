@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCountryNames
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanCountryNames
+    inputTypeName: RateplanCountryNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_country_names
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCountryNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCountryNamesBoolExp
+  operand:
+    object:
+      type: RateplanCountryNames
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCountryNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCountryNamesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCountryNames
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCountryNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCountryNamesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCountryNames
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCountryNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCountryNames
+  objectType: RateplanCountryNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_country_names
+  filterExpressionType: RateplanCountryNamesBoolExp
+  aggregateExpression: RateplanCountryNamesAggExp
+  orderByExpression: RateplanCountryNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCountryNames
+      subscription:
+        rootField: rateplanCountryNames
+    selectUniques:
+      - queryRootField: rateplanCountryNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCountryNamesById
+    filterInputTypeName: RateplanCountryNamesFilterInput
+    aggregate:
+      queryRootField: rateplanCountryNamesAggregate
+      subscription:
+        rootField: rateplanCountryNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCountryNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

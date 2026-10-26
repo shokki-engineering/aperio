@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAffiliations
+  fields:
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: ProfileAffiliations
+    inputTypeName: ProfileAffiliationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_affiliations
+      fieldMapping:
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAffiliations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAffiliationsBoolExp
+  operand:
+    object:
+      type: ProfileAffiliations
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAffiliationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAffiliationsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAffiliations
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAffiliationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAffiliationsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAffiliations
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAffiliationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAffiliations
+  objectType: ProfileAffiliations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_affiliations
+  filterExpressionType: ProfileAffiliationsBoolExp
+  aggregateExpression: ProfileAffiliationsAggExp
+  orderByExpression: ProfileAffiliationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAffiliations
+      subscription:
+        rootField: profileAffiliations
+    selectUniques:
+      - queryRootField: profileAffiliationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAffiliationsById
+    filterInputTypeName: ProfileAffiliationsFilterInput
+    aggregate:
+      queryRootField: profileAffiliationsAggregate
+      subscription:
+        rootField: profileAffiliationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAffiliations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

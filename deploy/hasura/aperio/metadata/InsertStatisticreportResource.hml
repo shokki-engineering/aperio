@@ -1,0 +1,163 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStatisticreportResourceObject
+  fields:
+    - name: createTime
+      type: Timestamptz
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: fiscalId
+      type: String_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: reportCode
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertStatisticreportResourceObject
+    inputTypeName: InsertStatisticreportResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_statisticreport_resource_object
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        fiscalId:
+          column:
+            name: fiscal_id
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        reportCode:
+          column:
+            name: report_code
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStatisticreportResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - deleteTime
+          - etag
+          - expireTime
+          - fiscalId
+          - hotelId
+          - id
+          - name
+          - reportCode
+          - uid
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStatisticreportResourceResponse
+  description: Responses from the 'insert_statisticreport_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StatisticreportResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStatisticreportResourceResponse
+    inputTypeName: InsertStatisticreportResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_statisticreport_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStatisticreportResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStatisticreportResource
+  outputType: InsertStatisticreportResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStatisticreportResourceObject!]!"
+    - name: postCheck
+      type: StatisticreportResourceBoolExp
+      description: Insert permission predicate over the 'statisticreport_resource'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_statisticreport_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStatisticreportResource
+    rootFieldKind: Mutation
+  description: Insert into the statisticreport_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStatisticreportResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

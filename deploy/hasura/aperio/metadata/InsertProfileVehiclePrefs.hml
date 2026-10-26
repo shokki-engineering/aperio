@@ -1,0 +1,198 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehiclePrefsObject
+  fields:
+    - name: airCondition
+      type: Boolean_1
+    - name: airConditionPref
+      type: Enum
+    - name: classPref
+      type: Enum
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: driveType
+      type: Enum
+    - name: fuelType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: transmissionPref
+      type: Enum
+    - name: transmissionType
+      type: Enum
+    - name: typePref
+      type: Enum
+    - name: vehClassId
+      type: String_1
+    - name: vehMakeModelId
+      type: String_1
+    - name: vehTypeId
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+    - name: vehicleQty
+      type: Int32
+    - name: vendorCarType
+      type: String_1
+  graphql:
+    typeName: InsertProfileVehiclePrefsObject
+    inputTypeName: InsertProfileVehiclePrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_prefs_object
+      fieldMapping:
+        airCondition:
+          column:
+            name: air_condition
+        airConditionPref:
+          column:
+            name: air_condition_pref
+        classPref:
+          column:
+            name: class_pref
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        driveType:
+          column:
+            name: drive_type
+        fuelType:
+          column:
+            name: fuel_type
+        id:
+          column:
+            name: id
+        transmissionPref:
+          column:
+            name: transmission_pref
+        transmissionType:
+          column:
+            name: transmission_type
+        typePref:
+          column:
+            name: type_pref
+        vehClassId:
+          column:
+            name: veh_class_id
+        vehMakeModelId:
+          column:
+            name: veh_make_model_id
+        vehTypeId:
+          column:
+            name: veh_type_id
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+        vehicleQty:
+          column:
+            name: vehicle_qty
+        vendorCarType:
+          column:
+            name: vendor_car_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehiclePrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airCondition
+          - airConditionPref
+          - classPref
+          - code
+          - codeContext
+          - driveType
+          - fuelType
+          - id
+          - transmissionPref
+          - transmissionType
+          - typePref
+          - vehClassId
+          - vehMakeModelId
+          - vehTypeId
+          - vehicleProfileRentalPrefId
+          - vehicleQty
+          - vendorCarType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehiclePrefsResponse
+  description: Responses from the 'insert_profile_vehicle_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehiclePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileVehiclePrefsResponse
+    inputTypeName: InsertProfileVehiclePrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_vehicle_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehiclePrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileVehiclePrefs
+  outputType: InsertProfileVehiclePrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileVehiclePrefsObject!]!"
+    - name: postCheck
+      type: ProfileVehiclePrefsBoolExp
+      description: Insert permission predicate over the 'profile_vehicle_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_vehicle_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileVehiclePrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_vehicle_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileVehiclePrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

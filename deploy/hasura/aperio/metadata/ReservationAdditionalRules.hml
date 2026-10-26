@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationAdditionalRules
+  fields:
+    - name: additionalRule
+      type: Enum
+    - name: bookingRuleId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationAdditionalRules
+    inputTypeName: ReservationAdditionalRulesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_additional_rules
+      fieldMapping:
+        additionalRule:
+          column:
+            name: additional_rule
+        bookingRuleId:
+          column:
+            name: booking_rule_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationAdditionalRules
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalRule
+          - bookingRuleId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationAdditionalRulesBoolExp
+  operand:
+    object:
+      type: ReservationAdditionalRules
+      comparableFields:
+        - fieldName: additionalRule
+          booleanExpressionType: ReservationBookingRuleAdditionalRuleAdditionalRuleBoolExp
+        - fieldName: bookingRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationAdditionalRulesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationAdditionalRulesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationAdditionalRules
+      aggregatableFields:
+        - fieldName: additionalRule
+          aggregateExpression: ReservationBookingRuleAdditionalRuleAdditionalRuleAggExp
+        - fieldName: bookingRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationAdditionalRulesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationAdditionalRulesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationAdditionalRules
+      orderableFields:
+        - fieldName: additionalRule
+          orderByExpression: EnumOrderByExp
+        - fieldName: bookingRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationAdditionalRulesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationAdditionalRules
+  objectType: ReservationAdditionalRules
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_additional_rules
+  filterExpressionType: ReservationAdditionalRulesBoolExp
+  aggregateExpression: ReservationAdditionalRulesAggExp
+  orderByExpression: ReservationAdditionalRulesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationAdditionalRules
+      subscription:
+        rootField: reservationAdditionalRules
+    selectUniques:
+      - queryRootField: reservationAdditionalRulesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationAdditionalRulesById
+    filterInputTypeName: ReservationAdditionalRulesFilterInput
+    aggregate:
+      queryRootField: reservationAdditionalRulesAggregate
+      subscription:
+        rootField: reservationAdditionalRulesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationAdditionalRules
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

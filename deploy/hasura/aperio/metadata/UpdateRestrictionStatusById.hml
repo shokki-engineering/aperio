@@ -1,0 +1,346 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionStatusId
+  description: Update the 'id' column in the 'restriction_status' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionStatusId
+    inputTypeName: UpdateColumnRestrictionStatusIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_status_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionStatusId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionStatusMaxAdvancedBookingOffset
+  description: Update the 'max_advanced_booking_offset' column in the
+    'restriction_status' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionStatusMaxAdvancedBookingOffset
+    inputTypeName: UpdateColumnRestrictionStatusMaxAdvancedBookingOffsetInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_status_max_advanced_booking_offset
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionStatusMaxAdvancedBookingOffset
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionStatusMinAdvancedBookingOffset
+  description: Update the 'min_advanced_booking_offset' column in the
+    'restriction_status' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionStatusMinAdvancedBookingOffset
+    inputTypeName: UpdateColumnRestrictionStatusMinAdvancedBookingOffsetInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_status_min_advanced_booking_offset
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionStatusMinAdvancedBookingOffset
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionStatusRestriction
+  description: Update the 'restriction' column in the 'restriction_status' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionStatusRestriction
+    inputTypeName: UpdateColumnRestrictionStatusRestrictionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_status_restriction
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionStatusRestriction
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionStatusSellThroughOpenIndicator
+  description: Update the 'sell_through_open_indicator' column in the
+    'restriction_status' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionStatusSellThroughOpenIndicator
+    inputTypeName: UpdateColumnRestrictionStatusSellThroughOpenIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_status_sell_through_open_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionStatusSellThroughOpenIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionStatusStatus
+  description: Update the 'status' column in the 'restriction_status' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionStatusStatus
+    inputTypeName: UpdateColumnRestrictionStatusStatusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_status_status
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionStatusStatus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestrictionStatusByIdUpdateColumns
+  description: Update the columns of the 'restriction_status' collection
+  fields:
+    - name: id
+      type: UpdateColumnRestrictionStatusId
+      description: Update the 'id' column in the 'restriction_status' collection.
+    - name: maxAdvancedBookingOffset
+      type: UpdateColumnRestrictionStatusMaxAdvancedBookingOffset
+      description: Update the 'max_advanced_booking_offset' column in the
+        'restriction_status' collection.
+    - name: minAdvancedBookingOffset
+      type: UpdateColumnRestrictionStatusMinAdvancedBookingOffset
+      description: Update the 'min_advanced_booking_offset' column in the
+        'restriction_status' collection.
+    - name: restriction
+      type: UpdateColumnRestrictionStatusRestriction
+      description: Update the 'restriction' column in the 'restriction_status' collection.
+    - name: sellThroughOpenIndicator
+      type: UpdateColumnRestrictionStatusSellThroughOpenIndicator
+      description: Update the 'sell_through_open_indicator' column in the
+        'restriction_status' collection.
+    - name: status
+      type: UpdateColumnRestrictionStatusStatus
+      description: Update the 'status' column in the 'restriction_status' collection.
+  graphql:
+    typeName: UpdateRestrictionStatusByIdUpdateColumns
+    inputTypeName: UpdateRestrictionStatusByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restriction_status_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        maxAdvancedBookingOffset:
+          column:
+            name: max_advanced_booking_offset
+        minAdvancedBookingOffset:
+          column:
+            name: min_advanced_booking_offset
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestrictionStatusByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - maxAdvancedBookingOffset
+          - minAdvancedBookingOffset
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestrictionStatusByIdResponse
+  description: Responses from the 'update_restriction_status_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionStatus!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRestrictionStatusByIdResponse
+    inputTypeName: UpdateRestrictionStatusByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restriction_status_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestrictionStatusByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRestrictionStatusById
+  outputType: UpdateRestrictionStatusByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RestrictionStatusBoolExp
+      description: Update permission post-condition predicate over the
+        'restriction_status' collection
+    - name: preCheck
+      type: RestrictionStatusBoolExp
+      description: Update permission pre-condition predicate over the
+        'restriction_status' collection
+    - name: updateColumns
+      type: UpdateRestrictionStatusByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_restriction_status_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRestrictionStatusById
+    rootFieldKind: Mutation
+  description: Update any row on the 'restriction_status' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRestrictionStatusById
+  permissions:
+    - role: admin
+      allowExecution: true
+

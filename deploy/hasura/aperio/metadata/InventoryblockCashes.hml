@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockCashes
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InventoryblockCashes
+    inputTypeName: InventoryblockCashesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_cashes
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockCashes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockCashesBoolExp
+  operand:
+    object:
+      type: InventoryblockCashes
+      comparableFields:
+        - fieldName: cashIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockCashesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockCashesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockCashes
+      aggregatableFields:
+        - fieldName: cashIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockCashesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockCashesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockCashes
+      orderableFields:
+        - fieldName: cashIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockCashesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockCashes
+  objectType: InventoryblockCashes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_cashes
+  filterExpressionType: InventoryblockCashesBoolExp
+  aggregateExpression: InventoryblockCashesAggExp
+  orderByExpression: InventoryblockCashesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockCashes
+      subscription:
+        rootField: inventoryblockCashes
+    selectUniques:
+      - queryRootField: inventoryblockCashesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockCashesById
+    filterInputTypeName: InventoryblockCashesFilterInput
+    aggregate:
+      queryRootField: inventoryblockCashesAggregate
+      subscription:
+        rootField: inventoryblockCashesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockCashes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationAdditionalDetails
+  fields:
+    - name: amountId
+      type: String_1
+    - name: code
+      type: String_1
+    - name: detailDescriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: ratePlanId
+      type: String_1!
+    - name: roomTypeId
+      type: String_1!
+    - name: type
+      type: Enum
+  graphql:
+    typeName: ReservationAdditionalDetails
+    inputTypeName: ReservationAdditionalDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_additional_details
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        code:
+          column:
+            name: code
+        detailDescriptionId:
+          column:
+            name: detail_description_id
+        id:
+          column:
+            name: id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        roomTypeId:
+          column:
+            name: room_type_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationAdditionalDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - code
+          - detailDescriptionId
+          - id
+          - ratePlanId
+          - roomTypeId
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationAdditionalDetailsBoolExp
+  operand:
+    object:
+      type: ReservationAdditionalDetails
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: detailDescriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ReservationReservationAdditionalDetailTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationAdditionalDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationAdditionalDetailsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationAdditionalDetails
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: detailDescriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanId
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ReservationReservationAdditionalDetailTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationAdditionalDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationAdditionalDetailsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationAdditionalDetails
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: detailDescriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationAdditionalDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationAdditionalDetails
+  objectType: ReservationAdditionalDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_additional_details
+  filterExpressionType: ReservationAdditionalDetailsBoolExp
+  aggregateExpression: ReservationAdditionalDetailsAggExp
+  orderByExpression: ReservationAdditionalDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationAdditionalDetails
+      subscription:
+        rootField: reservationAdditionalDetails
+    selectUniques:
+      - queryRootField: reservationAdditionalDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationAdditionalDetailsById
+    filterInputTypeName: ReservationAdditionalDetailsFilterInput
+    aggregate:
+      queryRootField: reservationAdditionalDetailsAggregate
+      subscription:
+        rootField: reservationAdditionalDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationAdditionalDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

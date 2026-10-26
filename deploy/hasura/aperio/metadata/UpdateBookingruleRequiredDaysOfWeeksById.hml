@@ -1,0 +1,182 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleRequiredDaysOfWeeksId
+  description: Update the 'id' column in the 'bookingrule_required_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleRequiredDaysOfWeeksId
+    inputTypeName: UpdateColumnBookingruleRequiredDaysOfWeeksIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_required_days_of_weeks_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleRequiredDaysOfWeeksId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleRequiredDaysOfWeeksWeekdays
+  description: Update the 'weekdays' column in the
+    'bookingrule_required_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleRequiredDaysOfWeeksWeekdays
+    inputTypeName: UpdateColumnBookingruleRequiredDaysOfWeeksWeekdaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_required_days_of_weeks_weekdays
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleRequiredDaysOfWeeksWeekdays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleRequiredDaysOfWeeksByIdUpdateColumns
+  description: Update the columns of the 'bookingrule_required_days_of_weeks' collection
+  fields:
+    - name: id
+      type: UpdateColumnBookingruleRequiredDaysOfWeeksId
+      description: Update the 'id' column in the 'bookingrule_required_days_of_weeks'
+        collection.
+    - name: weekdays
+      type: UpdateColumnBookingruleRequiredDaysOfWeeksWeekdays
+      description: Update the 'weekdays' column in the
+        'bookingrule_required_days_of_weeks' collection.
+  graphql:
+    typeName: UpdateBookingruleRequiredDaysOfWeeksByIdUpdateColumns
+    inputTypeName: UpdateBookingruleRequiredDaysOfWeeksByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_required_days_of_weeks_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleRequiredDaysOfWeeksByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleRequiredDaysOfWeeksByIdResponse
+  description: Responses from the
+    'update_bookingrule_required_days_of_weeks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleRequiredDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateBookingruleRequiredDaysOfWeeksByIdResponse
+    inputTypeName: UpdateBookingruleRequiredDaysOfWeeksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_required_days_of_weeks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleRequiredDaysOfWeeksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateBookingruleRequiredDaysOfWeeksById
+  outputType: UpdateBookingruleRequiredDaysOfWeeksByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: BookingruleRequiredDaysOfWeeksBoolExp
+      description: Update permission post-condition predicate over the
+        'bookingrule_required_days_of_weeks' collection
+    - name: preCheck
+      type: BookingruleRequiredDaysOfWeeksBoolExp
+      description: Update permission pre-condition predicate over the
+        'bookingrule_required_days_of_weeks' collection
+    - name: updateColumns
+      type: UpdateBookingruleRequiredDaysOfWeeksByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_bookingrule_required_days_of_weeks_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateBookingruleRequiredDaysOfWeeksById
+    rootFieldKind: Mutation
+  description: Update any row on the 'bookingrule_required_days_of_weeks'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateBookingruleRequiredDaysOfWeeksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

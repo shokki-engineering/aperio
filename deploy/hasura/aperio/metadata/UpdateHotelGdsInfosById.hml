@@ -1,0 +1,224 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelGdsInfosGdsCodesId
+  description: Update the 'gds_codes_id' column in the 'hotel_gds_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelGdsInfosGdsCodesId
+    inputTypeName: UpdateColumnHotelGdsInfosGdsCodesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_gds_infos_gds_codes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelGdsInfosGdsCodesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelGdsInfosId
+  description: Update the 'id' column in the 'hotel_gds_infos' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelGdsInfosId
+    inputTypeName: UpdateColumnHotelGdsInfosIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_gds_infos_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelGdsInfosId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelGdsInfosMasterChainCode
+  description: Update the 'master_chain_code' column in the 'hotel_gds_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelGdsInfosMasterChainCode
+    inputTypeName: UpdateColumnHotelGdsInfosMasterChainCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_gds_infos_master_chain_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelGdsInfosMasterChainCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelGdsInfosByIdUpdateColumns
+  description: Update the columns of the 'hotel_gds_infos' collection
+  fields:
+    - name: gdsCodesId
+      type: UpdateColumnHotelGdsInfosGdsCodesId
+      description: Update the 'gds_codes_id' column in the 'hotel_gds_infos' collection.
+    - name: id
+      type: UpdateColumnHotelGdsInfosId
+      description: Update the 'id' column in the 'hotel_gds_infos' collection.
+    - name: masterChainCode
+      type: UpdateColumnHotelGdsInfosMasterChainCode
+      description: Update the 'master_chain_code' column in the 'hotel_gds_infos'
+        collection.
+  graphql:
+    typeName: UpdateHotelGdsInfosByIdUpdateColumns
+    inputTypeName: UpdateHotelGdsInfosByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_gds_infos_by_id_update_columns
+      fieldMapping:
+        gdsCodesId:
+          column:
+            name: gds_codes_id
+        id:
+          column:
+            name: id
+        masterChainCode:
+          column:
+            name: master_chain_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelGdsInfosByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - gdsCodesId
+          - id
+          - masterChainCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelGdsInfosByIdResponse
+  description: Responses from the 'update_hotel_gds_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelGdsInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelGdsInfosByIdResponse
+    inputTypeName: UpdateHotelGdsInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_gds_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelGdsInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelGdsInfosById
+  outputType: UpdateHotelGdsInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelGdsInfosBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_gds_infos' collection
+    - name: preCheck
+      type: HotelGdsInfosBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_gds_infos' collection
+    - name: updateColumns
+      type: UpdateHotelGdsInfosByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_gds_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelGdsInfosById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_gds_infos' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelGdsInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelproductSellDateRangesByIdResponse
+  description: Responses from the 'delete_hotelproduct_sell_date_ranges_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductSellDateRanges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelproductSellDateRangesByIdResponse
+    inputTypeName: DeleteHotelproductSellDateRangesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotelproduct_sell_date_ranges_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelproductSellDateRangesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelproductSellDateRangesById
+  outputType: DeleteHotelproductSellDateRangesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelproductSellDateRangesBoolExp
+      description: Delete permission predicate over the
+        'hotelproduct_sell_date_ranges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotelproduct_sell_date_ranges_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelproductSellDateRangesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'hotelproduct_sell_date_ranges' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelproductSellDateRangesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

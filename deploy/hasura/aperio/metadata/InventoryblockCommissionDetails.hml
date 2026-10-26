@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockCommissionDetails
+  fields:
+    - name: billingId
+      type: String_1
+    - name: capAmountId
+      type: String_1
+    - name: commentId
+      type: String_1
+    - name: commissionPayableAmountId
+      type: String_1
+    - name: commissionableAmountId
+      type: String_1
+    - name: flatCommissionId
+      type: String_1
+    - name: frequency
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: maxCommissionUnitApplies
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: prepaidAmountId
+      type: String_1
+    - name: reasonCode
+      type: String_1
+    - name: statusType
+      type: Enum
+    - name: uniqueIdId
+      type: String_1
+  graphql:
+    typeName: InventoryblockCommissionDetails
+    inputTypeName: InventoryblockCommissionDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_commission_details
+      fieldMapping:
+        billingId:
+          column:
+            name: billing_id
+        capAmountId:
+          column:
+            name: cap_amount_id
+        commentId:
+          column:
+            name: comment_id
+        commissionPayableAmountId:
+          column:
+            name: commission_payable_amount_id
+        commissionableAmountId:
+          column:
+            name: commissionable_amount_id
+        flatCommissionId:
+          column:
+            name: flat_commission_id
+        frequency:
+          column:
+            name: frequency
+        id:
+          column:
+            name: id
+        maxCommissionUnitApplies:
+          column:
+            name: max_commission_unit_applies
+        percentId:
+          column:
+            name: percent_id
+        prepaidAmountId:
+          column:
+            name: prepaid_amount_id
+        reasonCode:
+          column:
+            name: reason_code
+        statusType:
+          column:
+            name: status_type
+        uniqueIdId:
+          column:
+            name: unique_id_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockCommissionDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingId
+          - capAmountId
+          - commentId
+          - commissionPayableAmountId
+          - commissionableAmountId
+          - flatCommissionId
+          - frequency
+          - id
+          - maxCommissionUnitApplies
+          - percentId
+          - prepaidAmountId
+          - reasonCode
+          - statusType
+          - uniqueIdId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockCommissionDetailsBoolExp
+  operand:
+    object:
+      type: InventoryblockCommissionDetails
+      comparableFields:
+        - fieldName: billingId
+          booleanExpressionType: TextBoolExp
+        - fieldName: capAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commissionPayableAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commissionableAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: flatCommissionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: frequency
+          booleanExpressionType: InventoryblockInventoryblockChargeTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxCommissionUnitApplies
+          booleanExpressionType: Int4BoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: prepaidAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: reasonCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: statusType
+          booleanExpressionType: InventoryblockInventoryblockStatusTypeBoolExp
+        - fieldName: uniqueIdId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockCommissionDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockCommissionDetailsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockCommissionDetails
+      aggregatableFields:
+        - fieldName: billingId
+          aggregateExpression: TextAggExp
+        - fieldName: capAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: commissionPayableAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: commissionableAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: flatCommissionId
+          aggregateExpression: TextAggExp
+        - fieldName: frequency
+          aggregateExpression: InventoryblockInventoryblockChargeTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxCommissionUnitApplies
+          aggregateExpression: Int4AggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: prepaidAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: reasonCode
+          aggregateExpression: TextAggExp
+        - fieldName: statusType
+          aggregateExpression: InventoryblockInventoryblockStatusTypeAggExp
+        - fieldName: uniqueIdId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockCommissionDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockCommissionDetailsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockCommissionDetails
+      orderableFields:
+        - fieldName: billingId
+          orderByExpression: String1OrderByExp
+        - fieldName: capAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: commissionPayableAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: commissionableAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: flatCommissionId
+          orderByExpression: String1OrderByExp
+        - fieldName: frequency
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxCommissionUnitApplies
+          orderByExpression: Int32OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: prepaidAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: reasonCode
+          orderByExpression: String1OrderByExp
+        - fieldName: statusType
+          orderByExpression: EnumOrderByExp
+        - fieldName: uniqueIdId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockCommissionDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockCommissionDetails
+  objectType: InventoryblockCommissionDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_commission_details
+  filterExpressionType: InventoryblockCommissionDetailsBoolExp
+  aggregateExpression: InventoryblockCommissionDetailsAggExp
+  orderByExpression: InventoryblockCommissionDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockCommissionDetails
+      subscription:
+        rootField: inventoryblockCommissionDetails
+    selectUniques:
+      - queryRootField: inventoryblockCommissionDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockCommissionDetailsById
+    filterInputTypeName: InventoryblockCommissionDetailsFilterInput
+    aggregate:
+      queryRootField: inventoryblockCommissionDetailsAggregate
+      subscription:
+        rootField: inventoryblockCommissionDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockCommissionDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

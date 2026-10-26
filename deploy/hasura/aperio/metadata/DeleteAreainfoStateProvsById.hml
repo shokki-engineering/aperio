@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAreainfoStateProvsByIdResponse
+  description: Responses from the 'delete_areainfo_state_provs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoStateProvs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAreainfoStateProvsByIdResponse
+    inputTypeName: DeleteAreainfoStateProvsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_areainfo_state_provs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAreainfoStateProvsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAreainfoStateProvsById
+  outputType: DeleteAreainfoStateProvsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AreainfoStateProvsBoolExp
+      description: Delete permission predicate over the 'areainfo_state_provs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_areainfo_state_provs_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAreainfoStateProvsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'areainfo_state_provs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAreainfoStateProvsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

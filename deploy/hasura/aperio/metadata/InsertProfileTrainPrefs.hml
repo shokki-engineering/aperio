@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTrainPrefsObject
+  fields:
+    - name: directAndNonStopOnly
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: maxConnections
+      type: Int32
+    - name: nonStopsOnly
+      type: Boolean_1
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: routingType
+      type: Enum
+    - name: sameOperatorOnly
+      type: Boolean_1
+    - name: trainType
+      type: Enum
+  graphql:
+    typeName: InsertProfileTrainPrefsObject
+    inputTypeName: InsertProfileTrainPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_train_prefs_object
+      fieldMapping:
+        directAndNonStopOnly:
+          column:
+            name: direct_and_non_stop_only
+        id:
+          column:
+            name: id
+        maxConnections:
+          column:
+            name: max_connections
+        nonStopsOnly:
+          column:
+            name: non_stops_only
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        routingType:
+          column:
+            name: routing_type
+        sameOperatorOnly:
+          column:
+            name: same_operator_only
+        trainType:
+          column:
+            name: train_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTrainPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - directAndNonStopOnly
+          - id
+          - maxConnections
+          - nonStopsOnly
+          - preferLevel
+          - railPrefId
+          - routingType
+          - sameOperatorOnly
+          - trainType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTrainPrefsResponse
+  description: Responses from the 'insert_profile_train_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileTrainPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileTrainPrefsResponse
+    inputTypeName: InsertProfileTrainPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_train_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTrainPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileTrainPrefs
+  outputType: InsertProfileTrainPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileTrainPrefsObject!]!"
+    - name: postCheck
+      type: ProfileTrainPrefsBoolExp
+      description: Insert permission predicate over the 'profile_train_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_train_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileTrainPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_train_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileTrainPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

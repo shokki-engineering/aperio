@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationFeaturesObject
+  fields:
+    - name: accessibilityCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: roomAmenity
+      type: Enum
+    - name: roomRateId
+      type: String_1!
+    - name: roomViewCode
+      type: Enum
+  graphql:
+    typeName: InsertReservationFeaturesObject
+    inputTypeName: InsertReservationFeaturesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_features_object
+      fieldMapping:
+        accessibilityCode:
+          column:
+            name: accessibility_code
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        roomAmenity:
+          column:
+            name: room_amenity
+        roomRateId:
+          column:
+            name: room_rate_id
+        roomViewCode:
+          column:
+            name: room_view_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationFeaturesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessibilityCode
+          - id
+          - quantity
+          - roomAmenity
+          - roomRateId
+          - roomViewCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationFeaturesResponse
+  description: Responses from the 'insert_reservation_features' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationFeatures!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationFeaturesResponse
+    inputTypeName: InsertReservationFeaturesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_features_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationFeaturesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationFeatures
+  outputType: InsertReservationFeaturesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationFeaturesObject!]!"
+    - name: postCheck
+      type: ReservationFeaturesBoolExp
+      description: Insert permission predicate over the 'reservation_features' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_features
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationFeatures
+    rootFieldKind: Mutation
+  description: Insert into the reservation_features table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationFeatures
+  permissions:
+    - role: admin
+      allowExecution: true
+

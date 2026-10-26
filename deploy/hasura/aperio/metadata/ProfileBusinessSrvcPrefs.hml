@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileBusinessSrvcPrefs
+  fields:
+    - name: businessSrvcType
+      type: Enum
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileBusinessSrvcPrefs
+    inputTypeName: ProfileBusinessSrvcPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_business_srvc_prefs
+      fieldMapping:
+        businessSrvcType:
+          column:
+            name: business_srvc_type
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileBusinessSrvcPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - businessSrvcType
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileBusinessSrvcPrefsBoolExp
+  operand:
+    object:
+      type: ProfileBusinessSrvcPrefs
+      comparableFields:
+        - fieldName: businessSrvcType
+          booleanExpressionType: ProfileProfileBusinessSrvcTypeBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileBusinessSrvcPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileBusinessSrvcPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileBusinessSrvcPrefs
+      aggregatableFields:
+        - fieldName: businessSrvcType
+          aggregateExpression: ProfileProfileBusinessSrvcTypeAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileBusinessSrvcPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileBusinessSrvcPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileBusinessSrvcPrefs
+      orderableFields:
+        - fieldName: businessSrvcType
+          orderByExpression: EnumOrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileBusinessSrvcPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileBusinessSrvcPrefs
+  objectType: ProfileBusinessSrvcPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_business_srvc_prefs
+  filterExpressionType: ProfileBusinessSrvcPrefsBoolExp
+  aggregateExpression: ProfileBusinessSrvcPrefsAggExp
+  orderByExpression: ProfileBusinessSrvcPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileBusinessSrvcPrefs
+      subscription:
+        rootField: profileBusinessSrvcPrefs
+    selectUniques:
+      - queryRootField: profileBusinessSrvcPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileBusinessSrvcPrefsById
+    filterInputTypeName: ProfileBusinessSrvcPrefsFilterInput
+    aggregate:
+      queryRootField: profileBusinessSrvcPrefsAggregate
+      subscription:
+        rootField: profileBusinessSrvcPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileBusinessSrvcPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

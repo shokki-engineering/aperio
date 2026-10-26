@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionHurdleRatesObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRestrictionHurdleRatesObject
+    inputTypeName: InsertRestrictionHurdleRatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_hurdle_rates_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionHurdleRatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionHurdleRatesResponse
+  description: Responses from the 'insert_restriction_hurdle_rates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionHurdleRates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestrictionHurdleRatesResponse
+    inputTypeName: InsertRestrictionHurdleRatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_hurdle_rates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionHurdleRatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestrictionHurdleRates
+  outputType: InsertRestrictionHurdleRatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestrictionHurdleRatesObject!]!"
+    - name: postCheck
+      type: RestrictionHurdleRatesBoolExp
+      description: Insert permission predicate over the 'restriction_hurdle_rates'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restriction_hurdle_rates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestrictionHurdleRates
+    rootFieldKind: Mutation
+  description: Insert into the restriction_hurdle_rates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestrictionHurdleRates
+  permissions:
+    - role: admin
+      allowExecution: true
+

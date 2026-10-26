@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileRelatedTravelerPrefs
+  fields:
+    - name: commonPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: uniqueIdId
+      type: String_1!
+  graphql:
+    typeName: ProfileRelatedTravelerPrefs
+    inputTypeName: ProfileRelatedTravelerPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_related_traveler_prefs
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        uniqueIdId:
+          column:
+            name: unique_id_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileRelatedTravelerPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - id
+          - preferLevel
+          - uniqueIdId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileRelatedTravelerPrefsBoolExp
+  operand:
+    object:
+      type: ProfileRelatedTravelerPrefs
+      comparableFields:
+        - fieldName: commonPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: uniqueIdId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileRelatedTravelerPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileRelatedTravelerPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileRelatedTravelerPrefs
+      aggregatableFields:
+        - fieldName: commonPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: uniqueIdId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileRelatedTravelerPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileRelatedTravelerPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileRelatedTravelerPrefs
+      orderableFields:
+        - fieldName: commonPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: uniqueIdId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileRelatedTravelerPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileRelatedTravelerPrefs
+  objectType: ProfileRelatedTravelerPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_related_traveler_prefs
+  filterExpressionType: ProfileRelatedTravelerPrefsBoolExp
+  aggregateExpression: ProfileRelatedTravelerPrefsAggExp
+  orderByExpression: ProfileRelatedTravelerPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileRelatedTravelerPrefs
+      subscription:
+        rootField: profileRelatedTravelerPrefs
+    selectUniques:
+      - queryRootField: profileRelatedTravelerPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileRelatedTravelerPrefsById
+    filterInputTypeName: ProfileRelatedTravelerPrefsFilterInput
+    aggregate:
+      queryRootField: profileRelatedTravelerPrefsAggregate
+      subscription:
+        rootField: profileRelatedTravelerPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileRelatedTravelerPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

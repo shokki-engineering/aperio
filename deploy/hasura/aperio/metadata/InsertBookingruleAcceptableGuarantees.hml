@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleAcceptableGuaranteesObject
+  fields:
+    - name: bookingRulesItemId
+      type: String_1!
+    - name: currencyCode
+      type: String_1
+    - name: deadlineId
+      type: String_1
+    - name: decimalPlaces
+      type: Int32
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteePolicyType
+      type: Enum
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: paymentType
+      type: Enum
+    - name: retributionType
+      type: Enum
+    - name: unacceptablePaymentType
+      type: Enum
+  graphql:
+    typeName: InsertBookingruleAcceptableGuaranteesObject
+    inputTypeName: InsertBookingruleAcceptableGuaranteesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_acceptable_guarantees_object
+      fieldMapping:
+        bookingRulesItemId:
+          column:
+            name: booking_rules_item_id
+        currencyCode:
+          column:
+            name: currency_code
+        deadlineId:
+          column:
+            name: deadline_id
+        decimalPlaces:
+          column:
+            name: decimal_places
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteePolicyType:
+          column:
+            name: guarantee_policy_type
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        paymentType:
+          column:
+            name: payment_type
+        retributionType:
+          column:
+            name: retribution_type
+        unacceptablePaymentType:
+          column:
+            name: unacceptable_payment_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleAcceptableGuaranteesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingRulesItemId
+          - currencyCode
+          - deadlineId
+          - decimalPlaces
+          - guaranteeCode
+          - guaranteePolicyType
+          - guaranteeType
+          - holdClockId
+          - id
+          - paymentType
+          - retributionType
+          - unacceptablePaymentType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleAcceptableGuaranteesResponse
+  description: Responses from the 'insert_bookingrule_acceptable_guarantees' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleAcceptableGuarantees!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleAcceptableGuaranteesResponse
+    inputTypeName: InsertBookingruleAcceptableGuaranteesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_acceptable_guarantees_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleAcceptableGuaranteesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleAcceptableGuarantees
+  outputType: InsertBookingruleAcceptableGuaranteesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleAcceptableGuaranteesObject!]!"
+    - name: postCheck
+      type: BookingruleAcceptableGuaranteesBoolExp
+      description: Insert permission predicate over the
+        'bookingrule_acceptable_guarantees' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_acceptable_guarantees
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleAcceptableGuarantees
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_acceptable_guarantees table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleAcceptableGuarantees
+  permissions:
+    - role: admin
+      allowExecution: true
+

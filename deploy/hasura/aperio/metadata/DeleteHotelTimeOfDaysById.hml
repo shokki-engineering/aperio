@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelTimeOfDaysByIdResponse
+  description: Responses from the 'delete_hotel_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelTimeOfDaysByIdResponse
+    inputTypeName: DeleteHotelTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotel_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelTimeOfDaysById
+  outputType: DeleteHotelTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelTimeOfDaysBoolExp
+      description: Delete permission predicate over the 'hotel_time_of_days' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotel_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'hotel_time_of_days' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

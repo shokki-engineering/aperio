@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomVideoFormatsObject
+  fields:
+    - name: applicableEndId
+      type: String_1
+    - name: applicableStartId
+      type: String_1
+    - name: author
+      type: String_1
+    - name: bitRate
+      type: Int32
+    - name: contentId
+      type: String_1
+    - name: copyrightEndId
+      type: String_1
+    - name: copyrightNotice
+      type: String_1
+    - name: copyrightOwner
+      type: String_1
+    - name: copyrightStartId
+      type: String_1
+    - name: effectiveEndId
+      type: String_1
+    - name: effectiveStartId
+      type: String_1
+    - name: fileDisplayName
+      type: String_1
+    - name: fileSize
+      type: Int32
+    - name: format
+      type: Enum
+    - name: height
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: length
+      type: Int32
+    - name: recordId
+      type: String_1
+    - name: sourceId
+      type: String_1
+    - name: streamingSource
+      type: String_1
+    - name: title
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: uri
+      type: String_1
+    - name: videoItemId
+      type: String_1!
+    - name: width
+      type: Int32
+  graphql:
+    typeName: InsertMeetingroomVideoFormatsObject
+    inputTypeName: InsertMeetingroomVideoFormatsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_video_formats_object
+      fieldMapping:
+        applicableEndId:
+          column:
+            name: applicable_end_id
+        applicableStartId:
+          column:
+            name: applicable_start_id
+        author:
+          column:
+            name: author
+        bitRate:
+          column:
+            name: bit_rate
+        contentId:
+          column:
+            name: content_id
+        copyrightEndId:
+          column:
+            name: copyright_end_id
+        copyrightNotice:
+          column:
+            name: copyright_notice
+        copyrightOwner:
+          column:
+            name: copyright_owner
+        copyrightStartId:
+          column:
+            name: copyright_start_id
+        effectiveEndId:
+          column:
+            name: effective_end_id
+        effectiveStartId:
+          column:
+            name: effective_start_id
+        fileDisplayName:
+          column:
+            name: file_display_name
+        fileSize:
+          column:
+            name: file_size
+        format:
+          column:
+            name: format
+        height:
+          column:
+            name: height
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        length:
+          column:
+            name: length
+        recordId:
+          column:
+            name: record_id
+        sourceId:
+          column:
+            name: source_id
+        streamingSource:
+          column:
+            name: streaming_source
+        title:
+          column:
+            name: title
+        unitCode:
+          column:
+            name: unit_code
+        uri:
+          column:
+            name: uri
+        videoItemId:
+          column:
+            name: video_item_id
+        width:
+          column:
+            name: width
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomVideoFormatsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicableEndId
+          - applicableStartId
+          - author
+          - bitRate
+          - contentId
+          - copyrightEndId
+          - copyrightNotice
+          - copyrightOwner
+          - copyrightStartId
+          - effectiveEndId
+          - effectiveStartId
+          - fileDisplayName
+          - fileSize
+          - format
+          - height
+          - id
+          - languageCode
+          - length
+          - recordId
+          - sourceId
+          - streamingSource
+          - title
+          - unitCode
+          - uri
+          - videoItemId
+          - width
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomVideoFormatsResponse
+  description: Responses from the 'insert_meetingroom_video_formats' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomVideoFormats!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingroomVideoFormatsResponse
+    inputTypeName: InsertMeetingroomVideoFormatsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_video_formats_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomVideoFormatsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingroomVideoFormats
+  outputType: InsertMeetingroomVideoFormatsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingroomVideoFormatsObject!]!"
+    - name: postCheck
+      type: MeetingroomVideoFormatsBoolExp
+      description: Insert permission predicate over the 'meetingroom_video_formats'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingroom_video_formats
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingroomVideoFormats
+    rootFieldKind: Mutation
+  description: Insert into the meetingroom_video_formats table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingroomVideoFormats
+  permissions:
+    - role: admin
+      allowExecution: true
+

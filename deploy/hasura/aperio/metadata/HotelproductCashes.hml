@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductCashes
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: HotelproductCashes
+    inputTypeName: HotelproductCashesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_cashes
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductCashes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductCashesBoolExp
+  operand:
+    object:
+      type: HotelproductCashes
+      comparableFields:
+        - fieldName: cashIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductCashesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductCashesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductCashes
+      aggregatableFields:
+        - fieldName: cashIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductCashesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductCashesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductCashes
+      orderableFields:
+        - fieldName: cashIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductCashesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductCashes
+  objectType: HotelproductCashes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_cashes
+  filterExpressionType: HotelproductCashesBoolExp
+  aggregateExpression: HotelproductCashesAggExp
+  orderByExpression: HotelproductCashesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductCashes
+      subscription:
+        rootField: hotelproductCashes
+    selectUniques:
+      - queryRootField: hotelproductCashesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductCashesById
+    filterInputTypeName: HotelproductCashesFilterInput
+    aggregate:
+      queryRootField: hotelproductCashesAggregate
+      subscription:
+        rootField: hotelproductCashesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductCashes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

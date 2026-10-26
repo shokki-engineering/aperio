@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductBankAccts
+  fields:
+    - name: bankAcctDisplayName
+      type: String_1
+    - name: bankAcctNumberId
+      type: String_1
+    - name: bankIdId
+      type: String_1
+    - name: checkNumber
+      type: String_1
+    - name: checksAccepted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: typeId
+      type: String_1
+  graphql:
+    typeName: HotelproductBankAccts
+    inputTypeName: HotelproductBankAcctsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_bank_accts
+      fieldMapping:
+        bankAcctDisplayName:
+          column:
+            name: bank_acct_display_name
+        bankAcctNumberId:
+          column:
+            name: bank_acct_number_id
+        bankIdId:
+          column:
+            name: bank_id_id
+        checkNumber:
+          column:
+            name: check_number
+        checksAccepted:
+          column:
+            name: checks_accepted
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        typeId:
+          column:
+            name: type_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductBankAccts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bankAcctDisplayName
+          - bankAcctNumberId
+          - bankIdId
+          - checkNumber
+          - checksAccepted
+          - id
+          - shareMarketInd
+          - shareSynchInd
+          - typeId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductBankAcctsBoolExp
+  operand:
+    object:
+      type: HotelproductBankAccts
+      comparableFields:
+        - fieldName: bankAcctDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: bankAcctNumberId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bankIdId
+          booleanExpressionType: TextBoolExp
+        - fieldName: checkNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: checksAccepted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: HotelproductHotelproductAcceptedPaymentShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: HotelproductHotelproductAcceptedPaymentShareSynchIndBoolExp
+        - fieldName: typeId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductBankAcctsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductBankAcctsAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductBankAccts
+      aggregatableFields:
+        - fieldName: bankAcctDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: bankAcctNumberId
+          aggregateExpression: TextAggExp
+        - fieldName: bankIdId
+          aggregateExpression: TextAggExp
+        - fieldName: checkNumber
+          aggregateExpression: TextAggExp
+        - fieldName: checksAccepted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: HotelproductHotelproductAcceptedPaymentShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: HotelproductHotelproductAcceptedPaymentShareSynchIndAggExp
+        - fieldName: typeId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductBankAcctsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductBankAcctsOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductBankAccts
+      orderableFields:
+        - fieldName: bankAcctDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: bankAcctNumberId
+          orderByExpression: String1OrderByExp
+        - fieldName: bankIdId
+          orderByExpression: String1OrderByExp
+        - fieldName: checkNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: checksAccepted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: typeId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductBankAcctsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductBankAccts
+  objectType: HotelproductBankAccts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_bank_accts
+  filterExpressionType: HotelproductBankAcctsBoolExp
+  aggregateExpression: HotelproductBankAcctsAggExp
+  orderByExpression: HotelproductBankAcctsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductBankAccts
+      subscription:
+        rootField: hotelproductBankAccts
+    selectUniques:
+      - queryRootField: hotelproductBankAcctsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductBankAcctsById
+    filterInputTypeName: HotelproductBankAcctsFilterInput
+    aggregate:
+      queryRootField: hotelproductBankAcctsAggregate
+      subscription:
+        rootField: hotelproductBankAcctsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductBankAccts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

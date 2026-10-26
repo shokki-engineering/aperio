@@ -1,0 +1,111 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationTimeOfDaysObject
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: InsertReservationTimeOfDaysObject
+    inputTypeName: InsertReservationTimeOfDaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_time_of_days_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationTimeOfDaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationTimeOfDaysResponse
+  description: Responses from the 'insert_reservation_time_of_days' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationTimeOfDaysResponse
+    inputTypeName: InsertReservationTimeOfDaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_time_of_days_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationTimeOfDaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationTimeOfDays
+  outputType: InsertReservationTimeOfDaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationTimeOfDaysObject!]!"
+    - name: postCheck
+      type: ReservationTimeOfDaysBoolExp
+      description: Insert permission predicate over the 'reservation_time_of_days'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_time_of_days
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationTimeOfDays
+    rootFieldKind: Mutation
+  description: Insert into the reservation_time_of_days table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationTimeOfDays
+  permissions:
+    - role: admin
+      allowExecution: true
+

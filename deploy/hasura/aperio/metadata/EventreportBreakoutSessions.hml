@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportBreakoutSessions
+  fields:
+    - name: id
+      type: String_1!
+    - name: largestConcurrentQuantity
+      type: Int32
+    - name: largestDailyQuantity
+      type: Int32
+    - name: typicalRoomSetupCode
+      type: Enum
+    - name: typicalSeatQuantity
+      type: Int32
+  graphql:
+    typeName: EventreportBreakoutSessions
+    inputTypeName: EventreportBreakoutSessionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_breakout_sessions
+      fieldMapping:
+        id:
+          column:
+            name: id
+        largestConcurrentQuantity:
+          column:
+            name: largest_concurrent_quantity
+        largestDailyQuantity:
+          column:
+            name: largest_daily_quantity
+        typicalRoomSetupCode:
+          column:
+            name: typical_room_setup_code
+        typicalSeatQuantity:
+          column:
+            name: typical_seat_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportBreakoutSessions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - largestConcurrentQuantity
+          - largestDailyQuantity
+          - typicalRoomSetupCode
+          - typicalSeatQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportBreakoutSessionsBoolExp
+  operand:
+    object:
+      type: EventreportBreakoutSessions
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: largestConcurrentQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: largestDailyQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: typicalRoomSetupCode
+          booleanExpressionType: EventreportEventreportMeetingRoomFormatCodeBoolExp
+        - fieldName: typicalSeatQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportBreakoutSessionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportBreakoutSessionsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportBreakoutSessions
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: largestConcurrentQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: largestDailyQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: typicalRoomSetupCode
+          aggregateExpression: EventreportEventreportMeetingRoomFormatCodeAggExp
+        - fieldName: typicalSeatQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportBreakoutSessionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportBreakoutSessionsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportBreakoutSessions
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: largestConcurrentQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: largestDailyQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: typicalRoomSetupCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: typicalSeatQuantity
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportBreakoutSessionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportBreakoutSessions
+  objectType: EventreportBreakoutSessions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_breakout_sessions
+  filterExpressionType: EventreportBreakoutSessionsBoolExp
+  aggregateExpression: EventreportBreakoutSessionsAggExp
+  orderByExpression: EventreportBreakoutSessionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportBreakoutSessions
+      subscription:
+        rootField: eventreportBreakoutSessions
+    selectUniques:
+      - queryRootField: eventreportBreakoutSessionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportBreakoutSessionsById
+    filterInputTypeName: EventreportBreakoutSessionsFilterInput
+    aggregate:
+      queryRootField: eventreportBreakoutSessionsAggregate
+      subscription:
+        rootField: eventreportBreakoutSessionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportBreakoutSessions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

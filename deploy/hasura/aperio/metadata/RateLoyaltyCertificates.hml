@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateLoyaltyCertificates
+  fields:
+    - name: certificateNumber
+      type: String_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusiveIndicator
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: format
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: loyaltyRedemptionId
+      type: String_1!
+    - name: memberNumber
+      type: String_1
+    - name: nightCount
+      type: Int32
+    - name: programDisplayName
+      type: String_1
+    - name: status
+      type: String_1
+  graphql:
+    typeName: RateLoyaltyCertificates
+    inputTypeName: RateLoyaltyCertificatesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_loyalty_certificates
+      fieldMapping:
+        certificateNumber:
+          column:
+            name: certificate_number
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusiveIndicator:
+          column:
+            name: expire_date_exclusive_indicator
+        expireDayId:
+          column:
+            name: expire_day_id
+        format:
+          column:
+            name: format
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        loyaltyRedemptionId:
+          column:
+            name: loyalty_redemption_id
+        memberNumber:
+          column:
+            name: member_number
+        nightCount:
+          column:
+            name: night_count
+        programDisplayName:
+          column:
+            name: program_display_name
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateLoyaltyCertificates
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - certificateNumber
+          - effectiveDayId
+          - expireDateExclusiveIndicator
+          - expireDayId
+          - format
+          - id
+          - idContext
+          - loyaltyRedemptionId
+          - memberNumber
+          - nightCount
+          - programDisplayName
+          - status
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateLoyaltyCertificatesBoolExp
+  operand:
+    object:
+      type: RateLoyaltyCertificates
+      comparableFields:
+        - fieldName: certificateNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusiveIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: format
+          booleanExpressionType: RateRateFormatBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: loyaltyRedemptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: memberNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: nightCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: programDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: status
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateLoyaltyCertificatesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateLoyaltyCertificatesAggExp
+  operand:
+    object:
+      aggregatedType: RateLoyaltyCertificates
+      aggregatableFields:
+        - fieldName: certificateNumber
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusiveIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: format
+          aggregateExpression: RateRateFormatAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: loyaltyRedemptionId
+          aggregateExpression: TextAggExp
+        - fieldName: memberNumber
+          aggregateExpression: TextAggExp
+        - fieldName: nightCount
+          aggregateExpression: Int4AggExp
+        - fieldName: programDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: status
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateLoyaltyCertificatesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateLoyaltyCertificatesOrderByExp
+  operand:
+    object:
+      orderedType: RateLoyaltyCertificates
+      orderableFields:
+        - fieldName: certificateNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusiveIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: format
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: loyaltyRedemptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: memberNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: nightCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: programDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: status
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateLoyaltyCertificatesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateLoyaltyCertificates
+  objectType: RateLoyaltyCertificates
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_loyalty_certificates
+  filterExpressionType: RateLoyaltyCertificatesBoolExp
+  aggregateExpression: RateLoyaltyCertificatesAggExp
+  orderByExpression: RateLoyaltyCertificatesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateLoyaltyCertificates
+      subscription:
+        rootField: rateLoyaltyCertificates
+    selectUniques:
+      - queryRootField: rateLoyaltyCertificatesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateLoyaltyCertificatesById
+    filterInputTypeName: RateLoyaltyCertificatesFilterInput
+    aggregate:
+      queryRootField: rateLoyaltyCertificatesAggregate
+      subscription:
+        rootField: rateLoyaltyCertificatesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateLoyaltyCertificates
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

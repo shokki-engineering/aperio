@@ -1,0 +1,156 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelOperationTimesObject
+  fields:
+    - name: additionalOperationInfoCode
+      type: Enum
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: frequency
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operationScheduleId
+      type: String_1!
+    - name: operationSchedulesPlusChargeItemId
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: text
+      type: String_1
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertHotelOperationTimesObject
+    inputTypeName: InsertHotelOperationTimesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_operation_times_object
+      fieldMapping:
+        additionalOperationInfoCode:
+          column:
+            name: additional_operation_info_code
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        frequency:
+          column:
+            name: frequency
+        id:
+          column:
+            name: id
+        operationScheduleId:
+          column:
+            name: operation_schedule_id
+        operationSchedulesPlusChargeItemId:
+          column:
+            name: operation_schedules_plus_charge_item_id
+        startId:
+          column:
+            name: start_id
+        text:
+          column:
+            name: text
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelOperationTimesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalOperationInfoCode
+          - duration
+          - endId
+          - frequency
+          - id
+          - operationScheduleId
+          - operationSchedulesPlusChargeItemId
+          - startId
+          - text
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelOperationTimesResponse
+  description: Responses from the 'insert_hotel_operation_times' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelOperationTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelOperationTimesResponse
+    inputTypeName: InsertHotelOperationTimesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_operation_times_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelOperationTimesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelOperationTimes
+  outputType: InsertHotelOperationTimesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelOperationTimesObject!]!"
+    - name: postCheck
+      type: HotelOperationTimesBoolExp
+      description: Insert permission predicate over the 'hotel_operation_times' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_operation_times
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelOperationTimes
+    rootFieldKind: Mutation
+  description: Insert into the hotel_operation_times table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelOperationTimes
+  permissions:
+    - role: admin
+      allowExecution: true
+

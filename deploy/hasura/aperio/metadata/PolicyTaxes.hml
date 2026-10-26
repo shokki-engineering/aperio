@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyTaxes
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: PolicyTaxes
+    inputTypeName: PolicyTaxesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_taxes
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyTaxes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyTaxesBoolExp
+  operand:
+    object:
+      type: PolicyTaxes
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyTaxesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyTaxesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyTaxes
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyTaxesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyTaxesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyTaxes
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyTaxesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyTaxes
+  objectType: PolicyTaxes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_taxes
+  filterExpressionType: PolicyTaxesBoolExp
+  aggregateExpression: PolicyTaxesAggExp
+  orderByExpression: PolicyTaxesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyTaxes
+      subscription:
+        rootField: policyTaxes
+    selectUniques:
+      - queryRootField: policyTaxesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyTaxesById
+    filterInputTypeName: PolicyTaxesFilterInput
+    aggregate:
+      queryRootField: policyTaxesAggregate
+      subscription:
+        rootField: policyTaxesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyTaxes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationVideoItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertReservationVideoItemsObject
+    inputTypeName: InsertReservationVideoItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_video_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationVideoItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationVideoItemsResponse
+  description: Responses from the 'insert_reservation_video_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationVideoItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationVideoItemsResponse
+    inputTypeName: InsertReservationVideoItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_video_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationVideoItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationVideoItems
+  outputType: InsertReservationVideoItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationVideoItemsObject!]!"
+    - name: postCheck
+      type: ReservationVideoItemsBoolExp
+      description: Insert permission predicate over the 'reservation_video_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_video_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationVideoItems
+    rootFieldKind: Mutation
+  description: Insert into the reservation_video_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationVideoItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

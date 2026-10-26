@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanLevelFeesCode
+  description: Update the 'code' column in the 'rateplan_level_fees' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanLevelFeesCode
+    inputTypeName: UpdateColumnRateplanLevelFeesCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_level_fees_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanLevelFeesCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanLevelFeesCodeContext
+  description: Update the 'code_context' column in the 'rateplan_level_fees' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanLevelFeesCodeContext
+    inputTypeName: UpdateColumnRateplanLevelFeesCodeContextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_level_fees_code_context
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanLevelFeesCodeContext
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanLevelFeesId
+  description: Update the 'id' column in the 'rateplan_level_fees' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanLevelFeesId
+    inputTypeName: UpdateColumnRateplanLevelFeesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_level_fees_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanLevelFeesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanLevelFeesQuantity
+  description: Update the 'quantity' column in the 'rateplan_level_fees' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanLevelFeesQuantity
+    inputTypeName: UpdateColumnRateplanLevelFeesQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_level_fees_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanLevelFeesQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanLevelFeesUri
+  description: Update the 'uri' column in the 'rateplan_level_fees' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanLevelFeesUri
+    inputTypeName: UpdateColumnRateplanLevelFeesUriInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_level_fees_uri
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanLevelFeesUri
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanLevelFeesByIdUpdateColumns
+  description: Update the columns of the 'rateplan_level_fees' collection
+  fields:
+    - name: code
+      type: UpdateColumnRateplanLevelFeesCode
+      description: Update the 'code' column in the 'rateplan_level_fees' collection.
+    - name: codeContext
+      type: UpdateColumnRateplanLevelFeesCodeContext
+      description: Update the 'code_context' column in the 'rateplan_level_fees' collection.
+    - name: id
+      type: UpdateColumnRateplanLevelFeesId
+      description: Update the 'id' column in the 'rateplan_level_fees' collection.
+    - name: quantity
+      type: UpdateColumnRateplanLevelFeesQuantity
+      description: Update the 'quantity' column in the 'rateplan_level_fees' collection.
+    - name: uri
+      type: UpdateColumnRateplanLevelFeesUri
+      description: Update the 'uri' column in the 'rateplan_level_fees' collection.
+  graphql:
+    typeName: UpdateRateplanLevelFeesByIdUpdateColumns
+    inputTypeName: UpdateRateplanLevelFeesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_level_fees_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanLevelFeesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - quantity
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanLevelFeesByIdResponse
+  description: Responses from the 'update_rateplan_level_fees_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanLevelFees!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanLevelFeesByIdResponse
+    inputTypeName: UpdateRateplanLevelFeesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_level_fees_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanLevelFeesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanLevelFeesById
+  outputType: UpdateRateplanLevelFeesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanLevelFeesBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_level_fees' collection
+    - name: preCheck
+      type: RateplanLevelFeesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_level_fees' collection
+    - name: updateColumns
+      type: UpdateRateplanLevelFeesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_level_fees_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanLevelFeesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_level_fees' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanLevelFeesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

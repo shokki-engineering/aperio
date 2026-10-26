@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyInfoCodes
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: name
+      type: Enum
+    - name: policyId
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: PolicyInfoCodes
+    inputTypeName: PolicyInfoCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_info_codes
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        codeDetail:
+          column:
+            name: code_detail
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        policyId:
+          column:
+            name: policy_id
+        quantity:
+          column:
+            name: quantity
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyInfoCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - codeDetail
+          - existsCode
+          - id
+          - name
+          - policyId
+          - quantity
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyInfoCodesBoolExp
+  operand:
+    object:
+      type: PolicyInfoCodes
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: PolicyPolicyOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: PolicyNameBoolExp
+        - fieldName: policyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyInfoCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyInfoCodesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyInfoCodes
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: PolicyPolicyOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: PolicyNameAggExp
+        - fieldName: policyId
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyInfoCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyInfoCodesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyInfoCodes
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: EnumOrderByExp
+        - fieldName: policyId
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyInfoCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyInfoCodes
+  objectType: PolicyInfoCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_info_codes
+  filterExpressionType: PolicyInfoCodesBoolExp
+  aggregateExpression: PolicyInfoCodesAggExp
+  orderByExpression: PolicyInfoCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyInfoCodes
+      subscription:
+        rootField: policyInfoCodes
+    selectUniques:
+      - queryRootField: policyInfoCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyInfoCodesById
+    filterInputTypeName: PolicyInfoCodesFilterInput
+    aggregate:
+      queryRootField: policyInfoCodesAggregate
+      subscription:
+        rootField: policyInfoCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyInfoCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

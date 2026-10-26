@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelViewershipCodesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: viewershipCode
+      type: String_1!
+  graphql:
+    typeName: InsertHotelViewershipCodesObject
+    inputTypeName: InsertHotelViewershipCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_viewership_codes_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        viewershipCode:
+          column:
+            name: viewership_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelViewershipCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - viewershipCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelViewershipCodesResponse
+  description: Responses from the 'insert_hotel_viewership_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelViewershipCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelViewershipCodesResponse
+    inputTypeName: InsertHotelViewershipCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_viewership_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelViewershipCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelViewershipCodes
+  outputType: InsertHotelViewershipCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelViewershipCodesObject!]!"
+    - name: postCheck
+      type: HotelViewershipCodesBoolExp
+      description: Insert permission predicate over the 'hotel_viewership_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_viewership_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelViewershipCodes
+    rootFieldKind: Mutation
+  description: Insert into the hotel_viewership_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelViewershipCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

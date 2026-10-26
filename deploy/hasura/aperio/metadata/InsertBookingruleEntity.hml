@@ -1,0 +1,270 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleEntityObject
+  fields:
+    - name: absoluteCutoffId
+      type: String_1
+    - name: absoluteDropId
+      type: String_1
+    - name: addressRequired
+      type: Boolean_1
+    - name: bookingRuleId
+      type: String_1!
+    - name: cancelPenaltiesId
+      type: String_1
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: depositWaiverOffset
+      type: String_1
+    - name: dowRestrictionsId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: forceGuaranteeOffset
+      type: String_1
+    - name: generallyBookable
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: maxAdvancedBookingOffset
+      type: String_1
+    - name: maxContiguousBookings
+      type: Int32
+    - name: maxTotalOccupancy
+      type: Int32
+    - name: minAdvancedBookingOffset
+      type: String_1
+    - name: minTotalOccupancy
+      type: Int32
+    - name: offsetCalculationMode
+      type: Enum
+    - name: offsetDuration
+      type: String_1
+    - name: priceViewable
+      type: Boolean_1
+    - name: qualifiedRateYn
+      type: Boolean_1
+    - name: quantity
+      type: Int32
+    - name: restrictionStatusId
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: stayLengthsId
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleEntityObject
+    inputTypeName: InsertBookingruleEntityObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_entity_object
+      fieldMapping:
+        absoluteCutoffId:
+          column:
+            name: absolute_cutoff_id
+        absoluteDropId:
+          column:
+            name: absolute_drop_id
+        addressRequired:
+          column:
+            name: address_required
+        bookingRuleId:
+          column:
+            name: booking_rule_id
+        cancelPenaltiesId:
+          column:
+            name: cancel_penalties_id
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        depositWaiverOffset:
+          column:
+            name: deposit_waiver_offset
+        dowRestrictionsId:
+          column:
+            name: dow_restrictions_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        forceGuaranteeOffset:
+          column:
+            name: force_guarantee_offset
+        generallyBookable:
+          column:
+            name: generally_bookable
+        id:
+          column:
+            name: id
+        maxAdvancedBookingOffset:
+          column:
+            name: max_advanced_booking_offset
+        maxContiguousBookings:
+          column:
+            name: max_contiguous_bookings
+        maxTotalOccupancy:
+          column:
+            name: max_total_occupancy
+        minAdvancedBookingOffset:
+          column:
+            name: min_advanced_booking_offset
+        minTotalOccupancy:
+          column:
+            name: min_total_occupancy
+        offsetCalculationMode:
+          column:
+            name: offset_calculation_mode
+        offsetDuration:
+          column:
+            name: offset_duration
+        priceViewable:
+          column:
+            name: price_viewable
+        qualifiedRateYn:
+          column:
+            name: qualified_rate_yn
+        quantity:
+          column:
+            name: quantity
+        restrictionStatusId:
+          column:
+            name: restriction_status_id
+        startId:
+          column:
+            name: start_id
+        stayLengthsId:
+          column:
+            name: stay_lengths_id
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleEntityObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteCutoffId
+          - absoluteDropId
+          - addressRequired
+          - bookingRuleId
+          - cancelPenaltiesId
+          - code
+          - codeContext
+          - depositWaiverOffset
+          - dowRestrictionsId
+          - duration
+          - endId
+          - forceGuaranteeOffset
+          - generallyBookable
+          - id
+          - maxAdvancedBookingOffset
+          - maxContiguousBookings
+          - maxTotalOccupancy
+          - minAdvancedBookingOffset
+          - minTotalOccupancy
+          - offsetCalculationMode
+          - offsetDuration
+          - priceViewable
+          - qualifiedRateYn
+          - quantity
+          - restrictionStatusId
+          - startId
+          - stayLengthsId
+          - uniqueIdId
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleEntityResponse
+  description: Responses from the 'insert_bookingrule_entity' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleEntity!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleEntityResponse
+    inputTypeName: InsertBookingruleEntityResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_entity_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleEntityResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleEntity
+  outputType: InsertBookingruleEntityResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleEntityObject!]!"
+    - name: postCheck
+      type: BookingruleEntityBoolExp
+      description: Insert permission predicate over the 'bookingrule_entity' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_entity
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleEntity
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_entity table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleEntity
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeImageItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RoomtypeImageItems
+    inputTypeName: RoomtypeImageItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_image_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeImageItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeImageItemsBoolExp
+  operand:
+    object:
+      type: RoomtypeImageItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeImageItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeImageItemsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeImageItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeImageItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeImageItemsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeImageItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeImageItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeImageItems
+  objectType: RoomtypeImageItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_image_items
+  filterExpressionType: RoomtypeImageItemsBoolExp
+  aggregateExpression: RoomtypeImageItemsAggExp
+  orderByExpression: RoomtypeImageItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeImageItems
+      subscription:
+        rootField: roomtypeImageItems
+    selectUniques:
+      - queryRootField: roomtypeImageItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeImageItemsById
+    filterInputTypeName: RoomtypeImageItemsFilterInput
+    aggregate:
+      queryRootField: roomtypeImageItemsAggregate
+      subscription:
+        rootField: roomtypeImageItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeImageItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

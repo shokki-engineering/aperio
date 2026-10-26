@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanGuestRoomsObject
+  fields:
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: quantitiesId
+      type: String_1
+    - name: roomId
+      type: String_1
+    - name: roomLevelFeesId
+      type: String_1
+  graphql:
+    typeName: InsertRateplanGuestRoomsObject
+    inputTypeName: InsertRateplanGuestRoomsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_guest_rooms_object
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        quantitiesId:
+          column:
+            name: quantities_id
+        roomId:
+          column:
+            name: room_id
+        roomLevelFeesId:
+          column:
+            name: room_level_fees_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanGuestRoomsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - id
+          - quantitiesId
+          - roomId
+          - roomLevelFeesId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanGuestRoomsResponse
+  description: Responses from the 'insert_rateplan_guest_rooms' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanGuestRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanGuestRoomsResponse
+    inputTypeName: InsertRateplanGuestRoomsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_guest_rooms_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanGuestRoomsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanGuestRooms
+  outputType: InsertRateplanGuestRoomsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanGuestRoomsObject!]!"
+    - name: postCheck
+      type: RateplanGuestRoomsBoolExp
+      description: Insert permission predicate over the 'rateplan_guest_rooms' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_guest_rooms
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanGuestRooms
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_guest_rooms table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanGuestRooms
+  permissions:
+    - role: admin
+      allowExecution: true
+

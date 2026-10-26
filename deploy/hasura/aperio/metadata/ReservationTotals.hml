@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationTotals
+  fields:
+    - name: additionalFeesExcludedIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: markedUpAmountId
+      type: String_1
+    - name: postTaxAmountId
+      type: String_1
+    - name: preTaxAmountId
+      type: String_1
+    - name: rateOverrideIndicator
+      type: Boolean_1
+    - name: serviceOverrideIndicator
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: ReservationTotals
+    inputTypeName: ReservationTotalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_totals
+      fieldMapping:
+        additionalFeesExcludedIndicator:
+          column:
+            name: additional_fees_excluded_indicator
+        id:
+          column:
+            name: id
+        markedUpAmountId:
+          column:
+            name: marked_up_amount_id
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+        rateOverrideIndicator:
+          column:
+            name: rate_override_indicator
+        serviceOverrideIndicator:
+          column:
+            name: service_override_indicator
+        taxesId:
+          column:
+            name: taxes_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationTotals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalFeesExcludedIndicator
+          - id
+          - markedUpAmountId
+          - postTaxAmountId
+          - preTaxAmountId
+          - rateOverrideIndicator
+          - serviceOverrideIndicator
+          - taxesId
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationTotalsBoolExp
+  operand:
+    object:
+      type: ReservationTotals
+      comparableFields:
+        - fieldName: additionalFeesExcludedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: markedUpAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: postTaxAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preTaxAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateOverrideIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: serviceOverrideIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ReservationReservationChargeTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationTotalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationTotalsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationTotals
+      aggregatableFields:
+        - fieldName: additionalFeesExcludedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: markedUpAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: postTaxAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: preTaxAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: rateOverrideIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: serviceOverrideIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ReservationReservationChargeTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationTotalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationTotalsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationTotals
+      orderableFields:
+        - fieldName: additionalFeesExcludedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: markedUpAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: postTaxAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: preTaxAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: rateOverrideIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: serviceOverrideIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationTotalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationTotals
+  objectType: ReservationTotals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_totals
+  filterExpressionType: ReservationTotalsBoolExp
+  aggregateExpression: ReservationTotalsAggExp
+  orderByExpression: ReservationTotalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationTotals
+      subscription:
+        rootField: reservationTotals
+    selectUniques:
+      - queryRootField: reservationTotalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationTotalsById
+    filterInputTypeName: ReservationTotalsFilterInput
+    aggregate:
+      queryRootField: reservationTotalsAggregate
+      subscription:
+        rootField: reservationTotalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationTotals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

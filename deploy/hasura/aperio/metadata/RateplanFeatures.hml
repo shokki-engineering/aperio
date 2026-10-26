@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanFeatures
+  fields:
+    - name: accessibleCode
+      type: Enum
+    - name: chargeId
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: meetingRoomId
+      type: String_1!
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: Enum
+    - name: securityCode
+      type: Enum
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+  graphql:
+    typeName: RateplanFeatures
+    inputTypeName: RateplanFeaturesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_features
+      fieldMapping:
+        accessibleCode:
+          column:
+            name: accessible_code
+        chargeId:
+          column:
+            name: charge_id
+        codeDetail:
+          column:
+            name: code_detail
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        meetingRoomId:
+          column:
+            name: meeting_room_id
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        securityCode:
+          column:
+            name: security_code
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanFeatures
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessibleCode
+          - chargeId
+          - codeDetail
+          - descriptiveText
+          - existsCode
+          - id
+          - meetingRoomId
+          - multimediaDescriptionsId
+          - proximityCode
+          - securityCode
+          - unit
+          - unitCode
+          - unitQuantityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanFeaturesBoolExp
+  operand:
+    object:
+      type: RateplanFeatures
+      comparableFields:
+        - fieldName: accessibleCode
+          booleanExpressionType: RateplanRateplanDisabilityFeatureCodeBoolExp
+        - fieldName: chargeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: RateplanRateplanOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: proximityCode
+          booleanExpressionType: RateplanRateplanProximityBoolExp
+        - fieldName: securityCode
+          booleanExpressionType: RateplanRateplanSecurityFeatureCodeBoolExp
+        - fieldName: unit
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: RateplanRateplanUnitOfMeasureCodeBoolExp
+        - fieldName: unitQuantityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanFeaturesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanFeaturesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanFeatures
+      aggregatableFields:
+        - fieldName: accessibleCode
+          aggregateExpression: RateplanRateplanDisabilityFeatureCodeAggExp
+        - fieldName: chargeId
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: RateplanRateplanOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: proximityCode
+          aggregateExpression: RateplanRateplanProximityAggExp
+        - fieldName: securityCode
+          aggregateExpression: RateplanRateplanSecurityFeatureCodeAggExp
+        - fieldName: unit
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: RateplanRateplanUnitOfMeasureCodeAggExp
+        - fieldName: unitQuantityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanFeaturesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanFeaturesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanFeatures
+      orderableFields:
+        - fieldName: accessibleCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: chargeId
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: proximityCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: securityCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unit
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unitQuantityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanFeaturesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanFeatures
+  objectType: RateplanFeatures
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_features
+  filterExpressionType: RateplanFeaturesBoolExp
+  aggregateExpression: RateplanFeaturesAggExp
+  orderByExpression: RateplanFeaturesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanFeatures
+      subscription:
+        rootField: rateplanFeatures
+    selectUniques:
+      - queryRootField: rateplanFeaturesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanFeaturesById
+    filterInputTypeName: RateplanFeaturesFilterInput
+    aggregate:
+      queryRootField: rateplanFeaturesAggregate
+      subscription:
+        rootField: rateplanFeaturesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanFeatures
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

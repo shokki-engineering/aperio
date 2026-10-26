@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleSystemCode
+  fields:
+    - name: id
+      type: String_1!
+    - name: restrictedDisplayIndicator
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: systemCodesId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleSystemCode
+    inputTypeName: BookingruleSystemCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_system_code
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        systemCodesId:
+          column:
+            name: system_codes_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleSystemCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - systemCodesId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleSystemCodeBoolExp
+  operand:
+    object:
+      type: BookingruleSystemCode
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restrictedDisplayIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: systemCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleSystemCodeBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleSystemCodeAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleSystemCode
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restrictedDisplayIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: systemCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleSystemCodeAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleSystemCodeOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleSystemCode
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restrictedDisplayIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: systemCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleSystemCodeOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleSystemCode
+  objectType: BookingruleSystemCode
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_system_code
+  filterExpressionType: BookingruleSystemCodeBoolExp
+  aggregateExpression: BookingruleSystemCodeAggExp
+  orderByExpression: BookingruleSystemCodeOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleSystemCode
+      subscription:
+        rootField: bookingruleSystemCode
+    selectUniques:
+      - queryRootField: bookingruleSystemCodeById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleSystemCodeById
+    filterInputTypeName: BookingruleSystemCodeFilterInput
+    aggregate:
+      queryRootField: bookingruleSystemCodeAggregate
+      subscription:
+        rootField: bookingruleSystemCodeAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleSystemCode
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,226 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnTransientrfpCountryNamesId
+  description: Update the 'id' column in the 'transientrfp_country_names' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnTransientrfpCountryNamesId
+    inputTypeName: UpdateColumnTransientrfpCountryNamesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_transientrfp_country_names_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnTransientrfpCountryNamesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnTransientrfpCountryNamesRegionCode
+  description: Update the 'region_code' column in the 'transientrfp_country_names'
+    collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnTransientrfpCountryNamesRegionCode
+    inputTypeName: UpdateColumnTransientrfpCountryNamesRegionCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_transientrfp_country_names_region_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnTransientrfpCountryNamesRegionCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnTransientrfpCountryNamesValue
+  description: Update the 'value' column in the 'transientrfp_country_names' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnTransientrfpCountryNamesValue
+    inputTypeName: UpdateColumnTransientrfpCountryNamesValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_transientrfp_country_names_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnTransientrfpCountryNamesValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateTransientrfpCountryNamesByIdUpdateColumns
+  description: Update the columns of the 'transientrfp_country_names' collection
+  fields:
+    - name: id
+      type: UpdateColumnTransientrfpCountryNamesId
+      description: Update the 'id' column in the 'transientrfp_country_names' collection.
+    - name: regionCode
+      type: UpdateColumnTransientrfpCountryNamesRegionCode
+      description: Update the 'region_code' column in the 'transientrfp_country_names'
+        collection.
+    - name: value
+      type: UpdateColumnTransientrfpCountryNamesValue
+      description: Update the 'value' column in the 'transientrfp_country_names' collection.
+  graphql:
+    typeName: UpdateTransientrfpCountryNamesByIdUpdateColumns
+    inputTypeName: UpdateTransientrfpCountryNamesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_transientrfp_country_names_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateTransientrfpCountryNamesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateTransientrfpCountryNamesByIdResponse
+  description: Responses from the 'update_transientrfp_country_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[TransientrfpCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateTransientrfpCountryNamesByIdResponse
+    inputTypeName: UpdateTransientrfpCountryNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_transientrfp_country_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateTransientrfpCountryNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateTransientrfpCountryNamesById
+  outputType: UpdateTransientrfpCountryNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: TransientrfpCountryNamesBoolExp
+      description: Update permission post-condition predicate over the
+        'transientrfp_country_names' collection
+    - name: preCheck
+      type: TransientrfpCountryNamesBoolExp
+      description: Update permission pre-condition predicate over the
+        'transientrfp_country_names' collection
+    - name: updateColumns
+      type: UpdateTransientrfpCountryNamesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_transientrfp_country_names_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateTransientrfpCountryNamesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'transientrfp_country_names' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateTransientrfpCountryNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

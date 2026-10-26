@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePersonNameDocumentsObject
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertProfilePersonNameDocumentsObject
+    inputTypeName: InsertProfilePersonNameDocumentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_person_name_documents_object
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePersonNameDocumentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePersonNameDocumentsResponse
+  description: Responses from the 'insert_profile_person_name_documents' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePersonNameDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePersonNameDocumentsResponse
+    inputTypeName: InsertProfilePersonNameDocumentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_person_name_documents_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePersonNameDocumentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePersonNameDocuments
+  outputType: InsertProfilePersonNameDocumentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePersonNameDocumentsObject!]!"
+    - name: postCheck
+      type: ProfilePersonNameDocumentsBoolExp
+      description: Insert permission predicate over the
+        'profile_person_name_documents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_person_name_documents
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePersonNameDocuments
+    rootFieldKind: Mutation
+  description: Insert into the profile_person_name_documents table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePersonNameDocuments
+  permissions:
+    - role: admin
+      allowExecution: true
+

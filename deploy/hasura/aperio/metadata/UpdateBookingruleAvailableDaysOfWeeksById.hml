@@ -1,0 +1,183 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleAvailableDaysOfWeeksId
+  description: Update the 'id' column in the 'bookingrule_available_days_of_weeks'
+    collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleAvailableDaysOfWeeksId
+    inputTypeName: UpdateColumnBookingruleAvailableDaysOfWeeksIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_available_days_of_weeks_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleAvailableDaysOfWeeksId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleAvailableDaysOfWeeksWeekdays
+  description: Update the 'weekdays' column in the
+    'bookingrule_available_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleAvailableDaysOfWeeksWeekdays
+    inputTypeName: UpdateColumnBookingruleAvailableDaysOfWeeksWeekdaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_available_days_of_weeks_weekdays
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleAvailableDaysOfWeeksWeekdays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleAvailableDaysOfWeeksByIdUpdateColumns
+  description: Update the columns of the 'bookingrule_available_days_of_weeks' collection
+  fields:
+    - name: id
+      type: UpdateColumnBookingruleAvailableDaysOfWeeksId
+      description: Update the 'id' column in the 'bookingrule_available_days_of_weeks'
+        collection.
+    - name: weekdays
+      type: UpdateColumnBookingruleAvailableDaysOfWeeksWeekdays
+      description: Update the 'weekdays' column in the
+        'bookingrule_available_days_of_weeks' collection.
+  graphql:
+    typeName: UpdateBookingruleAvailableDaysOfWeeksByIdUpdateColumns
+    inputTypeName: UpdateBookingruleAvailableDaysOfWeeksByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_available_days_of_weeks_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleAvailableDaysOfWeeksByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleAvailableDaysOfWeeksByIdResponse
+  description: Responses from the
+    'update_bookingrule_available_days_of_weeks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleAvailableDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateBookingruleAvailableDaysOfWeeksByIdResponse
+    inputTypeName: UpdateBookingruleAvailableDaysOfWeeksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_available_days_of_weeks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleAvailableDaysOfWeeksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateBookingruleAvailableDaysOfWeeksById
+  outputType: UpdateBookingruleAvailableDaysOfWeeksByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: BookingruleAvailableDaysOfWeeksBoolExp
+      description: Update permission post-condition predicate over the
+        'bookingrule_available_days_of_weeks' collection
+    - name: preCheck
+      type: BookingruleAvailableDaysOfWeeksBoolExp
+      description: Update permission pre-condition predicate over the
+        'bookingrule_available_days_of_weeks' collection
+    - name: updateColumns
+      type: UpdateBookingruleAvailableDaysOfWeeksByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_bookingrule_available_days_of_weeks_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateBookingruleAvailableDaysOfWeeksById
+    rootFieldKind: Mutation
+  description: Update any row on the 'bookingrule_available_days_of_weeks'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateBookingruleAvailableDaysOfWeeksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

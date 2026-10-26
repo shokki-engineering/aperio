@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleFormattedTextTexts
+  fields:
+    - name: commentId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleFormattedTextTexts
+    inputTypeName: BookingruleFormattedTextTextsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_formatted_text_texts
+      fieldMapping:
+        commentId:
+          column:
+            name: comment_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleFormattedTextTexts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentId
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleFormattedTextTextsBoolExp
+  operand:
+    object:
+      type: BookingruleFormattedTextTexts
+      comparableFields:
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: BookingruleBookingruleFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleFormattedTextTextsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleFormattedTextTextsAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleFormattedTextTexts
+      aggregatableFields:
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: BookingruleBookingruleFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleFormattedTextTextsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleFormattedTextTextsOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleFormattedTextTexts
+      orderableFields:
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleFormattedTextTextsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleFormattedTextTexts
+  objectType: BookingruleFormattedTextTexts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_formatted_text_texts
+  filterExpressionType: BookingruleFormattedTextTextsBoolExp
+  aggregateExpression: BookingruleFormattedTextTextsAggExp
+  orderByExpression: BookingruleFormattedTextTextsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleFormattedTextTexts
+      subscription:
+        rootField: bookingruleFormattedTextTexts
+    selectUniques:
+      - queryRootField: bookingruleFormattedTextTextsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleFormattedTextTextsById
+    filterInputTypeName: BookingruleFormattedTextTextsFilterInput
+    aggregate:
+      queryRootField: bookingruleFormattedTextTextsAggregate
+      subscription:
+        rootField: bookingruleFormattedTextTextsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleFormattedTextTexts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

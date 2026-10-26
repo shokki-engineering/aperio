@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileTransportModesPrefs
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: trainPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileTransportModesPrefs
+    inputTypeName: ProfileTransportModesPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_transport_modes_prefs
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        trainPrefId:
+          column:
+            name: train_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileTransportModesPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - preferLevel
+          - trainPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileTransportModesPrefsBoolExp
+  operand:
+    object:
+      type: ProfileTransportModesPrefs
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: trainPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileTransportModesPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileTransportModesPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileTransportModesPrefs
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: trainPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileTransportModesPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileTransportModesPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileTransportModesPrefs
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: trainPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileTransportModesPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileTransportModesPrefs
+  objectType: ProfileTransportModesPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_transport_modes_prefs
+  filterExpressionType: ProfileTransportModesPrefsBoolExp
+  aggregateExpression: ProfileTransportModesPrefsAggExp
+  orderByExpression: ProfileTransportModesPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileTransportModesPrefs
+      subscription:
+        rootField: profileTransportModesPrefs
+    selectUniques:
+      - queryRootField: profileTransportModesPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileTransportModesPrefsById
+    filterInputTypeName: ProfileTransportModesPrefsFilterInput
+    aggregate:
+      queryRootField: profileTransportModesPrefsAggregate
+      subscription:
+        rootField: profileTransportModesPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileTransportModesPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

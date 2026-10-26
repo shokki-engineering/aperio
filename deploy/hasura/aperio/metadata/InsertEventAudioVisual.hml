@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventAudioVisualObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: audioVisualPref
+      type: Enum
+    - name: audioVisualsId
+      type: String_1!
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+  graphql:
+    typeName: InsertEventAudioVisualObject
+    inputTypeName: InsertEventAudioVisualObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_audio_visual_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        audioVisualPref:
+          column:
+            name: audio_visual_pref
+        audioVisualsId:
+          column:
+            name: audio_visuals_id
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventAudioVisualObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - audioVisualPref
+          - audioVisualsId
+          - code
+          - id
+          - quantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventAudioVisualResponse
+  description: Responses from the 'insert_event_audio_visual' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventAudioVisual!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventAudioVisualResponse
+    inputTypeName: InsertEventAudioVisualResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_audio_visual_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventAudioVisualResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventAudioVisual
+  outputType: InsertEventAudioVisualResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventAudioVisualObject!]!"
+    - name: postCheck
+      type: EventAudioVisualBoolExp
+      description: Insert permission predicate over the 'event_audio_visual' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_audio_visual
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventAudioVisual
+    rootFieldKind: Mutation
+  description: Insert into the event_audio_visual table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventAudioVisual
+  permissions:
+    - role: admin
+      allowExecution: true
+

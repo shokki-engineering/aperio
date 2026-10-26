@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleGuaranteePaymentDeadlines
+  fields:
+    - name: absoluteDeadlineId
+      type: String_1
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: offsetDropPoint
+      type: Enum
+    - name: offsetTimeUnit
+      type: Enum
+    - name: offsetUnitMultiplier
+      type: Int32
+    - name: overrideIndicator
+      type: Boolean_1
+  graphql:
+    typeName: BookingruleGuaranteePaymentDeadlines
+    inputTypeName: BookingruleGuaranteePaymentDeadlinesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_guarantee_payment_deadlines
+      fieldMapping:
+        absoluteDeadlineId:
+          column:
+            name: absolute_deadline_id
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        id:
+          column:
+            name: id
+        offsetDropPoint:
+          column:
+            name: offset_drop_point
+        offsetTimeUnit:
+          column:
+            name: offset_time_unit
+        offsetUnitMultiplier:
+          column:
+            name: offset_unit_multiplier
+        overrideIndicator:
+          column:
+            name: override_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleGuaranteePaymentDeadlines
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteDeadlineId
+          - guaranteePaymentId
+          - id
+          - offsetDropPoint
+          - offsetTimeUnit
+          - offsetUnitMultiplier
+          - overrideIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleGuaranteePaymentDeadlinesBoolExp
+  operand:
+    object:
+      type: BookingruleGuaranteePaymentDeadlines
+      comparableFields:
+        - fieldName: absoluteDeadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteePaymentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offsetDropPoint
+          booleanExpressionType: BookingruleBookingruleOffsetDropTimeBoolExp
+        - fieldName: offsetTimeUnit
+          booleanExpressionType: BookingruleBookingruleTimeUnitBoolExp
+        - fieldName: offsetUnitMultiplier
+          booleanExpressionType: Int4BoolExp
+        - fieldName: overrideIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleGuaranteePaymentDeadlinesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleGuaranteePaymentDeadlinesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleGuaranteePaymentDeadlines
+      aggregatableFields:
+        - fieldName: absoluteDeadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteePaymentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offsetDropPoint
+          aggregateExpression: BookingruleBookingruleOffsetDropTimeAggExp
+        - fieldName: offsetTimeUnit
+          aggregateExpression: BookingruleBookingruleTimeUnitAggExp
+        - fieldName: offsetUnitMultiplier
+          aggregateExpression: Int4AggExp
+        - fieldName: overrideIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleGuaranteePaymentDeadlinesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleGuaranteePaymentDeadlinesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleGuaranteePaymentDeadlines
+      orderableFields:
+        - fieldName: absoluteDeadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteePaymentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offsetDropPoint
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetTimeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetUnitMultiplier
+          orderByExpression: Int32OrderByExp
+        - fieldName: overrideIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleGuaranteePaymentDeadlinesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleGuaranteePaymentDeadlines
+  objectType: BookingruleGuaranteePaymentDeadlines
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_guarantee_payment_deadlines
+  filterExpressionType: BookingruleGuaranteePaymentDeadlinesBoolExp
+  aggregateExpression: BookingruleGuaranteePaymentDeadlinesAggExp
+  orderByExpression: BookingruleGuaranteePaymentDeadlinesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleGuaranteePaymentDeadlines
+      subscription:
+        rootField: bookingruleGuaranteePaymentDeadlines
+    selectUniques:
+      - queryRootField: bookingruleGuaranteePaymentDeadlinesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleGuaranteePaymentDeadlinesById
+    filterInputTypeName: BookingruleGuaranteePaymentDeadlinesFilterInput
+    aggregate:
+      queryRootField: bookingruleGuaranteePaymentDeadlinesAggregate
+      subscription:
+        rootField: bookingruleGuaranteePaymentDeadlinesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleGuaranteePaymentDeadlines
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

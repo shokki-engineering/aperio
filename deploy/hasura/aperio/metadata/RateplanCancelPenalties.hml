@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCancelPenalties
+  fields:
+    - name: cancelPolicyIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanCancelPenalties
+    inputTypeName: RateplanCancelPenaltiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_cancel_penalties
+      fieldMapping:
+        cancelPolicyIndicator:
+          column:
+            name: cancel_policy_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCancelPenalties
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelPolicyIndicator
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCancelPenaltiesBoolExp
+  operand:
+    object:
+      type: RateplanCancelPenalties
+      comparableFields:
+        - fieldName: cancelPolicyIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCancelPenaltiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCancelPenaltiesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCancelPenalties
+      aggregatableFields:
+        - fieldName: cancelPolicyIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCancelPenaltiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCancelPenaltiesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCancelPenalties
+      orderableFields:
+        - fieldName: cancelPolicyIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCancelPenaltiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCancelPenalties
+  objectType: RateplanCancelPenalties
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_cancel_penalties
+  filterExpressionType: RateplanCancelPenaltiesBoolExp
+  aggregateExpression: RateplanCancelPenaltiesAggExp
+  orderByExpression: RateplanCancelPenaltiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCancelPenalties
+      subscription:
+        rootField: rateplanCancelPenalties
+    selectUniques:
+      - queryRootField: rateplanCancelPenaltiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCancelPenaltiesById
+    filterInputTypeName: RateplanCancelPenaltiesFilterInput
+    aggregate:
+      queryRootField: rateplanCancelPenaltiesAggregate
+      subscription:
+        rootField: rateplanCancelPenaltiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCancelPenalties
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

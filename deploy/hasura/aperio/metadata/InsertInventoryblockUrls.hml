@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockUrlsObject
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertInventoryblockUrlsObject
+    inputTypeName: InsertInventoryblockUrlsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_urls_object
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockUrlsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockUrlsResponse
+  description: Responses from the 'insert_inventoryblock_urls' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockUrlsResponse
+    inputTypeName: InsertInventoryblockUrlsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_urls_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockUrlsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockUrls
+  outputType: InsertInventoryblockUrlsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockUrlsObject!]!"
+    - name: postCheck
+      type: InventoryblockUrlsBoolExp
+      description: Insert permission predicate over the 'inventoryblock_urls' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_urls
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockUrls
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_urls table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockUrls
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,186 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelLocationCodesId
+  description: Update the 'id' column in the 'hotel_location_codes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelLocationCodesId
+    inputTypeName: UpdateColumnHotelLocationCodesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_location_codes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelLocationCodesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelLocationCodesLocationCodesInclusive
+  description: Update the 'location_codes_inclusive' column in the
+    'hotel_location_codes' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelLocationCodesLocationCodesInclusive
+    inputTypeName: UpdateColumnHotelLocationCodesLocationCodesInclusiveInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_location_codes_location_codes_inclusive
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelLocationCodesLocationCodesInclusive
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelLocationCodesByIdUpdateColumns
+  description: Update the columns of the 'hotel_location_codes' collection
+  fields:
+    - name: id
+      type: UpdateColumnHotelLocationCodesId
+      description: Update the 'id' column in the 'hotel_location_codes' collection.
+    - name: locationCodesInclusive
+      type: UpdateColumnHotelLocationCodesLocationCodesInclusive
+      description: Update the 'location_codes_inclusive' column in the
+        'hotel_location_codes' collection.
+  graphql:
+    typeName: UpdateHotelLocationCodesByIdUpdateColumns
+    inputTypeName: UpdateHotelLocationCodesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_location_codes_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        locationCodesInclusive:
+          column:
+            name: location_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelLocationCodesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - locationCodesInclusive
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelLocationCodesByIdResponse
+  description: Responses from the 'update_hotel_location_codes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelLocationCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelLocationCodesByIdResponse
+    inputTypeName: UpdateHotelLocationCodesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_location_codes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelLocationCodesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelLocationCodesById
+  outputType: UpdateHotelLocationCodesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelLocationCodesBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_location_codes' collection
+    - name: preCheck
+      type: HotelLocationCodesBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_location_codes' collection
+    - name: updateColumns
+      type: UpdateHotelLocationCodesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_location_codes_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelLocationCodesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_location_codes' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelLocationCodesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

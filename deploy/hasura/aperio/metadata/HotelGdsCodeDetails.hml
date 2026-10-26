@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelGdsCodeDetails
+  fields:
+    - name: agencyDisplayName
+      type: String_1
+    - name: gdsCodeId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: pseudoCityCode
+      type: String_1
+  graphql:
+    typeName: HotelGdsCodeDetails
+    inputTypeName: HotelGdsCodeDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_gds_code_details
+      fieldMapping:
+        agencyDisplayName:
+          column:
+            name: agency_display_name
+        gdsCodeId:
+          column:
+            name: gds_code_id
+        id:
+          column:
+            name: id
+        pseudoCityCode:
+          column:
+            name: pseudo_city_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelGdsCodeDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - agencyDisplayName
+          - gdsCodeId
+          - id
+          - pseudoCityCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelGdsCodeDetailsBoolExp
+  operand:
+    object:
+      type: HotelGdsCodeDetails
+      comparableFields:
+        - fieldName: agencyDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: gdsCodeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: pseudoCityCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelGdsCodeDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelGdsCodeDetailsAggExp
+  operand:
+    object:
+      aggregatedType: HotelGdsCodeDetails
+      aggregatableFields:
+        - fieldName: agencyDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: gdsCodeId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: pseudoCityCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelGdsCodeDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelGdsCodeDetailsOrderByExp
+  operand:
+    object:
+      orderedType: HotelGdsCodeDetails
+      orderableFields:
+        - fieldName: agencyDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: gdsCodeId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: pseudoCityCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelGdsCodeDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelGdsCodeDetails
+  objectType: HotelGdsCodeDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_gds_code_details
+  filterExpressionType: HotelGdsCodeDetailsBoolExp
+  aggregateExpression: HotelGdsCodeDetailsAggExp
+  orderByExpression: HotelGdsCodeDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelGdsCodeDetails
+      subscription:
+        rootField: hotelGdsCodeDetails
+    selectUniques:
+      - queryRootField: hotelGdsCodeDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelGdsCodeDetailsById
+    filterInputTypeName: HotelGdsCodeDetailsFilterInput
+    aggregate:
+      queryRootField: hotelGdsCodeDetailsAggregate
+      subscription:
+        rootField: hotelGdsCodeDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelGdsCodeDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

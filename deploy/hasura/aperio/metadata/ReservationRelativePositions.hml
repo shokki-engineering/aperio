@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRelativePositions
+  fields:
+    - name: approximateDistance
+      type: Boolean_1
+    - name: direction
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: distance
+      type: String_1
+    - name: facilityDirection
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: indexPointCode
+      type: Enum
+    - name: nearest
+      type: Boolean_1
+    - name: positionAccuracy
+      type: Enum
+    - name: primaryIndicator
+      type: Boolean_1
+    - name: unitCode
+      type: Enum
+  graphql:
+    typeName: ReservationRelativePositions
+    inputTypeName: ReservationRelativePositionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_relative_positions
+      fieldMapping:
+        approximateDistance:
+          column:
+            name: approximate_distance
+        direction:
+          column:
+            name: direction
+        displayName:
+          column:
+            name: display_name
+        distance:
+          column:
+            name: distance
+        facilityDirection:
+          column:
+            name: facility_direction
+        id:
+          column:
+            name: id
+        indexPointCode:
+          column:
+            name: index_point_code
+        nearest:
+          column:
+            name: nearest
+        positionAccuracy:
+          column:
+            name: position_accuracy
+        primaryIndicator:
+          column:
+            name: primary_indicator
+        unitCode:
+          column:
+            name: unit_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRelativePositions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - approximateDistance
+          - direction
+          - displayName
+          - distance
+          - facilityDirection
+          - id
+          - indexPointCode
+          - nearest
+          - positionAccuracy
+          - primaryIndicator
+          - unitCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRelativePositionsBoolExp
+  operand:
+    object:
+      type: ReservationRelativePositions
+      comparableFields:
+        - fieldName: approximateDistance
+          booleanExpressionType: BoolBoolExp
+        - fieldName: direction
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: distance
+          booleanExpressionType: TextBoolExp
+        - fieldName: facilityDirection
+          booleanExpressionType: ReservationReservationToFromBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: indexPointCode
+          booleanExpressionType: ReservationReservationIndexPointCodeBoolExp
+        - fieldName: nearest
+          booleanExpressionType: BoolBoolExp
+        - fieldName: positionAccuracy
+          booleanExpressionType: ReservationReservationPositionAccuracyBoolExp
+        - fieldName: primaryIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: ReservationReservationUnitOfMeasureCodeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRelativePositionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRelativePositionsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRelativePositions
+      aggregatableFields:
+        - fieldName: approximateDistance
+          aggregateExpression: BoolAggExp
+        - fieldName: direction
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: distance
+          aggregateExpression: TextAggExp
+        - fieldName: facilityDirection
+          aggregateExpression: ReservationReservationToFromAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: indexPointCode
+          aggregateExpression: ReservationReservationIndexPointCodeAggExp
+        - fieldName: nearest
+          aggregateExpression: BoolAggExp
+        - fieldName: positionAccuracy
+          aggregateExpression: ReservationReservationPositionAccuracyAggExp
+        - fieldName: primaryIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: unitCode
+          aggregateExpression: ReservationReservationUnitOfMeasureCodeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRelativePositionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRelativePositionsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRelativePositions
+      orderableFields:
+        - fieldName: approximateDistance
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: direction
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: distance
+          orderByExpression: String1OrderByExp
+        - fieldName: facilityDirection
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: indexPointCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: nearest
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: positionAccuracy
+          orderByExpression: EnumOrderByExp
+        - fieldName: primaryIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRelativePositionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRelativePositions
+  objectType: ReservationRelativePositions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_relative_positions
+  filterExpressionType: ReservationRelativePositionsBoolExp
+  aggregateExpression: ReservationRelativePositionsAggExp
+  orderByExpression: ReservationRelativePositionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRelativePositions
+      subscription:
+        rootField: reservationRelativePositions
+    selectUniques:
+      - queryRootField: reservationRelativePositionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRelativePositionsById
+    filterInputTypeName: ReservationRelativePositionsFilterInput
+    aggregate:
+      queryRootField: reservationRelativePositionsAggregate
+      subscription:
+        rootField: reservationRelativePositionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRelativePositions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockCancelPenalties
+  fields:
+    - name: cancelPolicyIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InventoryblockCancelPenalties
+    inputTypeName: InventoryblockCancelPenaltiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_cancel_penalties
+      fieldMapping:
+        cancelPolicyIndicator:
+          column:
+            name: cancel_policy_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockCancelPenalties
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelPolicyIndicator
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockCancelPenaltiesBoolExp
+  operand:
+    object:
+      type: InventoryblockCancelPenalties
+      comparableFields:
+        - fieldName: cancelPolicyIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockCancelPenaltiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockCancelPenaltiesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockCancelPenalties
+      aggregatableFields:
+        - fieldName: cancelPolicyIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockCancelPenaltiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockCancelPenaltiesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockCancelPenalties
+      orderableFields:
+        - fieldName: cancelPolicyIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockCancelPenaltiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockCancelPenalties
+  objectType: InventoryblockCancelPenalties
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_cancel_penalties
+  filterExpressionType: InventoryblockCancelPenaltiesBoolExp
+  aggregateExpression: InventoryblockCancelPenaltiesAggExp
+  orderByExpression: InventoryblockCancelPenaltiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockCancelPenalties
+      subscription:
+        rootField: inventoryblockCancelPenalties
+    selectUniques:
+      - queryRootField: inventoryblockCancelPenaltiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockCancelPenaltiesById
+    filterInputTypeName: InventoryblockCancelPenaltiesFilterInput
+    aggregate:
+      queryRootField: inventoryblockCancelPenaltiesAggregate
+      subscription:
+        rootField: inventoryblockCancelPenaltiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockCancelPenalties
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

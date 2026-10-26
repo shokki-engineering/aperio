@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleLocationCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: locationCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: BookingruleLocationCodes
+    inputTypeName: BookingruleLocationCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_location_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        locationCodesInclusive:
+          column:
+            name: location_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleLocationCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - locationCodesInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleLocationCodesBoolExp
+  operand:
+    object:
+      type: BookingruleLocationCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationCodesInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleLocationCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleLocationCodesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleLocationCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationCodesInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleLocationCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleLocationCodesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleLocationCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationCodesInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleLocationCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleLocationCodes
+  objectType: BookingruleLocationCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_location_codes
+  filterExpressionType: BookingruleLocationCodesBoolExp
+  aggregateExpression: BookingruleLocationCodesAggExp
+  orderByExpression: BookingruleLocationCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleLocationCodes
+      subscription:
+        rootField: bookingruleLocationCodes
+    selectUniques:
+      - queryRootField: bookingruleLocationCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleLocationCodesById
+    filterInputTypeName: BookingruleLocationCodesFilterInput
+    aggregate:
+      queryRootField: bookingruleLocationCodesAggregate
+      subscription:
+        rootField: bookingruleLocationCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleLocationCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

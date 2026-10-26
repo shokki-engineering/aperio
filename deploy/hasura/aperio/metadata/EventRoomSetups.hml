@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventRoomSetups
+  fields:
+    - name: diagramId
+      type: String_1
+    - name: dismantleDeadlineId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: roomSetupCode
+      type: Enum
+    - name: setupDeadlineId
+      type: String_1
+    - name: setupQuantity
+      type: Int32
+  graphql:
+    typeName: EventRoomSetups
+    inputTypeName: EventRoomSetupsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_room_setups
+      fieldMapping:
+        diagramId:
+          column:
+            name: diagram_id
+        dismantleDeadlineId:
+          column:
+            name: dismantle_deadline_id
+        id:
+          column:
+            name: id
+        roomSetupCode:
+          column:
+            name: room_setup_code
+        setupDeadlineId:
+          column:
+            name: setup_deadline_id
+        setupQuantity:
+          column:
+            name: setup_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventRoomSetups
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - diagramId
+          - dismantleDeadlineId
+          - id
+          - roomSetupCode
+          - setupDeadlineId
+          - setupQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventRoomSetupsBoolExp
+  operand:
+    object:
+      type: EventRoomSetups
+      comparableFields:
+        - fieldName: diagramId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dismantleDeadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomSetupCode
+          booleanExpressionType: EventEventMeetingRoomFormatCodeBoolExp
+        - fieldName: setupDeadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: setupQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventRoomSetupsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventRoomSetupsAggExp
+  operand:
+    object:
+      aggregatedType: EventRoomSetups
+      aggregatableFields:
+        - fieldName: diagramId
+          aggregateExpression: TextAggExp
+        - fieldName: dismantleDeadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomSetupCode
+          aggregateExpression: EventEventMeetingRoomFormatCodeAggExp
+        - fieldName: setupDeadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: setupQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventRoomSetupsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventRoomSetupsOrderByExp
+  operand:
+    object:
+      orderedType: EventRoomSetups
+      orderableFields:
+        - fieldName: diagramId
+          orderByExpression: String1OrderByExp
+        - fieldName: dismantleDeadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomSetupCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: setupDeadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: setupQuantity
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventRoomSetupsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventRoomSetups
+  objectType: EventRoomSetups
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_room_setups
+  filterExpressionType: EventRoomSetupsBoolExp
+  aggregateExpression: EventRoomSetupsAggExp
+  orderByExpression: EventRoomSetupsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventRoomSetups
+      subscription:
+        rootField: eventRoomSetups
+    selectUniques:
+      - queryRootField: eventRoomSetupsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventRoomSetupsById
+    filterInputTypeName: EventRoomSetupsFilterInput
+    aggregate:
+      queryRootField: eventRoomSetupsAggregate
+      subscription:
+        rootField: eventRoomSetupsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventRoomSetups
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

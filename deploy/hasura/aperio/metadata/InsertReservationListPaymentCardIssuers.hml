@@ -1,0 +1,163 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationListPaymentCardIssuersObject
+  fields:
+    - name: code
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptionDetail
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: removal
+      type: Boolean_1
+    - name: resourceDisplayName
+      type: String_1
+    - name: resourceUri
+      type: String_1
+    - name: sourceDisplayName
+      type: String_1
+    - name: sourceUri
+      type: String_1
+    - name: uniqueId
+      type: String_1
+    - name: value
+      type: Enum
+  graphql:
+    typeName: InsertReservationListPaymentCardIssuersObject
+    inputTypeName: InsertReservationListPaymentCardIssuersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_list_payment_card_issuers_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        descriptionDetail:
+          column:
+            name: description_detail
+        id:
+          column:
+            name: id
+        removal:
+          column:
+            name: removal
+        resourceDisplayName:
+          column:
+            name: resource_display_name
+        resourceUri:
+          column:
+            name: resource_uri
+        sourceDisplayName:
+          column:
+            name: source_display_name
+        sourceUri:
+          column:
+            name: source_uri
+        uniqueId:
+          column:
+            name: unique_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationListPaymentCardIssuersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - description
+          - descriptionDetail
+          - id
+          - removal
+          - resourceDisplayName
+          - resourceUri
+          - sourceDisplayName
+          - sourceUri
+          - uniqueId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationListPaymentCardIssuersResponse
+  description: Responses from the 'insert_reservation_list_payment_card_issuers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationListPaymentCardIssuers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationListPaymentCardIssuersResponse
+    inputTypeName: InsertReservationListPaymentCardIssuersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_list_payment_card_issuers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationListPaymentCardIssuersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationListPaymentCardIssuers
+  outputType: InsertReservationListPaymentCardIssuersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationListPaymentCardIssuersObject!]!"
+    - name: postCheck
+      type: ReservationListPaymentCardIssuersBoolExp
+      description: Insert permission predicate over the
+        'reservation_list_payment_card_issuers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_list_payment_card_issuers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationListPaymentCardIssuers
+    rootFieldKind: Mutation
+  description: Insert into the reservation_list_payment_card_issuers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationListPaymentCardIssuers
+  permissions:
+    - role: admin
+      allowExecution: true
+

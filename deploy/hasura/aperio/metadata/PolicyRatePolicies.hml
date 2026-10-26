@@ -1,0 +1,211 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyRatePolicies
+  fields:
+    - name: changeable
+      type: Boolean_1
+    - name: corporateId
+      type: Boolean_1
+    - name: guestTypes
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: idRequired
+      type: Boolean_1
+    - name: minRoomNightCommitment
+      type: Int32
+    - name: policyId
+      type: String_1!
+    - name: rateOfferType
+      type: Enum
+    - name: typeId
+      type: String_1
+  graphql:
+    typeName: PolicyRatePolicies
+    inputTypeName: PolicyRatePoliciesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_rate_policies
+      fieldMapping:
+        changeable:
+          column:
+            name: changeable
+        corporateId:
+          column:
+            name: corporate_id
+        guestTypes:
+          column:
+            name: guest_types
+        id:
+          column:
+            name: id
+        idRequired:
+          column:
+            name: id_required
+        minRoomNightCommitment:
+          column:
+            name: min_room_night_commitment
+        policyId:
+          column:
+            name: policy_id
+        rateOfferType:
+          column:
+            name: rate_offer_type
+        typeId:
+          column:
+            name: type_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyRatePolicies
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - changeable
+          - corporateId
+          - guestTypes
+          - id
+          - idRequired
+          - minRoomNightCommitment
+          - policyId
+          - rateOfferType
+          - typeId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyRatePoliciesBoolExp
+  operand:
+    object:
+      type: PolicyRatePolicies
+      comparableFields:
+        - fieldName: changeable
+          booleanExpressionType: BoolBoolExp
+        - fieldName: corporateId
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idRequired
+          booleanExpressionType: BoolBoolExp
+        - fieldName: minRoomNightCommitment
+          booleanExpressionType: Int4BoolExp
+        - fieldName: policyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateOfferType
+          booleanExpressionType: PolicyPolicyRatePlanTypeBoolExp
+        - fieldName: typeId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyRatePoliciesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyRatePoliciesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyRatePolicies
+      aggregatableFields:
+        - fieldName: changeable
+          aggregateExpression: BoolAggExp
+        - fieldName: corporateId
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idRequired
+          aggregateExpression: BoolAggExp
+        - fieldName: minRoomNightCommitment
+          aggregateExpression: Int4AggExp
+        - fieldName: policyId
+          aggregateExpression: TextAggExp
+        - fieldName: rateOfferType
+          aggregateExpression: PolicyPolicyRatePlanTypeAggExp
+        - fieldName: typeId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyRatePoliciesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyRatePoliciesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyRatePolicies
+      orderableFields:
+        - fieldName: changeable
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: corporateId
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idRequired
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: minRoomNightCommitment
+          orderByExpression: Int32OrderByExp
+        - fieldName: policyId
+          orderByExpression: String1OrderByExp
+        - fieldName: rateOfferType
+          orderByExpression: EnumOrderByExp
+        - fieldName: typeId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyRatePoliciesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyRatePolicies
+  objectType: PolicyRatePolicies
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_rate_policies
+  filterExpressionType: PolicyRatePoliciesBoolExp
+  aggregateExpression: PolicyRatePoliciesAggExp
+  orderByExpression: PolicyRatePoliciesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyRatePolicies
+      subscription:
+        rootField: policyRatePolicies
+    selectUniques:
+      - queryRootField: policyRatePoliciesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyRatePoliciesById
+    filterInputTypeName: PolicyRatePoliciesFilterInput
+    aggregate:
+      queryRootField: policyRatePoliciesAggregate
+      subscription:
+        rootField: policyRatePoliciesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyRatePolicies
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

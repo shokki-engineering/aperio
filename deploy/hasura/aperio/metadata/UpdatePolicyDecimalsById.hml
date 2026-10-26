@@ -1,0 +1,177 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyDecimalsId
+  description: Update the 'id' column in the 'policy_decimals' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyDecimalsId
+    inputTypeName: UpdateColumnPolicyDecimalsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_decimals_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyDecimalsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyDecimalsValue
+  description: Update the 'value' column in the 'policy_decimals' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyDecimalsValue
+    inputTypeName: UpdateColumnPolicyDecimalsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_decimals_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyDecimalsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyDecimalsByIdUpdateColumns
+  description: Update the columns of the 'policy_decimals' collection
+  fields:
+    - name: id
+      type: UpdateColumnPolicyDecimalsId
+      description: Update the 'id' column in the 'policy_decimals' collection.
+    - name: value
+      type: UpdateColumnPolicyDecimalsValue
+      description: Update the 'value' column in the 'policy_decimals' collection.
+  graphql:
+    typeName: UpdatePolicyDecimalsByIdUpdateColumns
+    inputTypeName: UpdatePolicyDecimalsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_decimals_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyDecimalsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyDecimalsByIdResponse
+  description: Responses from the 'update_policy_decimals_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePolicyDecimalsByIdResponse
+    inputTypeName: UpdatePolicyDecimalsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_decimals_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyDecimalsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePolicyDecimalsById
+  outputType: UpdatePolicyDecimalsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: PolicyDecimalsBoolExp
+      description: Update permission post-condition predicate over the
+        'policy_decimals' collection
+    - name: preCheck
+      type: PolicyDecimalsBoolExp
+      description: Update permission pre-condition predicate over the
+        'policy_decimals' collection
+    - name: updateColumns
+      type: UpdatePolicyDecimalsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_policy_decimals_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePolicyDecimalsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'policy_decimals' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePolicyDecimalsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

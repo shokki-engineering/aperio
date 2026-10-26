@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoResourceObject
+  fields:
+    - name: createTime
+      type: Timestamptz
+    - name: distribSystemsId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertAffiliationinfoResourceObject
+    inputTypeName: InsertAffiliationinfoResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_resource_object
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        distribSystemsId:
+          column:
+            name: distrib_systems_id
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - distribSystemsId
+          - etag
+          - id
+          - name
+          - uid
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoResourceResponse
+  description: Responses from the 'insert_affiliationinfo_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoResourceResponse
+    inputTypeName: InsertAffiliationinfoResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoResource
+  outputType: InsertAffiliationinfoResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoResourceObject!]!"
+    - name: postCheck
+      type: AffiliationinfoResourceBoolExp
+      description: Insert permission predicate over the 'affiliationinfo_resource'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoResource
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

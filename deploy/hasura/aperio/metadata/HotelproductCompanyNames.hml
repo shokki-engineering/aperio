@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductCompanyNames
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: contactPersonId
+      type: String_1!
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelproductCompanyNames
+    inputTypeName: HotelproductCompanyNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_company_names
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        contactPersonId:
+          column:
+            name: contact_person_id
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductCompanyNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - contactPersonId
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductCompanyNamesBoolExp
+  operand:
+    object:
+      type: HotelproductCompanyNames
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: HotelproductHotelproductTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductCompanyNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductCompanyNamesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductCompanyNames
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: HotelproductHotelproductTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductCompanyNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductCompanyNamesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductCompanyNames
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductCompanyNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductCompanyNames
+  objectType: HotelproductCompanyNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_company_names
+  filterExpressionType: HotelproductCompanyNamesBoolExp
+  aggregateExpression: HotelproductCompanyNamesAggExp
+  orderByExpression: HotelproductCompanyNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductCompanyNames
+      subscription:
+        rootField: hotelproductCompanyNames
+    selectUniques:
+      - queryRootField: hotelproductCompanyNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductCompanyNamesById
+    filterInputTypeName: HotelproductCompanyNamesFilterInput
+    aggregate:
+      queryRootField: hotelproductCompanyNamesAggregate
+      subscription:
+        rootField: hotelproductCompanyNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductCompanyNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

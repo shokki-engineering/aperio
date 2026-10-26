@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductHotelRefsObject
+  fields:
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: hotelProductId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: InsertHotelproductHotelRefsObject
+    inputTypeName: InsertHotelproductHotelRefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_hotel_refs_object
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        hotelProductId:
+          column:
+            name: hotel_product_id
+        id:
+          column:
+            name: id
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductHotelRefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - hotelProductId
+          - id
+          - ttIcode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductHotelRefsResponse
+  description: Responses from the 'insert_hotelproduct_hotel_refs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductHotelRefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductHotelRefsResponse
+    inputTypeName: InsertHotelproductHotelRefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_hotel_refs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductHotelRefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductHotelRefs
+  outputType: InsertHotelproductHotelRefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductHotelRefsObject!]!"
+    - name: postCheck
+      type: HotelproductHotelRefsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_hotel_refs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_hotel_refs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductHotelRefs
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_hotel_refs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductHotelRefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

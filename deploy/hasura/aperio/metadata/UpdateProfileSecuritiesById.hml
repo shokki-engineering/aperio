@@ -1,0 +1,345 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileSecuritiesAccessType
+  description: Update the 'access_type' column in the 'profile_securities' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileSecuritiesAccessType
+    inputTypeName: UpdateColumnProfileSecuritiesAccessTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_securities_access_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileSecuritiesAccessType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileSecuritiesAccessingOrganizationId
+  description: Update the 'accessing_organization_id' column in the
+    'profile_securities' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileSecuritiesAccessingOrganizationId
+    inputTypeName: UpdateColumnProfileSecuritiesAccessingOrganizationIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_securities_accessing_organization_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileSecuritiesAccessingOrganizationId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileSecuritiesAccessingOrganizationType
+  description: Update the 'accessing_organization_type' column in the
+    'profile_securities' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileSecuritiesAccessingOrganizationType
+    inputTypeName: UpdateColumnProfileSecuritiesAccessingOrganizationTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_securities_accessing_organization_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileSecuritiesAccessingOrganizationType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileSecuritiesAgreementsId
+  description: Update the 'agreements_id' column in the 'profile_securities' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileSecuritiesAgreementsId
+    inputTypeName: UpdateColumnProfileSecuritiesAgreementsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_securities_agreements_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileSecuritiesAgreementsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileSecuritiesId
+  description: Update the 'id' column in the 'profile_securities' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileSecuritiesId
+    inputTypeName: UpdateColumnProfileSecuritiesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_securities_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileSecuritiesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileSecuritiesTransferAction
+  description: Update the 'transfer_action' column in the 'profile_securities' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileSecuritiesTransferAction
+    inputTypeName: UpdateColumnProfileSecuritiesTransferActionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_securities_transfer_action
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileSecuritiesTransferAction
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileSecuritiesByIdUpdateColumns
+  description: Update the columns of the 'profile_securities' collection
+  fields:
+    - name: accessType
+      type: UpdateColumnProfileSecuritiesAccessType
+      description: Update the 'access_type' column in the 'profile_securities' collection.
+    - name: accessingOrganizationId
+      type: UpdateColumnProfileSecuritiesAccessingOrganizationId
+      description: Update the 'accessing_organization_id' column in the
+        'profile_securities' collection.
+    - name: accessingOrganizationType
+      type: UpdateColumnProfileSecuritiesAccessingOrganizationType
+      description: Update the 'accessing_organization_type' column in the
+        'profile_securities' collection.
+    - name: agreementsId
+      type: UpdateColumnProfileSecuritiesAgreementsId
+      description: Update the 'agreements_id' column in the 'profile_securities' collection.
+    - name: id
+      type: UpdateColumnProfileSecuritiesId
+      description: Update the 'id' column in the 'profile_securities' collection.
+    - name: transferAction
+      type: UpdateColumnProfileSecuritiesTransferAction
+      description: Update the 'transfer_action' column in the 'profile_securities'
+        collection.
+  graphql:
+    typeName: UpdateProfileSecuritiesByIdUpdateColumns
+    inputTypeName: UpdateProfileSecuritiesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_securities_by_id_update_columns
+      fieldMapping:
+        accessType:
+          column:
+            name: access_type
+        accessingOrganizationId:
+          column:
+            name: accessing_organization_id
+        accessingOrganizationType:
+          column:
+            name: accessing_organization_type
+        agreementsId:
+          column:
+            name: agreements_id
+        id:
+          column:
+            name: id
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileSecuritiesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessType
+          - accessingOrganizationId
+          - accessingOrganizationType
+          - agreementsId
+          - id
+          - transferAction
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileSecuritiesByIdResponse
+  description: Responses from the 'update_profile_securities_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileSecurities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileSecuritiesByIdResponse
+    inputTypeName: UpdateProfileSecuritiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_securities_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileSecuritiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileSecuritiesById
+  outputType: UpdateProfileSecuritiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileSecuritiesBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_securities' collection
+    - name: preCheck
+      type: ProfileSecuritiesBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_securities' collection
+    - name: updateColumns
+      type: UpdateProfileSecuritiesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_securities_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileSecuritiesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_securities' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileSecuritiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

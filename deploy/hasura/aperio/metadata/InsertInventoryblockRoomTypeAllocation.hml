@@ -1,0 +1,175 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockRoomTypeAllocationObject
+  fields:
+    - name: allocationId
+      type: String_1
+    - name: allowGeneralInv
+      type: Boolean_1
+    - name: compRoomFactor
+      type: Int32
+    - name: compRoomQuantity
+      type: Int32
+    - name: duration
+      type: String_1
+    - name: endDateIndicator
+      type: Boolean_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: procureBlockCode
+      type: String_1
+    - name: roomTypeAllocationsId
+      type: String_1!
+    - name: sellLimit
+      type: Int32
+    - name: startId
+      type: String_1
+    - name: unitCount
+      type: Int32
+  graphql:
+    typeName: InsertInventoryblockRoomTypeAllocationObject
+    inputTypeName: InsertInventoryblockRoomTypeAllocationObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_room_type_allocation_object
+      fieldMapping:
+        allocationId:
+          column:
+            name: allocation_id
+        allowGeneralInv:
+          column:
+            name: allow_general_inv
+        compRoomFactor:
+          column:
+            name: comp_room_factor
+        compRoomQuantity:
+          column:
+            name: comp_room_quantity
+        duration:
+          column:
+            name: duration
+        endDateIndicator:
+          column:
+            name: end_date_indicator
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        procureBlockCode:
+          column:
+            name: procure_block_code
+        roomTypeAllocationsId:
+          column:
+            name: room_type_allocations_id
+        sellLimit:
+          column:
+            name: sell_limit
+        startId:
+          column:
+            name: start_id
+        unitCount:
+          column:
+            name: unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockRoomTypeAllocationObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - allocationId
+          - allowGeneralInv
+          - compRoomFactor
+          - compRoomQuantity
+          - duration
+          - endDateIndicator
+          - endId
+          - id
+          - procureBlockCode
+          - roomTypeAllocationsId
+          - sellLimit
+          - startId
+          - unitCount
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockRoomTypeAllocationResponse
+  description: Responses from the 'insert_inventoryblock_room_type_allocation' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockRoomTypeAllocation!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockRoomTypeAllocationResponse
+    inputTypeName: InsertInventoryblockRoomTypeAllocationResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_room_type_allocation_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockRoomTypeAllocationResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockRoomTypeAllocation
+  outputType: InsertInventoryblockRoomTypeAllocationResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockRoomTypeAllocationObject!]!"
+    - name: postCheck
+      type: InventoryblockRoomTypeAllocationBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_room_type_allocation' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_room_type_allocation
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockRoomTypeAllocation
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_room_type_allocation table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockRoomTypeAllocation
+  permissions:
+    - role: admin
+      allowExecution: true
+

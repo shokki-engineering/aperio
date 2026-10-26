@@ -1,0 +1,223 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAmenitiesAmenityCode
+  description: Update the 'amenity_code' column in the 'rateplan_amenities' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAmenitiesAmenityCode
+    inputTypeName: UpdateColumnRateplanAmenitiesAmenityCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_amenities_amenity_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAmenitiesAmenityCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAmenitiesGuestRoomId
+  description: Update the 'guest_room_id' column in the 'rateplan_amenities' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAmenitiesGuestRoomId
+    inputTypeName: UpdateColumnRateplanAmenitiesGuestRoomIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_amenities_guest_room_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAmenitiesGuestRoomId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanAmenitiesId
+  description: Update the 'id' column in the 'rateplan_amenities' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanAmenitiesId
+    inputTypeName: UpdateColumnRateplanAmenitiesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_amenities_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanAmenitiesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanAmenitiesByIdUpdateColumns
+  description: Update the columns of the 'rateplan_amenities' collection
+  fields:
+    - name: amenityCode
+      type: UpdateColumnRateplanAmenitiesAmenityCode
+      description: Update the 'amenity_code' column in the 'rateplan_amenities' collection.
+    - name: guestRoomId
+      type: UpdateColumnRateplanAmenitiesGuestRoomId
+      description: Update the 'guest_room_id' column in the 'rateplan_amenities' collection.
+    - name: id
+      type: UpdateColumnRateplanAmenitiesId
+      description: Update the 'id' column in the 'rateplan_amenities' collection.
+  graphql:
+    typeName: UpdateRateplanAmenitiesByIdUpdateColumns
+    inputTypeName: UpdateRateplanAmenitiesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_amenities_by_id_update_columns
+      fieldMapping:
+        amenityCode:
+          column:
+            name: amenity_code
+        guestRoomId:
+          column:
+            name: guest_room_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanAmenitiesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amenityCode
+          - guestRoomId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanAmenitiesByIdResponse
+  description: Responses from the 'update_rateplan_amenities_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanAmenities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanAmenitiesByIdResponse
+    inputTypeName: UpdateRateplanAmenitiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_amenities_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanAmenitiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanAmenitiesById
+  outputType: UpdateRateplanAmenitiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanAmenitiesBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_amenities' collection
+    - name: preCheck
+      type: RateplanAmenitiesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_amenities' collection
+    - name: updateColumns
+      type: UpdateRateplanAmenitiesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_amenities_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanAmenitiesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_amenities' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanAmenitiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteBookingruleUniqueIdsByIdResponse
+  description: Responses from the 'delete_bookingrule_unique_ids_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleUniqueIds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteBookingruleUniqueIdsByIdResponse
+    inputTypeName: DeleteBookingruleUniqueIdsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_bookingrule_unique_ids_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteBookingruleUniqueIdsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteBookingruleUniqueIdsById
+  outputType: DeleteBookingruleUniqueIdsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: BookingruleUniqueIdsBoolExp
+      description: Delete permission predicate over the 'bookingrule_unique_ids' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_bookingrule_unique_ids_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteBookingruleUniqueIdsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'bookingrule_unique_ids' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteBookingruleUniqueIdsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

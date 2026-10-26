@@ -1,0 +1,223 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDocumentsDocId
+  description: Update the 'doc_id' column in the 'commission_documents' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDocumentsDocId
+    inputTypeName: UpdateColumnCommissionDocumentsDocIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_documents_doc_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDocumentsDocId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDocumentsDocType
+  description: Update the 'doc_type' column in the 'commission_documents' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDocumentsDocType
+    inputTypeName: UpdateColumnCommissionDocumentsDocTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_documents_doc_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDocumentsDocType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDocumentsId
+  description: Update the 'id' column in the 'commission_documents' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDocumentsId
+    inputTypeName: UpdateColumnCommissionDocumentsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_documents_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDocumentsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCommissionDocumentsByIdUpdateColumns
+  description: Update the columns of the 'commission_documents' collection
+  fields:
+    - name: docId
+      type: UpdateColumnCommissionDocumentsDocId
+      description: Update the 'doc_id' column in the 'commission_documents' collection.
+    - name: docType
+      type: UpdateColumnCommissionDocumentsDocType
+      description: Update the 'doc_type' column in the 'commission_documents' collection.
+    - name: id
+      type: UpdateColumnCommissionDocumentsId
+      description: Update the 'id' column in the 'commission_documents' collection.
+  graphql:
+    typeName: UpdateCommissionDocumentsByIdUpdateColumns
+    inputTypeName: UpdateCommissionDocumentsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_commission_documents_by_id_update_columns
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCommissionDocumentsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCommissionDocumentsByIdResponse
+  description: Responses from the 'update_commission_documents_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateCommissionDocumentsByIdResponse
+    inputTypeName: UpdateCommissionDocumentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_commission_documents_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCommissionDocumentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateCommissionDocumentsById
+  outputType: UpdateCommissionDocumentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: CommissionDocumentsBoolExp
+      description: Update permission post-condition predicate over the
+        'commission_documents' collection
+    - name: preCheck
+      type: CommissionDocumentsBoolExp
+      description: Update permission pre-condition predicate over the
+        'commission_documents' collection
+    - name: updateColumns
+      type: UpdateCommissionDocumentsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_commission_documents_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateCommissionDocumentsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'commission_documents' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateCommissionDocumentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

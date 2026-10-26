@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePrefCollectionsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferencesId
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: travelPurpose
+      type: Enum
+  graphql:
+    typeName: InsertProfilePrefCollectionsObject
+    inputTypeName: InsertProfilePrefCollectionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_pref_collections_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferencesId:
+          column:
+            name: preferences_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        travelPurpose:
+          column:
+            name: travel_purpose
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePrefCollectionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferencesId
+          - shareMarketInd
+          - shareSynchInd
+          - travelPurpose
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePrefCollectionsResponse
+  description: Responses from the 'insert_profile_pref_collections' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePrefCollections!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePrefCollectionsResponse
+    inputTypeName: InsertProfilePrefCollectionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_pref_collections_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePrefCollectionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePrefCollections
+  outputType: InsertProfilePrefCollectionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePrefCollectionsObject!]!"
+    - name: postCheck
+      type: ProfilePrefCollectionsBoolExp
+      description: Insert permission predicate over the 'profile_pref_collections'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_pref_collections
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePrefCollections
+    rootFieldKind: Mutation
+  description: Insert into the profile_pref_collections table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePrefCollections
+  permissions:
+    - role: admin
+      allowExecution: true
+

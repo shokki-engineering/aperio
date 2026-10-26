@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoContactsObject
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: location
+      type: Enum
+  graphql:
+    typeName: InsertAreainfoContactsObject
+    inputTypeName: InsertAreainfoContactsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_contacts_object
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        location:
+          column:
+            name: location
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoContactsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - location
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoContactsResponse
+  description: Responses from the 'insert_areainfo_contacts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoContacts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoContactsResponse
+    inputTypeName: InsertAreainfoContactsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_contacts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoContactsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoContacts
+  outputType: InsertAreainfoContactsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoContactsObject!]!"
+    - name: postCheck
+      type: AreainfoContactsBoolExp
+      description: Insert permission predicate over the 'areainfo_contacts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_contacts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoContacts
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_contacts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoContacts
+  permissions:
+    - role: admin
+      allowExecution: true
+

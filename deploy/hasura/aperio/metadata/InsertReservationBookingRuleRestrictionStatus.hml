@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationBookingRuleRestrictionStatusObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: restriction
+      type: Enum
+    - name: sellThroughOpenIndicator
+      type: Boolean_1
+    - name: status
+      type: Enum
+  graphql:
+    typeName: InsertReservationBookingRuleRestrictionStatusObject
+    inputTypeName: InsertReservationBookingRuleRestrictionStatusObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_booking_rule_restriction_status_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationBookingRuleRestrictionStatusObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationBookingRuleRestrictionStatusResponse
+  description: Responses from the
+    'insert_reservation_booking_rule_restriction_status' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationBookingRuleRestrictionStatus!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationBookingRuleRestrictionStatusResponse
+    inputTypeName: InsertReservationBookingRuleRestrictionStatusResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_booking_rule_restriction_status_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationBookingRuleRestrictionStatusResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationBookingRuleRestrictionStatus
+  outputType: InsertReservationBookingRuleRestrictionStatusResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationBookingRuleRestrictionStatusObject!]!"
+    - name: postCheck
+      type: ReservationBookingRuleRestrictionStatusBoolExp
+      description: Insert permission predicate over the
+        'reservation_booking_rule_restriction_status' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_booking_rule_restriction_status
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationBookingRuleRestrictionStatus
+    rootFieldKind: Mutation
+  description: Insert into the reservation_booking_rule_restriction_status table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationBookingRuleRestrictionStatus
+  permissions:
+    - role: admin
+      allowExecution: true
+

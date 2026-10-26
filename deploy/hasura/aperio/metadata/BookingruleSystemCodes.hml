@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleSystemCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: systemCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: BookingruleSystemCodes
+    inputTypeName: BookingruleSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_system_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        systemCodesInclusive:
+          column:
+            name: system_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - systemCodesInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleSystemCodesBoolExp
+  operand:
+    object:
+      type: BookingruleSystemCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: systemCodesInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleSystemCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: systemCodesInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleSystemCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: systemCodesInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleSystemCodes
+  objectType: BookingruleSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_system_codes
+  filterExpressionType: BookingruleSystemCodesBoolExp
+  aggregateExpression: BookingruleSystemCodesAggExp
+  orderByExpression: BookingruleSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleSystemCodes
+      subscription:
+        rootField: bookingruleSystemCodes
+    selectUniques:
+      - queryRootField: bookingruleSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleSystemCodesById
+    filterInputTypeName: BookingruleSystemCodesFilterInput
+    aggregate:
+      queryRootField: bookingruleSystemCodesAggregate
+      subscription:
+        rootField: bookingruleSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

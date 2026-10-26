@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOsiPrefsObject
+  fields:
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operatorId
+      type: String_1!
+    - name: railPrefId
+      type: String_1!
+    - name: text
+      type: String_1!
+  graphql:
+    typeName: InsertProfileOsiPrefsObject
+    inputTypeName: InsertProfileOsiPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_osi_prefs_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        operatorId:
+          column:
+            name: operator_id
+        railPrefId:
+          column:
+            name: rail_pref_id
+        text:
+          column:
+            name: text
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOsiPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - operatorId
+          - railPrefId
+          - text
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileOsiPrefsResponse
+  description: Responses from the 'insert_profile_osi_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileOsiPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileOsiPrefsResponse
+    inputTypeName: InsertProfileOsiPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_osi_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileOsiPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileOsiPrefs
+  outputType: InsertProfileOsiPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileOsiPrefsObject!]!"
+    - name: postCheck
+      type: ProfileOsiPrefsBoolExp
+      description: Insert permission predicate over the 'profile_osi_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_osi_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileOsiPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_osi_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileOsiPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

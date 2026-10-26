@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAccessesObject
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: InsertProfileAccessesObject
+    inputTypeName: InsertProfileAccessesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_accesses_object
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAccessesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAccessesResponse
+  description: Responses from the 'insert_profile_accesses' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAccesses!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileAccessesResponse
+    inputTypeName: InsertProfileAccessesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_accesses_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAccessesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileAccesses
+  outputType: InsertProfileAccessesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileAccessesObject!]!"
+    - name: postCheck
+      type: ProfileAccessesBoolExp
+      description: Insert permission predicate over the 'profile_accesses' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_accesses
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileAccesses
+    rootFieldKind: Mutation
+  description: Insert into the profile_accesses table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileAccesses
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomListItems
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: MeetingroomListItems
+    inputTypeName: MeetingroomListItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_list_items
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomListItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomListItemsBoolExp
+  operand:
+    object:
+      type: MeetingroomListItems
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: MeetingroomMeetingroomTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomListItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomListItemsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomListItems
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: MeetingroomMeetingroomTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomListItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomListItemsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomListItems
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomListItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomListItems
+  objectType: MeetingroomListItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_list_items
+  filterExpressionType: MeetingroomListItemsBoolExp
+  aggregateExpression: MeetingroomListItemsAggExp
+  orderByExpression: MeetingroomListItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomListItems
+      subscription:
+        rootField: meetingroomListItems
+    selectUniques:
+      - queryRootField: meetingroomListItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomListItemsById
+    filterInputTypeName: MeetingroomListItemsFilterInput
+    aggregate:
+      queryRootField: meetingroomListItemsAggregate
+      subscription:
+        rootField: meetingroomListItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomListItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

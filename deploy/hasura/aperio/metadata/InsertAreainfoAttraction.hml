@@ -1,0 +1,234 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoAttractionObject
+  fields:
+    - name: applicableEndId
+      type: String_1
+    - name: applicableStartId
+      type: String_1
+    - name: attractionCategoryCode
+      type: Enum
+    - name: attractionDisplayName
+      type: String_1
+    - name: attractionFee
+      type: Float64
+    - name: attractionsId
+      type: String_1!
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: contactId
+      type: String_1
+    - name: courtesyPhone
+      type: Boolean_1
+    - name: descriptiveText
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: minAgeAppropriateCode
+      type: Enum
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: sort
+      type: Int32
+    - name: startId
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertAreainfoAttractionObject
+    inputTypeName: InsertAreainfoAttractionObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_attraction_object
+      fieldMapping:
+        applicableEndId:
+          column:
+            name: applicable_end_id
+        applicableStartId:
+          column:
+            name: applicable_start_id
+        attractionCategoryCode:
+          column:
+            name: attraction_category_code
+        attractionDisplayName:
+          column:
+            name: attraction_display_name
+        attractionFee:
+          column:
+            name: attraction_fee
+        attractionsId:
+          column:
+            name: attractions_id
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        codeDetail:
+          column:
+            name: code_detail
+        contactId:
+          column:
+            name: contact_id
+        courtesyPhone:
+          column:
+            name: courtesy_phone
+        descriptiveText:
+          column:
+            name: descriptive_text
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        minAgeAppropriateCode:
+          column:
+            name: min_age_appropriate_code
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        quantity:
+          column:
+            name: quantity
+        sort:
+          column:
+            name: sort
+        startId:
+          column:
+            name: start_id
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoAttractionObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicableEndId
+          - applicableStartId
+          - attractionCategoryCode
+          - attractionDisplayName
+          - attractionFee
+          - attractionsId
+          - code
+          - codeContext
+          - codeDetail
+          - contactId
+          - courtesyPhone
+          - descriptiveText
+          - duration
+          - endId
+          - id
+          - languageCode
+          - minAgeAppropriateCode
+          - multimediaDescriptionsId
+          - proximityCode
+          - quantity
+          - sort
+          - startId
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoAttractionResponse
+  description: Responses from the 'insert_areainfo_attraction' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoAttraction!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoAttractionResponse
+    inputTypeName: InsertAreainfoAttractionResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_attraction_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoAttractionResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoAttraction
+  outputType: InsertAreainfoAttractionResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoAttractionObject!]!"
+    - name: postCheck
+      type: AreainfoAttractionBoolExp
+      description: Insert permission predicate over the 'areainfo_attraction' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_attraction
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoAttraction
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_attraction table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoAttraction
+  permissions:
+    - role: admin
+      allowExecution: true
+

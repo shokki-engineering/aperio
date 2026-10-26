@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVehiclePrefs
+  fields:
+    - name: airCondition
+      type: Boolean_1
+    - name: airConditionPref
+      type: Enum
+    - name: classPref
+      type: Enum
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: driveType
+      type: Enum
+    - name: fuelType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: transmissionPref
+      type: Enum
+    - name: transmissionType
+      type: Enum
+    - name: typePref
+      type: Enum
+    - name: vehClassId
+      type: String_1
+    - name: vehMakeModelId
+      type: String_1
+    - name: vehTypeId
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+    - name: vehicleQty
+      type: Int32
+    - name: vendorCarType
+      type: String_1
+  graphql:
+    typeName: ProfileVehiclePrefs
+    inputTypeName: ProfileVehiclePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_vehicle_prefs
+      fieldMapping:
+        airCondition:
+          column:
+            name: air_condition
+        airConditionPref:
+          column:
+            name: air_condition_pref
+        classPref:
+          column:
+            name: class_pref
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        driveType:
+          column:
+            name: drive_type
+        fuelType:
+          column:
+            name: fuel_type
+        id:
+          column:
+            name: id
+        transmissionPref:
+          column:
+            name: transmission_pref
+        transmissionType:
+          column:
+            name: transmission_type
+        typePref:
+          column:
+            name: type_pref
+        vehClassId:
+          column:
+            name: veh_class_id
+        vehMakeModelId:
+          column:
+            name: veh_make_model_id
+        vehTypeId:
+          column:
+            name: veh_type_id
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+        vehicleQty:
+          column:
+            name: vehicle_qty
+        vendorCarType:
+          column:
+            name: vendor_car_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVehiclePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airCondition
+          - airConditionPref
+          - classPref
+          - code
+          - codeContext
+          - driveType
+          - fuelType
+          - id
+          - transmissionPref
+          - transmissionType
+          - typePref
+          - vehClassId
+          - vehMakeModelId
+          - vehTypeId
+          - vehicleProfileRentalPrefId
+          - vehicleQty
+          - vendorCarType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVehiclePrefsBoolExp
+  operand:
+    object:
+      type: ProfileVehiclePrefs
+      comparableFields:
+        - fieldName: airCondition
+          booleanExpressionType: BoolBoolExp
+        - fieldName: airConditionPref
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: classPref
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: driveType
+          booleanExpressionType: ProfileDriveTypeBoolExp
+        - fieldName: fuelType
+          booleanExpressionType: ProfileFuelTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: transmissionPref
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: transmissionType
+          booleanExpressionType: ProfileVehicleTransmissionBoolExp
+        - fieldName: typePref
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: vehClassId
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehMakeModelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehTypeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleProfileRentalPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleQty
+          booleanExpressionType: Int4BoolExp
+        - fieldName: vendorCarType
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVehiclePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVehiclePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVehiclePrefs
+      aggregatableFields:
+        - fieldName: airCondition
+          aggregateExpression: BoolAggExp
+        - fieldName: airConditionPref
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: classPref
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: driveType
+          aggregateExpression: ProfileDriveTypeAggExp
+        - fieldName: fuelType
+          aggregateExpression: ProfileFuelTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: transmissionPref
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: transmissionType
+          aggregateExpression: ProfileVehicleTransmissionAggExp
+        - fieldName: typePref
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: vehClassId
+          aggregateExpression: TextAggExp
+        - fieldName: vehMakeModelId
+          aggregateExpression: TextAggExp
+        - fieldName: vehTypeId
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleProfileRentalPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleQty
+          aggregateExpression: Int4AggExp
+        - fieldName: vendorCarType
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVehiclePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVehiclePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVehiclePrefs
+      orderableFields:
+        - fieldName: airCondition
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: airConditionPref
+          orderByExpression: EnumOrderByExp
+        - fieldName: classPref
+          orderByExpression: EnumOrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: driveType
+          orderByExpression: EnumOrderByExp
+        - fieldName: fuelType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: transmissionPref
+          orderByExpression: EnumOrderByExp
+        - fieldName: transmissionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: typePref
+          orderByExpression: EnumOrderByExp
+        - fieldName: vehClassId
+          orderByExpression: String1OrderByExp
+        - fieldName: vehMakeModelId
+          orderByExpression: String1OrderByExp
+        - fieldName: vehTypeId
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleProfileRentalPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleQty
+          orderByExpression: Int32OrderByExp
+        - fieldName: vendorCarType
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVehiclePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVehiclePrefs
+  objectType: ProfileVehiclePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_vehicle_prefs
+  filterExpressionType: ProfileVehiclePrefsBoolExp
+  aggregateExpression: ProfileVehiclePrefsAggExp
+  orderByExpression: ProfileVehiclePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVehiclePrefs
+      subscription:
+        rootField: profileVehiclePrefs
+    selectUniques:
+      - queryRootField: profileVehiclePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVehiclePrefsById
+    filterInputTypeName: ProfileVehiclePrefsFilterInput
+    aggregate:
+      queryRootField: profileVehiclePrefsAggregate
+      subscription:
+        rootField: profileVehiclePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVehiclePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanUpgradeTosObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: invCodeApplication
+      type: Enum
+    - name: invType
+      type: String_1
+    - name: invTypeCode
+      type: String_1
+    - name: room
+      type: Boolean_1
+  graphql:
+    typeName: InsertRateplanUpgradeTosObject
+    inputTypeName: InsertRateplanUpgradeTosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_upgrade_tos_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        invCodeApplication:
+          column:
+            name: inv_code_application
+        invType:
+          column:
+            name: inv_type
+        invTypeCode:
+          column:
+            name: inv_type_code
+        room:
+          column:
+            name: room
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanUpgradeTosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - invCode
+          - invCodeApplication
+          - invType
+          - invTypeCode
+          - room
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanUpgradeTosResponse
+  description: Responses from the 'insert_rateplan_upgrade_tos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanUpgradeTos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanUpgradeTosResponse
+    inputTypeName: InsertRateplanUpgradeTosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_upgrade_tos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanUpgradeTosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanUpgradeTos
+  outputType: InsertRateplanUpgradeTosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanUpgradeTosObject!]!"
+    - name: postCheck
+      type: RateplanUpgradeTosBoolExp
+      description: Insert permission predicate over the 'rateplan_upgrade_tos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_upgrade_tos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanUpgradeTos
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_upgrade_tos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanUpgradeTos
+  permissions:
+    - role: admin
+      allowExecution: true
+

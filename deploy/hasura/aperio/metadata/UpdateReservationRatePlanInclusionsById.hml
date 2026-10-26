@@ -1,0 +1,270 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationRatePlanInclusionsDescriptionId
+  description: Update the 'description_id' column in the
+    'reservation_rate_plan_inclusions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationRatePlanInclusionsDescriptionId
+    inputTypeName: UpdateColumnReservationRatePlanInclusionsDescriptionIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_rate_plan_inclusions_description_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationRatePlanInclusionsDescriptionId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationRatePlanInclusionsId
+  description: Update the 'id' column in the 'reservation_rate_plan_inclusions' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationRatePlanInclusionsId
+    inputTypeName: UpdateColumnReservationRatePlanInclusionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_rate_plan_inclusions_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationRatePlanInclusionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationRatePlanInclusionsServiceFeeInclusive
+  description: Update the 'service_fee_inclusive' column in the
+    'reservation_rate_plan_inclusions' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationRatePlanInclusionsServiceFeeInclusive
+    inputTypeName: UpdateColumnReservationRatePlanInclusionsServiceFeeInclusiveInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_rate_plan_inclusions_service_fee_inclusive
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationRatePlanInclusionsServiceFeeInclusive
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationRatePlanInclusionsTaxInclusive
+  description: Update the 'tax_inclusive' column in the
+    'reservation_rate_plan_inclusions' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationRatePlanInclusionsTaxInclusive
+    inputTypeName: UpdateColumnReservationRatePlanInclusionsTaxInclusiveInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_rate_plan_inclusions_tax_inclusive
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationRatePlanInclusionsTaxInclusive
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationRatePlanInclusionsByIdUpdateColumns
+  description: Update the columns of the 'reservation_rate_plan_inclusions' collection
+  fields:
+    - name: descriptionId
+      type: UpdateColumnReservationRatePlanInclusionsDescriptionId
+      description: Update the 'description_id' column in the
+        'reservation_rate_plan_inclusions' collection.
+    - name: id
+      type: UpdateColumnReservationRatePlanInclusionsId
+      description: Update the 'id' column in the 'reservation_rate_plan_inclusions'
+        collection.
+    - name: serviceFeeInclusive
+      type: UpdateColumnReservationRatePlanInclusionsServiceFeeInclusive
+      description: Update the 'service_fee_inclusive' column in the
+        'reservation_rate_plan_inclusions' collection.
+    - name: taxInclusive
+      type: UpdateColumnReservationRatePlanInclusionsTaxInclusive
+      description: Update the 'tax_inclusive' column in the
+        'reservation_rate_plan_inclusions' collection.
+  graphql:
+    typeName: UpdateReservationRatePlanInclusionsByIdUpdateColumns
+    inputTypeName: UpdateReservationRatePlanInclusionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_rate_plan_inclusions_by_id_update_columns
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        serviceFeeInclusive:
+          column:
+            name: service_fee_inclusive
+        taxInclusive:
+          column:
+            name: tax_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationRatePlanInclusionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - id
+          - serviceFeeInclusive
+          - taxInclusive
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationRatePlanInclusionsByIdResponse
+  description: Responses from the 'update_reservation_rate_plan_inclusions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRatePlanInclusions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationRatePlanInclusionsByIdResponse
+    inputTypeName: UpdateReservationRatePlanInclusionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_rate_plan_inclusions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationRatePlanInclusionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationRatePlanInclusionsById
+  outputType: UpdateReservationRatePlanInclusionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationRatePlanInclusionsBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_rate_plan_inclusions' collection
+    - name: preCheck
+      type: ReservationRatePlanInclusionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_rate_plan_inclusions' collection
+    - name: updateColumns
+      type: UpdateReservationRatePlanInclusionsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_rate_plan_inclusions_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationRatePlanInclusionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_rate_plan_inclusions' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationRatePlanInclusionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

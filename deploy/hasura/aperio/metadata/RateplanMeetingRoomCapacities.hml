@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanMeetingRoomCapacities
+  fields:
+    - name: id
+      type: String_1!
+    - name: meetingRoomFormatCode
+      type: Enum
+    - name: meetingRoomId
+      type: String_1!
+    - name: occupancyId
+      type: String_1
+  graphql:
+    typeName: RateplanMeetingRoomCapacities
+    inputTypeName: RateplanMeetingRoomCapacitiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_meeting_room_capacities
+      fieldMapping:
+        id:
+          column:
+            name: id
+        meetingRoomFormatCode:
+          column:
+            name: meeting_room_format_code
+        meetingRoomId:
+          column:
+            name: meeting_room_id
+        occupancyId:
+          column:
+            name: occupancy_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanMeetingRoomCapacities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - meetingRoomFormatCode
+          - meetingRoomId
+          - occupancyId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanMeetingRoomCapacitiesBoolExp
+  operand:
+    object:
+      type: RateplanMeetingRoomCapacities
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRoomFormatCode
+          booleanExpressionType: RateplanRateplanMeetingRoomFormatCodeBoolExp
+        - fieldName: meetingRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: occupancyId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanMeetingRoomCapacitiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanMeetingRoomCapacitiesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanMeetingRoomCapacities
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRoomFormatCode
+          aggregateExpression: RateplanRateplanMeetingRoomFormatCodeAggExp
+        - fieldName: meetingRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: occupancyId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanMeetingRoomCapacitiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanMeetingRoomCapacitiesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanMeetingRoomCapacities
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRoomFormatCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: meetingRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: occupancyId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanMeetingRoomCapacitiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanMeetingRoomCapacities
+  objectType: RateplanMeetingRoomCapacities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_meeting_room_capacities
+  filterExpressionType: RateplanMeetingRoomCapacitiesBoolExp
+  aggregateExpression: RateplanMeetingRoomCapacitiesAggExp
+  orderByExpression: RateplanMeetingRoomCapacitiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanMeetingRoomCapacities
+      subscription:
+        rootField: rateplanMeetingRoomCapacities
+    selectUniques:
+      - queryRootField: rateplanMeetingRoomCapacitiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanMeetingRoomCapacitiesById
+    filterInputTypeName: RateplanMeetingRoomCapacitiesFilterInput
+    aggregate:
+      queryRootField: rateplanMeetingRoomCapacitiesAggregate
+      subscription:
+        rootField: rateplanMeetingRoomCapacitiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanMeetingRoomCapacities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCabinsCabin
+  description: Update the 'cabin' column in the 'profile_cabins' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCabinsCabin
+    inputTypeName: UpdateColumnProfileCabinsCabinInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_cabins_cabin
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCabinsCabin
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCabinsId
+  description: Update the 'id' column in the 'profile_cabins' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCabinsId
+    inputTypeName: UpdateColumnProfileCabinsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_cabins_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCabinsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCabinsText
+  description: Update the 'text' column in the 'profile_cabins' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCabinsText
+    inputTypeName: UpdateColumnProfileCabinsTextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_cabins_text
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCabinsText
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCabinsValueCase
+  description: Update the 'value_case' column in the 'profile_cabins' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCabinsValueCase
+    inputTypeName: UpdateColumnProfileCabinsValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_cabins_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCabinsValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileCabinsByIdUpdateColumns
+  description: Update the columns of the 'profile_cabins' collection
+  fields:
+    - name: cabin
+      type: UpdateColumnProfileCabinsCabin
+      description: Update the 'cabin' column in the 'profile_cabins' collection.
+    - name: id
+      type: UpdateColumnProfileCabinsId
+      description: Update the 'id' column in the 'profile_cabins' collection.
+    - name: text
+      type: UpdateColumnProfileCabinsText
+      description: Update the 'text' column in the 'profile_cabins' collection.
+    - name: valueCase
+      type: UpdateColumnProfileCabinsValueCase
+      description: Update the 'value_case' column in the 'profile_cabins' collection.
+  graphql:
+    typeName: UpdateProfileCabinsByIdUpdateColumns
+    inputTypeName: UpdateProfileCabinsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_cabins_by_id_update_columns
+      fieldMapping:
+        cabin:
+          column:
+            name: cabin
+        id:
+          column:
+            name: id
+        text:
+          column:
+            name: text
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileCabinsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cabin
+          - id
+          - text
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileCabinsByIdResponse
+  description: Responses from the 'update_profile_cabins_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCabins!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileCabinsByIdResponse
+    inputTypeName: UpdateProfileCabinsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_cabins_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileCabinsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileCabinsById
+  outputType: UpdateProfileCabinsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileCabinsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_cabins' collection
+    - name: preCheck
+      type: ProfileCabinsBoolExp
+      description: Update permission pre-condition predicate over the 'profile_cabins'
+        collection
+    - name: updateColumns
+      type: UpdateProfileCabinsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_cabins_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileCabinsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_cabins' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileCabinsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

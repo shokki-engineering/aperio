@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductCancelPenalty
+  fields:
+    - name: amountPercentId
+      type: String_1
+    - name: cancelPenaltiesId
+      type: String_1!
+    - name: confirmClassCode
+      type: String_1
+    - name: deadlineId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: noCancel
+      type: Boolean_1
+    - name: nonRefundable
+      type: Boolean_1
+    - name: policyCode
+      type: String_1
+    - name: roomTypeCode
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: HotelproductCancelPenalty
+    inputTypeName: HotelproductCancelPenaltyInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_cancel_penalty
+      fieldMapping:
+        amountPercentId:
+          column:
+            name: amount_percent_id
+        cancelPenaltiesId:
+          column:
+            name: cancel_penalties_id
+        confirmClassCode:
+          column:
+            name: confirm_class_code
+        deadlineId:
+          column:
+            name: deadline_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        noCancel:
+          column:
+            name: no_cancel
+        nonRefundable:
+          column:
+            name: non_refundable
+        policyCode:
+          column:
+            name: policy_code
+        roomTypeCode:
+          column:
+            name: room_type_code
+        startId:
+          column:
+            name: start_id
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductCancelPenalty
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountPercentId
+          - cancelPenaltiesId
+          - confirmClassCode
+          - deadlineId
+          - duration
+          - endId
+          - id
+          - noCancel
+          - nonRefundable
+          - policyCode
+          - roomTypeCode
+          - startId
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductCancelPenaltyBoolExp
+  operand:
+    object:
+      type: HotelproductCancelPenalty
+      comparableFields:
+        - fieldName: amountPercentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cancelPenaltiesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: confirmClassCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: deadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: noCancel
+          booleanExpressionType: BoolBoolExp
+        - fieldName: nonRefundable
+          booleanExpressionType: BoolBoolExp
+        - fieldName: policyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductCancelPenaltyBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductCancelPenaltyAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductCancelPenalty
+      aggregatableFields:
+        - fieldName: amountPercentId
+          aggregateExpression: TextAggExp
+        - fieldName: cancelPenaltiesId
+          aggregateExpression: TextAggExp
+        - fieldName: confirmClassCode
+          aggregateExpression: TextAggExp
+        - fieldName: deadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: noCancel
+          aggregateExpression: BoolAggExp
+        - fieldName: nonRefundable
+          aggregateExpression: BoolAggExp
+        - fieldName: policyCode
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductCancelPenaltyAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductCancelPenaltyOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductCancelPenalty
+      orderableFields:
+        - fieldName: amountPercentId
+          orderByExpression: String1OrderByExp
+        - fieldName: cancelPenaltiesId
+          orderByExpression: String1OrderByExp
+        - fieldName: confirmClassCode
+          orderByExpression: String1OrderByExp
+        - fieldName: deadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: noCancel
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: nonRefundable
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: policyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductCancelPenaltyOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductCancelPenalty
+  objectType: HotelproductCancelPenalty
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_cancel_penalty
+  filterExpressionType: HotelproductCancelPenaltyBoolExp
+  aggregateExpression: HotelproductCancelPenaltyAggExp
+  orderByExpression: HotelproductCancelPenaltyOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductCancelPenalty
+      subscription:
+        rootField: hotelproductCancelPenalty
+    selectUniques:
+      - queryRootField: hotelproductCancelPenaltyById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductCancelPenaltyById
+    filterInputTypeName: HotelproductCancelPenaltyFilterInput
+    aggregate:
+      queryRootField: hotelproductCancelPenaltyAggregate
+      subscription:
+        rootField: hotelproductCancelPenaltyAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductCancelPenalty
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

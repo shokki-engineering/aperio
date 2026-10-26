@@ -1,0 +1,295 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationGuaranteePaymentsObject
+  fields:
+    - name: address
+      type: Boolean_1
+    - name: addressRetain
+      type: Boolean_1
+    - name: agencyNameAddrReq
+      type: Boolean_1
+    - name: amountId
+      type: String_1!
+    - name: amountPercentId
+      type: String_1
+    - name: bookingRuleId
+      type: String_1!
+    - name: companyNameAddrReq
+      type: Boolean_1
+    - name: displayName
+      type: Boolean_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: infoSource
+      type: String_1
+    - name: interbankNbr
+      type: Boolean_1
+    - name: nameRetain
+      type: Boolean_1
+    - name: noCardHolderInfoReq
+      type: Boolean_1
+    - name: noCardHolderInfoRetain
+      type: Boolean_1
+    - name: nonRefundableIndicator
+      type: Boolean_1
+    - name: paymentCode
+      type: String_1
+    - name: phone
+      type: Boolean_1
+    - name: phoneRetain
+      type: Boolean_1
+    - name: policyCode
+      type: String_1
+    - name: rateId
+      type: String_1!
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: retributionType
+      type: Enum
+    - name: roomStayId
+      type: String_1!
+    - name: roomTypeCode
+      type: String_1
+    - name: serviceDetailsId
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertReservationGuaranteePaymentsObject
+    inputTypeName: InsertReservationGuaranteePaymentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_guarantee_payments_object
+      fieldMapping:
+        address:
+          column:
+            name: address
+        addressRetain:
+          column:
+            name: address_retain
+        agencyNameAddrReq:
+          column:
+            name: agency_name_addr_req
+        amountId:
+          column:
+            name: amount_id
+        amountPercentId:
+          column:
+            name: amount_percent_id
+        bookingRuleId:
+          column:
+            name: booking_rule_id
+        companyNameAddrReq:
+          column:
+            name: company_name_addr_req
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        infoSource:
+          column:
+            name: info_source
+        interbankNbr:
+          column:
+            name: interbank_nbr
+        nameRetain:
+          column:
+            name: name_retain
+        noCardHolderInfoReq:
+          column:
+            name: no_card_holder_info_req
+        noCardHolderInfoRetain:
+          column:
+            name: no_card_holder_info_retain
+        nonRefundableIndicator:
+          column:
+            name: non_refundable_indicator
+        paymentCode:
+          column:
+            name: payment_code
+        phone:
+          column:
+            name: phone
+        phoneRetain:
+          column:
+            name: phone_retain
+        policyCode:
+          column:
+            name: policy_code
+        rateId:
+          column:
+            name: rate_id
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        retributionType:
+          column:
+            name: retribution_type
+        roomStayId:
+          column:
+            name: room_stay_id
+        roomTypeCode:
+          column:
+            name: room_type_code
+        serviceDetailsId:
+          column:
+            name: service_details_id
+        startId:
+          column:
+            name: start_id
+        type:
+          column:
+            name: type
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationGuaranteePaymentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - address
+          - addressRetain
+          - agencyNameAddrReq
+          - amountId
+          - amountPercentId
+          - bookingRuleId
+          - companyNameAddrReq
+          - displayName
+          - duration
+          - endId
+          - guaranteeCode
+          - guaranteeType
+          - holdClockId
+          - id
+          - infoSource
+          - interbankNbr
+          - nameRetain
+          - noCardHolderInfoReq
+          - noCardHolderInfoRetain
+          - nonRefundableIndicator
+          - paymentCode
+          - phone
+          - phoneRetain
+          - policyCode
+          - rateId
+          - resGlobalInfoId
+          - retributionType
+          - roomStayId
+          - roomTypeCode
+          - serviceDetailsId
+          - startId
+          - type
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationGuaranteePaymentsResponse
+  description: Responses from the 'insert_reservation_guarantee_payments' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationGuaranteePayments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationGuaranteePaymentsResponse
+    inputTypeName: InsertReservationGuaranteePaymentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_guarantee_payments_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationGuaranteePaymentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationGuaranteePayments
+  outputType: InsertReservationGuaranteePaymentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationGuaranteePaymentsObject!]!"
+    - name: postCheck
+      type: ReservationGuaranteePaymentsBoolExp
+      description: Insert permission predicate over the
+        'reservation_guarantee_payments' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_guarantee_payments
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationGuaranteePayments
+    rootFieldKind: Mutation
+  description: Insert into the reservation_guarantee_payments table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationGuaranteePayments
+  permissions:
+    - role: admin
+      allowExecution: true
+

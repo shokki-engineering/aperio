@@ -1,0 +1,271 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePassengerQualifyingInfosCode
+  description: Update the 'code' column in the
+    'profile_passenger_qualifying_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePassengerQualifyingInfosCode
+    inputTypeName: UpdateColumnProfilePassengerQualifyingInfosCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_passenger_qualifying_infos_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePassengerQualifyingInfosCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePassengerQualifyingInfosCodeContext
+  description: Update the 'code_context' column in the
+    'profile_passenger_qualifying_infos' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePassengerQualifyingInfosCodeContext
+    inputTypeName: UpdateColumnProfilePassengerQualifyingInfosCodeContextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_passenger_qualifying_infos_code_context
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePassengerQualifyingInfosCodeContext
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePassengerQualifyingInfosId
+  description: Update the 'id' column in the 'profile_passenger_qualifying_infos' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePassengerQualifyingInfosId
+    inputTypeName: UpdateColumnProfilePassengerQualifyingInfosIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_passenger_qualifying_infos_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePassengerQualifyingInfosId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePassengerQualifyingInfosPassengerInfoPrefId
+  description: Update the 'passenger_info_pref_id' column in the
+    'profile_passenger_qualifying_infos' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePassengerQualifyingInfosPassengerInfoPrefId
+    inputTypeName: UpdateColumnProfilePassengerQualifyingInfosPassengerInfoPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_passenger_qualifying_infos_passenger_info_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePassengerQualifyingInfosPassengerInfoPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePassengerQualifyingInfosByIdUpdateColumns
+  description: Update the columns of the 'profile_passenger_qualifying_infos' collection
+  fields:
+    - name: code
+      type: UpdateColumnProfilePassengerQualifyingInfosCode
+      description: Update the 'code' column in the
+        'profile_passenger_qualifying_infos' collection.
+    - name: codeContext
+      type: UpdateColumnProfilePassengerQualifyingInfosCodeContext
+      description: Update the 'code_context' column in the
+        'profile_passenger_qualifying_infos' collection.
+    - name: id
+      type: UpdateColumnProfilePassengerQualifyingInfosId
+      description: Update the 'id' column in the 'profile_passenger_qualifying_infos'
+        collection.
+    - name: passengerInfoPrefId
+      type: UpdateColumnProfilePassengerQualifyingInfosPassengerInfoPrefId
+      description: Update the 'passenger_info_pref_id' column in the
+        'profile_passenger_qualifying_infos' collection.
+  graphql:
+    typeName: UpdateProfilePassengerQualifyingInfosByIdUpdateColumns
+    inputTypeName: UpdateProfilePassengerQualifyingInfosByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_passenger_qualifying_infos_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        passengerInfoPrefId:
+          column:
+            name: passenger_info_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePassengerQualifyingInfosByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - passengerInfoPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePassengerQualifyingInfosByIdResponse
+  description: Responses from the
+    'update_profile_passenger_qualifying_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePassengerQualifyingInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfilePassengerQualifyingInfosByIdResponse
+    inputTypeName: UpdateProfilePassengerQualifyingInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_passenger_qualifying_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePassengerQualifyingInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfilePassengerQualifyingInfosById
+  outputType: UpdateProfilePassengerQualifyingInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfilePassengerQualifyingInfosBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_passenger_qualifying_infos' collection
+    - name: preCheck
+      type: ProfilePassengerQualifyingInfosBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_passenger_qualifying_infos' collection
+    - name: updateColumns
+      type: UpdateProfilePassengerQualifyingInfosByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_passenger_qualifying_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfilePassengerQualifyingInfosById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_passenger_qualifying_infos'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfilePassengerQualifyingInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

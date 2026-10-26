@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDateOrTimeOrDateTimesClockId
+  description: Update the 'clock_id' column in the
+    'commission_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDateOrTimeOrDateTimesClockId
+    inputTypeName: UpdateColumnCommissionDateOrTimeOrDateTimesClockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_date_or_time_or_date_times_clock_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDateOrTimeOrDateTimesClockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDateOrTimeOrDateTimesDateTime
+  description: Update the 'date_time' column in the
+    'commission_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDateOrTimeOrDateTimesDateTime
+    inputTypeName: UpdateColumnCommissionDateOrTimeOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_date_or_time_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDateOrTimeOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDateOrTimeOrDateTimesDayId
+  description: Update the 'day_id' column in the
+    'commission_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDateOrTimeOrDateTimesDayId
+    inputTypeName: UpdateColumnCommissionDateOrTimeOrDateTimesDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_date_or_time_or_date_times_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDateOrTimeOrDateTimesDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDateOrTimeOrDateTimesId
+  description: Update the 'id' column in the
+    'commission_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDateOrTimeOrDateTimesId
+    inputTypeName: UpdateColumnCommissionDateOrTimeOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_date_or_time_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDateOrTimeOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionDateOrTimeOrDateTimesValueCase
+  description: Update the 'value_case' column in the
+    'commission_date_or_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionDateOrTimeOrDateTimesValueCase
+    inputTypeName: UpdateColumnCommissionDateOrTimeOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_date_or_time_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionDateOrTimeOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCommissionDateOrTimeOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'commission_date_or_time_or_date_times' collection
+  fields:
+    - name: clockId
+      type: UpdateColumnCommissionDateOrTimeOrDateTimesClockId
+      description: Update the 'clock_id' column in the
+        'commission_date_or_time_or_date_times' collection.
+    - name: dateTime
+      type: UpdateColumnCommissionDateOrTimeOrDateTimesDateTime
+      description: Update the 'date_time' column in the
+        'commission_date_or_time_or_date_times' collection.
+    - name: dayId
+      type: UpdateColumnCommissionDateOrTimeOrDateTimesDayId
+      description: Update the 'day_id' column in the
+        'commission_date_or_time_or_date_times' collection.
+    - name: id
+      type: UpdateColumnCommissionDateOrTimeOrDateTimesId
+      description: Update the 'id' column in the
+        'commission_date_or_time_or_date_times' collection.
+    - name: valueCase
+      type: UpdateColumnCommissionDateOrTimeOrDateTimesValueCase
+      description: Update the 'value_case' column in the
+        'commission_date_or_time_or_date_times' collection.
+  graphql:
+    typeName: UpdateCommissionDateOrTimeOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdateCommissionDateOrTimeOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_commission_date_or_time_or_date_times_by_id_update_columns
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCommissionDateOrTimeOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCommissionDateOrTimeOrDateTimesByIdResponse
+  description: Responses from the
+    'update_commission_date_or_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionDateOrTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateCommissionDateOrTimeOrDateTimesByIdResponse
+    inputTypeName: UpdateCommissionDateOrTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_commission_date_or_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCommissionDateOrTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateCommissionDateOrTimeOrDateTimesById
+  outputType: UpdateCommissionDateOrTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: CommissionDateOrTimeOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'commission_date_or_time_or_date_times' collection
+    - name: preCheck
+      type: CommissionDateOrTimeOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'commission_date_or_time_or_date_times' collection
+    - name: updateColumns
+      type: UpdateCommissionDateOrTimeOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_commission_date_or_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateCommissionDateOrTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'commission_date_or_time_or_date_times'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateCommissionDateOrTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateEncryptionTokensByIdResponse
+  description: Responses from the 'delete_rate_encryption_tokens_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateEncryptionTokens!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateEncryptionTokensByIdResponse
+    inputTypeName: DeleteRateEncryptionTokensByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rate_encryption_tokens_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateEncryptionTokensByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateEncryptionTokensById
+  outputType: DeleteRateEncryptionTokensByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateEncryptionTokensBoolExp
+      description: Delete permission predicate over the 'rate_encryption_tokens' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rate_encryption_tokens_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateEncryptionTokensById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rate_encryption_tokens' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateEncryptionTokensById
+  permissions:
+    - role: admin
+      allowExecution: true
+

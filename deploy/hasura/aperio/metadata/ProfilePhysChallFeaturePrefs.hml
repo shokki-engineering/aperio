@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfilePhysChallFeaturePrefs
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: physChallFeatureType
+      type: Enum
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfilePhysChallFeaturePrefs
+    inputTypeName: ProfilePhysChallFeaturePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_phys_chall_feature_prefs
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        physChallFeatureType:
+          column:
+            name: phys_chall_feature_type
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfilePhysChallFeaturePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - physChallFeatureType
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfilePhysChallFeaturePrefsBoolExp
+  operand:
+    object:
+      type: ProfilePhysChallFeaturePrefs
+      comparableFields:
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: physChallFeatureType
+          booleanExpressionType: ProfileProfileDisabilityFeatureCodeBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfilePhysChallFeaturePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfilePhysChallFeaturePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfilePhysChallFeaturePrefs
+      aggregatableFields:
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: physChallFeatureType
+          aggregateExpression: ProfileProfileDisabilityFeatureCodeAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfilePhysChallFeaturePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfilePhysChallFeaturePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfilePhysChallFeaturePrefs
+      orderableFields:
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: physChallFeatureType
+          orderByExpression: EnumOrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfilePhysChallFeaturePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfilePhysChallFeaturePrefs
+  objectType: ProfilePhysChallFeaturePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_phys_chall_feature_prefs
+  filterExpressionType: ProfilePhysChallFeaturePrefsBoolExp
+  aggregateExpression: ProfilePhysChallFeaturePrefsAggExp
+  orderByExpression: ProfilePhysChallFeaturePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profilePhysChallFeaturePrefs
+      subscription:
+        rootField: profilePhysChallFeaturePrefs
+    selectUniques:
+      - queryRootField: profilePhysChallFeaturePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profilePhysChallFeaturePrefsById
+    filterInputTypeName: ProfilePhysChallFeaturePrefsFilterInput
+    aggregate:
+      queryRootField: profilePhysChallFeaturePrefsAggregate
+      subscription:
+        rootField: profilePhysChallFeaturePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfilePhysChallFeaturePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

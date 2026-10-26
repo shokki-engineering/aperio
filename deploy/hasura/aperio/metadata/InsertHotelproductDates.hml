@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertHotelproductDatesObject
+    inputTypeName: InsertHotelproductDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductDatesResponse
+  description: Responses from the 'insert_hotelproduct_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductDatesResponse
+    inputTypeName: InsertHotelproductDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductDates
+  outputType: InsertHotelproductDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductDatesObject!]!"
+    - name: postCheck
+      type: HotelproductDatesBoolExp
+      description: Insert permission predicate over the 'hotelproduct_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductDates
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

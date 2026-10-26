@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventreportLargestFunctionSpacesByIdResponse
+  description: Responses from the
+    'delete_eventreport_largest_function_spaces_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportLargestFunctionSpaces!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventreportLargestFunctionSpacesByIdResponse
+    inputTypeName: DeleteEventreportLargestFunctionSpacesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_eventreport_largest_function_spaces_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventreportLargestFunctionSpacesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventreportLargestFunctionSpacesById
+  outputType: DeleteEventreportLargestFunctionSpacesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventreportLargestFunctionSpacesBoolExp
+      description: Delete permission predicate over the
+        'eventreport_largest_function_spaces' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_eventreport_largest_function_spaces_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventreportLargestFunctionSpacesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'eventreport_largest_function_spaces'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventreportLargestFunctionSpacesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoOtherHotel
+  fields:
+    - name: alternateId
+      type: String_1
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: competitorIndicator
+      type: Boolean_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: hotelReferenceRph
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: otherHotelsId
+      type: String_1!
+    - name: segmentCategoryCode
+      type: String_1
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: AreainfoOtherHotel
+    inputTypeName: AreainfoOtherHotelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_other_hotel
+      fieldMapping:
+        alternateId:
+          column:
+            name: alternate_id
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        competitorIndicator:
+          column:
+            name: competitor_indicator
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        hotelReferenceRph:
+          column:
+            name: hotel_reference_rph
+        id:
+          column:
+            name: id
+        otherHotelsId:
+          column:
+            name: other_hotels_id
+        segmentCategoryCode:
+          column:
+            name: segment_category_code
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoOtherHotel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - alternateId
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - competitorIndicator
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - hotelReferenceRph
+          - id
+          - otherHotelsId
+          - segmentCategoryCode
+          - ttIcode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoOtherHotelBoolExp
+  operand:
+    object:
+      type: AreainfoOtherHotel
+      comparableFields:
+        - fieldName: alternateId
+          booleanExpressionType: TextBoolExp
+        - fieldName: areaId
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: competitorIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: hotelCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCodeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelReferenceRph
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: otherHotelsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: segmentCategoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: ttIcode
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoOtherHotelBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoOtherHotelAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoOtherHotel
+      aggregatableFields:
+        - fieldName: alternateId
+          aggregateExpression: TextAggExp
+        - fieldName: areaId
+          aggregateExpression: TextAggExp
+        - fieldName: brandCode
+          aggregateExpression: TextAggExp
+        - fieldName: brandDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: chainCode
+          aggregateExpression: TextAggExp
+        - fieldName: chainDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: competitorIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: hotelCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCodeContext
+          aggregateExpression: TextAggExp
+        - fieldName: hotelDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: hotelReferenceRph
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: otherHotelsId
+          aggregateExpression: TextAggExp
+        - fieldName: segmentCategoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: ttIcode
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoOtherHotelAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoOtherHotelOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoOtherHotel
+      orderableFields:
+        - fieldName: alternateId
+          orderByExpression: String1OrderByExp
+        - fieldName: areaId
+          orderByExpression: String1OrderByExp
+        - fieldName: brandCode
+          orderByExpression: String1OrderByExp
+        - fieldName: brandDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: chainCode
+          orderByExpression: String1OrderByExp
+        - fieldName: chainDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: competitorIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: hotelCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCodeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelReferenceRph
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: otherHotelsId
+          orderByExpression: String1OrderByExp
+        - fieldName: segmentCategoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: ttIcode
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoOtherHotelOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoOtherHotel
+  objectType: AreainfoOtherHotel
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_other_hotel
+  filterExpressionType: AreainfoOtherHotelBoolExp
+  aggregateExpression: AreainfoOtherHotelAggExp
+  orderByExpression: AreainfoOtherHotelOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoOtherHotel
+      subscription:
+        rootField: areainfoOtherHotel
+    selectUniques:
+      - queryRootField: areainfoOtherHotelById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoOtherHotelById
+    filterInputTypeName: AreainfoOtherHotelFilterInput
+    aggregate:
+      queryRootField: areainfoOtherHotelAggregate
+      subscription:
+        rootField: areainfoOtherHotelAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoOtherHotel
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

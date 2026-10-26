@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductEmployeeInfos
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: employeeId
+      type: String_1
+    - name: employeeLevel
+      type: String_1
+    - name: employeeStatus
+      type: Enum
+    - name: employeeTitle
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelproductEmployeeInfos
+    inputTypeName: HotelproductEmployeeInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_employee_infos
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        employeeId:
+          column:
+            name: employee_id
+        employeeLevel:
+          column:
+            name: employee_level
+        employeeStatus:
+          column:
+            name: employee_status
+        employeeTitle:
+          column:
+            name: employee_title
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductEmployeeInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - employeeId
+          - employeeLevel
+          - employeeStatus
+          - employeeTitle
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductEmployeeInfosBoolExp
+  operand:
+    object:
+      type: HotelproductEmployeeInfos
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: employeeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: employeeLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: employeeStatus
+          booleanExpressionType: HotelproductHotelproductEmployeeStatusCodeBoolExp
+        - fieldName: employeeTitle
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductEmployeeInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductEmployeeInfosAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductEmployeeInfos
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: employeeId
+          aggregateExpression: TextAggExp
+        - fieldName: employeeLevel
+          aggregateExpression: TextAggExp
+        - fieldName: employeeStatus
+          aggregateExpression: HotelproductHotelproductEmployeeStatusCodeAggExp
+        - fieldName: employeeTitle
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductEmployeeInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductEmployeeInfosOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductEmployeeInfos
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: employeeId
+          orderByExpression: String1OrderByExp
+        - fieldName: employeeLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: employeeStatus
+          orderByExpression: EnumOrderByExp
+        - fieldName: employeeTitle
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductEmployeeInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductEmployeeInfos
+  objectType: HotelproductEmployeeInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_employee_infos
+  filterExpressionType: HotelproductEmployeeInfosBoolExp
+  aggregateExpression: HotelproductEmployeeInfosAggExp
+  orderByExpression: HotelproductEmployeeInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductEmployeeInfos
+      subscription:
+        rootField: hotelproductEmployeeInfos
+    selectUniques:
+      - queryRootField: hotelproductEmployeeInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductEmployeeInfosById
+    filterInputTypeName: HotelproductEmployeeInfosFilterInput
+    aggregate:
+      queryRootField: hotelproductEmployeeInfosAggregate
+      subscription:
+        rootField: hotelproductEmployeeInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductEmployeeInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

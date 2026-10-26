@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventFoodAndBeverage
+  fields:
+    - name: attendeeQuantity
+      type: Int32
+    - name: foodAndBeveragesId
+      type: String_1!
+    - name: guaranteeQuantity
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: mealTypeCode
+      type: Enum
+    - name: serviceId
+      type: String_1
+    - name: serviceTypeCode
+      type: Enum
+    - name: setupQuantity
+      type: Int32
+  graphql:
+    typeName: EventFoodAndBeverage
+    inputTypeName: EventFoodAndBeverageInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_food_and_beverage
+      fieldMapping:
+        attendeeQuantity:
+          column:
+            name: attendee_quantity
+        foodAndBeveragesId:
+          column:
+            name: food_and_beverages_id
+        guaranteeQuantity:
+          column:
+            name: guarantee_quantity
+        id:
+          column:
+            name: id
+        mealTypeCode:
+          column:
+            name: meal_type_code
+        serviceId:
+          column:
+            name: service_id
+        serviceTypeCode:
+          column:
+            name: service_type_code
+        setupQuantity:
+          column:
+            name: setup_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventFoodAndBeverage
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeQuantity
+          - foodAndBeveragesId
+          - guaranteeQuantity
+          - id
+          - mealTypeCode
+          - serviceId
+          - serviceTypeCode
+          - setupQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventFoodAndBeverageBoolExp
+  operand:
+    object:
+      type: EventFoodAndBeverage
+      comparableFields:
+        - fieldName: attendeeQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: foodAndBeveragesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: mealTypeCode
+          booleanExpressionType: EventEventAvailableMealCategoryCodesBoolExp
+        - fieldName: serviceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceTypeCode
+          booleanExpressionType: EventEventEventChargeBoolExp
+        - fieldName: setupQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventFoodAndBeverageBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventFoodAndBeverageAggExp
+  operand:
+    object:
+      aggregatedType: EventFoodAndBeverage
+      aggregatableFields:
+        - fieldName: attendeeQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: foodAndBeveragesId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: mealTypeCode
+          aggregateExpression: EventEventAvailableMealCategoryCodesAggExp
+        - fieldName: serviceId
+          aggregateExpression: TextAggExp
+        - fieldName: serviceTypeCode
+          aggregateExpression: EventEventEventChargeAggExp
+        - fieldName: setupQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventFoodAndBeverageAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventFoodAndBeverageOrderByExp
+  operand:
+    object:
+      orderedType: EventFoodAndBeverage
+      orderableFields:
+        - fieldName: attendeeQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: foodAndBeveragesId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: mealTypeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: serviceId
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceTypeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: setupQuantity
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventFoodAndBeverageOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventFoodAndBeverage
+  objectType: EventFoodAndBeverage
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_food_and_beverage
+  filterExpressionType: EventFoodAndBeverageBoolExp
+  aggregateExpression: EventFoodAndBeverageAggExp
+  orderByExpression: EventFoodAndBeverageOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventFoodAndBeverage
+      subscription:
+        rootField: eventFoodAndBeverage
+    selectUniques:
+      - queryRootField: eventFoodAndBeverageById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventFoodAndBeverageById
+    filterInputTypeName: EventFoodAndBeverageFilterInput
+    aggregate:
+      queryRootField: eventFoodAndBeverageAggregate
+      subscription:
+        rootField: eventFoodAndBeverageAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventFoodAndBeverage
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

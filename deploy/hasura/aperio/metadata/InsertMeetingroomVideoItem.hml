@@ -1,0 +1,162 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomVideoItemObject
+  fields:
+    - name: caption
+      type: String_1
+    - name: category
+      type: Enum
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: purgeDayId
+      type: String_1
+    - name: version
+      type: String_1
+    - name: videoItemsId
+      type: String_1!
+  graphql:
+    typeName: InsertMeetingroomVideoItemObject
+    inputTypeName: InsertMeetingroomVideoItemObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_video_item_object
+      fieldMapping:
+        caption:
+          column:
+            name: caption
+        category:
+          column:
+            name: category
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        purgeDayId:
+          column:
+            name: purge_day_id
+        version:
+          column:
+            name: version
+        videoItemsId:
+          column:
+            name: video_items_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomVideoItemObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - caption
+          - category
+          - createDateTime
+          - creatorId
+          - id
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - purgeDayId
+          - version
+          - videoItemsId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomVideoItemResponse
+  description: Responses from the 'insert_meetingroom_video_item' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomVideoItem!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingroomVideoItemResponse
+    inputTypeName: InsertMeetingroomVideoItemResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_video_item_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomVideoItemResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingroomVideoItem
+  outputType: InsertMeetingroomVideoItemResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingroomVideoItemObject!]!"
+    - name: postCheck
+      type: MeetingroomVideoItemBoolExp
+      description: Insert permission predicate over the 'meetingroom_video_item' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingroom_video_item
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingroomVideoItem
+    rootFieldKind: Mutation
+  description: Insert into the meetingroom_video_item table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingroomVideoItem
+  permissions:
+    - role: admin
+      allowExecution: true
+

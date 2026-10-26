@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAdditionalLanguages
+  fields:
+    - name: code
+      type: String_1
+    - name: customerId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ProfileAdditionalLanguages
+    inputTypeName: ProfileAdditionalLanguagesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_additional_languages
+      fieldMapping:
+        code:
+          column:
+            name: code
+        customerId:
+          column:
+            name: customer_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAdditionalLanguages
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - customerId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAdditionalLanguagesBoolExp
+  operand:
+    object:
+      type: ProfileAdditionalLanguages
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: customerId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAdditionalLanguagesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAdditionalLanguagesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAdditionalLanguages
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: customerId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAdditionalLanguagesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAdditionalLanguagesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAdditionalLanguages
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: customerId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAdditionalLanguagesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAdditionalLanguages
+  objectType: ProfileAdditionalLanguages
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_additional_languages
+  filterExpressionType: ProfileAdditionalLanguagesBoolExp
+  aggregateExpression: ProfileAdditionalLanguagesAggExp
+  orderByExpression: ProfileAdditionalLanguagesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAdditionalLanguages
+      subscription:
+        rootField: profileAdditionalLanguages
+    selectUniques:
+      - queryRootField: profileAdditionalLanguagesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAdditionalLanguagesById
+    filterInputTypeName: ProfileAdditionalLanguagesFilterInput
+    aggregate:
+      queryRootField: profileAdditionalLanguagesAggregate
+      subscription:
+        rootField: profileAdditionalLanguagesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAdditionalLanguages
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

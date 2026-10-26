@@ -1,0 +1,102 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleRequiredDaysOfWeeksObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleRequiredDaysOfWeeksObject
+    inputTypeName: InsertBookingruleRequiredDaysOfWeeksObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_required_days_of_weeks_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleRequiredDaysOfWeeksObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleRequiredDaysOfWeeksResponse
+  description: Responses from the 'insert_bookingrule_required_days_of_weeks' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleRequiredDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleRequiredDaysOfWeeksResponse
+    inputTypeName: InsertBookingruleRequiredDaysOfWeeksResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_required_days_of_weeks_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleRequiredDaysOfWeeksResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleRequiredDaysOfWeeks
+  outputType: InsertBookingruleRequiredDaysOfWeeksResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleRequiredDaysOfWeeksObject!]!"
+    - name: postCheck
+      type: BookingruleRequiredDaysOfWeeksBoolExp
+      description: Insert permission predicate over the
+        'bookingrule_required_days_of_weeks' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_required_days_of_weeks
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleRequiredDaysOfWeeks
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_required_days_of_weeks table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleRequiredDaysOfWeeks
+  permissions:
+    - role: admin
+      allowExecution: true
+

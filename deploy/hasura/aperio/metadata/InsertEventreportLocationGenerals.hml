@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportLocationGeneralsObject
+  fields:
+    - name: cityDisplayName
+      type: String_1
+    - name: countryDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: stateProvId
+      type: String_1
+  graphql:
+    typeName: InsertEventreportLocationGeneralsObject
+    inputTypeName: InsertEventreportLocationGeneralsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_location_generals_object
+      fieldMapping:
+        cityDisplayName:
+          column:
+            name: city_display_name
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        id:
+          column:
+            name: id
+        stateProvId:
+          column:
+            name: state_prov_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportLocationGeneralsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cityDisplayName
+          - countryDisplayNameId
+          - id
+          - stateProvId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportLocationGeneralsResponse
+  description: Responses from the 'insert_eventreport_location_generals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportLocationGenerals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportLocationGeneralsResponse
+    inputTypeName: InsertEventreportLocationGeneralsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_location_generals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportLocationGeneralsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportLocationGenerals
+  outputType: InsertEventreportLocationGeneralsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportLocationGeneralsObject!]!"
+    - name: postCheck
+      type: EventreportLocationGeneralsBoolExp
+      description: Insert permission predicate over the
+        'eventreport_location_generals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_location_generals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportLocationGenerals
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_location_generals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportLocationGenerals
+  permissions:
+    - role: admin
+      allowExecution: true
+

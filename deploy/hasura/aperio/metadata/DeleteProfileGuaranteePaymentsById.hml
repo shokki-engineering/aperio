@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteProfileGuaranteePaymentsByIdResponse
+  description: Responses from the 'delete_profile_guarantee_payments_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileGuaranteePayments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteProfileGuaranteePaymentsByIdResponse
+    inputTypeName: DeleteProfileGuaranteePaymentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_profile_guarantee_payments_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteProfileGuaranteePaymentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteProfileGuaranteePaymentsById
+  outputType: DeleteProfileGuaranteePaymentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ProfileGuaranteePaymentsBoolExp
+      description: Delete permission predicate over the 'profile_guarantee_payments'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_profile_guarantee_payments_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteProfileGuaranteePaymentsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'profile_guarantee_payments' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteProfileGuaranteePaymentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

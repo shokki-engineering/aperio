@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantMultimediaDescriptionsLink
+  fields:
+    - name: attire
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: RestaurantMultimediaDescriptionsLink
+    inputTypeName: RestaurantMultimediaDescriptionsLinkInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_multimedia_descriptions_link
+      fieldMapping:
+        attire:
+          column:
+            name: attire
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantMultimediaDescriptionsLink
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attire
+          - id
+          - lastUpdateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantMultimediaDescriptionsLinkBoolExp
+  operand:
+    object:
+      type: RestaurantMultimediaDescriptionsLink
+      comparableFields:
+        - fieldName: attire
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantMultimediaDescriptionsLinkBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantMultimediaDescriptionsLinkAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantMultimediaDescriptionsLink
+      aggregatableFields:
+        - fieldName: attire
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantMultimediaDescriptionsLinkAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantMultimediaDescriptionsLinkOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantMultimediaDescriptionsLink
+      orderableFields:
+        - fieldName: attire
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantMultimediaDescriptionsLinkOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantMultimediaDescriptionsLink
+  objectType: RestaurantMultimediaDescriptionsLink
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_multimedia_descriptions_link
+  filterExpressionType: RestaurantMultimediaDescriptionsLinkBoolExp
+  aggregateExpression: RestaurantMultimediaDescriptionsLinkAggExp
+  orderByExpression: RestaurantMultimediaDescriptionsLinkOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantMultimediaDescriptionsLink
+      subscription:
+        rootField: restaurantMultimediaDescriptionsLink
+    selectUniques:
+      - queryRootField: restaurantMultimediaDescriptionsLinkById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantMultimediaDescriptionsLinkById
+    filterInputTypeName: RestaurantMultimediaDescriptionsLinkFilterInput
+    aggregate:
+      queryRootField: restaurantMultimediaDescriptionsLinkAggregate
+      subscription:
+        rootField: restaurantMultimediaDescriptionsLinkAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantMultimediaDescriptionsLink
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

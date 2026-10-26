@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePaymentCardCodesObject
+  fields:
+    - name: cardCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: text
+      type: String_1
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: InsertProfilePaymentCardCodesObject
+    inputTypeName: InsertProfilePaymentCardCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_payment_card_codes_object
+      fieldMapping:
+        cardCode:
+          column:
+            name: card_code
+        id:
+          column:
+            name: id
+        text:
+          column:
+            name: text
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePaymentCardCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cardCode
+          - id
+          - text
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePaymentCardCodesResponse
+  description: Responses from the 'insert_profile_payment_card_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePaymentCardCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePaymentCardCodesResponse
+    inputTypeName: InsertProfilePaymentCardCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_payment_card_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePaymentCardCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePaymentCardCodes
+  outputType: InsertProfilePaymentCardCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePaymentCardCodesObject!]!"
+    - name: postCheck
+      type: ProfilePaymentCardCodesBoolExp
+      description: Insert permission predicate over the 'profile_payment_card_codes'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_payment_card_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePaymentCardCodes
+    rootFieldKind: Mutation
+  description: Insert into the profile_payment_card_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePaymentCardCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

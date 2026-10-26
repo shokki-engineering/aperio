@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationOperationSchedule
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operationSchedulesId
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: ReservationOperationSchedule
+    inputTypeName: ReservationOperationScheduleInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_operation_schedule
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        operationSchedulesId:
+          column:
+            name: operation_schedules_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationOperationSchedule
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - operationSchedulesId
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationOperationScheduleBoolExp
+  operand:
+    object:
+      type: ReservationOperationSchedule
+      comparableFields:
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: operationSchedulesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationOperationScheduleBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationOperationScheduleAggExp
+  operand:
+    object:
+      aggregatedType: ReservationOperationSchedule
+      aggregatableFields:
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: operationSchedulesId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationOperationScheduleAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationOperationScheduleOrderByExp
+  operand:
+    object:
+      orderedType: ReservationOperationSchedule
+      orderableFields:
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: operationSchedulesId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationOperationScheduleOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationOperationSchedule
+  objectType: ReservationOperationSchedule
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_operation_schedule
+  filterExpressionType: ReservationOperationScheduleBoolExp
+  aggregateExpression: ReservationOperationScheduleAggExp
+  orderByExpression: ReservationOperationScheduleOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationOperationSchedule
+      subscription:
+        rootField: reservationOperationSchedule
+    selectUniques:
+      - queryRootField: reservationOperationScheduleById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationOperationScheduleById
+    filterInputTypeName: ReservationOperationScheduleFilterInput
+    aggregate:
+      queryRootField: reservationOperationScheduleAggregate
+      subscription:
+        rootField: reservationOperationScheduleAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationOperationSchedule
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

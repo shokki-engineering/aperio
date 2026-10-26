@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileSubAccountBalancesObject
+  fields:
+    - name: balance
+      type: Int32
+    - name: custLoyaltyId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+  graphql:
+    typeName: InsertProfileSubAccountBalancesObject
+    inputTypeName: InsertProfileSubAccountBalancesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_sub_account_balances_object
+      fieldMapping:
+        balance:
+          column:
+            name: balance
+        custLoyaltyId:
+          column:
+            name: cust_loyalty_id
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileSubAccountBalancesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - balance
+          - custLoyaltyId
+          - id
+          - type
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileSubAccountBalancesResponse
+  description: Responses from the 'insert_profile_sub_account_balances' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileSubAccountBalances!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileSubAccountBalancesResponse
+    inputTypeName: InsertProfileSubAccountBalancesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_sub_account_balances_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileSubAccountBalancesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileSubAccountBalances
+  outputType: InsertProfileSubAccountBalancesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileSubAccountBalancesObject!]!"
+    - name: postCheck
+      type: ProfileSubAccountBalancesBoolExp
+      description: Insert permission predicate over the 'profile_sub_account_balances'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_sub_account_balances
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileSubAccountBalances
+    rootFieldKind: Mutation
+  description: Insert into the profile_sub_account_balances table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileSubAccountBalances
+  permissions:
+    - role: admin
+      allowExecution: true
+

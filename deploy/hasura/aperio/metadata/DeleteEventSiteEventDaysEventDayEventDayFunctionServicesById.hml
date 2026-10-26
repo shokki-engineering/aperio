@@ -1,0 +1,77 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesByIdResponse
+  description: Responses from the
+    'delete_event_site_event_days_event_day_event_day_function_services_by_id'
+    procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventSiteEventDaysEventDayEventDayFunctionServices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesByIdResponse
+    inputTypeName: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_event_site_event_days_event_day_event_day_function_services_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesById
+  outputType: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventSiteEventDaysEventDayEventDayFunctionServicesBoolExp
+      description: Delete permission predicate over the
+        'event_site_event_days_event_day_event_day_function_services' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_event_site_event_days_event_day_event_day_function_services_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventSiteEventDaysEventDayEventDayFunctionServicesById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'event_site_event_days_event_day_event_day_function_services' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventSiteEventDaysEventDayEventDayFunctionServicesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

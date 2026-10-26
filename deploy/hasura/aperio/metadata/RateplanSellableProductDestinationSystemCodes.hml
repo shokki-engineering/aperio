@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanSellableProductDestinationSystemCodes
+  fields:
+    - name: chainRateCodeCrossRef
+      type: String_1
+    - name: chainRateLevelCrossRef
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: sellableProductId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanSellableProductDestinationSystemCodes
+    inputTypeName: RateplanSellableProductDestinationSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_sellable_product_destination_system_codes
+      fieldMapping:
+        chainRateCodeCrossRef:
+          column:
+            name: chain_rate_code_cross_ref
+        chainRateLevelCrossRef:
+          column:
+            name: chain_rate_level_cross_ref
+        id:
+          column:
+            name: id
+        sellableProductId:
+          column:
+            name: sellable_product_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanSellableProductDestinationSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainRateCodeCrossRef
+          - chainRateLevelCrossRef
+          - id
+          - sellableProductId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanSellableProductDestinationSystemCodesBoolExp
+  operand:
+    object:
+      type: RateplanSellableProductDestinationSystemCodes
+      comparableFields:
+        - fieldName: chainRateCodeCrossRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainRateLevelCrossRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: sellableProductId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanSellableProductDestinationSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanSellableProductDestinationSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanSellableProductDestinationSystemCodes
+      aggregatableFields:
+        - fieldName: chainRateCodeCrossRef
+          aggregateExpression: TextAggExp
+        - fieldName: chainRateLevelCrossRef
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: sellableProductId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanSellableProductDestinationSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanSellableProductDestinationSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanSellableProductDestinationSystemCodes
+      orderableFields:
+        - fieldName: chainRateCodeCrossRef
+          orderByExpression: String1OrderByExp
+        - fieldName: chainRateLevelCrossRef
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: sellableProductId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanSellableProductDestinationSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanSellableProductDestinationSystemCodes
+  objectType: RateplanSellableProductDestinationSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_sellable_product_destination_system_codes
+  filterExpressionType: RateplanSellableProductDestinationSystemCodesBoolExp
+  aggregateExpression: RateplanSellableProductDestinationSystemCodesAggExp
+  orderByExpression: RateplanSellableProductDestinationSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanSellableProductDestinationSystemCodes
+      subscription:
+        rootField: rateplanSellableProductDestinationSystemCodes
+    selectUniques:
+      - queryRootField: rateplanSellableProductDestinationSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanSellableProductDestinationSystemCodesById
+    filterInputTypeName: RateplanSellableProductDestinationSystemCodesFilterInput
+    aggregate:
+      queryRootField: rateplanSellableProductDestinationSystemCodesAggregate
+      subscription:
+        rootField: rateplanSellableProductDestinationSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanSellableProductDestinationSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

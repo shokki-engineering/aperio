@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanComments
+  fields:
+    - name: acceptableGuaranteeId
+      type: String_1!
+    - name: commentOriginatorCode
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: guaranteeId
+      type: String_1!
+    - name: guestViewable
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: RateplanComments
+    inputTypeName: RateplanCommentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_comments
+      fieldMapping:
+        acceptableGuaranteeId:
+          column:
+            name: acceptable_guarantee_id
+        commentOriginatorCode:
+          column:
+            name: comment_originator_code
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        guaranteeId:
+          column:
+            name: guarantee_id
+        guestViewable:
+          column:
+            name: guest_viewable
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanComments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acceptableGuaranteeId
+          - commentOriginatorCode
+          - createDateTime
+          - creatorId
+          - displayName
+          - guaranteeId
+          - guestViewable
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - uris
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCommentsBoolExp
+  operand:
+    object:
+      type: RateplanComments
+      comparableFields:
+        - fieldName: acceptableGuaranteeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commentOriginatorCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guestViewable
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCommentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCommentsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanComments
+      aggregatableFields:
+        - fieldName: acceptableGuaranteeId
+          aggregateExpression: TextAggExp
+        - fieldName: commentOriginatorCode
+          aggregateExpression: TextAggExp
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeId
+          aggregateExpression: TextAggExp
+        - fieldName: guestViewable
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCommentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCommentsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanComments
+      orderableFields:
+        - fieldName: acceptableGuaranteeId
+          orderByExpression: String1OrderByExp
+        - fieldName: commentOriginatorCode
+          orderByExpression: String1OrderByExp
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeId
+          orderByExpression: String1OrderByExp
+        - fieldName: guestViewable
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCommentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanComments
+  objectType: RateplanComments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_comments
+  filterExpressionType: RateplanCommentsBoolExp
+  aggregateExpression: RateplanCommentsAggExp
+  orderByExpression: RateplanCommentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanComments
+      subscription:
+        rootField: rateplanComments
+    selectUniques:
+      - queryRootField: rateplanCommentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCommentsById
+    filterInputTypeName: RateplanCommentsFilterInput
+    aggregate:
+      queryRootField: rateplanCommentsAggregate
+      subscription:
+        rootField: rateplanCommentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanComments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

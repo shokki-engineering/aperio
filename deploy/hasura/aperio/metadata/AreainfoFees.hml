@@ -1,0 +1,373 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoFees
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeFrequency
+      type: Enum
+    - name: chargeFrequencyExempt
+      type: Int32
+    - name: chargeUnit
+      type: Enum
+    - name: chargeUnitExempt
+      type: Int32
+    - name: code
+      type: Enum
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: mandatory
+      type: Boolean_1
+    - name: maxAge
+      type: Int32
+    - name: maxChargeFrequencyApplies
+      type: Int32
+    - name: maxChargeUnitApplies
+      type: Int32
+    - name: minAge
+      type: Int32
+    - name: operationSchedulesPlusChargeItemId
+      type: String_1!
+    - name: percentId
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: taxInclusive
+      type: Boolean_1
+    - name: taxableIndicator
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: AreainfoFees
+    inputTypeName: AreainfoFeesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_fees
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeFrequency:
+          column:
+            name: charge_frequency
+        chargeFrequencyExempt:
+          column:
+            name: charge_frequency_exempt
+        chargeUnit:
+          column:
+            name: charge_unit
+        chargeUnitExempt:
+          column:
+            name: charge_unit_exempt
+        code:
+          column:
+            name: code
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        mandatory:
+          column:
+            name: mandatory
+        maxAge:
+          column:
+            name: max_age
+        maxChargeFrequencyApplies:
+          column:
+            name: max_charge_frequency_applies
+        maxChargeUnitApplies:
+          column:
+            name: max_charge_unit_applies
+        minAge:
+          column:
+            name: min_age
+        operationSchedulesPlusChargeItemId:
+          column:
+            name: operation_schedules_plus_charge_item_id
+        percentId:
+          column:
+            name: percent_id
+        rph:
+          column:
+            name: rph
+        taxInclusive:
+          column:
+            name: tax_inclusive
+        taxableIndicator:
+          column:
+            name: taxable_indicator
+        taxesId:
+          column:
+            name: taxes_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoFees
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeFrequency
+          - chargeFrequencyExempt
+          - chargeUnit
+          - chargeUnitExempt
+          - code
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - mandatory
+          - maxAge
+          - maxChargeFrequencyApplies
+          - maxChargeUnitApplies
+          - minAge
+          - operationSchedulesPlusChargeItemId
+          - percentId
+          - rph
+          - taxInclusive
+          - taxableIndicator
+          - taxesId
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoFeesBoolExp
+  operand:
+    object:
+      type: AreainfoFees
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chargeFrequency
+          booleanExpressionType: AreainfoAreainfoChargeTypeBoolExp
+        - fieldName: chargeFrequencyExempt
+          booleanExpressionType: Int4BoolExp
+        - fieldName: chargeUnit
+          booleanExpressionType: AreainfoAreainfoChargeTypeBoolExp
+        - fieldName: chargeUnitExempt
+          booleanExpressionType: Int4BoolExp
+        - fieldName: code
+          booleanExpressionType: AreainfoAreainfoFeeTaxTypeBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: mandatory
+          booleanExpressionType: BoolBoolExp
+        - fieldName: maxAge
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxChargeFrequencyApplies
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxChargeUnitApplies
+          booleanExpressionType: Int4BoolExp
+        - fieldName: minAge
+          booleanExpressionType: Int4BoolExp
+        - fieldName: operationSchedulesPlusChargeItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxableIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: AreainfoAreainfoAmountDeterminationBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoFeesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoFeesAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoFees
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: chargeFrequency
+          aggregateExpression: AreainfoAreainfoChargeTypeAggExp
+        - fieldName: chargeFrequencyExempt
+          aggregateExpression: Int4AggExp
+        - fieldName: chargeUnit
+          aggregateExpression: AreainfoAreainfoChargeTypeAggExp
+        - fieldName: chargeUnitExempt
+          aggregateExpression: Int4AggExp
+        - fieldName: code
+          aggregateExpression: AreainfoAreainfoFeeTaxTypeAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: mandatory
+          aggregateExpression: BoolAggExp
+        - fieldName: maxAge
+          aggregateExpression: Int4AggExp
+        - fieldName: maxChargeFrequencyApplies
+          aggregateExpression: Int4AggExp
+        - fieldName: maxChargeUnitApplies
+          aggregateExpression: Int4AggExp
+        - fieldName: minAge
+          aggregateExpression: Int4AggExp
+        - fieldName: operationSchedulesPlusChargeItemId
+          aggregateExpression: TextAggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: taxInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: taxableIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: AreainfoAreainfoAmountDeterminationAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoFeesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoFeesOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoFees
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: chargeFrequency
+          orderByExpression: EnumOrderByExp
+        - fieldName: chargeFrequencyExempt
+          orderByExpression: Int32OrderByExp
+        - fieldName: chargeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: chargeUnitExempt
+          orderByExpression: Int32OrderByExp
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: mandatory
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: maxAge
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxChargeFrequencyApplies
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxChargeUnitApplies
+          orderByExpression: Int32OrderByExp
+        - fieldName: minAge
+          orderByExpression: Int32OrderByExp
+        - fieldName: operationSchedulesPlusChargeItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: taxInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxableIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoFeesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoFees
+  objectType: AreainfoFees
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_fees
+  filterExpressionType: AreainfoFeesBoolExp
+  aggregateExpression: AreainfoFeesAggExp
+  orderByExpression: AreainfoFeesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoFees
+      subscription:
+        rootField: areainfoFees
+    selectUniques:
+      - queryRootField: areainfoFeesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoFeesById
+    filterInputTypeName: AreainfoFeesFilterInput
+    aggregate:
+      queryRootField: areainfoFeesAggregate
+      subscription:
+        rootField: areainfoFeesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoFees
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

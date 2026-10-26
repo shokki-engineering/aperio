@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductFormattedTextTexts
+  fields:
+    - name: descriptionId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelproductFormattedTextTexts
+    inputTypeName: HotelproductFormattedTextTextsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_formatted_text_texts
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductFormattedTextTexts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductFormattedTextTextsBoolExp
+  operand:
+    object:
+      type: HotelproductFormattedTextTexts
+      comparableFields:
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: HotelproductHotelproductFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductFormattedTextTextsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductFormattedTextTextsAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductFormattedTextTexts
+      aggregatableFields:
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: HotelproductHotelproductFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductFormattedTextTextsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductFormattedTextTextsOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductFormattedTextTexts
+      orderableFields:
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductFormattedTextTextsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductFormattedTextTexts
+  objectType: HotelproductFormattedTextTexts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_formatted_text_texts
+  filterExpressionType: HotelproductFormattedTextTextsBoolExp
+  aggregateExpression: HotelproductFormattedTextTextsAggExp
+  orderByExpression: HotelproductFormattedTextTextsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductFormattedTextTexts
+      subscription:
+        rootField: hotelproductFormattedTextTexts
+    selectUniques:
+      - queryRootField: hotelproductFormattedTextTextsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductFormattedTextTextsById
+    filterInputTypeName: HotelproductFormattedTextTextsFilterInput
+    aggregate:
+      queryRootField: hotelproductFormattedTextTextsAggregate
+      subscription:
+        rootField: hotelproductFormattedTextTextsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductFormattedTextTexts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

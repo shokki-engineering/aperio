@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingrfpAudioVisualReqsByIdResponse
+  description: Responses from the 'delete_meetingrfp_audio_visual_reqs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpAudioVisualReqs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingrfpAudioVisualReqsByIdResponse
+    inputTypeName: DeleteMeetingrfpAudioVisualReqsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingrfp_audio_visual_reqs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingrfpAudioVisualReqsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingrfpAudioVisualReqsById
+  outputType: DeleteMeetingrfpAudioVisualReqsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingrfpAudioVisualReqsBoolExp
+      description: Delete permission predicate over the 'meetingrfp_audio_visual_reqs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingrfp_audio_visual_reqs_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingrfpAudioVisualReqsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingrfp_audio_visual_reqs' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingrfpAudioVisualReqsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,187 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationFlatCommissionsAmountId
+  description: Update the 'amount_id' column in the 'reservation_flat_commissions'
+    collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationFlatCommissionsAmountId
+    inputTypeName: UpdateColumnReservationFlatCommissionsAmountIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_flat_commissions_amount_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationFlatCommissionsAmountId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationFlatCommissionsId
+  description: Update the 'id' column in the 'reservation_flat_commissions' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationFlatCommissionsId
+    inputTypeName: UpdateColumnReservationFlatCommissionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_flat_commissions_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationFlatCommissionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationFlatCommissionsByIdUpdateColumns
+  description: Update the columns of the 'reservation_flat_commissions' collection
+  fields:
+    - name: amountId
+      type: UpdateColumnReservationFlatCommissionsAmountId
+      description: Update the 'amount_id' column in the 'reservation_flat_commissions'
+        collection.
+    - name: id
+      type: UpdateColumnReservationFlatCommissionsId
+      description: Update the 'id' column in the 'reservation_flat_commissions' collection.
+  graphql:
+    typeName: UpdateReservationFlatCommissionsByIdUpdateColumns
+    inputTypeName: UpdateReservationFlatCommissionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_flat_commissions_by_id_update_columns
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationFlatCommissionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationFlatCommissionsByIdResponse
+  description: Responses from the 'update_reservation_flat_commissions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationFlatCommissions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationFlatCommissionsByIdResponse
+    inputTypeName: UpdateReservationFlatCommissionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_flat_commissions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationFlatCommissionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationFlatCommissionsById
+  outputType: UpdateReservationFlatCommissionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationFlatCommissionsBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_flat_commissions' collection
+    - name: preCheck
+      type: ReservationFlatCommissionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_flat_commissions' collection
+    - name: updateColumns
+      type: UpdateReservationFlatCommissionsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_flat_commissions_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationFlatCommissionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_flat_commissions' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationFlatCommissionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

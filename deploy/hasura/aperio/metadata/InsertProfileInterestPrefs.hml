@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileInterestPrefsObject
+  fields:
+    - name: commonPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileInterestPrefsObject
+    inputTypeName: InsertProfileInterestPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_interest_prefs_object
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileInterestPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileInterestPrefsResponse
+  description: Responses from the 'insert_profile_interest_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileInterestPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileInterestPrefsResponse
+    inputTypeName: InsertProfileInterestPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_interest_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileInterestPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileInterestPrefs
+  outputType: InsertProfileInterestPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileInterestPrefsObject!]!"
+    - name: postCheck
+      type: ProfileInterestPrefsBoolExp
+      description: Insert permission predicate over the 'profile_interest_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_interest_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileInterestPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_interest_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileInterestPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

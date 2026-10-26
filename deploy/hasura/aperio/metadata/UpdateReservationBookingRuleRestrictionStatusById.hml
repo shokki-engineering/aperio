@@ -1,0 +1,273 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationBookingRuleRestrictionStatusId
+  description: Update the 'id' column in the
+    'reservation_booking_rule_restriction_status' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationBookingRuleRestrictionStatusId
+    inputTypeName: UpdateColumnReservationBookingRuleRestrictionStatusIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_booking_rule_restriction_status_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationBookingRuleRestrictionStatusId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationBookingRuleRestrictionStatusRestriction
+  description: Update the 'restriction' column in the
+    'reservation_booking_rule_restriction_status' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationBookingRuleRestrictionStatusRestriction
+    inputTypeName: UpdateColumnReservationBookingRuleRestrictionStatusRestrictionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_booking_rule_restriction_status_restriction
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationBookingRuleRestrictionStatusRestriction
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationBookingRuleRestrictionStatusSellThroughOpenIndicator
+  description: Update the 'sell_through_open_indicator' column in the
+    'reservation_booking_rule_restriction_status' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationBookingRuleRestrictionStatusSellThroughOpenIndicator
+    inputTypeName: UpdateColumnReservationBookingRuleRestrictionStatusSellThroughOpenIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_booking_rule_restriction_status_sell_through_open_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationBookingRuleRestrictionStatusSellThroughOpenIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationBookingRuleRestrictionStatusStatus
+  description: Update the 'status' column in the
+    'reservation_booking_rule_restriction_status' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationBookingRuleRestrictionStatusStatus
+    inputTypeName: UpdateColumnReservationBookingRuleRestrictionStatusStatusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_booking_rule_restriction_status_status
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationBookingRuleRestrictionStatusStatus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationBookingRuleRestrictionStatusByIdUpdateColumns
+  description: Update the columns of the
+    'reservation_booking_rule_restriction_status' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationBookingRuleRestrictionStatusId
+      description: Update the 'id' column in the
+        'reservation_booking_rule_restriction_status' collection.
+    - name: restriction
+      type: UpdateColumnReservationBookingRuleRestrictionStatusRestriction
+      description: Update the 'restriction' column in the
+        'reservation_booking_rule_restriction_status' collection.
+    - name: sellThroughOpenIndicator
+      type: UpdateColumnReservationBookingRuleRestrictionStatusSellThroughOpenIndicator
+      description: Update the 'sell_through_open_indicator' column in the
+        'reservation_booking_rule_restriction_status' collection.
+    - name: status
+      type: UpdateColumnReservationBookingRuleRestrictionStatusStatus
+      description: Update the 'status' column in the
+        'reservation_booking_rule_restriction_status' collection.
+  graphql:
+    typeName: UpdateReservationBookingRuleRestrictionStatusByIdUpdateColumns
+    inputTypeName: UpdateReservationBookingRuleRestrictionStatusByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_booking_rule_restriction_status_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationBookingRuleRestrictionStatusByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationBookingRuleRestrictionStatusByIdResponse
+  description: Responses from the
+    'update_reservation_booking_rule_restriction_status_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationBookingRuleRestrictionStatus!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationBookingRuleRestrictionStatusByIdResponse
+    inputTypeName: UpdateReservationBookingRuleRestrictionStatusByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_booking_rule_restriction_status_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationBookingRuleRestrictionStatusByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationBookingRuleRestrictionStatusById
+  outputType: UpdateReservationBookingRuleRestrictionStatusByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationBookingRuleRestrictionStatusBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_booking_rule_restriction_status' collection
+    - name: preCheck
+      type: ReservationBookingRuleRestrictionStatusBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_booking_rule_restriction_status' collection
+    - name: updateColumns
+      type: UpdateReservationBookingRuleRestrictionStatusByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_booking_rule_restriction_status_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationBookingRuleRestrictionStatusById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_booking_rule_restriction_status'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationBookingRuleRestrictionStatusById
+  permissions:
+    - role: admin
+      allowExecution: true
+

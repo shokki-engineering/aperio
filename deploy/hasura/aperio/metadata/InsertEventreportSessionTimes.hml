@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportSessionTimesObject
+  fields:
+    - name: endClockId
+      type: String_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: startClockId
+      type: String_1
+  graphql:
+    typeName: InsertEventreportSessionTimesObject
+    inputTypeName: InsertEventreportSessionTimesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_session_times_object
+      fieldMapping:
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        id:
+          column:
+            name: id
+        startClockId:
+          column:
+            name: start_clock_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportSessionTimesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - endClockId
+          - eventDayFunctionId
+          - id
+          - startClockId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportSessionTimesResponse
+  description: Responses from the 'insert_eventreport_session_times' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportSessionTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportSessionTimesResponse
+    inputTypeName: InsertEventreportSessionTimesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_session_times_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportSessionTimesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportSessionTimes
+  outputType: InsertEventreportSessionTimesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportSessionTimesObject!]!"
+    - name: postCheck
+      type: EventreportSessionTimesBoolExp
+      description: Insert permission predicate over the 'eventreport_session_times'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_session_times
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportSessionTimes
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_session_times table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportSessionTimes
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyGroupPoliciesObject
+  fields:
+    - name: contractCurrency
+      type: String_1
+    - name: contractLanguage
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: localDmcRole
+      type: Enum
+    - name: maxGroupSize
+      type: Int32
+    - name: policyId
+      type: String_1!
+  graphql:
+    typeName: InsertPolicyGroupPoliciesObject
+    inputTypeName: InsertPolicyGroupPoliciesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_group_policies_object
+      fieldMapping:
+        contractCurrency:
+          column:
+            name: contract_currency
+        contractLanguage:
+          column:
+            name: contract_language
+        id:
+          column:
+            name: id
+        localDmcRole:
+          column:
+            name: local_dmc_role
+        maxGroupSize:
+          column:
+            name: max_group_size
+        policyId:
+          column:
+            name: policy_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyGroupPoliciesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contractCurrency
+          - contractLanguage
+          - id
+          - localDmcRole
+          - maxGroupSize
+          - policyId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyGroupPoliciesResponse
+  description: Responses from the 'insert_policy_group_policies' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyGroupPolicies!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyGroupPoliciesResponse
+    inputTypeName: InsertPolicyGroupPoliciesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_group_policies_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyGroupPoliciesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyGroupPolicies
+  outputType: InsertPolicyGroupPoliciesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyGroupPoliciesObject!]!"
+    - name: postCheck
+      type: PolicyGroupPoliciesBoolExp
+      description: Insert permission predicate over the 'policy_group_policies' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_group_policies
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyGroupPolicies
+    rootFieldKind: Mutation
+  description: Insert into the policy_group_policies table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyGroupPolicies
+  permissions:
+    - role: admin
+      allowExecution: true
+

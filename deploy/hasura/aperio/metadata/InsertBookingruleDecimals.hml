@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleDecimalsObject
+    inputTypeName: InsertBookingruleDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleDecimalsResponse
+  description: Responses from the 'insert_bookingrule_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleDecimalsResponse
+    inputTypeName: InsertBookingruleDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleDecimals
+  outputType: InsertBookingruleDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleDecimalsObject!]!"
+    - name: postCheck
+      type: BookingruleDecimalsBoolExp
+      description: Insert permission predicate over the 'bookingrule_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleDecimals
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,211 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationResGlobalInfos
+  fields:
+    - name: basicPropertyInfoId
+      type: String_1!
+    - name: cancelPenaltiesId
+      type: String_1
+    - name: guaranteeId
+      type: String_1
+    - name: guestCountsId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: resGuestRphs
+      type: "[String_1]"
+    - name: timeSpanId
+      type: String_1
+    - name: totalCommissionsId
+      type: String_1
+    - name: totalId
+      type: String_1
+  graphql:
+    typeName: ReservationResGlobalInfos
+    inputTypeName: ReservationResGlobalInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_res_global_infos
+      fieldMapping:
+        basicPropertyInfoId:
+          column:
+            name: basic_property_info_id
+        cancelPenaltiesId:
+          column:
+            name: cancel_penalties_id
+        guaranteeId:
+          column:
+            name: guarantee_id
+        guestCountsId:
+          column:
+            name: guest_counts_id
+        id:
+          column:
+            name: id
+        resGuestRphs:
+          column:
+            name: res_guest_rphs
+        timeSpanId:
+          column:
+            name: time_span_id
+        totalCommissionsId:
+          column:
+            name: total_commissions_id
+        totalId:
+          column:
+            name: total_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationResGlobalInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - basicPropertyInfoId
+          - cancelPenaltiesId
+          - guaranteeId
+          - guestCountsId
+          - id
+          - resGuestRphs
+          - timeSpanId
+          - totalCommissionsId
+          - totalId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationResGlobalInfosBoolExp
+  operand:
+    object:
+      type: ReservationResGlobalInfos
+      comparableFields:
+        - fieldName: basicPropertyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cancelPenaltiesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guestCountsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: timeSpanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalCommissionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationResGlobalInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationResGlobalInfosAggExp
+  operand:
+    object:
+      aggregatedType: ReservationResGlobalInfos
+      aggregatableFields:
+        - fieldName: basicPropertyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: cancelPenaltiesId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeId
+          aggregateExpression: TextAggExp
+        - fieldName: guestCountsId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: timeSpanId
+          aggregateExpression: TextAggExp
+        - fieldName: totalCommissionsId
+          aggregateExpression: TextAggExp
+        - fieldName: totalId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationResGlobalInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationResGlobalInfosOrderByExp
+  operand:
+    object:
+      orderedType: ReservationResGlobalInfos
+      orderableFields:
+        - fieldName: basicPropertyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: cancelPenaltiesId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeId
+          orderByExpression: String1OrderByExp
+        - fieldName: guestCountsId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: timeSpanId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalCommissionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationResGlobalInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationResGlobalInfos
+  objectType: ReservationResGlobalInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_res_global_infos
+  filterExpressionType: ReservationResGlobalInfosBoolExp
+  aggregateExpression: ReservationResGlobalInfosAggExp
+  orderByExpression: ReservationResGlobalInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationResGlobalInfos
+      subscription:
+        rootField: reservationResGlobalInfos
+    selectUniques:
+      - queryRootField: reservationResGlobalInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationResGlobalInfosById
+    filterInputTypeName: ReservationResGlobalInfosFilterInput
+    aggregate:
+      queryRootField: reservationResGlobalInfosAggregate
+      subscription:
+        rootField: reservationResGlobalInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationResGlobalInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

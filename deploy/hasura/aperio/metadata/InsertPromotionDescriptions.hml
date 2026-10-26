@@ -1,0 +1,174 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPromotionDescriptionsObject
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: location
+      type: Boolean_1
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: referenceDirection
+      type: Boolean_1
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertPromotionDescriptionsObject
+    inputTypeName: InsertPromotionDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_promotion_descriptions_object
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        location:
+          column:
+            name: location
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        referenceDirection:
+          column:
+            name: reference_direction
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPromotionDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - displayName
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - location
+          - paragraphNumber
+          - purgeDayId
+          - referenceDirection
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPromotionDescriptionsResponse
+  description: Responses from the 'insert_promotion_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PromotionDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPromotionDescriptionsResponse
+    inputTypeName: InsertPromotionDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_promotion_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPromotionDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPromotionDescriptions
+  outputType: InsertPromotionDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPromotionDescriptionsObject!]!"
+    - name: postCheck
+      type: PromotionDescriptionsBoolExp
+      description: Insert permission predicate over the 'promotion_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_promotion_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPromotionDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the promotion_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPromotionDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

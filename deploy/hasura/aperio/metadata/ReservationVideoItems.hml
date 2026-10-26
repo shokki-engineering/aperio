@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationVideoItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationVideoItems
+    inputTypeName: ReservationVideoItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_video_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationVideoItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationVideoItemsBoolExp
+  operand:
+    object:
+      type: ReservationVideoItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationVideoItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationVideoItemsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationVideoItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationVideoItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationVideoItemsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationVideoItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationVideoItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationVideoItems
+  objectType: ReservationVideoItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_video_items
+  filterExpressionType: ReservationVideoItemsBoolExp
+  aggregateExpression: ReservationVideoItemsAggExp
+  orderByExpression: ReservationVideoItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationVideoItems
+      subscription:
+        rootField: reservationVideoItems
+    selectUniques:
+      - queryRootField: reservationVideoItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationVideoItemsById
+    filterInputTypeName: ReservationVideoItemsFilterInput
+    aggregate:
+      queryRootField: reservationVideoItemsAggregate
+      subscription:
+        rootField: reservationVideoItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationVideoItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileBankAccts
+  fields:
+    - name: bankAcctDisplayName
+      type: String_1
+    - name: bankAcctNumberId
+      type: String_1
+    - name: bankIdId
+      type: String_1
+    - name: checkNumber
+      type: String_1
+    - name: checksAccepted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: typeId
+      type: String_1
+  graphql:
+    typeName: ProfileBankAccts
+    inputTypeName: ProfileBankAcctsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_bank_accts
+      fieldMapping:
+        bankAcctDisplayName:
+          column:
+            name: bank_acct_display_name
+        bankAcctNumberId:
+          column:
+            name: bank_acct_number_id
+        bankIdId:
+          column:
+            name: bank_id_id
+        checkNumber:
+          column:
+            name: check_number
+        checksAccepted:
+          column:
+            name: checks_accepted
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        typeId:
+          column:
+            name: type_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileBankAccts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bankAcctDisplayName
+          - bankAcctNumberId
+          - bankIdId
+          - checkNumber
+          - checksAccepted
+          - id
+          - shareMarketInd
+          - shareSynchInd
+          - typeId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileBankAcctsBoolExp
+  operand:
+    object:
+      type: ProfileBankAccts
+      comparableFields:
+        - fieldName: bankAcctDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: bankAcctNumberId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bankIdId
+          booleanExpressionType: TextBoolExp
+        - fieldName: checkNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: checksAccepted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: typeId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileBankAcctsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileBankAcctsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileBankAccts
+      aggregatableFields:
+        - fieldName: bankAcctDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: bankAcctNumberId
+          aggregateExpression: TextAggExp
+        - fieldName: bankIdId
+          aggregateExpression: TextAggExp
+        - fieldName: checkNumber
+          aggregateExpression: TextAggExp
+        - fieldName: checksAccepted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: typeId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileBankAcctsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileBankAcctsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileBankAccts
+      orderableFields:
+        - fieldName: bankAcctDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: bankAcctNumberId
+          orderByExpression: String1OrderByExp
+        - fieldName: bankIdId
+          orderByExpression: String1OrderByExp
+        - fieldName: checkNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: checksAccepted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: typeId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileBankAcctsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileBankAccts
+  objectType: ProfileBankAccts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_bank_accts
+  filterExpressionType: ProfileBankAcctsBoolExp
+  aggregateExpression: ProfileBankAcctsAggExp
+  orderByExpression: ProfileBankAcctsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileBankAccts
+      subscription:
+        rootField: profileBankAccts
+    selectUniques:
+      - queryRootField: profileBankAcctsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileBankAcctsById
+    filterInputTypeName: ProfileBankAcctsFilterInput
+    aggregate:
+      queryRootField: profileBankAcctsAggregate
+      subscription:
+        rootField: profileBankAcctsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileBankAccts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

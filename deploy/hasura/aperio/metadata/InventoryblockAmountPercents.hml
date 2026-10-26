@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockAmountPercents
+  fields:
+    - name: amountId
+      type: String_1
+    - name: applyAs
+      type: Enum
+    - name: basisType
+      type: Enum
+    - name: feesInclusive
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: nightCount
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: taxInclusive
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+  graphql:
+    typeName: InventoryblockAmountPercents
+    inputTypeName: InventoryblockAmountPercentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_amount_percents
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        applyAs:
+          column:
+            name: apply_as
+        basisType:
+          column:
+            name: basis_type
+        feesInclusive:
+          column:
+            name: fees_inclusive
+        id:
+          column:
+            name: id
+        nightCount:
+          column:
+            name: night_count
+        percentId:
+          column:
+            name: percent_id
+        taxInclusive:
+          column:
+            name: tax_inclusive
+        taxesId:
+          column:
+            name: taxes_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockAmountPercents
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - applyAs
+          - basisType
+          - feesInclusive
+          - id
+          - nightCount
+          - percentId
+          - taxInclusive
+          - taxesId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockAmountPercentsBoolExp
+  operand:
+    object:
+      type: InventoryblockAmountPercents
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: applyAs
+          booleanExpressionType: InventoryblockInventoryblockApplyAsBoolExp
+        - fieldName: basisType
+          booleanExpressionType: InventoryblockInventoryblockBasisTypeBoolExp
+        - fieldName: feesInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nightCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockAmountPercentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockAmountPercentsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockAmountPercents
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: applyAs
+          aggregateExpression: InventoryblockInventoryblockApplyAsAggExp
+        - fieldName: basisType
+          aggregateExpression: InventoryblockInventoryblockBasisTypeAggExp
+        - fieldName: feesInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nightCount
+          aggregateExpression: Int4AggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: taxInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockAmountPercentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockAmountPercentsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockAmountPercents
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: applyAs
+          orderByExpression: EnumOrderByExp
+        - fieldName: basisType
+          orderByExpression: EnumOrderByExp
+        - fieldName: feesInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nightCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockAmountPercentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockAmountPercents
+  objectType: InventoryblockAmountPercents
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_amount_percents
+  filterExpressionType: InventoryblockAmountPercentsBoolExp
+  aggregateExpression: InventoryblockAmountPercentsAggExp
+  orderByExpression: InventoryblockAmountPercentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockAmountPercents
+      subscription:
+        rootField: inventoryblockAmountPercents
+    selectUniques:
+      - queryRootField: inventoryblockAmountPercentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockAmountPercentsById
+    filterInputTypeName: InventoryblockAmountPercentsFilterInput
+    aggregate:
+      queryRootField: inventoryblockAmountPercentsAggregate
+      subscription:
+        rootField: inventoryblockAmountPercentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockAmountPercents
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

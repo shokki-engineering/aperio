@@ -1,0 +1,287 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportTimeOfDaysHour
+  description: Update the 'hour' column in the 'eventreport_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportTimeOfDaysHour
+    inputTypeName: UpdateColumnEventreportTimeOfDaysHourInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_time_of_days_hour
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportTimeOfDaysHour
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportTimeOfDaysId
+  description: Update the 'id' column in the 'eventreport_time_of_days' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportTimeOfDaysId
+    inputTypeName: UpdateColumnEventreportTimeOfDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_time_of_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportTimeOfDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportTimeOfDaysMinute
+  description: Update the 'minute' column in the 'eventreport_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportTimeOfDaysMinute
+    inputTypeName: UpdateColumnEventreportTimeOfDaysMinuteInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_time_of_days_minute
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportTimeOfDaysMinute
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportTimeOfDaysNanosecond
+  description: Update the 'nanosecond' column in the 'eventreport_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportTimeOfDaysNanosecond
+    inputTypeName: UpdateColumnEventreportTimeOfDaysNanosecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_time_of_days_nanosecond
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportTimeOfDaysNanosecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportTimeOfDaysSecond
+  description: Update the 'second' column in the 'eventreport_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportTimeOfDaysSecond
+    inputTypeName: UpdateColumnEventreportTimeOfDaysSecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_time_of_days_second
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportTimeOfDaysSecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportTimeOfDaysByIdUpdateColumns
+  description: Update the columns of the 'eventreport_time_of_days' collection
+  fields:
+    - name: hour
+      type: UpdateColumnEventreportTimeOfDaysHour
+      description: Update the 'hour' column in the 'eventreport_time_of_days' collection.
+    - name: id
+      type: UpdateColumnEventreportTimeOfDaysId
+      description: Update the 'id' column in the 'eventreport_time_of_days' collection.
+    - name: minute
+      type: UpdateColumnEventreportTimeOfDaysMinute
+      description: Update the 'minute' column in the 'eventreport_time_of_days' collection.
+    - name: nanosecond
+      type: UpdateColumnEventreportTimeOfDaysNanosecond
+      description: Update the 'nanosecond' column in the 'eventreport_time_of_days'
+        collection.
+    - name: second
+      type: UpdateColumnEventreportTimeOfDaysSecond
+      description: Update the 'second' column in the 'eventreport_time_of_days' collection.
+  graphql:
+    typeName: UpdateEventreportTimeOfDaysByIdUpdateColumns
+    inputTypeName: UpdateEventreportTimeOfDaysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_time_of_days_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportTimeOfDaysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportTimeOfDaysByIdResponse
+  description: Responses from the 'update_eventreport_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventreportTimeOfDaysByIdResponse
+    inputTypeName: UpdateEventreportTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventreportTimeOfDaysById
+  outputType: UpdateEventreportTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventreportTimeOfDaysBoolExp
+      description: Update permission post-condition predicate over the
+        'eventreport_time_of_days' collection
+    - name: preCheck
+      type: EventreportTimeOfDaysBoolExp
+      description: Update permission pre-condition predicate over the
+        'eventreport_time_of_days' collection
+    - name: updateColumns
+      type: UpdateEventreportTimeOfDaysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_eventreport_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventreportTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'eventreport_time_of_days' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventreportTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

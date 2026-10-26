@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileTicketDistribPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: commonPrefId
+      type: String_1!
+    - name: distribType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: remark
+      type: String_1
+    - name: ticketingMoment
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileTicketDistribPrefs
+    inputTypeName: ProfileTicketDistribPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_ticket_distrib_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        commonPrefId:
+          column:
+            name: common_pref_id
+        distribType:
+          column:
+            name: distrib_type
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        remark:
+          column:
+            name: remark
+        ticketingMoment:
+          column:
+            name: ticketing_moment
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileTicketDistribPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - commonPrefId
+          - distribType
+          - id
+          - preferLevel
+          - railPrefId
+          - remark
+          - ticketingMoment
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileTicketDistribPrefsBoolExp
+  operand:
+    object:
+      type: ProfileTicketDistribPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commonPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: distribType
+          booleanExpressionType: ProfileProfileDistributionTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: railPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: ticketingMoment
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileTicketDistribPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileTicketDistribPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileTicketDistribPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: commonPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: distribType
+          aggregateExpression: ProfileProfileDistributionTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: railPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: ticketingMoment
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileTicketDistribPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileTicketDistribPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileTicketDistribPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: commonPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: distribType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: railPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: ticketingMoment
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileTicketDistribPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileTicketDistribPrefs
+  objectType: ProfileTicketDistribPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_ticket_distrib_prefs
+  filterExpressionType: ProfileTicketDistribPrefsBoolExp
+  aggregateExpression: ProfileTicketDistribPrefsAggExp
+  orderByExpression: ProfileTicketDistribPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileTicketDistribPrefs
+      subscription:
+        rootField: profileTicketDistribPrefs
+    selectUniques:
+      - queryRootField: profileTicketDistribPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileTicketDistribPrefsById
+    filterInputTypeName: ProfileTicketDistribPrefsFilterInput
+    aggregate:
+      queryRootField: profileTicketDistribPrefsAggregate
+      subscription:
+        rootField: profileTicketDistribPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileTicketDistribPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

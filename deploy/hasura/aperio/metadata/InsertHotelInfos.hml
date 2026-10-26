@@ -1,0 +1,204 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelInfosObject
+  fields:
+    - name: areaWeather
+      type: String_1
+    - name: categoryCodesId
+      type: String_1
+    - name: daylightSavingIndicator
+      type: Boolean_1
+    - name: descriptionsId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: hotelDisplayNameId
+      type: String_1
+    - name: hotelStatus
+      type: String_1
+    - name: hotelStatusCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: interfaceCompliance
+      type: String_1
+    - name: iso9000Certified
+      type: Boolean_1
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: pmsSystem
+      type: String_1
+    - name: positionId
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: taxId
+      type: String_1
+    - name: whenBuilt
+      type: String_1
+  graphql:
+    typeName: InsertHotelInfosObject
+    inputTypeName: InsertHotelInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_infos_object
+      fieldMapping:
+        areaWeather:
+          column:
+            name: area_weather
+        categoryCodesId:
+          column:
+            name: category_codes_id
+        daylightSavingIndicator:
+          column:
+            name: daylight_saving_indicator
+        descriptionsId:
+          column:
+            name: descriptions_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        hotelDisplayNameId:
+          column:
+            name: hotel_display_name_id
+        hotelStatus:
+          column:
+            name: hotel_status
+        hotelStatusCode:
+          column:
+            name: hotel_status_code
+        id:
+          column:
+            name: id
+        interfaceCompliance:
+          column:
+            name: interface_compliance
+        iso9000Certified:
+          column:
+            name: iso9000_certified
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        pmsSystem:
+          column:
+            name: pms_system
+        positionId:
+          column:
+            name: position_id
+        startId:
+          column:
+            name: start_id
+        taxId:
+          column:
+            name: tax_id
+        whenBuilt:
+          column:
+            name: when_built
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaWeather
+          - categoryCodesId
+          - daylightSavingIndicator
+          - descriptionsId
+          - duration
+          - endId
+          - hotelDisplayNameId
+          - hotelStatus
+          - hotelStatusCode
+          - id
+          - interfaceCompliance
+          - iso9000Certified
+          - lastUpdateTime
+          - pmsSystem
+          - positionId
+          - startId
+          - taxId
+          - whenBuilt
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelInfosResponse
+  description: Responses from the 'insert_hotel_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelInfosResponse
+    inputTypeName: InsertHotelInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelInfos
+  outputType: InsertHotelInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelInfosObject!]!"
+    - name: postCheck
+      type: HotelInfosBoolExp
+      description: Insert permission predicate over the 'hotel_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelInfos
+    rootFieldKind: Mutation
+  description: Insert into the hotel_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

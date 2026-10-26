@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanViewershipProfiles
+  fields:
+    - name: id
+      type: String_1!
+    - name: profileId
+      type: String_1!
+    - name: viewershipId
+      type: String_1!
+  graphql:
+    typeName: RateplanViewershipProfiles
+    inputTypeName: RateplanViewershipProfilesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_viewership_profiles
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profileId:
+          column:
+            name: profile_id
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanViewershipProfiles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profileId
+          - viewershipId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanViewershipProfilesBoolExp
+  operand:
+    object:
+      type: RateplanViewershipProfiles
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: profileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanViewershipProfilesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanViewershipProfilesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanViewershipProfiles
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: profileId
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanViewershipProfilesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanViewershipProfilesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanViewershipProfiles
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: profileId
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanViewershipProfilesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanViewershipProfiles
+  objectType: RateplanViewershipProfiles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_viewership_profiles
+  filterExpressionType: RateplanViewershipProfilesBoolExp
+  aggregateExpression: RateplanViewershipProfilesAggExp
+  orderByExpression: RateplanViewershipProfilesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanViewershipProfiles
+      subscription:
+        rootField: rateplanViewershipProfiles
+    selectUniques:
+      - queryRootField: rateplanViewershipProfilesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanViewershipProfilesById
+    filterInputTypeName: RateplanViewershipProfilesFilterInput
+    aggregate:
+      queryRootField: rateplanViewershipProfilesAggregate
+      subscription:
+        rootField: rateplanViewershipProfilesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanViewershipProfiles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

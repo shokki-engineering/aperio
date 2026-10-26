@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeletePromotionDateOrTimeOrDateTimesByIdResponse
+  description: Responses from the
+    'delete_promotion_date_or_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PromotionDateOrTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeletePromotionDateOrTimeOrDateTimesByIdResponse
+    inputTypeName: DeletePromotionDateOrTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_promotion_date_or_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeletePromotionDateOrTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeletePromotionDateOrTimeOrDateTimesById
+  outputType: DeletePromotionDateOrTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: PromotionDateOrTimeOrDateTimesBoolExp
+      description: Delete permission predicate over the
+        'promotion_date_or_time_or_date_times' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_promotion_date_or_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deletePromotionDateOrTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'promotion_date_or_time_or_date_times'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeletePromotionDateOrTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

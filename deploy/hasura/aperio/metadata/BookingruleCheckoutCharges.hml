@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleCheckoutCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: bookingRulesItemId
+      type: String_1!
+    - name: codeDetail
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: nightCount
+      type: Int32
+    - name: percentId
+      type: String_1
+    - name: stayBalance
+      type: Boolean_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: BookingruleCheckoutCharges
+    inputTypeName: BookingruleCheckoutChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_checkout_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        bookingRulesItemId:
+          column:
+            name: booking_rules_item_id
+        codeDetail:
+          column:
+            name: code_detail
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        nightCount:
+          column:
+            name: night_count
+        percentId:
+          column:
+            name: percent_id
+        stayBalance:
+          column:
+            name: stay_balance
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleCheckoutCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - bookingRulesItemId
+          - codeDetail
+          - existsCode
+          - id
+          - nightCount
+          - percentId
+          - stayBalance
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleCheckoutChargesBoolExp
+  operand:
+    object:
+      type: BookingruleCheckoutCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bookingRulesItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: BookingruleBookingruleOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nightCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: percentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: stayBalance
+          booleanExpressionType: BoolBoolExp
+        - fieldName: type
+          booleanExpressionType: BookingruleBookingRulesItemCheckoutChargeTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleCheckoutChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleCheckoutChargesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleCheckoutCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: bookingRulesItemId
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: BookingruleBookingruleOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nightCount
+          aggregateExpression: Int4AggExp
+        - fieldName: percentId
+          aggregateExpression: TextAggExp
+        - fieldName: stayBalance
+          aggregateExpression: BoolAggExp
+        - fieldName: type
+          aggregateExpression: BookingruleBookingRulesItemCheckoutChargeTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleCheckoutChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleCheckoutChargesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleCheckoutCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: bookingRulesItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nightCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: percentId
+          orderByExpression: String1OrderByExp
+        - fieldName: stayBalance
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleCheckoutChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleCheckoutCharges
+  objectType: BookingruleCheckoutCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_checkout_charges
+  filterExpressionType: BookingruleCheckoutChargesBoolExp
+  aggregateExpression: BookingruleCheckoutChargesAggExp
+  orderByExpression: BookingruleCheckoutChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleCheckoutCharges
+      subscription:
+        rootField: bookingruleCheckoutCharges
+    selectUniques:
+      - queryRootField: bookingruleCheckoutChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleCheckoutChargesById
+    filterInputTypeName: BookingruleCheckoutChargesFilterInput
+    aggregate:
+      queryRootField: bookingruleCheckoutChargesAggregate
+      subscription:
+        rootField: bookingruleCheckoutChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleCheckoutCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

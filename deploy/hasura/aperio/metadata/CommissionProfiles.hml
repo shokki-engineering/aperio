@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommissionProfiles
+  fields:
+    - name: commissionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: profileId
+      type: String_1!
+  graphql:
+    typeName: CommissionProfiles
+    inputTypeName: CommissionProfilesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: commission_profiles
+      fieldMapping:
+        commissionId:
+          column:
+            name: commission_id
+        id:
+          column:
+            name: id
+        profileId:
+          column:
+            name: profile_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommissionProfiles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commissionId
+          - id
+          - profileId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CommissionProfilesBoolExp
+  operand:
+    object:
+      type: CommissionProfiles
+      comparableFields:
+        - fieldName: commissionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: profileId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CommissionProfilesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CommissionProfilesAggExp
+  operand:
+    object:
+      aggregatedType: CommissionProfiles
+      aggregatableFields:
+        - fieldName: commissionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: profileId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CommissionProfilesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CommissionProfilesOrderByExp
+  operand:
+    object:
+      orderedType: CommissionProfiles
+      orderableFields:
+        - fieldName: commissionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: profileId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CommissionProfilesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CommissionProfiles
+  objectType: CommissionProfiles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: commission_profiles
+  filterExpressionType: CommissionProfilesBoolExp
+  aggregateExpression: CommissionProfilesAggExp
+  orderByExpression: CommissionProfilesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: commissionProfiles
+      subscription:
+        rootField: commissionProfiles
+    selectUniques:
+      - queryRootField: commissionProfilesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: commissionProfilesById
+    filterInputTypeName: CommissionProfilesFilterInput
+    aggregate:
+      queryRootField: commissionProfilesAggregate
+      subscription:
+        rootField: commissionProfilesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CommissionProfiles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

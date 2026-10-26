@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantParagraphs
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: feeId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: taxId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: RestaurantParagraphs
+    inputTypeName: RestaurantParagraphsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_paragraphs
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        feeId:
+          column:
+            name: fee_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        taxId:
+          column:
+            name: tax_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantParagraphs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - displayName
+          - feeId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - taxId
+          - uris
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantParagraphsBoolExp
+  operand:
+    object:
+      type: RestaurantParagraphs
+      comparableFields:
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: feeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantParagraphsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantParagraphsAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantParagraphs
+      aggregatableFields:
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: feeId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: taxId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantParagraphsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantParagraphsOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantParagraphs
+      orderableFields:
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: feeId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantParagraphsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantParagraphs
+  objectType: RestaurantParagraphs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_paragraphs
+  filterExpressionType: RestaurantParagraphsBoolExp
+  aggregateExpression: RestaurantParagraphsAggExp
+  orderByExpression: RestaurantParagraphsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantParagraphs
+      subscription:
+        rootField: restaurantParagraphs
+    selectUniques:
+      - queryRootField: restaurantParagraphsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantParagraphsById
+    filterInputTypeName: RestaurantParagraphsFilterInput
+    aggregate:
+      queryRootField: restaurantParagraphsAggregate
+      subscription:
+        rootField: restaurantParagraphsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantParagraphs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

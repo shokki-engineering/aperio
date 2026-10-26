@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportFunctionSpaceRequirements
+  fields:
+    - name: functionSpaceInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: requirement
+      type: Enum
+  graphql:
+    typeName: EventreportFunctionSpaceRequirements
+    inputTypeName: EventreportFunctionSpaceRequirementsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_function_space_requirements
+      fieldMapping:
+        functionSpaceInfoId:
+          column:
+            name: function_space_info_id
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        requirement:
+          column:
+            name: requirement
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportFunctionSpaceRequirements
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - functionSpaceInfoId
+          - id
+          - quantity
+          - requirement
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportFunctionSpaceRequirementsBoolExp
+  operand:
+    object:
+      type: EventreportFunctionSpaceRequirements
+      comparableFields:
+        - fieldName: functionSpaceInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: requirement
+          booleanExpressionType: EventreportRequirementBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportFunctionSpaceRequirementsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportFunctionSpaceRequirementsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportFunctionSpaceRequirements
+      aggregatableFields:
+        - fieldName: functionSpaceInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: requirement
+          aggregateExpression: EventreportRequirementAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportFunctionSpaceRequirementsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportFunctionSpaceRequirementsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportFunctionSpaceRequirements
+      orderableFields:
+        - fieldName: functionSpaceInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: requirement
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportFunctionSpaceRequirementsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportFunctionSpaceRequirements
+  objectType: EventreportFunctionSpaceRequirements
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_function_space_requirements
+  filterExpressionType: EventreportFunctionSpaceRequirementsBoolExp
+  aggregateExpression: EventreportFunctionSpaceRequirementsAggExp
+  orderByExpression: EventreportFunctionSpaceRequirementsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportFunctionSpaceRequirements
+      subscription:
+        rootField: eventreportFunctionSpaceRequirements
+    selectUniques:
+      - queryRootField: eventreportFunctionSpaceRequirementsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportFunctionSpaceRequirementsById
+    filterInputTypeName: EventreportFunctionSpaceRequirementsFilterInput
+    aggregate:
+      queryRootField: eventreportFunctionSpaceRequirementsAggregate
+      subscription:
+        rootField: eventreportFunctionSpaceRequirementsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportFunctionSpaceRequirements
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

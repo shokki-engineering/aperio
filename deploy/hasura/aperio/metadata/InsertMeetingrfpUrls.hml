@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingrfpUrlsObject
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertMeetingrfpUrlsObject
+    inputTypeName: InsertMeetingrfpUrlsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingrfp_urls_object
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingrfpUrlsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingrfpUrlsResponse
+  description: Responses from the 'insert_meetingrfp_urls' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingrfpUrlsResponse
+    inputTypeName: InsertMeetingrfpUrlsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingrfp_urls_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingrfpUrlsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingrfpUrls
+  outputType: InsertMeetingrfpUrlsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingrfpUrlsObject!]!"
+    - name: postCheck
+      type: MeetingrfpUrlsBoolExp
+      description: Insert permission predicate over the 'meetingrfp_urls' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingrfp_urls
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingrfpUrls
+    rootFieldKind: Mutation
+  description: Insert into the meetingrfp_urls table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingrfpUrls
+  permissions:
+    - role: admin
+      allowExecution: true
+

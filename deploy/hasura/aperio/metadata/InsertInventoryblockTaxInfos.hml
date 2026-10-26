@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockTaxInfosObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: taxId
+      type: String_1
+    - name: taxReason
+      type: String_1
+    - name: taxType
+      type: Enum
+  graphql:
+    typeName: InsertInventoryblockTaxInfosObject
+    inputTypeName: InsertInventoryblockTaxInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_tax_infos_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        taxId:
+          column:
+            name: tax_id
+        taxReason:
+          column:
+            name: tax_reason
+        taxType:
+          column:
+            name: tax_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockTaxInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - taxId
+          - taxReason
+          - taxType
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockTaxInfosResponse
+  description: Responses from the 'insert_inventoryblock_tax_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockTaxInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockTaxInfosResponse
+    inputTypeName: InsertInventoryblockTaxInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_tax_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockTaxInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockTaxInfos
+  outputType: InsertInventoryblockTaxInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockTaxInfosObject!]!"
+    - name: postCheck
+      type: InventoryblockTaxInfosBoolExp
+      description: Insert permission predicate over the 'inventoryblock_tax_infos'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_tax_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockTaxInfos
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_tax_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockTaxInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

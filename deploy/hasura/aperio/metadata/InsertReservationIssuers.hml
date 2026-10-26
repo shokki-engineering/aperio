@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationIssuersObject
+  fields:
+    - name: bankId
+      type: String_1
+    - name: code
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptionDetail
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: removal
+      type: Boolean_1
+    - name: resourceDisplayName
+      type: String_1
+    - name: resourceUri
+      type: String_1
+    - name: sourceDisplayName
+      type: String_1
+    - name: sourceUri
+      type: String_1
+    - name: uniqueId
+      type: String_1
+    - name: value
+      type: Enum
+  graphql:
+    typeName: InsertReservationIssuersObject
+    inputTypeName: InsertReservationIssuersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_issuers_object
+      fieldMapping:
+        bankId:
+          column:
+            name: bank_id
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        descriptionDetail:
+          column:
+            name: description_detail
+        id:
+          column:
+            name: id
+        removal:
+          column:
+            name: removal
+        resourceDisplayName:
+          column:
+            name: resource_display_name
+        resourceUri:
+          column:
+            name: resource_uri
+        sourceDisplayName:
+          column:
+            name: source_display_name
+        sourceUri:
+          column:
+            name: source_uri
+        uniqueId:
+          column:
+            name: unique_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationIssuersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bankId
+          - code
+          - description
+          - descriptionDetail
+          - id
+          - removal
+          - resourceDisplayName
+          - resourceUri
+          - sourceDisplayName
+          - sourceUri
+          - uniqueId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationIssuersResponse
+  description: Responses from the 'insert_reservation_issuers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationIssuers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationIssuersResponse
+    inputTypeName: InsertReservationIssuersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_issuers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationIssuersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationIssuers
+  outputType: InsertReservationIssuersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationIssuersObject!]!"
+    - name: postCheck
+      type: ReservationIssuersBoolExp
+      description: Insert permission predicate over the 'reservation_issuers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_issuers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationIssuers
+    rootFieldKind: Mutation
+  description: Insert into the reservation_issuers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationIssuers
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpPromotions
+  fields:
+    - name: advertisedHighAmountId
+      type: String_1
+    - name: advertisedLowAmountId
+      type: String_1
+    - name: advertisedRoomQuantity
+      type: Int32
+    - name: availableDateRangeId
+      type: String_1!
+    - name: descriptionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: offeredDateRangeId
+      type: String_1!
+    - name: promotionCode
+      type: String_1
+    - name: siteId
+      type: String_1!
+    - name: userAcknowledgementIndicator
+      type: Boolean_1
+  graphql:
+    typeName: MeetingrfpPromotions
+    inputTypeName: MeetingrfpPromotionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_promotions
+      fieldMapping:
+        advertisedHighAmountId:
+          column:
+            name: advertised_high_amount_id
+        advertisedLowAmountId:
+          column:
+            name: advertised_low_amount_id
+        advertisedRoomQuantity:
+          column:
+            name: advertised_room_quantity
+        availableDateRangeId:
+          column:
+            name: available_date_range_id
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        offeredDateRangeId:
+          column:
+            name: offered_date_range_id
+        promotionCode:
+          column:
+            name: promotion_code
+        siteId:
+          column:
+            name: site_id
+        userAcknowledgementIndicator:
+          column:
+            name: user_acknowledgement_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpPromotions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - advertisedHighAmountId
+          - advertisedLowAmountId
+          - advertisedRoomQuantity
+          - availableDateRangeId
+          - descriptionId
+          - id
+          - offeredDateRangeId
+          - promotionCode
+          - siteId
+          - userAcknowledgementIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpPromotionsBoolExp
+  operand:
+    object:
+      type: MeetingrfpPromotions
+      comparableFields:
+        - fieldName: advertisedHighAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: advertisedLowAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: advertisedRoomQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: availableDateRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offeredDateRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: promotionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: siteId
+          booleanExpressionType: TextBoolExp
+        - fieldName: userAcknowledgementIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpPromotionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpPromotionsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpPromotions
+      aggregatableFields:
+        - fieldName: advertisedHighAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: advertisedLowAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: advertisedRoomQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: availableDateRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offeredDateRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: promotionCode
+          aggregateExpression: TextAggExp
+        - fieldName: siteId
+          aggregateExpression: TextAggExp
+        - fieldName: userAcknowledgementIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpPromotionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpPromotionsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpPromotions
+      orderableFields:
+        - fieldName: advertisedHighAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: advertisedLowAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: advertisedRoomQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: availableDateRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offeredDateRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: promotionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: siteId
+          orderByExpression: String1OrderByExp
+        - fieldName: userAcknowledgementIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpPromotionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpPromotions
+  objectType: MeetingrfpPromotions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_promotions
+  filterExpressionType: MeetingrfpPromotionsBoolExp
+  aggregateExpression: MeetingrfpPromotionsAggExp
+  orderByExpression: MeetingrfpPromotionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpPromotions
+      subscription:
+        rootField: meetingrfpPromotions
+    selectUniques:
+      - queryRootField: meetingrfpPromotionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpPromotionsById
+    filterInputTypeName: MeetingrfpPromotionsFilterInput
+    aggregate:
+      queryRootField: meetingrfpPromotionsAggregate
+      subscription:
+        rootField: meetingrfpPromotionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpPromotions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

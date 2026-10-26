@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockMoneysObject
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: InsertInventoryblockMoneysObject
+    inputTypeName: InsertInventoryblockMoneysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_moneys_object
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockMoneysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockMoneysResponse
+  description: Responses from the 'insert_inventoryblock_moneys' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockMoneysResponse
+    inputTypeName: InsertInventoryblockMoneysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_moneys_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockMoneysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockMoneys
+  outputType: InsertInventoryblockMoneysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockMoneysObject!]!"
+    - name: postCheck
+      type: InventoryblockMoneysBoolExp
+      description: Insert permission predicate over the 'inventoryblock_moneys' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_moneys
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockMoneys
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_moneys table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockMoneys
+  permissions:
+    - role: admin
+      allowExecution: true
+

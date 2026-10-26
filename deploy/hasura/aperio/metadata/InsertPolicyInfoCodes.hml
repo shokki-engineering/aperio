@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyInfoCodesObject
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: name
+      type: Enum
+    - name: policyId
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertPolicyInfoCodesObject
+    inputTypeName: InsertPolicyInfoCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_info_codes_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        codeDetail:
+          column:
+            name: code_detail
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        policyId:
+          column:
+            name: policy_id
+        quantity:
+          column:
+            name: quantity
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyInfoCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - codeDetail
+          - existsCode
+          - id
+          - name
+          - policyId
+          - quantity
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyInfoCodesResponse
+  description: Responses from the 'insert_policy_info_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyInfoCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyInfoCodesResponse
+    inputTypeName: InsertPolicyInfoCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_info_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyInfoCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyInfoCodes
+  outputType: InsertPolicyInfoCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyInfoCodesObject!]!"
+    - name: postCheck
+      type: PolicyInfoCodesBoolExp
+      description: Insert permission predicate over the 'policy_info_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_info_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyInfoCodes
+    rootFieldKind: Mutation
+  description: Insert into the policy_info_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyInfoCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

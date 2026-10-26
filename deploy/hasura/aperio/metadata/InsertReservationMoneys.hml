@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationMoneysObject
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: InsertReservationMoneysObject
+    inputTypeName: InsertReservationMoneysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_moneys_object
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationMoneysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationMoneysResponse
+  description: Responses from the 'insert_reservation_moneys' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationMoneysResponse
+    inputTypeName: InsertReservationMoneysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_moneys_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationMoneysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationMoneys
+  outputType: InsertReservationMoneysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationMoneysObject!]!"
+    - name: postCheck
+      type: ReservationMoneysBoolExp
+      description: Insert permission predicate over the 'reservation_moneys' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_moneys
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationMoneys
+    rootFieldKind: Mutation
+  description: Insert into the reservation_moneys table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationMoneys
+  permissions:
+    - role: admin
+      allowExecution: true
+

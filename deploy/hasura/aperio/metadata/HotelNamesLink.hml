@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelNamesLink
+  fields:
+    - name: hotelShortDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelNamesLink
+    inputTypeName: HotelNamesLinkInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_names_link
+      fieldMapping:
+        hotelShortDisplayName:
+          column:
+            name: hotel_short_display_name
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelNamesLink
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelShortDisplayName
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelNamesLinkBoolExp
+  operand:
+    object:
+      type: HotelNamesLink
+      comparableFields:
+        - fieldName: hotelShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelNamesLinkBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelNamesLinkAggExp
+  operand:
+    object:
+      aggregatedType: HotelNamesLink
+      aggregatableFields:
+        - fieldName: hotelShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelNamesLinkAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelNamesLinkOrderByExp
+  operand:
+    object:
+      orderedType: HotelNamesLink
+      orderableFields:
+        - fieldName: hotelShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelNamesLinkOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelNamesLink
+  objectType: HotelNamesLink
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_names_link
+  filterExpressionType: HotelNamesLinkBoolExp
+  aggregateExpression: HotelNamesLinkAggExp
+  orderByExpression: HotelNamesLinkOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelNamesLink
+      subscription:
+        rootField: hotelNamesLink
+    selectUniques:
+      - queryRootField: hotelNamesLinkById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelNamesLinkById
+    filterInputTypeName: HotelNamesLinkFilterInput
+    aggregate:
+      queryRootField: hotelNamesLinkAggregate
+      subscription:
+        rootField: hotelNamesLinkAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelNamesLink
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

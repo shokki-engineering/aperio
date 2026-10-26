@@ -1,0 +1,529 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoRefPoint
+  fields:
+    - name: altitude
+      type: String_1
+    - name: altitudeUnitCode
+      type: Enum
+    - name: approximateDistance
+      type: Boolean_1
+    - name: attractionId
+      type: String_1!
+    - name: cityCode
+      type: String_1
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: direction
+      type: String_1
+    - name: distance
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: facilityDirection
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: indexPointCode
+      type: Enum
+    - name: latitude
+      type: String_1
+    - name: longitude
+      type: String_1
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: name
+      type: String_1
+    - name: nearest
+      type: Boolean_1
+    - name: otherHotelId
+      type: String_1!
+    - name: positionAccuracy
+      type: Enum
+    - name: positionAccuracyCode
+      type: Enum
+    - name: primaryIndicator
+      type: Boolean_1
+    - name: proximity
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: recreationId
+      type: String_1!
+    - name: refPointCategoryCode
+      type: Enum
+    - name: refPointDisplayName
+      type: String_1
+    - name: refPointsId
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: sort
+      type: Int32
+    - name: stateProv
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: AreainfoRefPoint
+    inputTypeName: AreainfoRefPointInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_ref_point
+      fieldMapping:
+        altitude:
+          column:
+            name: altitude
+        altitudeUnitCode:
+          column:
+            name: altitude_unit_code
+        approximateDistance:
+          column:
+            name: approximate_distance
+        attractionId:
+          column:
+            name: attraction_id
+        cityCode:
+          column:
+            name: city_code
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        codeDetail:
+          column:
+            name: code_detail
+        descriptiveText:
+          column:
+            name: descriptive_text
+        direction:
+          column:
+            name: direction
+        distance:
+          column:
+            name: distance
+        existsCode:
+          column:
+            name: exists_code
+        facilityDirection:
+          column:
+            name: facility_direction
+        id:
+          column:
+            name: id
+        indexPointCode:
+          column:
+            name: index_point_code
+        latitude:
+          column:
+            name: latitude
+        longitude:
+          column:
+            name: longitude
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        name:
+          column:
+            name: name
+        nearest:
+          column:
+            name: nearest
+        otherHotelId:
+          column:
+            name: other_hotel_id
+        positionAccuracy:
+          column:
+            name: position_accuracy
+        positionAccuracyCode:
+          column:
+            name: position_accuracy_code
+        primaryIndicator:
+          column:
+            name: primary_indicator
+        proximity:
+          column:
+            name: proximity
+        quantity:
+          column:
+            name: quantity
+        recreationId:
+          column:
+            name: recreation_id
+        refPointCategoryCode:
+          column:
+            name: ref_point_category_code
+        refPointDisplayName:
+          column:
+            name: ref_point_display_name
+        refPointsId:
+          column:
+            name: ref_points_id
+        regionCode:
+          column:
+            name: region_code
+        sort:
+          column:
+            name: sort
+        stateProv:
+          column:
+            name: state_prov
+        unitCode:
+          column:
+            name: unit_code
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoRefPoint
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - altitude
+          - altitudeUnitCode
+          - approximateDistance
+          - attractionId
+          - cityCode
+          - code
+          - codeContext
+          - codeDetail
+          - descriptiveText
+          - direction
+          - distance
+          - existsCode
+          - facilityDirection
+          - id
+          - indexPointCode
+          - latitude
+          - longitude
+          - multimediaDescriptionsId
+          - name
+          - nearest
+          - otherHotelId
+          - positionAccuracy
+          - positionAccuracyCode
+          - primaryIndicator
+          - proximity
+          - quantity
+          - recreationId
+          - refPointCategoryCode
+          - refPointDisplayName
+          - refPointsId
+          - regionCode
+          - sort
+          - stateProv
+          - unitCode
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoRefPointBoolExp
+  operand:
+    object:
+      type: AreainfoRefPoint
+      comparableFields:
+        - fieldName: altitude
+          booleanExpressionType: TextBoolExp
+        - fieldName: altitudeUnitCode
+          booleanExpressionType: AreainfoAreainfoUnitOfMeasureCodeBoolExp
+        - fieldName: approximateDistance
+          booleanExpressionType: BoolBoolExp
+        - fieldName: attractionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: direction
+          booleanExpressionType: TextBoolExp
+        - fieldName: distance
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: AreainfoAreainfoOptionTypeCodeBoolExp
+        - fieldName: facilityDirection
+          booleanExpressionType: AreainfoAreainfoToFromBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: indexPointCode
+          booleanExpressionType: AreainfoAreainfoIndexPointCodeBoolExp
+        - fieldName: latitude
+          booleanExpressionType: TextBoolExp
+        - fieldName: longitude
+          booleanExpressionType: TextBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: nearest
+          booleanExpressionType: BoolBoolExp
+        - fieldName: otherHotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: positionAccuracy
+          booleanExpressionType: AreainfoAreainfoPositionAccuracyBoolExp
+        - fieldName: positionAccuracyCode
+          booleanExpressionType: AreainfoAreainfoPositionAccuracyBoolExp
+        - fieldName: primaryIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: proximity
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: recreationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: refPointCategoryCode
+          booleanExpressionType: AreainfoReferencePointCategoryCodeBoolExp
+        - fieldName: refPointDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: refPointsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: stateProv
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: AreainfoAreainfoUnitOfMeasureCodeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoRefPointBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoRefPointAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoRefPoint
+      aggregatableFields:
+        - fieldName: altitude
+          aggregateExpression: TextAggExp
+        - fieldName: altitudeUnitCode
+          aggregateExpression: AreainfoAreainfoUnitOfMeasureCodeAggExp
+        - fieldName: approximateDistance
+          aggregateExpression: BoolAggExp
+        - fieldName: attractionId
+          aggregateExpression: TextAggExp
+        - fieldName: cityCode
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: direction
+          aggregateExpression: TextAggExp
+        - fieldName: distance
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: AreainfoAreainfoOptionTypeCodeAggExp
+        - fieldName: facilityDirection
+          aggregateExpression: AreainfoAreainfoToFromAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: indexPointCode
+          aggregateExpression: AreainfoAreainfoIndexPointCodeAggExp
+        - fieldName: latitude
+          aggregateExpression: TextAggExp
+        - fieldName: longitude
+          aggregateExpression: TextAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: nearest
+          aggregateExpression: BoolAggExp
+        - fieldName: otherHotelId
+          aggregateExpression: TextAggExp
+        - fieldName: positionAccuracy
+          aggregateExpression: AreainfoAreainfoPositionAccuracyAggExp
+        - fieldName: positionAccuracyCode
+          aggregateExpression: AreainfoAreainfoPositionAccuracyAggExp
+        - fieldName: primaryIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: proximity
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: recreationId
+          aggregateExpression: TextAggExp
+        - fieldName: refPointCategoryCode
+          aggregateExpression: AreainfoReferencePointCategoryCodeAggExp
+        - fieldName: refPointDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: refPointsId
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: stateProv
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: AreainfoAreainfoUnitOfMeasureCodeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoRefPointAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoRefPointOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoRefPoint
+      orderableFields:
+        - fieldName: altitude
+          orderByExpression: String1OrderByExp
+        - fieldName: altitudeUnitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: approximateDistance
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: attractionId
+          orderByExpression: String1OrderByExp
+        - fieldName: cityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: direction
+          orderByExpression: String1OrderByExp
+        - fieldName: distance
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: facilityDirection
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: indexPointCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: latitude
+          orderByExpression: String1OrderByExp
+        - fieldName: longitude
+          orderByExpression: String1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: nearest
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: otherHotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: positionAccuracy
+          orderByExpression: EnumOrderByExp
+        - fieldName: positionAccuracyCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: primaryIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: proximity
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: recreationId
+          orderByExpression: String1OrderByExp
+        - fieldName: refPointCategoryCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: refPointDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: refPointsId
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: stateProv
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoRefPointOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoRefPoint
+  objectType: AreainfoRefPoint
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_ref_point
+  filterExpressionType: AreainfoRefPointBoolExp
+  aggregateExpression: AreainfoRefPointAggExp
+  orderByExpression: AreainfoRefPointOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoRefPoint
+      subscription:
+        rootField: areainfoRefPoint
+    selectUniques:
+      - queryRootField: areainfoRefPointById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoRefPointById
+    filterInputTypeName: AreainfoRefPointFilterInput
+    aggregate:
+      queryRootField: areainfoRefPointAggregate
+      subscription:
+        rootField: areainfoRefPointAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoRefPoint
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

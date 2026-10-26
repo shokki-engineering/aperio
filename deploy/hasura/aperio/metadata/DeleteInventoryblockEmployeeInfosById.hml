@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryblockEmployeeInfosByIdResponse
+  description: Responses from the 'delete_inventoryblock_employee_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockEmployeeInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryblockEmployeeInfosByIdResponse
+    inputTypeName: DeleteInventoryblockEmployeeInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventoryblock_employee_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryblockEmployeeInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryblockEmployeeInfosById
+  outputType: DeleteInventoryblockEmployeeInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryblockEmployeeInfosBoolExp
+      description: Delete permission predicate over the
+        'inventoryblock_employee_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventoryblock_employee_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryblockEmployeeInfosById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'inventoryblock_employee_infos' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryblockEmployeeInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanConjunctionTicketNbrs
+  fields:
+    - name: coupons
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: ticketId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanConjunctionTicketNbrs
+    inputTypeName: RateplanConjunctionTicketNbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_conjunction_ticket_nbrs
+      fieldMapping:
+        coupons:
+          column:
+            name: coupons
+        id:
+          column:
+            name: id
+        ticketId:
+          column:
+            name: ticket_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanConjunctionTicketNbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - coupons
+          - id
+          - ticketId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanConjunctionTicketNbrsBoolExp
+  operand:
+    object:
+      type: RateplanConjunctionTicketNbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ticketId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanConjunctionTicketNbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanConjunctionTicketNbrsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanConjunctionTicketNbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ticketId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanConjunctionTicketNbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanConjunctionTicketNbrsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanConjunctionTicketNbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ticketId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanConjunctionTicketNbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanConjunctionTicketNbrs
+  objectType: RateplanConjunctionTicketNbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_conjunction_ticket_nbrs
+  filterExpressionType: RateplanConjunctionTicketNbrsBoolExp
+  aggregateExpression: RateplanConjunctionTicketNbrsAggExp
+  orderByExpression: RateplanConjunctionTicketNbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanConjunctionTicketNbrs
+      subscription:
+        rootField: rateplanConjunctionTicketNbrs
+    selectUniques:
+      - queryRootField: rateplanConjunctionTicketNbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanConjunctionTicketNbrsById
+    filterInputTypeName: RateplanConjunctionTicketNbrsFilterInput
+    aggregate:
+      queryRootField: rateplanConjunctionTicketNbrsAggregate
+      subscription:
+        rootField: rateplanConjunctionTicketNbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanConjunctionTicketNbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,227 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAuthorizedViewersCommentId
+  description: Update the 'comment_id' column in the 'profile_authorized_viewers' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAuthorizedViewersCommentId
+    inputTypeName: UpdateColumnProfileAuthorizedViewersCommentIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_authorized_viewers_comment_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAuthorizedViewersCommentId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAuthorizedViewersId
+  description: Update the 'id' column in the 'profile_authorized_viewers' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAuthorizedViewersId
+    inputTypeName: UpdateColumnProfileAuthorizedViewersIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_authorized_viewers_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAuthorizedViewersId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAuthorizedViewersViewerCode
+  description: Update the 'viewer_code' column in the 'profile_authorized_viewers'
+    collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAuthorizedViewersViewerCode
+    inputTypeName: UpdateColumnProfileAuthorizedViewersViewerCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_authorized_viewers_viewer_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAuthorizedViewersViewerCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAuthorizedViewersByIdUpdateColumns
+  description: Update the columns of the 'profile_authorized_viewers' collection
+  fields:
+    - name: commentId
+      type: UpdateColumnProfileAuthorizedViewersCommentId
+      description: Update the 'comment_id' column in the 'profile_authorized_viewers'
+        collection.
+    - name: id
+      type: UpdateColumnProfileAuthorizedViewersId
+      description: Update the 'id' column in the 'profile_authorized_viewers' collection.
+    - name: viewerCode
+      type: UpdateColumnProfileAuthorizedViewersViewerCode
+      description: Update the 'viewer_code' column in the 'profile_authorized_viewers'
+        collection.
+  graphql:
+    typeName: UpdateProfileAuthorizedViewersByIdUpdateColumns
+    inputTypeName: UpdateProfileAuthorizedViewersByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_authorized_viewers_by_id_update_columns
+      fieldMapping:
+        commentId:
+          column:
+            name: comment_id
+        id:
+          column:
+            name: id
+        viewerCode:
+          column:
+            name: viewer_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAuthorizedViewersByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentId
+          - id
+          - viewerCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAuthorizedViewersByIdResponse
+  description: Responses from the 'update_profile_authorized_viewers_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAuthorizedViewers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileAuthorizedViewersByIdResponse
+    inputTypeName: UpdateProfileAuthorizedViewersByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_authorized_viewers_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAuthorizedViewersByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileAuthorizedViewersById
+  outputType: UpdateProfileAuthorizedViewersByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileAuthorizedViewersBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_authorized_viewers' collection
+    - name: preCheck
+      type: ProfileAuthorizedViewersBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_authorized_viewers' collection
+    - name: updateColumns
+      type: UpdateProfileAuthorizedViewersByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_authorized_viewers_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileAuthorizedViewersById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_authorized_viewers' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileAuthorizedViewersById
+  permissions:
+    - role: admin
+      allowExecution: true
+

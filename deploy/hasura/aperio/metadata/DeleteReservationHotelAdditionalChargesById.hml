@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteReservationHotelAdditionalChargesByIdResponse
+  description: Responses from the
+    'delete_reservation_hotel_additional_charges_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationHotelAdditionalCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteReservationHotelAdditionalChargesByIdResponse
+    inputTypeName: DeleteReservationHotelAdditionalChargesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_reservation_hotel_additional_charges_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteReservationHotelAdditionalChargesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteReservationHotelAdditionalChargesById
+  outputType: DeleteReservationHotelAdditionalChargesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ReservationHotelAdditionalChargesBoolExp
+      description: Delete permission predicate over the
+        'reservation_hotel_additional_charges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_reservation_hotel_additional_charges_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteReservationHotelAdditionalChargesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'reservation_hotel_additional_charges'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteReservationHotelAdditionalChargesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

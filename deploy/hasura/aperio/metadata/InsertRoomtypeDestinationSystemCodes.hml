@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDestinationSystemCodesObject
+  fields:
+    - name: chainRateCodeCrossRef
+      type: String_1
+    - name: chainRateLevelCrossRef
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: roomTypeId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeDestinationSystemCodesObject
+    inputTypeName: InsertRoomtypeDestinationSystemCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_destination_system_codes_object
+      fieldMapping:
+        chainRateCodeCrossRef:
+          column:
+            name: chain_rate_code_cross_ref
+        chainRateLevelCrossRef:
+          column:
+            name: chain_rate_level_cross_ref
+        id:
+          column:
+            name: id
+        roomTypeId:
+          column:
+            name: room_type_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDestinationSystemCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainRateCodeCrossRef
+          - chainRateLevelCrossRef
+          - id
+          - roomTypeId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDestinationSystemCodesResponse
+  description: Responses from the 'insert_roomtype_destination_system_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeDestinationSystemCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeDestinationSystemCodesResponse
+    inputTypeName: InsertRoomtypeDestinationSystemCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_destination_system_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDestinationSystemCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeDestinationSystemCodes
+  outputType: InsertRoomtypeDestinationSystemCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeDestinationSystemCodesObject!]!"
+    - name: postCheck
+      type: RoomtypeDestinationSystemCodesBoolExp
+      description: Insert permission predicate over the
+        'roomtype_destination_system_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_destination_system_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeDestinationSystemCodes
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_destination_system_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeDestinationSystemCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

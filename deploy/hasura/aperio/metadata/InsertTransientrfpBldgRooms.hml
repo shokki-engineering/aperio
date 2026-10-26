@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertTransientrfpBldgRoomsObject
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertTransientrfpBldgRoomsObject
+    inputTypeName: InsertTransientrfpBldgRoomsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_transientrfp_bldg_rooms_object
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertTransientrfpBldgRoomsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertTransientrfpBldgRoomsResponse
+  description: Responses from the 'insert_transientrfp_bldg_rooms' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[TransientrfpBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertTransientrfpBldgRoomsResponse
+    inputTypeName: InsertTransientrfpBldgRoomsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_transientrfp_bldg_rooms_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertTransientrfpBldgRoomsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertTransientrfpBldgRooms
+  outputType: InsertTransientrfpBldgRoomsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertTransientrfpBldgRoomsObject!]!"
+    - name: postCheck
+      type: TransientrfpBldgRoomsBoolExp
+      description: Insert permission predicate over the 'transientrfp_bldg_rooms' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_transientrfp_bldg_rooms
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertTransientrfpBldgRooms
+    rootFieldKind: Mutation
+  description: Insert into the transientrfp_bldg_rooms table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertTransientrfpBldgRooms
+  permissions:
+    - role: admin
+      allowExecution: true
+

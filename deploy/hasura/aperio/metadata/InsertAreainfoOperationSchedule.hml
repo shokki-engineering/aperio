@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoOperationScheduleObject
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operationSchedulesId
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertAreainfoOperationScheduleObject
+    inputTypeName: InsertAreainfoOperationScheduleObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_operation_schedule_object
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        operationSchedulesId:
+          column:
+            name: operation_schedules_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoOperationScheduleObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - operationSchedulesId
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoOperationScheduleResponse
+  description: Responses from the 'insert_areainfo_operation_schedule' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoOperationSchedule!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoOperationScheduleResponse
+    inputTypeName: InsertAreainfoOperationScheduleResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_operation_schedule_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoOperationScheduleResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoOperationSchedule
+  outputType: InsertAreainfoOperationScheduleResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoOperationScheduleObject!]!"
+    - name: postCheck
+      type: AreainfoOperationScheduleBoolExp
+      description: Insert permission predicate over the 'areainfo_operation_schedule'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_operation_schedule
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoOperationSchedule
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_operation_schedule table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoOperationSchedule
+  permissions:
+    - role: admin
+      allowExecution: true
+

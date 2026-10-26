@@ -1,0 +1,273 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateAuthenticationVerificationValuesId
+  description: Update the 'id' column in the
+    'rate_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateAuthenticationVerificationValuesId
+    inputTypeName: UpdateColumnRateAuthenticationVerificationValuesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_authentication_verification_values_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateAuthenticationVerificationValuesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateAuthenticationVerificationValuesPlainText
+  description: Update the 'plain_text' column in the
+    'rate_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateAuthenticationVerificationValuesPlainText
+    inputTypeName: UpdateColumnRateAuthenticationVerificationValuesPlainTextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_authentication_verification_values_plain_text
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateAuthenticationVerificationValuesPlainText
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateAuthenticationVerificationValuesSecureId
+  description: Update the 'secure_id' column in the
+    'rate_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateAuthenticationVerificationValuesSecureId
+    inputTypeName: UpdateColumnRateAuthenticationVerificationValuesSecureIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_authentication_verification_values_secure_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateAuthenticationVerificationValuesSecureId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateAuthenticationVerificationValuesSecureOrPlainTextCase
+  description: Update the 'secure_or_plain_text_case' column in the
+    'rate_authentication_verification_values' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateAuthenticationVerificationValuesSecureOrPlainTextCase
+    inputTypeName: UpdateColumnRateAuthenticationVerificationValuesSecureOrPlainTextCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_authentication_verification_values_secure_or_plain_text_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateAuthenticationVerificationValuesSecureOrPlainTextCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateAuthenticationVerificationValuesByIdUpdateColumns
+  description: Update the columns of the 'rate_authentication_verification_values'
+    collection
+  fields:
+    - name: id
+      type: UpdateColumnRateAuthenticationVerificationValuesId
+      description: Update the 'id' column in the
+        'rate_authentication_verification_values' collection.
+    - name: plainText
+      type: UpdateColumnRateAuthenticationVerificationValuesPlainText
+      description: Update the 'plain_text' column in the
+        'rate_authentication_verification_values' collection.
+    - name: secureId
+      type: UpdateColumnRateAuthenticationVerificationValuesSecureId
+      description: Update the 'secure_id' column in the
+        'rate_authentication_verification_values' collection.
+    - name: secureOrPlainTextCase
+      type: UpdateColumnRateAuthenticationVerificationValuesSecureOrPlainTextCase
+      description: Update the 'secure_or_plain_text_case' column in the
+        'rate_authentication_verification_values' collection.
+  graphql:
+    typeName: UpdateRateAuthenticationVerificationValuesByIdUpdateColumns
+    inputTypeName: UpdateRateAuthenticationVerificationValuesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_authentication_verification_values_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        plainText:
+          column:
+            name: plain_text
+        secureId:
+          column:
+            name: secure_id
+        secureOrPlainTextCase:
+          column:
+            name: secure_or_plain_text_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateAuthenticationVerificationValuesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - plainText
+          - secureId
+          - secureOrPlainTextCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateAuthenticationVerificationValuesByIdResponse
+  description: Responses from the
+    'update_rate_authentication_verification_values_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateAuthenticationVerificationValues!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateAuthenticationVerificationValuesByIdResponse
+    inputTypeName: UpdateRateAuthenticationVerificationValuesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_authentication_verification_values_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateAuthenticationVerificationValuesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateAuthenticationVerificationValuesById
+  outputType: UpdateRateAuthenticationVerificationValuesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateAuthenticationVerificationValuesBoolExp
+      description: Update permission post-condition predicate over the
+        'rate_authentication_verification_values' collection
+    - name: preCheck
+      type: RateAuthenticationVerificationValuesBoolExp
+      description: Update permission pre-condition predicate over the
+        'rate_authentication_verification_values' collection
+    - name: updateColumns
+      type: UpdateRateAuthenticationVerificationValuesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rate_authentication_verification_values_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateAuthenticationVerificationValuesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rate_authentication_verification_values'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateAuthenticationVerificationValuesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

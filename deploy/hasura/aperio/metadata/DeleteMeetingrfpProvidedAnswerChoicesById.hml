@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingrfpProvidedAnswerChoicesByIdResponse
+  description: Responses from the
+    'delete_meetingrfp_provided_answer_choices_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpProvidedAnswerChoices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingrfpProvidedAnswerChoicesByIdResponse
+    inputTypeName: DeleteMeetingrfpProvidedAnswerChoicesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingrfp_provided_answer_choices_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingrfpProvidedAnswerChoicesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingrfpProvidedAnswerChoicesById
+  outputType: DeleteMeetingrfpProvidedAnswerChoicesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingrfpProvidedAnswerChoicesBoolExp
+      description: Delete permission predicate over the
+        'meetingrfp_provided_answer_choices' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingrfp_provided_answer_choices_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingrfpProvidedAnswerChoicesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingrfp_provided_answer_choices'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingrfpProvidedAnswerChoicesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

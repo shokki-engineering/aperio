@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionBestAvailableRatesObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: ratePlanCode
+      type: String_1
+    - name: restrictionId
+      type: String_1!
+    - name: stayLength
+      type: Int32
+    - name: stayLengthsTimeUnit
+      type: Enum
+    - name: taxInclusive
+      type: Boolean_1
+  graphql:
+    typeName: InsertRestrictionBestAvailableRatesObject
+    inputTypeName: InsertRestrictionBestAvailableRatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_best_available_rates_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        restrictionId:
+          column:
+            name: restriction_id
+        stayLength:
+          column:
+            name: stay_length
+        stayLengthsTimeUnit:
+          column:
+            name: stay_lengths_time_unit
+        taxInclusive:
+          column:
+            name: tax_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionBestAvailableRatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+          - ratePlanCode
+          - restrictionId
+          - stayLength
+          - stayLengthsTimeUnit
+          - taxInclusive
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionBestAvailableRatesResponse
+  description: Responses from the 'insert_restriction_best_available_rates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionBestAvailableRates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestrictionBestAvailableRatesResponse
+    inputTypeName: InsertRestrictionBestAvailableRatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_best_available_rates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionBestAvailableRatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestrictionBestAvailableRates
+  outputType: InsertRestrictionBestAvailableRatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestrictionBestAvailableRatesObject!]!"
+    - name: postCheck
+      type: RestrictionBestAvailableRatesBoolExp
+      description: Insert permission predicate over the
+        'restriction_best_available_rates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restriction_best_available_rates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestrictionBestAvailableRates
+    rootFieldKind: Mutation
+  description: Insert into the restriction_best_available_rates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestrictionBestAvailableRates
+  permissions:
+    - role: admin
+      allowExecution: true
+

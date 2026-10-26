@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileOsiPrefs
+  fields:
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operatorId
+      type: String_1!
+    - name: railPrefId
+      type: String_1!
+    - name: text
+      type: String_1!
+  graphql:
+    typeName: ProfileOsiPrefs
+    inputTypeName: ProfileOsiPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_osi_prefs
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        operatorId:
+          column:
+            name: operator_id
+        railPrefId:
+          column:
+            name: rail_pref_id
+        text:
+          column:
+            name: text
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileOsiPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - operatorId
+          - railPrefId
+          - text
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileOsiPrefsBoolExp
+  operand:
+    object:
+      type: ProfileOsiPrefs
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: operatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: railPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileOsiPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileOsiPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileOsiPrefs
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: operatorId
+          aggregateExpression: TextAggExp
+        - fieldName: railPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileOsiPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileOsiPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileOsiPrefs
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: operatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: railPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileOsiPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileOsiPrefs
+  objectType: ProfileOsiPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_osi_prefs
+  filterExpressionType: ProfileOsiPrefsBoolExp
+  aggregateExpression: ProfileOsiPrefsAggExp
+  orderByExpression: ProfileOsiPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileOsiPrefs
+      subscription:
+        rootField: profileOsiPrefs
+    selectUniques:
+      - queryRootField: profileOsiPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileOsiPrefsById
+    filterInputTypeName: ProfileOsiPrefsFilterInput
+    aggregate:
+      queryRootField: profileOsiPrefsAggregate
+      subscription:
+        rootField: profileOsiPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileOsiPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

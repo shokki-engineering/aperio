@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportStartDateWindows
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: EventreportStartDateWindows
+    inputTypeName: EventreportStartDateWindowsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_start_date_windows
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportStartDateWindows
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportStartDateWindowsBoolExp
+  operand:
+    object:
+      type: EventreportStartDateWindows
+      comparableFields:
+        - fieldName: dow
+          booleanExpressionType: EventreportEventreportDayOfWeekBoolExp
+        - fieldName: earliestId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: latestId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportStartDateWindowsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportStartDateWindowsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportStartDateWindows
+      aggregatableFields:
+        - fieldName: dow
+          aggregateExpression: EventreportEventreportDayOfWeekAggExp
+        - fieldName: earliestId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: latestId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportStartDateWindowsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportStartDateWindowsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportStartDateWindows
+      orderableFields:
+        - fieldName: dow
+          orderByExpression: EnumOrderByExp
+        - fieldName: earliestId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: latestId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportStartDateWindowsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportStartDateWindows
+  objectType: EventreportStartDateWindows
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_start_date_windows
+  filterExpressionType: EventreportStartDateWindowsBoolExp
+  aggregateExpression: EventreportStartDateWindowsAggExp
+  orderByExpression: EventreportStartDateWindowsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportStartDateWindows
+      subscription:
+        rootField: eventreportStartDateWindows
+    selectUniques:
+      - queryRootField: eventreportStartDateWindowsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportStartDateWindowsById
+    filterInputTypeName: EventreportStartDateWindowsFilterInput
+    aggregate:
+      queryRootField: eventreportStartDateWindowsAggregate
+      subscription:
+        rootField: eventreportStartDateWindowsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportStartDateWindows
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

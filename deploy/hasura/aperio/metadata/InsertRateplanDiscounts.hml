@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanDiscountsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnitCode
+      type: Enum
+    - name: discountPattern
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nightsDiscounted
+      type: Int32
+    - name: nightsRequired
+      type: Int32
+    - name: percentId
+      type: String_1
+  graphql:
+    typeName: InsertRateplanDiscountsObject
+    inputTypeName: InsertRateplanDiscountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_discounts_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnitCode:
+          column:
+            name: charge_unit_code
+        discountPattern:
+          column:
+            name: discount_pattern
+        id:
+          column:
+            name: id
+        nightsDiscounted:
+          column:
+            name: nights_discounted
+        nightsRequired:
+          column:
+            name: nights_required
+        percentId:
+          column:
+            name: percent_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanDiscountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnitCode
+          - discountPattern
+          - id
+          - nightsDiscounted
+          - nightsRequired
+          - percentId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanDiscountsResponse
+  description: Responses from the 'insert_rateplan_discounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanDiscounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanDiscountsResponse
+    inputTypeName: InsertRateplanDiscountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_discounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanDiscountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanDiscounts
+  outputType: InsertRateplanDiscountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanDiscountsObject!]!"
+    - name: postCheck
+      type: RateplanDiscountsBoolExp
+      description: Insert permission predicate over the 'rateplan_discounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_discounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanDiscounts
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_discounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanDiscounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

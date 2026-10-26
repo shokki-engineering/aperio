@@ -1,0 +1,286 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantTimeOfDaysHour
+  description: Update the 'hour' column in the 'restaurant_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantTimeOfDaysHour
+    inputTypeName: UpdateColumnRestaurantTimeOfDaysHourInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_time_of_days_hour
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantTimeOfDaysHour
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantTimeOfDaysId
+  description: Update the 'id' column in the 'restaurant_time_of_days' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantTimeOfDaysId
+    inputTypeName: UpdateColumnRestaurantTimeOfDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_time_of_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantTimeOfDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantTimeOfDaysMinute
+  description: Update the 'minute' column in the 'restaurant_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantTimeOfDaysMinute
+    inputTypeName: UpdateColumnRestaurantTimeOfDaysMinuteInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_time_of_days_minute
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantTimeOfDaysMinute
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantTimeOfDaysNanosecond
+  description: Update the 'nanosecond' column in the 'restaurant_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantTimeOfDaysNanosecond
+    inputTypeName: UpdateColumnRestaurantTimeOfDaysNanosecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_time_of_days_nanosecond
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantTimeOfDaysNanosecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantTimeOfDaysSecond
+  description: Update the 'second' column in the 'restaurant_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantTimeOfDaysSecond
+    inputTypeName: UpdateColumnRestaurantTimeOfDaysSecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_time_of_days_second
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantTimeOfDaysSecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestaurantTimeOfDaysByIdUpdateColumns
+  description: Update the columns of the 'restaurant_time_of_days' collection
+  fields:
+    - name: hour
+      type: UpdateColumnRestaurantTimeOfDaysHour
+      description: Update the 'hour' column in the 'restaurant_time_of_days' collection.
+    - name: id
+      type: UpdateColumnRestaurantTimeOfDaysId
+      description: Update the 'id' column in the 'restaurant_time_of_days' collection.
+    - name: minute
+      type: UpdateColumnRestaurantTimeOfDaysMinute
+      description: Update the 'minute' column in the 'restaurant_time_of_days' collection.
+    - name: nanosecond
+      type: UpdateColumnRestaurantTimeOfDaysNanosecond
+      description: Update the 'nanosecond' column in the 'restaurant_time_of_days'
+        collection.
+    - name: second
+      type: UpdateColumnRestaurantTimeOfDaysSecond
+      description: Update the 'second' column in the 'restaurant_time_of_days' collection.
+  graphql:
+    typeName: UpdateRestaurantTimeOfDaysByIdUpdateColumns
+    inputTypeName: UpdateRestaurantTimeOfDaysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restaurant_time_of_days_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestaurantTimeOfDaysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestaurantTimeOfDaysByIdResponse
+  description: Responses from the 'update_restaurant_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRestaurantTimeOfDaysByIdResponse
+    inputTypeName: UpdateRestaurantTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restaurant_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestaurantTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRestaurantTimeOfDaysById
+  outputType: UpdateRestaurantTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RestaurantTimeOfDaysBoolExp
+      description: Update permission post-condition predicate over the
+        'restaurant_time_of_days' collection
+    - name: preCheck
+      type: RestaurantTimeOfDaysBoolExp
+      description: Update permission pre-condition predicate over the
+        'restaurant_time_of_days' collection
+    - name: updateColumns
+      type: UpdateRestaurantTimeOfDaysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_restaurant_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRestaurantTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'restaurant_time_of_days' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRestaurantTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryInvBlockCutoffsByIdResponse
+  description: Responses from the 'delete_inventory_inv_block_cutoffs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryInvBlockCutoffs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryInvBlockCutoffsByIdResponse
+    inputTypeName: DeleteInventoryInvBlockCutoffsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventory_inv_block_cutoffs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryInvBlockCutoffsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryInvBlockCutoffsById
+  outputType: DeleteInventoryInvBlockCutoffsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryInvBlockCutoffsBoolExp
+      description: Delete permission predicate over the 'inventory_inv_block_cutoffs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventory_inv_block_cutoffs_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryInvBlockCutoffsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'inventory_inv_block_cutoffs' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryInvBlockCutoffsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

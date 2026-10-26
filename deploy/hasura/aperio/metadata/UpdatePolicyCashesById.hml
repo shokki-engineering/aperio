@@ -1,0 +1,184 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyCashesCashIndicator
+  description: Update the 'cash_indicator' column in the 'policy_cashes' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyCashesCashIndicator
+    inputTypeName: UpdateColumnPolicyCashesCashIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_cashes_cash_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyCashesCashIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyCashesId
+  description: Update the 'id' column in the 'policy_cashes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyCashesId
+    inputTypeName: UpdateColumnPolicyCashesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_cashes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyCashesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyCashesByIdUpdateColumns
+  description: Update the columns of the 'policy_cashes' collection
+  fields:
+    - name: cashIndicator
+      type: UpdateColumnPolicyCashesCashIndicator
+      description: Update the 'cash_indicator' column in the 'policy_cashes' collection.
+    - name: id
+      type: UpdateColumnPolicyCashesId
+      description: Update the 'id' column in the 'policy_cashes' collection.
+  graphql:
+    typeName: UpdatePolicyCashesByIdUpdateColumns
+    inputTypeName: UpdatePolicyCashesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_cashes_by_id_update_columns
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyCashesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyCashesByIdResponse
+  description: Responses from the 'update_policy_cashes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePolicyCashesByIdResponse
+    inputTypeName: UpdatePolicyCashesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_cashes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyCashesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePolicyCashesById
+  outputType: UpdatePolicyCashesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: PolicyCashesBoolExp
+      description: Update permission post-condition predicate over the 'policy_cashes'
+        collection
+    - name: preCheck
+      type: PolicyCashesBoolExp
+      description: Update permission pre-condition predicate over the 'policy_cashes'
+        collection
+    - name: updateColumns
+      type: UpdatePolicyCashesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_policy_cashes_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePolicyCashesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'policy_cashes' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePolicyCashesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

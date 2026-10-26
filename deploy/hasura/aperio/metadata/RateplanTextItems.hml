@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanTextItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanTextItems
+    inputTypeName: RateplanTextItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_text_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanTextItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanTextItemsBoolExp
+  operand:
+    object:
+      type: RateplanTextItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanTextItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanTextItemsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanTextItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanTextItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanTextItemsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanTextItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanTextItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanTextItems
+  objectType: RateplanTextItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_text_items
+  filterExpressionType: RateplanTextItemsBoolExp
+  aggregateExpression: RateplanTextItemsAggExp
+  orderByExpression: RateplanTextItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanTextItems
+      subscription:
+        rootField: rateplanTextItems
+    selectUniques:
+      - queryRootField: rateplanTextItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanTextItemsById
+    filterInputTypeName: RateplanTextItemsFilterInput
+    aggregate:
+      queryRootField: rateplanTextItemsAggregate
+      subscription:
+        rootField: rateplanTextItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanTextItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

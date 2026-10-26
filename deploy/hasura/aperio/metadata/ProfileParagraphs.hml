@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileParagraphs
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: taxId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: ProfileParagraphs
+    inputTypeName: ProfileParagraphsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_paragraphs
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        taxId:
+          column:
+            name: tax_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileParagraphs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - displayName
+          - guaranteePaymentId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - taxId
+          - uris
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileParagraphsBoolExp
+  operand:
+    object:
+      type: ProfileParagraphs
+      comparableFields:
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteePaymentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileParagraphsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileParagraphsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileParagraphs
+      aggregatableFields:
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteePaymentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: taxId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileParagraphsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileParagraphsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileParagraphs
+      orderableFields:
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteePaymentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileParagraphsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileParagraphs
+  objectType: ProfileParagraphs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_paragraphs
+  filterExpressionType: ProfileParagraphsBoolExp
+  aggregateExpression: ProfileParagraphsAggExp
+  orderByExpression: ProfileParagraphsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileParagraphs
+      subscription:
+        rootField: profileParagraphs
+    selectUniques:
+      - queryRootField: profileParagraphsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileParagraphsById
+    filterInputTypeName: ProfileParagraphsFilterInput
+    aggregate:
+      queryRootField: profileParagraphsAggregate
+      subscription:
+        rootField: profileParagraphsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileParagraphs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

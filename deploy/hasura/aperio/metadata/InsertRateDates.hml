@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertRateDatesObject
+    inputTypeName: InsertRateDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateDatesResponse
+  description: Responses from the 'insert_rate_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateDatesResponse
+    inputTypeName: InsertRateDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateDates
+  outputType: InsertRateDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateDatesObject!]!"
+    - name: postCheck
+      type: RateDatesBoolExp
+      description: Insert permission predicate over the 'rate_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rate_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateDates
+    rootFieldKind: Mutation
+  description: Insert into the rate_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

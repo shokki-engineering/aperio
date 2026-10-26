@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePreferencesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: InsertProfilePreferencesObject
+    inputTypeName: InsertProfilePreferencesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_preferences_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePreferencesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePreferencesResponse
+  description: Responses from the 'insert_profile_preferences' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePreferences!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePreferencesResponse
+    inputTypeName: InsertProfilePreferencesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_preferences_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePreferencesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePreferences
+  outputType: InsertProfilePreferencesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePreferencesObject!]!"
+    - name: postCheck
+      type: ProfilePreferencesBoolExp
+      description: Insert permission predicate over the 'profile_preferences' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_preferences
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePreferences
+    rootFieldKind: Mutation
+  description: Insert into the profile_preferences table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePreferences
+  permissions:
+    - role: admin
+      allowExecution: true
+

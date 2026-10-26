@@ -1,0 +1,535 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelResource
+  fields:
+    - name: areaId
+      type: String_1
+    - name: areaUnitCode
+      type: Enum
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: currencyCode
+      type: String_1
+    - name: decimalPlaces
+      type: Int32
+    - name: deleteTime
+      type: Timestamptz
+    - name: destinationSystemsCode
+      type: "[String_1]"
+    - name: displayName
+      type: String_1
+    - name: distanceUnitCode
+      type: Enum
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: gdsInfoId
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelInfoId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: otaUid
+      type: String_1
+    - name: roomBlocksId
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: timeZone
+      type: String_1
+    - name: ttIcode
+      type: Int32
+    - name: uid
+      type: String_1
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: weightUnitCode
+      type: Enum
+  graphql:
+    typeName: HotelResource
+    inputTypeName: HotelResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_resource
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        areaUnitCode:
+          column:
+            name: area_unit_code
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        createTime:
+          column:
+            name: create_time
+        currencyCode:
+          column:
+            name: currency_code
+        decimalPlaces:
+          column:
+            name: decimal_places
+        deleteTime:
+          column:
+            name: delete_time
+        destinationSystemsCode:
+          column:
+            name: destination_systems_code
+        displayName:
+          column:
+            name: display_name
+        distanceUnitCode:
+          column:
+            name: distance_unit_code
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        gdsInfoId:
+          column:
+            name: gds_info_id
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        name:
+          column:
+            name: name
+        otaUid:
+          column:
+            name: ota_uid
+        roomBlocksId:
+          column:
+            name: room_blocks_id
+        rph:
+          column:
+            name: rph
+        startId:
+          column:
+            name: start_id
+        timeZone:
+          column:
+            name: time_zone
+        ttIcode:
+          column:
+            name: tt_icode
+        uid:
+          column:
+            name: uid
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+        updateTime:
+          column:
+            name: update_time
+        weightUnitCode:
+          column:
+            name: weight_unit_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - areaUnitCode
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - createTime
+          - currencyCode
+          - decimalPlaces
+          - deleteTime
+          - destinationSystemsCode
+          - displayName
+          - distanceUnitCode
+          - duration
+          - endId
+          - etag
+          - expireTime
+          - gdsInfoId
+          - hotelCityCode
+          - hotelCodeContext
+          - hotelInfoId
+          - id
+          - languageCode
+          - name
+          - otaUid
+          - roomBlocksId
+          - rph
+          - startId
+          - timeZone
+          - ttIcode
+          - uid
+          - unit
+          - unitCode
+          - unitQuantityId
+          - updateTime
+          - weightUnitCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelResourceBoolExp
+  operand:
+    object:
+      type: HotelResource
+      comparableFields:
+        - fieldName: areaId
+          booleanExpressionType: TextBoolExp
+        - fieldName: areaUnitCode
+          booleanExpressionType: HotelHotelUnitOfMeasureCodeBoolExp
+        - fieldName: brandCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: decimalPlaces
+          booleanExpressionType: Int4BoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: distanceUnitCode
+          booleanExpressionType: HotelHotelUnitOfMeasureCodeBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: gdsInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCodeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: otaUid
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomBlocksId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: timeZone
+          booleanExpressionType: TextBoolExp
+        - fieldName: ttIcode
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: unit
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: HotelHotelUnitOfMeasureCodeBoolExp
+        - fieldName: unitQuantityId
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: weightUnitCode
+          booleanExpressionType: HotelHotelUnitOfMeasureCodeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelResourceAggExp
+  operand:
+    object:
+      aggregatedType: HotelResource
+      aggregatableFields:
+        - fieldName: areaId
+          aggregateExpression: TextAggExp
+        - fieldName: areaUnitCode
+          aggregateExpression: HotelHotelUnitOfMeasureCodeAggExp
+        - fieldName: brandCode
+          aggregateExpression: TextAggExp
+        - fieldName: brandDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: chainCode
+          aggregateExpression: TextAggExp
+        - fieldName: chainDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: decimalPlaces
+          aggregateExpression: Int4AggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: distanceUnitCode
+          aggregateExpression: HotelHotelUnitOfMeasureCodeAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: gdsInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCodeContext
+          aggregateExpression: TextAggExp
+        - fieldName: hotelInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: otaUid
+          aggregateExpression: TextAggExp
+        - fieldName: roomBlocksId
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: timeZone
+          aggregateExpression: TextAggExp
+        - fieldName: ttIcode
+          aggregateExpression: Int4AggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: unit
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: HotelHotelUnitOfMeasureCodeAggExp
+        - fieldName: unitQuantityId
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: weightUnitCode
+          aggregateExpression: HotelHotelUnitOfMeasureCodeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelResourceOrderByExp
+  operand:
+    object:
+      orderedType: HotelResource
+      orderableFields:
+        - fieldName: areaId
+          orderByExpression: String1OrderByExp
+        - fieldName: areaUnitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: brandCode
+          orderByExpression: String1OrderByExp
+        - fieldName: brandDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: chainCode
+          orderByExpression: String1OrderByExp
+        - fieldName: chainDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: decimalPlaces
+          orderByExpression: Int32OrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: distanceUnitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: gdsInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCodeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: otaUid
+          orderByExpression: String1OrderByExp
+        - fieldName: roomBlocksId
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: timeZone
+          orderByExpression: String1OrderByExp
+        - fieldName: ttIcode
+          orderByExpression: Int32OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: unit
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unitQuantityId
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: weightUnitCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelResource
+  objectType: HotelResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_resource
+  filterExpressionType: HotelResourceBoolExp
+  aggregateExpression: HotelResourceAggExp
+  orderByExpression: HotelResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelResource
+      subscription:
+        rootField: hotelResource
+    selectUniques:
+      - queryRootField: hotelResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelResourceById
+    filterInputTypeName: HotelResourceFilterInput
+    aggregate:
+      queryRootField: hotelResourceAggregate
+      subscription:
+        rootField: hotelResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

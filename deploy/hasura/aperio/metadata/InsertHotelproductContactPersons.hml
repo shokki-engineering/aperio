@@ -1,0 +1,175 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductContactPersonsObject
+  fields:
+    - name: birthDayId
+      type: String_1
+    - name: communicationMethodCode
+      type: Enum
+    - name: contactType
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentDistribMethodCode
+      type: Enum
+    - name: emergencyFlag
+      type: Boolean_1
+    - name: hotelProductId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: personDisplayNameId
+      type: String_1
+    - name: relation
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: InsertHotelproductContactPersonsObject
+    inputTypeName: InsertHotelproductContactPersonsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_contact_persons_object
+      fieldMapping:
+        birthDayId:
+          column:
+            name: birth_day_id
+        communicationMethodCode:
+          column:
+            name: communication_method_code
+        contactType:
+          column:
+            name: contact_type
+        defaultValue:
+          column:
+            name: default_value
+        documentDistribMethodCode:
+          column:
+            name: document_distrib_method_code
+        emergencyFlag:
+          column:
+            name: emergency_flag
+        hotelProductId:
+          column:
+            name: hotel_product_id
+        id:
+          column:
+            name: id
+        personDisplayNameId:
+          column:
+            name: person_display_name_id
+        relation:
+          column:
+            name: relation
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductContactPersonsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - birthDayId
+          - communicationMethodCode
+          - contactType
+          - defaultValue
+          - documentDistribMethodCode
+          - emergencyFlag
+          - hotelProductId
+          - id
+          - personDisplayNameId
+          - relation
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductContactPersonsResponse
+  description: Responses from the 'insert_hotelproduct_contact_persons' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductContactPersons!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductContactPersonsResponse
+    inputTypeName: InsertHotelproductContactPersonsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_contact_persons_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductContactPersonsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductContactPersons
+  outputType: InsertHotelproductContactPersonsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductContactPersonsObject!]!"
+    - name: postCheck
+      type: HotelproductContactPersonsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_contact_persons'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_contact_persons
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductContactPersons
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_contact_persons table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductContactPersons
+  permissions:
+    - role: admin
+      allowExecution: true
+

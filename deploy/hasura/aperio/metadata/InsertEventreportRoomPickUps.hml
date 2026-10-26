@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportRoomPickUpsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: pickUpParameter
+      type: Enum
+    - name: stayDayId
+      type: String_1!
+    - name: totalUnitCount
+      type: Int32
+  graphql:
+    typeName: InsertEventreportRoomPickUpsObject
+    inputTypeName: InsertEventreportRoomPickUpsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_room_pick_ups_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        pickUpParameter:
+          column:
+            name: pick_up_parameter
+        stayDayId:
+          column:
+            name: stay_day_id
+        totalUnitCount:
+          column:
+            name: total_unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportRoomPickUpsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - pickUpParameter
+          - stayDayId
+          - totalUnitCount
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportRoomPickUpsResponse
+  description: Responses from the 'insert_eventreport_room_pick_ups' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportRoomPickUps!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportRoomPickUpsResponse
+    inputTypeName: InsertEventreportRoomPickUpsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_room_pick_ups_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportRoomPickUpsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportRoomPickUps
+  outputType: InsertEventreportRoomPickUpsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportRoomPickUpsObject!]!"
+    - name: postCheck
+      type: EventreportRoomPickUpsBoolExp
+      description: Insert permission predicate over the 'eventreport_room_pick_ups'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_room_pick_ups
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportRoomPickUps
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_room_pick_ups table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportRoomPickUps
+  permissions:
+    - role: admin
+      allowExecution: true
+

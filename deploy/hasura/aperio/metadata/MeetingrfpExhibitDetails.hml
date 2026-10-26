@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpExhibitDetails
+  fields:
+    - name: exhibitTypeCode
+      type: String_1
+    - name: exhibitionId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: MeetingrfpExhibitDetails
+    inputTypeName: MeetingrfpExhibitDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_exhibit_details
+      fieldMapping:
+        exhibitTypeCode:
+          column:
+            name: exhibit_type_code
+        exhibitionId:
+          column:
+            name: exhibition_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpExhibitDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - exhibitTypeCode
+          - exhibitionId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpExhibitDetailsBoolExp
+  operand:
+    object:
+      type: MeetingrfpExhibitDetails
+      comparableFields:
+        - fieldName: exhibitTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: exhibitionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpExhibitDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpExhibitDetailsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpExhibitDetails
+      aggregatableFields:
+        - fieldName: exhibitTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: exhibitionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpExhibitDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpExhibitDetailsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpExhibitDetails
+      orderableFields:
+        - fieldName: exhibitTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: exhibitionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpExhibitDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpExhibitDetails
+  objectType: MeetingrfpExhibitDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_exhibit_details
+  filterExpressionType: MeetingrfpExhibitDetailsBoolExp
+  aggregateExpression: MeetingrfpExhibitDetailsAggExp
+  orderByExpression: MeetingrfpExhibitDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpExhibitDetails
+      subscription:
+        rootField: meetingrfpExhibitDetails
+    selectUniques:
+      - queryRootField: meetingrfpExhibitDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpExhibitDetailsById
+    filterInputTypeName: MeetingrfpExhibitDetailsFilterInput
+    aggregate:
+      queryRootField: meetingrfpExhibitDetailsAggregate
+      subscription:
+        rootField: meetingrfpExhibitDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpExhibitDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

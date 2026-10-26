@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestaurantDateOrDateTimesByIdResponse
+  description: Responses from the 'delete_restaurant_date_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantDateOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestaurantDateOrDateTimesByIdResponse
+    inputTypeName: DeleteRestaurantDateOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restaurant_date_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestaurantDateOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestaurantDateOrDateTimesById
+  outputType: DeleteRestaurantDateOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestaurantDateOrDateTimesBoolExp
+      description: Delete permission predicate over the
+        'restaurant_date_or_date_times' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restaurant_date_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestaurantDateOrDateTimesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'restaurant_date_or_date_times' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestaurantDateOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

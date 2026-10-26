@@ -1,0 +1,307 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAreainfoOperationScheduleDuration
+  description: Update the 'duration' column in the 'areainfo_operation_schedule' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAreainfoOperationScheduleDuration
+    inputTypeName: UpdateColumnAreainfoOperationScheduleDurationInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_areainfo_operation_schedule_duration
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAreainfoOperationScheduleDuration
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAreainfoOperationScheduleEndId
+  description: Update the 'end_id' column in the 'areainfo_operation_schedule' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAreainfoOperationScheduleEndId
+    inputTypeName: UpdateColumnAreainfoOperationScheduleEndIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_areainfo_operation_schedule_end_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAreainfoOperationScheduleEndId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAreainfoOperationScheduleId
+  description: Update the 'id' column in the 'areainfo_operation_schedule' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAreainfoOperationScheduleId
+    inputTypeName: UpdateColumnAreainfoOperationScheduleIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_areainfo_operation_schedule_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAreainfoOperationScheduleId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAreainfoOperationScheduleOperationSchedulesId
+  description: Update the 'operation_schedules_id' column in the
+    'areainfo_operation_schedule' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAreainfoOperationScheduleOperationSchedulesId
+    inputTypeName: UpdateColumnAreainfoOperationScheduleOperationSchedulesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_areainfo_operation_schedule_operation_schedules_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAreainfoOperationScheduleOperationSchedulesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAreainfoOperationScheduleStartId
+  description: Update the 'start_id' column in the 'areainfo_operation_schedule' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAreainfoOperationScheduleStartId
+    inputTypeName: UpdateColumnAreainfoOperationScheduleStartIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_areainfo_operation_schedule_start_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAreainfoOperationScheduleStartId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAreainfoOperationScheduleByIdUpdateColumns
+  description: Update the columns of the 'areainfo_operation_schedule' collection
+  fields:
+    - name: duration
+      type: UpdateColumnAreainfoOperationScheduleDuration
+      description: Update the 'duration' column in the 'areainfo_operation_schedule'
+        collection.
+    - name: endId
+      type: UpdateColumnAreainfoOperationScheduleEndId
+      description: Update the 'end_id' column in the 'areainfo_operation_schedule'
+        collection.
+    - name: id
+      type: UpdateColumnAreainfoOperationScheduleId
+      description: Update the 'id' column in the 'areainfo_operation_schedule' collection.
+    - name: operationSchedulesId
+      type: UpdateColumnAreainfoOperationScheduleOperationSchedulesId
+      description: Update the 'operation_schedules_id' column in the
+        'areainfo_operation_schedule' collection.
+    - name: startId
+      type: UpdateColumnAreainfoOperationScheduleStartId
+      description: Update the 'start_id' column in the 'areainfo_operation_schedule'
+        collection.
+  graphql:
+    typeName: UpdateAreainfoOperationScheduleByIdUpdateColumns
+    inputTypeName: UpdateAreainfoOperationScheduleByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_areainfo_operation_schedule_by_id_update_columns
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        operationSchedulesId:
+          column:
+            name: operation_schedules_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAreainfoOperationScheduleByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - operationSchedulesId
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAreainfoOperationScheduleByIdResponse
+  description: Responses from the 'update_areainfo_operation_schedule_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoOperationSchedule!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateAreainfoOperationScheduleByIdResponse
+    inputTypeName: UpdateAreainfoOperationScheduleByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_areainfo_operation_schedule_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAreainfoOperationScheduleByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateAreainfoOperationScheduleById
+  outputType: UpdateAreainfoOperationScheduleByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: AreainfoOperationScheduleBoolExp
+      description: Update permission post-condition predicate over the
+        'areainfo_operation_schedule' collection
+    - name: preCheck
+      type: AreainfoOperationScheduleBoolExp
+      description: Update permission pre-condition predicate over the
+        'areainfo_operation_schedule' collection
+    - name: updateColumns
+      type: UpdateAreainfoOperationScheduleByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_areainfo_operation_schedule_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateAreainfoOperationScheduleById
+    rootFieldKind: Mutation
+  description: Update any row on the 'areainfo_operation_schedule' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateAreainfoOperationScheduleById
+  permissions:
+    - role: admin
+      allowExecution: true
+

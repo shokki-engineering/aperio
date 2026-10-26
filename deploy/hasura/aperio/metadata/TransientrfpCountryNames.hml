@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: TransientrfpCountryNames
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: TransientrfpCountryNames
+    inputTypeName: TransientrfpCountryNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: transientrfp_country_names
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: TransientrfpCountryNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: TransientrfpCountryNamesBoolExp
+  operand:
+    object:
+      type: TransientrfpCountryNames
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: TransientrfpCountryNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: TransientrfpCountryNamesAggExp
+  operand:
+    object:
+      aggregatedType: TransientrfpCountryNames
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: TransientrfpCountryNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: TransientrfpCountryNamesOrderByExp
+  operand:
+    object:
+      orderedType: TransientrfpCountryNames
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: TransientrfpCountryNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: TransientrfpCountryNames
+  objectType: TransientrfpCountryNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: transientrfp_country_names
+  filterExpressionType: TransientrfpCountryNamesBoolExp
+  aggregateExpression: TransientrfpCountryNamesAggExp
+  orderByExpression: TransientrfpCountryNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: transientrfpCountryNames
+      subscription:
+        rootField: transientrfpCountryNames
+    selectUniques:
+      - queryRootField: transientrfpCountryNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: transientrfpCountryNamesById
+    filterInputTypeName: TransientrfpCountryNamesFilterInput
+    aggregate:
+      queryRootField: transientrfpCountryNamesAggregate
+      subscription:
+        rootField: transientrfpCountryNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: TransientrfpCountryNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

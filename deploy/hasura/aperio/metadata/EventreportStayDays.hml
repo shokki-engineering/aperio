@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportStayDays
+  fields:
+    - name: firstStayWeekday
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventreportStayDays
+    inputTypeName: EventreportStayDaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_stay_days
+      fieldMapping:
+        firstStayWeekday:
+          column:
+            name: first_stay_weekday
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportStayDays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - firstStayWeekday
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportStayDaysBoolExp
+  operand:
+    object:
+      type: EventreportStayDays
+      comparableFields:
+        - fieldName: firstStayWeekday
+          booleanExpressionType: EventreportEventreportDayOfWeekBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportStayDaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportStayDaysAggExp
+  operand:
+    object:
+      aggregatedType: EventreportStayDays
+      aggregatableFields:
+        - fieldName: firstStayWeekday
+          aggregateExpression: EventreportEventreportDayOfWeekAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportStayDaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportStayDaysOrderByExp
+  operand:
+    object:
+      orderedType: EventreportStayDays
+      orderableFields:
+        - fieldName: firstStayWeekday
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportStayDaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportStayDays
+  objectType: EventreportStayDays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_stay_days
+  filterExpressionType: EventreportStayDaysBoolExp
+  aggregateExpression: EventreportStayDaysAggExp
+  orderByExpression: EventreportStayDaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportStayDays
+      subscription:
+        rootField: eventreportStayDays
+    selectUniques:
+      - queryRootField: eventreportStayDaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportStayDaysById
+    filterInputTypeName: EventreportStayDaysFilterInput
+    aggregate:
+      queryRootField: eventreportStayDaysAggregate
+      subscription:
+        rootField: eventreportStayDaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportStayDays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

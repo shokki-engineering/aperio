@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelUniqueIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+    - name: viewershipId
+      type: String_1!
+  graphql:
+    typeName: HotelUniqueIds
+    inputTypeName: HotelUniqueIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_unique_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelUniqueIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+          - viewershipId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelUniqueIdsBoolExp
+  operand:
+    object:
+      type: HotelUniqueIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: HotelHotelUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelUniqueIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelUniqueIdsAggExp
+  operand:
+    object:
+      aggregatedType: HotelUniqueIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: HotelHotelUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelUniqueIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelUniqueIdsOrderByExp
+  operand:
+    object:
+      orderedType: HotelUniqueIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelUniqueIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelUniqueIds
+  objectType: HotelUniqueIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_unique_ids
+  filterExpressionType: HotelUniqueIdsBoolExp
+  aggregateExpression: HotelUniqueIdsAggExp
+  orderByExpression: HotelUniqueIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelUniqueIds
+      subscription:
+        rootField: hotelUniqueIds
+    selectUniques:
+      - queryRootField: hotelUniqueIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelUniqueIdsById
+    filterInputTypeName: HotelUniqueIdsFilterInput
+    aggregate:
+      queryRootField: hotelUniqueIdsAggregate
+      subscription:
+        rootField: hotelUniqueIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelUniqueIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

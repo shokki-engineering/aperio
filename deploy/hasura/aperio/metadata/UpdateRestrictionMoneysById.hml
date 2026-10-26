@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionMoneysCurrencyCode
+  description: Update the 'currency_code' column in the 'restriction_moneys' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionMoneysCurrencyCode
+    inputTypeName: UpdateColumnRestrictionMoneysCurrencyCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_moneys_currency_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionMoneysCurrencyCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionMoneysId
+  description: Update the 'id' column in the 'restriction_moneys' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionMoneysId
+    inputTypeName: UpdateColumnRestrictionMoneysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_moneys_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionMoneysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionMoneysNanoUnits
+  description: Update the 'nano_units' column in the 'restriction_moneys' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionMoneysNanoUnits
+    inputTypeName: UpdateColumnRestrictionMoneysNanoUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_moneys_nano_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionMoneysNanoUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionMoneysUnits
+  description: Update the 'units' column in the 'restriction_moneys' collection
+  fields:
+    - name: set
+      type: Int64
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionMoneysUnits
+    inputTypeName: UpdateColumnRestrictionMoneysUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_moneys_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionMoneysUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestrictionMoneysByIdUpdateColumns
+  description: Update the columns of the 'restriction_moneys' collection
+  fields:
+    - name: currencyCode
+      type: UpdateColumnRestrictionMoneysCurrencyCode
+      description: Update the 'currency_code' column in the 'restriction_moneys' collection.
+    - name: id
+      type: UpdateColumnRestrictionMoneysId
+      description: Update the 'id' column in the 'restriction_moneys' collection.
+    - name: nanoUnits
+      type: UpdateColumnRestrictionMoneysNanoUnits
+      description: Update the 'nano_units' column in the 'restriction_moneys' collection.
+    - name: units
+      type: UpdateColumnRestrictionMoneysUnits
+      description: Update the 'units' column in the 'restriction_moneys' collection.
+  graphql:
+    typeName: UpdateRestrictionMoneysByIdUpdateColumns
+    inputTypeName: UpdateRestrictionMoneysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restriction_moneys_by_id_update_columns
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestrictionMoneysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestrictionMoneysByIdResponse
+  description: Responses from the 'update_restriction_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRestrictionMoneysByIdResponse
+    inputTypeName: UpdateRestrictionMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restriction_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestrictionMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRestrictionMoneysById
+  outputType: UpdateRestrictionMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RestrictionMoneysBoolExp
+      description: Update permission post-condition predicate over the
+        'restriction_moneys' collection
+    - name: preCheck
+      type: RestrictionMoneysBoolExp
+      description: Update permission pre-condition predicate over the
+        'restriction_moneys' collection
+    - name: updateColumns
+      type: UpdateRestrictionMoneysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_restriction_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRestrictionMoneysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'restriction_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRestrictionMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAccommodationPrefsObject
+  fields:
+    - name: berthId
+      type: String_1
+    - name: carId
+      type: String_1
+    - name: classValueId
+      type: String_1
+    - name: compartmentId
+      type: String_1
+    - name: deck
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: seatId
+      type: String_1
+    - name: seatOrBerthCase
+      type: Enum
+  graphql:
+    typeName: InsertProfileAccommodationPrefsObject
+    inputTypeName: InsertProfileAccommodationPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_accommodation_prefs_object
+      fieldMapping:
+        berthId:
+          column:
+            name: berth_id
+        carId:
+          column:
+            name: car_id
+        classValueId:
+          column:
+            name: class_value_id
+        compartmentId:
+          column:
+            name: compartment_id
+        deck:
+          column:
+            name: deck
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        seatId:
+          column:
+            name: seat_id
+        seatOrBerthCase:
+          column:
+            name: seat_or_berth_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAccommodationPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - berthId
+          - carId
+          - classValueId
+          - compartmentId
+          - deck
+          - id
+          - preferLevel
+          - railPrefId
+          - seatId
+          - seatOrBerthCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAccommodationPrefsResponse
+  description: Responses from the 'insert_profile_accommodation_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAccommodationPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileAccommodationPrefsResponse
+    inputTypeName: InsertProfileAccommodationPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_accommodation_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAccommodationPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileAccommodationPrefs
+  outputType: InsertProfileAccommodationPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileAccommodationPrefsObject!]!"
+    - name: postCheck
+      type: ProfileAccommodationPrefsBoolExp
+      description: Insert permission predicate over the 'profile_accommodation_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_accommodation_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileAccommodationPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_accommodation_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileAccommodationPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

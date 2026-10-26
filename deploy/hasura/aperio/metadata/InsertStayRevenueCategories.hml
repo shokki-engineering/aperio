@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStayRevenueCategoriesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: revenueCategoryCode
+      type: Enum
+    - name: stayId
+      type: String_1!
+    - name: summaryAmountId
+      type: String_1
+  graphql:
+    typeName: InsertStayRevenueCategoriesObject
+    inputTypeName: InsertStayRevenueCategoriesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_revenue_categories_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        revenueCategoryCode:
+          column:
+            name: revenue_category_code
+        stayId:
+          column:
+            name: stay_id
+        summaryAmountId:
+          column:
+            name: summary_amount_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStayRevenueCategoriesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - revenueCategoryCode
+          - stayId
+          - summaryAmountId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStayRevenueCategoriesResponse
+  description: Responses from the 'insert_stay_revenue_categories' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StayRevenueCategories!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStayRevenueCategoriesResponse
+    inputTypeName: InsertStayRevenueCategoriesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_revenue_categories_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStayRevenueCategoriesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStayRevenueCategories
+  outputType: InsertStayRevenueCategoriesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStayRevenueCategoriesObject!]!"
+    - name: postCheck
+      type: StayRevenueCategoriesBoolExp
+      description: Insert permission predicate over the 'stay_revenue_categories' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_stay_revenue_categories
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStayRevenueCategories
+    rootFieldKind: Mutation
+  description: Insert into the stay_revenue_categories table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStayRevenueCategories
+  permissions:
+    - role: admin
+      allowExecution: true
+

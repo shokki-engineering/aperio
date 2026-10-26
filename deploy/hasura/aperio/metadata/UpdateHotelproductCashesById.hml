@@ -1,0 +1,185 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductCashesCashIndicator
+  description: Update the 'cash_indicator' column in the 'hotelproduct_cashes' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductCashesCashIndicator
+    inputTypeName: UpdateColumnHotelproductCashesCashIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_cashes_cash_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductCashesCashIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductCashesId
+  description: Update the 'id' column in the 'hotelproduct_cashes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductCashesId
+    inputTypeName: UpdateColumnHotelproductCashesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_cashes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductCashesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelproductCashesByIdUpdateColumns
+  description: Update the columns of the 'hotelproduct_cashes' collection
+  fields:
+    - name: cashIndicator
+      type: UpdateColumnHotelproductCashesCashIndicator
+      description: Update the 'cash_indicator' column in the 'hotelproduct_cashes'
+        collection.
+    - name: id
+      type: UpdateColumnHotelproductCashesId
+      description: Update the 'id' column in the 'hotelproduct_cashes' collection.
+  graphql:
+    typeName: UpdateHotelproductCashesByIdUpdateColumns
+    inputTypeName: UpdateHotelproductCashesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotelproduct_cashes_by_id_update_columns
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelproductCashesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelproductCashesByIdResponse
+  description: Responses from the 'update_hotelproduct_cashes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelproductCashesByIdResponse
+    inputTypeName: UpdateHotelproductCashesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotelproduct_cashes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelproductCashesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelproductCashesById
+  outputType: UpdateHotelproductCashesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelproductCashesBoolExp
+      description: Update permission post-condition predicate over the
+        'hotelproduct_cashes' collection
+    - name: preCheck
+      type: HotelproductCashesBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotelproduct_cashes' collection
+    - name: updateColumns
+      type: UpdateHotelproductCashesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotelproduct_cashes_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelproductCashesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotelproduct_cashes' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelproductCashesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

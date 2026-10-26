@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpStateProvs
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: MeetingrfpStateProvs
+    inputTypeName: MeetingrfpStateProvsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_state_provs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpStateProvs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpStateProvsBoolExp
+  operand:
+    object:
+      type: MeetingrfpStateProvs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: stateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpStateProvsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpStateProvsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpStateProvs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: stateCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpStateProvsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpStateProvsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpStateProvs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: stateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpStateProvsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpStateProvs
+  objectType: MeetingrfpStateProvs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_state_provs
+  filterExpressionType: MeetingrfpStateProvsBoolExp
+  aggregateExpression: MeetingrfpStateProvsAggExp
+  orderByExpression: MeetingrfpStateProvsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpStateProvs
+      subscription:
+        rootField: meetingrfpStateProvs
+    selectUniques:
+      - queryRootField: meetingrfpStateProvsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpStateProvsById
+    filterInputTypeName: MeetingrfpStateProvsFilterInput
+    aggregate:
+      queryRootField: meetingrfpStateProvsAggregate
+      subscription:
+        rootField: meetingrfpStateProvsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpStateProvs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

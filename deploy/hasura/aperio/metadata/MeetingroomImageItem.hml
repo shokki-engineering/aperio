@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomImageItem
+  fields:
+    - name: category
+      type: Enum
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: imageItemsId
+      type: String_1!
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: purgeDayId
+      type: String_1
+    - name: version
+      type: String_1
+  graphql:
+    typeName: MeetingroomImageItem
+    inputTypeName: MeetingroomImageItemInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_image_item
+      fieldMapping:
+        category:
+          column:
+            name: category
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        id:
+          column:
+            name: id
+        imageItemsId:
+          column:
+            name: image_items_id
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        purgeDayId:
+          column:
+            name: purge_day_id
+        version:
+          column:
+            name: version
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomImageItem
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - category
+          - createDateTime
+          - creatorId
+          - id
+          - imageItemsId
+          - lastModifierId
+          - lastModifyDateTime
+          - purgeDayId
+          - version
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomImageItemBoolExp
+  operand:
+    object:
+      type: MeetingroomImageItem
+      comparableFields:
+        - fieldName: category
+          booleanExpressionType: MeetingroomMeetingroomPictureCategoryCodeBoolExp
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: imageItemsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: version
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomImageItemBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomImageItemAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomImageItem
+      aggregatableFields:
+        - fieldName: category
+          aggregateExpression: MeetingroomMeetingroomPictureCategoryCodeAggExp
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: imageItemsId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: version
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomImageItemAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomImageItemOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomImageItem
+      orderableFields:
+        - fieldName: category
+          orderByExpression: EnumOrderByExp
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: imageItemsId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: version
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomImageItemOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomImageItem
+  objectType: MeetingroomImageItem
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_image_item
+  filterExpressionType: MeetingroomImageItemBoolExp
+  aggregateExpression: MeetingroomImageItemAggExp
+  orderByExpression: MeetingroomImageItemOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomImageItem
+      subscription:
+        rootField: meetingroomImageItem
+    selectUniques:
+      - queryRootField: meetingroomImageItemById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomImageItemById
+    filterInputTypeName: MeetingroomImageItemFilterInput
+    aggregate:
+      queryRootField: meetingroomImageItemAggregate
+      subscription:
+        rootField: meetingroomImageItemAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomImageItem
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

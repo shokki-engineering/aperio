@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAdditionalLanguagesObject
+  fields:
+    - name: code
+      type: String_1
+    - name: customerId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertProfileAdditionalLanguagesObject
+    inputTypeName: InsertProfileAdditionalLanguagesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_additional_languages_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        customerId:
+          column:
+            name: customer_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAdditionalLanguagesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - customerId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAdditionalLanguagesResponse
+  description: Responses from the 'insert_profile_additional_languages' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAdditionalLanguages!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileAdditionalLanguagesResponse
+    inputTypeName: InsertProfileAdditionalLanguagesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_additional_languages_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAdditionalLanguagesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileAdditionalLanguages
+  outputType: InsertProfileAdditionalLanguagesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileAdditionalLanguagesObject!]!"
+    - name: postCheck
+      type: ProfileAdditionalLanguagesBoolExp
+      description: Insert permission predicate over the 'profile_additional_languages'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_additional_languages
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileAdditionalLanguages
+    rootFieldKind: Mutation
+  description: Insert into the profile_additional_languages table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileAdditionalLanguages
+  permissions:
+    - role: admin
+      allowExecution: true
+

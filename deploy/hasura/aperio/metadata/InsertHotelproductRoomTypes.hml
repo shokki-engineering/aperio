@@ -1,0 +1,198 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductRoomTypesObject
+  fields:
+    - name: accessible
+      type: Boolean_1
+    - name: bedTypeCodes
+      type: String_1
+    - name: bedroomCount
+      type: Int32
+    - name: featureAmenities
+      type: String_1
+    - name: hotelProductId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: maxAdultOccupancy
+      type: Int32
+    - name: maxChildOccupancy
+      type: Int32
+    - name: maxInfantOccupancy
+      type: Int32
+    - name: maxOccupancy
+      type: Int32
+    - name: nonSmoking
+      type: Boolean_1
+    - name: roomGender
+      type: Enum
+    - name: roomLocation
+      type: Enum
+    - name: roomQualities
+      type: String_1
+    - name: roomTypeCode
+      type: String_1
+    - name: roomTypeDisplayName
+      type: String_1
+    - name: roomView
+      type: Enum
+  graphql:
+    typeName: InsertHotelproductRoomTypesObject
+    inputTypeName: InsertHotelproductRoomTypesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_room_types_object
+      fieldMapping:
+        accessible:
+          column:
+            name: accessible
+        bedTypeCodes:
+          column:
+            name: bed_type_codes
+        bedroomCount:
+          column:
+            name: bedroom_count
+        featureAmenities:
+          column:
+            name: feature_amenities
+        hotelProductId:
+          column:
+            name: hotel_product_id
+        id:
+          column:
+            name: id
+        maxAdultOccupancy:
+          column:
+            name: max_adult_occupancy
+        maxChildOccupancy:
+          column:
+            name: max_child_occupancy
+        maxInfantOccupancy:
+          column:
+            name: max_infant_occupancy
+        maxOccupancy:
+          column:
+            name: max_occupancy
+        nonSmoking:
+          column:
+            name: non_smoking
+        roomGender:
+          column:
+            name: room_gender
+        roomLocation:
+          column:
+            name: room_location
+        roomQualities:
+          column:
+            name: room_qualities
+        roomTypeCode:
+          column:
+            name: room_type_code
+        roomTypeDisplayName:
+          column:
+            name: room_type_display_name
+        roomView:
+          column:
+            name: room_view
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductRoomTypesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessible
+          - bedTypeCodes
+          - bedroomCount
+          - featureAmenities
+          - hotelProductId
+          - id
+          - maxAdultOccupancy
+          - maxChildOccupancy
+          - maxInfantOccupancy
+          - maxOccupancy
+          - nonSmoking
+          - roomGender
+          - roomLocation
+          - roomQualities
+          - roomTypeCode
+          - roomTypeDisplayName
+          - roomView
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductRoomTypesResponse
+  description: Responses from the 'insert_hotelproduct_room_types' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductRoomTypes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductRoomTypesResponse
+    inputTypeName: InsertHotelproductRoomTypesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_room_types_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductRoomTypesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductRoomTypes
+  outputType: InsertHotelproductRoomTypesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductRoomTypesObject!]!"
+    - name: postCheck
+      type: HotelproductRoomTypesBoolExp
+      description: Insert permission predicate over the 'hotelproduct_room_types' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_room_types
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductRoomTypes
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_room_types table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductRoomTypes
+  permissions:
+    - role: admin
+      allowExecution: true
+

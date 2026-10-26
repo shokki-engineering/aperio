@@ -1,0 +1,249 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnStayDatesDay
+  description: Update the 'day' column in the 'stay_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnStayDatesDay
+    inputTypeName: UpdateColumnStayDatesDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_stay_dates_day
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnStayDatesDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnStayDatesId
+  description: Update the 'id' column in the 'stay_dates' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnStayDatesId
+    inputTypeName: UpdateColumnStayDatesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_stay_dates_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnStayDatesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnStayDatesMonth
+  description: Update the 'month' column in the 'stay_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnStayDatesMonth
+    inputTypeName: UpdateColumnStayDatesMonthInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_stay_dates_month
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnStayDatesMonth
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnStayDatesYear
+  description: Update the 'year' column in the 'stay_dates' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnStayDatesYear
+    inputTypeName: UpdateColumnStayDatesYearInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_stay_dates_year
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnStayDatesYear
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateStayDatesByIdUpdateColumns
+  description: Update the columns of the 'stay_dates' collection
+  fields:
+    - name: day
+      type: UpdateColumnStayDatesDay
+      description: Update the 'day' column in the 'stay_dates' collection.
+    - name: id
+      type: UpdateColumnStayDatesId
+      description: Update the 'id' column in the 'stay_dates' collection.
+    - name: month
+      type: UpdateColumnStayDatesMonth
+      description: Update the 'month' column in the 'stay_dates' collection.
+    - name: year
+      type: UpdateColumnStayDatesYear
+      description: Update the 'year' column in the 'stay_dates' collection.
+  graphql:
+    typeName: UpdateStayDatesByIdUpdateColumns
+    inputTypeName: UpdateStayDatesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_stay_dates_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateStayDatesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateStayDatesByIdResponse
+  description: Responses from the 'update_stay_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StayDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateStayDatesByIdResponse
+    inputTypeName: UpdateStayDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_stay_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateStayDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateStayDatesById
+  outputType: UpdateStayDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: StayDatesBoolExp
+      description: Update permission post-condition predicate over the 'stay_dates'
+        collection
+    - name: preCheck
+      type: StayDatesBoolExp
+      description: Update permission pre-condition predicate over the 'stay_dates'
+        collection
+    - name: updateColumns
+      type: UpdateStayDatesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_stay_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateStayDatesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'stay_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateStayDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanTimeOrDateTimes
+  fields:
+    - name: clockId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: RateplanTimeOrDateTimes
+    inputTypeName: RateplanTimeOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_time_or_date_times
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanTimeOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanTimeOrDateTimesBoolExp
+  operand:
+    object:
+      type: RateplanTimeOrDateTimes
+      comparableFields:
+        - fieldName: clockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: RateplanRateplanTimeOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanTimeOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanTimeOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanTimeOrDateTimes
+      aggregatableFields:
+        - fieldName: clockId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: RateplanRateplanTimeOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanTimeOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanTimeOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanTimeOrDateTimes
+      orderableFields:
+        - fieldName: clockId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanTimeOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanTimeOrDateTimes
+  objectType: RateplanTimeOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_time_or_date_times
+  filterExpressionType: RateplanTimeOrDateTimesBoolExp
+  aggregateExpression: RateplanTimeOrDateTimesAggExp
+  orderByExpression: RateplanTimeOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanTimeOrDateTimes
+      subscription:
+        rootField: rateplanTimeOrDateTimes
+    selectUniques:
+      - queryRootField: rateplanTimeOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanTimeOrDateTimesById
+    filterInputTypeName: RateplanTimeOrDateTimesFilterInput
+    aggregate:
+      queryRootField: rateplanTimeOrDateTimesAggregate
+      subscription:
+        rootField: rateplanTimeOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanTimeOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

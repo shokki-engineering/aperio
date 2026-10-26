@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: AffiliationinfoDocuments
+    inputTypeName: AffiliationinfoDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoDocumentsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: AffiliationinfoAffiliationinfoDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: AffiliationinfoAffiliationinfoDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoDocuments
+  objectType: AffiliationinfoDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_documents
+  filterExpressionType: AffiliationinfoDocumentsBoolExp
+  aggregateExpression: AffiliationinfoDocumentsAggExp
+  orderByExpression: AffiliationinfoDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoDocuments
+      subscription:
+        rootField: affiliationinfoDocuments
+    selectUniques:
+      - queryRootField: affiliationinfoDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoDocumentsById
+    filterInputTypeName: AffiliationinfoDocumentsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoDocumentsAggregate
+      subscription:
+        rootField: affiliationinfoDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

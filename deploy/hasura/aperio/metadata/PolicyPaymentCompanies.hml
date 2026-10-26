@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyPaymentCompanies
+  fields:
+    - name: commissionPolicyId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+  graphql:
+    typeName: PolicyPaymentCompanies
+    inputTypeName: PolicyPaymentCompaniesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_payment_companies
+      fieldMapping:
+        commissionPolicyId:
+          column:
+            name: commission_policy_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyPaymentCompanies
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commissionPolicyId
+          - id
+          - name
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyPaymentCompaniesBoolExp
+  operand:
+    object:
+      type: PolicyPaymentCompanies
+      comparableFields:
+        - fieldName: commissionPolicyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyPaymentCompaniesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyPaymentCompaniesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyPaymentCompanies
+      aggregatableFields:
+        - fieldName: commissionPolicyId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyPaymentCompaniesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyPaymentCompaniesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyPaymentCompanies
+      orderableFields:
+        - fieldName: commissionPolicyId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyPaymentCompaniesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyPaymentCompanies
+  objectType: PolicyPaymentCompanies
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_payment_companies
+  filterExpressionType: PolicyPaymentCompaniesBoolExp
+  aggregateExpression: PolicyPaymentCompaniesAggExp
+  orderByExpression: PolicyPaymentCompaniesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyPaymentCompanies
+      subscription:
+        rootField: policyPaymentCompanies
+    selectUniques:
+      - queryRootField: policyPaymentCompaniesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyPaymentCompaniesById
+    filterInputTypeName: PolicyPaymentCompaniesFilterInput
+    aggregate:
+      queryRootField: policyPaymentCompaniesAggregate
+      subscription:
+        rootField: policyPaymentCompaniesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyPaymentCompanies
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

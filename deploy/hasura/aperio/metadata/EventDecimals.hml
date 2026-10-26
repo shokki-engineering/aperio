@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventDecimals
+    inputTypeName: EventDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventDecimalsBoolExp
+  operand:
+    object:
+      type: EventDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: EventDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: EventDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventDecimals
+  objectType: EventDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_decimals
+  filterExpressionType: EventDecimalsBoolExp
+  aggregateExpression: EventDecimalsAggExp
+  orderByExpression: EventDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventDecimals
+      subscription:
+        rootField: eventDecimals
+    selectUniques:
+      - queryRootField: eventDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventDecimalsById
+    filterInputTypeName: EventDecimalsFilterInput
+    aggregate:
+      queryRootField: eventDecimalsAggregate
+      subscription:
+        rootField: eventDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

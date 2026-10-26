@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVouchers
+  fields:
+    - name: billingAccountAddressId
+      type: String_1
+    - name: billingAccountDisplayNameId
+      type: String_1
+    - name: billingNumber
+      type: String_1
+    - name: effectiveDayId
+      type: String_1
+    - name: electronicIndicator
+      type: Boolean_1
+    - name: expireDateExclusiveIndicator
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: groupDaysApply
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: seriesCode
+      type: String_1
+    - name: supplierId
+      type: String_1
+    - name: valueType
+      type: String_1
+  graphql:
+    typeName: ProfileVouchers
+    inputTypeName: ProfileVouchersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_vouchers
+      fieldMapping:
+        billingAccountAddressId:
+          column:
+            name: billing_account_address_id
+        billingAccountDisplayNameId:
+          column:
+            name: billing_account_display_name_id
+        billingNumber:
+          column:
+            name: billing_number
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        electronicIndicator:
+          column:
+            name: electronic_indicator
+        expireDateExclusiveIndicator:
+          column:
+            name: expire_date_exclusive_indicator
+        expireDayId:
+          column:
+            name: expire_day_id
+        groupDaysApply:
+          column:
+            name: group_days_apply
+        id:
+          column:
+            name: id
+        seriesCode:
+          column:
+            name: series_code
+        supplierId:
+          column:
+            name: supplier_id
+        valueType:
+          column:
+            name: value_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVouchers
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingAccountAddressId
+          - billingAccountDisplayNameId
+          - billingNumber
+          - effectiveDayId
+          - electronicIndicator
+          - expireDateExclusiveIndicator
+          - expireDayId
+          - groupDaysApply
+          - id
+          - seriesCode
+          - supplierId
+          - valueType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVouchersBoolExp
+  operand:
+    object:
+      type: ProfileVouchers
+      comparableFields:
+        - fieldName: billingAccountAddressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: billingAccountDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: billingNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: electronicIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDateExclusiveIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: groupDaysApply
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: seriesCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: supplierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueType
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVouchersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVouchersAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVouchers
+      aggregatableFields:
+        - fieldName: billingAccountAddressId
+          aggregateExpression: TextAggExp
+        - fieldName: billingAccountDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: billingNumber
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: electronicIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDateExclusiveIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: groupDaysApply
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: seriesCode
+          aggregateExpression: TextAggExp
+        - fieldName: supplierId
+          aggregateExpression: TextAggExp
+        - fieldName: valueType
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVouchersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVouchersOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVouchers
+      orderableFields:
+        - fieldName: billingAccountAddressId
+          orderByExpression: String1OrderByExp
+        - fieldName: billingAccountDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: billingNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: electronicIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDateExclusiveIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: groupDaysApply
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: seriesCode
+          orderByExpression: String1OrderByExp
+        - fieldName: supplierId
+          orderByExpression: String1OrderByExp
+        - fieldName: valueType
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVouchersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVouchers
+  objectType: ProfileVouchers
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_vouchers
+  filterExpressionType: ProfileVouchersBoolExp
+  aggregateExpression: ProfileVouchersAggExp
+  orderByExpression: ProfileVouchersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVouchers
+      subscription:
+        rootField: profileVouchers
+    selectUniques:
+      - queryRootField: profileVouchersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVouchersById
+    filterInputTypeName: ProfileVouchersFilterInput
+    aggregate:
+      queryRootField: profileVouchersAggregate
+      subscription:
+        rootField: profileVouchersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVouchers
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

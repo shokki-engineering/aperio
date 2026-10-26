@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanPaymentCardCodes
+  fields:
+    - name: cardCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: text
+      type: String_1
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: RateplanPaymentCardCodes
+    inputTypeName: RateplanPaymentCardCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_payment_card_codes
+      fieldMapping:
+        cardCode:
+          column:
+            name: card_code
+        id:
+          column:
+            name: id
+        text:
+          column:
+            name: text
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanPaymentCardCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cardCode
+          - id
+          - text
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanPaymentCardCodesBoolExp
+  operand:
+    object:
+      type: RateplanPaymentCardCodes
+      comparableFields:
+        - fieldName: cardCode
+          booleanExpressionType: RateplanRateplanCardCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: RateplanRateplanPaymentCardCodeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanPaymentCardCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanPaymentCardCodesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanPaymentCardCodes
+      aggregatableFields:
+        - fieldName: cardCode
+          aggregateExpression: RateplanRateplanCardCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: RateplanRateplanPaymentCardCodeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanPaymentCardCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanPaymentCardCodesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanPaymentCardCodes
+      orderableFields:
+        - fieldName: cardCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanPaymentCardCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanPaymentCardCodes
+  objectType: RateplanPaymentCardCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_payment_card_codes
+  filterExpressionType: RateplanPaymentCardCodesBoolExp
+  aggregateExpression: RateplanPaymentCardCodesAggExp
+  orderByExpression: RateplanPaymentCardCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanPaymentCardCodes
+      subscription:
+        rootField: rateplanPaymentCardCodes
+    selectUniques:
+      - queryRootField: rateplanPaymentCardCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanPaymentCardCodesById
+    filterInputTypeName: RateplanPaymentCardCodesFilterInput
+    aggregate:
+      queryRootField: rateplanPaymentCardCodesAggregate
+      subscription:
+        rootField: rateplanPaymentCardCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanPaymentCardCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

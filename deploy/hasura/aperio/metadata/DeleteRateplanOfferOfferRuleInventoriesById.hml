@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanOfferOfferRuleInventoriesByIdResponse
+  description: Responses from the
+    'delete_rateplan_offer_offer_rule_inventories_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanOfferOfferRuleInventories!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanOfferOfferRuleInventoriesByIdResponse
+    inputTypeName: DeleteRateplanOfferOfferRuleInventoriesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_offer_offer_rule_inventories_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanOfferOfferRuleInventoriesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanOfferOfferRuleInventoriesById
+  outputType: DeleteRateplanOfferOfferRuleInventoriesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanOfferOfferRuleInventoriesBoolExp
+      description: Delete permission predicate over the
+        'rateplan_offer_offer_rule_inventories' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_offer_offer_rule_inventories_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanOfferOfferRuleInventoriesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_offer_offer_rule_inventories'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanOfferOfferRuleInventoriesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

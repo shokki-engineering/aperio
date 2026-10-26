@@ -1,0 +1,349 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAcceptedPayments
+  fields:
+    - name: bankAcctId
+      type: String_1
+    - name: cashId
+      type: String_1
+    - name: costCenterId
+      type: String_1
+    - name: directBillId
+      type: String_1
+    - name: guaranteeId
+      type: String_1
+    - name: guaranteeIndicator
+      type: Boolean_1
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: guaranteeTypeCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: loyaltyRedemptionId
+      type: String_1
+    - name: miscChargeOrderId
+      type: String_1
+    - name: paymentCardChoiceCase
+      type: Enum
+    - name: paymentCardId
+      type: String_1
+    - name: paymentTransactionTypeCode
+      type: Enum
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: ticketId
+      type: String_1
+    - name: voucherId
+      type: String_1
+  graphql:
+    typeName: ProfileAcceptedPayments
+    inputTypeName: ProfileAcceptedPaymentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_accepted_payments
+      fieldMapping:
+        bankAcctId:
+          column:
+            name: bank_acct_id
+        cashId:
+          column:
+            name: cash_id
+        costCenterId:
+          column:
+            name: cost_center_id
+        directBillId:
+          column:
+            name: direct_bill_id
+        guaranteeId:
+          column:
+            name: guarantee_id
+        guaranteeIndicator:
+          column:
+            name: guarantee_indicator
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        guaranteeTypeCode:
+          column:
+            name: guarantee_type_code
+        id:
+          column:
+            name: id
+        loyaltyRedemptionId:
+          column:
+            name: loyalty_redemption_id
+        miscChargeOrderId:
+          column:
+            name: misc_charge_order_id
+        paymentCardChoiceCase:
+          column:
+            name: payment_card_choice_case
+        paymentCardId:
+          column:
+            name: payment_card_id
+        paymentTransactionTypeCode:
+          column:
+            name: payment_transaction_type_code
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        ticketId:
+          column:
+            name: ticket_id
+        voucherId:
+          column:
+            name: voucher_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAcceptedPayments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bankAcctId
+          - cashId
+          - costCenterId
+          - directBillId
+          - guaranteeId
+          - guaranteeIndicator
+          - guaranteePaymentId
+          - guaranteeTypeCode
+          - id
+          - loyaltyRedemptionId
+          - miscChargeOrderId
+          - paymentCardChoiceCase
+          - paymentCardId
+          - paymentTransactionTypeCode
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - ticketId
+          - voucherId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAcceptedPaymentsBoolExp
+  operand:
+    object:
+      type: ProfileAcceptedPayments
+      comparableFields:
+        - fieldName: bankAcctId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cashId
+          booleanExpressionType: TextBoolExp
+        - fieldName: costCenterId
+          booleanExpressionType: TextBoolExp
+        - fieldName: directBillId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: guaranteePaymentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeTypeCode
+          booleanExpressionType: ProfileProfilePaymentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: loyaltyRedemptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: miscChargeOrderId
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentCardChoiceCase
+          booleanExpressionType: ProfileProfileAcceptedPaymentPaymentCardChoiceCaseBoolExp
+        - fieldName: paymentCardId
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentTransactionTypeCode
+          booleanExpressionType: ProfileProfilePaymentTransactionTypeCodeBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: ticketId
+          booleanExpressionType: TextBoolExp
+        - fieldName: voucherId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAcceptedPaymentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAcceptedPaymentsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAcceptedPayments
+      aggregatableFields:
+        - fieldName: bankAcctId
+          aggregateExpression: TextAggExp
+        - fieldName: cashId
+          aggregateExpression: TextAggExp
+        - fieldName: costCenterId
+          aggregateExpression: TextAggExp
+        - fieldName: directBillId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: guaranteePaymentId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeTypeCode
+          aggregateExpression: ProfileProfilePaymentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: loyaltyRedemptionId
+          aggregateExpression: TextAggExp
+        - fieldName: miscChargeOrderId
+          aggregateExpression: TextAggExp
+        - fieldName: paymentCardChoiceCase
+          aggregateExpression: ProfileProfileAcceptedPaymentPaymentCardChoiceCaseAggExp
+        - fieldName: paymentCardId
+          aggregateExpression: TextAggExp
+        - fieldName: paymentTransactionTypeCode
+          aggregateExpression: ProfileProfilePaymentTransactionTypeCodeAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: ticketId
+          aggregateExpression: TextAggExp
+        - fieldName: voucherId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAcceptedPaymentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAcceptedPaymentsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAcceptedPayments
+      orderableFields:
+        - fieldName: bankAcctId
+          orderByExpression: String1OrderByExp
+        - fieldName: cashId
+          orderByExpression: String1OrderByExp
+        - fieldName: costCenterId
+          orderByExpression: String1OrderByExp
+        - fieldName: directBillId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: guaranteePaymentId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeTypeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: loyaltyRedemptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: miscChargeOrderId
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentCardChoiceCase
+          orderByExpression: EnumOrderByExp
+        - fieldName: paymentCardId
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentTransactionTypeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: ticketId
+          orderByExpression: String1OrderByExp
+        - fieldName: voucherId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAcceptedPaymentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAcceptedPayments
+  objectType: ProfileAcceptedPayments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_accepted_payments
+  filterExpressionType: ProfileAcceptedPaymentsBoolExp
+  aggregateExpression: ProfileAcceptedPaymentsAggExp
+  orderByExpression: ProfileAcceptedPaymentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAcceptedPayments
+      subscription:
+        rootField: profileAcceptedPayments
+    selectUniques:
+      - queryRootField: profileAcceptedPaymentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAcceptedPaymentsById
+    filterInputTypeName: ProfileAcceptedPaymentsFilterInput
+    aggregate:
+      queryRootField: profileAcceptedPaymentsAggregate
+      subscription:
+        rootField: profileAcceptedPaymentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAcceptedPayments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoJobTitles
+  fields:
+    - name: id
+      type: String_1!
+    - name: nameId
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoJobTitles
+    inputTypeName: AffiliationinfoJobTitlesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_job_titles
+      fieldMapping:
+        id:
+          column:
+            name: id
+        nameId:
+          column:
+            name: name_id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoJobTitles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - nameId
+          - type
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoJobTitlesBoolExp
+  operand:
+    object:
+      type: AffiliationinfoJobTitles
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoJobTitlesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoJobTitlesAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoJobTitles
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nameId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoJobTitlesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoJobTitlesOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoJobTitles
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nameId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoJobTitlesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoJobTitles
+  objectType: AffiliationinfoJobTitles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_job_titles
+  filterExpressionType: AffiliationinfoJobTitlesBoolExp
+  aggregateExpression: AffiliationinfoJobTitlesAggExp
+  orderByExpression: AffiliationinfoJobTitlesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoJobTitles
+      subscription:
+        rootField: affiliationinfoJobTitles
+    selectUniques:
+      - queryRootField: affiliationinfoJobTitlesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoJobTitlesById
+    filterInputTypeName: AffiliationinfoJobTitlesFilterInput
+    aggregate:
+      queryRootField: affiliationinfoJobTitlesAggregate
+      subscription:
+        rootField: affiliationinfoJobTitlesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoJobTitles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

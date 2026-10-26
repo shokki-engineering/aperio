@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelproductMiscChargeOrdersByIdResponse
+  description: Responses from the 'delete_hotelproduct_misc_charge_orders_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductMiscChargeOrders!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelproductMiscChargeOrdersByIdResponse
+    inputTypeName: DeleteHotelproductMiscChargeOrdersByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotelproduct_misc_charge_orders_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelproductMiscChargeOrdersByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelproductMiscChargeOrdersById
+  outputType: DeleteHotelproductMiscChargeOrdersByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelproductMiscChargeOrdersBoolExp
+      description: Delete permission predicate over the
+        'hotelproduct_misc_charge_orders' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotelproduct_misc_charge_orders_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelproductMiscChargeOrdersById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'hotelproduct_misc_charge_orders' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelproductMiscChargeOrdersById
+  permissions:
+    - role: admin
+      allowExecution: true
+

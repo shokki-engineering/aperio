@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductTaxes
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: HotelproductTaxes
+    inputTypeName: HotelproductTaxesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_taxes
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductTaxes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductTaxesBoolExp
+  operand:
+    object:
+      type: HotelproductTaxes
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductTaxesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductTaxesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductTaxes
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductTaxesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductTaxesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductTaxes
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductTaxesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductTaxes
+  objectType: HotelproductTaxes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_taxes
+  filterExpressionType: HotelproductTaxesBoolExp
+  aggregateExpression: HotelproductTaxesAggExp
+  orderByExpression: HotelproductTaxesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductTaxes
+      subscription:
+        rootField: hotelproductTaxes
+    selectUniques:
+      - queryRootField: hotelproductTaxesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductTaxesById
+    filterInputTypeName: HotelproductTaxesFilterInput
+    aggregate:
+      queryRootField: hotelproductTaxesAggregate
+      subscription:
+        rootField: hotelproductTaxesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductTaxes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

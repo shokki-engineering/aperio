@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportGeneralEventInfoDates
+  fields:
+    - name: contractedIndicator
+      type: Boolean_1
+    - name: dateWindowRangeId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endDateWindowId
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: eventDateType
+      type: Enum
+    - name: generalEventInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: startDateWindowId
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: EventreportGeneralEventInfoDates
+    inputTypeName: EventreportGeneralEventInfoDatesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_general_event_info_dates
+      fieldMapping:
+        contractedIndicator:
+          column:
+            name: contracted_indicator
+        dateWindowRangeId:
+          column:
+            name: date_window_range_id
+        duration:
+          column:
+            name: duration
+        endDateWindowId:
+          column:
+            name: end_date_window_id
+        endId:
+          column:
+            name: end_id
+        eventDateType:
+          column:
+            name: event_date_type
+        generalEventInfoId:
+          column:
+            name: general_event_info_id
+        id:
+          column:
+            name: id
+        startDateWindowId:
+          column:
+            name: start_date_window_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportGeneralEventInfoDates
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contractedIndicator
+          - dateWindowRangeId
+          - duration
+          - endDateWindowId
+          - endId
+          - eventDateType
+          - generalEventInfoId
+          - id
+          - startDateWindowId
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportGeneralEventInfoDatesBoolExp
+  operand:
+    object:
+      type: EventreportGeneralEventInfoDates
+      comparableFields:
+        - fieldName: contractedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: dateWindowRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDateType
+          booleanExpressionType: EventreportEventDateTypeBoolExp
+        - fieldName: generalEventInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportGeneralEventInfoDatesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportGeneralEventInfoDatesAggExp
+  operand:
+    object:
+      aggregatedType: EventreportGeneralEventInfoDates
+      aggregatableFields:
+        - fieldName: contractedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: dateWindowRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDateType
+          aggregateExpression: EventreportEventDateTypeAggExp
+        - fieldName: generalEventInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportGeneralEventInfoDatesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportGeneralEventInfoDatesOrderByExp
+  operand:
+    object:
+      orderedType: EventreportGeneralEventInfoDates
+      orderableFields:
+        - fieldName: contractedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: dateWindowRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDateType
+          orderByExpression: EnumOrderByExp
+        - fieldName: generalEventInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportGeneralEventInfoDatesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportGeneralEventInfoDates
+  objectType: EventreportGeneralEventInfoDates
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_general_event_info_dates
+  filterExpressionType: EventreportGeneralEventInfoDatesBoolExp
+  aggregateExpression: EventreportGeneralEventInfoDatesAggExp
+  orderByExpression: EventreportGeneralEventInfoDatesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportGeneralEventInfoDates
+      subscription:
+        rootField: eventreportGeneralEventInfoDates
+    selectUniques:
+      - queryRootField: eventreportGeneralEventInfoDatesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportGeneralEventInfoDatesById
+    filterInputTypeName: EventreportGeneralEventInfoDatesFilterInput
+    aggregate:
+      queryRootField: eventreportGeneralEventInfoDatesAggregate
+      subscription:
+        rootField: eventreportGeneralEventInfoDatesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportGeneralEventInfoDates
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

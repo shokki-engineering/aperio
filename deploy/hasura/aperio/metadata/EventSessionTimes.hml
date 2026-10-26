@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventSessionTimes
+  fields:
+    - name: endClockId
+      type: String_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: startClockId
+      type: String_1
+  graphql:
+    typeName: EventSessionTimes
+    inputTypeName: EventSessionTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_session_times
+      fieldMapping:
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        id:
+          column:
+            name: id
+        startClockId:
+          column:
+            name: start_clock_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventSessionTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - endClockId
+          - eventDayFunctionId
+          - id
+          - startClockId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventSessionTimesBoolExp
+  operand:
+    object:
+      type: EventSessionTimes
+      comparableFields:
+        - fieldName: endClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayFunctionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startClockId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventSessionTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventSessionTimesAggExp
+  operand:
+    object:
+      aggregatedType: EventSessionTimes
+      aggregatableFields:
+        - fieldName: endClockId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayFunctionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startClockId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventSessionTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventSessionTimesOrderByExp
+  operand:
+    object:
+      orderedType: EventSessionTimes
+      orderableFields:
+        - fieldName: endClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayFunctionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startClockId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventSessionTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventSessionTimes
+  objectType: EventSessionTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_session_times
+  filterExpressionType: EventSessionTimesBoolExp
+  aggregateExpression: EventSessionTimesAggExp
+  orderByExpression: EventSessionTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventSessionTimes
+      subscription:
+        rootField: eventSessionTimes
+    selectUniques:
+      - queryRootField: eventSessionTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventSessionTimesById
+    filterInputTypeName: EventSessionTimesFilterInput
+    aggregate:
+      queryRootField: eventSessionTimesAggregate
+      subscription:
+        rootField: eventSessionTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventSessionTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

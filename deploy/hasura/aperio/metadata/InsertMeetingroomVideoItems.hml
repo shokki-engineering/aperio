@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomVideoItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertMeetingroomVideoItemsObject
+    inputTypeName: InsertMeetingroomVideoItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_video_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomVideoItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomVideoItemsResponse
+  description: Responses from the 'insert_meetingroom_video_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomVideoItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingroomVideoItemsResponse
+    inputTypeName: InsertMeetingroomVideoItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_video_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomVideoItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingroomVideoItems
+  outputType: InsertMeetingroomVideoItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingroomVideoItemsObject!]!"
+    - name: postCheck
+      type: MeetingroomVideoItemsBoolExp
+      description: Insert permission predicate over the 'meetingroom_video_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingroom_video_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingroomVideoItems
+    rootFieldKind: Mutation
+  description: Insert into the meetingroom_video_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingroomVideoItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

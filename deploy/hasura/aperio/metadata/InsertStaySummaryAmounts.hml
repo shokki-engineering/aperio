@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStaySummaryAmountsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertStaySummaryAmountsObject
+    inputTypeName: InsertStaySummaryAmountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_summary_amounts_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStaySummaryAmountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStaySummaryAmountsResponse
+  description: Responses from the 'insert_stay_summary_amounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StaySummaryAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStaySummaryAmountsResponse
+    inputTypeName: InsertStaySummaryAmountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_summary_amounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStaySummaryAmountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStaySummaryAmounts
+  outputType: InsertStaySummaryAmountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStaySummaryAmountsObject!]!"
+    - name: postCheck
+      type: StaySummaryAmountsBoolExp
+      description: Insert permission predicate over the 'stay_summary_amounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_stay_summary_amounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStaySummaryAmounts
+    rootFieldKind: Mutation
+  description: Insert into the stay_summary_amounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStaySummaryAmounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

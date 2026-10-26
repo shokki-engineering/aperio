@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelproductDepartureDaysOfWeeksByIdResponse
+  description: Responses from the
+    'delete_hotelproduct_departure_days_of_weeks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductDepartureDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelproductDepartureDaysOfWeeksByIdResponse
+    inputTypeName: DeleteHotelproductDepartureDaysOfWeeksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotelproduct_departure_days_of_weeks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelproductDepartureDaysOfWeeksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelproductDepartureDaysOfWeeksById
+  outputType: DeleteHotelproductDepartureDaysOfWeeksByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelproductDepartureDaysOfWeeksBoolExp
+      description: Delete permission predicate over the
+        'hotelproduct_departure_days_of_weeks' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotelproduct_departure_days_of_weeks_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelproductDepartureDaysOfWeeksById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'hotelproduct_departure_days_of_weeks'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelproductDepartureDaysOfWeeksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

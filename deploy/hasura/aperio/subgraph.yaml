@@ -1,0 +1,22 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+kind: Subgraph
+version: v2
+definition:
+  name: aperio
+  generator:
+    rootPath: .
+    namingConvention: graphql
+  includePaths:
+    - metadata
+  envMapping:
+    APERIO_APERIO_PGSQL_AUTHORIZATION_HEADER:
+      fromEnv: APERIO_APERIO_PGSQL_AUTHORIZATION_HEADER
+    APERIO_APERIO_PGSQL_READ_URL:
+      fromEnv: APERIO_APERIO_PGSQL_READ_URL
+    APERIO_APERIO_PGSQL_WRITE_URL:
+      fromEnv: APERIO_APERIO_PGSQL_WRITE_URL
+  connectors:
+    - path: connector/aperio_pgsql/connector.yaml
+      connectorLinkName: aperio_pgsql

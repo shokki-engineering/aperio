@@ -1,0 +1,99 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyGuaranteePaymentPoliciesObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertPolicyGuaranteePaymentPoliciesObject
+    inputTypeName: InsertPolicyGuaranteePaymentPoliciesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_guarantee_payment_policies_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyGuaranteePaymentPoliciesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyGuaranteePaymentPoliciesResponse
+  description: Responses from the 'insert_policy_guarantee_payment_policies' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyGuaranteePaymentPolicies!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyGuaranteePaymentPoliciesResponse
+    inputTypeName: InsertPolicyGuaranteePaymentPoliciesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_guarantee_payment_policies_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyGuaranteePaymentPoliciesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyGuaranteePaymentPolicies
+  outputType: InsertPolicyGuaranteePaymentPoliciesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyGuaranteePaymentPoliciesObject!]!"
+    - name: postCheck
+      type: PolicyGuaranteePaymentPoliciesBoolExp
+      description: Insert permission predicate over the
+        'policy_guarantee_payment_policies' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_guarantee_payment_policies
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyGuaranteePaymentPolicies
+    rootFieldKind: Mutation
+  description: Insert into the policy_guarantee_payment_policies table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyGuaranteePaymentPolicies
+  permissions:
+    - role: admin
+      allowExecution: true
+

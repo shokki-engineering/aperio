@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleBookingChannelCodes
+  fields:
+    - name: channelCodesInclusive
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: BookingruleBookingChannelCodes
+    inputTypeName: BookingruleBookingChannelCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_booking_channel_codes
+      fieldMapping:
+        channelCodesInclusive:
+          column:
+            name: channel_codes_inclusive
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleBookingChannelCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - channelCodesInclusive
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleBookingChannelCodesBoolExp
+  operand:
+    object:
+      type: BookingruleBookingChannelCodes
+      comparableFields:
+        - fieldName: channelCodesInclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleBookingChannelCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleBookingChannelCodesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleBookingChannelCodes
+      aggregatableFields:
+        - fieldName: channelCodesInclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleBookingChannelCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleBookingChannelCodesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleBookingChannelCodes
+      orderableFields:
+        - fieldName: channelCodesInclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleBookingChannelCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleBookingChannelCodes
+  objectType: BookingruleBookingChannelCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_booking_channel_codes
+  filterExpressionType: BookingruleBookingChannelCodesBoolExp
+  aggregateExpression: BookingruleBookingChannelCodesAggExp
+  orderByExpression: BookingruleBookingChannelCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleBookingChannelCodes
+      subscription:
+        rootField: bookingruleBookingChannelCodes
+    selectUniques:
+      - queryRootField: bookingruleBookingChannelCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleBookingChannelCodesById
+    filterInputTypeName: BookingruleBookingChannelCodesFilterInput
+    aggregate:
+      queryRootField: bookingruleBookingChannelCodesAggregate
+      subscription:
+        rootField: bookingruleBookingChannelCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleBookingChannelCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

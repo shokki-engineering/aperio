@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeUrlsObject
+  fields:
+    - name: contactInfoRootId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeUrlsObject
+    inputTypeName: InsertRoomtypeUrlsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_urls_object
+      fieldMapping:
+        contactInfoRootId:
+          column:
+            name: contact_info_root_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeUrlsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactInfoRootId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeUrlsResponse
+  description: Responses from the 'insert_roomtype_urls' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeUrlsResponse
+    inputTypeName: InsertRoomtypeUrlsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_urls_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeUrlsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeUrls
+  outputType: InsertRoomtypeUrlsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeUrlsObject!]!"
+    - name: postCheck
+      type: RoomtypeUrlsBoolExp
+      description: Insert permission predicate over the 'roomtype_urls' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_urls
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeUrls
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_urls table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeUrls
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestaurantFormattedTextTextsByIdResponse
+  description: Responses from the 'delete_restaurant_formatted_text_texts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantFormattedTextTexts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestaurantFormattedTextTextsByIdResponse
+    inputTypeName: DeleteRestaurantFormattedTextTextsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restaurant_formatted_text_texts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestaurantFormattedTextTextsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestaurantFormattedTextTextsById
+  outputType: DeleteRestaurantFormattedTextTextsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestaurantFormattedTextTextsBoolExp
+      description: Delete permission predicate over the
+        'restaurant_formatted_text_texts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restaurant_formatted_text_texts_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestaurantFormattedTextTextsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'restaurant_formatted_text_texts' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestaurantFormattedTextTextsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanGuaranteePaymentAddressObject
+  fields:
+    - name: addressLines
+      type: "[String_1]"
+    - name: addresseeDisplayName
+      type: String_1
+    - name: cityDisplayName
+      type: String_1
+    - name: countryDisplayNameId
+      type: String_1
+    - name: county
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: formatted
+      type: Boolean_1
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: postalCode
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: stateProvId
+      type: String_1
+    - name: streetNmbrId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: useType
+      type: Enum
+    - name: valid
+      type: Boolean_1
+  graphql:
+    typeName: InsertRateplanGuaranteePaymentAddressObject
+    inputTypeName: InsertRateplanGuaranteePaymentAddressObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_guarantee_payment_address_object
+      fieldMapping:
+        addressLines:
+          column:
+            name: address_lines
+        addresseeDisplayName:
+          column:
+            name: addressee_display_name
+        cityDisplayName:
+          column:
+            name: city_display_name
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        county:
+          column:
+            name: county
+        defaultValue:
+          column:
+            name: default_value
+        formatted:
+          column:
+            name: formatted
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        postalCode:
+          column:
+            name: postal_code
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        stateProvId:
+          column:
+            name: state_prov_id
+        streetNmbrId:
+          column:
+            name: street_nmbr_id
+        type:
+          column:
+            name: type
+        useType:
+          column:
+            name: use_type
+        valid:
+          column:
+            name: valid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanGuaranteePaymentAddressObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressLines
+          - addresseeDisplayName
+          - cityDisplayName
+          - countryDisplayNameId
+          - county
+          - defaultValue
+          - formatted
+          - guaranteePaymentId
+          - id
+          - languageCode
+          - postalCode
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - stateProvId
+          - streetNmbrId
+          - type
+          - useType
+          - valid
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanGuaranteePaymentAddressResponse
+  description: Responses from the 'insert_rateplan_guarantee_payment_address' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanGuaranteePaymentAddress!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanGuaranteePaymentAddressResponse
+    inputTypeName: InsertRateplanGuaranteePaymentAddressResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_guarantee_payment_address_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanGuaranteePaymentAddressResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanGuaranteePaymentAddress
+  outputType: InsertRateplanGuaranteePaymentAddressResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanGuaranteePaymentAddressObject!]!"
+    - name: postCheck
+      type: RateplanGuaranteePaymentAddressBoolExp
+      description: Insert permission predicate over the
+        'rateplan_guarantee_payment_address' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_guarantee_payment_address
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanGuaranteePaymentAddress
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_guarantee_payment_address table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanGuaranteePaymentAddress
+  permissions:
+    - role: admin
+      allowExecution: true
+

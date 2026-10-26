@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductMealPlansObject
+  fields:
+    - name: codeDetail
+      type: String_1
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: maxNumberProvided
+      type: Int32
+    - name: mealPlanCode
+      type: Enum
+    - name: valueAddInclusionsId
+      type: String_1!
+  graphql:
+    typeName: InsertHotelproductMealPlansObject
+    inputTypeName: InsertHotelproductMealPlansObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_meal_plans_object
+      fieldMapping:
+        codeDetail:
+          column:
+            name: code_detail
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        maxNumberProvided:
+          column:
+            name: max_number_provided
+        mealPlanCode:
+          column:
+            name: meal_plan_code
+        valueAddInclusionsId:
+          column:
+            name: value_add_inclusions_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductMealPlansObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeDetail
+          - descriptionId
+          - id
+          - maxNumberProvided
+          - mealPlanCode
+          - valueAddInclusionsId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductMealPlansResponse
+  description: Responses from the 'insert_hotelproduct_meal_plans' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductMealPlans!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductMealPlansResponse
+    inputTypeName: InsertHotelproductMealPlansResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_meal_plans_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductMealPlansResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductMealPlans
+  outputType: InsertHotelproductMealPlansResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductMealPlansObject!]!"
+    - name: postCheck
+      type: HotelproductMealPlansBoolExp
+      description: Insert permission predicate over the 'hotelproduct_meal_plans' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_meal_plans
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductMealPlans
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_meal_plans table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductMealPlans
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationPrepaidAmounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationPrepaidAmounts
+    inputTypeName: ReservationPrepaidAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_prepaid_amounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationPrepaidAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationPrepaidAmountsBoolExp
+  operand:
+    object:
+      type: ReservationPrepaidAmounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationPrepaidAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationPrepaidAmountsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationPrepaidAmounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationPrepaidAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationPrepaidAmountsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationPrepaidAmounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationPrepaidAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationPrepaidAmounts
+  objectType: ReservationPrepaidAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_prepaid_amounts
+  filterExpressionType: ReservationPrepaidAmountsBoolExp
+  aggregateExpression: ReservationPrepaidAmountsAggExp
+  orderByExpression: ReservationPrepaidAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationPrepaidAmounts
+      subscription:
+        rootField: reservationPrepaidAmounts
+    selectUniques:
+      - queryRootField: reservationPrepaidAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationPrepaidAmountsById
+    filterInputTypeName: ReservationPrepaidAmountsFilterInput
+    aggregate:
+      queryRootField: reservationPrepaidAmountsAggregate
+      subscription:
+        rootField: reservationPrepaidAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationPrepaidAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

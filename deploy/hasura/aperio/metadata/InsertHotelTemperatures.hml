@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelTemperaturesObject
+  fields:
+    - name: averageHighTemp
+      type: Int32
+    - name: averageLowTemp
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: tempUnit
+      type: Enum
+    - name: weatherInfoId
+      type: String_1!
+  graphql:
+    typeName: InsertHotelTemperaturesObject
+    inputTypeName: InsertHotelTemperaturesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_temperatures_object
+      fieldMapping:
+        averageHighTemp:
+          column:
+            name: average_high_temp
+        averageLowTemp:
+          column:
+            name: average_low_temp
+        id:
+          column:
+            name: id
+        tempUnit:
+          column:
+            name: temp_unit
+        weatherInfoId:
+          column:
+            name: weather_info_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelTemperaturesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - averageHighTemp
+          - averageLowTemp
+          - id
+          - tempUnit
+          - weatherInfoId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelTemperaturesResponse
+  description: Responses from the 'insert_hotel_temperatures' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelTemperatures!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelTemperaturesResponse
+    inputTypeName: InsertHotelTemperaturesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_temperatures_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelTemperaturesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelTemperatures
+  outputType: InsertHotelTemperaturesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelTemperaturesObject!]!"
+    - name: postCheck
+      type: HotelTemperaturesBoolExp
+      description: Insert permission predicate over the 'hotel_temperatures' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_temperatures
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelTemperatures
+    rootFieldKind: Mutation
+  description: Insert into the hotel_temperatures table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelTemperatures
+  permissions:
+    - role: admin
+      allowExecution: true
+

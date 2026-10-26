@@ -1,0 +1,183 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationDepartureDaysOfWeeksId
+  description: Update the 'id' column in the 'reservation_departure_days_of_weeks'
+    collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationDepartureDaysOfWeeksId
+    inputTypeName: UpdateColumnReservationDepartureDaysOfWeeksIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_departure_days_of_weeks_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationDepartureDaysOfWeeksId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationDepartureDaysOfWeeksWeekdays
+  description: Update the 'weekdays' column in the
+    'reservation_departure_days_of_weeks' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationDepartureDaysOfWeeksWeekdays
+    inputTypeName: UpdateColumnReservationDepartureDaysOfWeeksWeekdaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_departure_days_of_weeks_weekdays
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationDepartureDaysOfWeeksWeekdays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationDepartureDaysOfWeeksByIdUpdateColumns
+  description: Update the columns of the 'reservation_departure_days_of_weeks' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationDepartureDaysOfWeeksId
+      description: Update the 'id' column in the 'reservation_departure_days_of_weeks'
+        collection.
+    - name: weekdays
+      type: UpdateColumnReservationDepartureDaysOfWeeksWeekdays
+      description: Update the 'weekdays' column in the
+        'reservation_departure_days_of_weeks' collection.
+  graphql:
+    typeName: UpdateReservationDepartureDaysOfWeeksByIdUpdateColumns
+    inputTypeName: UpdateReservationDepartureDaysOfWeeksByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_departure_days_of_weeks_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationDepartureDaysOfWeeksByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationDepartureDaysOfWeeksByIdResponse
+  description: Responses from the
+    'update_reservation_departure_days_of_weeks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationDepartureDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationDepartureDaysOfWeeksByIdResponse
+    inputTypeName: UpdateReservationDepartureDaysOfWeeksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_departure_days_of_weeks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationDepartureDaysOfWeeksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationDepartureDaysOfWeeksById
+  outputType: UpdateReservationDepartureDaysOfWeeksByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationDepartureDaysOfWeeksBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_departure_days_of_weeks' collection
+    - name: preCheck
+      type: ReservationDepartureDaysOfWeeksBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_departure_days_of_weeks' collection
+    - name: updateColumns
+      type: UpdateReservationDepartureDaysOfWeeksByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_departure_days_of_weeks_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationDepartureDaysOfWeeksById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_departure_days_of_weeks'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationDepartureDaysOfWeeksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestrictionLosPatterns
+  fields:
+    - name: fullPatternLos
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RestrictionLosPatterns
+    inputTypeName: RestrictionLosPatternsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restriction_los_patterns
+      fieldMapping:
+        fullPatternLos:
+          column:
+            name: full_pattern_los
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestrictionLosPatterns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fullPatternLos
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestrictionLosPatternsBoolExp
+  operand:
+    object:
+      type: RestrictionLosPatterns
+      comparableFields:
+        - fieldName: fullPatternLos
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestrictionLosPatternsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestrictionLosPatternsAggExp
+  operand:
+    object:
+      aggregatedType: RestrictionLosPatterns
+      aggregatableFields:
+        - fieldName: fullPatternLos
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestrictionLosPatternsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestrictionLosPatternsOrderByExp
+  operand:
+    object:
+      orderedType: RestrictionLosPatterns
+      orderableFields:
+        - fieldName: fullPatternLos
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestrictionLosPatternsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestrictionLosPatterns
+  objectType: RestrictionLosPatterns
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restriction_los_patterns
+  filterExpressionType: RestrictionLosPatternsBoolExp
+  aggregateExpression: RestrictionLosPatternsAggExp
+  orderByExpression: RestrictionLosPatternsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restrictionLosPatterns
+      subscription:
+        rootField: restrictionLosPatterns
+    selectUniques:
+      - queryRootField: restrictionLosPatternsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restrictionLosPatternsById
+    filterInputTypeName: RestrictionLosPatternsFilterInput
+    aggregate:
+      queryRootField: restrictionLosPatternsAggregate
+      subscription:
+        rootField: restrictionLosPatternsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestrictionLosPatterns
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

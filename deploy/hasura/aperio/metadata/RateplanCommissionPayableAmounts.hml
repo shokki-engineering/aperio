@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCommissionPayableAmounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanCommissionPayableAmounts
+    inputTypeName: RateplanCommissionPayableAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_commission_payable_amounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCommissionPayableAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCommissionPayableAmountsBoolExp
+  operand:
+    object:
+      type: RateplanCommissionPayableAmounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCommissionPayableAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCommissionPayableAmountsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCommissionPayableAmounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCommissionPayableAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCommissionPayableAmountsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCommissionPayableAmounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCommissionPayableAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCommissionPayableAmounts
+  objectType: RateplanCommissionPayableAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_commission_payable_amounts
+  filterExpressionType: RateplanCommissionPayableAmountsBoolExp
+  aggregateExpression: RateplanCommissionPayableAmountsAggExp
+  orderByExpression: RateplanCommissionPayableAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCommissionPayableAmounts
+      subscription:
+        rootField: rateplanCommissionPayableAmounts
+    selectUniques:
+      - queryRootField: rateplanCommissionPayableAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCommissionPayableAmountsById
+    filterInputTypeName: RateplanCommissionPayableAmountsFilterInput
+    aggregate:
+      queryRootField: rateplanCommissionPayableAmountsAggregate
+      subscription:
+        rootField: rateplanCommissionPayableAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCommissionPayableAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

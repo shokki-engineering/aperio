@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanInventoryBlocks
+  fields:
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanInventoryBlocks
+    inputTypeName: RateplanInventoryBlocksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_inventory_blocks
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanInventoryBlocks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanInventoryBlocksBoolExp
+  operand:
+    object:
+      type: RateplanInventoryBlocks
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanInventoryBlocksBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanInventoryBlocksAggExp
+  operand:
+    object:
+      aggregatedType: RateplanInventoryBlocks
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanInventoryBlocksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanInventoryBlocksOrderByExp
+  operand:
+    object:
+      orderedType: RateplanInventoryBlocks
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanInventoryBlocksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanInventoryBlocks
+  objectType: RateplanInventoryBlocks
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_inventory_blocks
+  filterExpressionType: RateplanInventoryBlocksBoolExp
+  aggregateExpression: RateplanInventoryBlocksAggExp
+  orderByExpression: RateplanInventoryBlocksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanInventoryBlocks
+      subscription:
+        rootField: rateplanInventoryBlocks
+    selectUniques:
+      - queryRootField: rateplanInventoryBlocksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanInventoryBlocksById
+    filterInputTypeName: RateplanInventoryBlocksFilterInput
+    aggregate:
+      queryRootField: rateplanInventoryBlocksAggregate
+      subscription:
+        rootField: rateplanInventoryBlocksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanInventoryBlocks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

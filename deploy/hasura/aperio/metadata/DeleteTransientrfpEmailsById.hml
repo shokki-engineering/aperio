@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteTransientrfpEmailsByIdResponse
+  description: Responses from the 'delete_transientrfp_emails_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[TransientrfpEmails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteTransientrfpEmailsByIdResponse
+    inputTypeName: DeleteTransientrfpEmailsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_transientrfp_emails_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteTransientrfpEmailsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteTransientrfpEmailsById
+  outputType: DeleteTransientrfpEmailsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: TransientrfpEmailsBoolExp
+      description: Delete permission predicate over the 'transientrfp_emails' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_transientrfp_emails_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteTransientrfpEmailsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'transientrfp_emails' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteTransientrfpEmailsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

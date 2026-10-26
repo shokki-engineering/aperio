@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelTextItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertHotelTextItemsObject
+    inputTypeName: InsertHotelTextItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_text_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelTextItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelTextItemsResponse
+  description: Responses from the 'insert_hotel_text_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelTextItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelTextItemsResponse
+    inputTypeName: InsertHotelTextItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_text_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelTextItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelTextItems
+  outputType: InsertHotelTextItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelTextItemsObject!]!"
+    - name: postCheck
+      type: HotelTextItemsBoolExp
+      description: Insert permission predicate over the 'hotel_text_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_text_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelTextItems
+    rootFieldKind: Mutation
+  description: Insert into the hotel_text_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelTextItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

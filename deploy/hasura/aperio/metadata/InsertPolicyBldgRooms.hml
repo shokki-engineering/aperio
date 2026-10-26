@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyBldgRoomsObject
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertPolicyBldgRoomsObject
+    inputTypeName: InsertPolicyBldgRoomsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_bldg_rooms_object
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyBldgRoomsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyBldgRoomsResponse
+  description: Responses from the 'insert_policy_bldg_rooms' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyBldgRoomsResponse
+    inputTypeName: InsertPolicyBldgRoomsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_bldg_rooms_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyBldgRoomsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyBldgRooms
+  outputType: InsertPolicyBldgRoomsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyBldgRoomsObject!]!"
+    - name: postCheck
+      type: PolicyBldgRoomsBoolExp
+      description: Insert permission predicate over the 'policy_bldg_rooms' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_bldg_rooms
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyBldgRooms
+    rootFieldKind: Mutation
+  description: Insert into the policy_bldg_rooms table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyBldgRooms
+  permissions:
+    - role: admin
+      allowExecution: true
+

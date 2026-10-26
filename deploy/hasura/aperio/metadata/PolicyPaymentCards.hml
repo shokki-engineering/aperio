@@ -1,0 +1,385 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyPaymentCards
+  fields:
+    - name: addressId
+      type: String_1
+    - name: cardCodeId
+      type: String_1
+    - name: cardHolderDisplayName
+      type: String_1
+    - name: cardHolderNameDetailsId
+      type: String_1
+    - name: cardHolderRph
+      type: String_1
+    - name: cardNumberId
+      type: String_1
+    - name: cardTypeId
+      type: String_1
+    - name: companyCardReference
+      type: String_1
+    - name: effectiveMonthYear
+      type: String_1
+    - name: expiryMonthYear
+      type: String_1
+    - name: extendedPayment
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: issueRegionCode
+      type: String_1
+    - name: issuerId
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: secure
+      type: Boolean_1
+    - name: seriesCodeId
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: signatureOnFileHeld
+      type: Boolean_1
+    - name: signatureOnFileId
+      type: String_1
+    - name: threeDomainSecurityId
+      type: String_1
+  graphql:
+    typeName: PolicyPaymentCards
+    inputTypeName: PolicyPaymentCardsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_payment_cards
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        cardCodeId:
+          column:
+            name: card_code_id
+        cardHolderDisplayName:
+          column:
+            name: card_holder_display_name
+        cardHolderNameDetailsId:
+          column:
+            name: card_holder_name_details_id
+        cardHolderRph:
+          column:
+            name: card_holder_rph
+        cardNumberId:
+          column:
+            name: card_number_id
+        cardTypeId:
+          column:
+            name: card_type_id
+        companyCardReference:
+          column:
+            name: company_card_reference
+        effectiveMonthYear:
+          column:
+            name: effective_month_year
+        expiryMonthYear:
+          column:
+            name: expiry_month_year
+        extendedPayment:
+          column:
+            name: extended_payment
+        id:
+          column:
+            name: id
+        issueRegionCode:
+          column:
+            name: issue_region_code
+        issuerId:
+          column:
+            name: issuer_id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        secure:
+          column:
+            name: secure
+        seriesCodeId:
+          column:
+            name: series_code_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        signatureOnFileHeld:
+          column:
+            name: signature_on_file_held
+        signatureOnFileId:
+          column:
+            name: signature_on_file_id
+        threeDomainSecurityId:
+          column:
+            name: three_domain_security_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyPaymentCards
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - cardCodeId
+          - cardHolderDisplayName
+          - cardHolderNameDetailsId
+          - cardHolderRph
+          - cardNumberId
+          - cardTypeId
+          - companyCardReference
+          - effectiveMonthYear
+          - expiryMonthYear
+          - extendedPayment
+          - id
+          - issueRegionCode
+          - issuerId
+          - remark
+          - rph
+          - secure
+          - seriesCodeId
+          - shareMarketInd
+          - shareSynchInd
+          - signatureOnFileHeld
+          - signatureOnFileId
+          - threeDomainSecurityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyPaymentCardsBoolExp
+  operand:
+    object:
+      type: PolicyPaymentCards
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cardCodeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cardHolderDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: cardHolderNameDetailsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cardHolderRph
+          booleanExpressionType: TextBoolExp
+        - fieldName: cardNumberId
+          booleanExpressionType: TextBoolExp
+        - fieldName: cardTypeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyCardReference
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveMonthYear
+          booleanExpressionType: TextBoolExp
+        - fieldName: expiryMonthYear
+          booleanExpressionType: TextBoolExp
+        - fieldName: extendedPayment
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: issueRegionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: issuerId
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: secure
+          booleanExpressionType: BoolBoolExp
+        - fieldName: seriesCodeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: PolicyPolicyAcceptedPaymentShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: PolicyPolicyAcceptedPaymentShareSynchIndBoolExp
+        - fieldName: signatureOnFileHeld
+          booleanExpressionType: BoolBoolExp
+        - fieldName: signatureOnFileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: threeDomainSecurityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyPaymentCardsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyPaymentCardsAggExp
+  operand:
+    object:
+      aggregatedType: PolicyPaymentCards
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: cardCodeId
+          aggregateExpression: TextAggExp
+        - fieldName: cardHolderDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: cardHolderNameDetailsId
+          aggregateExpression: TextAggExp
+        - fieldName: cardHolderRph
+          aggregateExpression: TextAggExp
+        - fieldName: cardNumberId
+          aggregateExpression: TextAggExp
+        - fieldName: cardTypeId
+          aggregateExpression: TextAggExp
+        - fieldName: companyCardReference
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveMonthYear
+          aggregateExpression: TextAggExp
+        - fieldName: expiryMonthYear
+          aggregateExpression: TextAggExp
+        - fieldName: extendedPayment
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: issueRegionCode
+          aggregateExpression: TextAggExp
+        - fieldName: issuerId
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: secure
+          aggregateExpression: BoolAggExp
+        - fieldName: seriesCodeId
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: PolicyPolicyAcceptedPaymentShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: PolicyPolicyAcceptedPaymentShareSynchIndAggExp
+        - fieldName: signatureOnFileHeld
+          aggregateExpression: BoolAggExp
+        - fieldName: signatureOnFileId
+          aggregateExpression: TextAggExp
+        - fieldName: threeDomainSecurityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyPaymentCardsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyPaymentCardsOrderByExp
+  operand:
+    object:
+      orderedType: PolicyPaymentCards
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: cardCodeId
+          orderByExpression: String1OrderByExp
+        - fieldName: cardHolderDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: cardHolderNameDetailsId
+          orderByExpression: String1OrderByExp
+        - fieldName: cardHolderRph
+          orderByExpression: String1OrderByExp
+        - fieldName: cardNumberId
+          orderByExpression: String1OrderByExp
+        - fieldName: cardTypeId
+          orderByExpression: String1OrderByExp
+        - fieldName: companyCardReference
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveMonthYear
+          orderByExpression: String1OrderByExp
+        - fieldName: expiryMonthYear
+          orderByExpression: String1OrderByExp
+        - fieldName: extendedPayment
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: issueRegionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: issuerId
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: secure
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: seriesCodeId
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: signatureOnFileHeld
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: signatureOnFileId
+          orderByExpression: String1OrderByExp
+        - fieldName: threeDomainSecurityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyPaymentCardsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyPaymentCards
+  objectType: PolicyPaymentCards
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_payment_cards
+  filterExpressionType: PolicyPaymentCardsBoolExp
+  aggregateExpression: PolicyPaymentCardsAggExp
+  orderByExpression: PolicyPaymentCardsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyPaymentCards
+      subscription:
+        rootField: policyPaymentCards
+    selectUniques:
+      - queryRootField: policyPaymentCardsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyPaymentCardsById
+    filterInputTypeName: PolicyPaymentCardsFilterInput
+    aggregate:
+      queryRootField: policyPaymentCardsAggregate
+      subscription:
+        rootField: policyPaymentCardsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyPaymentCards
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

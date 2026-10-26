@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventreportAudioVisualsByIdResponse
+  description: Responses from the 'delete_eventreport_audio_visuals_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportAudioVisuals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventreportAudioVisualsByIdResponse
+    inputTypeName: DeleteEventreportAudioVisualsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_eventreport_audio_visuals_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventreportAudioVisualsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventreportAudioVisualsById
+  outputType: DeleteEventreportAudioVisualsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventreportAudioVisualsBoolExp
+      description: Delete permission predicate over the 'eventreport_audio_visuals'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_eventreport_audio_visuals_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventreportAudioVisualsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'eventreport_audio_visuals' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventreportAudioVisualsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

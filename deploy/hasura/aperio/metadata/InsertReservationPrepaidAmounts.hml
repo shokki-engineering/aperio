@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationPrepaidAmountsObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertReservationPrepaidAmountsObject
+    inputTypeName: InsertReservationPrepaidAmountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_prepaid_amounts_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationPrepaidAmountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationPrepaidAmountsResponse
+  description: Responses from the 'insert_reservation_prepaid_amounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationPrepaidAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationPrepaidAmountsResponse
+    inputTypeName: InsertReservationPrepaidAmountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_prepaid_amounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationPrepaidAmountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationPrepaidAmounts
+  outputType: InsertReservationPrepaidAmountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationPrepaidAmountsObject!]!"
+    - name: postCheck
+      type: ReservationPrepaidAmountsBoolExp
+      description: Insert permission predicate over the 'reservation_prepaid_amounts'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_prepaid_amounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationPrepaidAmounts
+    rootFieldKind: Mutation
+  description: Insert into the reservation_prepaid_amounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationPrepaidAmounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

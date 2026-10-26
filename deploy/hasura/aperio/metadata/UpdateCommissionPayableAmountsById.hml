@@ -1,0 +1,186 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionPayableAmountsAmountId
+  description: Update the 'amount_id' column in the 'commission_payable_amounts' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionPayableAmountsAmountId
+    inputTypeName: UpdateColumnCommissionPayableAmountsAmountIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_payable_amounts_amount_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionPayableAmountsAmountId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnCommissionPayableAmountsId
+  description: Update the 'id' column in the 'commission_payable_amounts' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnCommissionPayableAmountsId
+    inputTypeName: UpdateColumnCommissionPayableAmountsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_commission_payable_amounts_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnCommissionPayableAmountsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCommissionPayableAmountsByIdUpdateColumns
+  description: Update the columns of the 'commission_payable_amounts' collection
+  fields:
+    - name: amountId
+      type: UpdateColumnCommissionPayableAmountsAmountId
+      description: Update the 'amount_id' column in the 'commission_payable_amounts'
+        collection.
+    - name: id
+      type: UpdateColumnCommissionPayableAmountsId
+      description: Update the 'id' column in the 'commission_payable_amounts' collection.
+  graphql:
+    typeName: UpdateCommissionPayableAmountsByIdUpdateColumns
+    inputTypeName: UpdateCommissionPayableAmountsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_commission_payable_amounts_by_id_update_columns
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCommissionPayableAmountsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateCommissionPayableAmountsByIdResponse
+  description: Responses from the 'update_commission_payable_amounts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionPayableAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateCommissionPayableAmountsByIdResponse
+    inputTypeName: UpdateCommissionPayableAmountsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_commission_payable_amounts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateCommissionPayableAmountsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateCommissionPayableAmountsById
+  outputType: UpdateCommissionPayableAmountsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: CommissionPayableAmountsBoolExp
+      description: Update permission post-condition predicate over the
+        'commission_payable_amounts' collection
+    - name: preCheck
+      type: CommissionPayableAmountsBoolExp
+      description: Update permission pre-condition predicate over the
+        'commission_payable_amounts' collection
+    - name: updateColumns
+      type: UpdateCommissionPayableAmountsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_commission_payable_amounts_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateCommissionPayableAmountsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'commission_payable_amounts' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateCommissionPayableAmountsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

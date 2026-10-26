@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoTransportations
+  fields:
+    - name: amountId
+      type: String_1
+    - name: chargeUnit
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: included
+      type: Boolean_1
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: notificationRequired
+      type: String_1
+    - name: operationSchedulesId
+      type: String_1
+    - name: refPointId
+      type: String_1!
+    - name: transportationCode
+      type: Enum
+    - name: typicalTravelDuration
+      type: String_1
+  graphql:
+    typeName: AreainfoTransportations
+    inputTypeName: AreainfoTransportationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_transportations
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        chargeUnit:
+          column:
+            name: charge_unit
+        codeDetail:
+          column:
+            name: code_detail
+        description:
+          column:
+            name: description
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        included:
+          column:
+            name: included
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        notificationRequired:
+          column:
+            name: notification_required
+        operationSchedulesId:
+          column:
+            name: operation_schedules_id
+        refPointId:
+          column:
+            name: ref_point_id
+        transportationCode:
+          column:
+            name: transportation_code
+        typicalTravelDuration:
+          column:
+            name: typical_travel_duration
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoTransportations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - chargeUnit
+          - codeDetail
+          - description
+          - descriptiveText
+          - existsCode
+          - id
+          - included
+          - multimediaDescriptionsId
+          - notificationRequired
+          - operationSchedulesId
+          - refPointId
+          - transportationCode
+          - typicalTravelDuration
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoTransportationsBoolExp
+  operand:
+    object:
+      type: AreainfoTransportations
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chargeUnit
+          booleanExpressionType: AreainfoAreainfoChargeTypeBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: AreainfoAreainfoOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: included
+          booleanExpressionType: BoolBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: notificationRequired
+          booleanExpressionType: TextBoolExp
+        - fieldName: operationSchedulesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: refPointId
+          booleanExpressionType: TextBoolExp
+        - fieldName: transportationCode
+          booleanExpressionType: AreainfoAreainfoTransportationCodeBoolExp
+        - fieldName: typicalTravelDuration
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoTransportationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoTransportationsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoTransportations
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: chargeUnit
+          aggregateExpression: AreainfoAreainfoChargeTypeAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: AreainfoAreainfoOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: included
+          aggregateExpression: BoolAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: notificationRequired
+          aggregateExpression: TextAggExp
+        - fieldName: operationSchedulesId
+          aggregateExpression: TextAggExp
+        - fieldName: refPointId
+          aggregateExpression: TextAggExp
+        - fieldName: transportationCode
+          aggregateExpression: AreainfoAreainfoTransportationCodeAggExp
+        - fieldName: typicalTravelDuration
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoTransportationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoTransportationsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoTransportations
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: chargeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: included
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: notificationRequired
+          orderByExpression: String1OrderByExp
+        - fieldName: operationSchedulesId
+          orderByExpression: String1OrderByExp
+        - fieldName: refPointId
+          orderByExpression: String1OrderByExp
+        - fieldName: transportationCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: typicalTravelDuration
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoTransportationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoTransportations
+  objectType: AreainfoTransportations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_transportations
+  filterExpressionType: AreainfoTransportationsBoolExp
+  aggregateExpression: AreainfoTransportationsAggExp
+  orderByExpression: AreainfoTransportationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoTransportations
+      subscription:
+        rootField: areainfoTransportations
+    selectUniques:
+      - queryRootField: areainfoTransportationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoTransportationsById
+    filterInputTypeName: AreainfoTransportationsFilterInput
+    aggregate:
+      queryRootField: areainfoTransportationsAggregate
+      subscription:
+        rootField: areainfoTransportationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoTransportations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

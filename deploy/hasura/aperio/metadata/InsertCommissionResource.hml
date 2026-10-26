@@ -1,0 +1,264 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionResourceObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: bookingSource
+      type: String_1
+    - name: commissionOriginatorCode
+      type: String_1
+    - name: confirmationId
+      type: String_1
+    - name: confirmationOriginatorCode
+      type: String_1
+    - name: createTime
+      type: Timestamptz
+    - name: deleteTime
+      type: Timestamptz
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: marketCode
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: originalBookingDayId
+      type: String_1
+    - name: payeeAddressId
+      type: String_1
+    - name: payeeId
+      type: String_1
+    - name: preferredPaymentCurrency
+      type: String_1
+    - name: profileCertificationId
+      type: String_1
+    - name: promotionCode
+      type: String_1
+    - name: reservationId
+      type: String_1
+    - name: roomCount
+      type: Int32
+    - name: roomInventoryCode
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertCommissionResourceObject
+    inputTypeName: InsertCommissionResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_resource_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        bookingSource:
+          column:
+            name: booking_source
+        commissionOriginatorCode:
+          column:
+            name: commission_originator_code
+        confirmationId:
+          column:
+            name: confirmation_id
+        confirmationOriginatorCode:
+          column:
+            name: confirmation_originator_code
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        marketCode:
+          column:
+            name: market_code
+        name:
+          column:
+            name: name
+        originalBookingDayId:
+          column:
+            name: original_booking_day_id
+        payeeAddressId:
+          column:
+            name: payee_address_id
+        payeeId:
+          column:
+            name: payee_id
+        preferredPaymentCurrency:
+          column:
+            name: preferred_payment_currency
+        profileCertificationId:
+          column:
+            name: profile_certification_id
+        promotionCode:
+          column:
+            name: promotion_code
+        reservationId:
+          column:
+            name: reservation_id
+        roomCount:
+          column:
+            name: room_count
+        roomInventoryCode:
+          column:
+            name: room_inventory_code
+        startId:
+          column:
+            name: start_id
+        uid:
+          column:
+            name: uid
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - bookingSource
+          - commissionOriginatorCode
+          - confirmationId
+          - confirmationOriginatorCode
+          - createTime
+          - deleteTime
+          - duration
+          - endId
+          - etag
+          - expireTime
+          - hotelId
+          - id
+          - marketCode
+          - name
+          - originalBookingDayId
+          - payeeAddressId
+          - payeeId
+          - preferredPaymentCurrency
+          - profileCertificationId
+          - promotionCode
+          - reservationId
+          - roomCount
+          - roomInventoryCode
+          - startId
+          - uid
+          - uniqueIdId
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionResourceResponse
+  description: Responses from the 'insert_commission_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCommissionResourceResponse
+    inputTypeName: InsertCommissionResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCommissionResource
+  outputType: InsertCommissionResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCommissionResourceObject!]!"
+    - name: postCheck
+      type: CommissionResourceBoolExp
+      description: Insert permission predicate over the 'commission_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_commission_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCommissionResource
+    rootFieldKind: Mutation
+  description: Insert into the commission_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCommissionResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

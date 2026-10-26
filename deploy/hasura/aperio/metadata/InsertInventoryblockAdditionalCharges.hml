@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockAdditionalChargesObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: hotelAdditionalChargesId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: roomAmenityCode
+      type: Enum
+  graphql:
+    typeName: InsertInventoryblockAdditionalChargesObject
+    inputTypeName: InsertInventoryblockAdditionalChargesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_additional_charges_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        hotelAdditionalChargesId:
+          column:
+            name: hotel_additional_charges_id
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        roomAmenityCode:
+          column:
+            name: room_amenity_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockAdditionalChargesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - hotelAdditionalChargesId
+          - id
+          - quantity
+          - roomAmenityCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockAdditionalChargesResponse
+  description: Responses from the 'insert_inventoryblock_additional_charges' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockAdditionalCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockAdditionalChargesResponse
+    inputTypeName: InsertInventoryblockAdditionalChargesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_additional_charges_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockAdditionalChargesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockAdditionalCharges
+  outputType: InsertInventoryblockAdditionalChargesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockAdditionalChargesObject!]!"
+    - name: postCheck
+      type: InventoryblockAdditionalChargesBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_additional_charges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_additional_charges
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockAdditionalCharges
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_additional_charges table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockAdditionalCharges
+  permissions:
+    - role: admin
+      allowExecution: true
+

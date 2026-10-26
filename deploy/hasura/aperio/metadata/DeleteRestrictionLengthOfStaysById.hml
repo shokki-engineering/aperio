@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestrictionLengthOfStaysByIdResponse
+  description: Responses from the 'delete_restriction_length_of_stays_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionLengthOfStays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestrictionLengthOfStaysByIdResponse
+    inputTypeName: DeleteRestrictionLengthOfStaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restriction_length_of_stays_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestrictionLengthOfStaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestrictionLengthOfStaysById
+  outputType: DeleteRestrictionLengthOfStaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestrictionLengthOfStaysBoolExp
+      description: Delete permission predicate over the 'restriction_length_of_stays'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restriction_length_of_stays_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestrictionLengthOfStaysById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'restriction_length_of_stays' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestrictionLengthOfStaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

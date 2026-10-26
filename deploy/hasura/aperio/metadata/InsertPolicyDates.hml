@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertPolicyDatesObject
+    inputTypeName: InsertPolicyDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyDatesResponse
+  description: Responses from the 'insert_policy_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyDatesResponse
+    inputTypeName: InsertPolicyDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyDates
+  outputType: InsertPolicyDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyDatesObject!]!"
+    - name: postCheck
+      type: PolicyDatesBoolExp
+      description: Insert permission predicate over the 'policy_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyDates
+    rootFieldKind: Mutation
+  description: Insert into the policy_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

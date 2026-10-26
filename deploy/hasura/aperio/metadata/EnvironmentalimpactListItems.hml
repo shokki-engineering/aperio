@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EnvironmentalimpactListItems
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EnvironmentalimpactListItems
+    inputTypeName: EnvironmentalimpactListItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: environmentalimpact_list_items
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EnvironmentalimpactListItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EnvironmentalimpactListItemsBoolExp
+  operand:
+    object:
+      type: EnvironmentalimpactListItems
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: EnvironmentalimpactEnvironmentalimpactTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EnvironmentalimpactListItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EnvironmentalimpactListItemsAggExp
+  operand:
+    object:
+      aggregatedType: EnvironmentalimpactListItems
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: EnvironmentalimpactEnvironmentalimpactTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EnvironmentalimpactListItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EnvironmentalimpactListItemsOrderByExp
+  operand:
+    object:
+      orderedType: EnvironmentalimpactListItems
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EnvironmentalimpactListItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EnvironmentalimpactListItems
+  objectType: EnvironmentalimpactListItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: environmentalimpact_list_items
+  filterExpressionType: EnvironmentalimpactListItemsBoolExp
+  aggregateExpression: EnvironmentalimpactListItemsAggExp
+  orderByExpression: EnvironmentalimpactListItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: environmentalimpactListItems
+      subscription:
+        rootField: environmentalimpactListItems
+    selectUniques:
+      - queryRootField: environmentalimpactListItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: environmentalimpactListItemsById
+    filterInputTypeName: EnvironmentalimpactListItemsFilterInput
+    aggregate:
+      queryRootField: environmentalimpactListItemsAggregate
+      subscription:
+        rootField: environmentalimpactListItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EnvironmentalimpactListItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,270 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEnvironmentalimpactRecyclingsActiveProgram
+  description: Update the 'active_program' column in the
+    'environmentalimpact_recyclings' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEnvironmentalimpactRecyclingsActiveProgram
+    inputTypeName: UpdateColumnEnvironmentalimpactRecyclingsActiveProgramInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_environmentalimpact_recyclings_active_program
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEnvironmentalimpactRecyclingsActiveProgram
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEnvironmentalimpactRecyclingsDetailsId
+  description: Update the 'details_id' column in the
+    'environmentalimpact_recyclings' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEnvironmentalimpactRecyclingsDetailsId
+    inputTypeName: UpdateColumnEnvironmentalimpactRecyclingsDetailsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_environmentalimpact_recyclings_details_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEnvironmentalimpactRecyclingsDetailsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEnvironmentalimpactRecyclingsEcologicalDishware
+  description: Update the 'ecological_dishware' column in the
+    'environmentalimpact_recyclings' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEnvironmentalimpactRecyclingsEcologicalDishware
+    inputTypeName: UpdateColumnEnvironmentalimpactRecyclingsEcologicalDishwareInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_environmentalimpact_recyclings_ecological_dishware
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEnvironmentalimpactRecyclingsEcologicalDishware
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEnvironmentalimpactRecyclingsId
+  description: Update the 'id' column in the 'environmentalimpact_recyclings' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEnvironmentalimpactRecyclingsId
+    inputTypeName: UpdateColumnEnvironmentalimpactRecyclingsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_environmentalimpact_recyclings_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEnvironmentalimpactRecyclingsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEnvironmentalimpactRecyclingsByIdUpdateColumns
+  description: Update the columns of the 'environmentalimpact_recyclings' collection
+  fields:
+    - name: activeProgram
+      type: UpdateColumnEnvironmentalimpactRecyclingsActiveProgram
+      description: Update the 'active_program' column in the
+        'environmentalimpact_recyclings' collection.
+    - name: detailsId
+      type: UpdateColumnEnvironmentalimpactRecyclingsDetailsId
+      description: Update the 'details_id' column in the
+        'environmentalimpact_recyclings' collection.
+    - name: ecologicalDishware
+      type: UpdateColumnEnvironmentalimpactRecyclingsEcologicalDishware
+      description: Update the 'ecological_dishware' column in the
+        'environmentalimpact_recyclings' collection.
+    - name: id
+      type: UpdateColumnEnvironmentalimpactRecyclingsId
+      description: Update the 'id' column in the 'environmentalimpact_recyclings'
+        collection.
+  graphql:
+    typeName: UpdateEnvironmentalimpactRecyclingsByIdUpdateColumns
+    inputTypeName: UpdateEnvironmentalimpactRecyclingsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_environmentalimpact_recyclings_by_id_update_columns
+      fieldMapping:
+        activeProgram:
+          column:
+            name: active_program
+        detailsId:
+          column:
+            name: details_id
+        ecologicalDishware:
+          column:
+            name: ecological_dishware
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEnvironmentalimpactRecyclingsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - activeProgram
+          - detailsId
+          - ecologicalDishware
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEnvironmentalimpactRecyclingsByIdResponse
+  description: Responses from the 'update_environmentalimpact_recyclings_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EnvironmentalimpactRecyclings!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEnvironmentalimpactRecyclingsByIdResponse
+    inputTypeName: UpdateEnvironmentalimpactRecyclingsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_environmentalimpact_recyclings_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEnvironmentalimpactRecyclingsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEnvironmentalimpactRecyclingsById
+  outputType: UpdateEnvironmentalimpactRecyclingsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EnvironmentalimpactRecyclingsBoolExp
+      description: Update permission post-condition predicate over the
+        'environmentalimpact_recyclings' collection
+    - name: preCheck
+      type: EnvironmentalimpactRecyclingsBoolExp
+      description: Update permission pre-condition predicate over the
+        'environmentalimpact_recyclings' collection
+    - name: updateColumns
+      type: UpdateEnvironmentalimpactRecyclingsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_environmentalimpact_recyclings_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEnvironmentalimpactRecyclingsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'environmentalimpact_recyclings' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEnvironmentalimpactRecyclingsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

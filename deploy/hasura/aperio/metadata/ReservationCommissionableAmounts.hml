@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationCommissionableAmounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: taxInclusiveIndicator
+      type: Boolean_1
+  graphql:
+    typeName: ReservationCommissionableAmounts
+    inputTypeName: ReservationCommissionableAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_commissionable_amounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+        taxInclusiveIndicator:
+          column:
+            name: tax_inclusive_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationCommissionableAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+          - taxInclusiveIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationCommissionableAmountsBoolExp
+  operand:
+    object:
+      type: ReservationCommissionableAmounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxInclusiveIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationCommissionableAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationCommissionableAmountsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationCommissionableAmounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: taxInclusiveIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationCommissionableAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationCommissionableAmountsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationCommissionableAmounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: taxInclusiveIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationCommissionableAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationCommissionableAmounts
+  objectType: ReservationCommissionableAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_commissionable_amounts
+  filterExpressionType: ReservationCommissionableAmountsBoolExp
+  aggregateExpression: ReservationCommissionableAmountsAggExp
+  orderByExpression: ReservationCommissionableAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationCommissionableAmounts
+      subscription:
+        rootField: reservationCommissionableAmounts
+    selectUniques:
+      - queryRootField: reservationCommissionableAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationCommissionableAmountsById
+    filterInputTypeName: ReservationCommissionableAmountsFilterInput
+    aggregate:
+      queryRootField: reservationCommissionableAmountsAggregate
+      subscription:
+        rootField: reservationCommissionableAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationCommissionableAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

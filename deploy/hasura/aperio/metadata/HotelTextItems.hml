@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelTextItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: HotelTextItems
+    inputTypeName: HotelTextItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_text_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelTextItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelTextItemsBoolExp
+  operand:
+    object:
+      type: HotelTextItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelTextItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelTextItemsAggExp
+  operand:
+    object:
+      aggregatedType: HotelTextItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelTextItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelTextItemsOrderByExp
+  operand:
+    object:
+      orderedType: HotelTextItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelTextItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelTextItems
+  objectType: HotelTextItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_text_items
+  filterExpressionType: HotelTextItemsBoolExp
+  aggregateExpression: HotelTextItemsAggExp
+  orderByExpression: HotelTextItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelTextItems
+      subscription:
+        rootField: hotelTextItems
+    selectUniques:
+      - queryRootField: hotelTextItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelTextItemsById
+    filterInputTypeName: HotelTextItemsFilterInput
+    aggregate:
+      queryRootField: hotelTextItemsAggregate
+      subscription:
+        rootField: hotelTextItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelTextItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

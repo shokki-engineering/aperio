@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventExhibitions
+  fields:
+    - name: companyQuantity
+      type: Int32
+    - name: eventInfoId
+      type: String_1!
+    - name: exhibitQuantity
+      type: Int32
+    - name: exhibitorInfoId
+      type: String_1
+    - name: generalServiceContractor
+      type: Boolean_1
+    - name: grossExhibitionSpace
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: kitDistributionCode
+      type: String_1
+    - name: kitFormatCode
+      type: String_1
+    - name: netExhibitionSpace
+      type: Int32
+    - name: securedAreaIndicator
+      type: Boolean_1
+    - name: type
+      type: Enum
+    - name: unitCode
+      type: Enum
+  graphql:
+    typeName: EventExhibitions
+    inputTypeName: EventExhibitionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_exhibitions
+      fieldMapping:
+        companyQuantity:
+          column:
+            name: company_quantity
+        eventInfoId:
+          column:
+            name: event_info_id
+        exhibitQuantity:
+          column:
+            name: exhibit_quantity
+        exhibitorInfoId:
+          column:
+            name: exhibitor_info_id
+        generalServiceContractor:
+          column:
+            name: general_service_contractor
+        grossExhibitionSpace:
+          column:
+            name: gross_exhibition_space
+        id:
+          column:
+            name: id
+        kitDistributionCode:
+          column:
+            name: kit_distribution_code
+        kitFormatCode:
+          column:
+            name: kit_format_code
+        netExhibitionSpace:
+          column:
+            name: net_exhibition_space
+        securedAreaIndicator:
+          column:
+            name: secured_area_indicator
+        type:
+          column:
+            name: type
+        unitCode:
+          column:
+            name: unit_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventExhibitions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyQuantity
+          - eventInfoId
+          - exhibitQuantity
+          - exhibitorInfoId
+          - generalServiceContractor
+          - grossExhibitionSpace
+          - id
+          - kitDistributionCode
+          - kitFormatCode
+          - netExhibitionSpace
+          - securedAreaIndicator
+          - type
+          - unitCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventExhibitionsBoolExp
+  operand:
+    object:
+      type: EventExhibitions
+      comparableFields:
+        - fieldName: companyQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: eventInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: exhibitQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: exhibitorInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: generalServiceContractor
+          booleanExpressionType: BoolBoolExp
+        - fieldName: grossExhibitionSpace
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: kitDistributionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: kitFormatCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: netExhibitionSpace
+          booleanExpressionType: Int4BoolExp
+        - fieldName: securedAreaIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: type
+          booleanExpressionType: EventEventEventInfoExhibitionTypeBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: EventEventUnitOfMeasureCodeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventExhibitionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventExhibitionsAggExp
+  operand:
+    object:
+      aggregatedType: EventExhibitions
+      aggregatableFields:
+        - fieldName: companyQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: eventInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: exhibitQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: exhibitorInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: generalServiceContractor
+          aggregateExpression: BoolAggExp
+        - fieldName: grossExhibitionSpace
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: kitDistributionCode
+          aggregateExpression: TextAggExp
+        - fieldName: kitFormatCode
+          aggregateExpression: TextAggExp
+        - fieldName: netExhibitionSpace
+          aggregateExpression: Int4AggExp
+        - fieldName: securedAreaIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: type
+          aggregateExpression: EventEventEventInfoExhibitionTypeAggExp
+        - fieldName: unitCode
+          aggregateExpression: EventEventUnitOfMeasureCodeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventExhibitionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventExhibitionsOrderByExp
+  operand:
+    object:
+      orderedType: EventExhibitions
+      orderableFields:
+        - fieldName: companyQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: eventInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: exhibitQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: exhibitorInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: generalServiceContractor
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: grossExhibitionSpace
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: kitDistributionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: kitFormatCode
+          orderByExpression: String1OrderByExp
+        - fieldName: netExhibitionSpace
+          orderByExpression: Int32OrderByExp
+        - fieldName: securedAreaIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventExhibitionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventExhibitions
+  objectType: EventExhibitions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_exhibitions
+  filterExpressionType: EventExhibitionsBoolExp
+  aggregateExpression: EventExhibitionsAggExp
+  orderByExpression: EventExhibitionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventExhibitions
+      subscription:
+        rootField: eventExhibitions
+    selectUniques:
+      - queryRootField: eventExhibitionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventExhibitionsById
+    filterInputTypeName: EventExhibitionsFilterInput
+    aggregate:
+      queryRootField: eventExhibitionsAggregate
+      subscription:
+        rootField: eventExhibitionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventExhibitions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

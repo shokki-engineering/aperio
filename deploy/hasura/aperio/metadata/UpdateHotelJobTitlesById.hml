@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelJobTitlesId
+  description: Update the 'id' column in the 'hotel_job_titles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelJobTitlesId
+    inputTypeName: UpdateColumnHotelJobTitlesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_job_titles_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelJobTitlesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelJobTitlesNameId
+  description: Update the 'name_id' column in the 'hotel_job_titles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelJobTitlesNameId
+    inputTypeName: UpdateColumnHotelJobTitlesNameIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_job_titles_name_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelJobTitlesNameId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelJobTitlesType
+  description: Update the 'type' column in the 'hotel_job_titles' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelJobTitlesType
+    inputTypeName: UpdateColumnHotelJobTitlesTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_job_titles_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelJobTitlesType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelJobTitlesValue
+  description: Update the 'value' column in the 'hotel_job_titles' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelJobTitlesValue
+    inputTypeName: UpdateColumnHotelJobTitlesValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_job_titles_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelJobTitlesValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelJobTitlesByIdUpdateColumns
+  description: Update the columns of the 'hotel_job_titles' collection
+  fields:
+    - name: id
+      type: UpdateColumnHotelJobTitlesId
+      description: Update the 'id' column in the 'hotel_job_titles' collection.
+    - name: nameId
+      type: UpdateColumnHotelJobTitlesNameId
+      description: Update the 'name_id' column in the 'hotel_job_titles' collection.
+    - name: type
+      type: UpdateColumnHotelJobTitlesType
+      description: Update the 'type' column in the 'hotel_job_titles' collection.
+    - name: value
+      type: UpdateColumnHotelJobTitlesValue
+      description: Update the 'value' column in the 'hotel_job_titles' collection.
+  graphql:
+    typeName: UpdateHotelJobTitlesByIdUpdateColumns
+    inputTypeName: UpdateHotelJobTitlesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_job_titles_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        nameId:
+          column:
+            name: name_id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelJobTitlesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - nameId
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelJobTitlesByIdResponse
+  description: Responses from the 'update_hotel_job_titles_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelJobTitles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelJobTitlesByIdResponse
+    inputTypeName: UpdateHotelJobTitlesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_job_titles_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelJobTitlesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelJobTitlesById
+  outputType: UpdateHotelJobTitlesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelJobTitlesBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_job_titles' collection
+    - name: preCheck
+      type: HotelJobTitlesBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_job_titles' collection
+    - name: updateColumns
+      type: UpdateHotelJobTitlesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_job_titles_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelJobTitlesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_job_titles' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelJobTitlesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

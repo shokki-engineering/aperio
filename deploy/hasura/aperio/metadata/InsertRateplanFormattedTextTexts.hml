@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanFormattedTextTextsObject
+  fields:
+    - name: commentId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRateplanFormattedTextTextsObject
+    inputTypeName: InsertRateplanFormattedTextTextsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_formatted_text_texts_object
+      fieldMapping:
+        commentId:
+          column:
+            name: comment_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanFormattedTextTextsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentId
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanFormattedTextTextsResponse
+  description: Responses from the 'insert_rateplan_formatted_text_texts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanFormattedTextTexts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanFormattedTextTextsResponse
+    inputTypeName: InsertRateplanFormattedTextTextsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_formatted_text_texts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanFormattedTextTextsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanFormattedTextTexts
+  outputType: InsertRateplanFormattedTextTextsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanFormattedTextTextsObject!]!"
+    - name: postCheck
+      type: RateplanFormattedTextTextsBoolExp
+      description: Insert permission predicate over the
+        'rateplan_formatted_text_texts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_formatted_text_texts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanFormattedTextTexts
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_formatted_text_texts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanFormattedTextTexts
+  permissions:
+    - role: admin
+      allowExecution: true
+

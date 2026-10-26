@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAgreementsObject
+  fields:
+    - name: contractInfoId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: InsertProfileAgreementsObject
+    inputTypeName: InsertProfileAgreementsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_agreements_object
+      fieldMapping:
+        contractInfoId:
+          column:
+            name: contract_info_id
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAgreementsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contractInfoId
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAgreementsResponse
+  description: Responses from the 'insert_profile_agreements' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAgreements!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileAgreementsResponse
+    inputTypeName: InsertProfileAgreementsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_agreements_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAgreementsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileAgreements
+  outputType: InsertProfileAgreementsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileAgreementsObject!]!"
+    - name: postCheck
+      type: ProfileAgreementsBoolExp
+      description: Insert permission predicate over the 'profile_agreements' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_agreements
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileAgreements
+    rootFieldKind: Mutation
+  description: Insert into the profile_agreements table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileAgreements
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,184 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanTaxesAmountId
+  description: Update the 'amount_id' column in the 'rateplan_taxes' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanTaxesAmountId
+    inputTypeName: UpdateColumnRateplanTaxesAmountIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_taxes_amount_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanTaxesAmountId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanTaxesId
+  description: Update the 'id' column in the 'rateplan_taxes' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanTaxesId
+    inputTypeName: UpdateColumnRateplanTaxesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_taxes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanTaxesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanTaxesByIdUpdateColumns
+  description: Update the columns of the 'rateplan_taxes' collection
+  fields:
+    - name: amountId
+      type: UpdateColumnRateplanTaxesAmountId
+      description: Update the 'amount_id' column in the 'rateplan_taxes' collection.
+    - name: id
+      type: UpdateColumnRateplanTaxesId
+      description: Update the 'id' column in the 'rateplan_taxes' collection.
+  graphql:
+    typeName: UpdateRateplanTaxesByIdUpdateColumns
+    inputTypeName: UpdateRateplanTaxesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_taxes_by_id_update_columns
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanTaxesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanTaxesByIdResponse
+  description: Responses from the 'update_rateplan_taxes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanTaxes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanTaxesByIdResponse
+    inputTypeName: UpdateRateplanTaxesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_taxes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanTaxesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanTaxesById
+  outputType: UpdateRateplanTaxesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanTaxesBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_taxes' collection
+    - name: preCheck
+      type: RateplanTaxesBoolExp
+      description: Update permission pre-condition predicate over the 'rateplan_taxes'
+        collection
+    - name: updateColumns
+      type: UpdateRateplanTaxesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_taxes_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanTaxesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_taxes' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanTaxesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

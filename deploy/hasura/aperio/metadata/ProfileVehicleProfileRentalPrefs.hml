@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefs
+  fields:
+    - name: gasPrePay
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: smokingAllowed
+      type: Boolean_1
+  graphql:
+    typeName: ProfileVehicleProfileRentalPrefs
+    inputTypeName: ProfileVehicleProfileRentalPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_vehicle_profile_rental_prefs
+      fieldMapping:
+        gasPrePay:
+          column:
+            name: gas_pre_pay
+        id:
+          column:
+            name: id
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        preferLevel:
+          column:
+            name: prefer_level
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVehicleProfileRentalPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - gasPrePay
+          - id
+          - prefCollectionId
+          - preferLevel
+          - shareMarketInd
+          - shareSynchInd
+          - smokingAllowed
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefsBoolExp
+  operand:
+    object:
+      type: ProfileVehicleProfileRentalPrefs
+      comparableFields:
+        - fieldName: gasPrePay
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: prefCollectionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: smokingAllowed
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVehicleProfileRentalPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVehicleProfileRentalPrefs
+      aggregatableFields:
+        - fieldName: gasPrePay
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: prefCollectionId
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: smokingAllowed
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVehicleProfileRentalPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVehicleProfileRentalPrefs
+      orderableFields:
+        - fieldName: gasPrePay
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: prefCollectionId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: smokingAllowed
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVehicleProfileRentalPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVehicleProfileRentalPrefs
+  objectType: ProfileVehicleProfileRentalPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_vehicle_profile_rental_prefs
+  filterExpressionType: ProfileVehicleProfileRentalPrefsBoolExp
+  aggregateExpression: ProfileVehicleProfileRentalPrefsAggExp
+  orderByExpression: ProfileVehicleProfileRentalPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVehicleProfileRentalPrefs
+      subscription:
+        rootField: profileVehicleProfileRentalPrefs
+    selectUniques:
+      - queryRootField: profileVehicleProfileRentalPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVehicleProfileRentalPrefsById
+    filterInputTypeName: ProfileVehicleProfileRentalPrefsFilterInput
+    aggregate:
+      queryRootField: profileVehicleProfileRentalPrefsAggregate
+      subscription:
+        rootField: profileVehicleProfileRentalPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVehicleProfileRentalPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

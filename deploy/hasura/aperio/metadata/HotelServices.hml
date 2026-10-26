@@ -1,0 +1,337 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelServices
+  fields:
+    - name: availableAllGuests
+      type: Boolean_1
+    - name: businessServiceCode
+      type: Enum
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: contactId
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: featured
+      type: Boolean_1
+    - name: hotelInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: included
+      type: Boolean_1
+    - name: invCode
+      type: String_1
+    - name: mealPlanCode
+      type: String_1
+    - name: meetingRoomCode
+      type: Enum
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: relativePositionId
+      type: String_1
+    - name: sort
+      type: Int32
+  graphql:
+    typeName: HotelServices
+    inputTypeName: HotelServicesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_services
+      fieldMapping:
+        availableAllGuests:
+          column:
+            name: available_all_guests
+        businessServiceCode:
+          column:
+            name: business_service_code
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        contactId:
+          column:
+            name: contact_id
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        featured:
+          column:
+            name: featured
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        included:
+          column:
+            name: included
+        invCode:
+          column:
+            name: inv_code
+        mealPlanCode:
+          column:
+            name: meal_plan_code
+        meetingRoomCode:
+          column:
+            name: meeting_room_code
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        quantity:
+          column:
+            name: quantity
+        relativePositionId:
+          column:
+            name: relative_position_id
+        sort:
+          column:
+            name: sort
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelServices
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - availableAllGuests
+          - businessServiceCode
+          - code
+          - codeDetail
+          - contactId
+          - descriptiveText
+          - existsCode
+          - featured
+          - hotelInfoId
+          - id
+          - included
+          - invCode
+          - mealPlanCode
+          - meetingRoomCode
+          - multimediaDescriptionsId
+          - proximityCode
+          - quantity
+          - relativePositionId
+          - sort
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelServicesBoolExp
+  operand:
+    object:
+      type: HotelServices
+      comparableFields:
+        - fieldName: availableAllGuests
+          booleanExpressionType: BoolBoolExp
+        - fieldName: businessServiceCode
+          booleanExpressionType: HotelHotelBusinessSrvcTypeBoolExp
+        - fieldName: code
+          booleanExpressionType: HotelHotelHotelAmenityCodeBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: HotelHotelOptionTypeCodeBoolExp
+        - fieldName: featured
+          booleanExpressionType: BoolBoolExp
+        - fieldName: hotelInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: included
+          booleanExpressionType: BoolBoolExp
+        - fieldName: invCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: mealPlanCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRoomCode
+          booleanExpressionType: HotelHotelMeetingRoomCodeBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: proximityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: relativePositionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelServicesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelServicesAggExp
+  operand:
+    object:
+      aggregatedType: HotelServices
+      aggregatableFields:
+        - fieldName: availableAllGuests
+          aggregateExpression: BoolAggExp
+        - fieldName: businessServiceCode
+          aggregateExpression: HotelHotelBusinessSrvcTypeAggExp
+        - fieldName: code
+          aggregateExpression: HotelHotelHotelAmenityCodeAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: HotelHotelOptionTypeCodeAggExp
+        - fieldName: featured
+          aggregateExpression: BoolAggExp
+        - fieldName: hotelInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: included
+          aggregateExpression: BoolAggExp
+        - fieldName: invCode
+          aggregateExpression: TextAggExp
+        - fieldName: mealPlanCode
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRoomCode
+          aggregateExpression: HotelHotelMeetingRoomCodeAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: proximityCode
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: relativePositionId
+          aggregateExpression: TextAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelServicesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelServicesOrderByExp
+  operand:
+    object:
+      orderedType: HotelServices
+      orderableFields:
+        - fieldName: availableAllGuests
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: businessServiceCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: featured
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: hotelInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: included
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: invCode
+          orderByExpression: String1OrderByExp
+        - fieldName: mealPlanCode
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRoomCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: proximityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: relativePositionId
+          orderByExpression: String1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelServicesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelServices
+  objectType: HotelServices
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_services
+  filterExpressionType: HotelServicesBoolExp
+  aggregateExpression: HotelServicesAggExp
+  orderByExpression: HotelServicesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelServices
+      subscription:
+        rootField: hotelServices
+    selectUniques:
+      - queryRootField: hotelServicesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelServicesById
+    filterInputTypeName: HotelServicesFilterInput
+    aggregate:
+      queryRootField: hotelServicesAggregate
+      subscription:
+        rootField: hotelServicesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelServices
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

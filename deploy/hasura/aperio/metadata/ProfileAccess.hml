@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAccess
+  fields:
+    - name: accessCommentId
+      type: String_1
+    - name: accessPersonId
+      type: String_1
+    - name: accessesId
+      type: String_1!
+    - name: actionDateTime
+      type: Timestamptz
+    - name: actionType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ProfileAccess
+    inputTypeName: ProfileAccessInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_access
+      fieldMapping:
+        accessCommentId:
+          column:
+            name: access_comment_id
+        accessPersonId:
+          column:
+            name: access_person_id
+        accessesId:
+          column:
+            name: accesses_id
+        actionDateTime:
+          column:
+            name: action_date_time
+        actionType:
+          column:
+            name: action_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAccess
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessCommentId
+          - accessPersonId
+          - accessesId
+          - actionDateTime
+          - actionType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAccessBoolExp
+  operand:
+    object:
+      type: ProfileAccess
+      comparableFields:
+        - fieldName: accessCommentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: accessPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: accessesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: actionDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: actionType
+          booleanExpressionType: ProfileProfileActionTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAccessBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAccessAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAccess
+      aggregatableFields:
+        - fieldName: accessCommentId
+          aggregateExpression: TextAggExp
+        - fieldName: accessPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: accessesId
+          aggregateExpression: TextAggExp
+        - fieldName: actionDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: actionType
+          aggregateExpression: ProfileProfileActionTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAccessAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAccessOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAccess
+      orderableFields:
+        - fieldName: accessCommentId
+          orderByExpression: String1OrderByExp
+        - fieldName: accessPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: accessesId
+          orderByExpression: String1OrderByExp
+        - fieldName: actionDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: actionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAccessOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAccess
+  objectType: ProfileAccess
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_access
+  filterExpressionType: ProfileAccessBoolExp
+  aggregateExpression: ProfileAccessAggExp
+  orderByExpression: ProfileAccessOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAccess
+      subscription:
+        rootField: profileAccess
+    selectUniques:
+      - queryRootField: profileAccessById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAccessById
+    filterInputTypeName: ProfileAccessFilterInput
+    aggregate:
+      queryRootField: profileAccessAggregate
+      subscription:
+        rootField: profileAccessAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAccess
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

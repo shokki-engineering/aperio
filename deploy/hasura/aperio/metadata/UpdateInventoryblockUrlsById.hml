@@ -1,0 +1,303 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockUrlsContactPersonId
+  description: Update the 'contact_person_id' column in the 'inventoryblock_urls' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockUrlsContactPersonId
+    inputTypeName: UpdateColumnInventoryblockUrlsContactPersonIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_urls_contact_person_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockUrlsContactPersonId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockUrlsDefaultValue
+  description: Update the 'default_value' column in the 'inventoryblock_urls' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockUrlsDefaultValue
+    inputTypeName: UpdateColumnInventoryblockUrlsDefaultValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_urls_default_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockUrlsDefaultValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockUrlsId
+  description: Update the 'id' column in the 'inventoryblock_urls' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockUrlsId
+    inputTypeName: UpdateColumnInventoryblockUrlsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_urls_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockUrlsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockUrlsType
+  description: Update the 'type' column in the 'inventoryblock_urls' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockUrlsType
+    inputTypeName: UpdateColumnInventoryblockUrlsTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_urls_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockUrlsType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryblockUrlsValue
+  description: Update the 'value' column in the 'inventoryblock_urls' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryblockUrlsValue
+    inputTypeName: UpdateColumnInventoryblockUrlsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventoryblock_urls_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryblockUrlsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockUrlsByIdUpdateColumns
+  description: Update the columns of the 'inventoryblock_urls' collection
+  fields:
+    - name: contactPersonId
+      type: UpdateColumnInventoryblockUrlsContactPersonId
+      description: Update the 'contact_person_id' column in the 'inventoryblock_urls'
+        collection.
+    - name: defaultValue
+      type: UpdateColumnInventoryblockUrlsDefaultValue
+      description: Update the 'default_value' column in the 'inventoryblock_urls'
+        collection.
+    - name: id
+      type: UpdateColumnInventoryblockUrlsId
+      description: Update the 'id' column in the 'inventoryblock_urls' collection.
+    - name: type
+      type: UpdateColumnInventoryblockUrlsType
+      description: Update the 'type' column in the 'inventoryblock_urls' collection.
+    - name: value
+      type: UpdateColumnInventoryblockUrlsValue
+      description: Update the 'value' column in the 'inventoryblock_urls' collection.
+  graphql:
+    typeName: UpdateInventoryblockUrlsByIdUpdateColumns
+    inputTypeName: UpdateInventoryblockUrlsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_urls_by_id_update_columns
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockUrlsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryblockUrlsByIdResponse
+  description: Responses from the 'update_inventoryblock_urls_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateInventoryblockUrlsByIdResponse
+    inputTypeName: UpdateInventoryblockUrlsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventoryblock_urls_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryblockUrlsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateInventoryblockUrlsById
+  outputType: UpdateInventoryblockUrlsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: InventoryblockUrlsBoolExp
+      description: Update permission post-condition predicate over the
+        'inventoryblock_urls' collection
+    - name: preCheck
+      type: InventoryblockUrlsBoolExp
+      description: Update permission pre-condition predicate over the
+        'inventoryblock_urls' collection
+    - name: updateColumns
+      type: UpdateInventoryblockUrlsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_inventoryblock_urls_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateInventoryblockUrlsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'inventoryblock_urls' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateInventoryblockUrlsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

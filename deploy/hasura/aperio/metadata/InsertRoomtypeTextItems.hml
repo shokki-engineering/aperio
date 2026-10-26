@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeTextItemsObject
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRoomtypeTextItemsObject
+    inputTypeName: InsertRoomtypeTextItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_text_items_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeTextItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeTextItemsResponse
+  description: Responses from the 'insert_roomtype_text_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeTextItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeTextItemsResponse
+    inputTypeName: InsertRoomtypeTextItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_text_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeTextItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeTextItems
+  outputType: InsertRoomtypeTextItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeTextItemsObject!]!"
+    - name: postCheck
+      type: RoomtypeTextItemsBoolExp
+      description: Insert permission predicate over the 'roomtype_text_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_text_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeTextItems
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_text_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeTextItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

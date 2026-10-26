@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileRecreationSrvcPrefs
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: recreationSrvcType
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileRecreationSrvcPrefs
+    inputTypeName: ProfileRecreationSrvcPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_recreation_srvc_prefs
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        recreationSrvcType:
+          column:
+            name: recreation_srvc_type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileRecreationSrvcPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - recreationSrvcType
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileRecreationSrvcPrefsBoolExp
+  operand:
+    object:
+      type: ProfileRecreationSrvcPrefs
+      comparableFields:
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: recreationSrvcType
+          booleanExpressionType: ProfileProfileRecreationSrvcTypeBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileRecreationSrvcPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileRecreationSrvcPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileRecreationSrvcPrefs
+      aggregatableFields:
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: recreationSrvcType
+          aggregateExpression: ProfileProfileRecreationSrvcTypeAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileRecreationSrvcPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileRecreationSrvcPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileRecreationSrvcPrefs
+      orderableFields:
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: recreationSrvcType
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileRecreationSrvcPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileRecreationSrvcPrefs
+  objectType: ProfileRecreationSrvcPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_recreation_srvc_prefs
+  filterExpressionType: ProfileRecreationSrvcPrefsBoolExp
+  aggregateExpression: ProfileRecreationSrvcPrefsAggExp
+  orderByExpression: ProfileRecreationSrvcPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileRecreationSrvcPrefs
+      subscription:
+        rootField: profileRecreationSrvcPrefs
+    selectUniques:
+      - queryRootField: profileRecreationSrvcPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileRecreationSrvcPrefsById
+    filterInputTypeName: ProfileRecreationSrvcPrefsFilterInput
+    aggregate:
+      queryRootField: profileRecreationSrvcPrefsAggregate
+      subscription:
+        rootField: profileRecreationSrvcPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileRecreationSrvcPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoDistribSystemObject
+  fields:
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: companyDisplayNameId
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: InsertAffiliationinfoDistribSystemObject
+    inputTypeName: InsertAffiliationinfoDistribSystemObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_distrib_system_object
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        id:
+          column:
+            name: id
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoDistribSystemObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - companyDisplayNameId
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - id
+          - ttIcode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoDistribSystemResponse
+  description: Responses from the 'insert_affiliationinfo_distrib_system' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoDistribSystem!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoDistribSystemResponse
+    inputTypeName: InsertAffiliationinfoDistribSystemResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_distrib_system_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoDistribSystemResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoDistribSystem
+  outputType: InsertAffiliationinfoDistribSystemResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoDistribSystemObject!]!"
+    - name: postCheck
+      type: AffiliationinfoDistribSystemBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_distrib_system' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_distrib_system
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoDistribSystem
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_distrib_system table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoDistribSystem
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayServices
+  fields:
+    - name: code
+      type: Enum
+    - name: endClockId
+      type: String_1
+    - name: eventDayId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: locationDisplayName
+      type: String_1
+    - name: provider
+      type: Enum
+    - name: providerDisplayName
+      type: String_1
+    - name: startClockId
+      type: String_1
+  graphql:
+    typeName: EventSiteEventDaysEventDayServices
+    inputTypeName: EventSiteEventDaysEventDayServicesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_site_event_days_event_day_services
+      fieldMapping:
+        code:
+          column:
+            name: code
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayId:
+          column:
+            name: event_day_id
+        id:
+          column:
+            name: id
+        locationDisplayName:
+          column:
+            name: location_display_name
+        provider:
+          column:
+            name: provider
+        providerDisplayName:
+          column:
+            name: provider_display_name
+        startClockId:
+          column:
+            name: start_clock_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventSiteEventDaysEventDayServices
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - endClockId
+          - eventDayId
+          - id
+          - locationDisplayName
+          - provider
+          - providerDisplayName
+          - startClockId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayServicesBoolExp
+  operand:
+    object:
+      type: EventSiteEventDaysEventDayServices
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: EventEventMeetingRoomCodeBoolExp
+        - fieldName: endClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: provider
+          booleanExpressionType: EventEventProviderBoolExp
+        - fieldName: providerDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: startClockId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventSiteEventDaysEventDayServicesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayServicesAggExp
+  operand:
+    object:
+      aggregatedType: EventSiteEventDaysEventDayServices
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: EventEventMeetingRoomCodeAggExp
+        - fieldName: endClockId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: provider
+          aggregateExpression: EventEventProviderAggExp
+        - fieldName: providerDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: startClockId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventSiteEventDaysEventDayServicesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventSiteEventDaysEventDayServicesOrderByExp
+  operand:
+    object:
+      orderedType: EventSiteEventDaysEventDayServices
+      orderableFields:
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: endClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: provider
+          orderByExpression: EnumOrderByExp
+        - fieldName: providerDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: startClockId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventSiteEventDaysEventDayServicesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventSiteEventDaysEventDayServices
+  objectType: EventSiteEventDaysEventDayServices
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_site_event_days_event_day_services
+  filterExpressionType: EventSiteEventDaysEventDayServicesBoolExp
+  aggregateExpression: EventSiteEventDaysEventDayServicesAggExp
+  orderByExpression: EventSiteEventDaysEventDayServicesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventSiteEventDaysEventDayServices
+      subscription:
+        rootField: eventSiteEventDaysEventDayServices
+    selectUniques:
+      - queryRootField: eventSiteEventDaysEventDayServicesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventSiteEventDaysEventDayServicesById
+    filterInputTypeName: EventSiteEventDaysEventDayServicesFilterInput
+    aggregate:
+      queryRootField: eventSiteEventDaysEventDayServicesAggregate
+      subscription:
+        rootField: eventSiteEventDaysEventDayServicesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventSiteEventDaysEventDayServices
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

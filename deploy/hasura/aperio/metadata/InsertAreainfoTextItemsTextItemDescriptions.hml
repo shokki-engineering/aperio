@@ -1,0 +1,140 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoTextItemsTextItemDescriptionsObject
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: textFormat
+      type: Enum
+    - name: textItemId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertAreainfoTextItemsTextItemDescriptionsObject
+    inputTypeName: InsertAreainfoTextItemsTextItemDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_text_items_text_item_descriptions_object
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        textFormat:
+          column:
+            name: text_format
+        textItemId:
+          column:
+            name: text_item_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoTextItemsTextItemDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - textFormat
+          - textItemId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoTextItemsTextItemDescriptionsResponse
+  description: Responses from the
+    'insert_areainfo_text_items_text_item_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoTextItemsTextItemDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoTextItemsTextItemDescriptionsResponse
+    inputTypeName: InsertAreainfoTextItemsTextItemDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_text_items_text_item_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoTextItemsTextItemDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoTextItemsTextItemDescriptions
+  outputType: InsertAreainfoTextItemsTextItemDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoTextItemsTextItemDescriptionsObject!]!"
+    - name: postCheck
+      type: AreainfoTextItemsTextItemDescriptionsBoolExp
+      description: Insert permission predicate over the
+        'areainfo_text_items_text_item_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_text_items_text_item_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoTextItemsTextItemDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_text_items_text_item_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

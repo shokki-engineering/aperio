@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanImageItem
+  fields:
+    - name: category
+      type: Enum
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: imageItemsId
+      type: String_1!
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: purgeDayId
+      type: String_1
+    - name: version
+      type: String_1
+  graphql:
+    typeName: RateplanImageItem
+    inputTypeName: RateplanImageItemInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_image_item
+      fieldMapping:
+        category:
+          column:
+            name: category
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        id:
+          column:
+            name: id
+        imageItemsId:
+          column:
+            name: image_items_id
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        purgeDayId:
+          column:
+            name: purge_day_id
+        version:
+          column:
+            name: version
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanImageItem
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - category
+          - createDateTime
+          - creatorId
+          - id
+          - imageItemsId
+          - lastModifierId
+          - lastModifyDateTime
+          - purgeDayId
+          - version
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanImageItemBoolExp
+  operand:
+    object:
+      type: RateplanImageItem
+      comparableFields:
+        - fieldName: category
+          booleanExpressionType: RateplanRateplanPictureCategoryCodeBoolExp
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: imageItemsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: version
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanImageItemBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanImageItemAggExp
+  operand:
+    object:
+      aggregatedType: RateplanImageItem
+      aggregatableFields:
+        - fieldName: category
+          aggregateExpression: RateplanRateplanPictureCategoryCodeAggExp
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: imageItemsId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: version
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanImageItemAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanImageItemOrderByExp
+  operand:
+    object:
+      orderedType: RateplanImageItem
+      orderableFields:
+        - fieldName: category
+          orderByExpression: EnumOrderByExp
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: imageItemsId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: version
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanImageItemOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanImageItem
+  objectType: RateplanImageItem
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_image_item
+  filterExpressionType: RateplanImageItemBoolExp
+  aggregateExpression: RateplanImageItemAggExp
+  orderByExpression: RateplanImageItemOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanImageItem
+      subscription:
+        rootField: rateplanImageItem
+    selectUniques:
+      - queryRootField: rateplanImageItemById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanImageItemById
+    filterInputTypeName: RateplanImageItemFilterInput
+    aggregate:
+      queryRootField: rateplanImageItemAggregate
+      subscription:
+        rootField: rateplanImageItemAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanImageItem
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

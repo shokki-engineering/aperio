@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanLoyaltyCertificatesByIdResponse
+  description: Responses from the 'delete_rateplan_loyalty_certificates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanLoyaltyCertificates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanLoyaltyCertificatesByIdResponse
+    inputTypeName: DeleteRateplanLoyaltyCertificatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_loyalty_certificates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanLoyaltyCertificatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanLoyaltyCertificatesById
+  outputType: DeleteRateplanLoyaltyCertificatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanLoyaltyCertificatesBoolExp
+      description: Delete permission predicate over the
+        'rateplan_loyalty_certificates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_loyalty_certificates_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanLoyaltyCertificatesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_loyalty_certificates' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanLoyaltyCertificatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

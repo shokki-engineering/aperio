@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingroomChargesByIdResponse
+  description: Responses from the 'delete_meetingroom_charges_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingroomChargesByIdResponse
+    inputTypeName: DeleteMeetingroomChargesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingroom_charges_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingroomChargesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingroomChargesById
+  outputType: DeleteMeetingroomChargesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingroomChargesBoolExp
+      description: Delete permission predicate over the 'meetingroom_charges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingroom_charges_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingroomChargesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingroom_charges' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingroomChargesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

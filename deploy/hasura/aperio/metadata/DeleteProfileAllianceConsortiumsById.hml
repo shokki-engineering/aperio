@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteProfileAllianceConsortiumsByIdResponse
+  description: Responses from the 'delete_profile_alliance_consortiums_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAllianceConsortiums!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteProfileAllianceConsortiumsByIdResponse
+    inputTypeName: DeleteProfileAllianceConsortiumsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_profile_alliance_consortiums_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteProfileAllianceConsortiumsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteProfileAllianceConsortiumsById
+  outputType: DeleteProfileAllianceConsortiumsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ProfileAllianceConsortiumsBoolExp
+      description: Delete permission predicate over the 'profile_alliance_consortiums'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_profile_alliance_consortiums_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteProfileAllianceConsortiumsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'profile_alliance_consortiums' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteProfileAllianceConsortiumsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

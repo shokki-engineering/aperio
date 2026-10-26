@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfilePropertyNamePrefs
+  fields:
+    - name: hotelCode
+      type: String_1
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfilePropertyNamePrefs
+    inputTypeName: ProfilePropertyNamePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_property_name_prefs
+      fieldMapping:
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfilePropertyNamePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelCode
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfilePropertyNamePrefsBoolExp
+  operand:
+    object:
+      type: ProfilePropertyNamePrefs
+      comparableFields:
+        - fieldName: hotelCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfilePropertyNamePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfilePropertyNamePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfilePropertyNamePrefs
+      aggregatableFields:
+        - fieldName: hotelCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfilePropertyNamePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfilePropertyNamePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfilePropertyNamePrefs
+      orderableFields:
+        - fieldName: hotelCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfilePropertyNamePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfilePropertyNamePrefs
+  objectType: ProfilePropertyNamePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_property_name_prefs
+  filterExpressionType: ProfilePropertyNamePrefsBoolExp
+  aggregateExpression: ProfilePropertyNamePrefsAggExp
+  orderByExpression: ProfilePropertyNamePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profilePropertyNamePrefs
+      subscription:
+        rootField: profilePropertyNamePrefs
+    selectUniques:
+      - queryRootField: profilePropertyNamePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profilePropertyNamePrefsById
+    filterInputTypeName: ProfilePropertyNamePrefsFilterInput
+    aggregate:
+      queryRootField: profilePropertyNamePrefsAggregate
+      subscription:
+        rootField: profilePropertyNamePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfilePropertyNamePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

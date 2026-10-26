@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationGuarantees
+  fields:
+    - name: deadlineId
+      type: String_1
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: retributionType
+      type: Enum
+    - name: roomStayId
+      type: String_1!
+  graphql:
+    typeName: ReservationGuarantees
+    inputTypeName: ReservationGuaranteesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_guarantees
+      fieldMapping:
+        deadlineId:
+          column:
+            name: deadline_id
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        retributionType:
+          column:
+            name: retribution_type
+        roomStayId:
+          column:
+            name: room_stay_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationGuarantees
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - deadlineId
+          - guaranteeCode
+          - guaranteeType
+          - holdClockId
+          - id
+          - retributionType
+          - roomStayId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationGuaranteesBoolExp
+  operand:
+    object:
+      type: ReservationGuarantees
+      comparableFields:
+        - fieldName: deadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeType
+          booleanExpressionType: ReservationRatePlanGuaranteeGuaranteeTypeBoolExp
+        - fieldName: holdClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: retributionType
+          booleanExpressionType: ReservationRatePlanGuaranteeRetributionTypeBoolExp
+        - fieldName: roomStayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationGuaranteesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationGuaranteesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationGuarantees
+      aggregatableFields:
+        - fieldName: deadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeCode
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeType
+          aggregateExpression: ReservationRatePlanGuaranteeGuaranteeTypeAggExp
+        - fieldName: holdClockId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: retributionType
+          aggregateExpression: ReservationRatePlanGuaranteeRetributionTypeAggExp
+        - fieldName: roomStayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationGuaranteesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationGuaranteesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationGuarantees
+      orderableFields:
+        - fieldName: deadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeType
+          orderByExpression: EnumOrderByExp
+        - fieldName: holdClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: retributionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomStayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationGuaranteesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationGuarantees
+  objectType: ReservationGuarantees
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_guarantees
+  filterExpressionType: ReservationGuaranteesBoolExp
+  aggregateExpression: ReservationGuaranteesAggExp
+  orderByExpression: ReservationGuaranteesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationGuarantees
+      subscription:
+        rootField: reservationGuarantees
+    selectUniques:
+      - queryRootField: reservationGuaranteesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationGuaranteesById
+    filterInputTypeName: ReservationGuaranteesFilterInput
+    aggregate:
+      queryRootField: reservationGuaranteesAggregate
+      subscription:
+        rootField: reservationGuaranteesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationGuarantees
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

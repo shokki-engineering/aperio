@@ -1,0 +1,134 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockInvBlockRoomRatePlanMarketCodesObject
+  fields:
+    - name: businessSource
+      type: String_1
+    - name: commissionableIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: marketCode
+      type: String_1
+    - name: marketCodeDisplayName
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+  graphql:
+    typeName: InsertInventoryblockInvBlockRoomRatePlanMarketCodesObject
+    inputTypeName: InsertInventoryblockInvBlockRoomRatePlanMarketCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_inv_block_room_rate_plan_market_codes_object
+      fieldMapping:
+        businessSource:
+          column:
+            name: business_source
+        commissionableIndicator:
+          column:
+            name: commissionable_indicator
+        id:
+          column:
+            name: id
+        marketCode:
+          column:
+            name: market_code
+        marketCodeDisplayName:
+          column:
+            name: market_code_display_name
+        ratePlanId:
+          column:
+            name: rate_plan_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockInvBlockRoomRatePlanMarketCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - businessSource
+          - commissionableIndicator
+          - id
+          - marketCode
+          - marketCodeDisplayName
+          - ratePlanId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockInvBlockRoomRatePlanMarketCodesResponse
+  description: Responses from the
+    'insert_inventoryblock_inv_block_room_rate_plan_market_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockInvBlockRoomRatePlanMarketCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockInvBlockRoomRatePlanMarketCodesResponse
+    inputTypeName: InsertInventoryblockInvBlockRoomRatePlanMarketCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_inv_block_room_rate_plan_market_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockInvBlockRoomRatePlanMarketCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockInvBlockRoomRatePlanMarketCodes
+  outputType: InsertInventoryblockInvBlockRoomRatePlanMarketCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockInvBlockRoomRatePlanMarketCodesObject!]!"
+    - name: postCheck
+      type: InventoryblockInvBlockRoomRatePlanMarketCodesBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_inv_block_room_rate_plan_market_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_inv_block_room_rate_plan_market_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockInvBlockRoomRatePlanMarketCodes
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_inv_block_room_rate_plan_market_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockInvBlockRoomRatePlanMarketCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

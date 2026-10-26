@@ -1,0 +1,343 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: TransientrfpNames
+  fields:
+    - name: codeDetail
+      type: String_1
+    - name: contactInfoRootId
+      type: String_1!
+    - name: corporatePosition
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: gender
+      type: Enum
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: location
+      type: Enum
+    - name: middleNames
+      type: "[String_1]"
+    - name: nameOrdered
+      type: String_1
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: publishable
+      type: Boolean_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: srvcCode
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+  graphql:
+    typeName: TransientrfpNames
+    inputTypeName: TransientrfpNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: transientrfp_names
+      fieldMapping:
+        codeDetail:
+          column:
+            name: code_detail
+        contactInfoRootId:
+          column:
+            name: contact_info_root_id
+        corporatePosition:
+          column:
+            name: corporate_position
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        gender:
+          column:
+            name: gender
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        location:
+          column:
+            name: location
+        middleNames:
+          column:
+            name: middle_names
+        nameOrdered:
+          column:
+            name: name_ordered
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        publishable:
+          column:
+            name: publishable
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        srvcCode:
+          column:
+            name: srvc_code
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: TransientrfpNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeDetail
+          - contactInfoRootId
+          - corporatePosition
+          - defaultValue
+          - documentId
+          - gender
+          - givenNames
+          - id
+          - languageCode
+          - location
+          - middleNames
+          - nameOrdered
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - publishable
+          - shareMarketInd
+          - shareSynchInd
+          - srvcCode
+          - surname
+          - surnamePrefix
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: TransientrfpNamesBoolExp
+  operand:
+    object:
+      type: TransientrfpNames
+      comparableFields:
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactInfoRootId
+          booleanExpressionType: TextBoolExp
+        - fieldName: corporatePosition
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: gender
+          booleanExpressionType: TransientrfpTransientrfpGenderBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: location
+          booleanExpressionType: TransientrfpTransientrfpContactLocationBoolExp
+        - fieldName: nameOrdered
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameType
+          booleanExpressionType: TransientrfpTransientrfpNameTypeBoolExp
+        - fieldName: publishable
+          booleanExpressionType: BoolBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: TransientrfpTransientrfpNameShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: TransientrfpTransientrfpNameShareSynchIndBoolExp
+        - fieldName: srvcCode
+          booleanExpressionType: TransientrfpTransientrfpContactSrvcCodeBoolExp
+        - fieldName: surname
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnamePrefix
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: TransientrfpNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: TransientrfpNamesAggExp
+  operand:
+    object:
+      aggregatedType: TransientrfpNames
+      aggregatableFields:
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: contactInfoRootId
+          aggregateExpression: TextAggExp
+        - fieldName: corporatePosition
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentId
+          aggregateExpression: TextAggExp
+        - fieldName: gender
+          aggregateExpression: TransientrfpTransientrfpGenderAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: location
+          aggregateExpression: TransientrfpTransientrfpContactLocationAggExp
+        - fieldName: nameOrdered
+          aggregateExpression: TextAggExp
+        - fieldName: nameType
+          aggregateExpression: TransientrfpTransientrfpNameTypeAggExp
+        - fieldName: publishable
+          aggregateExpression: BoolAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: TransientrfpTransientrfpNameShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: TransientrfpTransientrfpNameShareSynchIndAggExp
+        - fieldName: srvcCode
+          aggregateExpression: TransientrfpTransientrfpContactSrvcCodeAggExp
+        - fieldName: surname
+          aggregateExpression: TextAggExp
+        - fieldName: surnamePrefix
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: TransientrfpNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: TransientrfpNamesOrderByExp
+  operand:
+    object:
+      orderedType: TransientrfpNames
+      orderableFields:
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: contactInfoRootId
+          orderByExpression: String1OrderByExp
+        - fieldName: corporatePosition
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentId
+          orderByExpression: String1OrderByExp
+        - fieldName: gender
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: location
+          orderByExpression: EnumOrderByExp
+        - fieldName: nameOrdered
+          orderByExpression: String1OrderByExp
+        - fieldName: nameType
+          orderByExpression: EnumOrderByExp
+        - fieldName: publishable
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: srvcCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: surname
+          orderByExpression: String1OrderByExp
+        - fieldName: surnamePrefix
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: TransientrfpNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: TransientrfpNames
+  objectType: TransientrfpNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: transientrfp_names
+  filterExpressionType: TransientrfpNamesBoolExp
+  aggregateExpression: TransientrfpNamesAggExp
+  orderByExpression: TransientrfpNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: transientrfpNames
+      subscription:
+        rootField: transientrfpNames
+    selectUniques:
+      - queryRootField: transientrfpNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: transientrfpNamesById
+    filterInputTypeName: TransientrfpNamesFilterInput
+    aggregate:
+      queryRootField: transientrfpNamesAggregate
+      subscription:
+        rootField: transientrfpNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: TransientrfpNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAllianceMembers
+  fields:
+    - name: allianceConsortiumId
+      type: String_1!
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: memberCode
+      type: String_1
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileAllianceMembers
+    inputTypeName: ProfileAllianceMembersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_alliance_members
+      fieldMapping:
+        allianceConsortiumId:
+          column:
+            name: alliance_consortium_id
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        memberCode:
+          column:
+            name: member_code
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAllianceMembers
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - allianceConsortiumId
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - department
+          - division
+          - id
+          - memberCode
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAllianceMembersBoolExp
+  operand:
+    object:
+      type: ProfileAllianceMembers
+      comparableFields:
+        - fieldName: allianceConsortiumId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyShortDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: department
+          booleanExpressionType: TextBoolExp
+        - fieldName: division
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: memberCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: travelSector
+          booleanExpressionType: ProfileProfileTravelSectorBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAllianceMembersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAllianceMembersAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAllianceMembers
+      aggregatableFields:
+        - fieldName: allianceConsortiumId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: companyShortDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: department
+          aggregateExpression: TextAggExp
+        - fieldName: division
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: memberCode
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: travelSector
+          aggregateExpression: ProfileProfileTravelSectorAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAllianceMembersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAllianceMembersOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAllianceMembers
+      orderableFields:
+        - fieldName: allianceConsortiumId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: companyShortDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: department
+          orderByExpression: String1OrderByExp
+        - fieldName: division
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: memberCode
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: travelSector
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAllianceMembersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAllianceMembers
+  objectType: ProfileAllianceMembers
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_alliance_members
+  filterExpressionType: ProfileAllianceMembersBoolExp
+  aggregateExpression: ProfileAllianceMembersAggExp
+  orderByExpression: ProfileAllianceMembersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAllianceMembers
+      subscription:
+        rootField: profileAllianceMembers
+    selectUniques:
+      - queryRootField: profileAllianceMembersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAllianceMembersById
+    filterInputTypeName: ProfileAllianceMembersFilterInput
+    aggregate:
+      queryRootField: profileAllianceMembersAggregate
+      subscription:
+        rootField: profileAllianceMembersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAllianceMembers
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,325 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationComments
+  fields:
+    - name: acceptableGuaranteeId
+      type: String_1!
+    - name: commentOriginatorCode
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: guaranteeId
+      type: String_1!
+    - name: guestViewable
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: resGuestId
+      type: String_1!
+    - name: roomStayId
+      type: String_1!
+    - name: serviceDetailsId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: ReservationComments
+    inputTypeName: ReservationCommentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_comments
+      fieldMapping:
+        acceptableGuaranteeId:
+          column:
+            name: acceptable_guarantee_id
+        commentOriginatorCode:
+          column:
+            name: comment_originator_code
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        guaranteeId:
+          column:
+            name: guarantee_id
+        guestViewable:
+          column:
+            name: guest_viewable
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        resGuestId:
+          column:
+            name: res_guest_id
+        roomStayId:
+          column:
+            name: room_stay_id
+        serviceDetailsId:
+          column:
+            name: service_details_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationComments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acceptableGuaranteeId
+          - commentOriginatorCode
+          - createDateTime
+          - creatorId
+          - displayName
+          - guaranteeId
+          - guestViewable
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - resGlobalInfoId
+          - resGuestId
+          - roomStayId
+          - serviceDetailsId
+          - uris
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationCommentsBoolExp
+  operand:
+    object:
+      type: ReservationComments
+      comparableFields:
+        - fieldName: acceptableGuaranteeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commentOriginatorCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guestViewable
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGlobalInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGuestId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomStayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceDetailsId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationCommentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationCommentsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationComments
+      aggregatableFields:
+        - fieldName: acceptableGuaranteeId
+          aggregateExpression: TextAggExp
+        - fieldName: commentOriginatorCode
+          aggregateExpression: TextAggExp
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeId
+          aggregateExpression: TextAggExp
+        - fieldName: guestViewable
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: resGlobalInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: resGuestId
+          aggregateExpression: TextAggExp
+        - fieldName: roomStayId
+          aggregateExpression: TextAggExp
+        - fieldName: serviceDetailsId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationCommentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationCommentsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationComments
+      orderableFields:
+        - fieldName: acceptableGuaranteeId
+          orderByExpression: String1OrderByExp
+        - fieldName: commentOriginatorCode
+          orderByExpression: String1OrderByExp
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeId
+          orderByExpression: String1OrderByExp
+        - fieldName: guestViewable
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: resGlobalInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: resGuestId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomStayId
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceDetailsId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationCommentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationComments
+  objectType: ReservationComments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_comments
+  filterExpressionType: ReservationCommentsBoolExp
+  aggregateExpression: ReservationCommentsAggExp
+  orderByExpression: ReservationCommentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationComments
+      subscription:
+        rootField: reservationComments
+    selectUniques:
+      - queryRootField: reservationCommentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationCommentsById
+    filterInputTypeName: ReservationCommentsFilterInput
+    aggregate:
+      queryRootField: reservationCommentsAggregate
+      subscription:
+        rootField: reservationCommentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationComments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

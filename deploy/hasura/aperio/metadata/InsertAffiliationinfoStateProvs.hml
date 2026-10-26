@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoStateProvsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertAffiliationinfoStateProvsObject
+    inputTypeName: InsertAffiliationinfoStateProvsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_state_provs_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoStateProvsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoStateProvsResponse
+  description: Responses from the 'insert_affiliationinfo_state_provs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoStateProvs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoStateProvsResponse
+    inputTypeName: InsertAffiliationinfoStateProvsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_state_provs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoStateProvsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoStateProvs
+  outputType: InsertAffiliationinfoStateProvsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoStateProvsObject!]!"
+    - name: postCheck
+      type: AffiliationinfoStateProvsBoolExp
+      description: Insert permission predicate over the 'affiliationinfo_state_provs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_state_provs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoStateProvs
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_state_provs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoStateProvs
+  permissions:
+    - role: admin
+      allowExecution: true
+

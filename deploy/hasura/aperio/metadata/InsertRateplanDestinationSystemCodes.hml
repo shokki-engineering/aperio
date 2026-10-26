@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanDestinationSystemCodesObject
+  fields:
+    - name: cancelRuleId
+      type: String_1
+    - name: chainRateCodeCrossRef
+      type: String_1
+    - name: chainRateLevelCrossRef
+      type: String_1
+    - name: guaranteeDepositRuleId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: posRuleId
+      type: String_1
+    - name: rateAccessId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: stayLengthsRuleId
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRateplanDestinationSystemCodesObject
+    inputTypeName: InsertRateplanDestinationSystemCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_destination_system_codes_object
+      fieldMapping:
+        cancelRuleId:
+          column:
+            name: cancel_rule_id
+        chainRateCodeCrossRef:
+          column:
+            name: chain_rate_code_cross_ref
+        chainRateLevelCrossRef:
+          column:
+            name: chain_rate_level_cross_ref
+        guaranteeDepositRuleId:
+          column:
+            name: guarantee_deposit_rule_id
+        id:
+          column:
+            name: id
+        posRuleId:
+          column:
+            name: pos_rule_id
+        rateAccessId:
+          column:
+            name: rate_access_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        stayLengthsRuleId:
+          column:
+            name: stay_lengths_rule_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanDestinationSystemCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelRuleId
+          - chainRateCodeCrossRef
+          - chainRateLevelCrossRef
+          - guaranteeDepositRuleId
+          - id
+          - posRuleId
+          - rateAccessId
+          - ratePlanId
+          - stayLengthsRuleId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanDestinationSystemCodesResponse
+  description: Responses from the 'insert_rateplan_destination_system_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanDestinationSystemCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanDestinationSystemCodesResponse
+    inputTypeName: InsertRateplanDestinationSystemCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_destination_system_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanDestinationSystemCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanDestinationSystemCodes
+  outputType: InsertRateplanDestinationSystemCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanDestinationSystemCodesObject!]!"
+    - name: postCheck
+      type: RateplanDestinationSystemCodesBoolExp
+      description: Insert permission predicate over the
+        'rateplan_destination_system_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_destination_system_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanDestinationSystemCodes
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_destination_system_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanDestinationSystemCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

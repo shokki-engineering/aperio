@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPrefOsiPrefTravelerRefNumbersObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: osiPrefId
+      type: String_1!
+    - name: rph
+      type: String_1
+    - name: surnameRefNumber
+      type: String_1
+  graphql:
+    typeName: InsertProfileRailPrefOsiPrefTravelerRefNumbersObject
+    inputTypeName: InsertProfileRailPrefOsiPrefTravelerRefNumbersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_pref_osi_pref_traveler_ref_numbers_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        osiPrefId:
+          column:
+            name: osi_pref_id
+        rph:
+          column:
+            name: rph
+        surnameRefNumber:
+          column:
+            name: surname_ref_number
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPrefOsiPrefTravelerRefNumbersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - osiPrefId
+          - rph
+          - surnameRefNumber
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPrefOsiPrefTravelerRefNumbersResponse
+  description: Responses from the
+    'insert_profile_rail_pref_osi_pref_traveler_ref_numbers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileRailPrefOsiPrefTravelerRefNumbers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileRailPrefOsiPrefTravelerRefNumbersResponse
+    inputTypeName: InsertProfileRailPrefOsiPrefTravelerRefNumbersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_pref_osi_pref_traveler_ref_numbers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPrefOsiPrefTravelerRefNumbersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileRailPrefOsiPrefTravelerRefNumbers
+  outputType: InsertProfileRailPrefOsiPrefTravelerRefNumbersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileRailPrefOsiPrefTravelerRefNumbersObject!]!"
+    - name: postCheck
+      type: ProfileRailPrefOsiPrefTravelerRefNumbersBoolExp
+      description: Insert permission predicate over the
+        'profile_rail_pref_osi_pref_traveler_ref_numbers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_rail_pref_osi_pref_traveler_ref_numbers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileRailPrefOsiPrefTravelerRefNumbers
+    rootFieldKind: Mutation
+  description: Insert into the profile_rail_pref_osi_pref_traveler_ref_numbers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileRailPrefOsiPrefTravelerRefNumbers
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileUniqueIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: ProfileUniqueIds
+    inputTypeName: ProfileUniqueIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_unique_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileUniqueIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileUniqueIdsBoolExp
+  operand:
+    object:
+      type: ProfileUniqueIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ProfileProfileUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileUniqueIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileUniqueIdsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileUniqueIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ProfileProfileUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileUniqueIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileUniqueIdsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileUniqueIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileUniqueIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileUniqueIds
+  objectType: ProfileUniqueIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_unique_ids
+  filterExpressionType: ProfileUniqueIdsBoolExp
+  aggregateExpression: ProfileUniqueIdsAggExp
+  orderByExpression: ProfileUniqueIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileUniqueIds
+      subscription:
+        rootField: profileUniqueIds
+    selectUniques:
+      - queryRootField: profileUniqueIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileUniqueIdsById
+    filterInputTypeName: ProfileUniqueIdsFilterInput
+    aggregate:
+      queryRootField: profileUniqueIdsAggregate
+      subscription:
+        rootField: profileUniqueIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileUniqueIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventSocialMedias
+  fields:
+    - name: contactId
+      type: String_1!
+    - name: contactPersonId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferredContact
+      type: Boolean_1
+    - name: shareMarketInd
+      type: Enum
+    - name: type
+      type: String_1!
+    - name: userDisplayName
+      type: String_1!
+  graphql:
+    typeName: EventSocialMedias
+    inputTypeName: EventSocialMediasInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_social_medias
+      fieldMapping:
+        contactId:
+          column:
+            name: contact_id
+        contactPersonId:
+          column:
+            name: contact_person_id
+        id:
+          column:
+            name: id
+        preferredContact:
+          column:
+            name: preferred_contact
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        type:
+          column:
+            name: type
+        userDisplayName:
+          column:
+            name: user_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventSocialMedias
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactId
+          - contactPersonId
+          - id
+          - preferredContact
+          - shareMarketInd
+          - type
+          - userDisplayName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventSocialMediasBoolExp
+  operand:
+    object:
+      type: EventSocialMedias
+      comparableFields:
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferredContact
+          booleanExpressionType: BoolBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: EventEventSocialMediaShareMarketIndBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: userDisplayName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventSocialMediasBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventSocialMediasAggExp
+  operand:
+    object:
+      aggregatedType: EventSocialMedias
+      aggregatableFields:
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferredContact
+          aggregateExpression: BoolAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: EventEventSocialMediaShareMarketIndAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: userDisplayName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventSocialMediasAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventSocialMediasOrderByExp
+  operand:
+    object:
+      orderedType: EventSocialMedias
+      orderableFields:
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferredContact
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: userDisplayName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventSocialMediasOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventSocialMedias
+  objectType: EventSocialMedias
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_social_medias
+  filterExpressionType: EventSocialMediasBoolExp
+  aggregateExpression: EventSocialMediasAggExp
+  orderByExpression: EventSocialMediasOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventSocialMedias
+      subscription:
+        rootField: eventSocialMedias
+    selectUniques:
+      - queryRootField: eventSocialMediasById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventSocialMediasById
+    filterInputTypeName: EventSocialMediasFilterInput
+    aggregate:
+      queryRootField: eventSocialMediasAggregate
+      subscription:
+        rootField: eventSocialMediasAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventSocialMedias
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

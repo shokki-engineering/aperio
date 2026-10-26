@@ -1,0 +1,271 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoDateOrDateTimesDateTime
+  description: Update the 'date_time' column in the
+    'affiliationinfo_date_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoDateOrDateTimesDateTime
+    inputTypeName: UpdateColumnAffiliationinfoDateOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_date_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoDateOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoDateOrDateTimesDayId
+  description: Update the 'day_id' column in the
+    'affiliationinfo_date_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoDateOrDateTimesDayId
+    inputTypeName: UpdateColumnAffiliationinfoDateOrDateTimesDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_date_or_date_times_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoDateOrDateTimesDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoDateOrDateTimesId
+  description: Update the 'id' column in the 'affiliationinfo_date_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoDateOrDateTimesId
+    inputTypeName: UpdateColumnAffiliationinfoDateOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_date_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoDateOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoDateOrDateTimesValueCase
+  description: Update the 'value_case' column in the
+    'affiliationinfo_date_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoDateOrDateTimesValueCase
+    inputTypeName: UpdateColumnAffiliationinfoDateOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_date_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoDateOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoDateOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'affiliationinfo_date_or_date_times' collection
+  fields:
+    - name: dateTime
+      type: UpdateColumnAffiliationinfoDateOrDateTimesDateTime
+      description: Update the 'date_time' column in the
+        'affiliationinfo_date_or_date_times' collection.
+    - name: dayId
+      type: UpdateColumnAffiliationinfoDateOrDateTimesDayId
+      description: Update the 'day_id' column in the
+        'affiliationinfo_date_or_date_times' collection.
+    - name: id
+      type: UpdateColumnAffiliationinfoDateOrDateTimesId
+      description: Update the 'id' column in the 'affiliationinfo_date_or_date_times'
+        collection.
+    - name: valueCase
+      type: UpdateColumnAffiliationinfoDateOrDateTimesValueCase
+      description: Update the 'value_case' column in the
+        'affiliationinfo_date_or_date_times' collection.
+  graphql:
+    typeName: UpdateAffiliationinfoDateOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdateAffiliationinfoDateOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_date_or_date_times_by_id_update_columns
+      fieldMapping:
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoDateOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoDateOrDateTimesByIdResponse
+  description: Responses from the
+    'update_affiliationinfo_date_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoDateOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateAffiliationinfoDateOrDateTimesByIdResponse
+    inputTypeName: UpdateAffiliationinfoDateOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_date_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoDateOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateAffiliationinfoDateOrDateTimesById
+  outputType: UpdateAffiliationinfoDateOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: AffiliationinfoDateOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'affiliationinfo_date_or_date_times' collection
+    - name: preCheck
+      type: AffiliationinfoDateOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'affiliationinfo_date_or_date_times' collection
+    - name: updateColumns
+      type: UpdateAffiliationinfoDateOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_affiliationinfo_date_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateAffiliationinfoDateOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'affiliationinfo_date_or_date_times'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateAffiliationinfoDateOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PromotionDateOrTimeOrDateTimes
+  fields:
+    - name: clockId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: dayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: PromotionDateOrTimeOrDateTimes
+    inputTypeName: PromotionDateOrTimeOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: promotion_date_or_time_or_date_times
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PromotionDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PromotionDateOrTimeOrDateTimesBoolExp
+  operand:
+    object:
+      type: PromotionDateOrTimeOrDateTimes
+      comparableFields:
+        - fieldName: clockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: PromotionPromotionDateOrTimeOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PromotionDateOrTimeOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PromotionDateOrTimeOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: PromotionDateOrTimeOrDateTimes
+      aggregatableFields:
+        - fieldName: clockId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: PromotionPromotionDateOrTimeOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PromotionDateOrTimeOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PromotionDateOrTimeOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: PromotionDateOrTimeOrDateTimes
+      orderableFields:
+        - fieldName: clockId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PromotionDateOrTimeOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PromotionDateOrTimeOrDateTimes
+  objectType: PromotionDateOrTimeOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: promotion_date_or_time_or_date_times
+  filterExpressionType: PromotionDateOrTimeOrDateTimesBoolExp
+  aggregateExpression: PromotionDateOrTimeOrDateTimesAggExp
+  orderByExpression: PromotionDateOrTimeOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: promotionDateOrTimeOrDateTimes
+      subscription:
+        rootField: promotionDateOrTimeOrDateTimes
+    selectUniques:
+      - queryRootField: promotionDateOrTimeOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: promotionDateOrTimeOrDateTimesById
+    filterInputTypeName: PromotionDateOrTimeOrDateTimesFilterInput
+    aggregate:
+      queryRootField: promotionDateOrTimeOrDateTimesAggregate
+      subscription:
+        rootField: promotionDateOrTimeOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PromotionDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

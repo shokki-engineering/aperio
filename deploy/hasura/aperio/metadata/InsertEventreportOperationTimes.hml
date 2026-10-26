@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportOperationTimesObject
+  fields:
+    - name: additionalOperationInfoCode
+      type: Enum
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: frequency
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operationScheduleId
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: text
+      type: String_1
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertEventreportOperationTimesObject
+    inputTypeName: InsertEventreportOperationTimesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_operation_times_object
+      fieldMapping:
+        additionalOperationInfoCode:
+          column:
+            name: additional_operation_info_code
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        frequency:
+          column:
+            name: frequency
+        id:
+          column:
+            name: id
+        operationScheduleId:
+          column:
+            name: operation_schedule_id
+        startId:
+          column:
+            name: start_id
+        text:
+          column:
+            name: text
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportOperationTimesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalOperationInfoCode
+          - duration
+          - endId
+          - frequency
+          - id
+          - operationScheduleId
+          - startId
+          - text
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportOperationTimesResponse
+  description: Responses from the 'insert_eventreport_operation_times' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportOperationTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportOperationTimesResponse
+    inputTypeName: InsertEventreportOperationTimesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_operation_times_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportOperationTimesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportOperationTimes
+  outputType: InsertEventreportOperationTimesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportOperationTimesObject!]!"
+    - name: postCheck
+      type: EventreportOperationTimesBoolExp
+      description: Insert permission predicate over the 'eventreport_operation_times'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_operation_times
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportOperationTimes
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_operation_times table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportOperationTimes
+  permissions:
+    - role: admin
+      allowExecution: true
+

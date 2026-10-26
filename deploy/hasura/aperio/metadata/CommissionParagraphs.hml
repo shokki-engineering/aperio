@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommissionParagraphs
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: CommissionParagraphs
+    inputTypeName: CommissionParagraphsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: commission_paragraphs
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommissionParagraphs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - displayName
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - uris
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CommissionParagraphsBoolExp
+  operand:
+    object:
+      type: CommissionParagraphs
+      comparableFields:
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CommissionParagraphsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CommissionParagraphsAggExp
+  operand:
+    object:
+      aggregatedType: CommissionParagraphs
+      aggregatableFields:
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CommissionParagraphsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CommissionParagraphsOrderByExp
+  operand:
+    object:
+      orderedType: CommissionParagraphs
+      orderableFields:
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CommissionParagraphsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CommissionParagraphs
+  objectType: CommissionParagraphs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: commission_paragraphs
+  filterExpressionType: CommissionParagraphsBoolExp
+  aggregateExpression: CommissionParagraphsAggExp
+  orderByExpression: CommissionParagraphsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: commissionParagraphs
+      subscription:
+        rootField: commissionParagraphs
+    selectUniques:
+      - queryRootField: commissionParagraphsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: commissionParagraphsById
+    filterInputTypeName: CommissionParagraphsFilterInput
+    aggregate:
+      queryRootField: commissionParagraphsAggregate
+      subscription:
+        rootField: commissionParagraphsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CommissionParagraphs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

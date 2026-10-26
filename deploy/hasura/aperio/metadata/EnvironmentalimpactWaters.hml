@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EnvironmentalimpactWaters
+  fields:
+    - name: grayWater
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: perRoomDayUsage
+      type: Int32
+    - name: perRoomNightUsage
+      type: Int32
+    - name: wasteDiversionPercentageId
+      type: String_1
+    - name: waterProgram
+      type: Boolean_1
+    - name: waterUomId
+      type: String_1
+  graphql:
+    typeName: EnvironmentalimpactWaters
+    inputTypeName: EnvironmentalimpactWatersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: environmentalimpact_waters
+      fieldMapping:
+        grayWater:
+          column:
+            name: gray_water
+        id:
+          column:
+            name: id
+        perRoomDayUsage:
+          column:
+            name: per_room_day_usage
+        perRoomNightUsage:
+          column:
+            name: per_room_night_usage
+        wasteDiversionPercentageId:
+          column:
+            name: waste_diversion_percentage_id
+        waterProgram:
+          column:
+            name: water_program
+        waterUomId:
+          column:
+            name: water_uom_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EnvironmentalimpactWaters
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - grayWater
+          - id
+          - perRoomDayUsage
+          - perRoomNightUsage
+          - wasteDiversionPercentageId
+          - waterProgram
+          - waterUomId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EnvironmentalimpactWatersBoolExp
+  operand:
+    object:
+      type: EnvironmentalimpactWaters
+      comparableFields:
+        - fieldName: grayWater
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: perRoomDayUsage
+          booleanExpressionType: Int4BoolExp
+        - fieldName: perRoomNightUsage
+          booleanExpressionType: Int4BoolExp
+        - fieldName: wasteDiversionPercentageId
+          booleanExpressionType: TextBoolExp
+        - fieldName: waterProgram
+          booleanExpressionType: BoolBoolExp
+        - fieldName: waterUomId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EnvironmentalimpactWatersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EnvironmentalimpactWatersAggExp
+  operand:
+    object:
+      aggregatedType: EnvironmentalimpactWaters
+      aggregatableFields:
+        - fieldName: grayWater
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: perRoomDayUsage
+          aggregateExpression: Int4AggExp
+        - fieldName: perRoomNightUsage
+          aggregateExpression: Int4AggExp
+        - fieldName: wasteDiversionPercentageId
+          aggregateExpression: TextAggExp
+        - fieldName: waterProgram
+          aggregateExpression: BoolAggExp
+        - fieldName: waterUomId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EnvironmentalimpactWatersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EnvironmentalimpactWatersOrderByExp
+  operand:
+    object:
+      orderedType: EnvironmentalimpactWaters
+      orderableFields:
+        - fieldName: grayWater
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: perRoomDayUsage
+          orderByExpression: Int32OrderByExp
+        - fieldName: perRoomNightUsage
+          orderByExpression: Int32OrderByExp
+        - fieldName: wasteDiversionPercentageId
+          orderByExpression: String1OrderByExp
+        - fieldName: waterProgram
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: waterUomId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EnvironmentalimpactWatersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EnvironmentalimpactWaters
+  objectType: EnvironmentalimpactWaters
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: environmentalimpact_waters
+  filterExpressionType: EnvironmentalimpactWatersBoolExp
+  aggregateExpression: EnvironmentalimpactWatersAggExp
+  orderByExpression: EnvironmentalimpactWatersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: environmentalimpactWaters
+      subscription:
+        rootField: environmentalimpactWaters
+    selectUniques:
+      - queryRootField: environmentalimpactWatersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: environmentalimpactWatersById
+    filterInputTypeName: EnvironmentalimpactWatersFilterInput
+    aggregate:
+      queryRootField: environmentalimpactWatersAggregate
+      subscription:
+        rootField: environmentalimpactWatersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EnvironmentalimpactWaters
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

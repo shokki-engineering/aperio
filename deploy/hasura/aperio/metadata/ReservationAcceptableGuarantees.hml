@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationAcceptableGuarantees
+  fields:
+    - name: bookingRuleId
+      type: String_1!
+    - name: currencyCode
+      type: String_1
+    - name: deadlineId
+      type: String_1
+    - name: decimalPlaces
+      type: Int32
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteePolicyType
+      type: Enum
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: paymentType
+      type: Enum
+    - name: retributionType
+      type: Enum
+    - name: unacceptablePaymentType
+      type: Enum
+  graphql:
+    typeName: ReservationAcceptableGuarantees
+    inputTypeName: ReservationAcceptableGuaranteesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_acceptable_guarantees
+      fieldMapping:
+        bookingRuleId:
+          column:
+            name: booking_rule_id
+        currencyCode:
+          column:
+            name: currency_code
+        deadlineId:
+          column:
+            name: deadline_id
+        decimalPlaces:
+          column:
+            name: decimal_places
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteePolicyType:
+          column:
+            name: guarantee_policy_type
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        paymentType:
+          column:
+            name: payment_type
+        retributionType:
+          column:
+            name: retribution_type
+        unacceptablePaymentType:
+          column:
+            name: unacceptable_payment_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationAcceptableGuarantees
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingRuleId
+          - currencyCode
+          - deadlineId
+          - decimalPlaces
+          - guaranteeCode
+          - guaranteePolicyType
+          - guaranteeType
+          - holdClockId
+          - id
+          - paymentType
+          - retributionType
+          - unacceptablePaymentType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationAcceptableGuaranteesBoolExp
+  operand:
+    object:
+      type: ReservationAcceptableGuarantees
+      comparableFields:
+        - fieldName: bookingRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: deadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: decimalPlaces
+          booleanExpressionType: Int4BoolExp
+        - fieldName: guaranteeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteePolicyType
+          booleanExpressionType: ReservationReservationGuaranteePolicyTypeBoolExp
+        - fieldName: guaranteeType
+          booleanExpressionType: ReservationRatePlanGuaranteeGuaranteeTypeBoolExp
+        - fieldName: holdClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentType
+          booleanExpressionType: ReservationReservationPaymentTypeBoolExp
+        - fieldName: retributionType
+          booleanExpressionType: ReservationRatePlanGuaranteeRetributionTypeBoolExp
+        - fieldName: unacceptablePaymentType
+          booleanExpressionType: ReservationReservationPaymentTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationAcceptableGuaranteesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationAcceptableGuaranteesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationAcceptableGuarantees
+      aggregatableFields:
+        - fieldName: bookingRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: deadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: decimalPlaces
+          aggregateExpression: Int4AggExp
+        - fieldName: guaranteeCode
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteePolicyType
+          aggregateExpression: ReservationReservationGuaranteePolicyTypeAggExp
+        - fieldName: guaranteeType
+          aggregateExpression: ReservationRatePlanGuaranteeGuaranteeTypeAggExp
+        - fieldName: holdClockId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: paymentType
+          aggregateExpression: ReservationReservationPaymentTypeAggExp
+        - fieldName: retributionType
+          aggregateExpression: ReservationRatePlanGuaranteeRetributionTypeAggExp
+        - fieldName: unacceptablePaymentType
+          aggregateExpression: ReservationReservationPaymentTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationAcceptableGuaranteesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationAcceptableGuaranteesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationAcceptableGuarantees
+      orderableFields:
+        - fieldName: bookingRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: deadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: decimalPlaces
+          orderByExpression: Int32OrderByExp
+        - fieldName: guaranteeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteePolicyType
+          orderByExpression: EnumOrderByExp
+        - fieldName: guaranteeType
+          orderByExpression: EnumOrderByExp
+        - fieldName: holdClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentType
+          orderByExpression: EnumOrderByExp
+        - fieldName: retributionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: unacceptablePaymentType
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationAcceptableGuaranteesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationAcceptableGuarantees
+  objectType: ReservationAcceptableGuarantees
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_acceptable_guarantees
+  filterExpressionType: ReservationAcceptableGuaranteesBoolExp
+  aggregateExpression: ReservationAcceptableGuaranteesAggExp
+  orderByExpression: ReservationAcceptableGuaranteesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationAcceptableGuarantees
+      subscription:
+        rootField: reservationAcceptableGuarantees
+    selectUniques:
+      - queryRootField: reservationAcceptableGuaranteesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationAcceptableGuaranteesById
+    filterInputTypeName: ReservationAcceptableGuaranteesFilterInput
+    aggregate:
+      queryRootField: reservationAcceptableGuaranteesAggregate
+      subscription:
+        rootField: reservationAcceptableGuaranteesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationAcceptableGuarantees
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

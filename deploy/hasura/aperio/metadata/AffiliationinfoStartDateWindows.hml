@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoStartDateWindows
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoStartDateWindows
+    inputTypeName: AffiliationinfoStartDateWindowsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_start_date_windows
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoStartDateWindows
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoStartDateWindowsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoStartDateWindows
+      comparableFields:
+        - fieldName: dow
+          booleanExpressionType: AffiliationinfoAffiliationinfoDayOfWeekBoolExp
+        - fieldName: earliestId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: latestId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoStartDateWindowsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoStartDateWindowsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoStartDateWindows
+      aggregatableFields:
+        - fieldName: dow
+          aggregateExpression: AffiliationinfoAffiliationinfoDayOfWeekAggExp
+        - fieldName: earliestId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: latestId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoStartDateWindowsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoStartDateWindowsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoStartDateWindows
+      orderableFields:
+        - fieldName: dow
+          orderByExpression: EnumOrderByExp
+        - fieldName: earliestId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: latestId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoStartDateWindowsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoStartDateWindows
+  objectType: AffiliationinfoStartDateWindows
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_start_date_windows
+  filterExpressionType: AffiliationinfoStartDateWindowsBoolExp
+  aggregateExpression: AffiliationinfoStartDateWindowsAggExp
+  orderByExpression: AffiliationinfoStartDateWindowsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoStartDateWindows
+      subscription:
+        rootField: affiliationinfoStartDateWindows
+    selectUniques:
+      - queryRootField: affiliationinfoStartDateWindowsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoStartDateWindowsById
+    filterInputTypeName: AffiliationinfoStartDateWindowsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoStartDateWindowsAggregate
+      subscription:
+        rootField: affiliationinfoStartDateWindowsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoStartDateWindows
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

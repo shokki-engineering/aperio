@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileContactPrefsObject
+  fields:
+    - name: commonPrefId
+      type: String_1!
+    - name: contactMethodCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+  graphql:
+    typeName: InsertProfileContactPrefsObject
+    inputTypeName: InsertProfileContactPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_contact_prefs_object
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        contactMethodCode:
+          column:
+            name: contact_method_code
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileContactPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - contactMethodCode
+          - id
+          - preferLevel
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileContactPrefsResponse
+  description: Responses from the 'insert_profile_contact_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileContactPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileContactPrefsResponse
+    inputTypeName: InsertProfileContactPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_contact_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileContactPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileContactPrefs
+  outputType: InsertProfileContactPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileContactPrefsObject!]!"
+    - name: postCheck
+      type: ProfileContactPrefsBoolExp
+      description: Insert permission predicate over the 'profile_contact_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_contact_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileContactPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_contact_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileContactPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

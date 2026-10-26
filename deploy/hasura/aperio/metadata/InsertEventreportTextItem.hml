@@ -1,0 +1,240 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportTextItemObject
+  fields:
+    - name: applicableEndId
+      type: String_1
+    - name: applicableStartId
+      type: String_1
+    - name: author
+      type: String_1
+    - name: category
+      type: Enum
+    - name: contentId
+      type: String_1
+    - name: copyrightEndId
+      type: String_1
+    - name: copyrightNotice
+      type: String_1
+    - name: copyrightOwner
+      type: String_1
+    - name: copyrightStartId
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: effectiveEndId
+      type: String_1
+    - name: effectiveStartId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: purgeDayId
+      type: String_1
+    - name: recordId
+      type: String_1
+    - name: sourceId
+      type: String_1
+    - name: textItemsId
+      type: String_1!
+    - name: title
+      type: String_1
+    - name: uri
+      type: String_1
+    - name: version
+      type: String_1
+  graphql:
+    typeName: InsertEventreportTextItemObject
+    inputTypeName: InsertEventreportTextItemObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_text_item_object
+      fieldMapping:
+        applicableEndId:
+          column:
+            name: applicable_end_id
+        applicableStartId:
+          column:
+            name: applicable_start_id
+        author:
+          column:
+            name: author
+        category:
+          column:
+            name: category
+        contentId:
+          column:
+            name: content_id
+        copyrightEndId:
+          column:
+            name: copyright_end_id
+        copyrightNotice:
+          column:
+            name: copyright_notice
+        copyrightOwner:
+          column:
+            name: copyright_owner
+        copyrightStartId:
+          column:
+            name: copyright_start_id
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        effectiveEndId:
+          column:
+            name: effective_end_id
+        effectiveStartId:
+          column:
+            name: effective_start_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        purgeDayId:
+          column:
+            name: purge_day_id
+        recordId:
+          column:
+            name: record_id
+        sourceId:
+          column:
+            name: source_id
+        textItemsId:
+          column:
+            name: text_items_id
+        title:
+          column:
+            name: title
+        uri:
+          column:
+            name: uri
+        version:
+          column:
+            name: version
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportTextItemObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicableEndId
+          - applicableStartId
+          - author
+          - category
+          - contentId
+          - copyrightEndId
+          - copyrightNotice
+          - copyrightOwner
+          - copyrightStartId
+          - createDateTime
+          - creatorId
+          - effectiveEndId
+          - effectiveStartId
+          - id
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - purgeDayId
+          - recordId
+          - sourceId
+          - textItemsId
+          - title
+          - uri
+          - version
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportTextItemResponse
+  description: Responses from the 'insert_eventreport_text_item' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportTextItem!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportTextItemResponse
+    inputTypeName: InsertEventreportTextItemResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_text_item_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportTextItemResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportTextItem
+  outputType: InsertEventreportTextItemResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportTextItemObject!]!"
+    - name: postCheck
+      type: EventreportTextItemBoolExp
+      description: Insert permission predicate over the 'eventreport_text_item' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_text_item
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportTextItem
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_text_item table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportTextItem
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductConjunctionTicketNbrs
+  fields:
+    - name: coupons
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: ticketId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelproductConjunctionTicketNbrs
+    inputTypeName: HotelproductConjunctionTicketNbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_conjunction_ticket_nbrs
+      fieldMapping:
+        coupons:
+          column:
+            name: coupons
+        id:
+          column:
+            name: id
+        ticketId:
+          column:
+            name: ticket_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductConjunctionTicketNbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - coupons
+          - id
+          - ticketId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductConjunctionTicketNbrsBoolExp
+  operand:
+    object:
+      type: HotelproductConjunctionTicketNbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ticketId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductConjunctionTicketNbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductConjunctionTicketNbrsAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductConjunctionTicketNbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ticketId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductConjunctionTicketNbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductConjunctionTicketNbrsOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductConjunctionTicketNbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ticketId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductConjunctionTicketNbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductConjunctionTicketNbrs
+  objectType: HotelproductConjunctionTicketNbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_conjunction_ticket_nbrs
+  filterExpressionType: HotelproductConjunctionTicketNbrsBoolExp
+  aggregateExpression: HotelproductConjunctionTicketNbrsAggExp
+  orderByExpression: HotelproductConjunctionTicketNbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductConjunctionTicketNbrs
+      subscription:
+        rootField: hotelproductConjunctionTicketNbrs
+    selectUniques:
+      - queryRootField: hotelproductConjunctionTicketNbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductConjunctionTicketNbrsById
+    filterInputTypeName: HotelproductConjunctionTicketNbrsFilterInput
+    aggregate:
+      queryRootField: hotelproductConjunctionTicketNbrsAggregate
+      subscription:
+        rootField: hotelproductConjunctionTicketNbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductConjunctionTicketNbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

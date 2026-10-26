@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileUniqueIdsObject
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertProfileUniqueIdsObject
+    inputTypeName: InsertProfileUniqueIdsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_unique_ids_object
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileUniqueIdsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileUniqueIdsResponse
+  description: Responses from the 'insert_profile_unique_ids' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileUniqueIds!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileUniqueIdsResponse
+    inputTypeName: InsertProfileUniqueIdsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_unique_ids_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileUniqueIdsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileUniqueIds
+  outputType: InsertProfileUniqueIdsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileUniqueIdsObject!]!"
+    - name: postCheck
+      type: ProfileUniqueIdsBoolExp
+      description: Insert permission predicate over the 'profile_unique_ids' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_unique_ids
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileUniqueIds
+    rootFieldKind: Mutation
+  description: Insert into the profile_unique_ids table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileUniqueIds
+  permissions:
+    - role: admin
+      allowExecution: true
+

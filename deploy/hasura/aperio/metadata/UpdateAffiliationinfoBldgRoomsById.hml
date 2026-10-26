@@ -1,0 +1,266 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoBldgRoomsAddressId
+  description: Update the 'address_id' column in the 'affiliationinfo_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoBldgRoomsAddressId
+    inputTypeName: UpdateColumnAffiliationinfoBldgRoomsAddressIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_bldg_rooms_address_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoBldgRoomsAddressId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoBldgRoomsBldgNameIndicator
+  description: Update the 'bldg_name_indicator' column in the
+    'affiliationinfo_bldg_rooms' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoBldgRoomsBldgNameIndicator
+    inputTypeName: UpdateColumnAffiliationinfoBldgRoomsBldgNameIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_bldg_rooms_bldg_name_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoBldgRoomsBldgNameIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoBldgRoomsId
+  description: Update the 'id' column in the 'affiliationinfo_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoBldgRoomsId
+    inputTypeName: UpdateColumnAffiliationinfoBldgRoomsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_bldg_rooms_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoBldgRoomsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoBldgRoomsValue
+  description: Update the 'value' column in the 'affiliationinfo_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoBldgRoomsValue
+    inputTypeName: UpdateColumnAffiliationinfoBldgRoomsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_bldg_rooms_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoBldgRoomsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoBldgRoomsByIdUpdateColumns
+  description: Update the columns of the 'affiliationinfo_bldg_rooms' collection
+  fields:
+    - name: addressId
+      type: UpdateColumnAffiliationinfoBldgRoomsAddressId
+      description: Update the 'address_id' column in the 'affiliationinfo_bldg_rooms'
+        collection.
+    - name: bldgNameIndicator
+      type: UpdateColumnAffiliationinfoBldgRoomsBldgNameIndicator
+      description: Update the 'bldg_name_indicator' column in the
+        'affiliationinfo_bldg_rooms' collection.
+    - name: id
+      type: UpdateColumnAffiliationinfoBldgRoomsId
+      description: Update the 'id' column in the 'affiliationinfo_bldg_rooms' collection.
+    - name: value
+      type: UpdateColumnAffiliationinfoBldgRoomsValue
+      description: Update the 'value' column in the 'affiliationinfo_bldg_rooms' collection.
+  graphql:
+    typeName: UpdateAffiliationinfoBldgRoomsByIdUpdateColumns
+    inputTypeName: UpdateAffiliationinfoBldgRoomsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_bldg_rooms_by_id_update_columns
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoBldgRoomsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoBldgRoomsByIdResponse
+  description: Responses from the 'update_affiliationinfo_bldg_rooms_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateAffiliationinfoBldgRoomsByIdResponse
+    inputTypeName: UpdateAffiliationinfoBldgRoomsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_bldg_rooms_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoBldgRoomsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateAffiliationinfoBldgRoomsById
+  outputType: UpdateAffiliationinfoBldgRoomsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: AffiliationinfoBldgRoomsBoolExp
+      description: Update permission post-condition predicate over the
+        'affiliationinfo_bldg_rooms' collection
+    - name: preCheck
+      type: AffiliationinfoBldgRoomsBoolExp
+      description: Update permission pre-condition predicate over the
+        'affiliationinfo_bldg_rooms' collection
+    - name: updateColumns
+      type: UpdateAffiliationinfoBldgRoomsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_affiliationinfo_bldg_rooms_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateAffiliationinfoBldgRoomsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'affiliationinfo_bldg_rooms' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateAffiliationinfoBldgRoomsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

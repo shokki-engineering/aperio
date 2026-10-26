@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: rph
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+    inputTypeName: ProfileVehicleProfileRentalPrefLoyaltyPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_vehicle_profile_rental_pref_loyalty_prefs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        rph:
+          column:
+            name: rph
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - rph
+          - vehicleProfileRentalPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefLoyaltyPrefsBoolExp
+  operand:
+    object:
+      type: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleProfileRentalPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVehicleProfileRentalPrefLoyaltyPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefLoyaltyPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleProfileRentalPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVehicleProfileRentalPrefLoyaltyPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefLoyaltyPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleProfileRentalPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVehicleProfileRentalPrefLoyaltyPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+  objectType: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_vehicle_profile_rental_pref_loyalty_prefs
+  filterExpressionType: ProfileVehicleProfileRentalPrefLoyaltyPrefsBoolExp
+  aggregateExpression: ProfileVehicleProfileRentalPrefLoyaltyPrefsAggExp
+  orderByExpression: ProfileVehicleProfileRentalPrefLoyaltyPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVehicleProfileRentalPrefLoyaltyPrefs
+      subscription:
+        rootField: profileVehicleProfileRentalPrefLoyaltyPrefs
+    selectUniques:
+      - queryRootField: profileVehicleProfileRentalPrefLoyaltyPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVehicleProfileRentalPrefLoyaltyPrefsById
+    filterInputTypeName: ProfileVehicleProfileRentalPrefLoyaltyPrefsFilterInput
+    aggregate:
+      queryRootField: profileVehicleProfileRentalPrefLoyaltyPrefsAggregate
+      subscription:
+        rootField: profileVehicleProfileRentalPrefLoyaltyPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVehicleProfileRentalPrefLoyaltyPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

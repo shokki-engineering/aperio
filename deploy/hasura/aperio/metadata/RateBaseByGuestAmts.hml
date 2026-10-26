@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateBaseByGuestAmts
+  fields:
+    - name: additionalFeesExcludedIndicator
+      type: Boolean_1
+    - name: ageBucket
+      type: String_1
+    - name: ageQualifyingCode
+      type: Enum
+    - name: ageTimeUnit
+      type: Enum
+    - name: code
+      type: String_1
+    - name: guestCount
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: markedUpAmountId
+      type: String_1
+    - name: maxAge
+      type: Int32
+    - name: minAge
+      type: Int32
+    - name: postTaxAmountId
+      type: String_1
+    - name: preTaxAmountId
+      type: String_1
+    - name: rateId
+      type: String_1!
+    - name: rateOverrideIndicator
+      type: Boolean_1
+    - name: serviceOverrideIndicator
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: RateBaseByGuestAmts
+    inputTypeName: RateBaseByGuestAmtsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_base_by_guest_amts
+      fieldMapping:
+        additionalFeesExcludedIndicator:
+          column:
+            name: additional_fees_excluded_indicator
+        ageBucket:
+          column:
+            name: age_bucket
+        ageQualifyingCode:
+          column:
+            name: age_qualifying_code
+        ageTimeUnit:
+          column:
+            name: age_time_unit
+        code:
+          column:
+            name: code
+        guestCount:
+          column:
+            name: guest_count
+        id:
+          column:
+            name: id
+        markedUpAmountId:
+          column:
+            name: marked_up_amount_id
+        maxAge:
+          column:
+            name: max_age
+        minAge:
+          column:
+            name: min_age
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+        rateId:
+          column:
+            name: rate_id
+        rateOverrideIndicator:
+          column:
+            name: rate_override_indicator
+        serviceOverrideIndicator:
+          column:
+            name: service_override_indicator
+        taxesId:
+          column:
+            name: taxes_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateBaseByGuestAmts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalFeesExcludedIndicator
+          - ageBucket
+          - ageQualifyingCode
+          - ageTimeUnit
+          - code
+          - guestCount
+          - id
+          - markedUpAmountId
+          - maxAge
+          - minAge
+          - postTaxAmountId
+          - preTaxAmountId
+          - rateId
+          - rateOverrideIndicator
+          - serviceOverrideIndicator
+          - taxesId
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateBaseByGuestAmtsBoolExp
+  operand:
+    object:
+      type: RateBaseByGuestAmts
+      comparableFields:
+        - fieldName: additionalFeesExcludedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: ageBucket
+          booleanExpressionType: TextBoolExp
+        - fieldName: ageQualifyingCode
+          booleanExpressionType: RateRateAgeQualifyingCodeBoolExp
+        - fieldName: ageTimeUnit
+          booleanExpressionType: RateRateTimeUnitBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: guestCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: markedUpAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxAge
+          booleanExpressionType: Int4BoolExp
+        - fieldName: minAge
+          booleanExpressionType: Int4BoolExp
+        - fieldName: postTaxAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preTaxAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateOverrideIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: serviceOverrideIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: RateRateChargeTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateBaseByGuestAmtsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateBaseByGuestAmtsAggExp
+  operand:
+    object:
+      aggregatedType: RateBaseByGuestAmts
+      aggregatableFields:
+        - fieldName: additionalFeesExcludedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: ageBucket
+          aggregateExpression: TextAggExp
+        - fieldName: ageQualifyingCode
+          aggregateExpression: RateRateAgeQualifyingCodeAggExp
+        - fieldName: ageTimeUnit
+          aggregateExpression: RateRateTimeUnitAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: guestCount
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: markedUpAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: maxAge
+          aggregateExpression: Int4AggExp
+        - fieldName: minAge
+          aggregateExpression: Int4AggExp
+        - fieldName: postTaxAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: preTaxAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: rateId
+          aggregateExpression: TextAggExp
+        - fieldName: rateOverrideIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: serviceOverrideIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: RateRateChargeTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateBaseByGuestAmtsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateBaseByGuestAmtsOrderByExp
+  operand:
+    object:
+      orderedType: RateBaseByGuestAmts
+      orderableFields:
+        - fieldName: additionalFeesExcludedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: ageBucket
+          orderByExpression: String1OrderByExp
+        - fieldName: ageQualifyingCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: ageTimeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: guestCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: markedUpAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: maxAge
+          orderByExpression: Int32OrderByExp
+        - fieldName: minAge
+          orderByExpression: Int32OrderByExp
+        - fieldName: postTaxAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: preTaxAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: rateId
+          orderByExpression: String1OrderByExp
+        - fieldName: rateOverrideIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: serviceOverrideIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateBaseByGuestAmtsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateBaseByGuestAmts
+  objectType: RateBaseByGuestAmts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_base_by_guest_amts
+  filterExpressionType: RateBaseByGuestAmtsBoolExp
+  aggregateExpression: RateBaseByGuestAmtsAggExp
+  orderByExpression: RateBaseByGuestAmtsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateBaseByGuestAmts
+      subscription:
+        rootField: rateBaseByGuestAmts
+    selectUniques:
+      - queryRootField: rateBaseByGuestAmtsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateBaseByGuestAmtsById
+    filterInputTypeName: RateBaseByGuestAmtsFilterInput
+    aggregate:
+      queryRootField: rateBaseByGuestAmtsAggregate
+      subscription:
+        rootField: rateBaseByGuestAmtsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateBaseByGuestAmts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

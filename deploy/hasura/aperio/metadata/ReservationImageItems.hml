@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationImageItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationImageItems
+    inputTypeName: ReservationImageItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_image_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationImageItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationImageItemsBoolExp
+  operand:
+    object:
+      type: ReservationImageItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationImageItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationImageItemsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationImageItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationImageItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationImageItemsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationImageItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationImageItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationImageItems
+  objectType: ReservationImageItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_image_items
+  filterExpressionType: ReservationImageItemsBoolExp
+  aggregateExpression: ReservationImageItemsAggExp
+  orderByExpression: ReservationImageItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationImageItems
+      subscription:
+        rootField: reservationImageItems
+    selectUniques:
+      - queryRootField: reservationImageItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationImageItemsById
+    filterInputTypeName: ReservationImageItemsFilterInput
+    aggregate:
+      queryRootField: reservationImageItemsAggregate
+      subscription:
+        rootField: reservationImageItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationImageItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

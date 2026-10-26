@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCabinPrefsObject
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: cabinId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+  graphql:
+    typeName: InsertProfileCabinPrefsObject
+    inputTypeName: InsertProfileCabinPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_cabin_prefs_object
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        cabinId:
+          column:
+            name: cabin_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCabinPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - cabinId
+          - id
+          - preferLevel
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCabinPrefsResponse
+  description: Responses from the 'insert_profile_cabin_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCabinPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileCabinPrefsResponse
+    inputTypeName: InsertProfileCabinPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_cabin_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCabinPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileCabinPrefs
+  outputType: InsertProfileCabinPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileCabinPrefsObject!]!"
+    - name: postCheck
+      type: ProfileCabinPrefsBoolExp
+      description: Insert permission predicate over the 'profile_cabin_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_cabin_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileCabinPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_cabin_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileCabinPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

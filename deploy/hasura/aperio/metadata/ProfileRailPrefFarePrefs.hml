@@ -1,0 +1,211 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileRailPrefFarePrefs
+  fields:
+    - name: code
+      type: String_1
+    - name: description
+      type: String_1
+    - name: fareBasisCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: rateCategoryCode
+      type: Enum
+    - name: transferAction
+      type: Enum
+    - name: vendorPrefRphs
+      type: "[String_1]"
+  graphql:
+    typeName: ProfileRailPrefFarePrefs
+    inputTypeName: ProfileRailPrefFarePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_rail_pref_fare_prefs
+      fieldMapping:
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        fareBasisCode:
+          column:
+            name: fare_basis_code
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        rateCategoryCode:
+          column:
+            name: rate_category_code
+        transferAction:
+          column:
+            name: transfer_action
+        vendorPrefRphs:
+          column:
+            name: vendor_pref_rphs
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileRailPrefFarePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - description
+          - fareBasisCode
+          - id
+          - preferLevel
+          - railPrefId
+          - rateCategoryCode
+          - transferAction
+          - vendorPrefRphs
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileRailPrefFarePrefsBoolExp
+  operand:
+    object:
+      type: ProfileRailPrefFarePrefs
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: fareBasisCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: railPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateCategoryCode
+          booleanExpressionType: ProfileRateCategoryBoolExp
+        - fieldName: transferAction
+          booleanExpressionType: ProfileTransferActionBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileRailPrefFarePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileRailPrefFarePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileRailPrefFarePrefs
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: fareBasisCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: railPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: rateCategoryCode
+          aggregateExpression: ProfileRateCategoryAggExp
+        - fieldName: transferAction
+          aggregateExpression: ProfileTransferActionAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileRailPrefFarePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileRailPrefFarePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileRailPrefFarePrefs
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: fareBasisCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: railPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: rateCategoryCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: transferAction
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileRailPrefFarePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileRailPrefFarePrefs
+  objectType: ProfileRailPrefFarePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_rail_pref_fare_prefs
+  filterExpressionType: ProfileRailPrefFarePrefsBoolExp
+  aggregateExpression: ProfileRailPrefFarePrefsAggExp
+  orderByExpression: ProfileRailPrefFarePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileRailPrefFarePrefs
+      subscription:
+        rootField: profileRailPrefFarePrefs
+    selectUniques:
+      - queryRootField: profileRailPrefFarePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileRailPrefFarePrefsById
+    filterInputTypeName: ProfileRailPrefFarePrefsFilterInput
+    aggregate:
+      queryRootField: profileRailPrefFarePrefsAggregate
+      subscription:
+        rootField: profileRailPrefFarePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileRailPrefFarePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

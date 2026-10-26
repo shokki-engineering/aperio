@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileDecimals
+    inputTypeName: ProfileDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileDecimalsBoolExp
+  operand:
+    object:
+      type: ProfileDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileDecimals
+  objectType: ProfileDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_decimals
+  filterExpressionType: ProfileDecimalsBoolExp
+  aggregateExpression: ProfileDecimalsAggExp
+  orderByExpression: ProfileDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileDecimals
+      subscription:
+        rootField: profileDecimals
+    selectUniques:
+      - queryRootField: profileDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileDecimalsById
+    filterInputTypeName: ProfileDecimalsFilterInput
+    aggregate:
+      queryRootField: profileDecimalsAggregate
+      subscription:
+        rootField: profileDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockBillingInstructions
+  fields:
+    - name: accountNumber
+      type: String_1
+    - name: authorizationCode
+      type: String_1
+    - name: code
+      type: String_1!
+    - name: description
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: typeId
+      type: String_1
+  graphql:
+    typeName: InventoryblockBillingInstructions
+    inputTypeName: InventoryblockBillingInstructionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_billing_instructions
+      fieldMapping:
+        accountNumber:
+          column:
+            name: account_number
+        authorizationCode:
+          column:
+            name: authorization_code
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+        typeId:
+          column:
+            name: type_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockBillingInstructions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accountNumber
+          - authorizationCode
+          - code
+          - description
+          - duration
+          - endId
+          - id
+          - startId
+          - typeId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockBillingInstructionsBoolExp
+  operand:
+    object:
+      type: InventoryblockBillingInstructions
+      comparableFields:
+        - fieldName: accountNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: authorizationCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: typeId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockBillingInstructionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockBillingInstructionsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockBillingInstructions
+      aggregatableFields:
+        - fieldName: accountNumber
+          aggregateExpression: TextAggExp
+        - fieldName: authorizationCode
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: typeId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockBillingInstructionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockBillingInstructionsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockBillingInstructions
+      orderableFields:
+        - fieldName: accountNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: authorizationCode
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: typeId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockBillingInstructionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockBillingInstructions
+  objectType: InventoryblockBillingInstructions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_billing_instructions
+  filterExpressionType: InventoryblockBillingInstructionsBoolExp
+  aggregateExpression: InventoryblockBillingInstructionsAggExp
+  orderByExpression: InventoryblockBillingInstructionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockBillingInstructions
+      subscription:
+        rootField: inventoryblockBillingInstructions
+    selectUniques:
+      - queryRootField: inventoryblockBillingInstructionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockBillingInstructionsById
+    filterInputTypeName: InventoryblockBillingInstructionsFilterInput
+    aggregate:
+      queryRootField: inventoryblockBillingInstructionsAggregate
+      subscription:
+        rootField: inventoryblockBillingInstructionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockBillingInstructions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

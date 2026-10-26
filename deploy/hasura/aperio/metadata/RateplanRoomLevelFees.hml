@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanRoomLevelFees
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: RateplanRoomLevelFees
+    inputTypeName: RateplanRoomLevelFeesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_room_level_fees
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanRoomLevelFees
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - quantity
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanRoomLevelFeesBoolExp
+  operand:
+    object:
+      type: RateplanRoomLevelFees
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanRoomLevelFeesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanRoomLevelFeesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanRoomLevelFees
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanRoomLevelFeesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanRoomLevelFeesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanRoomLevelFees
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanRoomLevelFeesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanRoomLevelFees
+  objectType: RateplanRoomLevelFees
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_room_level_fees
+  filterExpressionType: RateplanRoomLevelFeesBoolExp
+  aggregateExpression: RateplanRoomLevelFeesAggExp
+  orderByExpression: RateplanRoomLevelFeesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanRoomLevelFees
+      subscription:
+        rootField: rateplanRoomLevelFees
+    selectUniques:
+      - queryRootField: rateplanRoomLevelFeesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanRoomLevelFeesById
+    filterInputTypeName: RateplanRoomLevelFeesFilterInput
+    aggregate:
+      queryRootField: rateplanRoomLevelFeesAggregate
+      subscription:
+        rootField: rateplanRoomLevelFeesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanRoomLevelFees
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

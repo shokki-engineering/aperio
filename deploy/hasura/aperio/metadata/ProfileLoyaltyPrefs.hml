@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileLoyaltyPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: commonPrefId
+      type: String_1!
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: otherSrvcPrefId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: rph
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileLoyaltyPrefs
+    inputTypeName: ProfileLoyaltyPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_loyalty_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        commonPrefId:
+          column:
+            name: common_pref_id
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        otherSrvcPrefId:
+          column:
+            name: other_srvc_pref_id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        rph:
+          column:
+            name: rph
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileLoyaltyPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - commonPrefId
+          - hotelPrefId
+          - id
+          - otherSrvcPrefId
+          - preferLevel
+          - railPrefId
+          - rph
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileLoyaltyPrefsBoolExp
+  operand:
+    object:
+      type: ProfileLoyaltyPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commonPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: otherSrvcPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: railPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileLoyaltyPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileLoyaltyPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileLoyaltyPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: commonPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: otherSrvcPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: railPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileLoyaltyPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileLoyaltyPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileLoyaltyPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: commonPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: otherSrvcPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: railPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileLoyaltyPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileLoyaltyPrefs
+  objectType: ProfileLoyaltyPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_loyalty_prefs
+  filterExpressionType: ProfileLoyaltyPrefsBoolExp
+  aggregateExpression: ProfileLoyaltyPrefsAggExp
+  orderByExpression: ProfileLoyaltyPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileLoyaltyPrefs
+      subscription:
+        rootField: profileLoyaltyPrefs
+    selectUniques:
+      - queryRootField: profileLoyaltyPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileLoyaltyPrefsById
+    filterInputTypeName: ProfileLoyaltyPrefsFilterInput
+    aggregate:
+      queryRootField: profileLoyaltyPrefsAggregate
+      subscription:
+        rootField: profileLoyaltyPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileLoyaltyPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

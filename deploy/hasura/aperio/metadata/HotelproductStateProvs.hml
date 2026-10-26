@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductStateProvs
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelproductStateProvs
+    inputTypeName: HotelproductStateProvsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_state_provs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductStateProvs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductStateProvsBoolExp
+  operand:
+    object:
+      type: HotelproductStateProvs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: stateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductStateProvsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductStateProvsAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductStateProvs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: stateCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductStateProvsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductStateProvsOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductStateProvs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: stateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductStateProvsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductStateProvs
+  objectType: HotelproductStateProvs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_state_provs
+  filterExpressionType: HotelproductStateProvsBoolExp
+  aggregateExpression: HotelproductStateProvsAggExp
+  orderByExpression: HotelproductStateProvsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductStateProvs
+      subscription:
+        rootField: hotelproductStateProvs
+    selectUniques:
+      - queryRootField: hotelproductStateProvsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductStateProvsById
+    filterInputTypeName: HotelproductStateProvsFilterInput
+    aggregate:
+      queryRootField: hotelproductStateProvsAggregate
+      subscription:
+        rootField: hotelproductStateProvsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductStateProvs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

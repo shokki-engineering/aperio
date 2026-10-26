@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileInsurancePrefsObject
+  fields:
+    - name: commonPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: rph
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileInsurancePrefsObject
+    inputTypeName: InsertProfileInsurancePrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_insurance_prefs_object
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        rph:
+          column:
+            name: rph
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileInsurancePrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - id
+          - preferLevel
+          - rph
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileInsurancePrefsResponse
+  description: Responses from the 'insert_profile_insurance_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileInsurancePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileInsurancePrefsResponse
+    inputTypeName: InsertProfileInsurancePrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_insurance_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileInsurancePrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileInsurancePrefs
+  outputType: InsertProfileInsurancePrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileInsurancePrefsObject!]!"
+    - name: postCheck
+      type: ProfileInsurancePrefsBoolExp
+      description: Insert permission predicate over the 'profile_insurance_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_insurance_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileInsurancePrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_insurance_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileInsurancePrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

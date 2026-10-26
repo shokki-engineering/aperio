@@ -1,0 +1,227 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelViewershipProfilesId
+  description: Update the 'id' column in the 'hotel_viewership_profiles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelViewershipProfilesId
+    inputTypeName: UpdateColumnHotelViewershipProfilesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_viewership_profiles_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelViewershipProfilesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelViewershipProfilesProfileId
+  description: Update the 'profile_id' column in the 'hotel_viewership_profiles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelViewershipProfilesProfileId
+    inputTypeName: UpdateColumnHotelViewershipProfilesProfileIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_viewership_profiles_profile_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelViewershipProfilesProfileId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelViewershipProfilesViewershipId
+  description: Update the 'viewership_id' column in the
+    'hotel_viewership_profiles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelViewershipProfilesViewershipId
+    inputTypeName: UpdateColumnHotelViewershipProfilesViewershipIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_viewership_profiles_viewership_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelViewershipProfilesViewershipId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelViewershipProfilesByIdUpdateColumns
+  description: Update the columns of the 'hotel_viewership_profiles' collection
+  fields:
+    - name: id
+      type: UpdateColumnHotelViewershipProfilesId
+      description: Update the 'id' column in the 'hotel_viewership_profiles' collection.
+    - name: profileId
+      type: UpdateColumnHotelViewershipProfilesProfileId
+      description: Update the 'profile_id' column in the 'hotel_viewership_profiles'
+        collection.
+    - name: viewershipId
+      type: UpdateColumnHotelViewershipProfilesViewershipId
+      description: Update the 'viewership_id' column in the
+        'hotel_viewership_profiles' collection.
+  graphql:
+    typeName: UpdateHotelViewershipProfilesByIdUpdateColumns
+    inputTypeName: UpdateHotelViewershipProfilesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_viewership_profiles_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profileId:
+          column:
+            name: profile_id
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelViewershipProfilesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profileId
+          - viewershipId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelViewershipProfilesByIdResponse
+  description: Responses from the 'update_hotel_viewership_profiles_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelViewershipProfiles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelViewershipProfilesByIdResponse
+    inputTypeName: UpdateHotelViewershipProfilesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_viewership_profiles_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelViewershipProfilesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelViewershipProfilesById
+  outputType: UpdateHotelViewershipProfilesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelViewershipProfilesBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_viewership_profiles' collection
+    - name: preCheck
+      type: HotelViewershipProfilesBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_viewership_profiles' collection
+    - name: updateColumns
+      type: UpdateHotelViewershipProfilesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_viewership_profiles_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelViewershipProfilesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_viewership_profiles' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelViewershipProfilesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

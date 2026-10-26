@@ -1,0 +1,211 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: StayRevenueDetails
+  fields:
+    - name: amountId
+      type: String_1
+    - name: description
+      type: String_1
+    - name: folioIds
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: pmsRevenueCode
+      type: String_1
+    - name: ratePlanCode
+      type: String_1
+    - name: referenceId
+      type: String_1
+    - name: revenueCategoryId
+      type: String_1!
+    - name: transactionDayId
+      type: String_1
+  graphql:
+    typeName: StayRevenueDetails
+    inputTypeName: StayRevenueDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: stay_revenue_details
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        description:
+          column:
+            name: description
+        folioIds:
+          column:
+            name: folio_ids
+        id:
+          column:
+            name: id
+        pmsRevenueCode:
+          column:
+            name: pms_revenue_code
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        referenceId:
+          column:
+            name: reference_id
+        revenueCategoryId:
+          column:
+            name: revenue_category_id
+        transactionDayId:
+          column:
+            name: transaction_day_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: StayRevenueDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - description
+          - folioIds
+          - id
+          - pmsRevenueCode
+          - ratePlanCode
+          - referenceId
+          - revenueCategoryId
+          - transactionDayId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: StayRevenueDetailsBoolExp
+  operand:
+    object:
+      type: StayRevenueDetails
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: pmsRevenueCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: referenceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: revenueCategoryId
+          booleanExpressionType: TextBoolExp
+        - fieldName: transactionDayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: StayRevenueDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: StayRevenueDetailsAggExp
+  operand:
+    object:
+      aggregatedType: StayRevenueDetails
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: pmsRevenueCode
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanCode
+          aggregateExpression: TextAggExp
+        - fieldName: referenceId
+          aggregateExpression: TextAggExp
+        - fieldName: revenueCategoryId
+          aggregateExpression: TextAggExp
+        - fieldName: transactionDayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: StayRevenueDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: StayRevenueDetailsOrderByExp
+  operand:
+    object:
+      orderedType: StayRevenueDetails
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: description
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: pmsRevenueCode
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanCode
+          orderByExpression: String1OrderByExp
+        - fieldName: referenceId
+          orderByExpression: String1OrderByExp
+        - fieldName: revenueCategoryId
+          orderByExpression: String1OrderByExp
+        - fieldName: transactionDayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: StayRevenueDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: StayRevenueDetails
+  objectType: StayRevenueDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: stay_revenue_details
+  filterExpressionType: StayRevenueDetailsBoolExp
+  aggregateExpression: StayRevenueDetailsAggExp
+  orderByExpression: StayRevenueDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: stayRevenueDetails
+      subscription:
+        rootField: stayRevenueDetails
+    selectUniques:
+      - queryRootField: stayRevenueDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: stayRevenueDetailsById
+    filterInputTypeName: StayRevenueDetailsFilterInput
+    aggregate:
+      queryRootField: stayRevenueDetailsAggregate
+      subscription:
+        rootField: stayRevenueDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: StayRevenueDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

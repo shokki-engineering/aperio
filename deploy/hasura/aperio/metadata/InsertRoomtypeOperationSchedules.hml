@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeOperationSchedulesObject
+  fields:
+    - name: amenityId
+      type: String_1!
+    - name: displayName
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeOperationSchedulesObject
+    inputTypeName: InsertRoomtypeOperationSchedulesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_operation_schedules_object
+      fieldMapping:
+        amenityId:
+          column:
+            name: amenity_id
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeOperationSchedulesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amenityId
+          - displayName
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeOperationSchedulesResponse
+  description: Responses from the 'insert_roomtype_operation_schedules' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeOperationSchedules!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeOperationSchedulesResponse
+    inputTypeName: InsertRoomtypeOperationSchedulesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_operation_schedules_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeOperationSchedulesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeOperationSchedules
+  outputType: InsertRoomtypeOperationSchedulesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeOperationSchedulesObject!]!"
+    - name: postCheck
+      type: RoomtypeOperationSchedulesBoolExp
+      description: Insert permission predicate over the 'roomtype_operation_schedules'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_operation_schedules
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeOperationSchedules
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_operation_schedules table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeOperationSchedules
+  permissions:
+    - role: admin
+      allowExecution: true
+

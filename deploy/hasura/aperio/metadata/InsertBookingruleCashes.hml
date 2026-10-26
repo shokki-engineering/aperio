@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleCashesObject
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertBookingruleCashesObject
+    inputTypeName: InsertBookingruleCashesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_cashes_object
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleCashesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleCashesResponse
+  description: Responses from the 'insert_bookingrule_cashes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleCashesResponse
+    inputTypeName: InsertBookingruleCashesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_cashes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleCashesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleCashes
+  outputType: InsertBookingruleCashesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleCashesObject!]!"
+    - name: postCheck
+      type: BookingruleCashesBoolExp
+      description: Insert permission predicate over the 'bookingrule_cashes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_cashes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleCashes
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_cashes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleCashes
+  permissions:
+    - role: admin
+      allowExecution: true
+

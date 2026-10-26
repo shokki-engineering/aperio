@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantFormattedTextTexts
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RestaurantFormattedTextTexts
+    inputTypeName: RestaurantFormattedTextTextsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_formatted_text_texts
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantFormattedTextTexts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantFormattedTextTextsBoolExp
+  operand:
+    object:
+      type: RestaurantFormattedTextTexts
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: RestaurantRestaurantVideoItemsVideoItemDescriptionTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantFormattedTextTextsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantFormattedTextTextsAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantFormattedTextTexts
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: RestaurantRestaurantVideoItemsVideoItemDescriptionTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantFormattedTextTextsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantFormattedTextTextsOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantFormattedTextTexts
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantFormattedTextTextsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantFormattedTextTexts
+  objectType: RestaurantFormattedTextTexts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_formatted_text_texts
+  filterExpressionType: RestaurantFormattedTextTextsBoolExp
+  aggregateExpression: RestaurantFormattedTextTextsAggExp
+  orderByExpression: RestaurantFormattedTextTextsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantFormattedTextTexts
+      subscription:
+        rootField: restaurantFormattedTextTexts
+    selectUniques:
+      - queryRootField: restaurantFormattedTextTextsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantFormattedTextTextsById
+    filterInputTypeName: RestaurantFormattedTextTextsFilterInput
+    aggregate:
+      queryRootField: restaurantFormattedTextTextsAggregate
+      subscription:
+        rootField: restaurantFormattedTextTextsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantFormattedTextTexts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

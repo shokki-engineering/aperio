@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ContactDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ContactDocuments
+    inputTypeName: ContactDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: contact_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ContactDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ContactDocumentsBoolExp
+  operand:
+    object:
+      type: ContactDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: ContactContactDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ContactDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ContactDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: ContactDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: ContactContactDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ContactDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ContactDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: ContactDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ContactDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ContactDocuments
+  objectType: ContactDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: contact_documents
+  filterExpressionType: ContactDocumentsBoolExp
+  aggregateExpression: ContactDocumentsAggExp
+  orderByExpression: ContactDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: contactDocuments
+      subscription:
+        rootField: contactDocuments
+    selectUniques:
+      - queryRootField: contactDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: contactDocumentsById
+    filterInputTypeName: ContactDocumentsFilterInput
+    aggregate:
+      queryRootField: contactDocumentsAggregate
+      subscription:
+        rootField: contactDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ContactDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

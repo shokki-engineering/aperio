@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelUrls
+  fields:
+    - name: contactInfoId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: ownershipManagementInfoId
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelUrls
+    inputTypeName: HotelUrlsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_urls
+      fieldMapping:
+        contactInfoId:
+          column:
+            name: contact_info_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        ownershipManagementInfoId:
+          column:
+            name: ownership_management_info_id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelUrls
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactInfoId
+          - defaultValue
+          - id
+          - ownershipManagementInfoId
+          - type
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelUrlsBoolExp
+  operand:
+    object:
+      type: HotelUrls
+      comparableFields:
+        - fieldName: contactInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ownershipManagementInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelUrlsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelUrlsAggExp
+  operand:
+    object:
+      aggregatedType: HotelUrls
+      aggregatableFields:
+        - fieldName: contactInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ownershipManagementInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelUrlsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelUrlsOrderByExp
+  operand:
+    object:
+      orderedType: HotelUrls
+      orderableFields:
+        - fieldName: contactInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ownershipManagementInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelUrlsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelUrls
+  objectType: HotelUrls
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_urls
+  filterExpressionType: HotelUrlsBoolExp
+  aggregateExpression: HotelUrlsAggExp
+  orderByExpression: HotelUrlsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelUrls
+      subscription:
+        rootField: hotelUrls
+    selectUniques:
+      - queryRootField: hotelUrlsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelUrlsById
+    filterInputTypeName: HotelUrlsFilterInput
+    aggregate:
+      queryRootField: hotelUrlsAggregate
+      subscription:
+        rootField: hotelUrlsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelUrls
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

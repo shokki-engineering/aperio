@@ -1,0 +1,266 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpPropertiesId
+  description: Update the 'id' column in the 'meetingrfp_properties' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpPropertiesId
+    inputTypeName: UpdateColumnMeetingrfpPropertiesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_properties_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpPropertiesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpPropertiesPreferLevel
+  description: Update the 'prefer_level' column in the 'meetingrfp_properties' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpPropertiesPreferLevel
+    inputTypeName: UpdateColumnMeetingrfpPropertiesPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_properties_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpPropertiesPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpPropertiesPreferenceId
+  description: Update the 'preference_id' column in the 'meetingrfp_properties' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpPropertiesPreferenceId
+    inputTypeName: UpdateColumnMeetingrfpPropertiesPreferenceIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_properties_preference_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpPropertiesPreferenceId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpPropertiesPropertyTypeCode
+  description: Update the 'property_type_code' column in the
+    'meetingrfp_properties' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpPropertiesPropertyTypeCode
+    inputTypeName: UpdateColumnMeetingrfpPropertiesPropertyTypeCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_properties_property_type_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpPropertiesPropertyTypeCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpPropertiesByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_properties' collection
+  fields:
+    - name: id
+      type: UpdateColumnMeetingrfpPropertiesId
+      description: Update the 'id' column in the 'meetingrfp_properties' collection.
+    - name: preferLevel
+      type: UpdateColumnMeetingrfpPropertiesPreferLevel
+      description: Update the 'prefer_level' column in the 'meetingrfp_properties'
+        collection.
+    - name: preferenceId
+      type: UpdateColumnMeetingrfpPropertiesPreferenceId
+      description: Update the 'preference_id' column in the 'meetingrfp_properties'
+        collection.
+    - name: propertyTypeCode
+      type: UpdateColumnMeetingrfpPropertiesPropertyTypeCode
+      description: Update the 'property_type_code' column in the
+        'meetingrfp_properties' collection.
+  graphql:
+    typeName: UpdateMeetingrfpPropertiesByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpPropertiesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_properties_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        preferenceId:
+          column:
+            name: preference_id
+        propertyTypeCode:
+          column:
+            name: property_type_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpPropertiesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - preferenceId
+          - propertyTypeCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpPropertiesByIdResponse
+  description: Responses from the 'update_meetingrfp_properties_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpProperties!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpPropertiesByIdResponse
+    inputTypeName: UpdateMeetingrfpPropertiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_properties_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpPropertiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpPropertiesById
+  outputType: UpdateMeetingrfpPropertiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpPropertiesBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_properties' collection
+    - name: preCheck
+      type: MeetingrfpPropertiesBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_properties' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpPropertiesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_properties_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpPropertiesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_properties' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpPropertiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationTotalsObject
+  fields:
+    - name: additionalFeesExcludedIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: markedUpAmountId
+      type: String_1
+    - name: postTaxAmountId
+      type: String_1
+    - name: preTaxAmountId
+      type: String_1
+    - name: rateOverrideIndicator
+      type: Boolean_1
+    - name: serviceOverrideIndicator
+      type: Boolean_1
+    - name: taxesId
+      type: String_1
+    - name: type
+      type: Enum
+  graphql:
+    typeName: InsertReservationTotalsObject
+    inputTypeName: InsertReservationTotalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_totals_object
+      fieldMapping:
+        additionalFeesExcludedIndicator:
+          column:
+            name: additional_fees_excluded_indicator
+        id:
+          column:
+            name: id
+        markedUpAmountId:
+          column:
+            name: marked_up_amount_id
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+        rateOverrideIndicator:
+          column:
+            name: rate_override_indicator
+        serviceOverrideIndicator:
+          column:
+            name: service_override_indicator
+        taxesId:
+          column:
+            name: taxes_id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationTotalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalFeesExcludedIndicator
+          - id
+          - markedUpAmountId
+          - postTaxAmountId
+          - preTaxAmountId
+          - rateOverrideIndicator
+          - serviceOverrideIndicator
+          - taxesId
+          - type
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationTotalsResponse
+  description: Responses from the 'insert_reservation_totals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationTotals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationTotalsResponse
+    inputTypeName: InsertReservationTotalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_totals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationTotalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationTotals
+  outputType: InsertReservationTotalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationTotalsObject!]!"
+    - name: postCheck
+      type: ReservationTotalsBoolExp
+      description: Insert permission predicate over the 'reservation_totals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_totals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationTotals
+    rootFieldKind: Mutation
+  description: Insert into the reservation_totals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationTotals
+  permissions:
+    - role: admin
+      allowExecution: true
+

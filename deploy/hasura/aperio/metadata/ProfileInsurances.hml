@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileInsurances
+  fields:
+    - name: affiliationsId
+      type: String_1!
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: insuranceCompanyId
+      type: String_1
+    - name: insuranceType
+      type: String_1
+    - name: insuredDisplayNameId
+      type: String_1
+    - name: policyNumber
+      type: String_1!
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: underwriterId
+      type: String_1
+  graphql:
+    typeName: ProfileInsurances
+    inputTypeName: ProfileInsurancesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_insurances
+      fieldMapping:
+        affiliationsId:
+          column:
+            name: affiliations_id
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        insuranceCompanyId:
+          column:
+            name: insurance_company_id
+        insuranceType:
+          column:
+            name: insurance_type
+        insuredDisplayNameId:
+          column:
+            name: insured_display_name_id
+        policyNumber:
+          column:
+            name: policy_number
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        underwriterId:
+          column:
+            name: underwriter_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileInsurances
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affiliationsId
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - insuranceCompanyId
+          - insuranceType
+          - insuredDisplayNameId
+          - policyNumber
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - underwriterId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileInsurancesBoolExp
+  operand:
+    object:
+      type: ProfileInsurances
+      comparableFields:
+        - fieldName: affiliationsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: insuranceCompanyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: insuranceType
+          booleanExpressionType: TextBoolExp
+        - fieldName: insuredDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: policyNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: underwriterId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileInsurancesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileInsurancesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileInsurances
+      aggregatableFields:
+        - fieldName: affiliationsId
+          aggregateExpression: TextAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: insuranceCompanyId
+          aggregateExpression: TextAggExp
+        - fieldName: insuranceType
+          aggregateExpression: TextAggExp
+        - fieldName: insuredDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: policyNumber
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: underwriterId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileInsurancesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileInsurancesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileInsurances
+      orderableFields:
+        - fieldName: affiliationsId
+          orderByExpression: String1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: insuranceCompanyId
+          orderByExpression: String1OrderByExp
+        - fieldName: insuranceType
+          orderByExpression: String1OrderByExp
+        - fieldName: insuredDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: policyNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: underwriterId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileInsurancesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileInsurances
+  objectType: ProfileInsurances
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_insurances
+  filterExpressionType: ProfileInsurancesBoolExp
+  aggregateExpression: ProfileInsurancesAggExp
+  orderByExpression: ProfileInsurancesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileInsurances
+      subscription:
+        rootField: profileInsurances
+    selectUniques:
+      - queryRootField: profileInsurancesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileInsurancesById
+    filterInputTypeName: ProfileInsurancesFilterInput
+    aggregate:
+      queryRootField: profileInsurancesAggregate
+      subscription:
+        rootField: profileInsurancesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileInsurances
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

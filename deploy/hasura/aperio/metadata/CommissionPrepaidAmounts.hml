@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommissionPrepaidAmounts
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: CommissionPrepaidAmounts
+    inputTypeName: CommissionPrepaidAmountsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: commission_prepaid_amounts
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommissionPrepaidAmounts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CommissionPrepaidAmountsBoolExp
+  operand:
+    object:
+      type: CommissionPrepaidAmounts
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CommissionPrepaidAmountsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CommissionPrepaidAmountsAggExp
+  operand:
+    object:
+      aggregatedType: CommissionPrepaidAmounts
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CommissionPrepaidAmountsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CommissionPrepaidAmountsOrderByExp
+  operand:
+    object:
+      orderedType: CommissionPrepaidAmounts
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CommissionPrepaidAmountsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CommissionPrepaidAmounts
+  objectType: CommissionPrepaidAmounts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: commission_prepaid_amounts
+  filterExpressionType: CommissionPrepaidAmountsBoolExp
+  aggregateExpression: CommissionPrepaidAmountsAggExp
+  orderByExpression: CommissionPrepaidAmountsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: commissionPrepaidAmounts
+      subscription:
+        rootField: commissionPrepaidAmounts
+    selectUniques:
+      - queryRootField: commissionPrepaidAmountsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: commissionPrepaidAmountsById
+    filterInputTypeName: CommissionPrepaidAmountsFilterInput
+    aggregate:
+      queryRootField: commissionPrepaidAmountsAggregate
+      subscription:
+        rootField: commissionPrepaidAmountsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CommissionPrepaidAmounts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

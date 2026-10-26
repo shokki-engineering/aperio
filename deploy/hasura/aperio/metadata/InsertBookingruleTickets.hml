@@ -1,0 +1,162 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleTicketsObject
+  fields:
+    - name: checkInhibitorType
+      type: Enum
+    - name: couponRphs
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: originalIssueDayId
+      type: String_1
+    - name: originalIssueIata
+      type: String_1
+    - name: originalIssuePlace
+      type: String_1
+    - name: originalPaymentForm
+      type: String_1
+    - name: originalTicketNumber
+      type: String_1
+    - name: rerouteReason
+      type: String_1
+    - name: reroutingType
+      type: Enum
+    - name: ticketNumber
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleTicketsObject
+    inputTypeName: InsertBookingruleTicketsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_tickets_object
+      fieldMapping:
+        checkInhibitorType:
+          column:
+            name: check_inhibitor_type
+        couponRphs:
+          column:
+            name: coupon_rphs
+        id:
+          column:
+            name: id
+        originalIssueDayId:
+          column:
+            name: original_issue_day_id
+        originalIssueIata:
+          column:
+            name: original_issue_iata
+        originalIssuePlace:
+          column:
+            name: original_issue_place
+        originalPaymentForm:
+          column:
+            name: original_payment_form
+        originalTicketNumber:
+          column:
+            name: original_ticket_number
+        rerouteReason:
+          column:
+            name: reroute_reason
+        reroutingType:
+          column:
+            name: rerouting_type
+        ticketNumber:
+          column:
+            name: ticket_number
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleTicketsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkInhibitorType
+          - couponRphs
+          - id
+          - originalIssueDayId
+          - originalIssueIata
+          - originalIssuePlace
+          - originalPaymentForm
+          - originalTicketNumber
+          - rerouteReason
+          - reroutingType
+          - ticketNumber
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleTicketsResponse
+  description: Responses from the 'insert_bookingrule_tickets' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleTickets!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleTicketsResponse
+    inputTypeName: InsertBookingruleTicketsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_tickets_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleTicketsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleTickets
+  outputType: InsertBookingruleTicketsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleTicketsObject!]!"
+    - name: postCheck
+      type: BookingruleTicketsBoolExp
+      description: Insert permission predicate over the 'bookingrule_tickets' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_tickets
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleTickets
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_tickets table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleTickets
+  permissions:
+    - role: admin
+      allowExecution: true
+

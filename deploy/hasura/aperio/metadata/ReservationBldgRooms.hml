@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationBldgRooms
+  fields:
+    - name: addressId
+      type: String_1!
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ReservationBldgRooms
+    inputTypeName: ReservationBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_bldg_rooms
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationBldgRoomsBoolExp
+  operand:
+    object:
+      type: ReservationBldgRooms
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: addressInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationBldgRooms
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: addressInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationBldgRooms
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: addressInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationBldgRooms
+  objectType: ReservationBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_bldg_rooms
+  filterExpressionType: ReservationBldgRoomsBoolExp
+  aggregateExpression: ReservationBldgRoomsAggExp
+  orderByExpression: ReservationBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationBldgRooms
+      subscription:
+        rootField: reservationBldgRooms
+    selectUniques:
+      - queryRootField: reservationBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationBldgRoomsById
+    filterInputTypeName: ReservationBldgRoomsFilterInput
+    aggregate:
+      queryRootField: reservationBldgRoomsAggregate
+      subscription:
+        rootField: reservationBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

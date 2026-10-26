@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportRoomAmenityPrefsObject
+  fields:
+    - name: contactId
+      type: String_1!
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: qualityLevel
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: roomAmenity
+      type: Enum
+    - name: roomGender
+      type: Enum
+    - name: sharedRoom
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertEventreportRoomAmenityPrefsObject
+    inputTypeName: InsertEventreportRoomAmenityPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_room_amenity_prefs_object
+      fieldMapping:
+        contactId:
+          column:
+            name: contact_id
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        qualityLevel:
+          column:
+            name: quality_level
+        quantity:
+          column:
+            name: quantity
+        roomAmenity:
+          column:
+            name: room_amenity
+        roomGender:
+          column:
+            name: room_gender
+        sharedRoom:
+          column:
+            name: shared_room
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportRoomAmenityPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactId
+          - existsCode
+          - id
+          - preferLevel
+          - qualityLevel
+          - quantity
+          - roomAmenity
+          - roomGender
+          - sharedRoom
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportRoomAmenityPrefsResponse
+  description: Responses from the 'insert_eventreport_room_amenity_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportRoomAmenityPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportRoomAmenityPrefsResponse
+    inputTypeName: InsertEventreportRoomAmenityPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_room_amenity_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportRoomAmenityPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportRoomAmenityPrefs
+  outputType: InsertEventreportRoomAmenityPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportRoomAmenityPrefsObject!]!"
+    - name: postCheck
+      type: EventreportRoomAmenityPrefsBoolExp
+      description: Insert permission predicate over the
+        'eventreport_room_amenity_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_room_amenity_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportRoomAmenityPrefs
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_room_amenity_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportRoomAmenityPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

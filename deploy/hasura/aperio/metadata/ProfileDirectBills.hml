@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileDirectBills
+  fields:
+    - name: addressId
+      type: String_1
+    - name: billingNumber
+      type: String_1
+    - name: companyDisplayNameId
+      type: String_1
+    - name: directBillId
+      type: String_1
+    - name: emailId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: telephoneId
+      type: String_1
+  graphql:
+    typeName: ProfileDirectBills
+    inputTypeName: ProfileDirectBillsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_direct_bills
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        billingNumber:
+          column:
+            name: billing_number
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        directBillId:
+          column:
+            name: direct_bill_id
+        emailId:
+          column:
+            name: email_id
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        telephoneId:
+          column:
+            name: telephone_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileDirectBills
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - billingNumber
+          - companyDisplayNameId
+          - directBillId
+          - emailId
+          - id
+          - shareMarketInd
+          - shareSynchInd
+          - telephoneId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileDirectBillsBoolExp
+  operand:
+    object:
+      type: ProfileDirectBills
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: billingNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: directBillId
+          booleanExpressionType: TextBoolExp
+        - fieldName: emailId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: telephoneId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileDirectBillsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileDirectBillsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileDirectBills
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: billingNumber
+          aggregateExpression: TextAggExp
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: directBillId
+          aggregateExpression: TextAggExp
+        - fieldName: emailId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: telephoneId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileDirectBillsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileDirectBillsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileDirectBills
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: billingNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: directBillId
+          orderByExpression: String1OrderByExp
+        - fieldName: emailId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: telephoneId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileDirectBillsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileDirectBills
+  objectType: ProfileDirectBills
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_direct_bills
+  filterExpressionType: ProfileDirectBillsBoolExp
+  aggregateExpression: ProfileDirectBillsAggExp
+  orderByExpression: ProfileDirectBillsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileDirectBills
+      subscription:
+        rootField: profileDirectBills
+    selectUniques:
+      - queryRootField: profileDirectBillsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileDirectBillsById
+    filterInputTypeName: ProfileDirectBillsFilterInput
+    aggregate:
+      queryRootField: profileDirectBillsAggregate
+      subscription:
+        rootField: profileDirectBillsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileDirectBills
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

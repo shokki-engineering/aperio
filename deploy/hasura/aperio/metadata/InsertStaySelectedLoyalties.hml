@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStaySelectedLoyaltiesObject
+  fields:
+    - name: accountId
+      type: String_1
+    - name: bonusCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: pointsEarned
+      type: String_1
+    - name: programCode
+      type: String_1
+    - name: reservationActionType
+      type: String_1
+    - name: selectedLoyaltyRph
+      type: String_1
+    - name: stayId
+      type: String_1!
+  graphql:
+    typeName: InsertStaySelectedLoyaltiesObject
+    inputTypeName: InsertStaySelectedLoyaltiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_selected_loyalties_object
+      fieldMapping:
+        accountId:
+          column:
+            name: account_id
+        bonusCode:
+          column:
+            name: bonus_code
+        id:
+          column:
+            name: id
+        pointsEarned:
+          column:
+            name: points_earned
+        programCode:
+          column:
+            name: program_code
+        reservationActionType:
+          column:
+            name: reservation_action_type
+        selectedLoyaltyRph:
+          column:
+            name: selected_loyalty_rph
+        stayId:
+          column:
+            name: stay_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStaySelectedLoyaltiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accountId
+          - bonusCode
+          - id
+          - pointsEarned
+          - programCode
+          - reservationActionType
+          - selectedLoyaltyRph
+          - stayId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStaySelectedLoyaltiesResponse
+  description: Responses from the 'insert_stay_selected_loyalties' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StaySelectedLoyalties!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStaySelectedLoyaltiesResponse
+    inputTypeName: InsertStaySelectedLoyaltiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_selected_loyalties_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStaySelectedLoyaltiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStaySelectedLoyalties
+  outputType: InsertStaySelectedLoyaltiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStaySelectedLoyaltiesObject!]!"
+    - name: postCheck
+      type: StaySelectedLoyaltiesBoolExp
+      description: Insert permission predicate over the 'stay_selected_loyalties' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_stay_selected_loyalties
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStaySelectedLoyalties
+    rootFieldKind: Mutation
+  description: Insert into the stay_selected_loyalties table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStaySelectedLoyalties
+  permissions:
+    - role: admin
+      allowExecution: true
+

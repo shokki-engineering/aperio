@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDocumentsObject
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRoomtypeDocumentsObject
+    inputTypeName: InsertRoomtypeDocumentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_documents_object
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDocumentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDocumentsResponse
+  description: Responses from the 'insert_roomtype_documents' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeDocumentsResponse
+    inputTypeName: InsertRoomtypeDocumentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_documents_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDocumentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeDocuments
+  outputType: InsertRoomtypeDocumentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeDocumentsObject!]!"
+    - name: postCheck
+      type: RoomtypeDocumentsBoolExp
+      description: Insert permission predicate over the 'roomtype_documents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_documents
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeDocuments
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_documents table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeDocuments
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanViewershipCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: viewershipCode
+      type: String_1!
+  graphql:
+    typeName: RateplanViewershipCodes
+    inputTypeName: RateplanViewershipCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_viewership_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        viewershipCode:
+          column:
+            name: viewership_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanViewershipCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - viewershipCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanViewershipCodesBoolExp
+  operand:
+    object:
+      type: RateplanViewershipCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanViewershipCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanViewershipCodesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanViewershipCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanViewershipCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanViewershipCodesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanViewershipCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanViewershipCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanViewershipCodes
+  objectType: RateplanViewershipCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_viewership_codes
+  filterExpressionType: RateplanViewershipCodesBoolExp
+  aggregateExpression: RateplanViewershipCodesAggExp
+  orderByExpression: RateplanViewershipCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanViewershipCodes
+      subscription:
+        rootField: rateplanViewershipCodes
+    selectUniques:
+      - queryRootField: rateplanViewershipCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanViewershipCodesById
+    filterInputTypeName: RateplanViewershipCodesFilterInput
+    aggregate:
+      queryRootField: rateplanViewershipCodesAggregate
+      subscription:
+        rootField: rateplanViewershipCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanViewershipCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

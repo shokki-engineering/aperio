@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileOrganizations
+  fields:
+    - name: affiliationsId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: officeType
+      type: Enum
+    - name: orgDisplayNameId
+      type: String_1
+    - name: orgMemberDisplayNameId
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: ProfileOrganizations
+    inputTypeName: ProfileOrganizationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_organizations
+      fieldMapping:
+        affiliationsId:
+          column:
+            name: affiliations_id
+        defaultValue:
+          column:
+            name: default_value
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        officeType:
+          column:
+            name: office_type
+        orgDisplayNameId:
+          column:
+            name: org_display_name_id
+        orgMemberDisplayNameId:
+          column:
+            name: org_member_display_name_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileOrganizations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affiliationsId
+          - defaultValue
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - officeType
+          - orgDisplayNameId
+          - orgMemberDisplayNameId
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileOrganizationsBoolExp
+  operand:
+    object:
+      type: ProfileOrganizations
+      comparableFields:
+        - fieldName: affiliationsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: officeType
+          booleanExpressionType: ProfileOfficeLocationBoolExp
+        - fieldName: orgDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: orgMemberDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileOrganizationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileOrganizationsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileOrganizations
+      aggregatableFields:
+        - fieldName: affiliationsId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: officeType
+          aggregateExpression: ProfileOfficeLocationAggExp
+        - fieldName: orgDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: orgMemberDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileOrganizationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileOrganizationsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileOrganizations
+      orderableFields:
+        - fieldName: affiliationsId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: officeType
+          orderByExpression: EnumOrderByExp
+        - fieldName: orgDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: orgMemberDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileOrganizationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileOrganizations
+  objectType: ProfileOrganizations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_organizations
+  filterExpressionType: ProfileOrganizationsBoolExp
+  aggregateExpression: ProfileOrganizationsAggExp
+  orderByExpression: ProfileOrganizationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileOrganizations
+      subscription:
+        rootField: profileOrganizations
+    selectUniques:
+      - queryRootField: profileOrganizationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileOrganizationsById
+    filterInputTypeName: ProfileOrganizationsFilterInput
+    aggregate:
+      queryRootField: profileOrganizationsAggregate
+      subscription:
+        rootField: profileOrganizationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileOrganizations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

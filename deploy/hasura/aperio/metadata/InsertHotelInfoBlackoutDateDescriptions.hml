@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelInfoBlackoutDateDescriptionsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+  graphql:
+    typeName: InsertHotelInfoBlackoutDateDescriptionsObject
+    inputTypeName: InsertHotelInfoBlackoutDateDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_info_blackout_date_descriptions_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelInfoBlackoutDateDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - languageCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelInfoBlackoutDateDescriptionsResponse
+  description: Responses from the 'insert_hotel_info_blackout_date_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelInfoBlackoutDateDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelInfoBlackoutDateDescriptionsResponse
+    inputTypeName: InsertHotelInfoBlackoutDateDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_info_blackout_date_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelInfoBlackoutDateDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelInfoBlackoutDateDescriptions
+  outputType: InsertHotelInfoBlackoutDateDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelInfoBlackoutDateDescriptionsObject!]!"
+    - name: postCheck
+      type: HotelInfoBlackoutDateDescriptionsBoolExp
+      description: Insert permission predicate over the
+        'hotel_info_blackout_date_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_info_blackout_date_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelInfoBlackoutDateDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the hotel_info_blackout_date_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelInfoBlackoutDateDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

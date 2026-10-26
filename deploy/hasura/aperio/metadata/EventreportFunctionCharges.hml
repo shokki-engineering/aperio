@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportFunctionCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: commentId
+      type: String_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: functionChargeCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: taxesId
+      type: String_1
+  graphql:
+    typeName: EventreportFunctionCharges
+    inputTypeName: EventreportFunctionChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_function_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        commentId:
+          column:
+            name: comment_id
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        functionChargeCode:
+          column:
+            name: function_charge_code
+        id:
+          column:
+            name: id
+        taxesId:
+          column:
+            name: taxes_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportFunctionCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - commentId
+          - eventDayFunctionId
+          - functionChargeCode
+          - id
+          - taxesId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportFunctionChargesBoolExp
+  operand:
+    object:
+      type: EventreportFunctionCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayFunctionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: functionChargeCode
+          booleanExpressionType: EventreportEventreportEventChargeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxesId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportFunctionChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportFunctionChargesAggExp
+  operand:
+    object:
+      aggregatedType: EventreportFunctionCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayFunctionId
+          aggregateExpression: TextAggExp
+        - fieldName: functionChargeCode
+          aggregateExpression: EventreportEventreportEventChargeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: taxesId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportFunctionChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportFunctionChargesOrderByExp
+  operand:
+    object:
+      orderedType: EventreportFunctionCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayFunctionId
+          orderByExpression: String1OrderByExp
+        - fieldName: functionChargeCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: taxesId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportFunctionChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportFunctionCharges
+  objectType: EventreportFunctionCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_function_charges
+  filterExpressionType: EventreportFunctionChargesBoolExp
+  aggregateExpression: EventreportFunctionChargesAggExp
+  orderByExpression: EventreportFunctionChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportFunctionCharges
+      subscription:
+        rootField: eventreportFunctionCharges
+    selectUniques:
+      - queryRootField: eventreportFunctionChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportFunctionChargesById
+    filterInputTypeName: EventreportFunctionChargesFilterInput
+    aggregate:
+      queryRootField: eventreportFunctionChargesAggregate
+      subscription:
+        rootField: eventreportFunctionChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportFunctionCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

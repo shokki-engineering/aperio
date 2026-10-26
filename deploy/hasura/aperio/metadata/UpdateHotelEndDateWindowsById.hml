@@ -1,0 +1,263 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelEndDateWindowsDow
+  description: Update the 'dow' column in the 'hotel_end_date_windows' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelEndDateWindowsDow
+    inputTypeName: UpdateColumnHotelEndDateWindowsDowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_end_date_windows_dow
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelEndDateWindowsDow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelEndDateWindowsEarliestId
+  description: Update the 'earliest_id' column in the 'hotel_end_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelEndDateWindowsEarliestId
+    inputTypeName: UpdateColumnHotelEndDateWindowsEarliestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_end_date_windows_earliest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelEndDateWindowsEarliestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelEndDateWindowsId
+  description: Update the 'id' column in the 'hotel_end_date_windows' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelEndDateWindowsId
+    inputTypeName: UpdateColumnHotelEndDateWindowsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_end_date_windows_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelEndDateWindowsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelEndDateWindowsLatestId
+  description: Update the 'latest_id' column in the 'hotel_end_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelEndDateWindowsLatestId
+    inputTypeName: UpdateColumnHotelEndDateWindowsLatestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_end_date_windows_latest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelEndDateWindowsLatestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelEndDateWindowsByIdUpdateColumns
+  description: Update the columns of the 'hotel_end_date_windows' collection
+  fields:
+    - name: dow
+      type: UpdateColumnHotelEndDateWindowsDow
+      description: Update the 'dow' column in the 'hotel_end_date_windows' collection.
+    - name: earliestId
+      type: UpdateColumnHotelEndDateWindowsEarliestId
+      description: Update the 'earliest_id' column in the 'hotel_end_date_windows'
+        collection.
+    - name: id
+      type: UpdateColumnHotelEndDateWindowsId
+      description: Update the 'id' column in the 'hotel_end_date_windows' collection.
+    - name: latestId
+      type: UpdateColumnHotelEndDateWindowsLatestId
+      description: Update the 'latest_id' column in the 'hotel_end_date_windows' collection.
+  graphql:
+    typeName: UpdateHotelEndDateWindowsByIdUpdateColumns
+    inputTypeName: UpdateHotelEndDateWindowsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_end_date_windows_by_id_update_columns
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelEndDateWindowsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelEndDateWindowsByIdResponse
+  description: Responses from the 'update_hotel_end_date_windows_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelEndDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelEndDateWindowsByIdResponse
+    inputTypeName: UpdateHotelEndDateWindowsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_end_date_windows_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelEndDateWindowsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelEndDateWindowsById
+  outputType: UpdateHotelEndDateWindowsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelEndDateWindowsBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_end_date_windows' collection
+    - name: preCheck
+      type: HotelEndDateWindowsBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_end_date_windows' collection
+    - name: updateColumns
+      type: UpdateHotelEndDateWindowsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_end_date_windows_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelEndDateWindowsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_end_date_windows' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelEndDateWindowsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

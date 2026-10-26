@@ -1,0 +1,342 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationQueuesId
+  description: Update the 'id' column in the 'reservation_queues' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationQueuesId
+    inputTypeName: UpdateColumnReservationQueuesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_queues_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationQueuesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationQueuesPseudoCityCode
+  description: Update the 'pseudo_city_code' column in the 'reservation_queues' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationQueuesPseudoCityCode
+    inputTypeName: UpdateColumnReservationQueuesPseudoCityCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_queues_pseudo_city_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationQueuesPseudoCityCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationQueuesQueueCategory
+  description: Update the 'queue_category' column in the 'reservation_queues' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationQueuesQueueCategory
+    inputTypeName: UpdateColumnReservationQueuesQueueCategoryInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_queues_queue_category
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationQueuesQueueCategory
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationQueuesQueueId
+  description: Update the 'queue_id' column in the 'reservation_queues' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationQueuesQueueId
+    inputTypeName: UpdateColumnReservationQueuesQueueIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_queues_queue_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationQueuesQueueId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationQueuesQueueNumber
+  description: Update the 'queue_number' column in the 'reservation_queues' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationQueuesQueueNumber
+    inputTypeName: UpdateColumnReservationQueuesQueueNumberInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_queues_queue_number
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationQueuesQueueNumber
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationQueuesSystemCode
+  description: Update the 'system_code' column in the 'reservation_queues' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationQueuesSystemCode
+    inputTypeName: UpdateColumnReservationQueuesSystemCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_queues_system_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationQueuesSystemCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationQueuesByIdUpdateColumns
+  description: Update the columns of the 'reservation_queues' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationQueuesId
+      description: Update the 'id' column in the 'reservation_queues' collection.
+    - name: pseudoCityCode
+      type: UpdateColumnReservationQueuesPseudoCityCode
+      description: Update the 'pseudo_city_code' column in the 'reservation_queues'
+        collection.
+    - name: queueCategory
+      type: UpdateColumnReservationQueuesQueueCategory
+      description: Update the 'queue_category' column in the 'reservation_queues'
+        collection.
+    - name: queueId
+      type: UpdateColumnReservationQueuesQueueId
+      description: Update the 'queue_id' column in the 'reservation_queues' collection.
+    - name: queueNumber
+      type: UpdateColumnReservationQueuesQueueNumber
+      description: Update the 'queue_number' column in the 'reservation_queues' collection.
+    - name: systemCode
+      type: UpdateColumnReservationQueuesSystemCode
+      description: Update the 'system_code' column in the 'reservation_queues' collection.
+  graphql:
+    typeName: UpdateReservationQueuesByIdUpdateColumns
+    inputTypeName: UpdateReservationQueuesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_queues_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        pseudoCityCode:
+          column:
+            name: pseudo_city_code
+        queueCategory:
+          column:
+            name: queue_category
+        queueId:
+          column:
+            name: queue_id
+        queueNumber:
+          column:
+            name: queue_number
+        systemCode:
+          column:
+            name: system_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationQueuesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - pseudoCityCode
+          - queueCategory
+          - queueId
+          - queueNumber
+          - systemCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationQueuesByIdResponse
+  description: Responses from the 'update_reservation_queues_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationQueues!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationQueuesByIdResponse
+    inputTypeName: UpdateReservationQueuesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_queues_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationQueuesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationQueuesById
+  outputType: UpdateReservationQueuesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationQueuesBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_queues' collection
+    - name: preCheck
+      type: ReservationQueuesBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_queues' collection
+    - name: updateColumns
+      type: UpdateReservationQueuesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_queues_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationQueuesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_queues' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationQueuesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,162 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelRenovationsObject
+  fields:
+    - name: areaText
+      type: String_1
+    - name: descriptionsId
+      type: String_1!
+    - name: descriptiveText
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: immediatePlans
+      type: Boolean_1
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: renovationCompletedPercentId
+      type: String_1
+    - name: renovationCompletion
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertHotelRenovationsObject
+    inputTypeName: InsertHotelRenovationsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_renovations_object
+      fieldMapping:
+        areaText:
+          column:
+            name: area_text
+        descriptionsId:
+          column:
+            name: descriptions_id
+        descriptiveText:
+          column:
+            name: descriptive_text
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        immediatePlans:
+          column:
+            name: immediate_plans
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        renovationCompletedPercentId:
+          column:
+            name: renovation_completed_percent_id
+        renovationCompletion:
+          column:
+            name: renovation_completion
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelRenovationsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaText
+          - descriptionsId
+          - descriptiveText
+          - duration
+          - endId
+          - id
+          - immediatePlans
+          - multimediaDescriptionsId
+          - renovationCompletedPercentId
+          - renovationCompletion
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelRenovationsResponse
+  description: Responses from the 'insert_hotel_renovations' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelRenovations!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelRenovationsResponse
+    inputTypeName: InsertHotelRenovationsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_renovations_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelRenovationsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelRenovations
+  outputType: InsertHotelRenovationsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelRenovationsObject!]!"
+    - name: postCheck
+      type: HotelRenovationsBoolExp
+      description: Insert permission predicate over the 'hotel_renovations' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_renovations
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelRenovations
+    rootFieldKind: Mutation
+  description: Insert into the hotel_renovations table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelRenovations
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCoveragePrefsObject
+  fields:
+    - name: code
+      type: String_1
+    - name: coverageType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: InsertProfileCoveragePrefsObject
+    inputTypeName: InsertProfileCoveragePrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_coverage_prefs_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        coverageType:
+          column:
+            name: coverage_type
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCoveragePrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - coverageType
+          - id
+          - preferLevel
+          - vehicleProfileRentalPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCoveragePrefsResponse
+  description: Responses from the 'insert_profile_coverage_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCoveragePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileCoveragePrefsResponse
+    inputTypeName: InsertProfileCoveragePrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_coverage_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCoveragePrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileCoveragePrefs
+  outputType: InsertProfileCoveragePrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileCoveragePrefsObject!]!"
+    - name: postCheck
+      type: ProfileCoveragePrefsBoolExp
+      description: Insert permission predicate over the 'profile_coverage_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_coverage_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileCoveragePrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_coverage_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileCoveragePrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

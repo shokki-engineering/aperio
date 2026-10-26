@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoLoyalProgramsObject
+  fields:
+    - name: affiliateProgramDisplayName
+      type: String_1
+    - name: affiliationInfoId
+      type: String_1!
+    - name: hotelLevel
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: primaryProgram
+      type: Boolean_1
+    - name: programCode
+      type: String_1
+    - name: programDisplayName
+      type: String_1
+    - name: programRestrictionId
+      type: String_1
+    - name: secondaryProgramDisplayName
+      type: String_1
+    - name: travelSector
+      type: Enum
+  graphql:
+    typeName: InsertAffiliationinfoLoyalProgramsObject
+    inputTypeName: InsertAffiliationinfoLoyalProgramsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_loyal_programs_object
+      fieldMapping:
+        affiliateProgramDisplayName:
+          column:
+            name: affiliate_program_display_name
+        affiliationInfoId:
+          column:
+            name: affiliation_info_id
+        hotelLevel:
+          column:
+            name: hotel_level
+        id:
+          column:
+            name: id
+        primaryProgram:
+          column:
+            name: primary_program
+        programCode:
+          column:
+            name: program_code
+        programDisplayName:
+          column:
+            name: program_display_name
+        programRestrictionId:
+          column:
+            name: program_restriction_id
+        secondaryProgramDisplayName:
+          column:
+            name: secondary_program_display_name
+        travelSector:
+          column:
+            name: travel_sector
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoLoyalProgramsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affiliateProgramDisplayName
+          - affiliationInfoId
+          - hotelLevel
+          - id
+          - primaryProgram
+          - programCode
+          - programDisplayName
+          - programRestrictionId
+          - secondaryProgramDisplayName
+          - travelSector
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoLoyalProgramsResponse
+  description: Responses from the 'insert_affiliationinfo_loyal_programs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoLoyalPrograms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoLoyalProgramsResponse
+    inputTypeName: InsertAffiliationinfoLoyalProgramsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_loyal_programs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoLoyalProgramsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoLoyalPrograms
+  outputType: InsertAffiliationinfoLoyalProgramsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoLoyalProgramsObject!]!"
+    - name: postCheck
+      type: AffiliationinfoLoyalProgramsBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_loyal_programs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_loyal_programs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoLoyalPrograms
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_loyal_programs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoLoyalPrograms
+  permissions:
+    - role: admin
+      allowExecution: true
+

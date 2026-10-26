@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRebates
+  fields:
+    - name: id
+      type: String_1!
+    - name: participation
+      type: Boolean_1
+    - name: programDisplayName
+      type: String_1
+    - name: reservationId
+      type: String_1!
+    - name: tripPurpose
+      type: Enum
+    - name: tripPurposeRequired
+      type: Boolean_1
+  graphql:
+    typeName: ReservationRebates
+    inputTypeName: ReservationRebatesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_rebates
+      fieldMapping:
+        id:
+          column:
+            name: id
+        participation:
+          column:
+            name: participation
+        programDisplayName:
+          column:
+            name: program_display_name
+        reservationId:
+          column:
+            name: reservation_id
+        tripPurpose:
+          column:
+            name: trip_purpose
+        tripPurposeRequired:
+          column:
+            name: trip_purpose_required
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRebates
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - participation
+          - programDisplayName
+          - reservationId
+          - tripPurpose
+          - tripPurposeRequired
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRebatesBoolExp
+  operand:
+    object:
+      type: ReservationRebates
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: participation
+          booleanExpressionType: BoolBoolExp
+        - fieldName: programDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: reservationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: tripPurpose
+          booleanExpressionType: ReservationReservationTripPurposeBoolExp
+        - fieldName: tripPurposeRequired
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRebatesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRebatesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRebates
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: participation
+          aggregateExpression: BoolAggExp
+        - fieldName: programDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: reservationId
+          aggregateExpression: TextAggExp
+        - fieldName: tripPurpose
+          aggregateExpression: ReservationReservationTripPurposeAggExp
+        - fieldName: tripPurposeRequired
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRebatesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRebatesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRebates
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: participation
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: programDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: reservationId
+          orderByExpression: String1OrderByExp
+        - fieldName: tripPurpose
+          orderByExpression: EnumOrderByExp
+        - fieldName: tripPurposeRequired
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRebatesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRebates
+  objectType: ReservationRebates
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_rebates
+  filterExpressionType: ReservationRebatesBoolExp
+  aggregateExpression: ReservationRebatesAggExp
+  orderByExpression: ReservationRebatesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRebates
+      subscription:
+        rootField: reservationRebates
+    selectUniques:
+      - queryRootField: reservationRebatesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRebatesById
+    filterInputTypeName: ReservationRebatesFilterInput
+    aggregate:
+      queryRootField: reservationRebatesAggregate
+      subscription:
+        rootField: reservationRebatesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRebates
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

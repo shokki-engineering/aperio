@@ -1,0 +1,409 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantResource
+  fields:
+    - name: awardsRph
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: descriptiveText
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: featured
+      type: Boolean_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: maxSeatingCapacity
+      type: Int32
+    - name: maxSingleParty
+      type: Int32
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: offerBreakfast
+      type: Boolean_1
+    - name: offerBrunch
+      type: Boolean_1
+    - name: offerDinner
+      type: Boolean_1
+    - name: offerLunch
+      type: Boolean_1
+    - name: proximityCode
+      type: String_1
+    - name: relativePositionId
+      type: String_1
+    - name: reservationReq
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: RestaurantResource
+    inputTypeName: RestaurantResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_resource
+      fieldMapping:
+        awardsRph:
+          column:
+            name: awards_rph
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        descriptiveText:
+          column:
+            name: descriptive_text
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        featured:
+          column:
+            name: featured
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        maxSeatingCapacity:
+          column:
+            name: max_seating_capacity
+        maxSingleParty:
+          column:
+            name: max_single_party
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        name:
+          column:
+            name: name
+        offerBreakfast:
+          column:
+            name: offer_breakfast
+        offerBrunch:
+          column:
+            name: offer_brunch
+        offerDinner:
+          column:
+            name: offer_dinner
+        offerLunch:
+          column:
+            name: offer_lunch
+        proximityCode:
+          column:
+            name: proximity_code
+        relativePositionId:
+          column:
+            name: relative_position_id
+        reservationReq:
+          column:
+            name: reservation_req
+        sort:
+          column:
+            name: sort
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - awardsRph
+          - createTime
+          - deleteTime
+          - descriptiveText
+          - displayName
+          - etag
+          - expireTime
+          - featured
+          - hotelId
+          - id
+          - invCode
+          - maxSeatingCapacity
+          - maxSingleParty
+          - multimediaDescriptionsId
+          - name
+          - offerBreakfast
+          - offerBrunch
+          - offerDinner
+          - offerLunch
+          - proximityCode
+          - relativePositionId
+          - reservationReq
+          - sort
+          - uid
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantResourceBoolExp
+  operand:
+    object:
+      type: RestaurantResource
+      comparableFields:
+        - fieldName: awardsRph
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: featured
+          booleanExpressionType: BoolBoolExp
+        - fieldName: hotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxSeatingCapacity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxSingleParty
+          booleanExpressionType: Int4BoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: offerBreakfast
+          booleanExpressionType: BoolBoolExp
+        - fieldName: offerBrunch
+          booleanExpressionType: BoolBoolExp
+        - fieldName: offerDinner
+          booleanExpressionType: BoolBoolExp
+        - fieldName: offerLunch
+          booleanExpressionType: BoolBoolExp
+        - fieldName: proximityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: relativePositionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: reservationReq
+          booleanExpressionType: BoolBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantResourceAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantResource
+      aggregatableFields:
+        - fieldName: awardsRph
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: featured
+          aggregateExpression: BoolAggExp
+        - fieldName: hotelId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invCode
+          aggregateExpression: TextAggExp
+        - fieldName: maxSeatingCapacity
+          aggregateExpression: Int4AggExp
+        - fieldName: maxSingleParty
+          aggregateExpression: Int4AggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: offerBreakfast
+          aggregateExpression: BoolAggExp
+        - fieldName: offerBrunch
+          aggregateExpression: BoolAggExp
+        - fieldName: offerDinner
+          aggregateExpression: BoolAggExp
+        - fieldName: offerLunch
+          aggregateExpression: BoolAggExp
+        - fieldName: proximityCode
+          aggregateExpression: TextAggExp
+        - fieldName: relativePositionId
+          aggregateExpression: TextAggExp
+        - fieldName: reservationReq
+          aggregateExpression: BoolAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantResourceOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantResource
+      orderableFields:
+        - fieldName: awardsRph
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: featured
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: hotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invCode
+          orderByExpression: String1OrderByExp
+        - fieldName: maxSeatingCapacity
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxSingleParty
+          orderByExpression: Int32OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: offerBreakfast
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: offerBrunch
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: offerDinner
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: offerLunch
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: proximityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: relativePositionId
+          orderByExpression: String1OrderByExp
+        - fieldName: reservationReq
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantResource
+  objectType: RestaurantResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_resource
+  filterExpressionType: RestaurantResourceBoolExp
+  aggregateExpression: RestaurantResourceAggExp
+  orderByExpression: RestaurantResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantResource
+      subscription:
+        rootField: restaurantResource
+    selectUniques:
+      - queryRootField: restaurantResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantResourceById
+    filterInputTypeName: RestaurantResourceFilterInput
+    aggregate:
+      queryRootField: restaurantResourceAggregate
+      subscription:
+        rootField: restaurantResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

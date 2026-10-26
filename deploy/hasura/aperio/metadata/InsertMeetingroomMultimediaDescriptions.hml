@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomMultimediaDescriptionsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: InsertMeetingroomMultimediaDescriptionsObject
+    inputTypeName: InsertMeetingroomMultimediaDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_multimedia_descriptions_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomMultimediaDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - lastUpdateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingroomMultimediaDescriptionsResponse
+  description: Responses from the 'insert_meetingroom_multimedia_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomMultimediaDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingroomMultimediaDescriptionsResponse
+    inputTypeName: InsertMeetingroomMultimediaDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingroom_multimedia_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingroomMultimediaDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingroomMultimediaDescriptions
+  outputType: InsertMeetingroomMultimediaDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingroomMultimediaDescriptionsObject!]!"
+    - name: postCheck
+      type: MeetingroomMultimediaDescriptionsBoolExp
+      description: Insert permission predicate over the
+        'meetingroom_multimedia_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingroom_multimedia_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingroomMultimediaDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the meetingroom_multimedia_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingroomMultimediaDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

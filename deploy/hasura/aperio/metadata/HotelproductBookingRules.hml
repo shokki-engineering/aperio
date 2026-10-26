@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductBookingRules
+  fields:
+    - name: descriptionId
+      type: String_1
+    - name: dowRestrictionsId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: maxAdvancedBookingOffset
+      type: String_1
+    - name: maxStayLengths
+      type: String_1
+    - name: minAdvancedBookingOffset
+      type: String_1
+    - name: minStayLengths
+      type: String_1
+    - name: policyInfoId
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: HotelproductBookingRules
+    inputTypeName: HotelproductBookingRulesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_booking_rules
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        dowRestrictionsId:
+          column:
+            name: dow_restrictions_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        maxAdvancedBookingOffset:
+          column:
+            name: max_advanced_booking_offset
+        maxStayLengths:
+          column:
+            name: max_stay_lengths
+        minAdvancedBookingOffset:
+          column:
+            name: min_advanced_booking_offset
+        minStayLengths:
+          column:
+            name: min_stay_lengths
+        policyInfoId:
+          column:
+            name: policy_info_id
+        startId:
+          column:
+            name: start_id
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductBookingRules
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - dowRestrictionsId
+          - duration
+          - endId
+          - id
+          - maxAdvancedBookingOffset
+          - maxStayLengths
+          - minAdvancedBookingOffset
+          - minStayLengths
+          - policyInfoId
+          - startId
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductBookingRulesBoolExp
+  operand:
+    object:
+      type: HotelproductBookingRules
+      comparableFields:
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dowRestrictionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxAdvancedBookingOffset
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxStayLengths
+          booleanExpressionType: TextBoolExp
+        - fieldName: minAdvancedBookingOffset
+          booleanExpressionType: TextBoolExp
+        - fieldName: minStayLengths
+          booleanExpressionType: TextBoolExp
+        - fieldName: policyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductBookingRulesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductBookingRulesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductBookingRules
+      aggregatableFields:
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: dowRestrictionsId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxAdvancedBookingOffset
+          aggregateExpression: TextAggExp
+        - fieldName: maxStayLengths
+          aggregateExpression: TextAggExp
+        - fieldName: minAdvancedBookingOffset
+          aggregateExpression: TextAggExp
+        - fieldName: minStayLengths
+          aggregateExpression: TextAggExp
+        - fieldName: policyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductBookingRulesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductBookingRulesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductBookingRules
+      orderableFields:
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: dowRestrictionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxAdvancedBookingOffset
+          orderByExpression: String1OrderByExp
+        - fieldName: maxStayLengths
+          orderByExpression: String1OrderByExp
+        - fieldName: minAdvancedBookingOffset
+          orderByExpression: String1OrderByExp
+        - fieldName: minStayLengths
+          orderByExpression: String1OrderByExp
+        - fieldName: policyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductBookingRulesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductBookingRules
+  objectType: HotelproductBookingRules
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_booking_rules
+  filterExpressionType: HotelproductBookingRulesBoolExp
+  aggregateExpression: HotelproductBookingRulesAggExp
+  orderByExpression: HotelproductBookingRulesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductBookingRules
+      subscription:
+        rootField: hotelproductBookingRules
+    selectUniques:
+      - queryRootField: hotelproductBookingRulesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductBookingRulesById
+    filterInputTypeName: HotelproductBookingRulesFilterInput
+    aggregate:
+      queryRootField: hotelproductBookingRulesAggregate
+      subscription:
+        rootField: hotelproductBookingRulesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductBookingRules
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

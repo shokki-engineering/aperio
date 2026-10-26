@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateCountryNamesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRateCountryNamesObject
+    inputTypeName: InsertRateCountryNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_country_names_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateCountryNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateCountryNamesResponse
+  description: Responses from the 'insert_rate_country_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateCountryNamesResponse
+    inputTypeName: InsertRateCountryNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_country_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateCountryNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateCountryNames
+  outputType: InsertRateCountryNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateCountryNamesObject!]!"
+    - name: postCheck
+      type: RateCountryNamesBoolExp
+      description: Insert permission predicate over the 'rate_country_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rate_country_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateCountryNames
+    rootFieldKind: Mutation
+  description: Insert into the rate_country_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateCountryNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

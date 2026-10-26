@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductCancelPenaltiesObject
+  fields:
+    - name: cancelPolicyIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertHotelproductCancelPenaltiesObject
+    inputTypeName: InsertHotelproductCancelPenaltiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_cancel_penalties_object
+      fieldMapping:
+        cancelPolicyIndicator:
+          column:
+            name: cancel_policy_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductCancelPenaltiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelPolicyIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductCancelPenaltiesResponse
+  description: Responses from the 'insert_hotelproduct_cancel_penalties' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductCancelPenalties!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductCancelPenaltiesResponse
+    inputTypeName: InsertHotelproductCancelPenaltiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_cancel_penalties_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductCancelPenaltiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductCancelPenalties
+  outputType: InsertHotelproductCancelPenaltiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductCancelPenaltiesObject!]!"
+    - name: postCheck
+      type: HotelproductCancelPenaltiesBoolExp
+      description: Insert permission predicate over the
+        'hotelproduct_cancel_penalties' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_cancel_penalties
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductCancelPenalties
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_cancel_penalties table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductCancelPenalties
+  permissions:
+    - role: admin
+      allowExecution: true
+

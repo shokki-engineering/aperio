@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelContactInfoCompanyNamesObject
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelContactInfoCompanyNamesObject
+    inputTypeName: InsertHotelContactInfoCompanyNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_contact_info_company_names_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelContactInfoCompanyNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelContactInfoCompanyNamesResponse
+  description: Responses from the 'insert_hotel_contact_info_company_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelContactInfoCompanyNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelContactInfoCompanyNamesResponse
+    inputTypeName: InsertHotelContactInfoCompanyNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_contact_info_company_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelContactInfoCompanyNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelContactInfoCompanyNames
+  outputType: InsertHotelContactInfoCompanyNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelContactInfoCompanyNamesObject!]!"
+    - name: postCheck
+      type: HotelContactInfoCompanyNamesBoolExp
+      description: Insert permission predicate over the
+        'hotel_contact_info_company_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_contact_info_company_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelContactInfoCompanyNames
+    rootFieldKind: Mutation
+  description: Insert into the hotel_contact_info_company_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelContactInfoCompanyNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

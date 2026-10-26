@@ -1,0 +1,162 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventCompanyNamesObject
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: companyShortDisplayName
+      type: String_1
+    - name: contactId
+      type: String_1!
+    - name: contactPersonId
+      type: String_1!
+    - name: department
+      type: String_1
+    - name: division
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: travelSector
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertEventCompanyNamesObject
+    inputTypeName: InsertEventCompanyNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_company_names_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        companyShortDisplayName:
+          column:
+            name: company_short_display_name
+        contactId:
+          column:
+            name: contact_id
+        contactPersonId:
+          column:
+            name: contact_person_id
+        department:
+          column:
+            name: department
+        division:
+          column:
+            name: division
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        travelSector:
+          column:
+            name: travel_sector
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventCompanyNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - companyShortDisplayName
+          - contactId
+          - contactPersonId
+          - department
+          - division
+          - id
+          - regionCode
+          - travelSector
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventCompanyNamesResponse
+  description: Responses from the 'insert_event_company_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventCompanyNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventCompanyNamesResponse
+    inputTypeName: InsertEventCompanyNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_company_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventCompanyNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventCompanyNames
+  outputType: InsertEventCompanyNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventCompanyNamesObject!]!"
+    - name: postCheck
+      type: EventCompanyNamesBoolExp
+      description: Insert permission predicate over the 'event_company_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_company_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventCompanyNames
+    rootFieldKind: Mutation
+  description: Insert into the event_company_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventCompanyNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

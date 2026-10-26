@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportTextItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventreportTextItems
+    inputTypeName: EventreportTextItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_text_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportTextItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportTextItemsBoolExp
+  operand:
+    object:
+      type: EventreportTextItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportTextItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportTextItemsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportTextItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportTextItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportTextItemsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportTextItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportTextItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportTextItems
+  objectType: EventreportTextItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_text_items
+  filterExpressionType: EventreportTextItemsBoolExp
+  aggregateExpression: EventreportTextItemsAggExp
+  orderByExpression: EventreportTextItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportTextItems
+      subscription:
+        rootField: eventreportTextItems
+    selectUniques:
+      - queryRootField: eventreportTextItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportTextItemsById
+    filterInputTypeName: EventreportTextItemsFilterInput
+    aggregate:
+      queryRootField: eventreportTextItemsAggregate
+      subscription:
+        rootField: eventreportTextItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportTextItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

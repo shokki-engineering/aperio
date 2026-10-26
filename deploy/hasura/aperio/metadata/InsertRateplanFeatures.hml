@@ -1,0 +1,174 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanFeaturesObject
+  fields:
+    - name: accessibleCode
+      type: Enum
+    - name: chargeId
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: meetingRoomId
+      type: String_1!
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: Enum
+    - name: securityCode
+      type: Enum
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+  graphql:
+    typeName: InsertRateplanFeaturesObject
+    inputTypeName: InsertRateplanFeaturesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_features_object
+      fieldMapping:
+        accessibleCode:
+          column:
+            name: accessible_code
+        chargeId:
+          column:
+            name: charge_id
+        codeDetail:
+          column:
+            name: code_detail
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        meetingRoomId:
+          column:
+            name: meeting_room_id
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        securityCode:
+          column:
+            name: security_code
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanFeaturesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessibleCode
+          - chargeId
+          - codeDetail
+          - descriptiveText
+          - existsCode
+          - id
+          - meetingRoomId
+          - multimediaDescriptionsId
+          - proximityCode
+          - securityCode
+          - unit
+          - unitCode
+          - unitQuantityId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanFeaturesResponse
+  description: Responses from the 'insert_rateplan_features' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanFeatures!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanFeaturesResponse
+    inputTypeName: InsertRateplanFeaturesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_features_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanFeaturesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanFeatures
+  outputType: InsertRateplanFeaturesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanFeaturesObject!]!"
+    - name: postCheck
+      type: RateplanFeaturesBoolExp
+      description: Insert permission predicate over the 'rateplan_features' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_features
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanFeatures
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_features table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanFeatures
+  permissions:
+    - role: admin
+      allowExecution: true
+

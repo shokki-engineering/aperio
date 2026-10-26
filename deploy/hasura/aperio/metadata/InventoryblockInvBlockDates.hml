@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockInvBlockDates
+  fields:
+    - name: absoluteCutoffId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endDateExtensionIndicator
+      type: Boolean_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: offsetCalculationMode
+      type: Enum
+    - name: offsetDuration
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InventoryblockInvBlockDates
+    inputTypeName: InventoryblockInvBlockDatesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_inv_block_dates
+      fieldMapping:
+        absoluteCutoffId:
+          column:
+            name: absolute_cutoff_id
+        duration:
+          column:
+            name: duration
+        endDateExtensionIndicator:
+          column:
+            name: end_date_extension_indicator
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        offsetCalculationMode:
+          column:
+            name: offset_calculation_mode
+        offsetDuration:
+          column:
+            name: offset_duration
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockInvBlockDates
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteCutoffId
+          - duration
+          - endDateExtensionIndicator
+          - endId
+          - id
+          - offsetCalculationMode
+          - offsetDuration
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockInvBlockDatesBoolExp
+  operand:
+    object:
+      type: InventoryblockInvBlockDates
+      comparableFields:
+        - fieldName: absoluteCutoffId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endDateExtensionIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offsetCalculationMode
+          booleanExpressionType: InventoryblockInventoryblockOffsetCalculationModeBoolExp
+        - fieldName: offsetDuration
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockInvBlockDatesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockInvBlockDatesAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockInvBlockDates
+      aggregatableFields:
+        - fieldName: absoluteCutoffId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endDateExtensionIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offsetCalculationMode
+          aggregateExpression: InventoryblockInventoryblockOffsetCalculationModeAggExp
+        - fieldName: offsetDuration
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockInvBlockDatesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockInvBlockDatesOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockInvBlockDates
+      orderableFields:
+        - fieldName: absoluteCutoffId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endDateExtensionIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offsetCalculationMode
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetDuration
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockInvBlockDatesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockInvBlockDates
+  objectType: InventoryblockInvBlockDates
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_inv_block_dates
+  filterExpressionType: InventoryblockInvBlockDatesBoolExp
+  aggregateExpression: InventoryblockInvBlockDatesAggExp
+  orderByExpression: InventoryblockInvBlockDatesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockInvBlockDates
+      subscription:
+        rootField: inventoryblockInvBlockDates
+    selectUniques:
+      - queryRootField: inventoryblockInvBlockDatesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockInvBlockDatesById
+    filterInputTypeName: InventoryblockInvBlockDatesFilterInput
+    aggregate:
+      queryRootField: inventoryblockInvBlockDatesAggregate
+      subscription:
+        rootField: inventoryblockInvBlockDatesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockInvBlockDates
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

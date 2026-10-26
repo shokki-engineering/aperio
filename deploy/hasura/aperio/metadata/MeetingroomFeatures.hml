@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomFeatures
+  fields:
+    - name: accessibleCode
+      type: Enum
+    - name: chargeId
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: meetingRoomId
+      type: String_1!
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: Enum
+    - name: securityCode
+      type: Enum
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+  graphql:
+    typeName: MeetingroomFeatures
+    inputTypeName: MeetingroomFeaturesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_features
+      fieldMapping:
+        accessibleCode:
+          column:
+            name: accessible_code
+        chargeId:
+          column:
+            name: charge_id
+        codeDetail:
+          column:
+            name: code_detail
+        descriptiveText:
+          column:
+            name: descriptive_text
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        meetingRoomId:
+          column:
+            name: meeting_room_id
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        securityCode:
+          column:
+            name: security_code
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomFeatures
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessibleCode
+          - chargeId
+          - codeDetail
+          - descriptiveText
+          - existsCode
+          - id
+          - meetingRoomId
+          - multimediaDescriptionsId
+          - proximityCode
+          - securityCode
+          - unit
+          - unitCode
+          - unitQuantityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomFeaturesBoolExp
+  operand:
+    object:
+      type: MeetingroomFeatures
+      comparableFields:
+        - fieldName: accessibleCode
+          booleanExpressionType: MeetingroomMeetingroomDisabilityFeatureCodeBoolExp
+        - fieldName: chargeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: MeetingroomMeetingroomOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: proximityCode
+          booleanExpressionType: MeetingroomMeetingroomProximityBoolExp
+        - fieldName: securityCode
+          booleanExpressionType: MeetingroomMeetingroomSecurityFeatureCodeBoolExp
+        - fieldName: unit
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: MeetingroomMeetingroomUnitOfMeasureCodeBoolExp
+        - fieldName: unitQuantityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomFeaturesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomFeaturesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomFeatures
+      aggregatableFields:
+        - fieldName: accessibleCode
+          aggregateExpression: MeetingroomMeetingroomDisabilityFeatureCodeAggExp
+        - fieldName: chargeId
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: MeetingroomMeetingroomOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: proximityCode
+          aggregateExpression: MeetingroomMeetingroomProximityAggExp
+        - fieldName: securityCode
+          aggregateExpression: MeetingroomMeetingroomSecurityFeatureCodeAggExp
+        - fieldName: unit
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: MeetingroomMeetingroomUnitOfMeasureCodeAggExp
+        - fieldName: unitQuantityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomFeaturesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomFeaturesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomFeatures
+      orderableFields:
+        - fieldName: accessibleCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: chargeId
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: proximityCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: securityCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unit
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unitQuantityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomFeaturesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomFeatures
+  objectType: MeetingroomFeatures
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_features
+  filterExpressionType: MeetingroomFeaturesBoolExp
+  aggregateExpression: MeetingroomFeaturesAggExp
+  orderByExpression: MeetingroomFeaturesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomFeatures
+      subscription:
+        rootField: meetingroomFeatures
+    selectUniques:
+      - queryRootField: meetingroomFeaturesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomFeaturesById
+    filterInputTypeName: MeetingroomFeaturesFilterInput
+    aggregate:
+      queryRootField: meetingroomFeaturesAggregate
+      subscription:
+        rootField: meetingroomFeaturesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomFeatures
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

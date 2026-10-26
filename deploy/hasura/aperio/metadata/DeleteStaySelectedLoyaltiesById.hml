@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteStaySelectedLoyaltiesByIdResponse
+  description: Responses from the 'delete_stay_selected_loyalties_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StaySelectedLoyalties!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteStaySelectedLoyaltiesByIdResponse
+    inputTypeName: DeleteStaySelectedLoyaltiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_stay_selected_loyalties_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteStaySelectedLoyaltiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteStaySelectedLoyaltiesById
+  outputType: DeleteStaySelectedLoyaltiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: StaySelectedLoyaltiesBoolExp
+      description: Delete permission predicate over the 'stay_selected_loyalties' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_stay_selected_loyalties_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteStaySelectedLoyaltiesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'stay_selected_loyalties' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteStaySelectedLoyaltiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

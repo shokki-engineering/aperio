@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventreportEndDateWindowsByIdResponse
+  description: Responses from the 'delete_eventreport_end_date_windows_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportEndDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventreportEndDateWindowsByIdResponse
+    inputTypeName: DeleteEventreportEndDateWindowsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_eventreport_end_date_windows_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventreportEndDateWindowsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventreportEndDateWindowsById
+  outputType: DeleteEventreportEndDateWindowsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventreportEndDateWindowsBoolExp
+      description: Delete permission predicate over the 'eventreport_end_date_windows'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_eventreport_end_date_windows_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventreportEndDateWindowsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'eventreport_end_date_windows' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventreportEndDateWindowsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

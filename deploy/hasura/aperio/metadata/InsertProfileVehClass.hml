@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehClassObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: size
+      type: Enum
+  graphql:
+    typeName: InsertProfileVehClassObject
+    inputTypeName: InsertProfileVehClassObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_veh_class_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehClassObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - size
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileVehClassResponse
+  description: Responses from the 'insert_profile_veh_class' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehClass!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileVehClassResponse
+    inputTypeName: InsertProfileVehClassResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_veh_class_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileVehClassResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileVehClass
+  outputType: InsertProfileVehClassResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileVehClassObject!]!"
+    - name: postCheck
+      type: ProfileVehClassBoolExp
+      description: Insert permission predicate over the 'profile_veh_class' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_veh_class
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileVehClass
+    rootFieldKind: Mutation
+  description: Insert into the profile_veh_class table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileVehClass
+  permissions:
+    - role: admin
+      allowExecution: true
+

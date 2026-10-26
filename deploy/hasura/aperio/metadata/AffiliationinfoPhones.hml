@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoPhones
+  fields:
+    - name: areaCityCode
+      type: String_1
+    - name: contactInfoId
+      type: String_1!
+    - name: countryAccessCode
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: extension
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: phoneLocationType
+      type: Enum
+    - name: phoneNumber
+      type: String_1!
+    - name: phoneTechType
+      type: Enum
+    - name: phoneUseType
+      type: Enum
+    - name: pin
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: AffiliationinfoPhones
+    inputTypeName: AffiliationinfoPhonesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_phones
+      fieldMapping:
+        areaCityCode:
+          column:
+            name: area_city_code
+        contactInfoId:
+          column:
+            name: contact_info_id
+        countryAccessCode:
+          column:
+            name: country_access_code
+        defaultValue:
+          column:
+            name: default_value
+        extension:
+          column:
+            name: extension
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        phoneLocationType:
+          column:
+            name: phone_location_type
+        phoneNumber:
+          column:
+            name: phone_number
+        phoneTechType:
+          column:
+            name: phone_tech_type
+        phoneUseType:
+          column:
+            name: phone_use_type
+        pin:
+          column:
+            name: pin
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoPhones
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaCityCode
+          - contactInfoId
+          - countryAccessCode
+          - defaultValue
+          - extension
+          - formatted
+          - id
+          - phoneLocationType
+          - phoneNumber
+          - phoneTechType
+          - phoneUseType
+          - pin
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoPhonesBoolExp
+  operand:
+    object:
+      type: AffiliationinfoPhones
+      comparableFields:
+        - fieldName: areaCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryAccessCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneLocationType
+          booleanExpressionType: AffiliationinfoAffiliationinfoPhoneLocationTypeBoolExp
+        - fieldName: phoneNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneTechType
+          booleanExpressionType: AffiliationinfoAffiliationinfoPhoneTechnologyTypeBoolExp
+        - fieldName: phoneUseType
+          booleanExpressionType: AffiliationinfoAffiliationinfoPhoneUseTypeBoolExp
+        - fieldName: pin
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: AffiliationinfoAffiliationinfoPhoneShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: AffiliationinfoAffiliationinfoPhoneShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoPhonesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoPhonesAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoPhones
+      aggregatableFields:
+        - fieldName: areaCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: contactInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: countryAccessCode
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: phoneLocationType
+          aggregateExpression: AffiliationinfoAffiliationinfoPhoneLocationTypeAggExp
+        - fieldName: phoneNumber
+          aggregateExpression: TextAggExp
+        - fieldName: phoneTechType
+          aggregateExpression: AffiliationinfoAffiliationinfoPhoneTechnologyTypeAggExp
+        - fieldName: phoneUseType
+          aggregateExpression: AffiliationinfoAffiliationinfoPhoneUseTypeAggExp
+        - fieldName: pin
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: AffiliationinfoAffiliationinfoPhoneShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: AffiliationinfoAffiliationinfoPhoneShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoPhonesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoPhonesOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoPhones
+      orderableFields:
+        - fieldName: areaCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: contactInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: countryAccessCode
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneLocationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneTechType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneUseType
+          orderByExpression: EnumOrderByExp
+        - fieldName: pin
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoPhonesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoPhones
+  objectType: AffiliationinfoPhones
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_phones
+  filterExpressionType: AffiliationinfoPhonesBoolExp
+  aggregateExpression: AffiliationinfoPhonesAggExp
+  orderByExpression: AffiliationinfoPhonesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoPhones
+      subscription:
+        rootField: affiliationinfoPhones
+    selectUniques:
+      - queryRootField: affiliationinfoPhonesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoPhonesById
+    filterInputTypeName: AffiliationinfoPhonesFilterInput
+    aggregate:
+      queryRootField: affiliationinfoPhonesAggregate
+      subscription:
+        rootField: affiliationinfoPhonesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoPhones
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

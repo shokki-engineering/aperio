@@ -1,0 +1,224 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomStayBasicPropertyInfosObject
+  fields:
+    - name: addressId
+      type: String_1
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: currencyCode
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: hotelSegmentCategoryCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: masterChainCode
+      type: String_1
+    - name: maxGroupRoomQuantity
+      type: Int32
+    - name: policyId
+      type: String_1
+    - name: positionId
+      type: String_1
+    - name: relativePositionId
+      type: String_1
+    - name: supplierIntegrationLevel
+      type: Int32
+    - name: ttIcode
+      type: Int32
+    - name: userGeneratedContentId
+      type: String_1
+  graphql:
+    typeName: InsertReservationRoomStayBasicPropertyInfosObject
+    inputTypeName: InsertReservationRoomStayBasicPropertyInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_stay_basic_property_infos_object
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        currencyCode:
+          column:
+            name: currency_code
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        hotelSegmentCategoryCode:
+          column:
+            name: hotel_segment_category_code
+        id:
+          column:
+            name: id
+        masterChainCode:
+          column:
+            name: master_chain_code
+        maxGroupRoomQuantity:
+          column:
+            name: max_group_room_quantity
+        policyId:
+          column:
+            name: policy_id
+        positionId:
+          column:
+            name: position_id
+        relativePositionId:
+          column:
+            name: relative_position_id
+        supplierIntegrationLevel:
+          column:
+            name: supplier_integration_level
+        ttIcode:
+          column:
+            name: tt_icode
+        userGeneratedContentId:
+          column:
+            name: user_generated_content_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomStayBasicPropertyInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - currencyCode
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - hotelSegmentCategoryCode
+          - id
+          - masterChainCode
+          - maxGroupRoomQuantity
+          - policyId
+          - positionId
+          - relativePositionId
+          - supplierIntegrationLevel
+          - ttIcode
+          - userGeneratedContentId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomStayBasicPropertyInfosResponse
+  description: Responses from the
+    'insert_reservation_room_stay_basic_property_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRoomStayBasicPropertyInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRoomStayBasicPropertyInfosResponse
+    inputTypeName: InsertReservationRoomStayBasicPropertyInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_stay_basic_property_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomStayBasicPropertyInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRoomStayBasicPropertyInfos
+  outputType: InsertReservationRoomStayBasicPropertyInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRoomStayBasicPropertyInfosObject!]!"
+    - name: postCheck
+      type: ReservationRoomStayBasicPropertyInfosBoolExp
+      description: Insert permission predicate over the
+        'reservation_room_stay_basic_property_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_room_stay_basic_property_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRoomStayBasicPropertyInfos
+    rootFieldKind: Mutation
+  description: Insert into the reservation_room_stay_basic_property_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRoomStayBasicPropertyInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

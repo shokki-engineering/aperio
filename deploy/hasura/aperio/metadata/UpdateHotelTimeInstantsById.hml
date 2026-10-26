@@ -1,0 +1,303 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelTimeInstantsCrossDateAllowedIndicator
+  description: Update the 'cross_date_allowed_indicator' column in the
+    'hotel_time_instants' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelTimeInstantsCrossDateAllowedIndicator
+    inputTypeName: UpdateColumnHotelTimeInstantsCrossDateAllowedIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_time_instants_cross_date_allowed_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelTimeInstantsCrossDateAllowedIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelTimeInstantsEarlyWindow
+  description: Update the 'early_window' column in the 'hotel_time_instants' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelTimeInstantsEarlyWindow
+    inputTypeName: UpdateColumnHotelTimeInstantsEarlyWindowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_time_instants_early_window
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelTimeInstantsEarlyWindow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelTimeInstantsId
+  description: Update the 'id' column in the 'hotel_time_instants' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelTimeInstantsId
+    inputTypeName: UpdateColumnHotelTimeInstantsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_time_instants_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelTimeInstantsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelTimeInstantsLateWindow
+  description: Update the 'late_window' column in the 'hotel_time_instants' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelTimeInstantsLateWindow
+    inputTypeName: UpdateColumnHotelTimeInstantsLateWindowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_time_instants_late_window
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelTimeInstantsLateWindow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelTimeInstantsValueId
+  description: Update the 'value_id' column in the 'hotel_time_instants' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelTimeInstantsValueId
+    inputTypeName: UpdateColumnHotelTimeInstantsValueIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_time_instants_value_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelTimeInstantsValueId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelTimeInstantsByIdUpdateColumns
+  description: Update the columns of the 'hotel_time_instants' collection
+  fields:
+    - name: crossDateAllowedIndicator
+      type: UpdateColumnHotelTimeInstantsCrossDateAllowedIndicator
+      description: Update the 'cross_date_allowed_indicator' column in the
+        'hotel_time_instants' collection.
+    - name: earlyWindow
+      type: UpdateColumnHotelTimeInstantsEarlyWindow
+      description: Update the 'early_window' column in the 'hotel_time_instants' collection.
+    - name: id
+      type: UpdateColumnHotelTimeInstantsId
+      description: Update the 'id' column in the 'hotel_time_instants' collection.
+    - name: lateWindow
+      type: UpdateColumnHotelTimeInstantsLateWindow
+      description: Update the 'late_window' column in the 'hotel_time_instants' collection.
+    - name: valueId
+      type: UpdateColumnHotelTimeInstantsValueId
+      description: Update the 'value_id' column in the 'hotel_time_instants' collection.
+  graphql:
+    typeName: UpdateHotelTimeInstantsByIdUpdateColumns
+    inputTypeName: UpdateHotelTimeInstantsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_time_instants_by_id_update_columns
+      fieldMapping:
+        crossDateAllowedIndicator:
+          column:
+            name: cross_date_allowed_indicator
+        earlyWindow:
+          column:
+            name: early_window
+        id:
+          column:
+            name: id
+        lateWindow:
+          column:
+            name: late_window
+        valueId:
+          column:
+            name: value_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelTimeInstantsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - crossDateAllowedIndicator
+          - earlyWindow
+          - id
+          - lateWindow
+          - valueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelTimeInstantsByIdResponse
+  description: Responses from the 'update_hotel_time_instants_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelTimeInstants!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelTimeInstantsByIdResponse
+    inputTypeName: UpdateHotelTimeInstantsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_time_instants_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelTimeInstantsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelTimeInstantsById
+  outputType: UpdateHotelTimeInstantsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelTimeInstantsBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_time_instants' collection
+    - name: preCheck
+      type: HotelTimeInstantsBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_time_instants' collection
+    - name: updateColumns
+      type: UpdateHotelTimeInstantsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_time_instants_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelTimeInstantsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_time_instants' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelTimeInstantsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpDaySummaries
+  fields:
+    - name: attendeeQuantity
+      type: Int32
+    - name: dayNumber
+      type: Int32
+    - name: historyId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: roomBlockQuantity
+      type: Int32
+    - name: roomPickupQuantity
+      type: Int32
+    - name: totalAudioVisualRentalAmountId
+      type: String_1
+    - name: totalFoodAndBevAmountId
+      type: String_1
+    - name: totalGuestRoomAmountId
+      type: String_1
+    - name: totalMeetingRoomRentalAmountId
+      type: String_1
+    - name: totalMiscAmountId
+      type: String_1
+  graphql:
+    typeName: MeetingrfpDaySummaries
+    inputTypeName: MeetingrfpDaySummariesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_day_summaries
+      fieldMapping:
+        attendeeQuantity:
+          column:
+            name: attendee_quantity
+        dayNumber:
+          column:
+            name: day_number
+        historyId:
+          column:
+            name: history_id
+        id:
+          column:
+            name: id
+        roomBlockQuantity:
+          column:
+            name: room_block_quantity
+        roomPickupQuantity:
+          column:
+            name: room_pickup_quantity
+        totalAudioVisualRentalAmountId:
+          column:
+            name: total_audio_visual_rental_amount_id
+        totalFoodAndBevAmountId:
+          column:
+            name: total_food_and_bev_amount_id
+        totalGuestRoomAmountId:
+          column:
+            name: total_guest_room_amount_id
+        totalMeetingRoomRentalAmountId:
+          column:
+            name: total_meeting_room_rental_amount_id
+        totalMiscAmountId:
+          column:
+            name: total_misc_amount_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpDaySummaries
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeQuantity
+          - dayNumber
+          - historyId
+          - id
+          - roomBlockQuantity
+          - roomPickupQuantity
+          - totalAudioVisualRentalAmountId
+          - totalFoodAndBevAmountId
+          - totalGuestRoomAmountId
+          - totalMeetingRoomRentalAmountId
+          - totalMiscAmountId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpDaySummariesBoolExp
+  operand:
+    object:
+      type: MeetingrfpDaySummaries
+      comparableFields:
+        - fieldName: attendeeQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: dayNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: historyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomBlockQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: roomPickupQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: totalAudioVisualRentalAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalFoodAndBevAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalGuestRoomAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalMeetingRoomRentalAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalMiscAmountId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpDaySummariesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpDaySummariesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpDaySummaries
+      aggregatableFields:
+        - fieldName: attendeeQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: dayNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: historyId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomBlockQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: roomPickupQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: totalAudioVisualRentalAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalFoodAndBevAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalGuestRoomAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalMeetingRoomRentalAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalMiscAmountId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpDaySummariesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpDaySummariesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpDaySummaries
+      orderableFields:
+        - fieldName: attendeeQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: dayNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: historyId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomBlockQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: roomPickupQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: totalAudioVisualRentalAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalFoodAndBevAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalGuestRoomAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalMeetingRoomRentalAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalMiscAmountId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpDaySummariesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpDaySummaries
+  objectType: MeetingrfpDaySummaries
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_day_summaries
+  filterExpressionType: MeetingrfpDaySummariesBoolExp
+  aggregateExpression: MeetingrfpDaySummariesAggExp
+  orderByExpression: MeetingrfpDaySummariesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpDaySummaries
+      subscription:
+        rootField: meetingrfpDaySummaries
+    selectUniques:
+      - queryRootField: meetingrfpDaySummariesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpDaySummariesById
+    filterInputTypeName: MeetingrfpDaySummariesFilterInput
+    aggregate:
+      queryRootField: meetingrfpDaySummariesAggregate
+      subscription:
+        rootField: meetingrfpDaySummariesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpDaySummaries
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

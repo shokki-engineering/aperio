@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportRoomAmenityPrefs
+  fields:
+    - name: contactId
+      type: String_1!
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: qualityLevel
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: roomAmenity
+      type: Enum
+    - name: roomGender
+      type: Enum
+    - name: sharedRoom
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventreportRoomAmenityPrefs
+    inputTypeName: EventreportRoomAmenityPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_room_amenity_prefs
+      fieldMapping:
+        contactId:
+          column:
+            name: contact_id
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        qualityLevel:
+          column:
+            name: quality_level
+        quantity:
+          column:
+            name: quantity
+        roomAmenity:
+          column:
+            name: room_amenity
+        roomGender:
+          column:
+            name: room_gender
+        sharedRoom:
+          column:
+            name: shared_room
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportRoomAmenityPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactId
+          - existsCode
+          - id
+          - preferLevel
+          - qualityLevel
+          - quantity
+          - roomAmenity
+          - roomGender
+          - sharedRoom
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportRoomAmenityPrefsBoolExp
+  operand:
+    object:
+      type: EventreportRoomAmenityPrefs
+      comparableFields:
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: EventreportEventreportOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: EventreportEventreportPreferLevelBoolExp
+        - fieldName: qualityLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: roomAmenity
+          booleanExpressionType: EventreportEventreportRoomAmenityTypeBoolExp
+        - fieldName: roomGender
+          booleanExpressionType: EventreportEventreportRoomGenderBoolExp
+        - fieldName: sharedRoom
+          booleanExpressionType: BoolBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportRoomAmenityPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportRoomAmenityPrefsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportRoomAmenityPrefs
+      aggregatableFields:
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: EventreportEventreportOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: EventreportEventreportPreferLevelAggExp
+        - fieldName: qualityLevel
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: roomAmenity
+          aggregateExpression: EventreportEventreportRoomAmenityTypeAggExp
+        - fieldName: roomGender
+          aggregateExpression: EventreportEventreportRoomGenderAggExp
+        - fieldName: sharedRoom
+          aggregateExpression: BoolAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportRoomAmenityPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportRoomAmenityPrefsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportRoomAmenityPrefs
+      orderableFields:
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: qualityLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: roomAmenity
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomGender
+          orderByExpression: EnumOrderByExp
+        - fieldName: sharedRoom
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportRoomAmenityPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportRoomAmenityPrefs
+  objectType: EventreportRoomAmenityPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_room_amenity_prefs
+  filterExpressionType: EventreportRoomAmenityPrefsBoolExp
+  aggregateExpression: EventreportRoomAmenityPrefsAggExp
+  orderByExpression: EventreportRoomAmenityPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportRoomAmenityPrefs
+      subscription:
+        rootField: eventreportRoomAmenityPrefs
+    selectUniques:
+      - queryRootField: eventreportRoomAmenityPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportRoomAmenityPrefsById
+    filterInputTypeName: EventreportRoomAmenityPrefsFilterInput
+    aggregate:
+      queryRootField: eventreportRoomAmenityPrefsAggregate
+      subscription:
+        rootField: eventreportRoomAmenityPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportRoomAmenityPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

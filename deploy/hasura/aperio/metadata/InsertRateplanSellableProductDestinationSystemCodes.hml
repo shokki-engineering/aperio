@@ -1,0 +1,128 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanSellableProductDestinationSystemCodesObject
+  fields:
+    - name: chainRateCodeCrossRef
+      type: String_1
+    - name: chainRateLevelCrossRef
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: sellableProductId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRateplanSellableProductDestinationSystemCodesObject
+    inputTypeName: InsertRateplanSellableProductDestinationSystemCodesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_sellable_product_destination_system_codes_object
+      fieldMapping:
+        chainRateCodeCrossRef:
+          column:
+            name: chain_rate_code_cross_ref
+        chainRateLevelCrossRef:
+          column:
+            name: chain_rate_level_cross_ref
+        id:
+          column:
+            name: id
+        sellableProductId:
+          column:
+            name: sellable_product_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanSellableProductDestinationSystemCodesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainRateCodeCrossRef
+          - chainRateLevelCrossRef
+          - id
+          - sellableProductId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanSellableProductDestinationSystemCodesResponse
+  description: Responses from the
+    'insert_rateplan_sellable_product_destination_system_codes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanSellableProductDestinationSystemCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanSellableProductDestinationSystemCodesResponse
+    inputTypeName: InsertRateplanSellableProductDestinationSystemCodesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_sellable_product_destination_system_codes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanSellableProductDestinationSystemCodesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanSellableProductDestinationSystemCodes
+  outputType: InsertRateplanSellableProductDestinationSystemCodesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanSellableProductDestinationSystemCodesObject!]!"
+    - name: postCheck
+      type: RateplanSellableProductDestinationSystemCodesBoolExp
+      description: Insert permission predicate over the
+        'rateplan_sellable_product_destination_system_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_sellable_product_destination_system_codes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanSellableProductDestinationSystemCodes
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_sellable_product_destination_system_codes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanSellableProductDestinationSystemCodes
+  permissions:
+    - role: admin
+      allowExecution: true
+

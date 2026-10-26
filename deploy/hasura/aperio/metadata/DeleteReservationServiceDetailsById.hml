@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteReservationServiceDetailsByIdResponse
+  description: Responses from the 'delete_reservation_service_details_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationServiceDetails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteReservationServiceDetailsByIdResponse
+    inputTypeName: DeleteReservationServiceDetailsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_reservation_service_details_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteReservationServiceDetailsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteReservationServiceDetailsById
+  outputType: DeleteReservationServiceDetailsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ReservationServiceDetailsBoolExp
+      description: Delete permission predicate over the 'reservation_service_details'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_reservation_service_details_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteReservationServiceDetailsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'reservation_service_details' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteReservationServiceDetailsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

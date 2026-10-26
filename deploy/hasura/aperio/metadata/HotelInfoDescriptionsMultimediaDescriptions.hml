@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelInfoDescriptionsMultimediaDescriptions
+  fields:
+    - name: additionalDetailCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: infoCode
+      type: Enum
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: HotelInfoDescriptionsMultimediaDescriptions
+    inputTypeName: HotelInfoDescriptionsMultimediaDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_info_descriptions_multimedia_descriptions
+      fieldMapping:
+        additionalDetailCode:
+          column:
+            name: additional_detail_code
+        id:
+          column:
+            name: id
+        infoCode:
+          column:
+            name: info_code
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelInfoDescriptionsMultimediaDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalDetailCode
+          - id
+          - infoCode
+          - lastUpdateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelInfoDescriptionsMultimediaDescriptionsBoolExp
+  operand:
+    object:
+      type: HotelInfoDescriptionsMultimediaDescriptions
+      comparableFields:
+        - fieldName: additionalDetailCode
+          booleanExpressionType: HotelHotelAdditionalDetailTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: infoCode
+          booleanExpressionType: HotelHotelInfoTypeBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelInfoDescriptionsMultimediaDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelInfoDescriptionsMultimediaDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: HotelInfoDescriptionsMultimediaDescriptions
+      aggregatableFields:
+        - fieldName: additionalDetailCode
+          aggregateExpression: HotelHotelAdditionalDetailTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: infoCode
+          aggregateExpression: HotelHotelInfoTypeAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelInfoDescriptionsMultimediaDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelInfoDescriptionsMultimediaDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: HotelInfoDescriptionsMultimediaDescriptions
+      orderableFields:
+        - fieldName: additionalDetailCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: infoCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelInfoDescriptionsMultimediaDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelInfoDescriptionsMultimediaDescriptions
+  objectType: HotelInfoDescriptionsMultimediaDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_info_descriptions_multimedia_descriptions
+  filterExpressionType: HotelInfoDescriptionsMultimediaDescriptionsBoolExp
+  aggregateExpression: HotelInfoDescriptionsMultimediaDescriptionsAggExp
+  orderByExpression: HotelInfoDescriptionsMultimediaDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelInfoDescriptionsMultimediaDescriptions
+      subscription:
+        rootField: hotelInfoDescriptionsMultimediaDescriptions
+    selectUniques:
+      - queryRootField: hotelInfoDescriptionsMultimediaDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelInfoDescriptionsMultimediaDescriptionsById
+    filterInputTypeName: HotelInfoDescriptionsMultimediaDescriptionsFilterInput
+    aggregate:
+      queryRootField: hotelInfoDescriptionsMultimediaDescriptionsAggregate
+      subscription:
+        rootField: hotelInfoDescriptionsMultimediaDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelInfoDescriptionsMultimediaDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

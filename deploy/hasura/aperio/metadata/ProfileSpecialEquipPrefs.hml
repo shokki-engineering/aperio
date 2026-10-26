@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileSpecialEquipPrefs
+  fields:
+    - name: action
+      type: Enum
+    - name: equipType
+      type: Enum!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: quantity
+      type: Int32
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileSpecialEquipPrefs
+    inputTypeName: ProfileSpecialEquipPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_special_equip_prefs
+      fieldMapping:
+        action:
+          column:
+            name: action
+        equipType:
+          column:
+            name: equip_type
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        quantity:
+          column:
+            name: quantity
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileSpecialEquipPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - action
+          - equipType
+          - id
+          - preferLevel
+          - quantity
+          - vehicleProfileRentalPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileSpecialEquipPrefsBoolExp
+  operand:
+    object:
+      type: ProfileSpecialEquipPrefs
+      comparableFields:
+        - fieldName: action
+          booleanExpressionType: ProfileProfileActionBoolExp
+        - fieldName: equipType
+          booleanExpressionType: ProfileEquipmentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: vehicleProfileRentalPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileSpecialEquipPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileSpecialEquipPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileSpecialEquipPrefs
+      aggregatableFields:
+        - fieldName: action
+          aggregateExpression: ProfileProfileActionAggExp
+        - fieldName: equipType
+          aggregateExpression: ProfileEquipmentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: vehicleProfileRentalPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileSpecialEquipPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileSpecialEquipPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileSpecialEquipPrefs
+      orderableFields:
+        - fieldName: action
+          orderByExpression: EnumOrderByExp
+        - fieldName: equipType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: vehicleProfileRentalPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileSpecialEquipPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileSpecialEquipPrefs
+  objectType: ProfileSpecialEquipPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_special_equip_prefs
+  filterExpressionType: ProfileSpecialEquipPrefsBoolExp
+  aggregateExpression: ProfileSpecialEquipPrefsAggExp
+  orderByExpression: ProfileSpecialEquipPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileSpecialEquipPrefs
+      subscription:
+        rootField: profileSpecialEquipPrefs
+    selectUniques:
+      - queryRootField: profileSpecialEquipPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileSpecialEquipPrefsById
+    filterInputTypeName: ProfileSpecialEquipPrefsFilterInput
+    aggregate:
+      queryRootField: profileSpecialEquipPrefsAggregate
+      subscription:
+        rootField: profileSpecialEquipPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileSpecialEquipPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

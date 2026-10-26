@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanMultimediaDescriptionObject
+  fields:
+    - name: additionalDetailCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: imageItemsId
+      type: String_1
+    - name: infoCode
+      type: Enum
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: multimediaDescriptionsId
+      type: String_1!
+    - name: textItemsId
+      type: String_1
+    - name: version
+      type: String_1
+    - name: videoItemsId
+      type: String_1
+    - name: videoItemsOrImageItemsOrTextItemsCase
+      type: Enum
+  graphql:
+    typeName: InsertRateplanMultimediaDescriptionObject
+    inputTypeName: InsertRateplanMultimediaDescriptionObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_multimedia_description_object
+      fieldMapping:
+        additionalDetailCode:
+          column:
+            name: additional_detail_code
+        id:
+          column:
+            name: id
+        imageItemsId:
+          column:
+            name: image_items_id
+        infoCode:
+          column:
+            name: info_code
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        textItemsId:
+          column:
+            name: text_items_id
+        version:
+          column:
+            name: version
+        videoItemsId:
+          column:
+            name: video_items_id
+        videoItemsOrImageItemsOrTextItemsCase:
+          column:
+            name: video_items_or_image_items_or_text_items_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanMultimediaDescriptionObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalDetailCode
+          - id
+          - imageItemsId
+          - infoCode
+          - lastUpdateTime
+          - multimediaDescriptionsId
+          - textItemsId
+          - version
+          - videoItemsId
+          - videoItemsOrImageItemsOrTextItemsCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanMultimediaDescriptionResponse
+  description: Responses from the 'insert_rateplan_multimedia_description' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanMultimediaDescription!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanMultimediaDescriptionResponse
+    inputTypeName: InsertRateplanMultimediaDescriptionResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_multimedia_description_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanMultimediaDescriptionResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanMultimediaDescription
+  outputType: InsertRateplanMultimediaDescriptionResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanMultimediaDescriptionObject!]!"
+    - name: postCheck
+      type: RateplanMultimediaDescriptionBoolExp
+      description: Insert permission predicate over the
+        'rateplan_multimedia_description' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_multimedia_description
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanMultimediaDescription
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_multimedia_description table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanMultimediaDescription
+  permissions:
+    - role: admin
+      allowExecution: true
+

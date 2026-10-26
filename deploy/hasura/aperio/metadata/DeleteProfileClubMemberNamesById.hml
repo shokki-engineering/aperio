@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteProfileClubMemberNamesByIdResponse
+  description: Responses from the 'delete_profile_club_member_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileClubMemberNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteProfileClubMemberNamesByIdResponse
+    inputTypeName: DeleteProfileClubMemberNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_profile_club_member_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteProfileClubMemberNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteProfileClubMemberNamesById
+  outputType: DeleteProfileClubMemberNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ProfileClubMemberNamesBoolExp
+      description: Delete permission predicate over the 'profile_club_member_names'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_profile_club_member_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteProfileClubMemberNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'profile_club_member_names' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteProfileClubMemberNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

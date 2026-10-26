@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteStatisticreportRevenueCategoryCodeValuesByIdResponse
+  description: Responses from the
+    'delete_statisticreport_revenue_category_code_values_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StatisticreportRevenueCategoryCodeValues!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteStatisticreportRevenueCategoryCodeValuesByIdResponse
+    inputTypeName: DeleteStatisticreportRevenueCategoryCodeValuesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_statisticreport_revenue_category_code_values_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteStatisticreportRevenueCategoryCodeValuesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteStatisticreportRevenueCategoryCodeValuesById
+  outputType: DeleteStatisticreportRevenueCategoryCodeValuesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: StatisticreportRevenueCategoryCodeValuesBoolExp
+      description: Delete permission predicate over the
+        'statisticreport_revenue_category_code_values' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_statisticreport_revenue_category_code_values_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteStatisticreportRevenueCategoryCodeValuesById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'statisticreport_revenue_category_code_values' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteStatisticreportRevenueCategoryCodeValuesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportResource
+  fields:
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: generalEventInfoId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: rph
+      type: String_1
+    - name: timeStampTime
+      type: Timestamptz
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: versionId
+      type: String_1
+  graphql:
+    typeName: EventreportResource
+    inputTypeName: EventreportResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_resource
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        generalEventInfoId:
+          column:
+            name: general_event_info_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        rph:
+          column:
+            name: rph
+        timeStampTime:
+          column:
+            name: time_stamp_time
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+        versionId:
+          column:
+            name: version_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - deleteTime
+          - etag
+          - expireTime
+          - generalEventInfoId
+          - id
+          - name
+          - rph
+          - timeStampTime
+          - uid
+          - updateTime
+          - versionId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportResourceBoolExp
+  operand:
+    object:
+      type: EventreportResource
+      comparableFields:
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: generalEventInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: timeStampTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: versionId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportResourceAggExp
+  operand:
+    object:
+      aggregatedType: EventreportResource
+      aggregatableFields:
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: generalEventInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: timeStampTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: versionId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportResourceOrderByExp
+  operand:
+    object:
+      orderedType: EventreportResource
+      orderableFields:
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: generalEventInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: timeStampTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: versionId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportResource
+  objectType: EventreportResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_resource
+  filterExpressionType: EventreportResourceBoolExp
+  aggregateExpression: EventreportResourceAggExp
+  orderByExpression: EventreportResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportResource
+      subscription:
+        rootField: eventreportResource
+    selectUniques:
+      - queryRootField: eventreportResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportResourceById
+    filterInputTypeName: EventreportResourceFilterInput
+    aggregate:
+      queryRootField: eventreportResourceAggregate
+      subscription:
+        rootField: eventreportResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductStayDateRangesObject
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductStayDateRangesObject
+    inputTypeName: InsertHotelproductStayDateRangesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_stay_date_ranges_object
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductStayDateRangesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductStayDateRangesResponse
+  description: Responses from the 'insert_hotelproduct_stay_date_ranges' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductStayDateRanges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductStayDateRangesResponse
+    inputTypeName: InsertHotelproductStayDateRangesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_stay_date_ranges_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductStayDateRangesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductStayDateRanges
+  outputType: InsertHotelproductStayDateRangesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductStayDateRangesObject!]!"
+    - name: postCheck
+      type: HotelproductStayDateRangesBoolExp
+      description: Insert permission predicate over the
+        'hotelproduct_stay_date_ranges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_stay_date_ranges
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductStayDateRanges
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_stay_date_ranges table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductStayDateRanges
+  permissions:
+    - role: admin
+      allowExecution: true
+

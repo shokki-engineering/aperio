@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoRecreationsRecreationMultimediaDescriptions
+  fields:
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+    - name: location
+      type: Boolean_1
+    - name: referenceDirection
+      type: Boolean_1
+  graphql:
+    typeName: AreainfoRecreationsRecreationMultimediaDescriptions
+    inputTypeName: AreainfoRecreationsRecreationMultimediaDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_recreations_recreation_multimedia_descriptions
+      fieldMapping:
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+        location:
+          column:
+            name: location
+        referenceDirection:
+          column:
+            name: reference_direction
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoRecreationsRecreationMultimediaDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - lastUpdateTime
+          - location
+          - referenceDirection
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoRecreationsRecreationMultimediaDescriptionsBoolExp
+  operand:
+    object:
+      type: AreainfoRecreationsRecreationMultimediaDescriptions
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: location
+          booleanExpressionType: BoolBoolExp
+        - fieldName: referenceDirection
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoRecreationsRecreationMultimediaDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoRecreationsRecreationMultimediaDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoRecreationsRecreationMultimediaDescriptions
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: location
+          aggregateExpression: BoolAggExp
+        - fieldName: referenceDirection
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoRecreationsRecreationMultimediaDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoRecreationsRecreationMultimediaDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoRecreationsRecreationMultimediaDescriptions
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: location
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: referenceDirection
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoRecreationsRecreationMultimediaDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoRecreationsRecreationMultimediaDescriptions
+  objectType: AreainfoRecreationsRecreationMultimediaDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_recreations_recreation_multimedia_descriptions
+  filterExpressionType: AreainfoRecreationsRecreationMultimediaDescriptionsBoolExp
+  aggregateExpression: AreainfoRecreationsRecreationMultimediaDescriptionsAggExp
+  orderByExpression: AreainfoRecreationsRecreationMultimediaDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoRecreationsRecreationMultimediaDescriptions
+      subscription:
+        rootField: areainfoRecreationsRecreationMultimediaDescriptions
+    selectUniques:
+      - queryRootField: areainfoRecreationsRecreationMultimediaDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoRecreationsRecreationMultimediaDescriptionsById
+    filterInputTypeName: AreainfoRecreationsRecreationMultimediaDescriptionsFilterInput
+    aggregate:
+      queryRootField: areainfoRecreationsRecreationMultimediaDescriptionsAggregate
+      subscription:
+        rootField: areainfoRecreationsRecreationMultimediaDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoRecreationsRecreationMultimediaDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportEventDay
+  fields:
+    - name: dayNumber
+      type: Int32!
+    - name: dayType
+      type: Enum
+    - name: eventDaysId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventreportEventDay
+    inputTypeName: EventreportEventDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_event_day
+      fieldMapping:
+        dayNumber:
+          column:
+            name: day_number
+        dayType:
+          column:
+            name: day_type
+        eventDaysId:
+          column:
+            name: event_days_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportEventDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayNumber
+          - dayType
+          - eventDaysId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportEventDayBoolExp
+  operand:
+    object:
+      type: EventreportEventDay
+      comparableFields:
+        - fieldName: dayNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: dayType
+          booleanExpressionType: EventreportEnumsEventDayBoolExp
+        - fieldName: eventDaysId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportEventDayBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportEventDayAggExp
+  operand:
+    object:
+      aggregatedType: EventreportEventDay
+      aggregatableFields:
+        - fieldName: dayNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: dayType
+          aggregateExpression: EventreportEnumsEventDayAggExp
+        - fieldName: eventDaysId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportEventDayAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportEventDayOrderByExp
+  operand:
+    object:
+      orderedType: EventreportEventDay
+      orderableFields:
+        - fieldName: dayNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: dayType
+          orderByExpression: EnumOrderByExp
+        - fieldName: eventDaysId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportEventDayOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportEventDay
+  objectType: EventreportEventDay
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_event_day
+  filterExpressionType: EventreportEventDayBoolExp
+  aggregateExpression: EventreportEventDayAggExp
+  orderByExpression: EventreportEventDayOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportEventDay
+      subscription:
+        rootField: eventreportEventDay
+    selectUniques:
+      - queryRootField: eventreportEventDayById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportEventDayById
+    filterInputTypeName: EventreportEventDayFilterInput
+    aggregate:
+      queryRootField: eventreportEventDayAggregate
+      subscription:
+        rootField: eventreportEventDayAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportEventDay
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

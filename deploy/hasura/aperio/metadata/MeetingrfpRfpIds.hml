@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpRfpIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: meetingDisplayName
+      type: String_1
+    - name: meetingRfpId
+      type: String_1!
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: MeetingrfpRfpIds
+    inputTypeName: MeetingrfpRfpIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_rfp_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        meetingDisplayName:
+          column:
+            name: meeting_display_name
+        meetingRfpId:
+          column:
+            name: meeting_rfp_id
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpRfpIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - meetingDisplayName
+          - meetingRfpId
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpRfpIdsBoolExp
+  operand:
+    object:
+      type: MeetingrfpRfpIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRfpId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: MeetingrfpMeetingrfpUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpRfpIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpRfpIdsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpRfpIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: meetingDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRfpId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: MeetingrfpMeetingrfpUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpRfpIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpRfpIdsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpRfpIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRfpId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpRfpIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpRfpIds
+  objectType: MeetingrfpRfpIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_rfp_ids
+  filterExpressionType: MeetingrfpRfpIdsBoolExp
+  aggregateExpression: MeetingrfpRfpIdsAggExp
+  orderByExpression: MeetingrfpRfpIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpRfpIds
+      subscription:
+        rootField: meetingrfpRfpIds
+    selectUniques:
+      - queryRootField: meetingrfpRfpIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpRfpIdsById
+    filterInputTypeName: MeetingrfpRfpIdsFilterInput
+    aggregate:
+      queryRootField: meetingrfpRfpIdsAggregate
+      subscription:
+        rootField: meetingrfpRfpIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpRfpIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

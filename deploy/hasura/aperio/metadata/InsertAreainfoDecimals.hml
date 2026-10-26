@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertAreainfoDecimalsObject
+    inputTypeName: InsertAreainfoDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoDecimalsResponse
+  description: Responses from the 'insert_areainfo_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoDecimalsResponse
+    inputTypeName: InsertAreainfoDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoDecimals
+  outputType: InsertAreainfoDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoDecimalsObject!]!"
+    - name: postCheck
+      type: AreainfoDecimalsBoolExp
+      description: Insert permission predicate over the 'areainfo_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoDecimals
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionDocumentsObject
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertCommissionDocumentsObject
+    inputTypeName: InsertCommissionDocumentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_documents_object
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionDocumentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionDocumentsResponse
+  description: Responses from the 'insert_commission_documents' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCommissionDocumentsResponse
+    inputTypeName: InsertCommissionDocumentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_documents_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionDocumentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCommissionDocuments
+  outputType: InsertCommissionDocumentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCommissionDocumentsObject!]!"
+    - name: postCheck
+      type: CommissionDocumentsBoolExp
+      description: Insert permission predicate over the 'commission_documents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_commission_documents
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCommissionDocuments
+    rootFieldKind: Mutation
+  description: Insert into the commission_documents table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCommissionDocuments
+  permissions:
+    - role: admin
+      allowExecution: true
+

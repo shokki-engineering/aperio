@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileHotelPrefsObject
+  fields:
+    - name: hotelGuestType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: ratePlanCode
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: smokingAllowed
+      type: Boolean_1
+  graphql:
+    typeName: InsertProfileHotelPrefsObject
+    inputTypeName: InsertProfileHotelPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_hotel_prefs_object
+      fieldMapping:
+        hotelGuestType:
+          column:
+            name: hotel_guest_type
+        id:
+          column:
+            name: id
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        preferLevel:
+          column:
+            name: prefer_level
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileHotelPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelGuestType
+          - id
+          - prefCollectionId
+          - preferLevel
+          - ratePlanCode
+          - shareMarketInd
+          - shareSynchInd
+          - smokingAllowed
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileHotelPrefsResponse
+  description: Responses from the 'insert_profile_hotel_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileHotelPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileHotelPrefsResponse
+    inputTypeName: InsertProfileHotelPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_hotel_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileHotelPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileHotelPrefs
+  outputType: InsertProfileHotelPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileHotelPrefsObject!]!"
+    - name: postCheck
+      type: ProfileHotelPrefsBoolExp
+      description: Insert permission predicate over the 'profile_hotel_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_hotel_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileHotelPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_hotel_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileHotelPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

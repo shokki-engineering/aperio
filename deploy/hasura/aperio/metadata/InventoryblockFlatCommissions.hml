@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockFlatCommissions
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InventoryblockFlatCommissions
+    inputTypeName: InventoryblockFlatCommissionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_flat_commissions
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockFlatCommissions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockFlatCommissionsBoolExp
+  operand:
+    object:
+      type: InventoryblockFlatCommissions
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockFlatCommissionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockFlatCommissionsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockFlatCommissions
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockFlatCommissionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockFlatCommissionsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockFlatCommissions
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockFlatCommissionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockFlatCommissions
+  objectType: InventoryblockFlatCommissions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_flat_commissions
+  filterExpressionType: InventoryblockFlatCommissionsBoolExp
+  aggregateExpression: InventoryblockFlatCommissionsAggExp
+  orderByExpression: InventoryblockFlatCommissionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockFlatCommissions
+      subscription:
+        rootField: inventoryblockFlatCommissions
+    selectUniques:
+      - queryRootField: inventoryblockFlatCommissionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockFlatCommissionsById
+    filterInputTypeName: InventoryblockFlatCommissionsFilterInput
+    aggregate:
+      queryRootField: inventoryblockFlatCommissionsAggregate
+      subscription:
+        rootField: inventoryblockFlatCommissionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockFlatCommissions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

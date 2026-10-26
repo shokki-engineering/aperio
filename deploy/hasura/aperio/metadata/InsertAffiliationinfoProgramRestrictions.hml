@@ -1,0 +1,163 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoProgramRestrictionsObject
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: name
+      type: String_1
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertAffiliationinfoProgramRestrictionsObject
+    inputTypeName: InsertAffiliationinfoProgramRestrictionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_program_restrictions_object
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        name:
+          column:
+            name: name
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoProgramRestrictionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - name
+          - paragraphNumber
+          - purgeDayId
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoProgramRestrictionsResponse
+  description: Responses from the 'insert_affiliationinfo_program_restrictions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoProgramRestrictions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoProgramRestrictionsResponse
+    inputTypeName: InsertAffiliationinfoProgramRestrictionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_program_restrictions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoProgramRestrictionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoProgramRestrictions
+  outputType: InsertAffiliationinfoProgramRestrictionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoProgramRestrictionsObject!]!"
+    - name: postCheck
+      type: AffiliationinfoProgramRestrictionsBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_program_restrictions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_program_restrictions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoProgramRestrictions
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_program_restrictions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoProgramRestrictions
+  permissions:
+    - role: admin
+      allowExecution: true
+

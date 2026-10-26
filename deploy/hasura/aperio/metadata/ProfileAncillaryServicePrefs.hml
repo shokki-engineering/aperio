@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAncillaryServicePrefs
+  fields:
+    - name: ancillaryServiceCode
+      type: String_1
+    - name: foodAllergies
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+    - name: remark
+      type: String_1
+  graphql:
+    typeName: ProfileAncillaryServicePrefs
+    inputTypeName: ProfileAncillaryServicePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_ancillary_service_prefs
+      fieldMapping:
+        ancillaryServiceCode:
+          column:
+            name: ancillary_service_code
+        foodAllergies:
+          column:
+            name: food_allergies
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+        remark:
+          column:
+            name: remark
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAncillaryServicePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - ancillaryServiceCode
+          - foodAllergies
+          - id
+          - preferLevel
+          - railPrefId
+          - remark
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAncillaryServicePrefsBoolExp
+  operand:
+    object:
+      type: ProfileAncillaryServicePrefs
+      comparableFields:
+        - fieldName: ancillaryServiceCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: foodAllergies
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: railPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAncillaryServicePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAncillaryServicePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAncillaryServicePrefs
+      aggregatableFields:
+        - fieldName: ancillaryServiceCode
+          aggregateExpression: TextAggExp
+        - fieldName: foodAllergies
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: railPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAncillaryServicePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAncillaryServicePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAncillaryServicePrefs
+      orderableFields:
+        - fieldName: ancillaryServiceCode
+          orderByExpression: String1OrderByExp
+        - fieldName: foodAllergies
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: railPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAncillaryServicePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAncillaryServicePrefs
+  objectType: ProfileAncillaryServicePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_ancillary_service_prefs
+  filterExpressionType: ProfileAncillaryServicePrefsBoolExp
+  aggregateExpression: ProfileAncillaryServicePrefsAggExp
+  orderByExpression: ProfileAncillaryServicePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAncillaryServicePrefs
+      subscription:
+        rootField: profileAncillaryServicePrefs
+    selectUniques:
+      - queryRootField: profileAncillaryServicePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAncillaryServicePrefsById
+    filterInputTypeName: ProfileAncillaryServicePrefsFilterInput
+    aggregate:
+      queryRootField: profileAncillaryServicePrefsAggregate
+      subscription:
+        rootField: profileAncillaryServicePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAncillaryServicePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

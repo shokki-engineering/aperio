@@ -1,0 +1,273 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportPostEventSiteReportDatesDuration
+  description: Update the 'duration' column in the
+    'eventreport_post_event_site_report_dates' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportPostEventSiteReportDatesDuration
+    inputTypeName: UpdateColumnEventreportPostEventSiteReportDatesDurationInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_post_event_site_report_dates_duration
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportPostEventSiteReportDatesDuration
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportPostEventSiteReportDatesEndId
+  description: Update the 'end_id' column in the
+    'eventreport_post_event_site_report_dates' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportPostEventSiteReportDatesEndId
+    inputTypeName: UpdateColumnEventreportPostEventSiteReportDatesEndIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_post_event_site_report_dates_end_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportPostEventSiteReportDatesEndId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportPostEventSiteReportDatesId
+  description: Update the 'id' column in the
+    'eventreport_post_event_site_report_dates' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportPostEventSiteReportDatesId
+    inputTypeName: UpdateColumnEventreportPostEventSiteReportDatesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_post_event_site_report_dates_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportPostEventSiteReportDatesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportPostEventSiteReportDatesStartId
+  description: Update the 'start_id' column in the
+    'eventreport_post_event_site_report_dates' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportPostEventSiteReportDatesStartId
+    inputTypeName: UpdateColumnEventreportPostEventSiteReportDatesStartIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_post_event_site_report_dates_start_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportPostEventSiteReportDatesStartId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportPostEventSiteReportDatesByIdUpdateColumns
+  description: Update the columns of the
+    'eventreport_post_event_site_report_dates' collection
+  fields:
+    - name: duration
+      type: UpdateColumnEventreportPostEventSiteReportDatesDuration
+      description: Update the 'duration' column in the
+        'eventreport_post_event_site_report_dates' collection.
+    - name: endId
+      type: UpdateColumnEventreportPostEventSiteReportDatesEndId
+      description: Update the 'end_id' column in the
+        'eventreport_post_event_site_report_dates' collection.
+    - name: id
+      type: UpdateColumnEventreportPostEventSiteReportDatesId
+      description: Update the 'id' column in the
+        'eventreport_post_event_site_report_dates' collection.
+    - name: startId
+      type: UpdateColumnEventreportPostEventSiteReportDatesStartId
+      description: Update the 'start_id' column in the
+        'eventreport_post_event_site_report_dates' collection.
+  graphql:
+    typeName: UpdateEventreportPostEventSiteReportDatesByIdUpdateColumns
+    inputTypeName: UpdateEventreportPostEventSiteReportDatesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_post_event_site_report_dates_by_id_update_columns
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportPostEventSiteReportDatesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportPostEventSiteReportDatesByIdResponse
+  description: Responses from the
+    'update_eventreport_post_event_site_report_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportPostEventSiteReportDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventreportPostEventSiteReportDatesByIdResponse
+    inputTypeName: UpdateEventreportPostEventSiteReportDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_post_event_site_report_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportPostEventSiteReportDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventreportPostEventSiteReportDatesById
+  outputType: UpdateEventreportPostEventSiteReportDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventreportPostEventSiteReportDatesBoolExp
+      description: Update permission post-condition predicate over the
+        'eventreport_post_event_site_report_dates' collection
+    - name: preCheck
+      type: EventreportPostEventSiteReportDatesBoolExp
+      description: Update permission pre-condition predicate over the
+        'eventreport_post_event_site_report_dates' collection
+    - name: updateColumns
+      type: UpdateEventreportPostEventSiteReportDatesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_eventreport_post_event_site_report_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventreportPostEventSiteReportDatesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'eventreport_post_event_site_report_dates'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventreportPostEventSiteReportDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

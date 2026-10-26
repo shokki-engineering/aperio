@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileTelephoneInfos
+  fields:
+    - name: areaCityCode
+      type: String_1
+    - name: companyInfoId
+      type: String_1!
+    - name: countryAccessCode
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: extension
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: phoneLocationType
+      type: Enum
+    - name: phoneNumber
+      type: String_1!
+    - name: phoneTechType
+      type: Enum
+    - name: phoneUseType
+      type: Enum
+    - name: pin
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: transferAction
+      type: Enum
+  graphql:
+    typeName: ProfileTelephoneInfos
+    inputTypeName: ProfileTelephoneInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_telephone_infos
+      fieldMapping:
+        areaCityCode:
+          column:
+            name: area_city_code
+        companyInfoId:
+          column:
+            name: company_info_id
+        countryAccessCode:
+          column:
+            name: country_access_code
+        defaultValue:
+          column:
+            name: default_value
+        extension:
+          column:
+            name: extension
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        phoneLocationType:
+          column:
+            name: phone_location_type
+        phoneNumber:
+          column:
+            name: phone_number
+        phoneTechType:
+          column:
+            name: phone_tech_type
+        phoneUseType:
+          column:
+            name: phone_use_type
+        pin:
+          column:
+            name: pin
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileTelephoneInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaCityCode
+          - companyInfoId
+          - countryAccessCode
+          - defaultValue
+          - extension
+          - formatted
+          - id
+          - phoneLocationType
+          - phoneNumber
+          - phoneTechType
+          - phoneUseType
+          - pin
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - transferAction
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileTelephoneInfosBoolExp
+  operand:
+    object:
+      type: ProfileTelephoneInfos
+      comparableFields:
+        - fieldName: areaCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryAccessCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneLocationType
+          booleanExpressionType: ProfileProfilePhoneLocationTypeBoolExp
+        - fieldName: phoneNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneTechType
+          booleanExpressionType: ProfileProfilePhoneTechnologyTypeBoolExp
+        - fieldName: phoneUseType
+          booleanExpressionType: ProfileProfilePhoneUseTypeBoolExp
+        - fieldName: pin
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileCustomerTelephoneShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileCustomerTelephoneShareSynchIndBoolExp
+        - fieldName: transferAction
+          booleanExpressionType: ProfileTransferActionBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileTelephoneInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileTelephoneInfosAggExp
+  operand:
+    object:
+      aggregatedType: ProfileTelephoneInfos
+      aggregatableFields:
+        - fieldName: areaCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: companyInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: countryAccessCode
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: phoneLocationType
+          aggregateExpression: ProfileProfilePhoneLocationTypeAggExp
+        - fieldName: phoneNumber
+          aggregateExpression: TextAggExp
+        - fieldName: phoneTechType
+          aggregateExpression: ProfileProfilePhoneTechnologyTypeAggExp
+        - fieldName: phoneUseType
+          aggregateExpression: ProfileProfilePhoneUseTypeAggExp
+        - fieldName: pin
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileCustomerTelephoneShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileCustomerTelephoneShareSynchIndAggExp
+        - fieldName: transferAction
+          aggregateExpression: ProfileTransferActionAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileTelephoneInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileTelephoneInfosOrderByExp
+  operand:
+    object:
+      orderedType: ProfileTelephoneInfos
+      orderableFields:
+        - fieldName: areaCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: companyInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: countryAccessCode
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneLocationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneTechType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneUseType
+          orderByExpression: EnumOrderByExp
+        - fieldName: pin
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: transferAction
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileTelephoneInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileTelephoneInfos
+  objectType: ProfileTelephoneInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_telephone_infos
+  filterExpressionType: ProfileTelephoneInfosBoolExp
+  aggregateExpression: ProfileTelephoneInfosAggExp
+  orderByExpression: ProfileTelephoneInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileTelephoneInfos
+      subscription:
+        rootField: profileTelephoneInfos
+    selectUniques:
+      - queryRootField: profileTelephoneInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileTelephoneInfosById
+    filterInputTypeName: ProfileTelephoneInfosFilterInput
+    aggregate:
+      queryRootField: profileTelephoneInfosAggregate
+      subscription:
+        rootField: profileTelephoneInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileTelephoneInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

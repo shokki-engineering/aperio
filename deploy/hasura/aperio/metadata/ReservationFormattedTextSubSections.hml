@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationFormattedTextSubSections
+  fields:
+    - name: id
+      type: String_1!
+    - name: subCode
+      type: String_1
+    - name: subSectionNumber
+      type: Int32
+    - name: subTitle
+      type: String_1
+    - name: vendorMessageId
+      type: String_1!
+  graphql:
+    typeName: ReservationFormattedTextSubSections
+    inputTypeName: ReservationFormattedTextSubSectionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_formatted_text_sub_sections
+      fieldMapping:
+        id:
+          column:
+            name: id
+        subCode:
+          column:
+            name: sub_code
+        subSectionNumber:
+          column:
+            name: sub_section_number
+        subTitle:
+          column:
+            name: sub_title
+        vendorMessageId:
+          column:
+            name: vendor_message_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationFormattedTextSubSections
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - subCode
+          - subSectionNumber
+          - subTitle
+          - vendorMessageId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationFormattedTextSubSectionsBoolExp
+  operand:
+    object:
+      type: ReservationFormattedTextSubSections
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: subCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: subSectionNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: subTitle
+          booleanExpressionType: TextBoolExp
+        - fieldName: vendorMessageId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationFormattedTextSubSectionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationFormattedTextSubSectionsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationFormattedTextSubSections
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: subCode
+          aggregateExpression: TextAggExp
+        - fieldName: subSectionNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: subTitle
+          aggregateExpression: TextAggExp
+        - fieldName: vendorMessageId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationFormattedTextSubSectionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationFormattedTextSubSectionsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationFormattedTextSubSections
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: subCode
+          orderByExpression: String1OrderByExp
+        - fieldName: subSectionNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: subTitle
+          orderByExpression: String1OrderByExp
+        - fieldName: vendorMessageId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationFormattedTextSubSectionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationFormattedTextSubSections
+  objectType: ReservationFormattedTextSubSections
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_formatted_text_sub_sections
+  filterExpressionType: ReservationFormattedTextSubSectionsBoolExp
+  aggregateExpression: ReservationFormattedTextSubSectionsAggExp
+  orderByExpression: ReservationFormattedTextSubSectionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationFormattedTextSubSections
+      subscription:
+        rootField: reservationFormattedTextSubSections
+    selectUniques:
+      - queryRootField: reservationFormattedTextSubSectionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationFormattedTextSubSectionsById
+    filterInputTypeName: ReservationFormattedTextSubSectionsFilterInput
+    aggregate:
+      queryRootField: reservationFormattedTextSubSectionsAggregate
+      subscription:
+        rootField: reservationFormattedTextSubSectionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationFormattedTextSubSections
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

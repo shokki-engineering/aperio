@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportVideoItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventreportVideoItems
+    inputTypeName: EventreportVideoItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_video_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportVideoItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportVideoItemsBoolExp
+  operand:
+    object:
+      type: EventreportVideoItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportVideoItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportVideoItemsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportVideoItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportVideoItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportVideoItemsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportVideoItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportVideoItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportVideoItems
+  objectType: EventreportVideoItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_video_items
+  filterExpressionType: EventreportVideoItemsBoolExp
+  aggregateExpression: EventreportVideoItemsAggExp
+  orderByExpression: EventreportVideoItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportVideoItems
+      subscription:
+        rootField: eventreportVideoItems
+    selectUniques:
+      - queryRootField: eventreportVideoItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportVideoItemsById
+    filterInputTypeName: EventreportVideoItemsFilterInput
+    aggregate:
+      queryRootField: eventreportVideoItemsAggregate
+      subscription:
+        rootField: eventreportVideoItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportVideoItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

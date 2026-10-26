@@ -1,0 +1,76 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRestaurantOperationSchedulesPlusChargeItemsByIdResponse
+  description: Responses from the
+    'delete_restaurant_operation_schedules_plus_charge_items_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantOperationSchedulesPlusChargeItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRestaurantOperationSchedulesPlusChargeItemsByIdResponse
+    inputTypeName: DeleteRestaurantOperationSchedulesPlusChargeItemsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_restaurant_operation_schedules_plus_charge_items_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRestaurantOperationSchedulesPlusChargeItemsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRestaurantOperationSchedulesPlusChargeItemsById
+  outputType: DeleteRestaurantOperationSchedulesPlusChargeItemsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RestaurantOperationSchedulesPlusChargeItemsBoolExp
+      description: Delete permission predicate over the
+        'restaurant_operation_schedules_plus_charge_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_restaurant_operation_schedules_plus_charge_items_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRestaurantOperationSchedulesPlusChargeItemsById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'restaurant_operation_schedules_plus_charge_items' collection using the 'id'
+    key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRestaurantOperationSchedulesPlusChargeItemsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

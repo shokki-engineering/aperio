@@ -1,0 +1,107 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStayDatesObject
+  fields:
+    - name: day
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: month
+      type: Int32
+    - name: year
+      type: Int32
+  graphql:
+    typeName: InsertStayDatesObject
+    inputTypeName: InsertStayDatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_dates_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStayDatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - day
+          - id
+          - month
+          - year
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStayDatesResponse
+  description: Responses from the 'insert_stay_dates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StayDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStayDatesResponse
+    inputTypeName: InsertStayDatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_stay_dates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStayDatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStayDates
+  outputType: InsertStayDatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStayDatesObject!]!"
+    - name: postCheck
+      type: StayDatesBoolExp
+      description: Insert permission predicate over the 'stay_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_stay_dates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStayDates
+    rootFieldKind: Mutation
+  description: Insert into the stay_dates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStayDates
+  permissions:
+    - role: admin
+      allowExecution: true
+

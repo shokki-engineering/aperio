@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionStatusObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: maxAdvancedBookingOffset
+      type: String_1
+    - name: minAdvancedBookingOffset
+      type: String_1
+    - name: restriction
+      type: Enum
+    - name: sellThroughOpenIndicator
+      type: Boolean_1
+    - name: status
+      type: Enum
+  graphql:
+    typeName: InsertRestrictionStatusObject
+    inputTypeName: InsertRestrictionStatusObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_status_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        maxAdvancedBookingOffset:
+          column:
+            name: max_advanced_booking_offset
+        minAdvancedBookingOffset:
+          column:
+            name: min_advanced_booking_offset
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionStatusObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - maxAdvancedBookingOffset
+          - minAdvancedBookingOffset
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionStatusResponse
+  description: Responses from the 'insert_restriction_status' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionStatus!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestrictionStatusResponse
+    inputTypeName: InsertRestrictionStatusResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_status_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionStatusResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestrictionStatus
+  outputType: InsertRestrictionStatusResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestrictionStatusObject!]!"
+    - name: postCheck
+      type: RestrictionStatusBoolExp
+      description: Insert permission predicate over the 'restriction_status' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restriction_status
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestrictionStatus
+    rootFieldKind: Mutation
+  description: Insert into the restriction_status table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestrictionStatus
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,263 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelBldgRoomsAddressItemId
+  description: Update the 'address_item_id' column in the 'hotel_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelBldgRoomsAddressItemId
+    inputTypeName: UpdateColumnHotelBldgRoomsAddressItemIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_bldg_rooms_address_item_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelBldgRoomsAddressItemId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelBldgRoomsBldgNameIndicator
+  description: Update the 'bldg_name_indicator' column in the 'hotel_bldg_rooms' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelBldgRoomsBldgNameIndicator
+    inputTypeName: UpdateColumnHotelBldgRoomsBldgNameIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_bldg_rooms_bldg_name_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelBldgRoomsBldgNameIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelBldgRoomsId
+  description: Update the 'id' column in the 'hotel_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelBldgRoomsId
+    inputTypeName: UpdateColumnHotelBldgRoomsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_bldg_rooms_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelBldgRoomsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelBldgRoomsValue
+  description: Update the 'value' column in the 'hotel_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelBldgRoomsValue
+    inputTypeName: UpdateColumnHotelBldgRoomsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotel_bldg_rooms_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelBldgRoomsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelBldgRoomsByIdUpdateColumns
+  description: Update the columns of the 'hotel_bldg_rooms' collection
+  fields:
+    - name: addressItemId
+      type: UpdateColumnHotelBldgRoomsAddressItemId
+      description: Update the 'address_item_id' column in the 'hotel_bldg_rooms' collection.
+    - name: bldgNameIndicator
+      type: UpdateColumnHotelBldgRoomsBldgNameIndicator
+      description: Update the 'bldg_name_indicator' column in the 'hotel_bldg_rooms'
+        collection.
+    - name: id
+      type: UpdateColumnHotelBldgRoomsId
+      description: Update the 'id' column in the 'hotel_bldg_rooms' collection.
+    - name: value
+      type: UpdateColumnHotelBldgRoomsValue
+      description: Update the 'value' column in the 'hotel_bldg_rooms' collection.
+  graphql:
+    typeName: UpdateHotelBldgRoomsByIdUpdateColumns
+    inputTypeName: UpdateHotelBldgRoomsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_bldg_rooms_by_id_update_columns
+      fieldMapping:
+        addressItemId:
+          column:
+            name: address_item_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelBldgRoomsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressItemId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelBldgRoomsByIdResponse
+  description: Responses from the 'update_hotel_bldg_rooms_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelBldgRoomsByIdResponse
+    inputTypeName: UpdateHotelBldgRoomsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotel_bldg_rooms_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelBldgRoomsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelBldgRoomsById
+  outputType: UpdateHotelBldgRoomsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelBldgRoomsBoolExp
+      description: Update permission post-condition predicate over the
+        'hotel_bldg_rooms' collection
+    - name: preCheck
+      type: HotelBldgRoomsBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotel_bldg_rooms' collection
+    - name: updateColumns
+      type: UpdateHotelBldgRoomsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotel_bldg_rooms_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelBldgRoomsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotel_bldg_rooms' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelBldgRoomsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

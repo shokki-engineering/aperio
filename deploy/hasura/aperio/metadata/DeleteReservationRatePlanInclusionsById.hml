@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteReservationRatePlanInclusionsByIdResponse
+  description: Responses from the 'delete_reservation_rate_plan_inclusions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRatePlanInclusions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteReservationRatePlanInclusionsByIdResponse
+    inputTypeName: DeleteReservationRatePlanInclusionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_reservation_rate_plan_inclusions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteReservationRatePlanInclusionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteReservationRatePlanInclusionsById
+  outputType: DeleteReservationRatePlanInclusionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ReservationRatePlanInclusionsBoolExp
+      description: Delete permission predicate over the
+        'reservation_rate_plan_inclusions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_reservation_rate_plan_inclusions_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteReservationRatePlanInclusionsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'reservation_rate_plan_inclusions' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteReservationRatePlanInclusionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

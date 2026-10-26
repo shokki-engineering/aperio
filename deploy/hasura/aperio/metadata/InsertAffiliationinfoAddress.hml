@@ -1,0 +1,210 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoAddressObject
+  fields:
+    - name: addressLines
+      type: "[String_1]"
+    - name: cityDisplayName
+      type: String_1
+    - name: contactInfoId
+      type: String_1!
+    - name: countryDisplayNameId
+      type: String_1
+    - name: county
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: postalCode
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: stateProvId
+      type: String_1
+    - name: streetNmbrId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: useType
+      type: Enum
+    - name: valid
+      type: Boolean_1
+  graphql:
+    typeName: InsertAffiliationinfoAddressObject
+    inputTypeName: InsertAffiliationinfoAddressObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_address_object
+      fieldMapping:
+        addressLines:
+          column:
+            name: address_lines
+        cityDisplayName:
+          column:
+            name: city_display_name
+        contactInfoId:
+          column:
+            name: contact_info_id
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        county:
+          column:
+            name: county
+        defaultValue:
+          column:
+            name: default_value
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        postalCode:
+          column:
+            name: postal_code
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        stateProvId:
+          column:
+            name: state_prov_id
+        streetNmbrId:
+          column:
+            name: street_nmbr_id
+        type:
+          column:
+            name: type
+        useType:
+          column:
+            name: use_type
+        valid:
+          column:
+            name: valid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoAddressObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressLines
+          - cityDisplayName
+          - contactInfoId
+          - countryDisplayNameId
+          - county
+          - defaultValue
+          - formatted
+          - id
+          - languageCode
+          - postalCode
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - stateProvId
+          - streetNmbrId
+          - type
+          - useType
+          - valid
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoAddressResponse
+  description: Responses from the 'insert_affiliationinfo_address' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoAddress!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoAddressResponse
+    inputTypeName: InsertAffiliationinfoAddressResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_address_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoAddressResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoAddress
+  outputType: InsertAffiliationinfoAddressResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoAddressObject!]!"
+    - name: postCheck
+      type: AffiliationinfoAddressBoolExp
+      description: Insert permission predicate over the 'affiliationinfo_address' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_address
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoAddress
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_address table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoAddress
+  permissions:
+    - role: admin
+      allowExecution: true
+

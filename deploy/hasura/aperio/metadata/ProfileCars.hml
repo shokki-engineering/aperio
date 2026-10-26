@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileCars
+  fields:
+    - name: id
+      type: String_1!
+    - name: number
+      type: String_1
+  graphql:
+    typeName: ProfileCars
+    inputTypeName: ProfileCarsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_cars
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileCars
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - number
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileCarsBoolExp
+  operand:
+    object:
+      type: ProfileCars
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: number
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileCarsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileCarsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileCars
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: number
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileCarsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileCarsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileCars
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: number
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileCarsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileCars
+  objectType: ProfileCars
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_cars
+  filterExpressionType: ProfileCarsBoolExp
+  aggregateExpression: ProfileCarsAggExp
+  orderByExpression: ProfileCarsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileCars
+      subscription:
+        rootField: profileCars
+    selectUniques:
+      - queryRootField: profileCarsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileCarsById
+    filterInputTypeName: ProfileCarsFilterInput
+    aggregate:
+      queryRootField: profileCarsAggregate
+      subscription:
+        rootField: profileCarsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileCars
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

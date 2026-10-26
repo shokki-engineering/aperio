@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAffiliationsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: InsertProfileAffiliationsObject
+    inputTypeName: InsertProfileAffiliationsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_affiliations_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAffiliationsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileAffiliationsResponse
+  description: Responses from the 'insert_profile_affiliations' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAffiliations!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileAffiliationsResponse
+    inputTypeName: InsertProfileAffiliationsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_affiliations_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileAffiliationsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileAffiliations
+  outputType: InsertProfileAffiliationsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileAffiliationsObject!]!"
+    - name: postCheck
+      type: ProfileAffiliationsBoolExp
+      description: Insert permission predicate over the 'profile_affiliations' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_affiliations
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileAffiliations
+    rootFieldKind: Mutation
+  description: Insert into the profile_affiliations table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileAffiliations
+  permissions:
+    - role: admin
+      allowExecution: true
+

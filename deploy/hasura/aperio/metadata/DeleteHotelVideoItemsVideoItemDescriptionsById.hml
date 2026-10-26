@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelVideoItemsVideoItemDescriptionsByIdResponse
+  description: Responses from the
+    'delete_hotel_video_items_video_item_descriptions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelVideoItemsVideoItemDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelVideoItemsVideoItemDescriptionsByIdResponse
+    inputTypeName: DeleteHotelVideoItemsVideoItemDescriptionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotel_video_items_video_item_descriptions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelVideoItemsVideoItemDescriptionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelVideoItemsVideoItemDescriptionsById
+  outputType: DeleteHotelVideoItemsVideoItemDescriptionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelVideoItemsVideoItemDescriptionsBoolExp
+      description: Delete permission predicate over the
+        'hotel_video_items_video_item_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotel_video_items_video_item_descriptions_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelVideoItemsVideoItemDescriptionsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'hotel_video_items_video_item_descriptions'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelVideoItemsVideoItemDescriptionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

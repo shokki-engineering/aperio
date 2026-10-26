@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationProfileInfos
+  fields:
+    - name: id
+      type: String_1!
+    - name: profile
+      type: String_1!
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: resGuestId
+      type: String_1!
+  graphql:
+    typeName: ReservationProfileInfos
+    inputTypeName: ReservationProfileInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_profile_infos
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profile:
+          column:
+            name: profile
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        resGuestId:
+          column:
+            name: res_guest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationProfileInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profile
+          - resGlobalInfoId
+          - resGuestId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationProfileInfosBoolExp
+  operand:
+    object:
+      type: ReservationProfileInfos
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: profile
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGlobalInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: resGuestId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationProfileInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationProfileInfosAggExp
+  operand:
+    object:
+      aggregatedType: ReservationProfileInfos
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: profile
+          aggregateExpression: TextAggExp
+        - fieldName: resGlobalInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: resGuestId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationProfileInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationProfileInfosOrderByExp
+  operand:
+    object:
+      orderedType: ReservationProfileInfos
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: profile
+          orderByExpression: String1OrderByExp
+        - fieldName: resGlobalInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: resGuestId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationProfileInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationProfileInfos
+  objectType: ReservationProfileInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_profile_infos
+  filterExpressionType: ReservationProfileInfosBoolExp
+  aggregateExpression: ReservationProfileInfosAggExp
+  orderByExpression: ReservationProfileInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationProfileInfos
+      subscription:
+        rootField: reservationProfileInfos
+    selectUniques:
+      - queryRootField: reservationProfileInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationProfileInfosById
+    filterInputTypeName: ReservationProfileInfosFilterInput
+    aggregate:
+      queryRootField: reservationProfileInfosAggregate
+      subscription:
+        rootField: reservationProfileInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationProfileInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

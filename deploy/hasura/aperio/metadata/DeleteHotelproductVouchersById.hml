@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelproductVouchersByIdResponse
+  description: Responses from the 'delete_hotelproduct_vouchers_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductVouchers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelproductVouchersByIdResponse
+    inputTypeName: DeleteHotelproductVouchersByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotelproduct_vouchers_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelproductVouchersByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelproductVouchersById
+  outputType: DeleteHotelproductVouchersByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelproductVouchersBoolExp
+      description: Delete permission predicate over the 'hotelproduct_vouchers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotelproduct_vouchers_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelproductVouchersById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'hotelproduct_vouchers' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelproductVouchersById
+  permissions:
+    - role: admin
+      allowExecution: true
+

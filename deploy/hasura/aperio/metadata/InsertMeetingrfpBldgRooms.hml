@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingrfpBldgRoomsObject
+  fields:
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertMeetingrfpBldgRoomsObject
+    inputTypeName: InsertMeetingrfpBldgRoomsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingrfp_bldg_rooms_object
+      fieldMapping:
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingrfpBldgRoomsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingrfpBldgRoomsResponse
+  description: Responses from the 'insert_meetingrfp_bldg_rooms' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingrfpBldgRoomsResponse
+    inputTypeName: InsertMeetingrfpBldgRoomsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingrfp_bldg_rooms_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingrfpBldgRoomsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingrfpBldgRooms
+  outputType: InsertMeetingrfpBldgRoomsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingrfpBldgRoomsObject!]!"
+    - name: postCheck
+      type: MeetingrfpBldgRoomsBoolExp
+      description: Insert permission predicate over the 'meetingrfp_bldg_rooms' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingrfp_bldg_rooms
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingrfpBldgRooms
+    rootFieldKind: Mutation
+  description: Insert into the meetingrfp_bldg_rooms table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingrfpBldgRooms
+  permissions:
+    - role: admin
+      allowExecution: true
+

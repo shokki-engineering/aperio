@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanOffersObject
+  fields:
+    - name: applicationOrder
+      type: Int32
+    - name: discountId
+      type: String_1
+    - name: freeUpgradeId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: offerCode
+      type: String_1
+    - name: offerDescriptionId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: rph
+      type: String_1
+    - name: supplementRphs
+      type: "[String_1]"
+  graphql:
+    typeName: InsertRateplanOffersObject
+    inputTypeName: InsertRateplanOffersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_offers_object
+      fieldMapping:
+        applicationOrder:
+          column:
+            name: application_order
+        discountId:
+          column:
+            name: discount_id
+        freeUpgradeId:
+          column:
+            name: free_upgrade_id
+        id:
+          column:
+            name: id
+        offerCode:
+          column:
+            name: offer_code
+        offerDescriptionId:
+          column:
+            name: offer_description_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        rph:
+          column:
+            name: rph
+        supplementRphs:
+          column:
+            name: supplement_rphs
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanOffersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicationOrder
+          - discountId
+          - freeUpgradeId
+          - id
+          - offerCode
+          - offerDescriptionId
+          - ratePlanId
+          - rph
+          - supplementRphs
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanOffersResponse
+  description: Responses from the 'insert_rateplan_offers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanOffers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanOffersResponse
+    inputTypeName: InsertRateplanOffersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_offers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanOffersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanOffers
+  outputType: InsertRateplanOffersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanOffersObject!]!"
+    - name: postCheck
+      type: RateplanOffersBoolExp
+      description: Insert permission predicate over the 'rateplan_offers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_offers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanOffers
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_offers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanOffers
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,192 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventSitesObject
+  fields:
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: eventDaysId
+      type: String_1
+    - name: eventId
+      type: String_1!
+    - name: headquarterHotelIndicator
+      type: Boolean_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: primaryFacilityIndicator
+      type: Boolean_1
+    - name: shippingReceivingDetailsId
+      type: String_1
+    - name: ttIcode
+      type: Int32
+  graphql:
+    typeName: InsertEventSitesObject
+    inputTypeName: InsertEventSitesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_sites_object
+      fieldMapping:
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        eventDaysId:
+          column:
+            name: event_days_id
+        eventId:
+          column:
+            name: event_id
+        headquarterHotelIndicator:
+          column:
+            name: headquarter_hotel_indicator
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        id:
+          column:
+            name: id
+        primaryFacilityIndicator:
+          column:
+            name: primary_facility_indicator
+        shippingReceivingDetailsId:
+          column:
+            name: shipping_receiving_details_id
+        ttIcode:
+          column:
+            name: tt_icode
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventSitesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - eventDaysId
+          - eventId
+          - headquarterHotelIndicator
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - id
+          - primaryFacilityIndicator
+          - shippingReceivingDetailsId
+          - ttIcode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventSitesResponse
+  description: Responses from the 'insert_event_sites' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventSites!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventSitesResponse
+    inputTypeName: InsertEventSitesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_sites_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventSitesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventSites
+  outputType: InsertEventSitesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventSitesObject!]!"
+    - name: postCheck
+      type: EventSitesBoolExp
+      description: Insert permission predicate over the 'event_sites' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_sites
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventSites
+    rootFieldKind: Mutation
+  description: Insert into the event_sites table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventSites
+  permissions:
+    - role: admin
+      allowExecution: true
+

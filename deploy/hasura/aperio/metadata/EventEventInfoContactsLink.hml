@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventEventInfoContactsLink
+  fields:
+    - name: arrivalId
+      type: String_1
+    - name: birthDayId
+      type: String_1
+    - name: communicationMethodCode
+      type: Enum
+    - name: contactType
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: departureId
+      type: String_1
+    - name: documentDistribMethodCode
+      type: Enum
+    - name: emergencyFlag
+      type: Boolean_1
+    - name: eventInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: personDisplayNameId
+      type: String_1
+    - name: relation
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: vipIndicator
+      type: Boolean_1
+  graphql:
+    typeName: EventEventInfoContactsLink
+    inputTypeName: EventEventInfoContactsLinkInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_event_info_contacts_link
+      fieldMapping:
+        arrivalId:
+          column:
+            name: arrival_id
+        birthDayId:
+          column:
+            name: birth_day_id
+        communicationMethodCode:
+          column:
+            name: communication_method_code
+        contactType:
+          column:
+            name: contact_type
+        defaultValue:
+          column:
+            name: default_value
+        departureId:
+          column:
+            name: departure_id
+        documentDistribMethodCode:
+          column:
+            name: document_distrib_method_code
+        emergencyFlag:
+          column:
+            name: emergency_flag
+        eventInfoId:
+          column:
+            name: event_info_id
+        id:
+          column:
+            name: id
+        personDisplayNameId:
+          column:
+            name: person_display_name_id
+        relation:
+          column:
+            name: relation
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        vipIndicator:
+          column:
+            name: vip_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventEventInfoContactsLink
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - arrivalId
+          - birthDayId
+          - communicationMethodCode
+          - contactType
+          - defaultValue
+          - departureId
+          - documentDistribMethodCode
+          - emergencyFlag
+          - eventInfoId
+          - id
+          - personDisplayNameId
+          - relation
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - vipIndicator
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventEventInfoContactsLinkBoolExp
+  operand:
+    object:
+      type: EventEventInfoContactsLink
+      comparableFields:
+        - fieldName: arrivalId
+          booleanExpressionType: TextBoolExp
+        - fieldName: birthDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: communicationMethodCode
+          booleanExpressionType: EventEventDistributionTypeBoolExp
+        - fieldName: contactType
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: departureId
+          booleanExpressionType: TextBoolExp
+        - fieldName: documentDistribMethodCode
+          booleanExpressionType: EventEventDistributionTypeBoolExp
+        - fieldName: emergencyFlag
+          booleanExpressionType: BoolBoolExp
+        - fieldName: eventInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: personDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: relation
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: EventEventContactShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: EventEventContactShareSynchIndBoolExp
+        - fieldName: vipIndicator
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventEventInfoContactsLinkBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventEventInfoContactsLinkAggExp
+  operand:
+    object:
+      aggregatedType: EventEventInfoContactsLink
+      aggregatableFields:
+        - fieldName: arrivalId
+          aggregateExpression: TextAggExp
+        - fieldName: birthDayId
+          aggregateExpression: TextAggExp
+        - fieldName: communicationMethodCode
+          aggregateExpression: EventEventDistributionTypeAggExp
+        - fieldName: contactType
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: departureId
+          aggregateExpression: TextAggExp
+        - fieldName: documentDistribMethodCode
+          aggregateExpression: EventEventDistributionTypeAggExp
+        - fieldName: emergencyFlag
+          aggregateExpression: BoolAggExp
+        - fieldName: eventInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: personDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: relation
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: EventEventContactShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: EventEventContactShareSynchIndAggExp
+        - fieldName: vipIndicator
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventEventInfoContactsLinkAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventEventInfoContactsLinkOrderByExp
+  operand:
+    object:
+      orderedType: EventEventInfoContactsLink
+      orderableFields:
+        - fieldName: arrivalId
+          orderByExpression: String1OrderByExp
+        - fieldName: birthDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: communicationMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: contactType
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: departureId
+          orderByExpression: String1OrderByExp
+        - fieldName: documentDistribMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: emergencyFlag
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: eventInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: personDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: relation
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: vipIndicator
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventEventInfoContactsLinkOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventEventInfoContactsLink
+  objectType: EventEventInfoContactsLink
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_event_info_contacts_link
+  filterExpressionType: EventEventInfoContactsLinkBoolExp
+  aggregateExpression: EventEventInfoContactsLinkAggExp
+  orderByExpression: EventEventInfoContactsLinkOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventEventInfoContactsLink
+      subscription:
+        rootField: eventEventInfoContactsLink
+    selectUniques:
+      - queryRootField: eventEventInfoContactsLinkById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventEventInfoContactsLinkById
+    filterInputTypeName: EventEventInfoContactsLinkFilterInput
+    aggregate:
+      queryRootField: eventEventInfoContactsLinkAggregate
+      subscription:
+        rootField: eventEventInfoContactsLinkAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventEventInfoContactsLink
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

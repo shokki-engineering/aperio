@@ -1,0 +1,270 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehicleSpecialReqPrefsId
+  description: Update the 'id' column in the 'profile_vehicle_special_req_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehicleSpecialReqPrefsId
+    inputTypeName: UpdateColumnProfileVehicleSpecialReqPrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_vehicle_special_req_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehicleSpecialReqPrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehicleSpecialReqPrefsPreferLevel
+  description: Update the 'prefer_level' column in the
+    'profile_vehicle_special_req_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehicleSpecialReqPrefsPreferLevel
+    inputTypeName: UpdateColumnProfileVehicleSpecialReqPrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_vehicle_special_req_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehicleSpecialReqPrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehicleSpecialReqPrefsValue
+  description: Update the 'value' column in the
+    'profile_vehicle_special_req_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehicleSpecialReqPrefsValue
+    inputTypeName: UpdateColumnProfileVehicleSpecialReqPrefsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_vehicle_special_req_prefs_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehicleSpecialReqPrefsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileVehicleSpecialReqPrefsVehicleProfileRentalPrefId
+  description: Update the 'vehicle_profile_rental_pref_id' column in the
+    'profile_vehicle_special_req_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileVehicleSpecialReqPrefsVehicleProfileRentalPrefId
+    inputTypeName: UpdateColumnProfileVehicleSpecialReqPrefsVehicleProfileRentalPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_vehicle_special_req_prefs_vehicle_profile_rental_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileVehicleSpecialReqPrefsVehicleProfileRentalPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileVehicleSpecialReqPrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_vehicle_special_req_prefs' collection
+  fields:
+    - name: id
+      type: UpdateColumnProfileVehicleSpecialReqPrefsId
+      description: Update the 'id' column in the 'profile_vehicle_special_req_prefs'
+        collection.
+    - name: preferLevel
+      type: UpdateColumnProfileVehicleSpecialReqPrefsPreferLevel
+      description: Update the 'prefer_level' column in the
+        'profile_vehicle_special_req_prefs' collection.
+    - name: value
+      type: UpdateColumnProfileVehicleSpecialReqPrefsValue
+      description: Update the 'value' column in the
+        'profile_vehicle_special_req_prefs' collection.
+    - name: vehicleProfileRentalPrefId
+      type: UpdateColumnProfileVehicleSpecialReqPrefsVehicleProfileRentalPrefId
+      description: Update the 'vehicle_profile_rental_pref_id' column in the
+        'profile_vehicle_special_req_prefs' collection.
+  graphql:
+    typeName: UpdateProfileVehicleSpecialReqPrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileVehicleSpecialReqPrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_vehicle_special_req_prefs_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileVehicleSpecialReqPrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - value
+          - vehicleProfileRentalPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileVehicleSpecialReqPrefsByIdResponse
+  description: Responses from the 'update_profile_vehicle_special_req_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileVehicleSpecialReqPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileVehicleSpecialReqPrefsByIdResponse
+    inputTypeName: UpdateProfileVehicleSpecialReqPrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_vehicle_special_req_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileVehicleSpecialReqPrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileVehicleSpecialReqPrefsById
+  outputType: UpdateProfileVehicleSpecialReqPrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileVehicleSpecialReqPrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_vehicle_special_req_prefs' collection
+    - name: preCheck
+      type: ProfileVehicleSpecialReqPrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_vehicle_special_req_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileVehicleSpecialReqPrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_vehicle_special_req_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileVehicleSpecialReqPrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_vehicle_special_req_prefs'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileVehicleSpecialReqPrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

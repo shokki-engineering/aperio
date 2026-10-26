@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyStateProvs
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: PolicyStateProvs
+    inputTypeName: PolicyStateProvsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_state_provs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyStateProvs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyStateProvsBoolExp
+  operand:
+    object:
+      type: PolicyStateProvs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: stateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyStateProvsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyStateProvsAggExp
+  operand:
+    object:
+      aggregatedType: PolicyStateProvs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: stateCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyStateProvsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyStateProvsOrderByExp
+  operand:
+    object:
+      orderedType: PolicyStateProvs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: stateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyStateProvsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyStateProvs
+  objectType: PolicyStateProvs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_state_provs
+  filterExpressionType: PolicyStateProvsBoolExp
+  aggregateExpression: PolicyStateProvsAggExp
+  orderByExpression: PolicyStateProvsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyStateProvs
+      subscription:
+        rootField: policyStateProvs
+    selectUniques:
+      - queryRootField: policyStateProvsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyStateProvsById
+    filterInputTypeName: PolicyStateProvsFilterInput
+    aggregate:
+      queryRootField: policyStateProvsAggregate
+      subscription:
+        rootField: policyStateProvsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyStateProvs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

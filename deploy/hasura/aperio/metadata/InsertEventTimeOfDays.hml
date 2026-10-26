@@ -1,0 +1,110 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventTimeOfDaysObject
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: InsertEventTimeOfDaysObject
+    inputTypeName: InsertEventTimeOfDaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_time_of_days_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventTimeOfDaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventTimeOfDaysResponse
+  description: Responses from the 'insert_event_time_of_days' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventTimeOfDaysResponse
+    inputTypeName: InsertEventTimeOfDaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_time_of_days_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventTimeOfDaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventTimeOfDays
+  outputType: InsertEventTimeOfDaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventTimeOfDaysObject!]!"
+    - name: postCheck
+      type: EventTimeOfDaysBoolExp
+      description: Insert permission predicate over the 'event_time_of_days' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_time_of_days
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventTimeOfDays
+    rootFieldKind: Mutation
+  description: Insert into the event_time_of_days table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventTimeOfDays
+  permissions:
+    - role: admin
+      allowExecution: true
+

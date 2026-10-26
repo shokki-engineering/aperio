@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportTotalRoomPickUps
+  fields:
+    - name: id
+      type: String_1!
+    - name: pickUpParameter
+      type: Enum
+    - name: roomBlockId
+      type: String_1!
+    - name: totalUnitCount
+      type: Int32
+  graphql:
+    typeName: EventreportTotalRoomPickUps
+    inputTypeName: EventreportTotalRoomPickUpsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_total_room_pick_ups
+      fieldMapping:
+        id:
+          column:
+            name: id
+        pickUpParameter:
+          column:
+            name: pick_up_parameter
+        roomBlockId:
+          column:
+            name: room_block_id
+        totalUnitCount:
+          column:
+            name: total_unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportTotalRoomPickUps
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - pickUpParameter
+          - roomBlockId
+          - totalUnitCount
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportTotalRoomPickUpsBoolExp
+  operand:
+    object:
+      type: EventreportTotalRoomPickUps
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: pickUpParameter
+          booleanExpressionType: EventreportPickUpParameterBoolExp
+        - fieldName: roomBlockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalUnitCount
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportTotalRoomPickUpsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportTotalRoomPickUpsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportTotalRoomPickUps
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: pickUpParameter
+          aggregateExpression: EventreportPickUpParameterAggExp
+        - fieldName: roomBlockId
+          aggregateExpression: TextAggExp
+        - fieldName: totalUnitCount
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportTotalRoomPickUpsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportTotalRoomPickUpsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportTotalRoomPickUps
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: pickUpParameter
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomBlockId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalUnitCount
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportTotalRoomPickUpsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportTotalRoomPickUps
+  objectType: EventreportTotalRoomPickUps
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_total_room_pick_ups
+  filterExpressionType: EventreportTotalRoomPickUpsBoolExp
+  aggregateExpression: EventreportTotalRoomPickUpsAggExp
+  orderByExpression: EventreportTotalRoomPickUpsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportTotalRoomPickUps
+      subscription:
+        rootField: eventreportTotalRoomPickUps
+    selectUniques:
+      - queryRootField: eventreportTotalRoomPickUpsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportTotalRoomPickUpsById
+    filterInputTypeName: EventreportTotalRoomPickUpsFilterInput
+    aggregate:
+      queryRootField: eventreportTotalRoomPickUpsAggregate
+      subscription:
+        rootField: eventreportTotalRoomPickUpsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportTotalRoomPickUps
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductCountryNamesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductCountryNamesObject
+    inputTypeName: InsertHotelproductCountryNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_country_names_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductCountryNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductCountryNamesResponse
+  description: Responses from the 'insert_hotelproduct_country_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductCountryNamesResponse
+    inputTypeName: InsertHotelproductCountryNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_country_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductCountryNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductCountryNames
+  outputType: InsertHotelproductCountryNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductCountryNamesObject!]!"
+    - name: postCheck
+      type: HotelproductCountryNamesBoolExp
+      description: Insert permission predicate over the 'hotelproduct_country_names'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_country_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductCountryNames
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_country_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductCountryNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

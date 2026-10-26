@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoDateOrTimeOrDateTimes
+  fields:
+    - name: clockId
+      type: String_1
+    - name: dateTime
+      type: Timestamptz
+    - name: dayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: valueCase
+      type: Enum
+  graphql:
+    typeName: AreainfoDateOrTimeOrDateTimes
+    inputTypeName: AreainfoDateOrTimeOrDateTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_date_or_time_or_date_times
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoDateOrTimeOrDateTimesBoolExp
+  operand:
+    object:
+      type: AreainfoDateOrTimeOrDateTimes
+      comparableFields:
+        - fieldName: clockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueCase
+          booleanExpressionType: AreainfoAreainfoDateOrTimeOrDateTimeValueCaseBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoDateOrTimeOrDateTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoDateOrTimeOrDateTimesAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoDateOrTimeOrDateTimes
+      aggregatableFields:
+        - fieldName: clockId
+          aggregateExpression: TextAggExp
+        - fieldName: dateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: valueCase
+          aggregateExpression: AreainfoAreainfoDateOrTimeOrDateTimeValueCaseAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoDateOrTimeOrDateTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoDateOrTimeOrDateTimesOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoDateOrTimeOrDateTimes
+      orderableFields:
+        - fieldName: clockId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: valueCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoDateOrTimeOrDateTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoDateOrTimeOrDateTimes
+  objectType: AreainfoDateOrTimeOrDateTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_date_or_time_or_date_times
+  filterExpressionType: AreainfoDateOrTimeOrDateTimesBoolExp
+  aggregateExpression: AreainfoDateOrTimeOrDateTimesAggExp
+  orderByExpression: AreainfoDateOrTimeOrDateTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoDateOrTimeOrDateTimes
+      subscription:
+        rootField: areainfoDateOrTimeOrDateTimes
+    selectUniques:
+      - queryRootField: areainfoDateOrTimeOrDateTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoDateOrTimeOrDateTimesById
+    filterInputTypeName: AreainfoDateOrTimeOrDateTimesFilterInput
+    aggregate:
+      queryRootField: areainfoDateOrTimeOrDateTimesAggregate
+      subscription:
+        rootField: areainfoDateOrTimeOrDateTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoDateOrTimeOrDateTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

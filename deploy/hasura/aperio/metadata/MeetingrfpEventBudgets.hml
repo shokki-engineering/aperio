@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpEventBudgets
+  fields:
+    - name: amountId
+      type: String_1
+    - name: budgetType
+      type: Enum
+    - name: eventBlockId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: includesGratuity
+      type: Boolean_1
+    - name: includesServiceFees
+      type: Boolean_1
+    - name: includesTax
+      type: Boolean_1
+  graphql:
+    typeName: MeetingrfpEventBudgets
+    inputTypeName: MeetingrfpEventBudgetsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_event_budgets
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        budgetType:
+          column:
+            name: budget_type
+        eventBlockId:
+          column:
+            name: event_block_id
+        id:
+          column:
+            name: id
+        includesGratuity:
+          column:
+            name: includes_gratuity
+        includesServiceFees:
+          column:
+            name: includes_service_fees
+        includesTax:
+          column:
+            name: includes_tax
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpEventBudgets
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - budgetType
+          - eventBlockId
+          - id
+          - includesGratuity
+          - includesServiceFees
+          - includesTax
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpEventBudgetsBoolExp
+  operand:
+    object:
+      type: MeetingrfpEventBudgets
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: budgetType
+          booleanExpressionType: MeetingrfpBudgetTypeBoolExp
+        - fieldName: eventBlockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: includesGratuity
+          booleanExpressionType: BoolBoolExp
+        - fieldName: includesServiceFees
+          booleanExpressionType: BoolBoolExp
+        - fieldName: includesTax
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpEventBudgetsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpEventBudgetsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpEventBudgets
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: budgetType
+          aggregateExpression: MeetingrfpBudgetTypeAggExp
+        - fieldName: eventBlockId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: includesGratuity
+          aggregateExpression: BoolAggExp
+        - fieldName: includesServiceFees
+          aggregateExpression: BoolAggExp
+        - fieldName: includesTax
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpEventBudgetsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpEventBudgetsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpEventBudgets
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: budgetType
+          orderByExpression: EnumOrderByExp
+        - fieldName: eventBlockId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: includesGratuity
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: includesServiceFees
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: includesTax
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpEventBudgetsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpEventBudgets
+  objectType: MeetingrfpEventBudgets
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_event_budgets
+  filterExpressionType: MeetingrfpEventBudgetsBoolExp
+  aggregateExpression: MeetingrfpEventBudgetsAggExp
+  orderByExpression: MeetingrfpEventBudgetsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpEventBudgets
+      subscription:
+        rootField: meetingrfpEventBudgets
+    selectUniques:
+      - queryRootField: meetingrfpEventBudgetsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpEventBudgetsById
+    filterInputTypeName: MeetingrfpEventBudgetsFilterInput
+    aggregate:
+      queryRootField: meetingrfpEventBudgetsAggregate
+      subscription:
+        rootField: meetingrfpEventBudgetsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpEventBudgets
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

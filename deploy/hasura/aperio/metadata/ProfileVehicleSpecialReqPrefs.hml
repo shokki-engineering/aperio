@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVehicleSpecialReqPrefs
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileVehicleSpecialReqPrefs
+    inputTypeName: ProfileVehicleSpecialReqPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_vehicle_special_req_prefs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVehicleSpecialReqPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - value
+          - vehicleProfileRentalPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVehicleSpecialReqPrefsBoolExp
+  operand:
+    object:
+      type: ProfileVehicleSpecialReqPrefs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleProfileRentalPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVehicleSpecialReqPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVehicleSpecialReqPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVehicleSpecialReqPrefs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleProfileRentalPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVehicleSpecialReqPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVehicleSpecialReqPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVehicleSpecialReqPrefs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleProfileRentalPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVehicleSpecialReqPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVehicleSpecialReqPrefs
+  objectType: ProfileVehicleSpecialReqPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_vehicle_special_req_prefs
+  filterExpressionType: ProfileVehicleSpecialReqPrefsBoolExp
+  aggregateExpression: ProfileVehicleSpecialReqPrefsAggExp
+  orderByExpression: ProfileVehicleSpecialReqPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVehicleSpecialReqPrefs
+      subscription:
+        rootField: profileVehicleSpecialReqPrefs
+    selectUniques:
+      - queryRootField: profileVehicleSpecialReqPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVehicleSpecialReqPrefsById
+    filterInputTypeName: ProfileVehicleSpecialReqPrefsFilterInput
+    aggregate:
+      queryRootField: profileVehicleSpecialReqPrefsAggregate
+      subscription:
+        rootField: profileVehicleSpecialReqPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVehicleSpecialReqPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

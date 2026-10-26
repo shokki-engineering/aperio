@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductStayDateRanges
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: HotelproductStayDateRanges
+    inputTypeName: HotelproductStayDateRangesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_stay_date_ranges
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductStayDateRanges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductStayDateRangesBoolExp
+  operand:
+    object:
+      type: HotelproductStayDateRanges
+      comparableFields:
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductStayDateRangesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductStayDateRangesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductStayDateRanges
+      aggregatableFields:
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductStayDateRangesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductStayDateRangesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductStayDateRanges
+      orderableFields:
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductStayDateRangesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductStayDateRanges
+  objectType: HotelproductStayDateRanges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_stay_date_ranges
+  filterExpressionType: HotelproductStayDateRangesBoolExp
+  aggregateExpression: HotelproductStayDateRangesAggExp
+  orderByExpression: HotelproductStayDateRangesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductStayDateRanges
+      subscription:
+        rootField: hotelproductStayDateRanges
+    selectUniques:
+      - queryRootField: hotelproductStayDateRangesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductStayDateRangesById
+    filterInputTypeName: HotelproductStayDateRangesFilterInput
+    aggregate:
+      queryRootField: hotelproductStayDateRangesAggregate
+      subscription:
+        rootField: hotelproductStayDateRangesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductStayDateRanges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

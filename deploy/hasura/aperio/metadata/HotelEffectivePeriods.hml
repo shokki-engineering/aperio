@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelEffectivePeriods
+  fields:
+    - name: duration
+      type: String_1
+    - name: endPeriodId
+      type: String_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: startPeriodId
+      type: String_1
+  graphql:
+    typeName: HotelEffectivePeriods
+    inputTypeName: HotelEffectivePeriodsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_effective_periods
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endPeriodId:
+          column:
+            name: end_period_id
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        startPeriodId:
+          column:
+            name: start_period_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelEffectivePeriods
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endPeriodId
+          - hotelId
+          - id
+          - startPeriodId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelEffectivePeriodsBoolExp
+  operand:
+    object:
+      type: HotelEffectivePeriods
+      comparableFields:
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endPeriodId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startPeriodId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelEffectivePeriodsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelEffectivePeriodsAggExp
+  operand:
+    object:
+      aggregatedType: HotelEffectivePeriods
+      aggregatableFields:
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endPeriodId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startPeriodId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelEffectivePeriodsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelEffectivePeriodsOrderByExp
+  operand:
+    object:
+      orderedType: HotelEffectivePeriods
+      orderableFields:
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endPeriodId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startPeriodId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelEffectivePeriodsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelEffectivePeriods
+  objectType: HotelEffectivePeriods
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_effective_periods
+  filterExpressionType: HotelEffectivePeriodsBoolExp
+  aggregateExpression: HotelEffectivePeriodsAggExp
+  orderByExpression: HotelEffectivePeriodsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelEffectivePeriods
+      subscription:
+        rootField: hotelEffectivePeriods
+    selectUniques:
+      - queryRootField: hotelEffectivePeriodsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelEffectivePeriodsById
+    filterInputTypeName: HotelEffectivePeriodsFilterInput
+    aggregate:
+      queryRootField: hotelEffectivePeriodsAggregate
+      subscription:
+        rootField: hotelEffectivePeriodsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelEffectivePeriods
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

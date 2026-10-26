@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoPartnerInfosObject
+  fields:
+    - name: affiliationInfoId
+      type: String_1!
+    - name: contactId
+      type: String_1
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertAffiliationinfoPartnerInfosObject
+    inputTypeName: InsertAffiliationinfoPartnerInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_partner_infos_object
+      fieldMapping:
+        affiliationInfoId:
+          column:
+            name: affiliation_info_id
+        contactId:
+          column:
+            name: contact_id
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoPartnerInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affiliationInfoId
+          - contactId
+          - descriptionId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoPartnerInfosResponse
+  description: Responses from the 'insert_affiliationinfo_partner_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoPartnerInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoPartnerInfosResponse
+    inputTypeName: InsertAffiliationinfoPartnerInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_partner_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoPartnerInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoPartnerInfos
+  outputType: InsertAffiliationinfoPartnerInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoPartnerInfosObject!]!"
+    - name: postCheck
+      type: AffiliationinfoPartnerInfosBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_partner_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_partner_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoPartnerInfos
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_partner_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoPartnerInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

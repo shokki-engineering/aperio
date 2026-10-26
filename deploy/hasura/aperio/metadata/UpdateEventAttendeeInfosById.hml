@@ -1,0 +1,309 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventAttendeeInfosDomesticQuantity
+  description: Update the 'domestic_quantity' column in the 'event_attendee_infos'
+    collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventAttendeeInfosDomesticQuantity
+    inputTypeName: UpdateColumnEventAttendeeInfosDomesticQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_attendee_infos_domestic_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventAttendeeInfosDomesticQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventAttendeeInfosExpectedTotalQuantity
+  description: Update the 'expected_total_quantity' column in the
+    'event_attendee_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventAttendeeInfosExpectedTotalQuantity
+    inputTypeName: UpdateColumnEventAttendeeInfosExpectedTotalQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_attendee_infos_expected_total_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventAttendeeInfosExpectedTotalQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventAttendeeInfosId
+  description: Update the 'id' column in the 'event_attendee_infos' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventAttendeeInfosId
+    inputTypeName: UpdateColumnEventAttendeeInfosIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_attendee_infos_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventAttendeeInfosId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventAttendeeInfosInternationalQuantity
+  description: Update the 'international_quantity' column in the
+    'event_attendee_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventAttendeeInfosInternationalQuantity
+    inputTypeName: UpdateColumnEventAttendeeInfosInternationalQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_attendee_infos_international_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventAttendeeInfosInternationalQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventAttendeeInfosPreRegisteredQuantity
+  description: Update the 'pre_registered_quantity' column in the
+    'event_attendee_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventAttendeeInfosPreRegisteredQuantity
+    inputTypeName: UpdateColumnEventAttendeeInfosPreRegisteredQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_attendee_infos_pre_registered_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventAttendeeInfosPreRegisteredQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventAttendeeInfosByIdUpdateColumns
+  description: Update the columns of the 'event_attendee_infos' collection
+  fields:
+    - name: domesticQuantity
+      type: UpdateColumnEventAttendeeInfosDomesticQuantity
+      description: Update the 'domestic_quantity' column in the 'event_attendee_infos'
+        collection.
+    - name: expectedTotalQuantity
+      type: UpdateColumnEventAttendeeInfosExpectedTotalQuantity
+      description: Update the 'expected_total_quantity' column in the
+        'event_attendee_infos' collection.
+    - name: id
+      type: UpdateColumnEventAttendeeInfosId
+      description: Update the 'id' column in the 'event_attendee_infos' collection.
+    - name: internationalQuantity
+      type: UpdateColumnEventAttendeeInfosInternationalQuantity
+      description: Update the 'international_quantity' column in the
+        'event_attendee_infos' collection.
+    - name: preRegisteredQuantity
+      type: UpdateColumnEventAttendeeInfosPreRegisteredQuantity
+      description: Update the 'pre_registered_quantity' column in the
+        'event_attendee_infos' collection.
+  graphql:
+    typeName: UpdateEventAttendeeInfosByIdUpdateColumns
+    inputTypeName: UpdateEventAttendeeInfosByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_attendee_infos_by_id_update_columns
+      fieldMapping:
+        domesticQuantity:
+          column:
+            name: domestic_quantity
+        expectedTotalQuantity:
+          column:
+            name: expected_total_quantity
+        id:
+          column:
+            name: id
+        internationalQuantity:
+          column:
+            name: international_quantity
+        preRegisteredQuantity:
+          column:
+            name: pre_registered_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventAttendeeInfosByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - domesticQuantity
+          - expectedTotalQuantity
+          - id
+          - internationalQuantity
+          - preRegisteredQuantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventAttendeeInfosByIdResponse
+  description: Responses from the 'update_event_attendee_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventAttendeeInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventAttendeeInfosByIdResponse
+    inputTypeName: UpdateEventAttendeeInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_attendee_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventAttendeeInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventAttendeeInfosById
+  outputType: UpdateEventAttendeeInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventAttendeeInfosBoolExp
+      description: Update permission post-condition predicate over the
+        'event_attendee_infos' collection
+    - name: preCheck
+      type: EventAttendeeInfosBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_attendee_infos' collection
+    - name: updateColumns
+      type: UpdateEventAttendeeInfosByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_attendee_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventAttendeeInfosById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_attendee_infos' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventAttendeeInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

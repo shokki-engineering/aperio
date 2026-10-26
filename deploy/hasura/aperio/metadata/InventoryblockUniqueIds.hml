@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockUniqueIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InventoryblockUniqueIds
+    inputTypeName: InventoryblockUniqueIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_unique_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockUniqueIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockUniqueIdsBoolExp
+  operand:
+    object:
+      type: InventoryblockUniqueIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: InventoryblockInventoryblockUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockUniqueIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockUniqueIdsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockUniqueIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: InventoryblockInventoryblockUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockUniqueIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockUniqueIdsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockUniqueIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockUniqueIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockUniqueIds
+  objectType: InventoryblockUniqueIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_unique_ids
+  filterExpressionType: InventoryblockUniqueIdsBoolExp
+  aggregateExpression: InventoryblockUniqueIdsAggExp
+  orderByExpression: InventoryblockUniqueIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockUniqueIds
+      subscription:
+        rootField: inventoryblockUniqueIds
+    selectUniques:
+      - queryRootField: inventoryblockUniqueIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockUniqueIdsById
+    filterInputTypeName: InventoryblockUniqueIdsFilterInput
+    aggregate:
+      queryRootField: inventoryblockUniqueIdsAggregate
+      subscription:
+        rootField: inventoryblockUniqueIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockUniqueIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

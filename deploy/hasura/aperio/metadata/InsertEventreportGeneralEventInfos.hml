@@ -1,0 +1,211 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportGeneralEventInfosObject
+  fields:
+    - name: acronym
+      type: String_1
+    - name: attendeeGuestProgramIndicator
+      type: Boolean_1
+    - name: childrenInvitedIndicator
+      type: Boolean_1
+    - name: destinationServiceProviderCodes
+      type: String_1
+    - name: eventLocationId
+      type: String_1
+    - name: eventReportRphs
+      type: "[String_1]"
+    - name: exhibitionInfoId
+      type: String_1
+    - name: foodAndBeverageInfoId
+      type: String_1
+    - name: frequency
+      type: Enum
+    - name: functionSpaceInfoId
+      type: String_1
+    - name: housingInfoId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+    - name: offsiteVenueIndicator
+      type: Boolean_1
+    - name: scope
+      type: Enum
+    - name: shuttleServiceIndicator
+      type: Boolean_1
+    - name: spouseInvitedIndicator
+      type: Boolean_1
+    - name: type
+      type: Enum
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertEventreportGeneralEventInfosObject
+    inputTypeName: InsertEventreportGeneralEventInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_general_event_infos_object
+      fieldMapping:
+        acronym:
+          column:
+            name: acronym
+        attendeeGuestProgramIndicator:
+          column:
+            name: attendee_guest_program_indicator
+        childrenInvitedIndicator:
+          column:
+            name: children_invited_indicator
+        destinationServiceProviderCodes:
+          column:
+            name: destination_service_provider_codes
+        eventLocationId:
+          column:
+            name: event_location_id
+        eventReportRphs:
+          column:
+            name: event_report_rphs
+        exhibitionInfoId:
+          column:
+            name: exhibition_info_id
+        foodAndBeverageInfoId:
+          column:
+            name: food_and_beverage_info_id
+        frequency:
+          column:
+            name: frequency
+        functionSpaceInfoId:
+          column:
+            name: function_space_info_id
+        housingInfoId:
+          column:
+            name: housing_info_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        offsiteVenueIndicator:
+          column:
+            name: offsite_venue_indicator
+        scope:
+          column:
+            name: scope
+        shuttleServiceIndicator:
+          column:
+            name: shuttle_service_indicator
+        spouseInvitedIndicator:
+          column:
+            name: spouse_invited_indicator
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportGeneralEventInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acronym
+          - attendeeGuestProgramIndicator
+          - childrenInvitedIndicator
+          - destinationServiceProviderCodes
+          - eventLocationId
+          - eventReportRphs
+          - exhibitionInfoId
+          - foodAndBeverageInfoId
+          - frequency
+          - functionSpaceInfoId
+          - housingInfoId
+          - id
+          - name
+          - offsiteVenueIndicator
+          - scope
+          - shuttleServiceIndicator
+          - spouseInvitedIndicator
+          - type
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventreportGeneralEventInfosResponse
+  description: Responses from the 'insert_eventreport_general_event_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportGeneralEventInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventreportGeneralEventInfosResponse
+    inputTypeName: InsertEventreportGeneralEventInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_eventreport_general_event_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventreportGeneralEventInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventreportGeneralEventInfos
+  outputType: InsertEventreportGeneralEventInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventreportGeneralEventInfosObject!]!"
+    - name: postCheck
+      type: EventreportGeneralEventInfosBoolExp
+      description: Insert permission predicate over the
+        'eventreport_general_event_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_eventreport_general_event_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventreportGeneralEventInfos
+    rootFieldKind: Mutation
+  description: Insert into the eventreport_general_event_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventreportGeneralEventInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

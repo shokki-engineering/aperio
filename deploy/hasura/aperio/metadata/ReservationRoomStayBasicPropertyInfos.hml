@@ -1,0 +1,361 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRoomStayBasicPropertyInfos
+  fields:
+    - name: addressId
+      type: String_1
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: currencyCode
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: hotelSegmentCategoryCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: masterChainCode
+      type: String_1
+    - name: maxGroupRoomQuantity
+      type: Int32
+    - name: policyId
+      type: String_1
+    - name: positionId
+      type: String_1
+    - name: relativePositionId
+      type: String_1
+    - name: supplierIntegrationLevel
+      type: Int32
+    - name: ttIcode
+      type: Int32
+    - name: userGeneratedContentId
+      type: String_1
+  graphql:
+    typeName: ReservationRoomStayBasicPropertyInfos
+    inputTypeName: ReservationRoomStayBasicPropertyInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_room_stay_basic_property_infos
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        currencyCode:
+          column:
+            name: currency_code
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        hotelSegmentCategoryCode:
+          column:
+            name: hotel_segment_category_code
+        id:
+          column:
+            name: id
+        masterChainCode:
+          column:
+            name: master_chain_code
+        maxGroupRoomQuantity:
+          column:
+            name: max_group_room_quantity
+        policyId:
+          column:
+            name: policy_id
+        positionId:
+          column:
+            name: position_id
+        relativePositionId:
+          column:
+            name: relative_position_id
+        supplierIntegrationLevel:
+          column:
+            name: supplier_integration_level
+        ttIcode:
+          column:
+            name: tt_icode
+        userGeneratedContentId:
+          column:
+            name: user_generated_content_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRoomStayBasicPropertyInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - currencyCode
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - hotelSegmentCategoryCode
+          - id
+          - masterChainCode
+          - maxGroupRoomQuantity
+          - policyId
+          - positionId
+          - relativePositionId
+          - supplierIntegrationLevel
+          - ttIcode
+          - userGeneratedContentId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRoomStayBasicPropertyInfosBoolExp
+  operand:
+    object:
+      type: ReservationRoomStayBasicPropertyInfos
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: areaId
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCodeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelSegmentCategoryCode
+          booleanExpressionType: ReservationReservationSegmentCategoryCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: masterChainCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxGroupRoomQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: policyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: positionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: relativePositionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: supplierIntegrationLevel
+          booleanExpressionType: Int4BoolExp
+        - fieldName: ttIcode
+          booleanExpressionType: Int4BoolExp
+        - fieldName: userGeneratedContentId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRoomStayBasicPropertyInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRoomStayBasicPropertyInfosAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRoomStayBasicPropertyInfos
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: areaId
+          aggregateExpression: TextAggExp
+        - fieldName: brandCode
+          aggregateExpression: TextAggExp
+        - fieldName: brandDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: chainCode
+          aggregateExpression: TextAggExp
+        - fieldName: chainDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCodeContext
+          aggregateExpression: TextAggExp
+        - fieldName: hotelDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: hotelSegmentCategoryCode
+          aggregateExpression: ReservationReservationSegmentCategoryCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: masterChainCode
+          aggregateExpression: TextAggExp
+        - fieldName: maxGroupRoomQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: policyId
+          aggregateExpression: TextAggExp
+        - fieldName: positionId
+          aggregateExpression: TextAggExp
+        - fieldName: relativePositionId
+          aggregateExpression: TextAggExp
+        - fieldName: supplierIntegrationLevel
+          aggregateExpression: Int4AggExp
+        - fieldName: ttIcode
+          aggregateExpression: Int4AggExp
+        - fieldName: userGeneratedContentId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRoomStayBasicPropertyInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRoomStayBasicPropertyInfosOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRoomStayBasicPropertyInfos
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: areaId
+          orderByExpression: String1OrderByExp
+        - fieldName: brandCode
+          orderByExpression: String1OrderByExp
+        - fieldName: brandDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: chainCode
+          orderByExpression: String1OrderByExp
+        - fieldName: chainDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCodeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelSegmentCategoryCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: masterChainCode
+          orderByExpression: String1OrderByExp
+        - fieldName: maxGroupRoomQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: policyId
+          orderByExpression: String1OrderByExp
+        - fieldName: positionId
+          orderByExpression: String1OrderByExp
+        - fieldName: relativePositionId
+          orderByExpression: String1OrderByExp
+        - fieldName: supplierIntegrationLevel
+          orderByExpression: Int32OrderByExp
+        - fieldName: ttIcode
+          orderByExpression: Int32OrderByExp
+        - fieldName: userGeneratedContentId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRoomStayBasicPropertyInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRoomStayBasicPropertyInfos
+  objectType: ReservationRoomStayBasicPropertyInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_room_stay_basic_property_infos
+  filterExpressionType: ReservationRoomStayBasicPropertyInfosBoolExp
+  aggregateExpression: ReservationRoomStayBasicPropertyInfosAggExp
+  orderByExpression: ReservationRoomStayBasicPropertyInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRoomStayBasicPropertyInfos
+      subscription:
+        rootField: reservationRoomStayBasicPropertyInfos
+    selectUniques:
+      - queryRootField: reservationRoomStayBasicPropertyInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRoomStayBasicPropertyInfosById
+    filterInputTypeName: ReservationRoomStayBasicPropertyInfosFilterInput
+    aggregate:
+      queryRootField: reservationRoomStayBasicPropertyInfosAggregate
+      subscription:
+        rootField: reservationRoomStayBasicPropertyInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRoomStayBasicPropertyInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

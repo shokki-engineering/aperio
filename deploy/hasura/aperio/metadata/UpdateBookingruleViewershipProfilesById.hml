@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleViewershipProfilesId
+  description: Update the 'id' column in the 'bookingrule_viewership_profiles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleViewershipProfilesId
+    inputTypeName: UpdateColumnBookingruleViewershipProfilesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_viewership_profiles_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleViewershipProfilesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleViewershipProfilesProfileId
+  description: Update the 'profile_id' column in the
+    'bookingrule_viewership_profiles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleViewershipProfilesProfileId
+    inputTypeName: UpdateColumnBookingruleViewershipProfilesProfileIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_viewership_profiles_profile_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleViewershipProfilesProfileId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleViewershipProfilesViewershipId
+  description: Update the 'viewership_id' column in the
+    'bookingrule_viewership_profiles' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleViewershipProfilesViewershipId
+    inputTypeName: UpdateColumnBookingruleViewershipProfilesViewershipIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_viewership_profiles_viewership_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleViewershipProfilesViewershipId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleViewershipProfilesByIdUpdateColumns
+  description: Update the columns of the 'bookingrule_viewership_profiles' collection
+  fields:
+    - name: id
+      type: UpdateColumnBookingruleViewershipProfilesId
+      description: Update the 'id' column in the 'bookingrule_viewership_profiles'
+        collection.
+    - name: profileId
+      type: UpdateColumnBookingruleViewershipProfilesProfileId
+      description: Update the 'profile_id' column in the
+        'bookingrule_viewership_profiles' collection.
+    - name: viewershipId
+      type: UpdateColumnBookingruleViewershipProfilesViewershipId
+      description: Update the 'viewership_id' column in the
+        'bookingrule_viewership_profiles' collection.
+  graphql:
+    typeName: UpdateBookingruleViewershipProfilesByIdUpdateColumns
+    inputTypeName: UpdateBookingruleViewershipProfilesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_viewership_profiles_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profileId:
+          column:
+            name: profile_id
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleViewershipProfilesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profileId
+          - viewershipId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleViewershipProfilesByIdResponse
+  description: Responses from the 'update_bookingrule_viewership_profiles_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleViewershipProfiles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateBookingruleViewershipProfilesByIdResponse
+    inputTypeName: UpdateBookingruleViewershipProfilesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_viewership_profiles_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleViewershipProfilesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateBookingruleViewershipProfilesById
+  outputType: UpdateBookingruleViewershipProfilesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: BookingruleViewershipProfilesBoolExp
+      description: Update permission post-condition predicate over the
+        'bookingrule_viewership_profiles' collection
+    - name: preCheck
+      type: BookingruleViewershipProfilesBoolExp
+      description: Update permission pre-condition predicate over the
+        'bookingrule_viewership_profiles' collection
+    - name: updateColumns
+      type: UpdateBookingruleViewershipProfilesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_bookingrule_viewership_profiles_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateBookingruleViewershipProfilesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'bookingrule_viewership_profiles' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateBookingruleViewershipProfilesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

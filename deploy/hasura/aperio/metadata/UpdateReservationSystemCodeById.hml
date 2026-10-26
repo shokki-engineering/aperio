@@ -1,0 +1,305 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSystemCodeId
+  description: Update the 'id' column in the 'reservation_system_code' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSystemCodeId
+    inputTypeName: UpdateColumnReservationSystemCodeIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_system_code_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSystemCodeId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSystemCodeRestrictedDisplayIndicator
+  description: Update the 'restricted_display_indicator' column in the
+    'reservation_system_code' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSystemCodeRestrictedDisplayIndicator
+    inputTypeName: UpdateColumnReservationSystemCodeRestrictedDisplayIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_system_code_restricted_display_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSystemCodeRestrictedDisplayIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSystemCodeSort
+  description: Update the 'sort' column in the 'reservation_system_code' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSystemCodeSort
+    inputTypeName: UpdateColumnReservationSystemCodeSortInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_system_code_sort
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSystemCodeSort
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSystemCodeSystemCodesId
+  description: Update the 'system_codes_id' column in the
+    'reservation_system_code' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSystemCodeSystemCodesId
+    inputTypeName: UpdateColumnReservationSystemCodeSystemCodesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_system_code_system_codes_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSystemCodeSystemCodesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationSystemCodeValue
+  description: Update the 'value' column in the 'reservation_system_code' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationSystemCodeValue
+    inputTypeName: UpdateColumnReservationSystemCodeValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_system_code_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationSystemCodeValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationSystemCodeByIdUpdateColumns
+  description: Update the columns of the 'reservation_system_code' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationSystemCodeId
+      description: Update the 'id' column in the 'reservation_system_code' collection.
+    - name: restrictedDisplayIndicator
+      type: UpdateColumnReservationSystemCodeRestrictedDisplayIndicator
+      description: Update the 'restricted_display_indicator' column in the
+        'reservation_system_code' collection.
+    - name: sort
+      type: UpdateColumnReservationSystemCodeSort
+      description: Update the 'sort' column in the 'reservation_system_code' collection.
+    - name: systemCodesId
+      type: UpdateColumnReservationSystemCodeSystemCodesId
+      description: Update the 'system_codes_id' column in the
+        'reservation_system_code' collection.
+    - name: value
+      type: UpdateColumnReservationSystemCodeValue
+      description: Update the 'value' column in the 'reservation_system_code' collection.
+  graphql:
+    typeName: UpdateReservationSystemCodeByIdUpdateColumns
+    inputTypeName: UpdateReservationSystemCodeByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_system_code_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        systemCodesId:
+          column:
+            name: system_codes_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationSystemCodeByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - systemCodesId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationSystemCodeByIdResponse
+  description: Responses from the 'update_reservation_system_code_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationSystemCode!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationSystemCodeByIdResponse
+    inputTypeName: UpdateReservationSystemCodeByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_system_code_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationSystemCodeByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationSystemCodeById
+  outputType: UpdateReservationSystemCodeByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationSystemCodeBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_system_code' collection
+    - name: preCheck
+      type: ReservationSystemCodeBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_system_code' collection
+    - name: updateColumns
+      type: UpdateReservationSystemCodeByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_system_code_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationSystemCodeById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_system_code' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationSystemCodeById
+  permissions:
+    - role: admin
+      allowExecution: true
+

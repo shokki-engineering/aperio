@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CommissionDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: CommissionDocuments
+    inputTypeName: CommissionDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: commission_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CommissionDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CommissionDocumentsBoolExp
+  operand:
+    object:
+      type: CommissionDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: CommissionCommissionDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CommissionDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CommissionDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: CommissionDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: CommissionCommissionDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CommissionDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CommissionDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: CommissionDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CommissionDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CommissionDocuments
+  objectType: CommissionDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: commission_documents
+  filterExpressionType: CommissionDocumentsBoolExp
+  aggregateExpression: CommissionDocumentsAggExp
+  orderByExpression: CommissionDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: commissionDocuments
+      subscription:
+        rootField: commissionDocuments
+    selectUniques:
+      - queryRootField: commissionDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: commissionDocumentsById
+    filterInputTypeName: CommissionDocumentsFilterInput
+    aggregate:
+      queryRootField: commissionDocumentsAggregate
+      subscription:
+        rootField: commissionDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CommissionDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

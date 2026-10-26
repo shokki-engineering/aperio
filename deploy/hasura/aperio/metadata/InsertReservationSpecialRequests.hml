@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationSpecialRequestsObject
+  fields:
+    - name: codeContext
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: requestCode
+      type: String_1
+    - name: resGlobalInfoId
+      type: String_1!
+    - name: resGuestId
+      type: String_1!
+    - name: roomStayId
+      type: String_1!
+    - name: serviceDetailsId
+      type: String_1!
+    - name: unitCount
+      type: Int32
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertReservationSpecialRequestsObject
+    inputTypeName: InsertReservationSpecialRequestsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_special_requests_object
+      fieldMapping:
+        codeContext:
+          column:
+            name: code_context
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        requestCode:
+          column:
+            name: request_code
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        resGuestId:
+          column:
+            name: res_guest_id
+        roomStayId:
+          column:
+            name: room_stay_id
+        serviceDetailsId:
+          column:
+            name: service_details_id
+        unitCount:
+          column:
+            name: unit_count
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationSpecialRequestsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeContext
+          - createDateTime
+          - creatorId
+          - displayName
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - requestCode
+          - resGlobalInfoId
+          - resGuestId
+          - roomStayId
+          - serviceDetailsId
+          - unitCount
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationSpecialRequestsResponse
+  description: Responses from the 'insert_reservation_special_requests' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationSpecialRequests!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationSpecialRequestsResponse
+    inputTypeName: InsertReservationSpecialRequestsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_special_requests_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationSpecialRequestsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationSpecialRequests
+  outputType: InsertReservationSpecialRequestsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationSpecialRequestsObject!]!"
+    - name: postCheck
+      type: ReservationSpecialRequestsBoolExp
+      description: Insert permission predicate over the 'reservation_special_requests'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_special_requests
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationSpecialRequests
+    rootFieldKind: Mutation
+  description: Insert into the reservation_special_requests table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationSpecialRequests
+  permissions:
+    - role: admin
+      allowExecution: true
+

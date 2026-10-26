@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePhysChallNamesObject
+  fields:
+    - name: customerId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: physChall
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfilePhysChallNamesObject
+    inputTypeName: InsertProfilePhysChallNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_phys_chall_names_object
+      fieldMapping:
+        customerId:
+          column:
+            name: customer_id
+        id:
+          column:
+            name: id
+        physChall:
+          column:
+            name: phys_chall
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePhysChallNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - customerId
+          - id
+          - physChall
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePhysChallNamesResponse
+  description: Responses from the 'insert_profile_phys_chall_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePhysChallNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePhysChallNamesResponse
+    inputTypeName: InsertProfilePhysChallNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_phys_chall_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePhysChallNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePhysChallNames
+  outputType: InsertProfilePhysChallNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePhysChallNamesObject!]!"
+    - name: postCheck
+      type: ProfilePhysChallNamesBoolExp
+      description: Insert permission predicate over the 'profile_phys_chall_names'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_phys_chall_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePhysChallNames
+    rootFieldKind: Mutation
+  description: Insert into the profile_phys_chall_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePhysChallNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

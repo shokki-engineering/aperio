@@ -1,0 +1,223 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDocumentsDocId
+  description: Update the 'doc_id' column in the 'rate_documents' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDocumentsDocId
+    inputTypeName: UpdateColumnRateDocumentsDocIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_documents_doc_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDocumentsDocId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDocumentsDocType
+  description: Update the 'doc_type' column in the 'rate_documents' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDocumentsDocType
+    inputTypeName: UpdateColumnRateDocumentsDocTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_documents_doc_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDocumentsDocType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateDocumentsId
+  description: Update the 'id' column in the 'rate_documents' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateDocumentsId
+    inputTypeName: UpdateColumnRateDocumentsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rate_documents_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateDocumentsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateDocumentsByIdUpdateColumns
+  description: Update the columns of the 'rate_documents' collection
+  fields:
+    - name: docId
+      type: UpdateColumnRateDocumentsDocId
+      description: Update the 'doc_id' column in the 'rate_documents' collection.
+    - name: docType
+      type: UpdateColumnRateDocumentsDocType
+      description: Update the 'doc_type' column in the 'rate_documents' collection.
+    - name: id
+      type: UpdateColumnRateDocumentsId
+      description: Update the 'id' column in the 'rate_documents' collection.
+  graphql:
+    typeName: UpdateRateDocumentsByIdUpdateColumns
+    inputTypeName: UpdateRateDocumentsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_documents_by_id_update_columns
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateDocumentsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateDocumentsByIdResponse
+  description: Responses from the 'update_rate_documents_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateDocumentsByIdResponse
+    inputTypeName: UpdateRateDocumentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rate_documents_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateDocumentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateDocumentsById
+  outputType: UpdateRateDocumentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateDocumentsBoolExp
+      description: Update permission post-condition predicate over the
+        'rate_documents' collection
+    - name: preCheck
+      type: RateDocumentsBoolExp
+      description: Update permission pre-condition predicate over the 'rate_documents'
+        collection
+    - name: updateColumns
+      type: UpdateRateDocumentsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rate_documents_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateDocumentsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rate_documents' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateDocumentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

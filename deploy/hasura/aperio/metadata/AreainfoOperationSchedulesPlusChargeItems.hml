@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoOperationSchedulesPlusChargeItems
+  fields:
+    - name: attractionId
+      type: String_1!
+    - name: displayName
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: recreationId
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: AreainfoOperationSchedulesPlusChargeItems
+    inputTypeName: AreainfoOperationSchedulesPlusChargeItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_operation_schedules_plus_charge_items
+      fieldMapping:
+        attractionId:
+          column:
+            name: attraction_id
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        recreationId:
+          column:
+            name: recreation_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoOperationSchedulesPlusChargeItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attractionId
+          - displayName
+          - duration
+          - endId
+          - id
+          - recreationId
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoOperationSchedulesPlusChargeItemsBoolExp
+  operand:
+    object:
+      type: AreainfoOperationSchedulesPlusChargeItems
+      comparableFields:
+        - fieldName: attractionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: recreationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoOperationSchedulesPlusChargeItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoOperationSchedulesPlusChargeItemsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoOperationSchedulesPlusChargeItems
+      aggregatableFields:
+        - fieldName: attractionId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: recreationId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoOperationSchedulesPlusChargeItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoOperationSchedulesPlusChargeItemsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoOperationSchedulesPlusChargeItems
+      orderableFields:
+        - fieldName: attractionId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: recreationId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoOperationSchedulesPlusChargeItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoOperationSchedulesPlusChargeItems
+  objectType: AreainfoOperationSchedulesPlusChargeItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_operation_schedules_plus_charge_items
+  filterExpressionType: AreainfoOperationSchedulesPlusChargeItemsBoolExp
+  aggregateExpression: AreainfoOperationSchedulesPlusChargeItemsAggExp
+  orderByExpression: AreainfoOperationSchedulesPlusChargeItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoOperationSchedulesPlusChargeItems
+      subscription:
+        rootField: areainfoOperationSchedulesPlusChargeItems
+    selectUniques:
+      - queryRootField: areainfoOperationSchedulesPlusChargeItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoOperationSchedulesPlusChargeItemsById
+    filterInputTypeName: AreainfoOperationSchedulesPlusChargeItemsFilterInput
+    aggregate:
+      queryRootField: areainfoOperationSchedulesPlusChargeItemsAggregate
+      subscription:
+        rootField: areainfoOperationSchedulesPlusChargeItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoOperationSchedulesPlusChargeItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,198 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventDayFunctionsObject
+  fields:
+    - name: attendeeQuantity
+      type: Int32
+    - name: audioVisualsId
+      type: String_1
+    - name: endClockId
+      type: String_1
+    - name: eventDayId
+      type: String_1!
+    - name: exhibitionIndicator
+      type: Boolean_1
+    - name: foodAndBeveragesId
+      type: String_1
+    - name: functionDisplayName
+      type: String_1
+    - name: functionType
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: locationDisplayName
+      type: String_1
+    - name: locationId
+      type: String_1
+    - name: postIndicator
+      type: Boolean_1
+    - name: reKeyIndicator
+      type: Boolean_1
+    - name: requiredKeyQuantity
+      type: Int32
+    - name: roomSetupId
+      type: String_1
+    - name: startClockId
+      type: String_1
+    - name: twentyFourHourHold
+      type: Boolean_1
+  graphql:
+    typeName: InsertEventDayFunctionsObject
+    inputTypeName: InsertEventDayFunctionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_day_functions_object
+      fieldMapping:
+        attendeeQuantity:
+          column:
+            name: attendee_quantity
+        audioVisualsId:
+          column:
+            name: audio_visuals_id
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayId:
+          column:
+            name: event_day_id
+        exhibitionIndicator:
+          column:
+            name: exhibition_indicator
+        foodAndBeveragesId:
+          column:
+            name: food_and_beverages_id
+        functionDisplayName:
+          column:
+            name: function_display_name
+        functionType:
+          column:
+            name: function_type
+        id:
+          column:
+            name: id
+        locationDisplayName:
+          column:
+            name: location_display_name
+        locationId:
+          column:
+            name: location_id
+        postIndicator:
+          column:
+            name: post_indicator
+        reKeyIndicator:
+          column:
+            name: re_key_indicator
+        requiredKeyQuantity:
+          column:
+            name: required_key_quantity
+        roomSetupId:
+          column:
+            name: room_setup_id
+        startClockId:
+          column:
+            name: start_clock_id
+        twentyFourHourHold:
+          column:
+            name: twenty_four_hour_hold
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventDayFunctionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeQuantity
+          - audioVisualsId
+          - endClockId
+          - eventDayId
+          - exhibitionIndicator
+          - foodAndBeveragesId
+          - functionDisplayName
+          - functionType
+          - id
+          - locationDisplayName
+          - locationId
+          - postIndicator
+          - reKeyIndicator
+          - requiredKeyQuantity
+          - roomSetupId
+          - startClockId
+          - twentyFourHourHold
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventDayFunctionsResponse
+  description: Responses from the 'insert_event_day_functions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventDayFunctions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventDayFunctionsResponse
+    inputTypeName: InsertEventDayFunctionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_day_functions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventDayFunctionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventDayFunctions
+  outputType: InsertEventDayFunctionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventDayFunctionsObject!]!"
+    - name: postCheck
+      type: EventDayFunctionsBoolExp
+      description: Insert permission predicate over the 'event_day_functions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_day_functions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventDayFunctions
+    rootFieldKind: Mutation
+  description: Insert into the event_day_functions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventDayFunctions
+  permissions:
+    - role: admin
+      allowExecution: true
+

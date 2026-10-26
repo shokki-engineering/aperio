@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantMoneysCurrencyCode
+  description: Update the 'currency_code' column in the 'restaurant_moneys' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantMoneysCurrencyCode
+    inputTypeName: UpdateColumnRestaurantMoneysCurrencyCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_moneys_currency_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantMoneysCurrencyCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantMoneysId
+  description: Update the 'id' column in the 'restaurant_moneys' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantMoneysId
+    inputTypeName: UpdateColumnRestaurantMoneysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_moneys_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantMoneysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantMoneysNanoUnits
+  description: Update the 'nano_units' column in the 'restaurant_moneys' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantMoneysNanoUnits
+    inputTypeName: UpdateColumnRestaurantMoneysNanoUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_moneys_nano_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantMoneysNanoUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantMoneysUnits
+  description: Update the 'units' column in the 'restaurant_moneys' collection
+  fields:
+    - name: set
+      type: Int64
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantMoneysUnits
+    inputTypeName: UpdateColumnRestaurantMoneysUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_moneys_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantMoneysUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestaurantMoneysByIdUpdateColumns
+  description: Update the columns of the 'restaurant_moneys' collection
+  fields:
+    - name: currencyCode
+      type: UpdateColumnRestaurantMoneysCurrencyCode
+      description: Update the 'currency_code' column in the 'restaurant_moneys' collection.
+    - name: id
+      type: UpdateColumnRestaurantMoneysId
+      description: Update the 'id' column in the 'restaurant_moneys' collection.
+    - name: nanoUnits
+      type: UpdateColumnRestaurantMoneysNanoUnits
+      description: Update the 'nano_units' column in the 'restaurant_moneys' collection.
+    - name: units
+      type: UpdateColumnRestaurantMoneysUnits
+      description: Update the 'units' column in the 'restaurant_moneys' collection.
+  graphql:
+    typeName: UpdateRestaurantMoneysByIdUpdateColumns
+    inputTypeName: UpdateRestaurantMoneysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restaurant_moneys_by_id_update_columns
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestaurantMoneysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestaurantMoneysByIdResponse
+  description: Responses from the 'update_restaurant_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRestaurantMoneysByIdResponse
+    inputTypeName: UpdateRestaurantMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restaurant_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestaurantMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRestaurantMoneysById
+  outputType: UpdateRestaurantMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RestaurantMoneysBoolExp
+      description: Update permission post-condition predicate over the
+        'restaurant_moneys' collection
+    - name: preCheck
+      type: RestaurantMoneysBoolExp
+      description: Update permission pre-condition predicate over the
+        'restaurant_moneys' collection
+    - name: updateColumns
+      type: UpdateRestaurantMoneysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_restaurant_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRestaurantMoneysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'restaurant_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRestaurantMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

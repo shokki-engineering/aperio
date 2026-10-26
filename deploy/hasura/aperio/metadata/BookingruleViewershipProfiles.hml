@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleViewershipProfiles
+  fields:
+    - name: id
+      type: String_1!
+    - name: profileId
+      type: String_1!
+    - name: viewershipId
+      type: String_1!
+  graphql:
+    typeName: BookingruleViewershipProfiles
+    inputTypeName: BookingruleViewershipProfilesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_viewership_profiles
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profileId:
+          column:
+            name: profile_id
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleViewershipProfiles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profileId
+          - viewershipId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleViewershipProfilesBoolExp
+  operand:
+    object:
+      type: BookingruleViewershipProfiles
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: profileId
+          booleanExpressionType: TextBoolExp
+        - fieldName: viewershipId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleViewershipProfilesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleViewershipProfilesAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleViewershipProfiles
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: profileId
+          aggregateExpression: TextAggExp
+        - fieldName: viewershipId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleViewershipProfilesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleViewershipProfilesOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleViewershipProfiles
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: profileId
+          orderByExpression: String1OrderByExp
+        - fieldName: viewershipId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleViewershipProfilesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleViewershipProfiles
+  objectType: BookingruleViewershipProfiles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_viewership_profiles
+  filterExpressionType: BookingruleViewershipProfilesBoolExp
+  aggregateExpression: BookingruleViewershipProfilesAggExp
+  orderByExpression: BookingruleViewershipProfilesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleViewershipProfiles
+      subscription:
+        rootField: bookingruleViewershipProfiles
+    selectUniques:
+      - queryRootField: bookingruleViewershipProfilesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleViewershipProfilesById
+    filterInputTypeName: BookingruleViewershipProfilesFilterInput
+    aggregate:
+      queryRootField: bookingruleViewershipProfilesAggregate
+      subscription:
+        rootField: bookingruleViewershipProfilesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleViewershipProfiles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

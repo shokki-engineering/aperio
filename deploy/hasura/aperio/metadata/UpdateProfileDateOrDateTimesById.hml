@@ -1,0 +1,266 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileDateOrDateTimesDateTime
+  description: Update the 'date_time' column in the 'profile_date_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileDateOrDateTimesDateTime
+    inputTypeName: UpdateColumnProfileDateOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_date_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileDateOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileDateOrDateTimesDayId
+  description: Update the 'day_id' column in the 'profile_date_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileDateOrDateTimesDayId
+    inputTypeName: UpdateColumnProfileDateOrDateTimesDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_date_or_date_times_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileDateOrDateTimesDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileDateOrDateTimesId
+  description: Update the 'id' column in the 'profile_date_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileDateOrDateTimesId
+    inputTypeName: UpdateColumnProfileDateOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_date_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileDateOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileDateOrDateTimesValueCase
+  description: Update the 'value_case' column in the 'profile_date_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileDateOrDateTimesValueCase
+    inputTypeName: UpdateColumnProfileDateOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_date_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileDateOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileDateOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'profile_date_or_date_times' collection
+  fields:
+    - name: dateTime
+      type: UpdateColumnProfileDateOrDateTimesDateTime
+      description: Update the 'date_time' column in the 'profile_date_or_date_times'
+        collection.
+    - name: dayId
+      type: UpdateColumnProfileDateOrDateTimesDayId
+      description: Update the 'day_id' column in the 'profile_date_or_date_times'
+        collection.
+    - name: id
+      type: UpdateColumnProfileDateOrDateTimesId
+      description: Update the 'id' column in the 'profile_date_or_date_times' collection.
+    - name: valueCase
+      type: UpdateColumnProfileDateOrDateTimesValueCase
+      description: Update the 'value_case' column in the 'profile_date_or_date_times'
+        collection.
+  graphql:
+    typeName: UpdateProfileDateOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdateProfileDateOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_date_or_date_times_by_id_update_columns
+      fieldMapping:
+        dateTime:
+          column:
+            name: date_time
+        dayId:
+          column:
+            name: day_id
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileDateOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateTime
+          - dayId
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileDateOrDateTimesByIdResponse
+  description: Responses from the 'update_profile_date_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileDateOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileDateOrDateTimesByIdResponse
+    inputTypeName: UpdateProfileDateOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_date_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileDateOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileDateOrDateTimesById
+  outputType: UpdateProfileDateOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileDateOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_date_or_date_times' collection
+    - name: preCheck
+      type: ProfileDateOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_date_or_date_times' collection
+    - name: updateColumns
+      type: UpdateProfileDateOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_date_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileDateOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_date_or_date_times' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileDateOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

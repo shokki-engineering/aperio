@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EnvironmentalimpactParagraphs
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: energyId
+      type: String_1!
+    - name: generalId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: recyclingId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+    - name: waterId
+      type: String_1!
+  graphql:
+    typeName: EnvironmentalimpactParagraphs
+    inputTypeName: EnvironmentalimpactParagraphsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: environmentalimpact_paragraphs
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        energyId:
+          column:
+            name: energy_id
+        generalId:
+          column:
+            name: general_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        recyclingId:
+          column:
+            name: recycling_id
+        uris:
+          column:
+            name: uris
+        waterId:
+          column:
+            name: water_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EnvironmentalimpactParagraphs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - displayName
+          - energyId
+          - generalId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - recyclingId
+          - uris
+          - waterId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EnvironmentalimpactParagraphsBoolExp
+  operand:
+    object:
+      type: EnvironmentalimpactParagraphs
+      comparableFields:
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: energyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: generalId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: recyclingId
+          booleanExpressionType: TextBoolExp
+        - fieldName: waterId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EnvironmentalimpactParagraphsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EnvironmentalimpactParagraphsAggExp
+  operand:
+    object:
+      aggregatedType: EnvironmentalimpactParagraphs
+      aggregatableFields:
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: energyId
+          aggregateExpression: TextAggExp
+        - fieldName: generalId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: recyclingId
+          aggregateExpression: TextAggExp
+        - fieldName: waterId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EnvironmentalimpactParagraphsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EnvironmentalimpactParagraphsOrderByExp
+  operand:
+    object:
+      orderedType: EnvironmentalimpactParagraphs
+      orderableFields:
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: energyId
+          orderByExpression: String1OrderByExp
+        - fieldName: generalId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: recyclingId
+          orderByExpression: String1OrderByExp
+        - fieldName: waterId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EnvironmentalimpactParagraphsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EnvironmentalimpactParagraphs
+  objectType: EnvironmentalimpactParagraphs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: environmentalimpact_paragraphs
+  filterExpressionType: EnvironmentalimpactParagraphsBoolExp
+  aggregateExpression: EnvironmentalimpactParagraphsAggExp
+  orderByExpression: EnvironmentalimpactParagraphsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: environmentalimpactParagraphs
+      subscription:
+        rootField: environmentalimpactParagraphs
+    selectUniques:
+      - queryRootField: environmentalimpactParagraphsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: environmentalimpactParagraphsById
+    filterInputTypeName: EnvironmentalimpactParagraphsFilterInput
+    aggregate:
+      queryRootField: environmentalimpactParagraphsAggregate
+      subscription:
+        rootField: environmentalimpactParagraphsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EnvironmentalimpactParagraphs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

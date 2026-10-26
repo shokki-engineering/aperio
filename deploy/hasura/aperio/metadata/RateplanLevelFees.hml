@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanLevelFees
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: quantity
+      type: Int32
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: RateplanLevelFees
+    inputTypeName: RateplanLevelFeesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_level_fees
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        quantity:
+          column:
+            name: quantity
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanLevelFees
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - quantity
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanLevelFeesBoolExp
+  operand:
+    object:
+      type: RateplanLevelFees
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanLevelFeesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanLevelFeesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanLevelFees
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanLevelFeesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanLevelFeesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanLevelFees
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanLevelFeesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanLevelFees
+  objectType: RateplanLevelFees
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_level_fees
+  filterExpressionType: RateplanLevelFeesBoolExp
+  aggregateExpression: RateplanLevelFeesAggExp
+  orderByExpression: RateplanLevelFeesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanLevelFees
+      subscription:
+        rootField: rateplanLevelFees
+    selectUniques:
+      - queryRootField: rateplanLevelFeesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanLevelFeesById
+    filterInputTypeName: RateplanLevelFeesFilterInput
+    aggregate:
+      queryRootField: rateplanLevelFeesAggregate
+      subscription:
+        rootField: rateplanLevelFeesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanLevelFees
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanSystemCode
+  fields:
+    - name: id
+      type: String_1!
+    - name: restrictedDisplayIndicator
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: systemCodesId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanSystemCode
+    inputTypeName: RateplanSystemCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_system_code
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        systemCodesId:
+          column:
+            name: system_codes_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanSystemCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - systemCodesId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanSystemCodeBoolExp
+  operand:
+    object:
+      type: RateplanSystemCode
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restrictedDisplayIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: systemCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanSystemCodeBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanSystemCodeAggExp
+  operand:
+    object:
+      aggregatedType: RateplanSystemCode
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restrictedDisplayIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: systemCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanSystemCodeAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanSystemCodeOrderByExp
+  operand:
+    object:
+      orderedType: RateplanSystemCode
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restrictedDisplayIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: systemCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanSystemCodeOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanSystemCode
+  objectType: RateplanSystemCode
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_system_code
+  filterExpressionType: RateplanSystemCodeBoolExp
+  aggregateExpression: RateplanSystemCodeAggExp
+  orderByExpression: RateplanSystemCodeOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanSystemCode
+      subscription:
+        rootField: rateplanSystemCode
+    selectUniques:
+      - queryRootField: rateplanSystemCodeById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanSystemCodeById
+    filterInputTypeName: RateplanSystemCodeFilterInput
+    aggregate:
+      queryRootField: rateplanSystemCodeAggregate
+      subscription:
+        rootField: rateplanSystemCodeAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanSystemCode
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,269 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpKeyDecisionFactorsCode
+  description: Update the 'code' column in the 'meetingrfp_key_decision_factors' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpKeyDecisionFactorsCode
+    inputTypeName: UpdateColumnMeetingrfpKeyDecisionFactorsCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_key_decision_factors_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpKeyDecisionFactorsCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpKeyDecisionFactorsId
+  description: Update the 'id' column in the 'meetingrfp_key_decision_factors' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpKeyDecisionFactorsId
+    inputTypeName: UpdateColumnMeetingrfpKeyDecisionFactorsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_key_decision_factors_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpKeyDecisionFactorsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpKeyDecisionFactorsProposalSpecId
+  description: Update the 'proposal_spec_id' column in the
+    'meetingrfp_key_decision_factors' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpKeyDecisionFactorsProposalSpecId
+    inputTypeName: UpdateColumnMeetingrfpKeyDecisionFactorsProposalSpecIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_key_decision_factors_proposal_spec_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpKeyDecisionFactorsProposalSpecId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpKeyDecisionFactorsRanking
+  description: Update the 'ranking' column in the
+    'meetingrfp_key_decision_factors' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpKeyDecisionFactorsRanking
+    inputTypeName: UpdateColumnMeetingrfpKeyDecisionFactorsRankingInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_key_decision_factors_ranking
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpKeyDecisionFactorsRanking
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpKeyDecisionFactorsByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_key_decision_factors' collection
+  fields:
+    - name: code
+      type: UpdateColumnMeetingrfpKeyDecisionFactorsCode
+      description: Update the 'code' column in the 'meetingrfp_key_decision_factors'
+        collection.
+    - name: id
+      type: UpdateColumnMeetingrfpKeyDecisionFactorsId
+      description: Update the 'id' column in the 'meetingrfp_key_decision_factors'
+        collection.
+    - name: proposalSpecId
+      type: UpdateColumnMeetingrfpKeyDecisionFactorsProposalSpecId
+      description: Update the 'proposal_spec_id' column in the
+        'meetingrfp_key_decision_factors' collection.
+    - name: ranking
+      type: UpdateColumnMeetingrfpKeyDecisionFactorsRanking
+      description: Update the 'ranking' column in the
+        'meetingrfp_key_decision_factors' collection.
+  graphql:
+    typeName: UpdateMeetingrfpKeyDecisionFactorsByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpKeyDecisionFactorsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_key_decision_factors_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        proposalSpecId:
+          column:
+            name: proposal_spec_id
+        ranking:
+          column:
+            name: ranking
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpKeyDecisionFactorsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - proposalSpecId
+          - ranking
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpKeyDecisionFactorsByIdResponse
+  description: Responses from the 'update_meetingrfp_key_decision_factors_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpKeyDecisionFactors!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpKeyDecisionFactorsByIdResponse
+    inputTypeName: UpdateMeetingrfpKeyDecisionFactorsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_key_decision_factors_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpKeyDecisionFactorsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpKeyDecisionFactorsById
+  outputType: UpdateMeetingrfpKeyDecisionFactorsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpKeyDecisionFactorsBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_key_decision_factors' collection
+    - name: preCheck
+      type: MeetingrfpKeyDecisionFactorsBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_key_decision_factors' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpKeyDecisionFactorsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_key_decision_factors_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpKeyDecisionFactorsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_key_decision_factors' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpKeyDecisionFactorsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

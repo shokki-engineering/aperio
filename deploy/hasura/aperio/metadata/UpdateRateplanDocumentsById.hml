@@ -1,0 +1,223 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDocumentsDocId
+  description: Update the 'doc_id' column in the 'rateplan_documents' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDocumentsDocId
+    inputTypeName: UpdateColumnRateplanDocumentsDocIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_documents_doc_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDocumentsDocId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDocumentsDocType
+  description: Update the 'doc_type' column in the 'rateplan_documents' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDocumentsDocType
+    inputTypeName: UpdateColumnRateplanDocumentsDocTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_documents_doc_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDocumentsDocType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDocumentsId
+  description: Update the 'id' column in the 'rateplan_documents' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDocumentsId
+    inputTypeName: UpdateColumnRateplanDocumentsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_documents_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDocumentsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanDocumentsByIdUpdateColumns
+  description: Update the columns of the 'rateplan_documents' collection
+  fields:
+    - name: docId
+      type: UpdateColumnRateplanDocumentsDocId
+      description: Update the 'doc_id' column in the 'rateplan_documents' collection.
+    - name: docType
+      type: UpdateColumnRateplanDocumentsDocType
+      description: Update the 'doc_type' column in the 'rateplan_documents' collection.
+    - name: id
+      type: UpdateColumnRateplanDocumentsId
+      description: Update the 'id' column in the 'rateplan_documents' collection.
+  graphql:
+    typeName: UpdateRateplanDocumentsByIdUpdateColumns
+    inputTypeName: UpdateRateplanDocumentsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_documents_by_id_update_columns
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanDocumentsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanDocumentsByIdResponse
+  description: Responses from the 'update_rateplan_documents_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanDocuments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanDocumentsByIdResponse
+    inputTypeName: UpdateRateplanDocumentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_documents_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanDocumentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanDocumentsById
+  outputType: UpdateRateplanDocumentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanDocumentsBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_documents' collection
+    - name: preCheck
+      type: RateplanDocumentsBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_documents' collection
+    - name: updateColumns
+      type: UpdateRateplanDocumentsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_documents_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanDocumentsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_documents' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanDocumentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

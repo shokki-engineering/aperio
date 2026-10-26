@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAreainfoDecimalsByIdResponse
+  description: Responses from the 'delete_areainfo_decimals_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAreainfoDecimalsByIdResponse
+    inputTypeName: DeleteAreainfoDecimalsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_areainfo_decimals_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAreainfoDecimalsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAreainfoDecimalsById
+  outputType: DeleteAreainfoDecimalsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AreainfoDecimalsBoolExp
+      description: Delete permission predicate over the 'areainfo_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_areainfo_decimals_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAreainfoDecimalsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'areainfo_decimals' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAreainfoDecimalsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

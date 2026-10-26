@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationBookingChannelCode
+  fields:
+    - name: bookingChannelCodesId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: restrictedDisplayIndicator
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ReservationBookingChannelCode
+    inputTypeName: ReservationBookingChannelCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_booking_channel_code
+      fieldMapping:
+        bookingChannelCodesId:
+          column:
+            name: booking_channel_codes_id
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationBookingChannelCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingChannelCodesId
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationBookingChannelCodeBoolExp
+  operand:
+    object:
+      type: ReservationBookingChannelCode
+      comparableFields:
+        - fieldName: bookingChannelCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restrictedDisplayIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationBookingChannelCodeBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationBookingChannelCodeAggExp
+  operand:
+    object:
+      aggregatedType: ReservationBookingChannelCode
+      aggregatableFields:
+        - fieldName: bookingChannelCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restrictedDisplayIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationBookingChannelCodeAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationBookingChannelCodeOrderByExp
+  operand:
+    object:
+      orderedType: ReservationBookingChannelCode
+      orderableFields:
+        - fieldName: bookingChannelCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restrictedDisplayIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationBookingChannelCodeOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationBookingChannelCode
+  objectType: ReservationBookingChannelCode
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_booking_channel_code
+  filterExpressionType: ReservationBookingChannelCodeBoolExp
+  aggregateExpression: ReservationBookingChannelCodeAggExp
+  orderByExpression: ReservationBookingChannelCodeOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationBookingChannelCode
+      subscription:
+        rootField: reservationBookingChannelCode
+    selectUniques:
+      - queryRootField: reservationBookingChannelCodeById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationBookingChannelCodeById
+    filterInputTypeName: ReservationBookingChannelCodeFilterInput
+    aggregate:
+      queryRootField: reservationBookingChannelCodeAggregate
+      subscription:
+        rootField: reservationBookingChannelCodeAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationBookingChannelCode
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

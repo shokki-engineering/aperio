@@ -1,0 +1,192 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCustomersObject
+  fields:
+    - name: birthDayId
+      type: String_1
+    - name: childQuantity
+      type: Int32
+    - name: currencyCode
+      type: String_1
+    - name: customerValue
+      type: String_1
+    - name: deceased
+      type: Boolean_1
+    - name: decimalPlaces
+      type: Int32
+    - name: employerInfoId
+      type: String_1
+    - name: gender
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: lockoutType
+      type: String_1
+    - name: maritalStatus
+      type: Enum
+    - name: petInfo
+      type: "[String_1]"
+    - name: previouslyMarriedIndicator
+      type: Boolean_1
+    - name: text
+      type: String_1
+    - name: vipIndicator
+      type: Boolean_1
+  graphql:
+    typeName: InsertProfileCustomersObject
+    inputTypeName: InsertProfileCustomersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_customers_object
+      fieldMapping:
+        birthDayId:
+          column:
+            name: birth_day_id
+        childQuantity:
+          column:
+            name: child_quantity
+        currencyCode:
+          column:
+            name: currency_code
+        customerValue:
+          column:
+            name: customer_value
+        deceased:
+          column:
+            name: deceased
+        decimalPlaces:
+          column:
+            name: decimal_places
+        employerInfoId:
+          column:
+            name: employer_info_id
+        gender:
+          column:
+            name: gender
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        lockoutType:
+          column:
+            name: lockout_type
+        maritalStatus:
+          column:
+            name: marital_status
+        petInfo:
+          column:
+            name: pet_info
+        previouslyMarriedIndicator:
+          column:
+            name: previously_married_indicator
+        text:
+          column:
+            name: text
+        vipIndicator:
+          column:
+            name: vip_indicator
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCustomersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - birthDayId
+          - childQuantity
+          - currencyCode
+          - customerValue
+          - deceased
+          - decimalPlaces
+          - employerInfoId
+          - gender
+          - id
+          - languageCode
+          - lockoutType
+          - maritalStatus
+          - petInfo
+          - previouslyMarriedIndicator
+          - text
+          - vipIndicator
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCustomersResponse
+  description: Responses from the 'insert_profile_customers' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCustomers!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileCustomersResponse
+    inputTypeName: InsertProfileCustomersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_customers_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCustomersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileCustomers
+  outputType: InsertProfileCustomersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileCustomersObject!]!"
+    - name: postCheck
+      type: ProfileCustomersBoolExp
+      description: Insert permission predicate over the 'profile_customers' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_customers
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileCustomers
+    rootFieldKind: Mutation
+  description: Insert into the profile_customers table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileCustomers
+  permissions:
+    - role: admin
+      allowExecution: true
+

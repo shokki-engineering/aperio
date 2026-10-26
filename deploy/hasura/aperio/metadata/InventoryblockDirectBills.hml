@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockDirectBills
+  fields:
+    - name: addressId
+      type: String_1
+    - name: billingNumber
+      type: String_1
+    - name: companyDisplayNameId
+      type: String_1
+    - name: directBillId
+      type: String_1
+    - name: emailId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: telephoneId
+      type: String_1
+  graphql:
+    typeName: InventoryblockDirectBills
+    inputTypeName: InventoryblockDirectBillsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_direct_bills
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        billingNumber:
+          column:
+            name: billing_number
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        directBillId:
+          column:
+            name: direct_bill_id
+        emailId:
+          column:
+            name: email_id
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        telephoneId:
+          column:
+            name: telephone_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockDirectBills
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - billingNumber
+          - companyDisplayNameId
+          - directBillId
+          - emailId
+          - id
+          - shareMarketInd
+          - shareSynchInd
+          - telephoneId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockDirectBillsBoolExp
+  operand:
+    object:
+      type: InventoryblockDirectBills
+      comparableFields:
+        - fieldName: addressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: billingNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: directBillId
+          booleanExpressionType: TextBoolExp
+        - fieldName: emailId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareSynchIndBoolExp
+        - fieldName: telephoneId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockDirectBillsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockDirectBillsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockDirectBills
+      aggregatableFields:
+        - fieldName: addressId
+          aggregateExpression: TextAggExp
+        - fieldName: billingNumber
+          aggregateExpression: TextAggExp
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: directBillId
+          aggregateExpression: TextAggExp
+        - fieldName: emailId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: InventoryblockInventoryblockGuaranteeGuaranteeAcceptedShareSynchIndAggExp
+        - fieldName: telephoneId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockDirectBillsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockDirectBillsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockDirectBills
+      orderableFields:
+        - fieldName: addressId
+          orderByExpression: String1OrderByExp
+        - fieldName: billingNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: directBillId
+          orderByExpression: String1OrderByExp
+        - fieldName: emailId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: telephoneId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockDirectBillsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockDirectBills
+  objectType: InventoryblockDirectBills
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_direct_bills
+  filterExpressionType: InventoryblockDirectBillsBoolExp
+  aggregateExpression: InventoryblockDirectBillsAggExp
+  orderByExpression: InventoryblockDirectBillsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockDirectBills
+      subscription:
+        rootField: inventoryblockDirectBills
+    selectUniques:
+      - queryRootField: inventoryblockDirectBillsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockDirectBillsById
+    filterInputTypeName: InventoryblockDirectBillsFilterInput
+    aggregate:
+      queryRootField: inventoryblockDirectBillsAggregate
+      subscription:
+        rootField: inventoryblockDirectBillsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockDirectBills
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

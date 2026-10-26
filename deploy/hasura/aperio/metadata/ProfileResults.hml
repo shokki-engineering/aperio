@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileResults
+  fields:
+    - name: cavv
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: paResStatus
+      type: String_1
+    - name: signatureVerfication
+      type: String_1
+    - name: transactionId
+      type: String_1
+    - name: xid
+      type: String_1
+  graphql:
+    typeName: ProfileResults
+    inputTypeName: ProfileResultsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_results
+      fieldMapping:
+        cavv:
+          column:
+            name: cavv
+        id:
+          column:
+            name: id
+        paResStatus:
+          column:
+            name: pa_res_status
+        signatureVerfication:
+          column:
+            name: signature_verfication
+        transactionId:
+          column:
+            name: transaction_id
+        xid:
+          column:
+            name: xid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileResults
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cavv
+          - id
+          - paResStatus
+          - signatureVerfication
+          - transactionId
+          - xid
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileResultsBoolExp
+  operand:
+    object:
+      type: ProfileResults
+      comparableFields:
+        - fieldName: cavv
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: paResStatus
+          booleanExpressionType: TextBoolExp
+        - fieldName: signatureVerfication
+          booleanExpressionType: TextBoolExp
+        - fieldName: transactionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: xid
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileResultsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileResultsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileResults
+      aggregatableFields:
+        - fieldName: cavv
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: paResStatus
+          aggregateExpression: TextAggExp
+        - fieldName: signatureVerfication
+          aggregateExpression: TextAggExp
+        - fieldName: transactionId
+          aggregateExpression: TextAggExp
+        - fieldName: xid
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileResultsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileResultsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileResults
+      orderableFields:
+        - fieldName: cavv
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: paResStatus
+          orderByExpression: String1OrderByExp
+        - fieldName: signatureVerfication
+          orderByExpression: String1OrderByExp
+        - fieldName: transactionId
+          orderByExpression: String1OrderByExp
+        - fieldName: xid
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileResultsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileResults
+  objectType: ProfileResults
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_results
+  filterExpressionType: ProfileResultsBoolExp
+  aggregateExpression: ProfileResultsAggExp
+  orderByExpression: ProfileResultsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileResults
+      subscription:
+        rootField: profileResults
+    selectUniques:
+      - queryRootField: profileResultsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileResultsById
+    filterInputTypeName: ProfileResultsFilterInput
+    aggregate:
+      queryRootField: profileResultsAggregate
+      subscription:
+        rootField: profileResultsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileResults
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

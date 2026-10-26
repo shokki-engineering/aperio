@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventDaysLink
+  fields:
+    - name: dayNumber
+      type: Int32!
+    - name: eventDaysId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: EventDaysLink
+    inputTypeName: EventDaysLinkInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_days_link
+      fieldMapping:
+        dayNumber:
+          column:
+            name: day_number
+        eventDaysId:
+          column:
+            name: event_days_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventDaysLink
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayNumber
+          - eventDaysId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventDaysLinkBoolExp
+  operand:
+    object:
+      type: EventDaysLink
+      comparableFields:
+        - fieldName: dayNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: eventDaysId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventDaysLinkBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventDaysLinkAggExp
+  operand:
+    object:
+      aggregatedType: EventDaysLink
+      aggregatableFields:
+        - fieldName: dayNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: eventDaysId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventDaysLinkAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventDaysLinkOrderByExp
+  operand:
+    object:
+      orderedType: EventDaysLink
+      orderableFields:
+        - fieldName: dayNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: eventDaysId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventDaysLinkOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventDaysLink
+  objectType: EventDaysLink
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_days_link
+  filterExpressionType: EventDaysLinkBoolExp
+  aggregateExpression: EventDaysLinkAggExp
+  orderByExpression: EventDaysLinkOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventDaysLink
+      subscription:
+        rootField: eventDaysLink
+    selectUniques:
+      - queryRootField: eventDaysLinkById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventDaysLinkById
+    filterInputTypeName: EventDaysLinkFilterInput
+    aggregate:
+      queryRootField: eventDaysLinkAggregate
+      subscription:
+        rootField: eventDaysLinkAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventDaysLink
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

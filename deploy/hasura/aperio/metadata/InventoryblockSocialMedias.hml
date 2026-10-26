@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockSocialMedias
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferredContact
+      type: Boolean_1
+    - name: shareMarketInd
+      type: Enum
+    - name: type
+      type: String_1!
+    - name: userDisplayName
+      type: String_1!
+  graphql:
+    typeName: InventoryblockSocialMedias
+    inputTypeName: InventoryblockSocialMediasInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_social_medias
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        id:
+          column:
+            name: id
+        preferredContact:
+          column:
+            name: preferred_contact
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        type:
+          column:
+            name: type
+        userDisplayName:
+          column:
+            name: user_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockSocialMedias
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - id
+          - preferredContact
+          - shareMarketInd
+          - type
+          - userDisplayName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockSocialMediasBoolExp
+  operand:
+    object:
+      type: InventoryblockSocialMedias
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferredContact
+          booleanExpressionType: BoolBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: InventoryblockInventoryblockSocialMediaShareMarketIndBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: userDisplayName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockSocialMediasBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockSocialMediasAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockSocialMedias
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferredContact
+          aggregateExpression: BoolAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: InventoryblockInventoryblockSocialMediaShareMarketIndAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: userDisplayName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockSocialMediasAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockSocialMediasOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockSocialMedias
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferredContact
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: userDisplayName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockSocialMediasOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockSocialMedias
+  objectType: InventoryblockSocialMedias
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_social_medias
+  filterExpressionType: InventoryblockSocialMediasBoolExp
+  aggregateExpression: InventoryblockSocialMediasAggExp
+  orderByExpression: InventoryblockSocialMediasOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockSocialMedias
+      subscription:
+        rootField: inventoryblockSocialMedias
+    selectUniques:
+      - queryRootField: inventoryblockSocialMediasById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockSocialMediasById
+    filterInputTypeName: InventoryblockSocialMediasFilterInput
+    aggregate:
+      queryRootField: inventoryblockSocialMediasAggregate
+      subscription:
+        rootField: inventoryblockSocialMediasAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockSocialMedias
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

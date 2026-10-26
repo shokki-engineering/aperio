@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: MeetingrfpDocuments
+    inputTypeName: MeetingrfpDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpDocumentsBoolExp
+  operand:
+    object:
+      type: MeetingrfpDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: MeetingrfpMeetingrfpDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: MeetingrfpMeetingrfpDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpDocuments
+  objectType: MeetingrfpDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_documents
+  filterExpressionType: MeetingrfpDocumentsBoolExp
+  aggregateExpression: MeetingrfpDocumentsAggExp
+  orderByExpression: MeetingrfpDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpDocuments
+      subscription:
+        rootField: meetingrfpDocuments
+    selectUniques:
+      - queryRootField: meetingrfpDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpDocumentsById
+    filterInputTypeName: MeetingrfpDocumentsFilterInput
+    aggregate:
+      queryRootField: meetingrfpDocumentsAggregate
+      subscription:
+        rootField: meetingrfpDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

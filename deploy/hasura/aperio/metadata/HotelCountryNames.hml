@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelCountryNames
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelCountryNames
+    inputTypeName: HotelCountryNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_country_names
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelCountryNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelCountryNamesBoolExp
+  operand:
+    object:
+      type: HotelCountryNames
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelCountryNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelCountryNamesAggExp
+  operand:
+    object:
+      aggregatedType: HotelCountryNames
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelCountryNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelCountryNamesOrderByExp
+  operand:
+    object:
+      orderedType: HotelCountryNames
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelCountryNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelCountryNames
+  objectType: HotelCountryNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_country_names
+  filterExpressionType: HotelCountryNamesBoolExp
+  aggregateExpression: HotelCountryNamesAggExp
+  orderByExpression: HotelCountryNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelCountryNames
+      subscription:
+        rootField: hotelCountryNames
+    selectUniques:
+      - queryRootField: hotelCountryNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelCountryNamesById
+    filterInputTypeName: HotelCountryNamesFilterInput
+    aggregate:
+      queryRootField: hotelCountryNamesAggregate
+      subscription:
+        rootField: hotelCountryNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelCountryNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

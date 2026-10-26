@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: TransientrfpAccountSpecificInfos
+  fields:
+    - name: additionalHotelIndicator
+      type: Boolean_1
+    - name: cityPotentialRoomQuantity
+      type: Int32
+    - name: hotelPotentialRoomQuantity
+      type: Int32
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: TransientrfpAccountSpecificInfos
+    inputTypeName: TransientrfpAccountSpecificInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: transientrfp_account_specific_infos
+      fieldMapping:
+        additionalHotelIndicator:
+          column:
+            name: additional_hotel_indicator
+        cityPotentialRoomQuantity:
+          column:
+            name: city_potential_room_quantity
+        hotelPotentialRoomQuantity:
+          column:
+            name: hotel_potential_room_quantity
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: TransientrfpAccountSpecificInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalHotelIndicator
+          - cityPotentialRoomQuantity
+          - hotelPotentialRoomQuantity
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: TransientrfpAccountSpecificInfosBoolExp
+  operand:
+    object:
+      type: TransientrfpAccountSpecificInfos
+      comparableFields:
+        - fieldName: additionalHotelIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: cityPotentialRoomQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: hotelPotentialRoomQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: TransientrfpAccountSpecificInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: TransientrfpAccountSpecificInfosAggExp
+  operand:
+    object:
+      aggregatedType: TransientrfpAccountSpecificInfos
+      aggregatableFields:
+        - fieldName: additionalHotelIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: cityPotentialRoomQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: hotelPotentialRoomQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: TransientrfpAccountSpecificInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: TransientrfpAccountSpecificInfosOrderByExp
+  operand:
+    object:
+      orderedType: TransientrfpAccountSpecificInfos
+      orderableFields:
+        - fieldName: additionalHotelIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: cityPotentialRoomQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: hotelPotentialRoomQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: TransientrfpAccountSpecificInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: TransientrfpAccountSpecificInfos
+  objectType: TransientrfpAccountSpecificInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: transientrfp_account_specific_infos
+  filterExpressionType: TransientrfpAccountSpecificInfosBoolExp
+  aggregateExpression: TransientrfpAccountSpecificInfosAggExp
+  orderByExpression: TransientrfpAccountSpecificInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: transientrfpAccountSpecificInfos
+      subscription:
+        rootField: transientrfpAccountSpecificInfos
+    selectUniques:
+      - queryRootField: transientrfpAccountSpecificInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: transientrfpAccountSpecificInfosById
+    filterInputTypeName: TransientrfpAccountSpecificInfosFilterInput
+    aggregate:
+      queryRootField: transientrfpAccountSpecificInfosAggregate
+      subscription:
+        rootField: transientrfpAccountSpecificInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: TransientrfpAccountSpecificInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

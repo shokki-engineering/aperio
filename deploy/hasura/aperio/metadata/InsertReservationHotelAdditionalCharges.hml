@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationHotelAdditionalChargesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: postTaxAmountId
+      type: String_1
+    - name: preTaxAmountId
+      type: String_1
+  graphql:
+    typeName: InsertReservationHotelAdditionalChargesObject
+    inputTypeName: InsertReservationHotelAdditionalChargesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_hotel_additional_charges_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postTaxAmountId:
+          column:
+            name: post_tax_amount_id
+        preTaxAmountId:
+          column:
+            name: pre_tax_amount_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationHotelAdditionalChargesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postTaxAmountId
+          - preTaxAmountId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationHotelAdditionalChargesResponse
+  description: Responses from the 'insert_reservation_hotel_additional_charges' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationHotelAdditionalCharges!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationHotelAdditionalChargesResponse
+    inputTypeName: InsertReservationHotelAdditionalChargesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_hotel_additional_charges_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationHotelAdditionalChargesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationHotelAdditionalCharges
+  outputType: InsertReservationHotelAdditionalChargesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationHotelAdditionalChargesObject!]!"
+    - name: postCheck
+      type: ReservationHotelAdditionalChargesBoolExp
+      description: Insert permission predicate over the
+        'reservation_hotel_additional_charges' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_hotel_additional_charges
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationHotelAdditionalCharges
+    rootFieldKind: Mutation
+  description: Insert into the reservation_hotel_additional_charges table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationHotelAdditionalCharges
+  permissions:
+    - role: admin
+      allowExecution: true
+

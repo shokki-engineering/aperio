@@ -1,0 +1,141 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationImageItemsId
+  description: Update the 'id' column in the 'reservation_image_items' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationImageItemsId
+    inputTypeName: UpdateColumnReservationImageItemsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_image_items_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationImageItemsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationImageItemsByIdUpdateColumns
+  description: Update the columns of the 'reservation_image_items' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationImageItemsId
+      description: Update the 'id' column in the 'reservation_image_items' collection.
+  graphql:
+    typeName: UpdateReservationImageItemsByIdUpdateColumns
+    inputTypeName: UpdateReservationImageItemsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_image_items_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationImageItemsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationImageItemsByIdResponse
+  description: Responses from the 'update_reservation_image_items_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationImageItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationImageItemsByIdResponse
+    inputTypeName: UpdateReservationImageItemsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_image_items_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationImageItemsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationImageItemsById
+  outputType: UpdateReservationImageItemsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationImageItemsBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_image_items' collection
+    - name: preCheck
+      type: ReservationImageItemsBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_image_items' collection
+    - name: updateColumns
+      type: UpdateReservationImageItemsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_image_items_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationImageItemsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_image_items' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationImageItemsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

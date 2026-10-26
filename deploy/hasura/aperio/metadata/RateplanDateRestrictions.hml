@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanDateRestrictions
+  fields:
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: offerRuleId
+      type: String_1!
+    - name: restrictionType
+      type: Enum
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: RateplanDateRestrictions
+    inputTypeName: RateplanDateRestrictionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_date_restrictions
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        offerRuleId:
+          column:
+            name: offer_rule_id
+        restrictionType:
+          column:
+            name: restriction_type
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanDateRestrictions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - offerRuleId
+          - restrictionType
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanDateRestrictionsBoolExp
+  operand:
+    object:
+      type: RateplanDateRestrictions
+      comparableFields:
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offerRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: restrictionType
+          booleanExpressionType: RateplanRestrictionTypeBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanDateRestrictionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanDateRestrictionsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanDateRestrictions
+      aggregatableFields:
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offerRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: restrictionType
+          aggregateExpression: RateplanRestrictionTypeAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanDateRestrictionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanDateRestrictionsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanDateRestrictions
+      orderableFields:
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offerRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: restrictionType
+          orderByExpression: EnumOrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanDateRestrictionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanDateRestrictions
+  objectType: RateplanDateRestrictions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_date_restrictions
+  filterExpressionType: RateplanDateRestrictionsBoolExp
+  aggregateExpression: RateplanDateRestrictionsAggExp
+  orderByExpression: RateplanDateRestrictionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanDateRestrictions
+      subscription:
+        rootField: rateplanDateRestrictions
+    selectUniques:
+      - queryRootField: rateplanDateRestrictionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanDateRestrictionsById
+    filterInputTypeName: RateplanDateRestrictionsFilterInput
+    aggregate:
+      queryRootField: rateplanDateRestrictionsAggregate
+      subscription:
+        rootField: rateplanDateRestrictionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanDateRestrictions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionLosPatternsObject
+  fields:
+    - name: fullPatternLos
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRestrictionLosPatternsObject
+    inputTypeName: InsertRestrictionLosPatternsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_los_patterns_object
+      fieldMapping:
+        fullPatternLos:
+          column:
+            name: full_pattern_los
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionLosPatternsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fullPatternLos
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionLosPatternsResponse
+  description: Responses from the 'insert_restriction_los_patterns' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionLosPatterns!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestrictionLosPatternsResponse
+    inputTypeName: InsertRestrictionLosPatternsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_los_patterns_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionLosPatternsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestrictionLosPatterns
+  outputType: InsertRestrictionLosPatternsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestrictionLosPatternsObject!]!"
+    - name: postCheck
+      type: RestrictionLosPatternsBoolExp
+      description: Insert permission predicate over the 'restriction_los_patterns'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restriction_los_patterns
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestrictionLosPatterns
+    rootFieldKind: Mutation
+  description: Insert into the restriction_los_patterns table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestrictionLosPatterns
+  permissions:
+    - role: admin
+      allowExecution: true
+

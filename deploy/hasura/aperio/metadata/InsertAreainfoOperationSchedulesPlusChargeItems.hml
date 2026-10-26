@@ -1,0 +1,140 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoOperationSchedulesPlusChargeItemsObject
+  fields:
+    - name: attractionId
+      type: String_1!
+    - name: displayName
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: recreationId
+      type: String_1!
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: InsertAreainfoOperationSchedulesPlusChargeItemsObject
+    inputTypeName: InsertAreainfoOperationSchedulesPlusChargeItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_operation_schedules_plus_charge_items_object
+      fieldMapping:
+        attractionId:
+          column:
+            name: attraction_id
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        recreationId:
+          column:
+            name: recreation_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoOperationSchedulesPlusChargeItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attractionId
+          - displayName
+          - duration
+          - endId
+          - id
+          - recreationId
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoOperationSchedulesPlusChargeItemsResponse
+  description: Responses from the
+    'insert_areainfo_operation_schedules_plus_charge_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoOperationSchedulesPlusChargeItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoOperationSchedulesPlusChargeItemsResponse
+    inputTypeName: InsertAreainfoOperationSchedulesPlusChargeItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_operation_schedules_plus_charge_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoOperationSchedulesPlusChargeItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoOperationSchedulesPlusChargeItems
+  outputType: InsertAreainfoOperationSchedulesPlusChargeItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoOperationSchedulesPlusChargeItemsObject!]!"
+    - name: postCheck
+      type: AreainfoOperationSchedulesPlusChargeItemsBoolExp
+      description: Insert permission predicate over the
+        'areainfo_operation_schedules_plus_charge_items' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_operation_schedules_plus_charge_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoOperationSchedulesPlusChargeItems
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_operation_schedules_plus_charge_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoOperationSchedulesPlusChargeItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

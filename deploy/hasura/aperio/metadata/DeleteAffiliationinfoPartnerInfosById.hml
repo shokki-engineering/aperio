@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAffiliationinfoPartnerInfosByIdResponse
+  description: Responses from the 'delete_affiliationinfo_partner_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoPartnerInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAffiliationinfoPartnerInfosByIdResponse
+    inputTypeName: DeleteAffiliationinfoPartnerInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_affiliationinfo_partner_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAffiliationinfoPartnerInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAffiliationinfoPartnerInfosById
+  outputType: DeleteAffiliationinfoPartnerInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AffiliationinfoPartnerInfosBoolExp
+      description: Delete permission predicate over the
+        'affiliationinfo_partner_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_affiliationinfo_partner_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAffiliationinfoPartnerInfosById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'affiliationinfo_partner_infos' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAffiliationinfoPartnerInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

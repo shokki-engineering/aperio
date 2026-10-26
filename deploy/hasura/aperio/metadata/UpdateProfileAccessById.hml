@@ -1,0 +1,340 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccessAccessCommentId
+  description: Update the 'access_comment_id' column in the 'profile_access' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccessAccessCommentId
+    inputTypeName: UpdateColumnProfileAccessAccessCommentIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_access_access_comment_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccessAccessCommentId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccessAccessPersonId
+  description: Update the 'access_person_id' column in the 'profile_access' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccessAccessPersonId
+    inputTypeName: UpdateColumnProfileAccessAccessPersonIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_access_access_person_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccessAccessPersonId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccessAccessesId
+  description: Update the 'accesses_id' column in the 'profile_access' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccessAccessesId
+    inputTypeName: UpdateColumnProfileAccessAccessesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_access_accesses_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccessAccessesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccessActionDateTime
+  description: Update the 'action_date_time' column in the 'profile_access' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccessActionDateTime
+    inputTypeName: UpdateColumnProfileAccessActionDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_access_action_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccessActionDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccessActionType
+  description: Update the 'action_type' column in the 'profile_access' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccessActionType
+    inputTypeName: UpdateColumnProfileAccessActionTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_access_action_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccessActionType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccessId
+  description: Update the 'id' column in the 'profile_access' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccessId
+    inputTypeName: UpdateColumnProfileAccessIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_access_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccessId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAccessByIdUpdateColumns
+  description: Update the columns of the 'profile_access' collection
+  fields:
+    - name: accessCommentId
+      type: UpdateColumnProfileAccessAccessCommentId
+      description: Update the 'access_comment_id' column in the 'profile_access' collection.
+    - name: accessPersonId
+      type: UpdateColumnProfileAccessAccessPersonId
+      description: Update the 'access_person_id' column in the 'profile_access' collection.
+    - name: accessesId
+      type: UpdateColumnProfileAccessAccessesId
+      description: Update the 'accesses_id' column in the 'profile_access' collection.
+    - name: actionDateTime
+      type: UpdateColumnProfileAccessActionDateTime
+      description: Update the 'action_date_time' column in the 'profile_access' collection.
+    - name: actionType
+      type: UpdateColumnProfileAccessActionType
+      description: Update the 'action_type' column in the 'profile_access' collection.
+    - name: id
+      type: UpdateColumnProfileAccessId
+      description: Update the 'id' column in the 'profile_access' collection.
+  graphql:
+    typeName: UpdateProfileAccessByIdUpdateColumns
+    inputTypeName: UpdateProfileAccessByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_access_by_id_update_columns
+      fieldMapping:
+        accessCommentId:
+          column:
+            name: access_comment_id
+        accessPersonId:
+          column:
+            name: access_person_id
+        accessesId:
+          column:
+            name: accesses_id
+        actionDateTime:
+          column:
+            name: action_date_time
+        actionType:
+          column:
+            name: action_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAccessByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessCommentId
+          - accessPersonId
+          - accessesId
+          - actionDateTime
+          - actionType
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAccessByIdResponse
+  description: Responses from the 'update_profile_access_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAccess!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileAccessByIdResponse
+    inputTypeName: UpdateProfileAccessByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_access_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAccessByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileAccessById
+  outputType: UpdateProfileAccessByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileAccessBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_access' collection
+    - name: preCheck
+      type: ProfileAccessBoolExp
+      description: Update permission pre-condition predicate over the 'profile_access'
+        collection
+    - name: updateColumns
+      type: UpdateProfileAccessByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_access_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileAccessById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_access' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileAccessById
+  permissions:
+    - role: admin
+      allowExecution: true
+

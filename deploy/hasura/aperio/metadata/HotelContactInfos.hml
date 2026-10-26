@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelContactInfos
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: location
+      type: Enum
+  graphql:
+    typeName: HotelContactInfos
+    inputTypeName: HotelContactInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_contact_infos
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        location:
+          column:
+            name: location
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelContactInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - location
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelContactInfosBoolExp
+  operand:
+    object:
+      type: HotelContactInfos
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: location
+          booleanExpressionType: HotelHotelContactLocationBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelContactInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelContactInfosAggExp
+  operand:
+    object:
+      aggregatedType: HotelContactInfos
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: location
+          aggregateExpression: HotelHotelContactLocationAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelContactInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelContactInfosOrderByExp
+  operand:
+    object:
+      orderedType: HotelContactInfos
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: location
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelContactInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelContactInfos
+  objectType: HotelContactInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_contact_infos
+  filterExpressionType: HotelContactInfosBoolExp
+  aggregateExpression: HotelContactInfosAggExp
+  orderByExpression: HotelContactInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelContactInfos
+      subscription:
+        rootField: hotelContactInfos
+    selectUniques:
+      - queryRootField: hotelContactInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelContactInfosById
+    filterInputTypeName: HotelContactInfosFilterInput
+    aggregate:
+      queryRootField: hotelContactInfosAggregate
+      subscription:
+        rootField: hotelContactInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelContactInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

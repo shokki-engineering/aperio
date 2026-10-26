@@ -1,0 +1,121 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoEndDateWindowsObject
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: InsertAffiliationinfoEndDateWindowsObject
+    inputTypeName: InsertAffiliationinfoEndDateWindowsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_end_date_windows_object
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoEndDateWindowsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAffiliationinfoEndDateWindowsResponse
+  description: Responses from the 'insert_affiliationinfo_end_date_windows' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoEndDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAffiliationinfoEndDateWindowsResponse
+    inputTypeName: InsertAffiliationinfoEndDateWindowsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_affiliationinfo_end_date_windows_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAffiliationinfoEndDateWindowsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAffiliationinfoEndDateWindows
+  outputType: InsertAffiliationinfoEndDateWindowsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAffiliationinfoEndDateWindowsObject!]!"
+    - name: postCheck
+      type: AffiliationinfoEndDateWindowsBoolExp
+      description: Insert permission predicate over the
+        'affiliationinfo_end_date_windows' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_affiliationinfo_end_date_windows
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAffiliationinfoEndDateWindows
+    rootFieldKind: Mutation
+  description: Insert into the affiliationinfo_end_date_windows table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAffiliationinfoEndDateWindows
+  permissions:
+    - role: admin
+      allowExecution: true
+

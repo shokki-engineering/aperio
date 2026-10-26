@@ -1,0 +1,271 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileOrgMemberNames
+  fields:
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: level
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+    - name: title
+      type: String_1
+  graphql:
+    typeName: ProfileOrgMemberNames
+    inputTypeName: ProfileOrgMemberNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_org_member_names
+      fieldMapping:
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        level:
+          column:
+            name: level
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+        title:
+          column:
+            name: title
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileOrgMemberNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - level
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+          - title
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileOrgMemberNamesBoolExp
+  operand:
+    object:
+      type: ProfileOrgMemberNames
+      comparableFields:
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: level
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameType
+          booleanExpressionType: ProfileProfileNameTypeBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ProfileAccessesShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ProfileAccessesShareSynchIndBoolExp
+        - fieldName: surname
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnamePrefix
+          booleanExpressionType: TextBoolExp
+        - fieldName: title
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileOrgMemberNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileOrgMemberNamesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileOrgMemberNames
+      aggregatableFields:
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: level
+          aggregateExpression: TextAggExp
+        - fieldName: nameType
+          aggregateExpression: ProfileProfileNameTypeAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ProfileAccessesShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ProfileAccessesShareSynchIndAggExp
+        - fieldName: surname
+          aggregateExpression: TextAggExp
+        - fieldName: surnamePrefix
+          aggregateExpression: TextAggExp
+        - fieldName: title
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileOrgMemberNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileOrgMemberNamesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileOrgMemberNames
+      orderableFields:
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: level
+          orderByExpression: String1OrderByExp
+        - fieldName: nameType
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: surname
+          orderByExpression: String1OrderByExp
+        - fieldName: surnamePrefix
+          orderByExpression: String1OrderByExp
+        - fieldName: title
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileOrgMemberNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileOrgMemberNames
+  objectType: ProfileOrgMemberNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_org_member_names
+  filterExpressionType: ProfileOrgMemberNamesBoolExp
+  aggregateExpression: ProfileOrgMemberNamesAggExp
+  orderByExpression: ProfileOrgMemberNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileOrgMemberNames
+      subscription:
+        rootField: profileOrgMemberNames
+    selectUniques:
+      - queryRootField: profileOrgMemberNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileOrgMemberNamesById
+    filterInputTypeName: ProfileOrgMemberNamesFilterInput
+    aggregate:
+      queryRootField: profileOrgMemberNamesAggregate
+      subscription:
+        rootField: profileOrgMemberNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileOrgMemberNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockRoomTypeAllocByGuestsObject
+  fields:
+    - name: guestCount
+      type: Int32!
+    - name: id
+      type: String_1!
+    - name: roomTypeAllocationId
+      type: String_1!
+    - name: unitCount
+      type: Int32!
+  graphql:
+    typeName: InsertInventoryblockRoomTypeAllocByGuestsObject
+    inputTypeName: InsertInventoryblockRoomTypeAllocByGuestsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_room_type_alloc_by_guests_object
+      fieldMapping:
+        guestCount:
+          column:
+            name: guest_count
+        id:
+          column:
+            name: id
+        roomTypeAllocationId:
+          column:
+            name: room_type_allocation_id
+        unitCount:
+          column:
+            name: unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockRoomTypeAllocByGuestsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - guestCount
+          - id
+          - roomTypeAllocationId
+          - unitCount
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertInventoryblockRoomTypeAllocByGuestsResponse
+  description: Responses from the
+    'insert_inventoryblock_room_type_alloc_by_guests' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockRoomTypeAllocByGuests!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertInventoryblockRoomTypeAllocByGuestsResponse
+    inputTypeName: InsertInventoryblockRoomTypeAllocByGuestsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_inventoryblock_room_type_alloc_by_guests_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertInventoryblockRoomTypeAllocByGuestsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertInventoryblockRoomTypeAllocByGuests
+  outputType: InsertInventoryblockRoomTypeAllocByGuestsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertInventoryblockRoomTypeAllocByGuestsObject!]!"
+    - name: postCheck
+      type: InventoryblockRoomTypeAllocByGuestsBoolExp
+      description: Insert permission predicate over the
+        'inventoryblock_room_type_alloc_by_guests' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_inventoryblock_room_type_alloc_by_guests
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertInventoryblockRoomTypeAllocByGuests
+    rootFieldKind: Mutation
+  description: Insert into the inventoryblock_room_type_alloc_by_guests table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertInventoryblockRoomTypeAllocByGuests
+  permissions:
+    - role: admin
+      allowExecution: true
+

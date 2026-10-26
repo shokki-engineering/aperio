@@ -1,0 +1,228 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionLengthsOfStaysArrivalDateBased
+  description: Update the 'arrival_date_based' column in the
+    'restriction_lengths_of_stays' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionLengthsOfStaysArrivalDateBased
+    inputTypeName: UpdateColumnRestrictionLengthsOfStaysArrivalDateBasedInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_lengths_of_stays_arrival_date_based
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionLengthsOfStaysArrivalDateBased
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionLengthsOfStaysFixedPatternLength
+  description: Update the 'fixed_pattern_length' column in the
+    'restriction_lengths_of_stays' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionLengthsOfStaysFixedPatternLength
+    inputTypeName: UpdateColumnRestrictionLengthsOfStaysFixedPatternLengthInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_lengths_of_stays_fixed_pattern_length
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionLengthsOfStaysFixedPatternLength
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestrictionLengthsOfStaysId
+  description: Update the 'id' column in the 'restriction_lengths_of_stays' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestrictionLengthsOfStaysId
+    inputTypeName: UpdateColumnRestrictionLengthsOfStaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restriction_lengths_of_stays_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestrictionLengthsOfStaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestrictionLengthsOfStaysByIdUpdateColumns
+  description: Update the columns of the 'restriction_lengths_of_stays' collection
+  fields:
+    - name: arrivalDateBased
+      type: UpdateColumnRestrictionLengthsOfStaysArrivalDateBased
+      description: Update the 'arrival_date_based' column in the
+        'restriction_lengths_of_stays' collection.
+    - name: fixedPatternLength
+      type: UpdateColumnRestrictionLengthsOfStaysFixedPatternLength
+      description: Update the 'fixed_pattern_length' column in the
+        'restriction_lengths_of_stays' collection.
+    - name: id
+      type: UpdateColumnRestrictionLengthsOfStaysId
+      description: Update the 'id' column in the 'restriction_lengths_of_stays' collection.
+  graphql:
+    typeName: UpdateRestrictionLengthsOfStaysByIdUpdateColumns
+    inputTypeName: UpdateRestrictionLengthsOfStaysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restriction_lengths_of_stays_by_id_update_columns
+      fieldMapping:
+        arrivalDateBased:
+          column:
+            name: arrival_date_based
+        fixedPatternLength:
+          column:
+            name: fixed_pattern_length
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestrictionLengthsOfStaysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - arrivalDateBased
+          - fixedPatternLength
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestrictionLengthsOfStaysByIdResponse
+  description: Responses from the 'update_restriction_lengths_of_stays_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionLengthsOfStays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRestrictionLengthsOfStaysByIdResponse
+    inputTypeName: UpdateRestrictionLengthsOfStaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restriction_lengths_of_stays_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestrictionLengthsOfStaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRestrictionLengthsOfStaysById
+  outputType: UpdateRestrictionLengthsOfStaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RestrictionLengthsOfStaysBoolExp
+      description: Update permission post-condition predicate over the
+        'restriction_lengths_of_stays' collection
+    - name: preCheck
+      type: RestrictionLengthsOfStaysBoolExp
+      description: Update permission pre-condition predicate over the
+        'restriction_lengths_of_stays' collection
+    - name: updateColumns
+      type: UpdateRestrictionLengthsOfStaysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_restriction_lengths_of_stays_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRestrictionLengthsOfStaysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'restriction_lengths_of_stays' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRestrictionLengthsOfStaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

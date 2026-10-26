@@ -1,0 +1,309 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBusinessSrvcPrefsBusinessSrvcType
+  description: Update the 'business_srvc_type' column in the
+    'profile_business_srvc_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBusinessSrvcPrefsBusinessSrvcType
+    inputTypeName: UpdateColumnProfileBusinessSrvcPrefsBusinessSrvcTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_business_srvc_prefs_business_srvc_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBusinessSrvcPrefsBusinessSrvcType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBusinessSrvcPrefsHotelPrefId
+  description: Update the 'hotel_pref_id' column in the
+    'profile_business_srvc_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBusinessSrvcPrefsHotelPrefId
+    inputTypeName: UpdateColumnProfileBusinessSrvcPrefsHotelPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_business_srvc_prefs_hotel_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBusinessSrvcPrefsHotelPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBusinessSrvcPrefsId
+  description: Update the 'id' column in the 'profile_business_srvc_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBusinessSrvcPrefsId
+    inputTypeName: UpdateColumnProfileBusinessSrvcPrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_business_srvc_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBusinessSrvcPrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBusinessSrvcPrefsPreferLevel
+  description: Update the 'prefer_level' column in the
+    'profile_business_srvc_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBusinessSrvcPrefsPreferLevel
+    inputTypeName: UpdateColumnProfileBusinessSrvcPrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_business_srvc_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBusinessSrvcPrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBusinessSrvcPrefsValue
+  description: Update the 'value' column in the 'profile_business_srvc_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBusinessSrvcPrefsValue
+    inputTypeName: UpdateColumnProfileBusinessSrvcPrefsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_business_srvc_prefs_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBusinessSrvcPrefsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileBusinessSrvcPrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_business_srvc_prefs' collection
+  fields:
+    - name: businessSrvcType
+      type: UpdateColumnProfileBusinessSrvcPrefsBusinessSrvcType
+      description: Update the 'business_srvc_type' column in the
+        'profile_business_srvc_prefs' collection.
+    - name: hotelPrefId
+      type: UpdateColumnProfileBusinessSrvcPrefsHotelPrefId
+      description: Update the 'hotel_pref_id' column in the
+        'profile_business_srvc_prefs' collection.
+    - name: id
+      type: UpdateColumnProfileBusinessSrvcPrefsId
+      description: Update the 'id' column in the 'profile_business_srvc_prefs' collection.
+    - name: preferLevel
+      type: UpdateColumnProfileBusinessSrvcPrefsPreferLevel
+      description: Update the 'prefer_level' column in the
+        'profile_business_srvc_prefs' collection.
+    - name: value
+      type: UpdateColumnProfileBusinessSrvcPrefsValue
+      description: Update the 'value' column in the 'profile_business_srvc_prefs'
+        collection.
+  graphql:
+    typeName: UpdateProfileBusinessSrvcPrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileBusinessSrvcPrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_business_srvc_prefs_by_id_update_columns
+      fieldMapping:
+        businessSrvcType:
+          column:
+            name: business_srvc_type
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileBusinessSrvcPrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - businessSrvcType
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileBusinessSrvcPrefsByIdResponse
+  description: Responses from the 'update_profile_business_srvc_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileBusinessSrvcPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileBusinessSrvcPrefsByIdResponse
+    inputTypeName: UpdateProfileBusinessSrvcPrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_business_srvc_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileBusinessSrvcPrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileBusinessSrvcPrefsById
+  outputType: UpdateProfileBusinessSrvcPrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileBusinessSrvcPrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_business_srvc_prefs' collection
+    - name: preCheck
+      type: ProfileBusinessSrvcPrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_business_srvc_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileBusinessSrvcPrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_business_srvc_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileBusinessSrvcPrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_business_srvc_prefs' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileBusinessSrvcPrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

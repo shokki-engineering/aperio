@@ -1,0 +1,174 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestaurantParagraphsObject
+  fields:
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: feeId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: taxId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertRestaurantParagraphsObject
+    inputTypeName: InsertRestaurantParagraphsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restaurant_paragraphs_object
+      fieldMapping:
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        feeId:
+          column:
+            name: fee_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        taxId:
+          column:
+            name: tax_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestaurantParagraphsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createDateTime
+          - creatorId
+          - displayName
+          - feeId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - taxId
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestaurantParagraphsResponse
+  description: Responses from the 'insert_restaurant_paragraphs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantParagraphs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestaurantParagraphsResponse
+    inputTypeName: InsertRestaurantParagraphsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restaurant_paragraphs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestaurantParagraphsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestaurantParagraphs
+  outputType: InsertRestaurantParagraphsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestaurantParagraphsObject!]!"
+    - name: postCheck
+      type: RestaurantParagraphsBoolExp
+      description: Insert permission predicate over the 'restaurant_paragraphs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restaurant_paragraphs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestaurantParagraphs
+    rootFieldKind: Mutation
+  description: Insert into the restaurant_paragraphs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestaurantParagraphs
+  permissions:
+    - role: admin
+      allowExecution: true
+

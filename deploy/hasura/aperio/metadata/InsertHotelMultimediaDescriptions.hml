@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelMultimediaDescriptionsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: InsertHotelMultimediaDescriptionsObject
+    inputTypeName: InsertHotelMultimediaDescriptionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_multimedia_descriptions_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelMultimediaDescriptionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - lastUpdateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelMultimediaDescriptionsResponse
+  description: Responses from the 'insert_hotel_multimedia_descriptions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelMultimediaDescriptions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelMultimediaDescriptionsResponse
+    inputTypeName: InsertHotelMultimediaDescriptionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_multimedia_descriptions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelMultimediaDescriptionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelMultimediaDescriptions
+  outputType: InsertHotelMultimediaDescriptionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelMultimediaDescriptionsObject!]!"
+    - name: postCheck
+      type: HotelMultimediaDescriptionsBoolExp
+      description: Insert permission predicate over the
+        'hotel_multimedia_descriptions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_multimedia_descriptions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelMultimediaDescriptions
+    rootFieldKind: Mutation
+  description: Insert into the hotel_multimedia_descriptions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelMultimediaDescriptions
+  permissions:
+    - role: admin
+      allowExecution: true
+

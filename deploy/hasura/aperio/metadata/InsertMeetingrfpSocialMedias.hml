@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingrfpSocialMediasObject
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferredContact
+      type: Boolean_1
+    - name: shareMarketInd
+      type: Enum
+    - name: type
+      type: String_1!
+    - name: userDisplayName
+      type: String_1!
+  graphql:
+    typeName: InsertMeetingrfpSocialMediasObject
+    inputTypeName: InsertMeetingrfpSocialMediasObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingrfp_social_medias_object
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        id:
+          column:
+            name: id
+        preferredContact:
+          column:
+            name: preferred_contact
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        type:
+          column:
+            name: type
+        userDisplayName:
+          column:
+            name: user_display_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingrfpSocialMediasObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - id
+          - preferredContact
+          - shareMarketInd
+          - type
+          - userDisplayName
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertMeetingrfpSocialMediasResponse
+  description: Responses from the 'insert_meetingrfp_social_medias' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpSocialMedias!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertMeetingrfpSocialMediasResponse
+    inputTypeName: InsertMeetingrfpSocialMediasResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_meetingrfp_social_medias_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertMeetingrfpSocialMediasResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertMeetingrfpSocialMedias
+  outputType: InsertMeetingrfpSocialMediasResponse!
+  arguments:
+    - name: objects
+      type: "[InsertMeetingrfpSocialMediasObject!]!"
+    - name: postCheck
+      type: MeetingrfpSocialMediasBoolExp
+      description: Insert permission predicate over the 'meetingrfp_social_medias'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_meetingrfp_social_medias
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertMeetingrfpSocialMedias
+    rootFieldKind: Mutation
+  description: Insert into the meetingrfp_social_medias table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertMeetingrfpSocialMedias
+  permissions:
+    - role: admin
+      allowExecution: true
+

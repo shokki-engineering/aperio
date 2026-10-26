@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpStartDateWindows
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: MeetingrfpStartDateWindows
+    inputTypeName: MeetingrfpStartDateWindowsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_start_date_windows
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpStartDateWindows
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpStartDateWindowsBoolExp
+  operand:
+    object:
+      type: MeetingrfpStartDateWindows
+      comparableFields:
+        - fieldName: dow
+          booleanExpressionType: MeetingrfpMeetingrfpDayOfWeekBoolExp
+        - fieldName: earliestId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: latestId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpStartDateWindowsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpStartDateWindowsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpStartDateWindows
+      aggregatableFields:
+        - fieldName: dow
+          aggregateExpression: MeetingrfpMeetingrfpDayOfWeekAggExp
+        - fieldName: earliestId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: latestId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpStartDateWindowsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpStartDateWindowsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpStartDateWindows
+      orderableFields:
+        - fieldName: dow
+          orderByExpression: EnumOrderByExp
+        - fieldName: earliestId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: latestId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpStartDateWindowsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpStartDateWindows
+  objectType: MeetingrfpStartDateWindows
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_start_date_windows
+  filterExpressionType: MeetingrfpStartDateWindowsBoolExp
+  aggregateExpression: MeetingrfpStartDateWindowsAggExp
+  orderByExpression: MeetingrfpStartDateWindowsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpStartDateWindows
+      subscription:
+        rootField: meetingrfpStartDateWindows
+    selectUniques:
+      - queryRootField: meetingrfpStartDateWindowsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpStartDateWindowsById
+    filterInputTypeName: MeetingrfpStartDateWindowsFilterInput
+    aggregate:
+      queryRootField: meetingrfpStartDateWindowsAggregate
+      subscription:
+        rootField: meetingrfpStartDateWindowsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpStartDateWindows
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,266 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyTimeOrDateTimesClockId
+  description: Update the 'clock_id' column in the 'policy_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyTimeOrDateTimesClockId
+    inputTypeName: UpdateColumnPolicyTimeOrDateTimesClockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_time_or_date_times_clock_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyTimeOrDateTimesClockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyTimeOrDateTimesDateTime
+  description: Update the 'date_time' column in the 'policy_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Timestamptz
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyTimeOrDateTimesDateTime
+    inputTypeName: UpdateColumnPolicyTimeOrDateTimesDateTimeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_time_or_date_times_date_time
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyTimeOrDateTimesDateTime
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyTimeOrDateTimesId
+  description: Update the 'id' column in the 'policy_time_or_date_times' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyTimeOrDateTimesId
+    inputTypeName: UpdateColumnPolicyTimeOrDateTimesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_time_or_date_times_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyTimeOrDateTimesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPolicyTimeOrDateTimesValueCase
+  description: Update the 'value_case' column in the 'policy_time_or_date_times' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPolicyTimeOrDateTimesValueCase
+    inputTypeName: UpdateColumnPolicyTimeOrDateTimesValueCaseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_policy_time_or_date_times_value_case
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPolicyTimeOrDateTimesValueCase
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyTimeOrDateTimesByIdUpdateColumns
+  description: Update the columns of the 'policy_time_or_date_times' collection
+  fields:
+    - name: clockId
+      type: UpdateColumnPolicyTimeOrDateTimesClockId
+      description: Update the 'clock_id' column in the 'policy_time_or_date_times'
+        collection.
+    - name: dateTime
+      type: UpdateColumnPolicyTimeOrDateTimesDateTime
+      description: Update the 'date_time' column in the 'policy_time_or_date_times'
+        collection.
+    - name: id
+      type: UpdateColumnPolicyTimeOrDateTimesId
+      description: Update the 'id' column in the 'policy_time_or_date_times' collection.
+    - name: valueCase
+      type: UpdateColumnPolicyTimeOrDateTimesValueCase
+      description: Update the 'value_case' column in the 'policy_time_or_date_times'
+        collection.
+  graphql:
+    typeName: UpdatePolicyTimeOrDateTimesByIdUpdateColumns
+    inputTypeName: UpdatePolicyTimeOrDateTimesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_time_or_date_times_by_id_update_columns
+      fieldMapping:
+        clockId:
+          column:
+            name: clock_id
+        dateTime:
+          column:
+            name: date_time
+        id:
+          column:
+            name: id
+        valueCase:
+          column:
+            name: value_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyTimeOrDateTimesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - clockId
+          - dateTime
+          - id
+          - valueCase
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePolicyTimeOrDateTimesByIdResponse
+  description: Responses from the 'update_policy_time_or_date_times_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyTimeOrDateTimes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePolicyTimeOrDateTimesByIdResponse
+    inputTypeName: UpdatePolicyTimeOrDateTimesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_policy_time_or_date_times_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePolicyTimeOrDateTimesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePolicyTimeOrDateTimesById
+  outputType: UpdatePolicyTimeOrDateTimesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: PolicyTimeOrDateTimesBoolExp
+      description: Update permission post-condition predicate over the
+        'policy_time_or_date_times' collection
+    - name: preCheck
+      type: PolicyTimeOrDateTimesBoolExp
+      description: Update permission pre-condition predicate over the
+        'policy_time_or_date_times' collection
+    - name: updateColumns
+      type: UpdatePolicyTimeOrDateTimesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_policy_time_or_date_times_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePolicyTimeOrDateTimesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'policy_time_or_date_times' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePolicyTimeOrDateTimesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelLanguages
+  fields:
+    - name: hotelInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: primaryLang
+      type: Boolean_1
+  graphql:
+    typeName: HotelLanguages
+    inputTypeName: HotelLanguagesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_languages
+      fieldMapping:
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        primaryLang:
+          column:
+            name: primary_lang
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelLanguages
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelInfoId
+          - id
+          - languageCode
+          - primaryLang
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelLanguagesBoolExp
+  operand:
+    object:
+      type: HotelLanguages
+      comparableFields:
+        - fieldName: hotelInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: primaryLang
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelLanguagesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelLanguagesAggExp
+  operand:
+    object:
+      aggregatedType: HotelLanguages
+      aggregatableFields:
+        - fieldName: hotelInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: primaryLang
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelLanguagesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelLanguagesOrderByExp
+  operand:
+    object:
+      orderedType: HotelLanguages
+      orderableFields:
+        - fieldName: hotelInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: primaryLang
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelLanguagesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelLanguages
+  objectType: HotelLanguages
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_languages
+  filterExpressionType: HotelLanguagesBoolExp
+  aggregateExpression: HotelLanguagesAggExp
+  orderByExpression: HotelLanguagesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelLanguages
+      subscription:
+        rootField: hotelLanguages
+    selectUniques:
+      - queryRootField: hotelLanguagesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelLanguagesById
+    filterInputTypeName: HotelLanguagesFilterInput
+    aggregate:
+      queryRootField: hotelLanguagesAggregate
+      subscription:
+        rootField: hotelLanguagesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelLanguages
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

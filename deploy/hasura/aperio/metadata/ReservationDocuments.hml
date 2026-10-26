@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationDocuments
+  fields:
+    - name: docId
+      type: String_1
+    - name: docType
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationDocuments
+    inputTypeName: ReservationDocumentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_documents
+      fieldMapping:
+        docId:
+          column:
+            name: doc_id
+        docType:
+          column:
+            name: doc_type
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationDocuments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - docId
+          - docType
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationDocumentsBoolExp
+  operand:
+    object:
+      type: ReservationDocuments
+      comparableFields:
+        - fieldName: docId
+          booleanExpressionType: TextBoolExp
+        - fieldName: docType
+          booleanExpressionType: ReservationReservationDocumentTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationDocumentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationDocumentsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationDocuments
+      aggregatableFields:
+        - fieldName: docId
+          aggregateExpression: TextAggExp
+        - fieldName: docType
+          aggregateExpression: ReservationReservationDocumentTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationDocumentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationDocumentsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationDocuments
+      orderableFields:
+        - fieldName: docId
+          orderByExpression: String1OrderByExp
+        - fieldName: docType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationDocumentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationDocuments
+  objectType: ReservationDocuments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_documents
+  filterExpressionType: ReservationDocumentsBoolExp
+  aggregateExpression: ReservationDocumentsAggExp
+  orderByExpression: ReservationDocumentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationDocuments
+      subscription:
+        rootField: reservationDocuments
+    selectUniques:
+      - queryRootField: reservationDocumentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationDocumentsById
+    filterInputTypeName: ReservationDocumentsFilterInput
+    aggregate:
+      queryRootField: reservationDocumentsAggregate
+      subscription:
+        rootField: reservationDocumentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationDocuments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,271 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileSeatPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: airlineVendorPrefRphs
+      type: "[String_1]"
+    - name: deckLevel
+      type: String_1
+    - name: flightDistanceQualifier
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: internationalIndicator
+      type: Boolean_1
+    - name: passengerTypeCode
+      type: String_1
+    - name: preferLevel
+      type: Enum
+    - name: rowNumber
+      type: Int32
+    - name: rowSeat
+      type: String_1
+    - name: seatNumber
+      type: String_1
+    - name: seatPreferences
+      type: String_1
+    - name: smokingAllowed
+      type: Boolean_1
+    - name: transferAction
+      type: Enum
+  graphql:
+    typeName: ProfileSeatPrefs
+    inputTypeName: ProfileSeatPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_seat_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        airlineVendorPrefRphs:
+          column:
+            name: airline_vendor_pref_rphs
+        deckLevel:
+          column:
+            name: deck_level
+        flightDistanceQualifier:
+          column:
+            name: flight_distance_qualifier
+        id:
+          column:
+            name: id
+        internationalIndicator:
+          column:
+            name: international_indicator
+        passengerTypeCode:
+          column:
+            name: passenger_type_code
+        preferLevel:
+          column:
+            name: prefer_level
+        rowNumber:
+          column:
+            name: row_number
+        rowSeat:
+          column:
+            name: row_seat
+        seatNumber:
+          column:
+            name: seat_number
+        seatPreferences:
+          column:
+            name: seat_preferences
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileSeatPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - airlineVendorPrefRphs
+          - deckLevel
+          - flightDistanceQualifier
+          - id
+          - internationalIndicator
+          - passengerTypeCode
+          - preferLevel
+          - rowNumber
+          - rowSeat
+          - seatNumber
+          - seatPreferences
+          - smokingAllowed
+          - transferAction
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileSeatPrefsBoolExp
+  operand:
+    object:
+      type: ProfileSeatPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: deckLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: flightDistanceQualifier
+          booleanExpressionType: ProfileFlightDistanceQualifierBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: internationalIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: passengerTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: rowNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: rowSeat
+          booleanExpressionType: TextBoolExp
+        - fieldName: seatNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: seatPreferences
+          booleanExpressionType: TextBoolExp
+        - fieldName: smokingAllowed
+          booleanExpressionType: BoolBoolExp
+        - fieldName: transferAction
+          booleanExpressionType: ProfileTransferActionBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileSeatPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileSeatPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileSeatPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: deckLevel
+          aggregateExpression: TextAggExp
+        - fieldName: flightDistanceQualifier
+          aggregateExpression: ProfileFlightDistanceQualifierAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: internationalIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: passengerTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: rowNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: rowSeat
+          aggregateExpression: TextAggExp
+        - fieldName: seatNumber
+          aggregateExpression: TextAggExp
+        - fieldName: seatPreferences
+          aggregateExpression: TextAggExp
+        - fieldName: smokingAllowed
+          aggregateExpression: BoolAggExp
+        - fieldName: transferAction
+          aggregateExpression: ProfileTransferActionAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileSeatPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileSeatPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileSeatPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: deckLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: flightDistanceQualifier
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: internationalIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: passengerTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: rowNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: rowSeat
+          orderByExpression: String1OrderByExp
+        - fieldName: seatNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: seatPreferences
+          orderByExpression: String1OrderByExp
+        - fieldName: smokingAllowed
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: transferAction
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileSeatPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileSeatPrefs
+  objectType: ProfileSeatPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_seat_prefs
+  filterExpressionType: ProfileSeatPrefsBoolExp
+  aggregateExpression: ProfileSeatPrefsAggExp
+  orderByExpression: ProfileSeatPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileSeatPrefs
+      subscription:
+        rootField: profileSeatPrefs
+    selectUniques:
+      - queryRootField: profileSeatPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileSeatPrefsById
+    filterInputTypeName: ProfileSeatPrefsFilterInput
+    aggregate:
+      queryRootField: profileSeatPrefsAggregate
+      subscription:
+        rootField: profileSeatPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileSeatPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

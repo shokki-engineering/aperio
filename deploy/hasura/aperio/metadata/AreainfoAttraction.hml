@@ -1,0 +1,385 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoAttraction
+  fields:
+    - name: applicableEndId
+      type: String_1
+    - name: applicableStartId
+      type: String_1
+    - name: attractionCategoryCode
+      type: Enum
+    - name: attractionDisplayName
+      type: String_1
+    - name: attractionFee
+      type: Float64
+    - name: attractionsId
+      type: String_1!
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: contactId
+      type: String_1
+    - name: courtesyPhone
+      type: Boolean_1
+    - name: descriptiveText
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: minAgeAppropriateCode
+      type: Enum
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: proximityCode
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: sort
+      type: Int32
+    - name: startId
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: AreainfoAttraction
+    inputTypeName: AreainfoAttractionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_attraction
+      fieldMapping:
+        applicableEndId:
+          column:
+            name: applicable_end_id
+        applicableStartId:
+          column:
+            name: applicable_start_id
+        attractionCategoryCode:
+          column:
+            name: attraction_category_code
+        attractionDisplayName:
+          column:
+            name: attraction_display_name
+        attractionFee:
+          column:
+            name: attraction_fee
+        attractionsId:
+          column:
+            name: attractions_id
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        codeDetail:
+          column:
+            name: code_detail
+        contactId:
+          column:
+            name: contact_id
+        courtesyPhone:
+          column:
+            name: courtesy_phone
+        descriptiveText:
+          column:
+            name: descriptive_text
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        minAgeAppropriateCode:
+          column:
+            name: min_age_appropriate_code
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        proximityCode:
+          column:
+            name: proximity_code
+        quantity:
+          column:
+            name: quantity
+        sort:
+          column:
+            name: sort
+        startId:
+          column:
+            name: start_id
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoAttraction
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - applicableEndId
+          - applicableStartId
+          - attractionCategoryCode
+          - attractionDisplayName
+          - attractionFee
+          - attractionsId
+          - code
+          - codeContext
+          - codeDetail
+          - contactId
+          - courtesyPhone
+          - descriptiveText
+          - duration
+          - endId
+          - id
+          - languageCode
+          - minAgeAppropriateCode
+          - multimediaDescriptionsId
+          - proximityCode
+          - quantity
+          - sort
+          - startId
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoAttractionBoolExp
+  operand:
+    object:
+      type: AreainfoAttraction
+      comparableFields:
+        - fieldName: applicableEndId
+          booleanExpressionType: TextBoolExp
+        - fieldName: applicableStartId
+          booleanExpressionType: TextBoolExp
+        - fieldName: attractionCategoryCode
+          booleanExpressionType: AreainfoAttractionCategoryCodeBoolExp
+        - fieldName: attractionDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: attractionFee
+          booleanExpressionType: Float8BoolExp
+        - fieldName: attractionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: courtesyPhone
+          booleanExpressionType: BoolBoolExp
+        - fieldName: descriptiveText
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: minAgeAppropriateCode
+          booleanExpressionType: AreainfoAreainfoAgeQualifyingCodeBoolExp
+        - fieldName: multimediaDescriptionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: proximityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoAttractionBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoAttractionAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoAttraction
+      aggregatableFields:
+        - fieldName: applicableEndId
+          aggregateExpression: TextAggExp
+        - fieldName: applicableStartId
+          aggregateExpression: TextAggExp
+        - fieldName: attractionCategoryCode
+          aggregateExpression: AreainfoAttractionCategoryCodeAggExp
+        - fieldName: attractionDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: attractionFee
+          aggregateExpression: Float8AggExp
+        - fieldName: attractionsId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: courtesyPhone
+          aggregateExpression: BoolAggExp
+        - fieldName: descriptiveText
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: minAgeAppropriateCode
+          aggregateExpression: AreainfoAreainfoAgeQualifyingCodeAggExp
+        - fieldName: multimediaDescriptionsId
+          aggregateExpression: TextAggExp
+        - fieldName: proximityCode
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoAttractionAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoAttractionOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoAttraction
+      orderableFields:
+        - fieldName: applicableEndId
+          orderByExpression: String1OrderByExp
+        - fieldName: applicableStartId
+          orderByExpression: String1OrderByExp
+        - fieldName: attractionCategoryCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: attractionDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: attractionFee
+          orderByExpression: Float64OrderByExp
+        - fieldName: attractionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: courtesyPhone
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: descriptiveText
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: minAgeAppropriateCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: multimediaDescriptionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: proximityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoAttractionOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoAttraction
+  objectType: AreainfoAttraction
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_attraction
+  filterExpressionType: AreainfoAttractionBoolExp
+  aggregateExpression: AreainfoAttractionAggExp
+  orderByExpression: AreainfoAttractionOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoAttraction
+      subscription:
+        rootField: areainfoAttraction
+    selectUniques:
+      - queryRootField: areainfoAttractionById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoAttractionById
+    filterInputTypeName: AreainfoAttractionFilterInput
+    aggregate:
+      queryRootField: areainfoAttractionAggregate
+      subscription:
+        rootField: areainfoAttractionAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoAttraction
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

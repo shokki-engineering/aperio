@@ -1,0 +1,253 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationEncryptionTokens
+  fields:
+    - name: authenticationMethod
+      type: Enum
+    - name: encryptedValue
+      type: String_1
+    - name: encryptionKey
+      type: String_1
+    - name: encryptionKeyMethod
+      type: String_1
+    - name: encryptionMethod
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: mask
+      type: String_1
+    - name: paymentCardId
+      type: String_1!
+    - name: plainText
+      type: String_1
+    - name: token
+      type: String_1
+    - name: tokenProviderId
+      type: String_1
+    - name: warningId
+      type: String_1
+  graphql:
+    typeName: ReservationEncryptionTokens
+    inputTypeName: ReservationEncryptionTokensInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_encryption_tokens
+      fieldMapping:
+        authenticationMethod:
+          column:
+            name: authentication_method
+        encryptedValue:
+          column:
+            name: encrypted_value
+        encryptionKey:
+          column:
+            name: encryption_key
+        encryptionKeyMethod:
+          column:
+            name: encryption_key_method
+        encryptionMethod:
+          column:
+            name: encryption_method
+        id:
+          column:
+            name: id
+        mask:
+          column:
+            name: mask
+        paymentCardId:
+          column:
+            name: payment_card_id
+        plainText:
+          column:
+            name: plain_text
+        token:
+          column:
+            name: token
+        tokenProviderId:
+          column:
+            name: token_provider_id
+        warningId:
+          column:
+            name: warning_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationEncryptionTokens
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - authenticationMethod
+          - encryptedValue
+          - encryptionKey
+          - encryptionKeyMethod
+          - encryptionMethod
+          - id
+          - mask
+          - paymentCardId
+          - plainText
+          - token
+          - tokenProviderId
+          - warningId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationEncryptionTokensBoolExp
+  operand:
+    object:
+      type: ReservationEncryptionTokens
+      comparableFields:
+        - fieldName: authenticationMethod
+          booleanExpressionType: ReservationReservationAuthenticationMethodBoolExp
+        - fieldName: encryptedValue
+          booleanExpressionType: TextBoolExp
+        - fieldName: encryptionKey
+          booleanExpressionType: TextBoolExp
+        - fieldName: encryptionKeyMethod
+          booleanExpressionType: TextBoolExp
+        - fieldName: encryptionMethod
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: mask
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentCardId
+          booleanExpressionType: TextBoolExp
+        - fieldName: plainText
+          booleanExpressionType: TextBoolExp
+        - fieldName: token
+          booleanExpressionType: TextBoolExp
+        - fieldName: tokenProviderId
+          booleanExpressionType: TextBoolExp
+        - fieldName: warningId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationEncryptionTokensBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationEncryptionTokensAggExp
+  operand:
+    object:
+      aggregatedType: ReservationEncryptionTokens
+      aggregatableFields:
+        - fieldName: authenticationMethod
+          aggregateExpression: ReservationReservationAuthenticationMethodAggExp
+        - fieldName: encryptedValue
+          aggregateExpression: TextAggExp
+        - fieldName: encryptionKey
+          aggregateExpression: TextAggExp
+        - fieldName: encryptionKeyMethod
+          aggregateExpression: TextAggExp
+        - fieldName: encryptionMethod
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: mask
+          aggregateExpression: TextAggExp
+        - fieldName: paymentCardId
+          aggregateExpression: TextAggExp
+        - fieldName: plainText
+          aggregateExpression: TextAggExp
+        - fieldName: token
+          aggregateExpression: TextAggExp
+        - fieldName: tokenProviderId
+          aggregateExpression: TextAggExp
+        - fieldName: warningId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationEncryptionTokensAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationEncryptionTokensOrderByExp
+  operand:
+    object:
+      orderedType: ReservationEncryptionTokens
+      orderableFields:
+        - fieldName: authenticationMethod
+          orderByExpression: EnumOrderByExp
+        - fieldName: encryptedValue
+          orderByExpression: String1OrderByExp
+        - fieldName: encryptionKey
+          orderByExpression: String1OrderByExp
+        - fieldName: encryptionKeyMethod
+          orderByExpression: String1OrderByExp
+        - fieldName: encryptionMethod
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: mask
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentCardId
+          orderByExpression: String1OrderByExp
+        - fieldName: plainText
+          orderByExpression: String1OrderByExp
+        - fieldName: token
+          orderByExpression: String1OrderByExp
+        - fieldName: tokenProviderId
+          orderByExpression: String1OrderByExp
+        - fieldName: warningId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationEncryptionTokensOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationEncryptionTokens
+  objectType: ReservationEncryptionTokens
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_encryption_tokens
+  filterExpressionType: ReservationEncryptionTokensBoolExp
+  aggregateExpression: ReservationEncryptionTokensAggExp
+  orderByExpression: ReservationEncryptionTokensOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationEncryptionTokens
+      subscription:
+        rootField: reservationEncryptionTokens
+    selectUniques:
+      - queryRootField: reservationEncryptionTokensById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationEncryptionTokensById
+    filterInputTypeName: ReservationEncryptionTokensFilterInput
+    aggregate:
+      queryRootField: reservationEncryptionTokensAggregate
+      subscription:
+        rootField: reservationEncryptionTokensAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationEncryptionTokens
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

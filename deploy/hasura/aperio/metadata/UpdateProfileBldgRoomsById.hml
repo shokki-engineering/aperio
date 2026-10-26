@@ -1,0 +1,304 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBldgRoomsAddressId
+  description: Update the 'address_id' column in the 'profile_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBldgRoomsAddressId
+    inputTypeName: UpdateColumnProfileBldgRoomsAddressIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bldg_rooms_address_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBldgRoomsAddressId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBldgRoomsAddressInfoId
+  description: Update the 'address_info_id' column in the 'profile_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBldgRoomsAddressInfoId
+    inputTypeName: UpdateColumnProfileBldgRoomsAddressInfoIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bldg_rooms_address_info_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBldgRoomsAddressInfoId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBldgRoomsBldgNameIndicator
+  description: Update the 'bldg_name_indicator' column in the 'profile_bldg_rooms'
+    collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBldgRoomsBldgNameIndicator
+    inputTypeName: UpdateColumnProfileBldgRoomsBldgNameIndicatorInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bldg_rooms_bldg_name_indicator
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBldgRoomsBldgNameIndicator
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBldgRoomsId
+  description: Update the 'id' column in the 'profile_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBldgRoomsId
+    inputTypeName: UpdateColumnProfileBldgRoomsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bldg_rooms_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBldgRoomsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileBldgRoomsValue
+  description: Update the 'value' column in the 'profile_bldg_rooms' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileBldgRoomsValue
+    inputTypeName: UpdateColumnProfileBldgRoomsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_bldg_rooms_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileBldgRoomsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileBldgRoomsByIdUpdateColumns
+  description: Update the columns of the 'profile_bldg_rooms' collection
+  fields:
+    - name: addressId
+      type: UpdateColumnProfileBldgRoomsAddressId
+      description: Update the 'address_id' column in the 'profile_bldg_rooms' collection.
+    - name: addressInfoId
+      type: UpdateColumnProfileBldgRoomsAddressInfoId
+      description: Update the 'address_info_id' column in the 'profile_bldg_rooms'
+        collection.
+    - name: bldgNameIndicator
+      type: UpdateColumnProfileBldgRoomsBldgNameIndicator
+      description: Update the 'bldg_name_indicator' column in the 'profile_bldg_rooms'
+        collection.
+    - name: id
+      type: UpdateColumnProfileBldgRoomsId
+      description: Update the 'id' column in the 'profile_bldg_rooms' collection.
+    - name: value
+      type: UpdateColumnProfileBldgRoomsValue
+      description: Update the 'value' column in the 'profile_bldg_rooms' collection.
+  graphql:
+    typeName: UpdateProfileBldgRoomsByIdUpdateColumns
+    inputTypeName: UpdateProfileBldgRoomsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_bldg_rooms_by_id_update_columns
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileBldgRoomsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileBldgRoomsByIdResponse
+  description: Responses from the 'update_profile_bldg_rooms_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileBldgRooms!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileBldgRoomsByIdResponse
+    inputTypeName: UpdateProfileBldgRoomsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_bldg_rooms_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileBldgRoomsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileBldgRoomsById
+  outputType: UpdateProfileBldgRoomsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileBldgRoomsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_bldg_rooms' collection
+    - name: preCheck
+      type: ProfileBldgRoomsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_bldg_rooms' collection
+    - name: updateColumns
+      type: UpdateProfileBldgRoomsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_bldg_rooms_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileBldgRoomsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_bldg_rooms' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileBldgRoomsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

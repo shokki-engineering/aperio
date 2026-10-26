@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductRoomUseExtensionsCheckOutClockId
+  description: Update the 'check_out_clock_id' column in the
+    'hotelproduct_room_use_extensions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductRoomUseExtensionsCheckOutClockId
+    inputTypeName: UpdateColumnHotelproductRoomUseExtensionsCheckOutClockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_room_use_extensions_check_out_clock_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductRoomUseExtensionsCheckOutClockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductRoomUseExtensionsCheckinClockId
+  description: Update the 'checkin_clock_id' column in the
+    'hotelproduct_room_use_extensions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductRoomUseExtensionsCheckinClockId
+    inputTypeName: UpdateColumnHotelproductRoomUseExtensionsCheckinClockIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_room_use_extensions_checkin_clock_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductRoomUseExtensionsCheckinClockId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnHotelproductRoomUseExtensionsId
+  description: Update the 'id' column in the 'hotelproduct_room_use_extensions' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnHotelproductRoomUseExtensionsId
+    inputTypeName: UpdateColumnHotelproductRoomUseExtensionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_hotelproduct_room_use_extensions_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnHotelproductRoomUseExtensionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelproductRoomUseExtensionsByIdUpdateColumns
+  description: Update the columns of the 'hotelproduct_room_use_extensions' collection
+  fields:
+    - name: checkOutClockId
+      type: UpdateColumnHotelproductRoomUseExtensionsCheckOutClockId
+      description: Update the 'check_out_clock_id' column in the
+        'hotelproduct_room_use_extensions' collection.
+    - name: checkinClockId
+      type: UpdateColumnHotelproductRoomUseExtensionsCheckinClockId
+      description: Update the 'checkin_clock_id' column in the
+        'hotelproduct_room_use_extensions' collection.
+    - name: id
+      type: UpdateColumnHotelproductRoomUseExtensionsId
+      description: Update the 'id' column in the 'hotelproduct_room_use_extensions'
+        collection.
+  graphql:
+    typeName: UpdateHotelproductRoomUseExtensionsByIdUpdateColumns
+    inputTypeName: UpdateHotelproductRoomUseExtensionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotelproduct_room_use_extensions_by_id_update_columns
+      fieldMapping:
+        checkOutClockId:
+          column:
+            name: check_out_clock_id
+        checkinClockId:
+          column:
+            name: checkin_clock_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelproductRoomUseExtensionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkOutClockId
+          - checkinClockId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateHotelproductRoomUseExtensionsByIdResponse
+  description: Responses from the 'update_hotelproduct_room_use_extensions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductRoomUseExtensions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateHotelproductRoomUseExtensionsByIdResponse
+    inputTypeName: UpdateHotelproductRoomUseExtensionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_hotelproduct_room_use_extensions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateHotelproductRoomUseExtensionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateHotelproductRoomUseExtensionsById
+  outputType: UpdateHotelproductRoomUseExtensionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: HotelproductRoomUseExtensionsBoolExp
+      description: Update permission post-condition predicate over the
+        'hotelproduct_room_use_extensions' collection
+    - name: preCheck
+      type: HotelproductRoomUseExtensionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'hotelproduct_room_use_extensions' collection
+    - name: updateColumns
+      type: UpdateHotelproductRoomUseExtensionsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_hotelproduct_room_use_extensions_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateHotelproductRoomUseExtensionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'hotelproduct_room_use_extensions' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateHotelproductRoomUseExtensionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

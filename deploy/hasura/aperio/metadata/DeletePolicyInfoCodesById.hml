@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeletePolicyInfoCodesByIdResponse
+  description: Responses from the 'delete_policy_info_codes_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyInfoCodes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeletePolicyInfoCodesByIdResponse
+    inputTypeName: DeletePolicyInfoCodesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_policy_info_codes_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeletePolicyInfoCodesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeletePolicyInfoCodesById
+  outputType: DeletePolicyInfoCodesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: PolicyInfoCodesBoolExp
+      description: Delete permission predicate over the 'policy_info_codes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_policy_info_codes_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deletePolicyInfoCodesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'policy_info_codes' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeletePolicyInfoCodesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

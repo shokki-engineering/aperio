@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeTextItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RoomtypeTextItems
+    inputTypeName: RoomtypeTextItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_text_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeTextItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeTextItemsBoolExp
+  operand:
+    object:
+      type: RoomtypeTextItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeTextItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeTextItemsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeTextItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeTextItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeTextItemsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeTextItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeTextItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeTextItems
+  objectType: RoomtypeTextItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_text_items
+  filterExpressionType: RoomtypeTextItemsBoolExp
+  aggregateExpression: RoomtypeTextItemsAggExp
+  orderByExpression: RoomtypeTextItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeTextItems
+      subscription:
+        rootField: roomtypeTextItems
+    selectUniques:
+      - queryRootField: roomtypeTextItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeTextItemsById
+    filterInputTypeName: RoomtypeTextItemsFilterInput
+    aggregate:
+      queryRootField: roomtypeTextItemsAggregate
+      subscription:
+        rootField: roomtypeTextItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeTextItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

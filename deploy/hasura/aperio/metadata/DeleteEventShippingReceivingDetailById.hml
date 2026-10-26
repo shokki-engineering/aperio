@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventShippingReceivingDetailByIdResponse
+  description: Responses from the 'delete_event_shipping_receiving_detail_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventShippingReceivingDetail!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventShippingReceivingDetailByIdResponse
+    inputTypeName: DeleteEventShippingReceivingDetailByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_event_shipping_receiving_detail_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventShippingReceivingDetailByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventShippingReceivingDetailById
+  outputType: DeleteEventShippingReceivingDetailByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventShippingReceivingDetailBoolExp
+      description: Delete permission predicate over the
+        'event_shipping_receiving_detail' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_event_shipping_receiving_detail_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventShippingReceivingDetailById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'event_shipping_receiving_detail' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventShippingReceivingDetailById
+  permissions:
+    - role: admin
+      allowExecution: true
+

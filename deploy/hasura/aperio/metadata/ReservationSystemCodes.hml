@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationSystemCodes
+  fields:
+    - name: id
+      type: String_1!
+    - name: systemCodesInclusive
+      type: Boolean_1
+  graphql:
+    typeName: ReservationSystemCodes
+    inputTypeName: ReservationSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_system_codes
+      fieldMapping:
+        id:
+          column:
+            name: id
+        systemCodesInclusive:
+          column:
+            name: system_codes_inclusive
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - systemCodesInclusive
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationSystemCodesBoolExp
+  operand:
+    object:
+      type: ReservationSystemCodes
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: systemCodesInclusive
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationSystemCodes
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: systemCodesInclusive
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationSystemCodes
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: systemCodesInclusive
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationSystemCodes
+  objectType: ReservationSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_system_codes
+  filterExpressionType: ReservationSystemCodesBoolExp
+  aggregateExpression: ReservationSystemCodesAggExp
+  orderByExpression: ReservationSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationSystemCodes
+      subscription:
+        rootField: reservationSystemCodes
+    selectUniques:
+      - queryRootField: reservationSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationSystemCodesById
+    filterInputTypeName: ReservationSystemCodesFilterInput
+    aggregate:
+      queryRootField: reservationSystemCodesAggregate
+      subscription:
+        rootField: reservationSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

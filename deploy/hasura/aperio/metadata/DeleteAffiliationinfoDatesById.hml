@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAffiliationinfoDatesByIdResponse
+  description: Responses from the 'delete_affiliationinfo_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAffiliationinfoDatesByIdResponse
+    inputTypeName: DeleteAffiliationinfoDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_affiliationinfo_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAffiliationinfoDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAffiliationinfoDatesById
+  outputType: DeleteAffiliationinfoDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AffiliationinfoDatesBoolExp
+      description: Delete permission predicate over the 'affiliationinfo_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_affiliationinfo_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAffiliationinfoDatesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'affiliationinfo_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAffiliationinfoDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

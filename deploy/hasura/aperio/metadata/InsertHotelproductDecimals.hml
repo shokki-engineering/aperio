@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductDecimalsObject
+    inputTypeName: InsertHotelproductDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductDecimalsResponse
+  description: Responses from the 'insert_hotelproduct_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductDecimalsResponse
+    inputTypeName: InsertHotelproductDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductDecimals
+  outputType: InsertHotelproductDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductDecimalsObject!]!"
+    - name: postCheck
+      type: HotelproductDecimalsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductDecimals
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

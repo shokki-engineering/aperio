@@ -1,0 +1,348 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDateRestrictionsDuration
+  description: Update the 'duration' column in the 'rateplan_date_restrictions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDateRestrictionsDuration
+    inputTypeName: UpdateColumnRateplanDateRestrictionsDurationInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_date_restrictions_duration
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDateRestrictionsDuration
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDateRestrictionsEndId
+  description: Update the 'end_id' column in the 'rateplan_date_restrictions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDateRestrictionsEndId
+    inputTypeName: UpdateColumnRateplanDateRestrictionsEndIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_date_restrictions_end_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDateRestrictionsEndId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDateRestrictionsId
+  description: Update the 'id' column in the 'rateplan_date_restrictions' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDateRestrictionsId
+    inputTypeName: UpdateColumnRateplanDateRestrictionsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_date_restrictions_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDateRestrictionsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDateRestrictionsOfferRuleId
+  description: Update the 'offer_rule_id' column in the
+    'rateplan_date_restrictions' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDateRestrictionsOfferRuleId
+    inputTypeName: UpdateColumnRateplanDateRestrictionsOfferRuleIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_date_restrictions_offer_rule_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDateRestrictionsOfferRuleId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDateRestrictionsRestrictionType
+  description: Update the 'restriction_type' column in the
+    'rateplan_date_restrictions' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDateRestrictionsRestrictionType
+    inputTypeName: UpdateColumnRateplanDateRestrictionsRestrictionTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_date_restrictions_restriction_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDateRestrictionsRestrictionType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRateplanDateRestrictionsStartId
+  description: Update the 'start_id' column in the 'rateplan_date_restrictions' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRateplanDateRestrictionsStartId
+    inputTypeName: UpdateColumnRateplanDateRestrictionsStartIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_rateplan_date_restrictions_start_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRateplanDateRestrictionsStartId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanDateRestrictionsByIdUpdateColumns
+  description: Update the columns of the 'rateplan_date_restrictions' collection
+  fields:
+    - name: duration
+      type: UpdateColumnRateplanDateRestrictionsDuration
+      description: Update the 'duration' column in the 'rateplan_date_restrictions'
+        collection.
+    - name: endId
+      type: UpdateColumnRateplanDateRestrictionsEndId
+      description: Update the 'end_id' column in the 'rateplan_date_restrictions'
+        collection.
+    - name: id
+      type: UpdateColumnRateplanDateRestrictionsId
+      description: Update the 'id' column in the 'rateplan_date_restrictions' collection.
+    - name: offerRuleId
+      type: UpdateColumnRateplanDateRestrictionsOfferRuleId
+      description: Update the 'offer_rule_id' column in the
+        'rateplan_date_restrictions' collection.
+    - name: restrictionType
+      type: UpdateColumnRateplanDateRestrictionsRestrictionType
+      description: Update the 'restriction_type' column in the
+        'rateplan_date_restrictions' collection.
+    - name: startId
+      type: UpdateColumnRateplanDateRestrictionsStartId
+      description: Update the 'start_id' column in the 'rateplan_date_restrictions'
+        collection.
+  graphql:
+    typeName: UpdateRateplanDateRestrictionsByIdUpdateColumns
+    inputTypeName: UpdateRateplanDateRestrictionsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_date_restrictions_by_id_update_columns
+      fieldMapping:
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        offerRuleId:
+          column:
+            name: offer_rule_id
+        restrictionType:
+          column:
+            name: restriction_type
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanDateRestrictionsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - duration
+          - endId
+          - id
+          - offerRuleId
+          - restrictionType
+          - startId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRateplanDateRestrictionsByIdResponse
+  description: Responses from the 'update_rateplan_date_restrictions_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanDateRestrictions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRateplanDateRestrictionsByIdResponse
+    inputTypeName: UpdateRateplanDateRestrictionsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_rateplan_date_restrictions_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRateplanDateRestrictionsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRateplanDateRestrictionsById
+  outputType: UpdateRateplanDateRestrictionsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RateplanDateRestrictionsBoolExp
+      description: Update permission post-condition predicate over the
+        'rateplan_date_restrictions' collection
+    - name: preCheck
+      type: RateplanDateRestrictionsBoolExp
+      description: Update permission pre-condition predicate over the
+        'rateplan_date_restrictions' collection
+    - name: updateColumns
+      type: UpdateRateplanDateRestrictionsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_rateplan_date_restrictions_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRateplanDateRestrictionsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'rateplan_date_restrictions' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRateplanDateRestrictionsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

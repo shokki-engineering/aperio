@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: StayResource
+  fields:
+    - name: createTime
+      type: Timestamptz!
+    - name: etag
+      type: String_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: roomStayRph
+      type: Int32
+    - name: sequenceNumber
+      type: Int32
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: StayResource
+    inputTypeName: StayResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: stay_resource
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        etag:
+          column:
+            name: etag
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        roomStayRph:
+          column:
+            name: room_stay_rph
+        sequenceNumber:
+          column:
+            name: sequence_number
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: StayResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - etag
+          - hotelId
+          - id
+          - name
+          - roomStayRph
+          - sequenceNumber
+          - uid
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: StayResourceBoolExp
+  operand:
+    object:
+      type: StayResource
+      comparableFields:
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomStayRph
+          booleanExpressionType: Int4BoolExp
+        - fieldName: sequenceNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: StayResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: StayResourceAggExp
+  operand:
+    object:
+      aggregatedType: StayResource
+      aggregatableFields:
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: hotelId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: roomStayRph
+          aggregateExpression: Int4AggExp
+        - fieldName: sequenceNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: StayResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: StayResourceOrderByExp
+  operand:
+    object:
+      orderedType: StayResource
+      orderableFields:
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: roomStayRph
+          orderByExpression: Int32OrderByExp
+        - fieldName: sequenceNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: StayResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: StayResource
+  objectType: StayResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: stay_resource
+  filterExpressionType: StayResourceBoolExp
+  aggregateExpression: StayResourceAggExp
+  orderByExpression: StayResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: stayResource
+      subscription:
+        rootField: stayResource
+    selectUniques:
+      - queryRootField: stayResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: stayResourceById
+    filterInputTypeName: StayResourceFilterInput
+    aggregate:
+      queryRootField: stayResourceAggregate
+      subscription:
+        rootField: stayResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: StayResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

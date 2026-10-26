@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCompatibleOffers
+  fields:
+    - name: id
+      type: String_1!
+    - name: incompatibleOfferIndicator
+      type: Boolean_1
+    - name: offerId
+      type: String_1!
+    - name: offerRphs
+      type: "[String_1]"
+  graphql:
+    typeName: RateplanCompatibleOffers
+    inputTypeName: RateplanCompatibleOffersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_compatible_offers
+      fieldMapping:
+        id:
+          column:
+            name: id
+        incompatibleOfferIndicator:
+          column:
+            name: incompatible_offer_indicator
+        offerId:
+          column:
+            name: offer_id
+        offerRphs:
+          column:
+            name: offer_rphs
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCompatibleOffers
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - incompatibleOfferIndicator
+          - offerId
+          - offerRphs
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanCompatibleOffersBoolExp
+  operand:
+    object:
+      type: RateplanCompatibleOffers
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: incompatibleOfferIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: offerId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanCompatibleOffersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanCompatibleOffersAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCompatibleOffers
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: incompatibleOfferIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: offerId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanCompatibleOffersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanCompatibleOffersOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCompatibleOffers
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: incompatibleOfferIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: offerId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanCompatibleOffersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCompatibleOffers
+  objectType: RateplanCompatibleOffers
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_compatible_offers
+  filterExpressionType: RateplanCompatibleOffersBoolExp
+  aggregateExpression: RateplanCompatibleOffersAggExp
+  orderByExpression: RateplanCompatibleOffersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCompatibleOffers
+      subscription:
+        rootField: rateplanCompatibleOffers
+    selectUniques:
+      - queryRootField: rateplanCompatibleOffersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanCompatibleOffersById
+    filterInputTypeName: RateplanCompatibleOffersFilterInput
+    aggregate:
+      queryRootField: rateplanCompatibleOffersAggregate
+      subscription:
+        rootField: rateplanCompatibleOffersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCompatibleOffers
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

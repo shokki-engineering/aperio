@@ -1,0 +1,223 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockMiscChargeOrders
+  fields:
+    - name: checkInhibitorType
+      type: Enum
+    - name: couponRphs
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: originalIssueDayId
+      type: String_1
+    - name: originalIssueIata
+      type: String_1
+    - name: originalIssuePlace
+      type: String_1
+    - name: originalPaymentForm
+      type: String_1
+    - name: originalTicketNumber
+      type: String_1
+    - name: paperMcoExist
+      type: Boolean_1
+    - name: ticketNumber
+      type: String_1
+  graphql:
+    typeName: InventoryblockMiscChargeOrders
+    inputTypeName: InventoryblockMiscChargeOrdersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_misc_charge_orders
+      fieldMapping:
+        checkInhibitorType:
+          column:
+            name: check_inhibitor_type
+        couponRphs:
+          column:
+            name: coupon_rphs
+        id:
+          column:
+            name: id
+        originalIssueDayId:
+          column:
+            name: original_issue_day_id
+        originalIssueIata:
+          column:
+            name: original_issue_iata
+        originalIssuePlace:
+          column:
+            name: original_issue_place
+        originalPaymentForm:
+          column:
+            name: original_payment_form
+        originalTicketNumber:
+          column:
+            name: original_ticket_number
+        paperMcoExist:
+          column:
+            name: paper_mco_exist
+        ticketNumber:
+          column:
+            name: ticket_number
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockMiscChargeOrders
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkInhibitorType
+          - couponRphs
+          - id
+          - originalIssueDayId
+          - originalIssueIata
+          - originalIssuePlace
+          - originalPaymentForm
+          - originalTicketNumber
+          - paperMcoExist
+          - ticketNumber
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockMiscChargeOrdersBoolExp
+  operand:
+    object:
+      type: InventoryblockMiscChargeOrders
+      comparableFields:
+        - fieldName: checkInhibitorType
+          booleanExpressionType: InventoryblockInventoryblockCheckInhibitorTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalIssueDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalIssueIata
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalIssuePlace
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalPaymentForm
+          booleanExpressionType: TextBoolExp
+        - fieldName: originalTicketNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: paperMcoExist
+          booleanExpressionType: BoolBoolExp
+        - fieldName: ticketNumber
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockMiscChargeOrdersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockMiscChargeOrdersAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockMiscChargeOrders
+      aggregatableFields:
+        - fieldName: checkInhibitorType
+          aggregateExpression: InventoryblockInventoryblockCheckInhibitorTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: originalIssueDayId
+          aggregateExpression: TextAggExp
+        - fieldName: originalIssueIata
+          aggregateExpression: TextAggExp
+        - fieldName: originalIssuePlace
+          aggregateExpression: TextAggExp
+        - fieldName: originalPaymentForm
+          aggregateExpression: TextAggExp
+        - fieldName: originalTicketNumber
+          aggregateExpression: TextAggExp
+        - fieldName: paperMcoExist
+          aggregateExpression: BoolAggExp
+        - fieldName: ticketNumber
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockMiscChargeOrdersAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockMiscChargeOrdersOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockMiscChargeOrders
+      orderableFields:
+        - fieldName: checkInhibitorType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: originalIssueDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: originalIssueIata
+          orderByExpression: String1OrderByExp
+        - fieldName: originalIssuePlace
+          orderByExpression: String1OrderByExp
+        - fieldName: originalPaymentForm
+          orderByExpression: String1OrderByExp
+        - fieldName: originalTicketNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: paperMcoExist
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: ticketNumber
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockMiscChargeOrdersOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockMiscChargeOrders
+  objectType: InventoryblockMiscChargeOrders
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_misc_charge_orders
+  filterExpressionType: InventoryblockMiscChargeOrdersBoolExp
+  aggregateExpression: InventoryblockMiscChargeOrdersAggExp
+  orderByExpression: InventoryblockMiscChargeOrdersOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockMiscChargeOrders
+      subscription:
+        rootField: inventoryblockMiscChargeOrders
+    selectUniques:
+      - queryRootField: inventoryblockMiscChargeOrdersById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockMiscChargeOrdersById
+    filterInputTypeName: InventoryblockMiscChargeOrdersFilterInput
+    aggregate:
+      queryRootField: inventoryblockMiscChargeOrdersAggregate
+      subscription:
+        rootField: inventoryblockMiscChargeOrdersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockMiscChargeOrders
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

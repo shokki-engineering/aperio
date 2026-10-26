@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelLocationCategories
+  fields:
+    - name: categoryCodesId
+      type: String_1!
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: HotelLocationCategories
+    inputTypeName: HotelLocationCategoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_location_categories
+      fieldMapping:
+        categoryCodesId:
+          column:
+            name: category_codes_id
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelLocationCategories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - categoryCodesId
+          - code
+          - codeDetail
+          - existsCode
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelLocationCategoriesBoolExp
+  operand:
+    object:
+      type: HotelLocationCategories
+      comparableFields:
+        - fieldName: categoryCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: HotelHotelLocationCategoryCodesBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: existsCode
+          booleanExpressionType: HotelHotelOptionTypeCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelLocationCategoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelLocationCategoriesAggExp
+  operand:
+    object:
+      aggregatedType: HotelLocationCategories
+      aggregatableFields:
+        - fieldName: categoryCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: HotelHotelLocationCategoryCodesAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: existsCode
+          aggregateExpression: HotelHotelOptionTypeCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelLocationCategoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelLocationCategoriesOrderByExp
+  operand:
+    object:
+      orderedType: HotelLocationCategories
+      orderableFields:
+        - fieldName: categoryCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: existsCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelLocationCategoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelLocationCategories
+  objectType: HotelLocationCategories
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_location_categories
+  filterExpressionType: HotelLocationCategoriesBoolExp
+  aggregateExpression: HotelLocationCategoriesAggExp
+  orderByExpression: HotelLocationCategoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelLocationCategories
+      subscription:
+        rootField: hotelLocationCategories
+    selectUniques:
+      - queryRootField: hotelLocationCategoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelLocationCategoriesById
+    filterInputTypeName: HotelLocationCategoriesFilterInput
+    aggregate:
+      queryRootField: hotelLocationCategoriesAggregate
+      subscription:
+        rootField: hotelLocationCategoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelLocationCategories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

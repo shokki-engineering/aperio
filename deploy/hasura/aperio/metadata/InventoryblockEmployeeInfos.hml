@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockEmployeeInfos
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: employeeId
+      type: String_1
+    - name: employeeLevel
+      type: String_1
+    - name: employeeStatus
+      type: Enum
+    - name: employeeTitle
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InventoryblockEmployeeInfos
+    inputTypeName: InventoryblockEmployeeInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_employee_infos
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        employeeId:
+          column:
+            name: employee_id
+        employeeLevel:
+          column:
+            name: employee_level
+        employeeStatus:
+          column:
+            name: employee_status
+        employeeTitle:
+          column:
+            name: employee_title
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockEmployeeInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - employeeId
+          - employeeLevel
+          - employeeStatus
+          - employeeTitle
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockEmployeeInfosBoolExp
+  operand:
+    object:
+      type: InventoryblockEmployeeInfos
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: employeeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: employeeLevel
+          booleanExpressionType: TextBoolExp
+        - fieldName: employeeStatus
+          booleanExpressionType: InventoryblockInventoryblockEmployeeStatusCodeBoolExp
+        - fieldName: employeeTitle
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockEmployeeInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockEmployeeInfosAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockEmployeeInfos
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: employeeId
+          aggregateExpression: TextAggExp
+        - fieldName: employeeLevel
+          aggregateExpression: TextAggExp
+        - fieldName: employeeStatus
+          aggregateExpression: InventoryblockInventoryblockEmployeeStatusCodeAggExp
+        - fieldName: employeeTitle
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockEmployeeInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockEmployeeInfosOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockEmployeeInfos
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: employeeId
+          orderByExpression: String1OrderByExp
+        - fieldName: employeeLevel
+          orderByExpression: String1OrderByExp
+        - fieldName: employeeStatus
+          orderByExpression: EnumOrderByExp
+        - fieldName: employeeTitle
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockEmployeeInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockEmployeeInfos
+  objectType: InventoryblockEmployeeInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_employee_infos
+  filterExpressionType: InventoryblockEmployeeInfosBoolExp
+  aggregateExpression: InventoryblockEmployeeInfosAggExp
+  orderByExpression: InventoryblockEmployeeInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockEmployeeInfos
+      subscription:
+        rootField: inventoryblockEmployeeInfos
+    selectUniques:
+      - queryRootField: inventoryblockEmployeeInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockEmployeeInfosById
+    filterInputTypeName: InventoryblockEmployeeInfosFilterInput
+    aggregate:
+      queryRootField: inventoryblockEmployeeInfosAggregate
+      subscription:
+        rootField: inventoryblockEmployeeInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockEmployeeInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

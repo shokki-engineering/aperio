@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileEquipmentPrefsObject
+  fields:
+    - name: code
+      type: String_1
+    - name: codeContext
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: railPrefId
+      type: String_1!
+  graphql:
+    typeName: InsertProfileEquipmentPrefsObject
+    inputTypeName: InsertProfileEquipmentPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_equipment_prefs_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileEquipmentPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - preferLevel
+          - railPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileEquipmentPrefsResponse
+  description: Responses from the 'insert_profile_equipment_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileEquipmentPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileEquipmentPrefsResponse
+    inputTypeName: InsertProfileEquipmentPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_equipment_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileEquipmentPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileEquipmentPrefs
+  outputType: InsertProfileEquipmentPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileEquipmentPrefsObject!]!"
+    - name: postCheck
+      type: ProfileEquipmentPrefsBoolExp
+      description: Insert permission predicate over the 'profile_equipment_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_equipment_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileEquipmentPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_equipment_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileEquipmentPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileFlightTypePrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: backhaulIndicator
+      type: Boolean_1
+    - name: directAndNonStopOnly
+      type: Boolean_1
+    - name: excludeTrain
+      type: Boolean_1
+    - name: flightType
+      type: Enum
+    - name: groundTransportIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: maxConnections
+      type: Int32
+    - name: nonScheduledFltInfo
+      type: Enum
+    - name: nonStopsOnly
+      type: Boolean_1
+    - name: onlineConnectionsOnly
+      type: Boolean_1
+    - name: preferLevel
+      type: Enum
+    - name: routingType
+      type: Enum
+  graphql:
+    typeName: ProfileFlightTypePrefs
+    inputTypeName: ProfileFlightTypePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_flight_type_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        backhaulIndicator:
+          column:
+            name: backhaul_indicator
+        directAndNonStopOnly:
+          column:
+            name: direct_and_non_stop_only
+        excludeTrain:
+          column:
+            name: exclude_train
+        flightType:
+          column:
+            name: flight_type
+        groundTransportIndicator:
+          column:
+            name: ground_transport_indicator
+        id:
+          column:
+            name: id
+        maxConnections:
+          column:
+            name: max_connections
+        nonScheduledFltInfo:
+          column:
+            name: non_scheduled_flt_info
+        nonStopsOnly:
+          column:
+            name: non_stops_only
+        onlineConnectionsOnly:
+          column:
+            name: online_connections_only
+        preferLevel:
+          column:
+            name: prefer_level
+        routingType:
+          column:
+            name: routing_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileFlightTypePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - backhaulIndicator
+          - directAndNonStopOnly
+          - excludeTrain
+          - flightType
+          - groundTransportIndicator
+          - id
+          - maxConnections
+          - nonScheduledFltInfo
+          - nonStopsOnly
+          - onlineConnectionsOnly
+          - preferLevel
+          - routingType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileFlightTypePrefsBoolExp
+  operand:
+    object:
+      type: ProfileFlightTypePrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: backhaulIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: directAndNonStopOnly
+          booleanExpressionType: BoolBoolExp
+        - fieldName: excludeTrain
+          booleanExpressionType: BoolBoolExp
+        - fieldName: flightType
+          booleanExpressionType: ProfileFlightTypeBoolExp
+        - fieldName: groundTransportIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxConnections
+          booleanExpressionType: Int4BoolExp
+        - fieldName: nonScheduledFltInfo
+          booleanExpressionType: ProfileNonScheduledFltInfoBoolExp
+        - fieldName: nonStopsOnly
+          booleanExpressionType: BoolBoolExp
+        - fieldName: onlineConnectionsOnly
+          booleanExpressionType: BoolBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: routingType
+          booleanExpressionType: ProfileAirlinePrefFlightTypePrefRoutingTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileFlightTypePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileFlightTypePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileFlightTypePrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: backhaulIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: directAndNonStopOnly
+          aggregateExpression: BoolAggExp
+        - fieldName: excludeTrain
+          aggregateExpression: BoolAggExp
+        - fieldName: flightType
+          aggregateExpression: ProfileFlightTypeAggExp
+        - fieldName: groundTransportIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxConnections
+          aggregateExpression: Int4AggExp
+        - fieldName: nonScheduledFltInfo
+          aggregateExpression: ProfileNonScheduledFltInfoAggExp
+        - fieldName: nonStopsOnly
+          aggregateExpression: BoolAggExp
+        - fieldName: onlineConnectionsOnly
+          aggregateExpression: BoolAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: routingType
+          aggregateExpression: ProfileAirlinePrefFlightTypePrefRoutingTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileFlightTypePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileFlightTypePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileFlightTypePrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: backhaulIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: directAndNonStopOnly
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: excludeTrain
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: flightType
+          orderByExpression: EnumOrderByExp
+        - fieldName: groundTransportIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxConnections
+          orderByExpression: Int32OrderByExp
+        - fieldName: nonScheduledFltInfo
+          orderByExpression: EnumOrderByExp
+        - fieldName: nonStopsOnly
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: onlineConnectionsOnly
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: routingType
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileFlightTypePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileFlightTypePrefs
+  objectType: ProfileFlightTypePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_flight_type_prefs
+  filterExpressionType: ProfileFlightTypePrefsBoolExp
+  aggregateExpression: ProfileFlightTypePrefsAggExp
+  orderByExpression: ProfileFlightTypePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileFlightTypePrefs
+      subscription:
+        rootField: profileFlightTypePrefs
+    selectUniques:
+      - queryRootField: profileFlightTypePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileFlightTypePrefsById
+    filterInputTypeName: ProfileFlightTypePrefsFilterInput
+    aggregate:
+      queryRootField: profileFlightTypePrefsAggregate
+      subscription:
+        rootField: profileFlightTypePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileFlightTypePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

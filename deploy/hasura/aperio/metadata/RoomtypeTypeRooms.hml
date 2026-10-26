@@ -1,0 +1,463 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeTypeRooms
+  fields:
+    - name: bedTypeCodes
+      type: String_1
+    - name: composite
+      type: Boolean_1
+    - name: config
+      type: String_1
+    - name: count
+      type: Int32
+    - name: floor
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: invBlockCode
+      type: String_1
+    - name: maxCribs
+      type: Int32
+    - name: maxRollaways
+      type: Int32
+    - name: name
+      type: String_1
+    - name: nonSmoking
+      type: Boolean_1
+    - name: promotionCode
+      type: String_1
+    - name: promotionVendorCodes
+      type: "[String_1]"
+    - name: quantity
+      type: Int32
+    - name: roomArchitectureCode
+      type: Enum
+    - name: roomCategory
+      type: Enum
+    - name: roomClassificationCode
+      type: Enum
+    - name: roomGender
+      type: Enum
+    - name: roomId
+      type: String_1
+    - name: roomLocationCode
+      type: Enum
+    - name: roomType
+      type: String_1
+    - name: roomTypeCode
+      type: String_1
+    - name: roomTypeId
+      type: String_1!
+    - name: roomViewCode
+      type: Enum
+    - name: sharedRoom
+      type: Boolean_1
+    - name: size
+      type: Int32
+    - name: sizeMeasurement
+      type: String_1
+    - name: standardNumBeds
+      type: Int32
+    - name: standardOccupancy
+      type: Int32
+    - name: typeImplied
+      type: String_1
+  graphql:
+    typeName: RoomtypeTypeRooms
+    inputTypeName: RoomtypeTypeRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_type_rooms
+      fieldMapping:
+        bedTypeCodes:
+          column:
+            name: bed_type_codes
+        composite:
+          column:
+            name: composite
+        config:
+          column:
+            name: config
+        count:
+          column:
+            name: count
+        floor:
+          column:
+            name: floor
+        id:
+          column:
+            name: id
+        invBlockCode:
+          column:
+            name: inv_block_code
+        maxCribs:
+          column:
+            name: max_cribs
+        maxRollaways:
+          column:
+            name: max_rollaways
+        name:
+          column:
+            name: name
+        nonSmoking:
+          column:
+            name: non_smoking
+        promotionCode:
+          column:
+            name: promotion_code
+        promotionVendorCodes:
+          column:
+            name: promotion_vendor_codes
+        quantity:
+          column:
+            name: quantity
+        roomArchitectureCode:
+          column:
+            name: room_architecture_code
+        roomCategory:
+          column:
+            name: room_category
+        roomClassificationCode:
+          column:
+            name: room_classification_code
+        roomGender:
+          column:
+            name: room_gender
+        roomId:
+          column:
+            name: room_id
+        roomLocationCode:
+          column:
+            name: room_location_code
+        roomType:
+          column:
+            name: room_type
+        roomTypeCode:
+          column:
+            name: room_type_code
+        roomTypeId:
+          column:
+            name: room_type_id
+        roomViewCode:
+          column:
+            name: room_view_code
+        sharedRoom:
+          column:
+            name: shared_room
+        size:
+          column:
+            name: size
+        sizeMeasurement:
+          column:
+            name: size_measurement
+        standardNumBeds:
+          column:
+            name: standard_num_beds
+        standardOccupancy:
+          column:
+            name: standard_occupancy
+        typeImplied:
+          column:
+            name: type_implied
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeTypeRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bedTypeCodes
+          - composite
+          - config
+          - count
+          - floor
+          - id
+          - invBlockCode
+          - maxCribs
+          - maxRollaways
+          - name
+          - nonSmoking
+          - promotionCode
+          - promotionVendorCodes
+          - quantity
+          - roomArchitectureCode
+          - roomCategory
+          - roomClassificationCode
+          - roomGender
+          - roomId
+          - roomLocationCode
+          - roomType
+          - roomTypeCode
+          - roomTypeId
+          - roomViewCode
+          - sharedRoom
+          - size
+          - sizeMeasurement
+          - standardNumBeds
+          - standardOccupancy
+          - typeImplied
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeTypeRoomsBoolExp
+  operand:
+    object:
+      type: RoomtypeTypeRooms
+      comparableFields:
+        - fieldName: bedTypeCodes
+          booleanExpressionType: TextBoolExp
+        - fieldName: composite
+          booleanExpressionType: BoolBoolExp
+        - fieldName: config
+          booleanExpressionType: TextBoolExp
+        - fieldName: count
+          booleanExpressionType: Int4BoolExp
+        - fieldName: floor
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invBlockCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxCribs
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxRollaways
+          booleanExpressionType: Int4BoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: nonSmoking
+          booleanExpressionType: BoolBoolExp
+        - fieldName: promotionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: roomArchitectureCode
+          booleanExpressionType: RoomtypeRoomtypeArchitecturalStyleCodeBoolExp
+        - fieldName: roomCategory
+          booleanExpressionType: RoomtypeRoomtypeSegmentCategoryCodeBoolExp
+        - fieldName: roomClassificationCode
+          booleanExpressionType: RoomtypeRoomtypeGuestRoomInfoBoolExp
+        - fieldName: roomGender
+          booleanExpressionType: RoomtypeRoomtypeRoomGenderBoolExp
+        - fieldName: roomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomLocationCode
+          booleanExpressionType: RoomtypeRoomtypeRoomLocationTypeBoolExp
+        - fieldName: roomType
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomViewCode
+          booleanExpressionType: RoomtypeRoomtypeRoomViewTypeBoolExp
+        - fieldName: sharedRoom
+          booleanExpressionType: BoolBoolExp
+        - fieldName: size
+          booleanExpressionType: Int4BoolExp
+        - fieldName: sizeMeasurement
+          booleanExpressionType: TextBoolExp
+        - fieldName: standardNumBeds
+          booleanExpressionType: Int4BoolExp
+        - fieldName: standardOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: typeImplied
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeTypeRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeTypeRoomsAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeTypeRooms
+      aggregatableFields:
+        - fieldName: bedTypeCodes
+          aggregateExpression: TextAggExp
+        - fieldName: composite
+          aggregateExpression: BoolAggExp
+        - fieldName: config
+          aggregateExpression: TextAggExp
+        - fieldName: count
+          aggregateExpression: Int4AggExp
+        - fieldName: floor
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invBlockCode
+          aggregateExpression: TextAggExp
+        - fieldName: maxCribs
+          aggregateExpression: Int4AggExp
+        - fieldName: maxRollaways
+          aggregateExpression: Int4AggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: nonSmoking
+          aggregateExpression: BoolAggExp
+        - fieldName: promotionCode
+          aggregateExpression: TextAggExp
+        - fieldName: quantity
+          aggregateExpression: Int4AggExp
+        - fieldName: roomArchitectureCode
+          aggregateExpression: RoomtypeRoomtypeArchitecturalStyleCodeAggExp
+        - fieldName: roomCategory
+          aggregateExpression: RoomtypeRoomtypeSegmentCategoryCodeAggExp
+        - fieldName: roomClassificationCode
+          aggregateExpression: RoomtypeRoomtypeGuestRoomInfoAggExp
+        - fieldName: roomGender
+          aggregateExpression: RoomtypeRoomtypeRoomGenderAggExp
+        - fieldName: roomId
+          aggregateExpression: TextAggExp
+        - fieldName: roomLocationCode
+          aggregateExpression: RoomtypeRoomtypeRoomLocationTypeAggExp
+        - fieldName: roomType
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeId
+          aggregateExpression: TextAggExp
+        - fieldName: roomViewCode
+          aggregateExpression: RoomtypeRoomtypeRoomViewTypeAggExp
+        - fieldName: sharedRoom
+          aggregateExpression: BoolAggExp
+        - fieldName: size
+          aggregateExpression: Int4AggExp
+        - fieldName: sizeMeasurement
+          aggregateExpression: TextAggExp
+        - fieldName: standardNumBeds
+          aggregateExpression: Int4AggExp
+        - fieldName: standardOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: typeImplied
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeTypeRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeTypeRoomsOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeTypeRooms
+      orderableFields:
+        - fieldName: bedTypeCodes
+          orderByExpression: String1OrderByExp
+        - fieldName: composite
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: config
+          orderByExpression: String1OrderByExp
+        - fieldName: count
+          orderByExpression: Int32OrderByExp
+        - fieldName: floor
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invBlockCode
+          orderByExpression: String1OrderByExp
+        - fieldName: maxCribs
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxRollaways
+          orderByExpression: Int32OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: nonSmoking
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: promotionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: quantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: roomArchitectureCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomCategory
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomClassificationCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomGender
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomLocationCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomType
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomViewCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: sharedRoom
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: size
+          orderByExpression: Int32OrderByExp
+        - fieldName: sizeMeasurement
+          orderByExpression: String1OrderByExp
+        - fieldName: standardNumBeds
+          orderByExpression: Int32OrderByExp
+        - fieldName: standardOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: typeImplied
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeTypeRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeTypeRooms
+  objectType: RoomtypeTypeRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_type_rooms
+  filterExpressionType: RoomtypeTypeRoomsBoolExp
+  aggregateExpression: RoomtypeTypeRoomsAggExp
+  orderByExpression: RoomtypeTypeRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeTypeRooms
+      subscription:
+        rootField: roomtypeTypeRooms
+    selectUniques:
+      - queryRootField: roomtypeTypeRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeTypeRoomsById
+    filterInputTypeName: RoomtypeTypeRoomsFilterInput
+    aggregate:
+      queryRootField: roomtypeTypeRoomsAggregate
+      subscription:
+        rootField: roomtypeTypeRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeTypeRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

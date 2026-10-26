@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAirportPrefs
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: codeContext
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: locationCode
+      type: String_1
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileAirportPrefs
+    inputTypeName: ProfileAirportPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_airport_prefs
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        locationCode:
+          column:
+            name: location_code
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAirportPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - codeContext
+          - id
+          - locationCode
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAirportPrefsBoolExp
+  operand:
+    object:
+      type: ProfileAirportPrefs
+      comparableFields:
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAirportPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAirportPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAirportPrefs
+      aggregatableFields:
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: codeContext
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationCode
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAirportPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAirportPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAirportPrefs
+      orderableFields:
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: codeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationCode
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAirportPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAirportPrefs
+  objectType: ProfileAirportPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_airport_prefs
+  filterExpressionType: ProfileAirportPrefsBoolExp
+  aggregateExpression: ProfileAirportPrefsAggExp
+  orderByExpression: ProfileAirportPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAirportPrefs
+      subscription:
+        rootField: profileAirportPrefs
+    selectUniques:
+      - queryRootField: profileAirportPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAirportPrefsById
+    filterInputTypeName: ProfileAirportPrefsFilterInput
+    aggregate:
+      queryRootField: profileAirportPrefsAggregate
+      subscription:
+        rootField: profileAirportPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAirportPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,267 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingroomCapacitiesId
+  description: Update the 'id' column in the 'meetingroom_capacities' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingroomCapacitiesId
+    inputTypeName: UpdateColumnMeetingroomCapacitiesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingroom_capacities_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingroomCapacitiesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingroomCapacitiesMeetingRoomFormatCode
+  description: Update the 'meeting_room_format_code' column in the
+    'meetingroom_capacities' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingroomCapacitiesMeetingRoomFormatCode
+    inputTypeName: UpdateColumnMeetingroomCapacitiesMeetingRoomFormatCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingroom_capacities_meeting_room_format_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingroomCapacitiesMeetingRoomFormatCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingroomCapacitiesMeetingRoomId
+  description: Update the 'meeting_room_id' column in the 'meetingroom_capacities'
+    collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingroomCapacitiesMeetingRoomId
+    inputTypeName: UpdateColumnMeetingroomCapacitiesMeetingRoomIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingroom_capacities_meeting_room_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingroomCapacitiesMeetingRoomId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingroomCapacitiesOccupancyId
+  description: Update the 'occupancy_id' column in the 'meetingroom_capacities' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingroomCapacitiesOccupancyId
+    inputTypeName: UpdateColumnMeetingroomCapacitiesOccupancyIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingroom_capacities_occupancy_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingroomCapacitiesOccupancyId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingroomCapacitiesByIdUpdateColumns
+  description: Update the columns of the 'meetingroom_capacities' collection
+  fields:
+    - name: id
+      type: UpdateColumnMeetingroomCapacitiesId
+      description: Update the 'id' column in the 'meetingroom_capacities' collection.
+    - name: meetingRoomFormatCode
+      type: UpdateColumnMeetingroomCapacitiesMeetingRoomFormatCode
+      description: Update the 'meeting_room_format_code' column in the
+        'meetingroom_capacities' collection.
+    - name: meetingRoomId
+      type: UpdateColumnMeetingroomCapacitiesMeetingRoomId
+      description: Update the 'meeting_room_id' column in the 'meetingroom_capacities'
+        collection.
+    - name: occupancyId
+      type: UpdateColumnMeetingroomCapacitiesOccupancyId
+      description: Update the 'occupancy_id' column in the 'meetingroom_capacities'
+        collection.
+  graphql:
+    typeName: UpdateMeetingroomCapacitiesByIdUpdateColumns
+    inputTypeName: UpdateMeetingroomCapacitiesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingroom_capacities_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        meetingRoomFormatCode:
+          column:
+            name: meeting_room_format_code
+        meetingRoomId:
+          column:
+            name: meeting_room_id
+        occupancyId:
+          column:
+            name: occupancy_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingroomCapacitiesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - meetingRoomFormatCode
+          - meetingRoomId
+          - occupancyId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingroomCapacitiesByIdResponse
+  description: Responses from the 'update_meetingroom_capacities_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingroomCapacities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingroomCapacitiesByIdResponse
+    inputTypeName: UpdateMeetingroomCapacitiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingroom_capacities_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingroomCapacitiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingroomCapacitiesById
+  outputType: UpdateMeetingroomCapacitiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingroomCapacitiesBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingroom_capacities' collection
+    - name: preCheck
+      type: MeetingroomCapacitiesBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingroom_capacities' collection
+    - name: updateColumns
+      type: UpdateMeetingroomCapacitiesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingroom_capacities_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingroomCapacitiesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingroom_capacities' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingroomCapacitiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

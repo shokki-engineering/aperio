@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventStayDay
+  fields:
+    - name: dayNumber
+      type: Int32!
+    - name: guestQuantity
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: stayDaysId
+      type: String_1!
+    - name: totalUnitCount
+      type: Int32
+  graphql:
+    typeName: EventStayDay
+    inputTypeName: EventStayDayInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_stay_day
+      fieldMapping:
+        dayNumber:
+          column:
+            name: day_number
+        guestQuantity:
+          column:
+            name: guest_quantity
+        id:
+          column:
+            name: id
+        stayDaysId:
+          column:
+            name: stay_days_id
+        totalUnitCount:
+          column:
+            name: total_unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventStayDay
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayNumber
+          - guestQuantity
+          - id
+          - stayDaysId
+          - totalUnitCount
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventStayDayBoolExp
+  operand:
+    object:
+      type: EventStayDay
+      comparableFields:
+        - fieldName: dayNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: guestQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: stayDaysId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalUnitCount
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventStayDayBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventStayDayAggExp
+  operand:
+    object:
+      aggregatedType: EventStayDay
+      aggregatableFields:
+        - fieldName: dayNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: guestQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: stayDaysId
+          aggregateExpression: TextAggExp
+        - fieldName: totalUnitCount
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventStayDayAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventStayDayOrderByExp
+  operand:
+    object:
+      orderedType: EventStayDay
+      orderableFields:
+        - fieldName: dayNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: guestQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: stayDaysId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalUnitCount
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventStayDayOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventStayDay
+  objectType: EventStayDay
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_stay_day
+  filterExpressionType: EventStayDayBoolExp
+  aggregateExpression: EventStayDayAggExp
+  orderByExpression: EventStayDayOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventStayDay
+      subscription:
+        rootField: eventStayDay
+    selectUniques:
+      - queryRootField: eventStayDayById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventStayDayById
+    filterInputTypeName: EventStayDayFilterInput
+    aggregate:
+      queryRootField: eventStayDayAggregate
+      subscription:
+        rootField: eventStayDayAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventStayDay
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

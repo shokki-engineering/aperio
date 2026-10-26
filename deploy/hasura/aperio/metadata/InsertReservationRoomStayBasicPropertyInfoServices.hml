@@ -1,0 +1,116 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomStayBasicPropertyInfoServicesObject
+  fields:
+    - name: basicPropertyInfoId
+      type: String_1!
+    - name: businessServiceCode
+      type: Enum
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertReservationRoomStayBasicPropertyInfoServicesObject
+    inputTypeName: InsertReservationRoomStayBasicPropertyInfoServicesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_stay_basic_property_info_services_object
+      fieldMapping:
+        basicPropertyInfoId:
+          column:
+            name: basic_property_info_id
+        businessServiceCode:
+          column:
+            name: business_service_code
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomStayBasicPropertyInfoServicesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - basicPropertyInfoId
+          - businessServiceCode
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomStayBasicPropertyInfoServicesResponse
+  description: Responses from the
+    'insert_reservation_room_stay_basic_property_info_services' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRoomStayBasicPropertyInfoServices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRoomStayBasicPropertyInfoServicesResponse
+    inputTypeName: InsertReservationRoomStayBasicPropertyInfoServicesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_stay_basic_property_info_services_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomStayBasicPropertyInfoServicesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRoomStayBasicPropertyInfoServices
+  outputType: InsertReservationRoomStayBasicPropertyInfoServicesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRoomStayBasicPropertyInfoServicesObject!]!"
+    - name: postCheck
+      type: ReservationRoomStayBasicPropertyInfoServicesBoolExp
+      description: Insert permission predicate over the
+        'reservation_room_stay_basic_property_info_services' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_room_stay_basic_property_info_services
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRoomStayBasicPropertyInfoServices
+    rootFieldKind: Mutation
+  description: Insert into the reservation_room_stay_basic_property_info_services table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRoomStayBasicPropertyInfoServices
+  permissions:
+    - role: admin
+      allowExecution: true
+

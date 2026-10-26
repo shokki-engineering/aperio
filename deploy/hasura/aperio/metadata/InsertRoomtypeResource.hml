@@ -1,0 +1,324 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeResourceObject
+  fields:
+    - name: codeContext
+      type: String_1
+    - name: composite
+      type: Boolean_1
+    - name: createTime
+      type: Timestamptz
+    - name: deleteTime
+      type: Timestamptz
+    - name: descriptionId
+      type: String_1
+    - name: descriptiveText
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: guestRoomId
+      type: String_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: invCode
+      type: String_1
+    - name: invCodeApplication
+      type: Enum
+    - name: invGroupingCode
+      type: String_1
+    - name: invStatusType
+      type: Enum
+    - name: invType
+      type: String_1
+    - name: languageCode
+      type: String_1
+    - name: maxAdultOccupancy
+      type: Int32
+    - name: maxChildOccupancy
+      type: Int32
+    - name: maxOccupancy
+      type: Int32
+    - name: minOccupancy
+      type: Int32
+    - name: multimediaDescriptionsId
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: nonsmokingQuantity
+      type: Int32
+    - name: orderSequence
+      type: Int32
+    - name: otaUid
+      type: String_1
+    - name: quality
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: rph
+      type: String_1
+    - name: sort
+      type: Int32
+    - name: startId
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeResourceObject
+    inputTypeName: InsertRoomtypeResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_resource_object
+      fieldMapping:
+        codeContext:
+          column:
+            name: code_context
+        composite:
+          column:
+            name: composite
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        descriptionId:
+          column:
+            name: description_id
+        descriptiveText:
+          column:
+            name: descriptive_text
+        displayName:
+          column:
+            name: display_name
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        guestRoomId:
+          column:
+            name: guest_room_id
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        invCode:
+          column:
+            name: inv_code
+        invCodeApplication:
+          column:
+            name: inv_code_application
+        invGroupingCode:
+          column:
+            name: inv_grouping_code
+        invStatusType:
+          column:
+            name: inv_status_type
+        invType:
+          column:
+            name: inv_type
+        languageCode:
+          column:
+            name: language_code
+        maxAdultOccupancy:
+          column:
+            name: max_adult_occupancy
+        maxChildOccupancy:
+          column:
+            name: max_child_occupancy
+        maxOccupancy:
+          column:
+            name: max_occupancy
+        minOccupancy:
+          column:
+            name: min_occupancy
+        multimediaDescriptionsId:
+          column:
+            name: multimedia_descriptions_id
+        name:
+          column:
+            name: name
+        nonsmokingQuantity:
+          column:
+            name: nonsmoking_quantity
+        orderSequence:
+          column:
+            name: order_sequence
+        otaUid:
+          column:
+            name: ota_uid
+        quality:
+          column:
+            name: quality
+        quantity:
+          column:
+            name: quantity
+        rph:
+          column:
+            name: rph
+        sort:
+          column:
+            name: sort
+        startId:
+          column:
+            name: start_id
+        uid:
+          column:
+            name: uid
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        updateTime:
+          column:
+            name: update_time
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeContext
+          - composite
+          - createTime
+          - deleteTime
+          - descriptionId
+          - descriptiveText
+          - displayName
+          - duration
+          - endId
+          - etag
+          - expireTime
+          - guestRoomId
+          - hotelId
+          - id
+          - invCode
+          - invCodeApplication
+          - invGroupingCode
+          - invStatusType
+          - invType
+          - languageCode
+          - maxAdultOccupancy
+          - maxChildOccupancy
+          - maxOccupancy
+          - minOccupancy
+          - multimediaDescriptionsId
+          - name
+          - nonsmokingQuantity
+          - orderSequence
+          - otaUid
+          - quality
+          - quantity
+          - rph
+          - sort
+          - startId
+          - uid
+          - uniqueIdId
+          - updateTime
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeResourceResponse
+  description: Responses from the 'insert_roomtype_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeResourceResponse
+    inputTypeName: InsertRoomtypeResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeResource
+  outputType: InsertRoomtypeResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeResourceObject!]!"
+    - name: postCheck
+      type: RoomtypeResourceBoolExp
+      description: Insert permission predicate over the 'roomtype_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeResource
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

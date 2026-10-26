@@ -1,0 +1,139 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStatisticreportListItemsObject
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertStatisticreportListItemsObject
+    inputTypeName: InsertStatisticreportListItemsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_statisticreport_list_items_object
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStatisticreportListItemsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertStatisticreportListItemsResponse
+  description: Responses from the 'insert_statisticreport_list_items' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[StatisticreportListItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertStatisticreportListItemsResponse
+    inputTypeName: InsertStatisticreportListItemsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_statisticreport_list_items_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertStatisticreportListItemsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertStatisticreportListItems
+  outputType: InsertStatisticreportListItemsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertStatisticreportListItemsObject!]!"
+    - name: postCheck
+      type: StatisticreportListItemsBoolExp
+      description: Insert permission predicate over the 'statisticreport_list_items'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_statisticreport_list_items
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertStatisticreportListItems
+    rootFieldKind: Mutation
+  description: Insert into the statisticreport_list_items table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertStatisticreportListItems
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventDaysLinkObject
+  fields:
+    - name: dayNumber
+      type: Int32!
+    - name: eventDaysId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertEventDaysLinkObject
+    inputTypeName: InsertEventDaysLinkObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_days_link_object
+      fieldMapping:
+        dayNumber:
+          column:
+            name: day_number
+        eventDaysId:
+          column:
+            name: event_days_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventDaysLinkObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayNumber
+          - eventDaysId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventDaysLinkResponse
+  description: Responses from the 'insert_event_days_link' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventDaysLink!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventDaysLinkResponse
+    inputTypeName: InsertEventDaysLinkResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_event_days_link_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventDaysLinkResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventDaysLink
+  outputType: InsertEventDaysLinkResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventDaysLinkObject!]!"
+    - name: postCheck
+      type: EventDaysLinkBoolExp
+      description: Insert permission predicate over the 'event_days_link' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_event_days_link
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventDaysLink
+    rootFieldKind: Mutation
+  description: Insert into the event_days_link table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventDaysLink
+  permissions:
+    - role: admin
+      allowExecution: true
+

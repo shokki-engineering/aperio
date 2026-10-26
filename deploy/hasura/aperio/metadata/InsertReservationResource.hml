@@ -1,0 +1,258 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationResourceObject
+  fields:
+    - name: createTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: forcedSellIndicator
+      type: Boolean_1
+    - name: gdsStatusCode
+      type: String_1
+    - name: hotelId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: lastModifierId
+      type: String_1
+    - name: lifecycleCase
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: originalDeliveryMethodCode
+      type: Enum
+    - name: passiveIndicator
+      type: Boolean_1
+    - name: purgeDayId
+      type: String_1
+    - name: queueId
+      type: String_1
+    - name: rateOverrideIndicator
+      type: Boolean_1
+    - name: resGlobalInfoId
+      type: String_1
+    - name: roomNumberLockedIndicator
+      type: Boolean_1
+    - name: roomStayReservation
+      type: Boolean_1
+    - name: serviceOverrideIndicator
+      type: Boolean_1
+    - name: servicesId
+      type: String_1
+    - name: state
+      type: Enum
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: walkinIndicator
+      type: Boolean_1
+    - name: writtenConfInstId
+      type: String_1
+  graphql:
+    typeName: InsertReservationResourceObject
+    inputTypeName: InsertReservationResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_resource_object
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        creatorId:
+          column:
+            name: creator_id
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        forcedSellIndicator:
+          column:
+            name: forced_sell_indicator
+        gdsStatusCode:
+          column:
+            name: gds_status_code
+        hotelId:
+          column:
+            name: hotel_id
+        id:
+          column:
+            name: id
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lifecycleCase:
+          column:
+            name: lifecycle_case
+        name:
+          column:
+            name: name
+        originalDeliveryMethodCode:
+          column:
+            name: original_delivery_method_code
+        passiveIndicator:
+          column:
+            name: passive_indicator
+        purgeDayId:
+          column:
+            name: purge_day_id
+        queueId:
+          column:
+            name: queue_id
+        rateOverrideIndicator:
+          column:
+            name: rate_override_indicator
+        resGlobalInfoId:
+          column:
+            name: res_global_info_id
+        roomNumberLockedIndicator:
+          column:
+            name: room_number_locked_indicator
+        roomStayReservation:
+          column:
+            name: room_stay_reservation
+        serviceOverrideIndicator:
+          column:
+            name: service_override_indicator
+        servicesId:
+          column:
+            name: services_id
+        state:
+          column:
+            name: state
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+        walkinIndicator:
+          column:
+            name: walkin_indicator
+        writtenConfInstId:
+          column:
+            name: written_conf_inst_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - creatorId
+          - deleteTime
+          - etag
+          - expireTime
+          - forcedSellIndicator
+          - gdsStatusCode
+          - hotelId
+          - id
+          - lastModifierId
+          - lifecycleCase
+          - name
+          - originalDeliveryMethodCode
+          - passiveIndicator
+          - purgeDayId
+          - queueId
+          - rateOverrideIndicator
+          - resGlobalInfoId
+          - roomNumberLockedIndicator
+          - roomStayReservation
+          - serviceOverrideIndicator
+          - servicesId
+          - state
+          - uid
+          - updateTime
+          - walkinIndicator
+          - writtenConfInstId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationResourceResponse
+  description: Responses from the 'insert_reservation_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationResourceResponse
+    inputTypeName: InsertReservationResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationResource
+  outputType: InsertReservationResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationResourceObject!]!"
+    - name: postCheck
+      type: ReservationResourceBoolExp
+      description: Insert permission predicate over the 'reservation_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationResource
+    rootFieldKind: Mutation
+  description: Insert into the reservation_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,180 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateCommentsObject
+  fields:
+    - name: commentOriginatorCode
+      type: String_1
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: guaranteeId
+      type: String_1!
+    - name: guestViewable
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertRateCommentsObject
+    inputTypeName: InsertRateCommentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_comments_object
+      fieldMapping:
+        commentOriginatorCode:
+          column:
+            name: comment_originator_code
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        guaranteeId:
+          column:
+            name: guarantee_id
+        guestViewable:
+          column:
+            name: guest_viewable
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateCommentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentOriginatorCode
+          - createDateTime
+          - creatorId
+          - displayName
+          - guaranteeId
+          - guestViewable
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateCommentsResponse
+  description: Responses from the 'insert_rate_comments' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateComments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateCommentsResponse
+    inputTypeName: InsertRateCommentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_comments_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateCommentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateComments
+  outputType: InsertRateCommentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateCommentsObject!]!"
+    - name: postCheck
+      type: RateCommentsBoolExp
+      description: Insert permission predicate over the 'rate_comments' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rate_comments
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateComments
+    rootFieldKind: Mutation
+  description: Insert into the rate_comments table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateComments
+  permissions:
+    - role: admin
+      allowExecution: true
+

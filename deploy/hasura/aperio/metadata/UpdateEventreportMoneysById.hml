@@ -1,0 +1,262 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportMoneysCurrencyCode
+  description: Update the 'currency_code' column in the 'eventreport_moneys' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportMoneysCurrencyCode
+    inputTypeName: UpdateColumnEventreportMoneysCurrencyCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_moneys_currency_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportMoneysCurrencyCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportMoneysId
+  description: Update the 'id' column in the 'eventreport_moneys' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportMoneysId
+    inputTypeName: UpdateColumnEventreportMoneysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_moneys_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportMoneysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportMoneysNanoUnits
+  description: Update the 'nano_units' column in the 'eventreport_moneys' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportMoneysNanoUnits
+    inputTypeName: UpdateColumnEventreportMoneysNanoUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_moneys_nano_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportMoneysNanoUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventreportMoneysUnits
+  description: Update the 'units' column in the 'eventreport_moneys' collection
+  fields:
+    - name: set
+      type: Int64
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventreportMoneysUnits
+    inputTypeName: UpdateColumnEventreportMoneysUnitsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_eventreport_moneys_units
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventreportMoneysUnits
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportMoneysByIdUpdateColumns
+  description: Update the columns of the 'eventreport_moneys' collection
+  fields:
+    - name: currencyCode
+      type: UpdateColumnEventreportMoneysCurrencyCode
+      description: Update the 'currency_code' column in the 'eventreport_moneys' collection.
+    - name: id
+      type: UpdateColumnEventreportMoneysId
+      description: Update the 'id' column in the 'eventreport_moneys' collection.
+    - name: nanoUnits
+      type: UpdateColumnEventreportMoneysNanoUnits
+      description: Update the 'nano_units' column in the 'eventreport_moneys' collection.
+    - name: units
+      type: UpdateColumnEventreportMoneysUnits
+      description: Update the 'units' column in the 'eventreport_moneys' collection.
+  graphql:
+    typeName: UpdateEventreportMoneysByIdUpdateColumns
+    inputTypeName: UpdateEventreportMoneysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_moneys_by_id_update_columns
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportMoneysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventreportMoneysByIdResponse
+  description: Responses from the 'update_eventreport_moneys_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventreportMoneysByIdResponse
+    inputTypeName: UpdateEventreportMoneysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_eventreport_moneys_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventreportMoneysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventreportMoneysById
+  outputType: UpdateEventreportMoneysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventreportMoneysBoolExp
+      description: Update permission post-condition predicate over the
+        'eventreport_moneys' collection
+    - name: preCheck
+      type: EventreportMoneysBoolExp
+      description: Update permission pre-condition predicate over the
+        'eventreport_moneys' collection
+    - name: updateColumns
+      type: UpdateEventreportMoneysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_eventreport_moneys_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventreportMoneysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'eventreport_moneys' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventreportMoneysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

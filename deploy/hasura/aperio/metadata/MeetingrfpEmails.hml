@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpEmails
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: emailType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: textFormat
+      type: Enum
+    - name: valid
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: MeetingrfpEmails
+    inputTypeName: MeetingrfpEmailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_emails
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        emailType:
+          column:
+            name: email_type
+        id:
+          column:
+            name: id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        textFormat:
+          column:
+            name: text_format
+        valid:
+          column:
+            name: valid
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpEmails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - emailType
+          - id
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - textFormat
+          - valid
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpEmailsBoolExp
+  operand:
+    object:
+      type: MeetingrfpEmails
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: emailType
+          booleanExpressionType: MeetingrfpMeetingrfpEmailAddressTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: MeetingrfpContactPersonShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: MeetingrfpContactPersonShareSynchIndBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: MeetingrfpMeetingrfpEmailTextFormatBoolExp
+        - fieldName: valid
+          booleanExpressionType: BoolBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpEmailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpEmailsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpEmails
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: emailType
+          aggregateExpression: MeetingrfpMeetingrfpEmailAddressTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: MeetingrfpContactPersonShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: MeetingrfpContactPersonShareSynchIndAggExp
+        - fieldName: textFormat
+          aggregateExpression: MeetingrfpMeetingrfpEmailTextFormatAggExp
+        - fieldName: valid
+          aggregateExpression: BoolAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpEmailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpEmailsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpEmails
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: emailType
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: valid
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpEmailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpEmails
+  objectType: MeetingrfpEmails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_emails
+  filterExpressionType: MeetingrfpEmailsBoolExp
+  aggregateExpression: MeetingrfpEmailsAggExp
+  orderByExpression: MeetingrfpEmailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpEmails
+      subscription:
+        rootField: meetingrfpEmails
+    selectUniques:
+      - queryRootField: meetingrfpEmailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpEmailsById
+    filterInputTypeName: MeetingrfpEmailsFilterInput
+    aggregate:
+      queryRootField: meetingrfpEmailsAggregate
+      subscription:
+        rootField: meetingrfpEmailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpEmails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

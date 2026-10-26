@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileSecurities
+  fields:
+    - name: accessType
+      type: Enum
+    - name: accessingOrganizationId
+      type: String_1
+    - name: accessingOrganizationType
+      type: Enum
+    - name: agreementsId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: transferAction
+      type: Enum
+  graphql:
+    typeName: ProfileSecurities
+    inputTypeName: ProfileSecuritiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_securities
+      fieldMapping:
+        accessType:
+          column:
+            name: access_type
+        accessingOrganizationId:
+          column:
+            name: accessing_organization_id
+        accessingOrganizationType:
+          column:
+            name: accessing_organization_type
+        agreementsId:
+          column:
+            name: agreements_id
+        id:
+          column:
+            name: id
+        transferAction:
+          column:
+            name: transfer_action
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileSecurities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessType
+          - accessingOrganizationId
+          - accessingOrganizationType
+          - agreementsId
+          - id
+          - transferAction
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileSecuritiesBoolExp
+  operand:
+    object:
+      type: ProfileSecurities
+      comparableFields:
+        - fieldName: accessType
+          booleanExpressionType: ProfileAccessTypeBoolExp
+        - fieldName: accessingOrganizationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: accessingOrganizationType
+          booleanExpressionType: ProfileAccessingOrganizationTypeBoolExp
+        - fieldName: agreementsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: transferAction
+          booleanExpressionType: ProfileTransferActionBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileSecuritiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileSecuritiesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileSecurities
+      aggregatableFields:
+        - fieldName: accessType
+          aggregateExpression: ProfileAccessTypeAggExp
+        - fieldName: accessingOrganizationId
+          aggregateExpression: TextAggExp
+        - fieldName: accessingOrganizationType
+          aggregateExpression: ProfileAccessingOrganizationTypeAggExp
+        - fieldName: agreementsId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: transferAction
+          aggregateExpression: ProfileTransferActionAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileSecuritiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileSecuritiesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileSecurities
+      orderableFields:
+        - fieldName: accessType
+          orderByExpression: EnumOrderByExp
+        - fieldName: accessingOrganizationId
+          orderByExpression: String1OrderByExp
+        - fieldName: accessingOrganizationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: agreementsId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: transferAction
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileSecuritiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileSecurities
+  objectType: ProfileSecurities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_securities
+  filterExpressionType: ProfileSecuritiesBoolExp
+  aggregateExpression: ProfileSecuritiesAggExp
+  orderByExpression: ProfileSecuritiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileSecurities
+      subscription:
+        rootField: profileSecurities
+    selectUniques:
+      - queryRootField: profileSecuritiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileSecuritiesById
+    filterInputTypeName: ProfileSecuritiesFilterInput
+    aggregate:
+      queryRootField: profileSecuritiesAggregate
+      subscription:
+        rootField: profileSecuritiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileSecurities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

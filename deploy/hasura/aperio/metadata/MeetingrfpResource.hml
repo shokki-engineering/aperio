@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpResource
+  fields:
+    - name: createTime
+      type: Timestamptz!
+    - name: datesId
+      type: String_1!
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: eventBlockId
+      type: String_1
+    - name: eventBlockIndicator
+      type: Boolean_1
+    - name: expireTime
+      type: Timestamptz
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: proposalSpecId
+      type: String_1
+    - name: roomBlockId
+      type: String_1
+    - name: roomBlockIndicator
+      type: Boolean_1
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: MeetingrfpResource
+    inputTypeName: MeetingrfpResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_resource
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        datesId:
+          column:
+            name: dates_id
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        eventBlockId:
+          column:
+            name: event_block_id
+        eventBlockIndicator:
+          column:
+            name: event_block_indicator
+        expireTime:
+          column:
+            name: expire_time
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        proposalSpecId:
+          column:
+            name: proposal_spec_id
+        roomBlockId:
+          column:
+            name: room_block_id
+        roomBlockIndicator:
+          column:
+            name: room_block_indicator
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - datesId
+          - deleteTime
+          - etag
+          - eventBlockId
+          - eventBlockIndicator
+          - expireTime
+          - id
+          - name
+          - proposalSpecId
+          - roomBlockId
+          - roomBlockIndicator
+          - uid
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpResourceBoolExp
+  operand:
+    object:
+      type: MeetingrfpResource
+      comparableFields:
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: datesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventBlockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventBlockIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: proposalSpecId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomBlockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomBlockIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpResourceAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpResource
+      aggregatableFields:
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: datesId
+          aggregateExpression: TextAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: eventBlockId
+          aggregateExpression: TextAggExp
+        - fieldName: eventBlockIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: proposalSpecId
+          aggregateExpression: TextAggExp
+        - fieldName: roomBlockId
+          aggregateExpression: TextAggExp
+        - fieldName: roomBlockIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpResourceOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpResource
+      orderableFields:
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: datesId
+          orderByExpression: String1OrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: eventBlockId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventBlockIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: proposalSpecId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomBlockId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomBlockIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpResource
+  objectType: MeetingrfpResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_resource
+  filterExpressionType: MeetingrfpResourceBoolExp
+  aggregateExpression: MeetingrfpResourceAggExp
+  orderByExpression: MeetingrfpResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpResource
+      subscription:
+        rootField: meetingrfpResource
+    selectUniques:
+      - queryRootField: meetingrfpResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpResourceById
+    filterInputTypeName: MeetingrfpResourceFilterInput
+    aggregate:
+      queryRootField: meetingrfpResourceAggregate
+      subscription:
+        rootField: meetingrfpResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

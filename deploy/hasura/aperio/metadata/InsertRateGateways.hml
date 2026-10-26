@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateGatewaysObject
+  fields:
+    - name: authenticationVerificationValueId
+      type: String_1
+    - name: eci
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: merchantId
+      type: String_1
+    - name: processorId
+      type: String_1
+    - name: transactionPasswordId
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: InsertRateGatewaysObject
+    inputTypeName: InsertRateGatewaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_gateways_object
+      fieldMapping:
+        authenticationVerificationValueId:
+          column:
+            name: authentication_verification_value_id
+        eci:
+          column:
+            name: eci
+        id:
+          column:
+            name: id
+        merchantId:
+          column:
+            name: merchant_id
+        processorId:
+          column:
+            name: processor_id
+        transactionPasswordId:
+          column:
+            name: transaction_password_id
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateGatewaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - authenticationVerificationValueId
+          - eci
+          - id
+          - merchantId
+          - processorId
+          - transactionPasswordId
+          - uri
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateGatewaysResponse
+  description: Responses from the 'insert_rate_gateways' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateGateways!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateGatewaysResponse
+    inputTypeName: InsertRateGatewaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_gateways_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateGatewaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateGateways
+  outputType: InsertRateGatewaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateGatewaysObject!]!"
+    - name: postCheck
+      type: RateGatewaysBoolExp
+      description: Insert permission predicate over the 'rate_gateways' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rate_gateways
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateGateways
+    rootFieldKind: Mutation
+  description: Insert into the rate_gateways table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateGateways
+  permissions:
+    - role: admin
+      allowExecution: true
+

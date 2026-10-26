@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileContactPrefs
+  fields:
+    - name: commonPrefId
+      type: String_1!
+    - name: contactMethodCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+  graphql:
+    typeName: ProfileContactPrefs
+    inputTypeName: ProfileContactPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_contact_prefs
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        contactMethodCode:
+          column:
+            name: contact_method_code
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileContactPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - contactMethodCode
+          - id
+          - preferLevel
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileContactPrefsBoolExp
+  operand:
+    object:
+      type: ProfileContactPrefs
+      comparableFields:
+        - fieldName: commonPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactMethodCode
+          booleanExpressionType: ProfileProfileDistributionTypeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileContactPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileContactPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileContactPrefs
+      aggregatableFields:
+        - fieldName: commonPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: contactMethodCode
+          aggregateExpression: ProfileProfileDistributionTypeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileContactPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileContactPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileContactPrefs
+      orderableFields:
+        - fieldName: commonPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileContactPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileContactPrefs
+  objectType: ProfileContactPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_contact_prefs
+  filterExpressionType: ProfileContactPrefsBoolExp
+  aggregateExpression: ProfileContactPrefsAggExp
+  orderByExpression: ProfileContactPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileContactPrefs
+      subscription:
+        rootField: profileContactPrefs
+    selectUniques:
+      - queryRootField: profileContactPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileContactPrefsById
+    filterInputTypeName: ProfileContactPrefsFilterInput
+    aggregate:
+      queryRootField: profileContactPrefsAggregate
+      subscription:
+        rootField: profileContactPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileContactPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

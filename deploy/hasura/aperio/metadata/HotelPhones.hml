@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelPhones
+  fields:
+    - name: areaCityCode
+      type: String_1
+    - name: contactInfoId
+      type: String_1!
+    - name: countryAccessCode
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: extension
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: ownershipManagementInfoId
+      type: String_1!
+    - name: phoneLocationType
+      type: Enum
+    - name: phoneNumber
+      type: String_1!
+    - name: phoneTechType
+      type: Enum
+    - name: phoneUseType
+      type: Enum
+    - name: pin
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: HotelPhones
+    inputTypeName: HotelPhonesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_phones
+      fieldMapping:
+        areaCityCode:
+          column:
+            name: area_city_code
+        contactInfoId:
+          column:
+            name: contact_info_id
+        countryAccessCode:
+          column:
+            name: country_access_code
+        defaultValue:
+          column:
+            name: default_value
+        extension:
+          column:
+            name: extension
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        ownershipManagementInfoId:
+          column:
+            name: ownership_management_info_id
+        phoneLocationType:
+          column:
+            name: phone_location_type
+        phoneNumber:
+          column:
+            name: phone_number
+        phoneTechType:
+          column:
+            name: phone_tech_type
+        phoneUseType:
+          column:
+            name: phone_use_type
+        pin:
+          column:
+            name: pin
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelPhones
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaCityCode
+          - contactInfoId
+          - countryAccessCode
+          - defaultValue
+          - extension
+          - formatted
+          - id
+          - ownershipManagementInfoId
+          - phoneLocationType
+          - phoneNumber
+          - phoneTechType
+          - phoneUseType
+          - pin
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelPhonesBoolExp
+  operand:
+    object:
+      type: HotelPhones
+      comparableFields:
+        - fieldName: areaCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryAccessCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ownershipManagementInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneLocationType
+          booleanExpressionType: HotelHotelPhoneLocationTypeBoolExp
+        - fieldName: phoneNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneTechType
+          booleanExpressionType: HotelHotelPhoneTechnologyTypeBoolExp
+        - fieldName: phoneUseType
+          booleanExpressionType: HotelHotelPhoneUseTypeBoolExp
+        - fieldName: pin
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: HotelHotelPhoneShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: HotelHotelPhoneShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelPhonesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelPhonesAggExp
+  operand:
+    object:
+      aggregatedType: HotelPhones
+      aggregatableFields:
+        - fieldName: areaCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: contactInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: countryAccessCode
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ownershipManagementInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: phoneLocationType
+          aggregateExpression: HotelHotelPhoneLocationTypeAggExp
+        - fieldName: phoneNumber
+          aggregateExpression: TextAggExp
+        - fieldName: phoneTechType
+          aggregateExpression: HotelHotelPhoneTechnologyTypeAggExp
+        - fieldName: phoneUseType
+          aggregateExpression: HotelHotelPhoneUseTypeAggExp
+        - fieldName: pin
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: HotelHotelPhoneShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: HotelHotelPhoneShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelPhonesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelPhonesOrderByExp
+  operand:
+    object:
+      orderedType: HotelPhones
+      orderableFields:
+        - fieldName: areaCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: contactInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: countryAccessCode
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ownershipManagementInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneLocationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneTechType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneUseType
+          orderByExpression: EnumOrderByExp
+        - fieldName: pin
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelPhonesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelPhones
+  objectType: HotelPhones
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_phones
+  filterExpressionType: HotelPhonesBoolExp
+  aggregateExpression: HotelPhonesAggExp
+  orderByExpression: HotelPhonesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelPhones
+      subscription:
+        rootField: hotelPhones
+    selectUniques:
+      - queryRootField: hotelPhonesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelPhonesById
+    filterInputTypeName: HotelPhonesFilterInput
+    aggregate:
+      queryRootField: hotelPhonesAggregate
+      subscription:
+        rootField: hotelPhonesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelPhones
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

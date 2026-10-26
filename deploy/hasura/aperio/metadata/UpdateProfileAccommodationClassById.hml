@@ -1,0 +1,216 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccommodationClassExtension
+  description: Update the 'extension' column in the 'profile_accommodation_class' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccommodationClassExtension
+    inputTypeName: UpdateColumnProfileAccommodationClassExtensionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_accommodation_class_extension
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccommodationClassExtension
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccommodationClassId
+  description: Update the 'id' column in the 'profile_accommodation_class' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccommodationClassId
+    inputTypeName: UpdateColumnProfileAccommodationClassIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_accommodation_class_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccommodationClassId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileAccommodationClassValue
+  description: Update the 'value' column in the 'profile_accommodation_class' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileAccommodationClassValue
+    inputTypeName: UpdateColumnProfileAccommodationClassValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_accommodation_class_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileAccommodationClassValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAccommodationClassByIdUpdateColumns
+  description: Update the columns of the 'profile_accommodation_class' collection
+  fields:
+    - name: extension
+      type: UpdateColumnProfileAccommodationClassExtension
+      description: Update the 'extension' column in the 'profile_accommodation_class'
+        collection.
+    - name: id
+      type: UpdateColumnProfileAccommodationClassId
+      description: Update the 'id' column in the 'profile_accommodation_class' collection.
+    - name: value
+      type: UpdateColumnProfileAccommodationClassValue
+      description: Update the 'value' column in the 'profile_accommodation_class'
+        collection.
+  graphql:
+    typeName: UpdateProfileAccommodationClassByIdUpdateColumns
+    inputTypeName: UpdateProfileAccommodationClassByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_accommodation_class_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAccommodationClassByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - extension
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileAccommodationClassByIdResponse
+  description: Responses from the 'update_profile_accommodation_class_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileAccommodationClass!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileAccommodationClassByIdResponse
+    inputTypeName: UpdateProfileAccommodationClassByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_accommodation_class_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileAccommodationClassByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileAccommodationClassById
+  outputType: UpdateProfileAccommodationClassByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileAccommodationClassBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_accommodation_class' collection
+    - name: preCheck
+      type: ProfileAccommodationClassBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_accommodation_class' collection
+    - name: updateColumns
+      type: UpdateProfileAccommodationClassByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_accommodation_class_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileAccommodationClassById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_accommodation_class' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileAccommodationClassById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelJobTitlesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: nameId
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertHotelJobTitlesObject
+    inputTypeName: InsertHotelJobTitlesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_job_titles_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        nameId:
+          column:
+            name: name_id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelJobTitlesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - nameId
+          - type
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelJobTitlesResponse
+  description: Responses from the 'insert_hotel_job_titles' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelJobTitles!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelJobTitlesResponse
+    inputTypeName: InsertHotelJobTitlesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_job_titles_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelJobTitlesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelJobTitles
+  outputType: InsertHotelJobTitlesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelJobTitlesObject!]!"
+    - name: postCheck
+      type: HotelJobTitlesBoolExp
+      description: Insert permission predicate over the 'hotel_job_titles' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_job_titles
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelJobTitles
+    rootFieldKind: Mutation
+  description: Insert into the hotel_job_titles table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelJobTitles
+  permissions:
+    - role: admin
+      allowExecution: true
+

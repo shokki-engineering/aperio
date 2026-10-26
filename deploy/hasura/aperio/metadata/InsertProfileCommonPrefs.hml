@@ -1,0 +1,144 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCommonPrefsObject
+  fields:
+    - name: altLangId
+      type: String_1
+    - name: employeeLevelInfoId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: prefCollectionId
+      type: String_1!
+    - name: primaryLangId
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: smokingAllowed
+      type: Boolean_1
+  graphql:
+    typeName: InsertProfileCommonPrefsObject
+    inputTypeName: InsertProfileCommonPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_common_prefs_object
+      fieldMapping:
+        altLangId:
+          column:
+            name: alt_lang_id
+        employeeLevelInfoId:
+          column:
+            name: employee_level_info_id
+        id:
+          column:
+            name: id
+        prefCollectionId:
+          column:
+            name: pref_collection_id
+        primaryLangId:
+          column:
+            name: primary_lang_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        smokingAllowed:
+          column:
+            name: smoking_allowed
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCommonPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - altLangId
+          - employeeLevelInfoId
+          - id
+          - prefCollectionId
+          - primaryLangId
+          - shareMarketInd
+          - shareSynchInd
+          - smokingAllowed
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCommonPrefsResponse
+  description: Responses from the 'insert_profile_common_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCommonPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileCommonPrefsResponse
+    inputTypeName: InsertProfileCommonPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_common_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCommonPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileCommonPrefs
+  outputType: InsertProfileCommonPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileCommonPrefsObject!]!"
+    - name: postCheck
+      type: ProfileCommonPrefsBoolExp
+      description: Insert permission predicate over the 'profile_common_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_common_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileCommonPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_common_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileCommonPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

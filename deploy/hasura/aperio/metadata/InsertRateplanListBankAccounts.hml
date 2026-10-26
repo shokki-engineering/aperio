@@ -1,0 +1,163 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanListBankAccountsObject
+  fields:
+    - name: code
+      type: String_1
+    - name: description
+      type: String_1
+    - name: descriptionDetail
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: removal
+      type: Boolean_1
+    - name: resourceDisplayName
+      type: String_1
+    - name: resourceUri
+      type: String_1
+    - name: sourceDisplayName
+      type: String_1
+    - name: sourceUri
+      type: String_1
+    - name: uniqueId
+      type: String_1
+    - name: value
+      type: Enum
+  graphql:
+    typeName: InsertRateplanListBankAccountsObject
+    inputTypeName: InsertRateplanListBankAccountsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_list_bank_accounts_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        description:
+          column:
+            name: description
+        descriptionDetail:
+          column:
+            name: description_detail
+        id:
+          column:
+            name: id
+        removal:
+          column:
+            name: removal
+        resourceDisplayName:
+          column:
+            name: resource_display_name
+        resourceUri:
+          column:
+            name: resource_uri
+        sourceDisplayName:
+          column:
+            name: source_display_name
+        sourceUri:
+          column:
+            name: source_uri
+        uniqueId:
+          column:
+            name: unique_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanListBankAccountsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - description
+          - descriptionDetail
+          - id
+          - removal
+          - resourceDisplayName
+          - resourceUri
+          - sourceDisplayName
+          - sourceUri
+          - uniqueId
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanListBankAccountsResponse
+  description: Responses from the 'insert_rateplan_list_bank_accounts' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanListBankAccounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanListBankAccountsResponse
+    inputTypeName: InsertRateplanListBankAccountsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_list_bank_accounts_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanListBankAccountsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanListBankAccounts
+  outputType: InsertRateplanListBankAccountsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanListBankAccountsObject!]!"
+    - name: postCheck
+      type: RateplanListBankAccountsBoolExp
+      description: Insert permission predicate over the 'rateplan_list_bank_accounts'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_list_bank_accounts
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanListBankAccounts
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_list_bank_accounts table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanListBankAccounts
+  permissions:
+    - role: admin
+      allowExecution: true
+

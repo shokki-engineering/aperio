@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoRecreations
+  fields:
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: AreainfoRecreations
+    inputTypeName: AreainfoRecreationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_recreations
+      fieldMapping:
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoRecreations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - lastUpdateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoRecreationsBoolExp
+  operand:
+    object:
+      type: AreainfoRecreations
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoRecreationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoRecreationsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoRecreations
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoRecreationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoRecreationsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoRecreations
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoRecreationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoRecreations
+  objectType: AreainfoRecreations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_recreations
+  filterExpressionType: AreainfoRecreationsBoolExp
+  aggregateExpression: AreainfoRecreationsAggExp
+  orderByExpression: AreainfoRecreationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoRecreations
+      subscription:
+        rootField: areainfoRecreations
+    selectUniques:
+      - queryRootField: areainfoRecreationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoRecreationsById
+    filterInputTypeName: AreainfoRecreationsFilterInput
+    aggregate:
+      queryRootField: areainfoRecreationsAggregate
+      subscription:
+        rootField: areainfoRecreationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoRecreations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

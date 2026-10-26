@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileOtherServiceInfos
+  fields:
+    - name: airlineId
+      type: String_1!
+    - name: airlinePrefId
+      type: String_1!
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: text
+      type: String_1!
+  graphql:
+    typeName: ProfileOtherServiceInfos
+    inputTypeName: ProfileOtherServiceInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_other_service_infos
+      fieldMapping:
+        airlineId:
+          column:
+            name: airline_id
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        text:
+          column:
+            name: text
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileOtherServiceInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlineId
+          - airlinePrefId
+          - code
+          - id
+          - text
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileOtherServiceInfosBoolExp
+  operand:
+    object:
+      type: ProfileOtherServiceInfos
+      comparableFields:
+        - fieldName: airlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: airlinePrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileOtherServiceInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileOtherServiceInfosAggExp
+  operand:
+    object:
+      aggregatedType: ProfileOtherServiceInfos
+      aggregatableFields:
+        - fieldName: airlineId
+          aggregateExpression: TextAggExp
+        - fieldName: airlinePrefId
+          aggregateExpression: TextAggExp
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileOtherServiceInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileOtherServiceInfosOrderByExp
+  operand:
+    object:
+      orderedType: ProfileOtherServiceInfos
+      orderableFields:
+        - fieldName: airlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: airlinePrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileOtherServiceInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileOtherServiceInfos
+  objectType: ProfileOtherServiceInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_other_service_infos
+  filterExpressionType: ProfileOtherServiceInfosBoolExp
+  aggregateExpression: ProfileOtherServiceInfosAggExp
+  orderByExpression: ProfileOtherServiceInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileOtherServiceInfos
+      subscription:
+        rootField: profileOtherServiceInfos
+    selectUniques:
+      - queryRootField: profileOtherServiceInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileOtherServiceInfosById
+    filterInputTypeName: ProfileOtherServiceInfosFilterInput
+    aggregate:
+      queryRootField: profileOtherServiceInfosAggregate
+      subscription:
+        rootField: profileOtherServiceInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileOtherServiceInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

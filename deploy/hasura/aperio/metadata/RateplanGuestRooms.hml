@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanGuestRooms
+  fields:
+    - name: descriptionId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: quantitiesId
+      type: String_1
+    - name: roomId
+      type: String_1
+    - name: roomLevelFeesId
+      type: String_1
+  graphql:
+    typeName: RateplanGuestRooms
+    inputTypeName: RateplanGuestRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_guest_rooms
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        id:
+          column:
+            name: id
+        quantitiesId:
+          column:
+            name: quantities_id
+        roomId:
+          column:
+            name: room_id
+        roomLevelFeesId:
+          column:
+            name: room_level_fees_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanGuestRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - id
+          - quantitiesId
+          - roomId
+          - roomLevelFeesId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanGuestRoomsBoolExp
+  operand:
+    object:
+      type: RateplanGuestRooms
+      comparableFields:
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: quantitiesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomLevelFeesId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanGuestRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanGuestRoomsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanGuestRooms
+      aggregatableFields:
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: quantitiesId
+          aggregateExpression: TextAggExp
+        - fieldName: roomId
+          aggregateExpression: TextAggExp
+        - fieldName: roomLevelFeesId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanGuestRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanGuestRoomsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanGuestRooms
+      orderableFields:
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: quantitiesId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomLevelFeesId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanGuestRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanGuestRooms
+  objectType: RateplanGuestRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_guest_rooms
+  filterExpressionType: RateplanGuestRoomsBoolExp
+  aggregateExpression: RateplanGuestRoomsAggExp
+  orderByExpression: RateplanGuestRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanGuestRooms
+      subscription:
+        rootField: rateplanGuestRooms
+    selectUniques:
+      - queryRootField: rateplanGuestRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanGuestRoomsById
+    filterInputTypeName: RateplanGuestRoomsFilterInput
+    aggregate:
+      queryRootField: rateplanGuestRoomsAggregate
+      subscription:
+        rootField: rateplanGuestRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanGuestRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductHotelAmenities
+  fields:
+    - name: codeDetail
+      type: String_1
+    - name: descriptionId
+      type: String_1
+    - name: hotelAmenityCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: maxNumberProvided
+      type: Int32
+    - name: valueAddInclusionsId
+      type: String_1!
+  graphql:
+    typeName: HotelproductHotelAmenities
+    inputTypeName: HotelproductHotelAmenitiesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_hotel_amenities
+      fieldMapping:
+        codeDetail:
+          column:
+            name: code_detail
+        descriptionId:
+          column:
+            name: description_id
+        hotelAmenityCode:
+          column:
+            name: hotel_amenity_code
+        id:
+          column:
+            name: id
+        maxNumberProvided:
+          column:
+            name: max_number_provided
+        valueAddInclusionsId:
+          column:
+            name: value_add_inclusions_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductHotelAmenities
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - codeDetail
+          - descriptionId
+          - hotelAmenityCode
+          - id
+          - maxNumberProvided
+          - valueAddInclusionsId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductHotelAmenitiesBoolExp
+  operand:
+    object:
+      type: HotelproductHotelAmenities
+      comparableFields:
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelAmenityCode
+          booleanExpressionType: HotelproductHotelproductHotelAmenityCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxNumberProvided
+          booleanExpressionType: Int4BoolExp
+        - fieldName: valueAddInclusionsId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductHotelAmenitiesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductHotelAmenitiesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductHotelAmenities
+      aggregatableFields:
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelAmenityCode
+          aggregateExpression: HotelproductHotelproductHotelAmenityCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxNumberProvided
+          aggregateExpression: Int4AggExp
+        - fieldName: valueAddInclusionsId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductHotelAmenitiesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductHotelAmenitiesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductHotelAmenities
+      orderableFields:
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelAmenityCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxNumberProvided
+          orderByExpression: Int32OrderByExp
+        - fieldName: valueAddInclusionsId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductHotelAmenitiesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductHotelAmenities
+  objectType: HotelproductHotelAmenities
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_hotel_amenities
+  filterExpressionType: HotelproductHotelAmenitiesBoolExp
+  aggregateExpression: HotelproductHotelAmenitiesAggExp
+  orderByExpression: HotelproductHotelAmenitiesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductHotelAmenities
+      subscription:
+        rootField: hotelproductHotelAmenities
+    selectUniques:
+      - queryRootField: hotelproductHotelAmenitiesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductHotelAmenitiesById
+    filterInputTypeName: HotelproductHotelAmenitiesFilterInput
+    aggregate:
+      queryRootField: hotelproductHotelAmenitiesAggregate
+      subscription:
+        rootField: hotelproductHotelAmenitiesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductHotelAmenities
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,17 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+services:
+  aperio_aperio_pgsql:
+    build:
+      context: .
+      dockerfile: .hasura-connector/Dockerfile.aperio_pgsql
+    environment:
+      CONNECTION_URI: $APERIO_APERIO_PGSQL_CONNECTION_URI
+      HASURA_SERVICE_TOKEN_SECRET: $APERIO_APERIO_PGSQL_HASURA_SERVICE_TOKEN_SECRET
+      OTEL_EXPORTER_OTLP_ENDPOINT: $APERIO_APERIO_PGSQL_OTEL_EXPORTER_OTLP_ENDPOINT
+      OTEL_SERVICE_NAME: $APERIO_APERIO_PGSQL_OTEL_SERVICE_NAME
+    extra_hosts:
+      - local.hasura.dev:host-gateway
+    ports:
+      - 9795:8080

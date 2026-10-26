@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelOwnershipManagementInfos
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: hotelInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: location
+      type: Enum
+    - name: relationshipTypeCode
+      type: Enum
+  graphql:
+    typeName: HotelOwnershipManagementInfos
+    inputTypeName: HotelOwnershipManagementInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_ownership_management_infos
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        hotelInfoId:
+          column:
+            name: hotel_info_id
+        id:
+          column:
+            name: id
+        location:
+          column:
+            name: location
+        relationshipTypeCode:
+          column:
+            name: relationship_type_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelOwnershipManagementInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - hotelInfoId
+          - id
+          - location
+          - relationshipTypeCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelOwnershipManagementInfosBoolExp
+  operand:
+    object:
+      type: HotelOwnershipManagementInfos
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: location
+          booleanExpressionType: HotelHotelContactLocationBoolExp
+        - fieldName: relationshipTypeCode
+          booleanExpressionType: HotelRelationshipBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelOwnershipManagementInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelOwnershipManagementInfosAggExp
+  operand:
+    object:
+      aggregatedType: HotelOwnershipManagementInfos
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: location
+          aggregateExpression: HotelHotelContactLocationAggExp
+        - fieldName: relationshipTypeCode
+          aggregateExpression: HotelRelationshipAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelOwnershipManagementInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelOwnershipManagementInfosOrderByExp
+  operand:
+    object:
+      orderedType: HotelOwnershipManagementInfos
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: location
+          orderByExpression: EnumOrderByExp
+        - fieldName: relationshipTypeCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelOwnershipManagementInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelOwnershipManagementInfos
+  objectType: HotelOwnershipManagementInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_ownership_management_infos
+  filterExpressionType: HotelOwnershipManagementInfosBoolExp
+  aggregateExpression: HotelOwnershipManagementInfosAggExp
+  orderByExpression: HotelOwnershipManagementInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelOwnershipManagementInfos
+      subscription:
+        rootField: hotelOwnershipManagementInfos
+    selectUniques:
+      - queryRootField: hotelOwnershipManagementInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelOwnershipManagementInfosById
+    filterInputTypeName: HotelOwnershipManagementInfosFilterInput
+    aggregate:
+      queryRootField: hotelOwnershipManagementInfosAggregate
+      subscription:
+        rootField: hotelOwnershipManagementInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelOwnershipManagementInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

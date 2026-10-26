@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationTimeSpans
+  fields:
+    - name: dateWindowRangeId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endDateWindowId
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: increment
+      type: String_1
+    - name: startDateWindowId
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: ReservationTimeSpans
+    inputTypeName: ReservationTimeSpansInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_time_spans
+      fieldMapping:
+        dateWindowRangeId:
+          column:
+            name: date_window_range_id
+        duration:
+          column:
+            name: duration
+        endDateWindowId:
+          column:
+            name: end_date_window_id
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        increment:
+          column:
+            name: increment
+        startDateWindowId:
+          column:
+            name: start_date_window_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationTimeSpans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateWindowRangeId
+          - duration
+          - endDateWindowId
+          - endId
+          - id
+          - increment
+          - startDateWindowId
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationTimeSpansBoolExp
+  operand:
+    object:
+      type: ReservationTimeSpans
+      comparableFields:
+        - fieldName: dateWindowRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: increment
+          booleanExpressionType: TextBoolExp
+        - fieldName: startDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationTimeSpansBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationTimeSpansAggExp
+  operand:
+    object:
+      aggregatedType: ReservationTimeSpans
+      aggregatableFields:
+        - fieldName: dateWindowRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: increment
+          aggregateExpression: TextAggExp
+        - fieldName: startDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationTimeSpansAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationTimeSpansOrderByExp
+  operand:
+    object:
+      orderedType: ReservationTimeSpans
+      orderableFields:
+        - fieldName: dateWindowRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: increment
+          orderByExpression: String1OrderByExp
+        - fieldName: startDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationTimeSpansOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationTimeSpans
+  objectType: ReservationTimeSpans
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_time_spans
+  filterExpressionType: ReservationTimeSpansBoolExp
+  aggregateExpression: ReservationTimeSpansAggExp
+  orderByExpression: ReservationTimeSpansOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationTimeSpans
+      subscription:
+        rootField: reservationTimeSpans
+    selectUniques:
+      - queryRootField: reservationTimeSpansById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationTimeSpansById
+    filterInputTypeName: ReservationTimeSpansFilterInput
+    aggregate:
+      queryRootField: reservationTimeSpansAggregate
+      subscription:
+        rootField: reservationTimeSpansAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationTimeSpans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

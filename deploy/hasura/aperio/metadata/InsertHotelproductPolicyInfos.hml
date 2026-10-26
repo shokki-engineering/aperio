@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductPolicyInfosObject
+  fields:
+    - name: cancelPolicyId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertHotelproductPolicyInfosObject
+    inputTypeName: InsertHotelproductPolicyInfosObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_policy_infos_object
+      fieldMapping:
+        cancelPolicyId:
+          column:
+            name: cancel_policy_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductPolicyInfosObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelPolicyId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductPolicyInfosResponse
+  description: Responses from the 'insert_hotelproduct_policy_infos' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductPolicyInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductPolicyInfosResponse
+    inputTypeName: InsertHotelproductPolicyInfosResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_policy_infos_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductPolicyInfosResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductPolicyInfos
+  outputType: InsertHotelproductPolicyInfosResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductPolicyInfosObject!]!"
+    - name: postCheck
+      type: HotelproductPolicyInfosBoolExp
+      description: Insert permission predicate over the 'hotelproduct_policy_infos'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_policy_infos
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductPolicyInfos
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_policy_infos table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductPolicyInfos
+  permissions:
+    - role: admin
+      allowExecution: true
+

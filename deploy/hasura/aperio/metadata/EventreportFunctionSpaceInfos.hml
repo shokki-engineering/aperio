@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportFunctionSpaceInfos
+  fields:
+    - name: breakoutSessionsId
+      type: String_1
+    - name: functionSpaceIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: largestFunctionSpaceId
+      type: String_1
+    - name: moveOutRequirement
+      type: String_1
+    - name: moveinRequirement
+      type: String_1
+    - name: preEventSetupIndicator
+      type: Boolean_1
+    - name: preFunctionSpaceIndicator
+      type: Boolean_1
+    - name: propertyTypeCodes
+      type: String_1
+    - name: telecommunicationCodes
+      type: String_1
+    - name: utilityCodes
+      type: String_1
+  graphql:
+    typeName: EventreportFunctionSpaceInfos
+    inputTypeName: EventreportFunctionSpaceInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_function_space_infos
+      fieldMapping:
+        breakoutSessionsId:
+          column:
+            name: breakout_sessions_id
+        functionSpaceIndicator:
+          column:
+            name: function_space_indicator
+        id:
+          column:
+            name: id
+        largestFunctionSpaceId:
+          column:
+            name: largest_function_space_id
+        moveOutRequirement:
+          column:
+            name: move_out_requirement
+        moveinRequirement:
+          column:
+            name: movein_requirement
+        preEventSetupIndicator:
+          column:
+            name: pre_event_setup_indicator
+        preFunctionSpaceIndicator:
+          column:
+            name: pre_function_space_indicator
+        propertyTypeCodes:
+          column:
+            name: property_type_codes
+        telecommunicationCodes:
+          column:
+            name: telecommunication_codes
+        utilityCodes:
+          column:
+            name: utility_codes
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportFunctionSpaceInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - breakoutSessionsId
+          - functionSpaceIndicator
+          - id
+          - largestFunctionSpaceId
+          - moveOutRequirement
+          - moveinRequirement
+          - preEventSetupIndicator
+          - preFunctionSpaceIndicator
+          - propertyTypeCodes
+          - telecommunicationCodes
+          - utilityCodes
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportFunctionSpaceInfosBoolExp
+  operand:
+    object:
+      type: EventreportFunctionSpaceInfos
+      comparableFields:
+        - fieldName: breakoutSessionsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: functionSpaceIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: largestFunctionSpaceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: moveOutRequirement
+          booleanExpressionType: TextBoolExp
+        - fieldName: moveinRequirement
+          booleanExpressionType: TextBoolExp
+        - fieldName: preEventSetupIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: preFunctionSpaceIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: propertyTypeCodes
+          booleanExpressionType: TextBoolExp
+        - fieldName: telecommunicationCodes
+          booleanExpressionType: TextBoolExp
+        - fieldName: utilityCodes
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportFunctionSpaceInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportFunctionSpaceInfosAggExp
+  operand:
+    object:
+      aggregatedType: EventreportFunctionSpaceInfos
+      aggregatableFields:
+        - fieldName: breakoutSessionsId
+          aggregateExpression: TextAggExp
+        - fieldName: functionSpaceIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: largestFunctionSpaceId
+          aggregateExpression: TextAggExp
+        - fieldName: moveOutRequirement
+          aggregateExpression: TextAggExp
+        - fieldName: moveinRequirement
+          aggregateExpression: TextAggExp
+        - fieldName: preEventSetupIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: preFunctionSpaceIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: propertyTypeCodes
+          aggregateExpression: TextAggExp
+        - fieldName: telecommunicationCodes
+          aggregateExpression: TextAggExp
+        - fieldName: utilityCodes
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportFunctionSpaceInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportFunctionSpaceInfosOrderByExp
+  operand:
+    object:
+      orderedType: EventreportFunctionSpaceInfos
+      orderableFields:
+        - fieldName: breakoutSessionsId
+          orderByExpression: String1OrderByExp
+        - fieldName: functionSpaceIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: largestFunctionSpaceId
+          orderByExpression: String1OrderByExp
+        - fieldName: moveOutRequirement
+          orderByExpression: String1OrderByExp
+        - fieldName: moveinRequirement
+          orderByExpression: String1OrderByExp
+        - fieldName: preEventSetupIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: preFunctionSpaceIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: propertyTypeCodes
+          orderByExpression: String1OrderByExp
+        - fieldName: telecommunicationCodes
+          orderByExpression: String1OrderByExp
+        - fieldName: utilityCodes
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportFunctionSpaceInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportFunctionSpaceInfos
+  objectType: EventreportFunctionSpaceInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_function_space_infos
+  filterExpressionType: EventreportFunctionSpaceInfosBoolExp
+  aggregateExpression: EventreportFunctionSpaceInfosAggExp
+  orderByExpression: EventreportFunctionSpaceInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportFunctionSpaceInfos
+      subscription:
+        rootField: eventreportFunctionSpaceInfos
+    selectUniques:
+      - queryRootField: eventreportFunctionSpaceInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportFunctionSpaceInfosById
+    filterInputTypeName: EventreportFunctionSpaceInfosFilterInput
+    aggregate:
+      queryRootField: eventreportFunctionSpaceInfosAggregate
+      subscription:
+        rootField: eventreportFunctionSpaceInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportFunctionSpaceInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

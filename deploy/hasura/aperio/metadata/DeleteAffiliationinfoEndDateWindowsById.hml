@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteAffiliationinfoEndDateWindowsByIdResponse
+  description: Responses from the 'delete_affiliationinfo_end_date_windows_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoEndDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteAffiliationinfoEndDateWindowsByIdResponse
+    inputTypeName: DeleteAffiliationinfoEndDateWindowsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_affiliationinfo_end_date_windows_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteAffiliationinfoEndDateWindowsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteAffiliationinfoEndDateWindowsById
+  outputType: DeleteAffiliationinfoEndDateWindowsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: AffiliationinfoEndDateWindowsBoolExp
+      description: Delete permission predicate over the
+        'affiliationinfo_end_date_windows' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_affiliationinfo_end_date_windows_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteAffiliationinfoEndDateWindowsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'affiliationinfo_end_date_windows' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteAffiliationinfoEndDateWindowsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

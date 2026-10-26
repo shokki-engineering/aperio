@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileMediaEntertainPrefsObject
+  fields:
+    - name: airlinePrefId
+      type: String_1!
+    - name: commonPrefId
+      type: String_1!
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileMediaEntertainPrefsObject
+    inputTypeName: InsertProfileMediaEntertainPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_media_entertain_prefs_object
+      fieldMapping:
+        airlinePrefId:
+          column:
+            name: airline_pref_id
+        commonPrefId:
+          column:
+            name: common_pref_id
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileMediaEntertainPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - airlinePrefId
+          - commonPrefId
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileMediaEntertainPrefsResponse
+  description: Responses from the 'insert_profile_media_entertain_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileMediaEntertainPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileMediaEntertainPrefsResponse
+    inputTypeName: InsertProfileMediaEntertainPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_media_entertain_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileMediaEntertainPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileMediaEntertainPrefs
+  outputType: InsertProfileMediaEntertainPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileMediaEntertainPrefsObject!]!"
+    - name: postCheck
+      type: ProfileMediaEntertainPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_media_entertain_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_media_entertain_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileMediaEntertainPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_media_entertain_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileMediaEntertainPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

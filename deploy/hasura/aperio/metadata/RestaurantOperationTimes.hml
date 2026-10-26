@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantOperationTimes
+  fields:
+    - name: additionalOperationInfoCode
+      type: Enum
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: frequency
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: operationScheduleId
+      type: String_1!
+    - name: operationSchedulesPlusChargeItemId
+      type: String_1!
+    - name: startId
+      type: String_1
+    - name: text
+      type: String_1
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: RestaurantOperationTimes
+    inputTypeName: RestaurantOperationTimesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_operation_times
+      fieldMapping:
+        additionalOperationInfoCode:
+          column:
+            name: additional_operation_info_code
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        frequency:
+          column:
+            name: frequency
+        id:
+          column:
+            name: id
+        operationScheduleId:
+          column:
+            name: operation_schedule_id
+        operationSchedulesPlusChargeItemId:
+          column:
+            name: operation_schedules_plus_charge_item_id
+        startId:
+          column:
+            name: start_id
+        text:
+          column:
+            name: text
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantOperationTimes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalOperationInfoCode
+          - duration
+          - endId
+          - frequency
+          - id
+          - operationScheduleId
+          - operationSchedulesPlusChargeItemId
+          - startId
+          - text
+          - weekdays
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantOperationTimesBoolExp
+  operand:
+    object:
+      type: RestaurantOperationTimes
+      comparableFields:
+        - fieldName: additionalOperationInfoCode
+          booleanExpressionType: RestaurantRestaurantAdditionalOperationInfoBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: frequency
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: operationScheduleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: operationSchedulesPlusChargeItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: text
+          booleanExpressionType: TextBoolExp
+        - fieldName: weekdays
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantOperationTimesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantOperationTimesAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantOperationTimes
+      aggregatableFields:
+        - fieldName: additionalOperationInfoCode
+          aggregateExpression: RestaurantRestaurantAdditionalOperationInfoAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: frequency
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: operationScheduleId
+          aggregateExpression: TextAggExp
+        - fieldName: operationSchedulesPlusChargeItemId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: text
+          aggregateExpression: TextAggExp
+        - fieldName: weekdays
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantOperationTimesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantOperationTimesOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantOperationTimes
+      orderableFields:
+        - fieldName: additionalOperationInfoCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: frequency
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: operationScheduleId
+          orderByExpression: String1OrderByExp
+        - fieldName: operationSchedulesPlusChargeItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: text
+          orderByExpression: String1OrderByExp
+        - fieldName: weekdays
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantOperationTimesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantOperationTimes
+  objectType: RestaurantOperationTimes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_operation_times
+  filterExpressionType: RestaurantOperationTimesBoolExp
+  aggregateExpression: RestaurantOperationTimesAggExp
+  orderByExpression: RestaurantOperationTimesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantOperationTimes
+      subscription:
+        rootField: restaurantOperationTimes
+    selectUniques:
+      - queryRootField: restaurantOperationTimesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantOperationTimesById
+    filterInputTypeName: RestaurantOperationTimesFilterInput
+    aggregate:
+      queryRootField: restaurantOperationTimesAggregate
+      subscription:
+        rootField: restaurantOperationTimesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantOperationTimes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

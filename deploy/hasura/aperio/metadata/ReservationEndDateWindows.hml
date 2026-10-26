@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationEndDateWindows
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: ReservationEndDateWindows
+    inputTypeName: ReservationEndDateWindowsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_end_date_windows
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationEndDateWindows
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationEndDateWindowsBoolExp
+  operand:
+    object:
+      type: ReservationEndDateWindows
+      comparableFields:
+        - fieldName: dow
+          booleanExpressionType: ReservationReservationDayOfWeekBoolExp
+        - fieldName: earliestId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: latestId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationEndDateWindowsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationEndDateWindowsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationEndDateWindows
+      aggregatableFields:
+        - fieldName: dow
+          aggregateExpression: ReservationReservationDayOfWeekAggExp
+        - fieldName: earliestId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: latestId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationEndDateWindowsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationEndDateWindowsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationEndDateWindows
+      orderableFields:
+        - fieldName: dow
+          orderByExpression: EnumOrderByExp
+        - fieldName: earliestId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: latestId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationEndDateWindowsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationEndDateWindows
+  objectType: ReservationEndDateWindows
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_end_date_windows
+  filterExpressionType: ReservationEndDateWindowsBoolExp
+  aggregateExpression: ReservationEndDateWindowsAggExp
+  orderByExpression: ReservationEndDateWindowsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationEndDateWindows
+      subscription:
+        rootField: reservationEndDateWindows
+    selectUniques:
+      - queryRootField: reservationEndDateWindowsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationEndDateWindowsById
+    filterInputTypeName: ReservationEndDateWindowsFilterInput
+    aggregate:
+      queryRootField: reservationEndDateWindowsAggregate
+      subscription:
+        rootField: reservationEndDateWindowsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationEndDateWindows
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

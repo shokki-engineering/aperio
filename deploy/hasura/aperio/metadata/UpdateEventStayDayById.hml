@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStayDayDayNumber
+  description: Update the 'day_number' column in the 'event_stay_day' collection
+  fields:
+    - name: set
+      type: Int32!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStayDayDayNumber
+    inputTypeName: UpdateColumnEventStayDayDayNumberInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_stay_day_day_number
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStayDayDayNumber
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStayDayGuestQuantity
+  description: Update the 'guest_quantity' column in the 'event_stay_day' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStayDayGuestQuantity
+    inputTypeName: UpdateColumnEventStayDayGuestQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_stay_day_guest_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStayDayGuestQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStayDayId
+  description: Update the 'id' column in the 'event_stay_day' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStayDayId
+    inputTypeName: UpdateColumnEventStayDayIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_stay_day_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStayDayId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStayDayStayDaysId
+  description: Update the 'stay_days_id' column in the 'event_stay_day' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStayDayStayDaysId
+    inputTypeName: UpdateColumnEventStayDayStayDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_stay_day_stay_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStayDayStayDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventStayDayTotalUnitCount
+  description: Update the 'total_unit_count' column in the 'event_stay_day' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventStayDayTotalUnitCount
+    inputTypeName: UpdateColumnEventStayDayTotalUnitCountInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_stay_day_total_unit_count
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventStayDayTotalUnitCount
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventStayDayByIdUpdateColumns
+  description: Update the columns of the 'event_stay_day' collection
+  fields:
+    - name: dayNumber
+      type: UpdateColumnEventStayDayDayNumber
+      description: Update the 'day_number' column in the 'event_stay_day' collection.
+    - name: guestQuantity
+      type: UpdateColumnEventStayDayGuestQuantity
+      description: Update the 'guest_quantity' column in the 'event_stay_day' collection.
+    - name: id
+      type: UpdateColumnEventStayDayId
+      description: Update the 'id' column in the 'event_stay_day' collection.
+    - name: stayDaysId
+      type: UpdateColumnEventStayDayStayDaysId
+      description: Update the 'stay_days_id' column in the 'event_stay_day' collection.
+    - name: totalUnitCount
+      type: UpdateColumnEventStayDayTotalUnitCount
+      description: Update the 'total_unit_count' column in the 'event_stay_day' collection.
+  graphql:
+    typeName: UpdateEventStayDayByIdUpdateColumns
+    inputTypeName: UpdateEventStayDayByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_stay_day_by_id_update_columns
+      fieldMapping:
+        dayNumber:
+          column:
+            name: day_number
+        guestQuantity:
+          column:
+            name: guest_quantity
+        id:
+          column:
+            name: id
+        stayDaysId:
+          column:
+            name: stay_days_id
+        totalUnitCount:
+          column:
+            name: total_unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventStayDayByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dayNumber
+          - guestQuantity
+          - id
+          - stayDaysId
+          - totalUnitCount
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventStayDayByIdResponse
+  description: Responses from the 'update_event_stay_day_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventStayDay!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventStayDayByIdResponse
+    inputTypeName: UpdateEventStayDayByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_stay_day_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventStayDayByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventStayDayById
+  outputType: UpdateEventStayDayByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventStayDayBoolExp
+      description: Update permission post-condition predicate over the
+        'event_stay_day' collection
+    - name: preCheck
+      type: EventStayDayBoolExp
+      description: Update permission pre-condition predicate over the 'event_stay_day'
+        collection
+    - name: updateColumns
+      type: UpdateEventStayDayByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_stay_day_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventStayDayById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_stay_day' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventStayDayById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateCountryNames
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateCountryNames
+    inputTypeName: RateCountryNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_country_names
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateCountryNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateCountryNamesBoolExp
+  operand:
+    object:
+      type: RateCountryNames
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateCountryNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateCountryNamesAggExp
+  operand:
+    object:
+      aggregatedType: RateCountryNames
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateCountryNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateCountryNamesOrderByExp
+  operand:
+    object:
+      orderedType: RateCountryNames
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateCountryNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateCountryNames
+  objectType: RateCountryNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_country_names
+  filterExpressionType: RateCountryNamesBoolExp
+  aggregateExpression: RateCountryNamesAggExp
+  orderByExpression: RateCountryNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateCountryNames
+      subscription:
+        rootField: rateCountryNames
+    selectUniques:
+      - queryRootField: rateCountryNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateCountryNamesById
+    filterInputTypeName: RateCountryNamesFilterInput
+    aggregate:
+      queryRootField: rateCountryNamesAggregate
+      subscription:
+        rootField: rateCountryNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateCountryNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

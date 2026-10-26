@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RestaurantInfoCodes
+  fields:
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: Enum
+    - name: restaurantId
+      type: String_1!
+  graphql:
+    typeName: RestaurantInfoCodes
+    inputTypeName: RestaurantInfoCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: restaurant_info_codes
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        restaurantId:
+          column:
+            name: restaurant_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RestaurantInfoCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeDetail
+          - id
+          - name
+          - restaurantId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RestaurantInfoCodesBoolExp
+  operand:
+    object:
+      type: RestaurantInfoCodes
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: RestaurantRestaurantCategoryCodeBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: RestaurantRestaurantInfoCodeNameBoolExp
+        - fieldName: restaurantId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RestaurantInfoCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RestaurantInfoCodesAggExp
+  operand:
+    object:
+      aggregatedType: RestaurantInfoCodes
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: RestaurantRestaurantCategoryCodeAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: RestaurantRestaurantInfoCodeNameAggExp
+        - fieldName: restaurantId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RestaurantInfoCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RestaurantInfoCodesOrderByExp
+  operand:
+    object:
+      orderedType: RestaurantInfoCodes
+      orderableFields:
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: EnumOrderByExp
+        - fieldName: restaurantId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RestaurantInfoCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RestaurantInfoCodes
+  objectType: RestaurantInfoCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: restaurant_info_codes
+  filterExpressionType: RestaurantInfoCodesBoolExp
+  aggregateExpression: RestaurantInfoCodesAggExp
+  orderByExpression: RestaurantInfoCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: restaurantInfoCodes
+      subscription:
+        rootField: restaurantInfoCodes
+    selectUniques:
+      - queryRootField: restaurantInfoCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: restaurantInfoCodesById
+    filterInputTypeName: RestaurantInfoCodesFilterInput
+    aggregate:
+      queryRootField: restaurantInfoCodesAggregate
+      subscription:
+        rootField: restaurantInfoCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RestaurantInfoCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

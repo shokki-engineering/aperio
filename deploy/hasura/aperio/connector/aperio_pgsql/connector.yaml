@@ -1,0 +1,21 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+kind: Connector
+version: v2
+definition:
+  name: aperio_pgsql
+  subgraph: aperio
+  source: hasura/postgres:v3.1.0
+  context: .
+  envMapping:
+    CONNECTION_URI:
+      fromEnv: APERIO_APERIO_PGSQL_CONNECTION_URI
+    HASURA_CONNECTOR_PORT:
+      fromEnv: APERIO_APERIO_PGSQL_HASURA_CONNECTOR_PORT
+    HASURA_SERVICE_TOKEN_SECRET:
+      fromEnv: APERIO_APERIO_PGSQL_HASURA_SERVICE_TOKEN_SECRET
+    OTEL_EXPORTER_OTLP_ENDPOINT:
+      fromEnv: APERIO_APERIO_PGSQL_OTEL_EXPORTER_OTLP_ENDPOINT
+    OTEL_SERVICE_NAME:
+      fromEnv: APERIO_APERIO_PGSQL_OTEL_SERVICE_NAME

@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoStateProvs
+  fields:
+    - name: id
+      type: String_1!
+    - name: stateCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoStateProvs
+    inputTypeName: AffiliationinfoStateProvsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_state_provs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        stateCode:
+          column:
+            name: state_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoStateProvs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - stateCode
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoStateProvsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoStateProvs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: stateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoStateProvsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoStateProvsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoStateProvs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: stateCode
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoStateProvsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoStateProvsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoStateProvs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: stateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoStateProvsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoStateProvs
+  objectType: AffiliationinfoStateProvs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_state_provs
+  filterExpressionType: AffiliationinfoStateProvsBoolExp
+  aggregateExpression: AffiliationinfoStateProvsAggExp
+  orderByExpression: AffiliationinfoStateProvsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoStateProvs
+      subscription:
+        rootField: affiliationinfoStateProvs
+    selectUniques:
+      - queryRootField: affiliationinfoStateProvsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoStateProvsById
+    filterInputTypeName: AffiliationinfoStateProvsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoStateProvsAggregate
+      subscription:
+        rootField: affiliationinfoStateProvsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoStateProvs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanAuthenticationVerificationValues
+  fields:
+    - name: id
+      type: String_1!
+    - name: plainText
+      type: String_1
+    - name: secureId
+      type: String_1
+    - name: secureOrPlainTextCase
+      type: Enum
+  graphql:
+    typeName: RateplanAuthenticationVerificationValues
+    inputTypeName: RateplanAuthenticationVerificationValuesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_authentication_verification_values
+      fieldMapping:
+        id:
+          column:
+            name: id
+        plainText:
+          column:
+            name: plain_text
+        secureId:
+          column:
+            name: secure_id
+        secureOrPlainTextCase:
+          column:
+            name: secure_or_plain_text_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - plainText
+          - secureId
+          - secureOrPlainTextCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanAuthenticationVerificationValuesBoolExp
+  operand:
+    object:
+      type: RateplanAuthenticationVerificationValues
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: plainText
+          booleanExpressionType: TextBoolExp
+        - fieldName: secureId
+          booleanExpressionType: TextBoolExp
+        - fieldName: secureOrPlainTextCase
+          booleanExpressionType: RateplanRateplanAuthenticationVerificationValueSecureOrPFf87BfbdBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanAuthenticationVerificationValuesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanAuthenticationVerificationValuesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanAuthenticationVerificationValues
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: plainText
+          aggregateExpression: TextAggExp
+        - fieldName: secureId
+          aggregateExpression: TextAggExp
+        - fieldName: secureOrPlainTextCase
+          aggregateExpression: RateplanRateplanAuthenticationVerificationValueSecureOrPFf87BfbdAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanAuthenticationVerificationValuesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanAuthenticationVerificationValuesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanAuthenticationVerificationValues
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: plainText
+          orderByExpression: String1OrderByExp
+        - fieldName: secureId
+          orderByExpression: String1OrderByExp
+        - fieldName: secureOrPlainTextCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanAuthenticationVerificationValuesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanAuthenticationVerificationValues
+  objectType: RateplanAuthenticationVerificationValues
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_authentication_verification_values
+  filterExpressionType: RateplanAuthenticationVerificationValuesBoolExp
+  aggregateExpression: RateplanAuthenticationVerificationValuesAggExp
+  orderByExpression: RateplanAuthenticationVerificationValuesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanAuthenticationVerificationValues
+      subscription:
+        rootField: rateplanAuthenticationVerificationValues
+    selectUniques:
+      - queryRootField: rateplanAuthenticationVerificationValuesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanAuthenticationVerificationValuesById
+    filterInputTypeName: RateplanAuthenticationVerificationValuesFilterInput
+    aggregate:
+      queryRootField: rateplanAuthenticationVerificationValuesAggregate
+      subscription:
+        rootField: rateplanAuthenticationVerificationValuesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

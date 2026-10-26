@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockUrls
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InventoryblockUrls
+    inputTypeName: InventoryblockUrlsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_urls
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockUrls
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - id
+          - type
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockUrlsBoolExp
+  operand:
+    object:
+      type: InventoryblockUrls
+      comparableFields:
+        - fieldName: contactPersonId
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockUrlsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockUrlsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockUrls
+      aggregatableFields:
+        - fieldName: contactPersonId
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockUrlsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockUrlsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockUrls
+      orderableFields:
+        - fieldName: contactPersonId
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockUrlsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockUrls
+  objectType: InventoryblockUrls
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_urls
+  filterExpressionType: InventoryblockUrlsBoolExp
+  aggregateExpression: InventoryblockUrlsAggExp
+  orderByExpression: InventoryblockUrlsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockUrls
+      subscription:
+        rootField: inventoryblockUrls
+    selectUniques:
+      - queryRootField: inventoryblockUrlsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockUrlsById
+    filterInputTypeName: InventoryblockUrlsFilterInput
+    aggregate:
+      queryRootField: inventoryblockUrlsAggregate
+      subscription:
+        rootField: inventoryblockUrlsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockUrls
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

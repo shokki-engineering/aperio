@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyPetsPolicies
+  fields:
+    - name: id
+      type: String_1!
+    - name: petsAllowedCode
+      type: Enum
+  graphql:
+    typeName: PolicyPetsPolicies
+    inputTypeName: PolicyPetsPoliciesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_pets_policies
+      fieldMapping:
+        id:
+          column:
+            name: id
+        petsAllowedCode:
+          column:
+            name: pets_allowed_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyPetsPolicies
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - petsAllowedCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyPetsPoliciesBoolExp
+  operand:
+    object:
+      type: PolicyPetsPolicies
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: petsAllowedCode
+          booleanExpressionType: PolicyPetsAllowedCodeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyPetsPoliciesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyPetsPoliciesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyPetsPolicies
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: petsAllowedCode
+          aggregateExpression: PolicyPetsAllowedCodeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyPetsPoliciesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyPetsPoliciesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyPetsPolicies
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: petsAllowedCode
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyPetsPoliciesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyPetsPolicies
+  objectType: PolicyPetsPolicies
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_pets_policies
+  filterExpressionType: PolicyPetsPoliciesBoolExp
+  aggregateExpression: PolicyPetsPoliciesAggExp
+  orderByExpression: PolicyPetsPoliciesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyPetsPolicies
+      subscription:
+        rootField: policyPetsPolicies
+    selectUniques:
+      - queryRootField: policyPetsPoliciesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyPetsPoliciesById
+    filterInputTypeName: PolicyPetsPoliciesFilterInput
+    aggregate:
+      queryRootField: policyPetsPoliciesAggregate
+      subscription:
+        rootField: policyPetsPoliciesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyPetsPolicies
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

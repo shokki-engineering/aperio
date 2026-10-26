@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeletePromotionTimeOfDaysByIdResponse
+  description: Responses from the 'delete_promotion_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PromotionTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeletePromotionTimeOfDaysByIdResponse
+    inputTypeName: DeletePromotionTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_promotion_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeletePromotionTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeletePromotionTimeOfDaysById
+  outputType: DeletePromotionTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: PromotionTimeOfDaysBoolExp
+      description: Delete permission predicate over the 'promotion_time_of_days' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_promotion_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deletePromotionTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'promotion_time_of_days' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeletePromotionTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

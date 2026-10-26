@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRatePlanRestrictionStatus
+  fields:
+    - name: id
+      type: String_1!
+    - name: restriction
+      type: Enum
+    - name: sellThroughOpenIndicator
+      type: Boolean_1
+    - name: status
+      type: Enum
+  graphql:
+    typeName: ReservationRatePlanRestrictionStatus
+    inputTypeName: ReservationRatePlanRestrictionStatusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_rate_plan_restriction_status
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRatePlanRestrictionStatus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRatePlanRestrictionStatusBoolExp
+  operand:
+    object:
+      type: ReservationRatePlanRestrictionStatus
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restriction
+          booleanExpressionType: ReservationRatePlanRestrictionStatusRestrictionBoolExp
+        - fieldName: sellThroughOpenIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: status
+          booleanExpressionType: ReservationEnumsAvailabilityBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRatePlanRestrictionStatusBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRatePlanRestrictionStatusAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRatePlanRestrictionStatus
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restriction
+          aggregateExpression: ReservationRatePlanRestrictionStatusRestrictionAggExp
+        - fieldName: sellThroughOpenIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: status
+          aggregateExpression: ReservationEnumsAvailabilityAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRatePlanRestrictionStatusAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRatePlanRestrictionStatusOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRatePlanRestrictionStatus
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restriction
+          orderByExpression: EnumOrderByExp
+        - fieldName: sellThroughOpenIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: status
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRatePlanRestrictionStatusOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRatePlanRestrictionStatus
+  objectType: ReservationRatePlanRestrictionStatus
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_rate_plan_restriction_status
+  filterExpressionType: ReservationRatePlanRestrictionStatusBoolExp
+  aggregateExpression: ReservationRatePlanRestrictionStatusAggExp
+  orderByExpression: ReservationRatePlanRestrictionStatusOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRatePlanRestrictionStatus
+      subscription:
+        rootField: reservationRatePlanRestrictionStatus
+    selectUniques:
+      - queryRootField: reservationRatePlanRestrictionStatusById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRatePlanRestrictionStatusById
+    filterInputTypeName: ReservationRatePlanRestrictionStatusFilterInput
+    aggregate:
+      queryRootField: reservationRatePlanRestrictionStatusAggregate
+      subscription:
+        rootField: reservationRatePlanRestrictionStatusAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRatePlanRestrictionStatus
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

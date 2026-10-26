@@ -1,0 +1,177 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryDecimalsId
+  description: Update the 'id' column in the 'inventory_decimals' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryDecimalsId
+    inputTypeName: UpdateColumnInventoryDecimalsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventory_decimals_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryDecimalsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnInventoryDecimalsValue
+  description: Update the 'value' column in the 'inventory_decimals' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnInventoryDecimalsValue
+    inputTypeName: UpdateColumnInventoryDecimalsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_inventory_decimals_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnInventoryDecimalsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryDecimalsByIdUpdateColumns
+  description: Update the columns of the 'inventory_decimals' collection
+  fields:
+    - name: id
+      type: UpdateColumnInventoryDecimalsId
+      description: Update the 'id' column in the 'inventory_decimals' collection.
+    - name: value
+      type: UpdateColumnInventoryDecimalsValue
+      description: Update the 'value' column in the 'inventory_decimals' collection.
+  graphql:
+    typeName: UpdateInventoryDecimalsByIdUpdateColumns
+    inputTypeName: UpdateInventoryDecimalsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventory_decimals_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryDecimalsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateInventoryDecimalsByIdResponse
+  description: Responses from the 'update_inventory_decimals_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateInventoryDecimalsByIdResponse
+    inputTypeName: UpdateInventoryDecimalsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_inventory_decimals_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateInventoryDecimalsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateInventoryDecimalsById
+  outputType: UpdateInventoryDecimalsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: InventoryDecimalsBoolExp
+      description: Update permission post-condition predicate over the
+        'inventory_decimals' collection
+    - name: preCheck
+      type: InventoryDecimalsBoolExp
+      description: Update permission pre-condition predicate over the
+        'inventory_decimals' collection
+    - name: updateColumns
+      type: UpdateInventoryDecimalsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_inventory_decimals_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateInventoryDecimalsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'inventory_decimals' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateInventoryDecimalsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

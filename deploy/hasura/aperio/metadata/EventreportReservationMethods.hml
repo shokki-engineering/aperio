@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportReservationMethods
+  fields:
+    - name: code
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: roomBlockId
+      type: String_1!
+  graphql:
+    typeName: EventreportReservationMethods
+    inputTypeName: EventreportReservationMethodsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_reservation_methods
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        roomBlockId:
+          column:
+            name: room_block_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportReservationMethods
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - roomBlockId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportReservationMethodsBoolExp
+  operand:
+    object:
+      type: EventreportReservationMethods
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: EventreportEventreportReservationMethodCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomBlockId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportReservationMethodsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportReservationMethodsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportReservationMethods
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: EventreportEventreportReservationMethodCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomBlockId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportReservationMethodsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportReservationMethodsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportReservationMethods
+      orderableFields:
+        - fieldName: code
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomBlockId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportReservationMethodsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportReservationMethods
+  objectType: EventreportReservationMethods
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_reservation_methods
+  filterExpressionType: EventreportReservationMethodsBoolExp
+  aggregateExpression: EventreportReservationMethodsAggExp
+  orderByExpression: EventreportReservationMethodsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportReservationMethods
+      subscription:
+        rootField: eventreportReservationMethods
+    selectUniques:
+      - queryRootField: eventreportReservationMethodsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportReservationMethodsById
+    filterInputTypeName: EventreportReservationMethodsFilterInput
+    aggregate:
+      queryRootField: eventreportReservationMethodsAggregate
+      subscription:
+        rootField: eventreportReservationMethodsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportReservationMethods
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

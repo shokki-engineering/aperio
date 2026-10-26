@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductRatePlans
+  fields:
+    - name: baseOccupancy
+      type: Int32
+    - name: currencyCode
+      type: String_1
+    - name: hotelProductId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: paymentCollection
+      type: Enum
+    - name: ratePlanCode
+      type: String_1
+    - name: ratePlanDisplayName
+      type: String_1
+    - name: ratePlanType
+      type: Enum
+    - name: sellDateRangeId
+      type: String_1
+    - name: stayDateRangeId
+      type: String_1
+  graphql:
+    typeName: HotelproductRatePlans
+    inputTypeName: HotelproductRatePlansInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_rate_plans
+      fieldMapping:
+        baseOccupancy:
+          column:
+            name: base_occupancy
+        currencyCode:
+          column:
+            name: currency_code
+        hotelProductId:
+          column:
+            name: hotel_product_id
+        id:
+          column:
+            name: id
+        paymentCollection:
+          column:
+            name: payment_collection
+        ratePlanCode:
+          column:
+            name: rate_plan_code
+        ratePlanDisplayName:
+          column:
+            name: rate_plan_display_name
+        ratePlanType:
+          column:
+            name: rate_plan_type
+        sellDateRangeId:
+          column:
+            name: sell_date_range_id
+        stayDateRangeId:
+          column:
+            name: stay_date_range_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductRatePlans
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - baseOccupancy
+          - currencyCode
+          - hotelProductId
+          - id
+          - paymentCollection
+          - ratePlanCode
+          - ratePlanDisplayName
+          - ratePlanType
+          - sellDateRangeId
+          - stayDateRangeId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductRatePlansBoolExp
+  operand:
+    object:
+      type: HotelproductRatePlans
+      comparableFields:
+        - fieldName: baseOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelProductId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: paymentCollection
+          booleanExpressionType: HotelproductPaymentCollectionBoolExp
+        - fieldName: ratePlanCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanType
+          booleanExpressionType: HotelproductHotelproductRatePlanTypeBoolExp
+        - fieldName: sellDateRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: stayDateRangeId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductRatePlansBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductRatePlansAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductRatePlans
+      aggregatableFields:
+        - fieldName: baseOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelProductId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: paymentCollection
+          aggregateExpression: HotelproductPaymentCollectionAggExp
+        - fieldName: ratePlanCode
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanType
+          aggregateExpression: HotelproductHotelproductRatePlanTypeAggExp
+        - fieldName: sellDateRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: stayDateRangeId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductRatePlansAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductRatePlansOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductRatePlans
+      orderableFields:
+        - fieldName: baseOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelProductId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: paymentCollection
+          orderByExpression: EnumOrderByExp
+        - fieldName: ratePlanCode
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanType
+          orderByExpression: EnumOrderByExp
+        - fieldName: sellDateRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: stayDateRangeId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductRatePlansOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductRatePlans
+  objectType: HotelproductRatePlans
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_rate_plans
+  filterExpressionType: HotelproductRatePlansBoolExp
+  aggregateExpression: HotelproductRatePlansAggExp
+  orderByExpression: HotelproductRatePlansOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductRatePlans
+      subscription:
+        rootField: hotelproductRatePlans
+    selectUniques:
+      - queryRootField: hotelproductRatePlansById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductRatePlansById
+    filterInputTypeName: HotelproductRatePlansFilterInput
+    aggregate:
+      queryRootField: hotelproductRatePlansAggregate
+      subscription:
+        rootField: hotelproductRatePlansAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductRatePlans
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

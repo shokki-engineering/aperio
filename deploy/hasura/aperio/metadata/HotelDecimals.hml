@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: HotelDecimals
+    inputTypeName: HotelDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelDecimalsBoolExp
+  operand:
+    object:
+      type: HotelDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: HotelDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: HotelDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelDecimals
+  objectType: HotelDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_decimals
+  filterExpressionType: HotelDecimalsBoolExp
+  aggregateExpression: HotelDecimalsAggExp
+  orderByExpression: HotelDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelDecimals
+      subscription:
+        rootField: hotelDecimals
+    selectUniques:
+      - queryRootField: hotelDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelDecimalsById
+    filterInputTypeName: HotelDecimalsFilterInput
+    aggregate:
+      queryRootField: hotelDecimalsAggregate
+      subscription:
+        rootField: hotelDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

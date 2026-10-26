@@ -1,0 +1,343 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentAddress
+  fields:
+    - name: addressLines
+      type: "[String_1]"
+    - name: addresseeDisplayName
+      type: String_1
+    - name: cityDisplayName
+      type: String_1
+    - name: countryDisplayNameId
+      type: String_1
+    - name: county
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: formatted
+      type: Boolean_1
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: postalCode
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: stateProvId
+      type: String_1
+    - name: streetNmbrId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: useType
+      type: Enum
+    - name: valid
+      type: Boolean_1
+  graphql:
+    typeName: HotelproductGuaranteePaymentAddress
+    inputTypeName: HotelproductGuaranteePaymentAddressInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_guarantee_payment_address
+      fieldMapping:
+        addressLines:
+          column:
+            name: address_lines
+        addresseeDisplayName:
+          column:
+            name: addressee_display_name
+        cityDisplayName:
+          column:
+            name: city_display_name
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        county:
+          column:
+            name: county
+        defaultValue:
+          column:
+            name: default_value
+        formatted:
+          column:
+            name: formatted
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        postalCode:
+          column:
+            name: postal_code
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        stateProvId:
+          column:
+            name: state_prov_id
+        streetNmbrId:
+          column:
+            name: street_nmbr_id
+        type:
+          column:
+            name: type
+        useType:
+          column:
+            name: use_type
+        valid:
+          column:
+            name: valid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductGuaranteePaymentAddress
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressLines
+          - addresseeDisplayName
+          - cityDisplayName
+          - countryDisplayNameId
+          - county
+          - defaultValue
+          - formatted
+          - guaranteePaymentId
+          - id
+          - languageCode
+          - postalCode
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - stateProvId
+          - streetNmbrId
+          - type
+          - useType
+          - valid
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentAddressBoolExp
+  operand:
+    object:
+      type: HotelproductGuaranteePaymentAddress
+      comparableFields:
+        - fieldName: addresseeDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: cityDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: county
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: guaranteePaymentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: postalCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: HotelproductHotelproductAcceptedPaymentShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: HotelproductHotelproductAcceptedPaymentShareSynchIndBoolExp
+        - fieldName: stateProvId
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetNmbrId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: HotelproductHotelproductCommunicationLocationTypeBoolExp
+        - fieldName: useType
+          booleanExpressionType: HotelproductHotelproductAddressUseTypeBoolExp
+        - fieldName: valid
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductGuaranteePaymentAddressBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentAddressAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductGuaranteePaymentAddress
+      aggregatableFields:
+        - fieldName: addresseeDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: cityDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: countryDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: county
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: guaranteePaymentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: postalCode
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: HotelproductHotelproductAcceptedPaymentShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: HotelproductHotelproductAcceptedPaymentShareSynchIndAggExp
+        - fieldName: stateProvId
+          aggregateExpression: TextAggExp
+        - fieldName: streetNmbrId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: HotelproductHotelproductCommunicationLocationTypeAggExp
+        - fieldName: useType
+          aggregateExpression: HotelproductHotelproductAddressUseTypeAggExp
+        - fieldName: valid
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductGuaranteePaymentAddressAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductGuaranteePaymentAddressOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductGuaranteePaymentAddress
+      orderableFields:
+        - fieldName: addresseeDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: cityDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: countryDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: county
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: guaranteePaymentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: postalCode
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: stateProvId
+          orderByExpression: String1OrderByExp
+        - fieldName: streetNmbrId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: useType
+          orderByExpression: EnumOrderByExp
+        - fieldName: valid
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductGuaranteePaymentAddressOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductGuaranteePaymentAddress
+  objectType: HotelproductGuaranteePaymentAddress
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_guarantee_payment_address
+  filterExpressionType: HotelproductGuaranteePaymentAddressBoolExp
+  aggregateExpression: HotelproductGuaranteePaymentAddressAggExp
+  orderByExpression: HotelproductGuaranteePaymentAddressOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductGuaranteePaymentAddress
+      subscription:
+        rootField: hotelproductGuaranteePaymentAddress
+    selectUniques:
+      - queryRootField: hotelproductGuaranteePaymentAddressById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductGuaranteePaymentAddressById
+    filterInputTypeName: HotelproductGuaranteePaymentAddressFilterInput
+    aggregate:
+      queryRootField: hotelproductGuaranteePaymentAddressAggregate
+      subscription:
+        rootField: hotelproductGuaranteePaymentAddressAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductGuaranteePaymentAddress
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,102 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanRequiredDaysOfWeeksObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertRateplanRequiredDaysOfWeeksObject
+    inputTypeName: InsertRateplanRequiredDaysOfWeeksObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_required_days_of_weeks_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanRequiredDaysOfWeeksObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanRequiredDaysOfWeeksResponse
+  description: Responses from the 'insert_rateplan_required_days_of_weeks' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanRequiredDaysOfWeeks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanRequiredDaysOfWeeksResponse
+    inputTypeName: InsertRateplanRequiredDaysOfWeeksResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_required_days_of_weeks_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanRequiredDaysOfWeeksResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanRequiredDaysOfWeeks
+  outputType: InsertRateplanRequiredDaysOfWeeksResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanRequiredDaysOfWeeksObject!]!"
+    - name: postCheck
+      type: RateplanRequiredDaysOfWeeksBoolExp
+      description: Insert permission predicate over the
+        'rateplan_required_days_of_weeks' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_required_days_of_weeks
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanRequiredDaysOfWeeks
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_required_days_of_weeks table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanRequiredDaysOfWeeks
+  permissions:
+    - role: admin
+      allowExecution: true
+

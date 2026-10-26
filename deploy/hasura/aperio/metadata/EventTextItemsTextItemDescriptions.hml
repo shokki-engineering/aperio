@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventTextItemsTextItemDescriptions
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: textFormat
+      type: Enum
+    - name: textItemId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventTextItemsTextItemDescriptions
+    inputTypeName: EventTextItemsTextItemDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: event_text_items_text_item_descriptions
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        textFormat:
+          column:
+            name: text_format
+        textItemId:
+          column:
+            name: text_item_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - textFormat
+          - textItemId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventTextItemsTextItemDescriptionsBoolExp
+  operand:
+    object:
+      type: EventTextItemsTextItemDescriptions
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: textFormat
+          booleanExpressionType: EventEventFormattedTextTextTextFormatBoolExp
+        - fieldName: textItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventTextItemsTextItemDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventTextItemsTextItemDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: EventTextItemsTextItemDescriptions
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: textFormat
+          aggregateExpression: EventEventFormattedTextTextTextFormatAggExp
+        - fieldName: textItemId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventTextItemsTextItemDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventTextItemsTextItemDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: EventTextItemsTextItemDescriptions
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: textItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventTextItemsTextItemDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventTextItemsTextItemDescriptions
+  objectType: EventTextItemsTextItemDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: event_text_items_text_item_descriptions
+  filterExpressionType: EventTextItemsTextItemDescriptionsBoolExp
+  aggregateExpression: EventTextItemsTextItemDescriptionsAggExp
+  orderByExpression: EventTextItemsTextItemDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventTextItemsTextItemDescriptions
+      subscription:
+        rootField: eventTextItemsTextItemDescriptions
+    selectUniques:
+      - queryRootField: eventTextItemsTextItemDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventTextItemsTextItemDescriptionsById
+    filterInputTypeName: EventTextItemsTextItemDescriptionsFilterInput
+    aggregate:
+      queryRootField: eventTextItemsTextItemDescriptionsAggregate
+      subscription:
+        rootField: eventTextItemsTextItemDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

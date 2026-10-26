@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeGuestRoomAmenitiesObject
+  fields:
+    - name: amenityCode
+      type: Enum
+    - name: guestRoomId
+      type: String_1!
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRoomtypeGuestRoomAmenitiesObject
+    inputTypeName: InsertRoomtypeGuestRoomAmenitiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_guest_room_amenities_object
+      fieldMapping:
+        amenityCode:
+          column:
+            name: amenity_code
+        guestRoomId:
+          column:
+            name: guest_room_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeGuestRoomAmenitiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amenityCode
+          - guestRoomId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeGuestRoomAmenitiesResponse
+  description: Responses from the 'insert_roomtype_guest_room_amenities' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeGuestRoomAmenities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeGuestRoomAmenitiesResponse
+    inputTypeName: InsertRoomtypeGuestRoomAmenitiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_guest_room_amenities_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeGuestRoomAmenitiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeGuestRoomAmenities
+  outputType: InsertRoomtypeGuestRoomAmenitiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeGuestRoomAmenitiesObject!]!"
+    - name: postCheck
+      type: RoomtypeGuestRoomAmenitiesBoolExp
+      description: Insert permission predicate over the
+        'roomtype_guest_room_amenities' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_guest_room_amenities
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeGuestRoomAmenities
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_guest_room_amenities table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeGuestRoomAmenities
+  permissions:
+    - role: admin
+      allowExecution: true
+

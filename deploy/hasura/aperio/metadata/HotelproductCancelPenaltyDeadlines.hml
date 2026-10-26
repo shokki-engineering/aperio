@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductCancelPenaltyDeadlines
+  fields:
+    - name: absoluteDeadlineId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: offsetDropPoint
+      type: Enum
+    - name: offsetTimeUnit
+      type: Enum
+    - name: offsetUnitMultiplier
+      type: Int32
+  graphql:
+    typeName: HotelproductCancelPenaltyDeadlines
+    inputTypeName: HotelproductCancelPenaltyDeadlinesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_cancel_penalty_deadlines
+      fieldMapping:
+        absoluteDeadlineId:
+          column:
+            name: absolute_deadline_id
+        id:
+          column:
+            name: id
+        offsetDropPoint:
+          column:
+            name: offset_drop_point
+        offsetTimeUnit:
+          column:
+            name: offset_time_unit
+        offsetUnitMultiplier:
+          column:
+            name: offset_unit_multiplier
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductCancelPenaltyDeadlines
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - absoluteDeadlineId
+          - id
+          - offsetDropPoint
+          - offsetTimeUnit
+          - offsetUnitMultiplier
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductCancelPenaltyDeadlinesBoolExp
+  operand:
+    object:
+      type: HotelproductCancelPenaltyDeadlines
+      comparableFields:
+        - fieldName: absoluteDeadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: offsetDropPoint
+          booleanExpressionType: HotelproductHotelproductOffsetDropTimeBoolExp
+        - fieldName: offsetTimeUnit
+          booleanExpressionType: HotelproductHotelproductTimeUnitBoolExp
+        - fieldName: offsetUnitMultiplier
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductCancelPenaltyDeadlinesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductCancelPenaltyDeadlinesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductCancelPenaltyDeadlines
+      aggregatableFields:
+        - fieldName: absoluteDeadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: offsetDropPoint
+          aggregateExpression: HotelproductHotelproductOffsetDropTimeAggExp
+        - fieldName: offsetTimeUnit
+          aggregateExpression: HotelproductHotelproductTimeUnitAggExp
+        - fieldName: offsetUnitMultiplier
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductCancelPenaltyDeadlinesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductCancelPenaltyDeadlinesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductCancelPenaltyDeadlines
+      orderableFields:
+        - fieldName: absoluteDeadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: offsetDropPoint
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetTimeUnit
+          orderByExpression: EnumOrderByExp
+        - fieldName: offsetUnitMultiplier
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductCancelPenaltyDeadlinesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductCancelPenaltyDeadlines
+  objectType: HotelproductCancelPenaltyDeadlines
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_cancel_penalty_deadlines
+  filterExpressionType: HotelproductCancelPenaltyDeadlinesBoolExp
+  aggregateExpression: HotelproductCancelPenaltyDeadlinesAggExp
+  orderByExpression: HotelproductCancelPenaltyDeadlinesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductCancelPenaltyDeadlines
+      subscription:
+        rootField: hotelproductCancelPenaltyDeadlines
+    selectUniques:
+      - queryRootField: hotelproductCancelPenaltyDeadlinesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductCancelPenaltyDeadlinesById
+    filterInputTypeName: HotelproductCancelPenaltyDeadlinesFilterInput
+    aggregate:
+      queryRootField: hotelproductCancelPenaltyDeadlinesAggregate
+      subscription:
+        rootField: hotelproductCancelPenaltyDeadlinesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductCancelPenaltyDeadlines
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

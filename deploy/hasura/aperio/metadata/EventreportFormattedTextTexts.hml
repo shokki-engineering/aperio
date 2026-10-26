@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportFormattedTextTexts
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventreportFormattedTextTexts
+    inputTypeName: EventreportFormattedTextTextsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_formatted_text_texts
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportFormattedTextTexts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportFormattedTextTextsBoolExp
+  operand:
+    object:
+      type: EventreportFormattedTextTexts
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: EventreportEventreportFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportFormattedTextTextsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportFormattedTextTextsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportFormattedTextTexts
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: EventreportEventreportFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportFormattedTextTextsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportFormattedTextTextsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportFormattedTextTexts
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportFormattedTextTextsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportFormattedTextTexts
+  objectType: EventreportFormattedTextTexts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_formatted_text_texts
+  filterExpressionType: EventreportFormattedTextTextsBoolExp
+  aggregateExpression: EventreportFormattedTextTextsAggExp
+  orderByExpression: EventreportFormattedTextTextsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportFormattedTextTexts
+      subscription:
+        rootField: eventreportFormattedTextTexts
+    selectUniques:
+      - queryRootField: eventreportFormattedTextTextsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportFormattedTextTextsById
+    filterInputTypeName: EventreportFormattedTextTextsFilterInput
+    aggregate:
+      queryRootField: eventreportFormattedTextTextsAggregate
+      subscription:
+        rootField: eventreportFormattedTextTextsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportFormattedTextTexts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

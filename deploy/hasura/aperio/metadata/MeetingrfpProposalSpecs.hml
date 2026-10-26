@@ -1,0 +1,241 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpProposalSpecs
+  fields:
+    - name: decisionDueId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: preliminaryCutDayId
+      type: String_1
+    - name: preliminaryCutIndicator
+      type: Boolean_1
+    - name: presentationId
+      type: String_1
+    - name: responseDueId
+      type: String_1
+    - name: responseFormat
+      type: Enum
+    - name: responseLanguage
+      type: String_1
+    - name: rfpCreationDayId
+      type: String_1
+    - name: rfpDistributionDayId
+      type: String_1
+    - name: rfpPublishedDayId
+      type: String_1
+  graphql:
+    typeName: MeetingrfpProposalSpecs
+    inputTypeName: MeetingrfpProposalSpecsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_proposal_specs
+      fieldMapping:
+        decisionDueId:
+          column:
+            name: decision_due_id
+        id:
+          column:
+            name: id
+        preliminaryCutDayId:
+          column:
+            name: preliminary_cut_day_id
+        preliminaryCutIndicator:
+          column:
+            name: preliminary_cut_indicator
+        presentationId:
+          column:
+            name: presentation_id
+        responseDueId:
+          column:
+            name: response_due_id
+        responseFormat:
+          column:
+            name: response_format
+        responseLanguage:
+          column:
+            name: response_language
+        rfpCreationDayId:
+          column:
+            name: rfp_creation_day_id
+        rfpDistributionDayId:
+          column:
+            name: rfp_distribution_day_id
+        rfpPublishedDayId:
+          column:
+            name: rfp_published_day_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpProposalSpecs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - decisionDueId
+          - id
+          - preliminaryCutDayId
+          - preliminaryCutIndicator
+          - presentationId
+          - responseDueId
+          - responseFormat
+          - responseLanguage
+          - rfpCreationDayId
+          - rfpDistributionDayId
+          - rfpPublishedDayId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpProposalSpecsBoolExp
+  operand:
+    object:
+      type: MeetingrfpProposalSpecs
+      comparableFields:
+        - fieldName: decisionDueId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preliminaryCutDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: preliminaryCutIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: presentationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: responseDueId
+          booleanExpressionType: TextBoolExp
+        - fieldName: responseFormat
+          booleanExpressionType: MeetingrfpMeetingrfpDistributionTypeBoolExp
+        - fieldName: responseLanguage
+          booleanExpressionType: TextBoolExp
+        - fieldName: rfpCreationDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rfpDistributionDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rfpPublishedDayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpProposalSpecsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpProposalSpecsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpProposalSpecs
+      aggregatableFields:
+        - fieldName: decisionDueId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preliminaryCutDayId
+          aggregateExpression: TextAggExp
+        - fieldName: preliminaryCutIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: presentationId
+          aggregateExpression: TextAggExp
+        - fieldName: responseDueId
+          aggregateExpression: TextAggExp
+        - fieldName: responseFormat
+          aggregateExpression: MeetingrfpMeetingrfpDistributionTypeAggExp
+        - fieldName: responseLanguage
+          aggregateExpression: TextAggExp
+        - fieldName: rfpCreationDayId
+          aggregateExpression: TextAggExp
+        - fieldName: rfpDistributionDayId
+          aggregateExpression: TextAggExp
+        - fieldName: rfpPublishedDayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpProposalSpecsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpProposalSpecsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpProposalSpecs
+      orderableFields:
+        - fieldName: decisionDueId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preliminaryCutDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: preliminaryCutIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: presentationId
+          orderByExpression: String1OrderByExp
+        - fieldName: responseDueId
+          orderByExpression: String1OrderByExp
+        - fieldName: responseFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: responseLanguage
+          orderByExpression: String1OrderByExp
+        - fieldName: rfpCreationDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: rfpDistributionDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: rfpPublishedDayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpProposalSpecsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpProposalSpecs
+  objectType: MeetingrfpProposalSpecs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_proposal_specs
+  filterExpressionType: MeetingrfpProposalSpecsBoolExp
+  aggregateExpression: MeetingrfpProposalSpecsAggExp
+  orderByExpression: MeetingrfpProposalSpecsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpProposalSpecs
+      subscription:
+        rootField: meetingrfpProposalSpecs
+    selectUniques:
+      - queryRootField: meetingrfpProposalSpecsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpProposalSpecsById
+    filterInputTypeName: MeetingrfpProposalSpecsFilterInput
+    aggregate:
+      queryRootField: meetingrfpProposalSpecsAggregate
+      subscription:
+        rootField: meetingrfpProposalSpecsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpProposalSpecs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

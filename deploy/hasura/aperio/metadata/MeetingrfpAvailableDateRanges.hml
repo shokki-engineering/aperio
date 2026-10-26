@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpAvailableDateRanges
+  fields:
+    - name: dateRph
+      type: String_1
+    - name: dateWindowRangeId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endDateWindowId
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: startDateWindowId
+      type: String_1
+    - name: startId
+      type: String_1
+  graphql:
+    typeName: MeetingrfpAvailableDateRanges
+    inputTypeName: MeetingrfpAvailableDateRangesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_available_date_ranges
+      fieldMapping:
+        dateRph:
+          column:
+            name: date_rph
+        dateWindowRangeId:
+          column:
+            name: date_window_range_id
+        duration:
+          column:
+            name: duration
+        endDateWindowId:
+          column:
+            name: end_date_window_id
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        startDateWindowId:
+          column:
+            name: start_date_window_id
+        startId:
+          column:
+            name: start_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpAvailableDateRanges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dateRph
+          - dateWindowRangeId
+          - duration
+          - endDateWindowId
+          - endId
+          - id
+          - startDateWindowId
+          - startId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpAvailableDateRangesBoolExp
+  operand:
+    object:
+      type: MeetingrfpAvailableDateRanges
+      comparableFields:
+        - fieldName: dateRph
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateWindowRangeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: startDateWindowId
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpAvailableDateRangesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpAvailableDateRangesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpAvailableDateRanges
+      aggregatableFields:
+        - fieldName: dateRph
+          aggregateExpression: TextAggExp
+        - fieldName: dateWindowRangeId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: startDateWindowId
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpAvailableDateRangesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpAvailableDateRangesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpAvailableDateRanges
+      orderableFields:
+        - fieldName: dateRph
+          orderByExpression: String1OrderByExp
+        - fieldName: dateWindowRangeId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: startDateWindowId
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpAvailableDateRangesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpAvailableDateRanges
+  objectType: MeetingrfpAvailableDateRanges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_available_date_ranges
+  filterExpressionType: MeetingrfpAvailableDateRangesBoolExp
+  aggregateExpression: MeetingrfpAvailableDateRangesAggExp
+  orderByExpression: MeetingrfpAvailableDateRangesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpAvailableDateRanges
+      subscription:
+        rootField: meetingrfpAvailableDateRanges
+    selectUniques:
+      - queryRootField: meetingrfpAvailableDateRangesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpAvailableDateRangesById
+    filterInputTypeName: MeetingrfpAvailableDateRangesFilterInput
+    aggregate:
+      queryRootField: meetingrfpAvailableDateRangesAggregate
+      subscription:
+        rootField: meetingrfpAvailableDateRangesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpAvailableDateRanges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

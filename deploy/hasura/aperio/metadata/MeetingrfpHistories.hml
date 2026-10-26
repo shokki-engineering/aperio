@@ -1,0 +1,325 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpHistories
+  fields:
+    - name: attendeeQuantity
+      type: Int32
+    - name: commentsId
+      type: String_1
+    - name: duration
+      type: String_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: meetingDisplayName
+      type: String_1
+    - name: meetingRfpId
+      type: String_1!
+    - name: postEventReportExists
+      type: Boolean_1
+    - name: roomBlockQuantity
+      type: Int32
+    - name: roomPickupQuantity
+      type: Int32
+    - name: siteDisplayName
+      type: String_1
+    - name: startId
+      type: String_1
+    - name: totalAudioVisualRentalAmountId
+      type: String_1
+    - name: totalFoodAndBevAmountId
+      type: String_1
+    - name: totalGuestRoomAmountId
+      type: String_1
+    - name: totalMeetingRoomRentalAmountId
+      type: String_1
+    - name: totalMiscAmountId
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+  graphql:
+    typeName: MeetingrfpHistories
+    inputTypeName: MeetingrfpHistoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_histories
+      fieldMapping:
+        attendeeQuantity:
+          column:
+            name: attendee_quantity
+        commentsId:
+          column:
+            name: comments_id
+        duration:
+          column:
+            name: duration
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        meetingDisplayName:
+          column:
+            name: meeting_display_name
+        meetingRfpId:
+          column:
+            name: meeting_rfp_id
+        postEventReportExists:
+          column:
+            name: post_event_report_exists
+        roomBlockQuantity:
+          column:
+            name: room_block_quantity
+        roomPickupQuantity:
+          column:
+            name: room_pickup_quantity
+        siteDisplayName:
+          column:
+            name: site_display_name
+        startId:
+          column:
+            name: start_id
+        totalAudioVisualRentalAmountId:
+          column:
+            name: total_audio_visual_rental_amount_id
+        totalFoodAndBevAmountId:
+          column:
+            name: total_food_and_bev_amount_id
+        totalGuestRoomAmountId:
+          column:
+            name: total_guest_room_amount_id
+        totalMeetingRoomRentalAmountId:
+          column:
+            name: total_meeting_room_rental_amount_id
+        totalMiscAmountId:
+          column:
+            name: total_misc_amount_id
+        uniqueIdId:
+          column:
+            name: unique_id_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpHistories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeQuantity
+          - commentsId
+          - duration
+          - endId
+          - id
+          - meetingDisplayName
+          - meetingRfpId
+          - postEventReportExists
+          - roomBlockQuantity
+          - roomPickupQuantity
+          - siteDisplayName
+          - startId
+          - totalAudioVisualRentalAmountId
+          - totalFoodAndBevAmountId
+          - totalGuestRoomAmountId
+          - totalMeetingRoomRentalAmountId
+          - totalMiscAmountId
+          - uniqueIdId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpHistoriesBoolExp
+  operand:
+    object:
+      type: MeetingrfpHistories
+      comparableFields:
+        - fieldName: attendeeQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: commentsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: meetingRfpId
+          booleanExpressionType: TextBoolExp
+        - fieldName: postEventReportExists
+          booleanExpressionType: BoolBoolExp
+        - fieldName: roomBlockQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: roomPickupQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: siteDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalAudioVisualRentalAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalFoodAndBevAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalGuestRoomAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalMeetingRoomRentalAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: totalMiscAmountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: uniqueIdId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpHistoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpHistoriesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpHistories
+      aggregatableFields:
+        - fieldName: attendeeQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: commentsId
+          aggregateExpression: TextAggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: meetingDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: meetingRfpId
+          aggregateExpression: TextAggExp
+        - fieldName: postEventReportExists
+          aggregateExpression: BoolAggExp
+        - fieldName: roomBlockQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: roomPickupQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: siteDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: totalAudioVisualRentalAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalFoodAndBevAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalGuestRoomAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalMeetingRoomRentalAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: totalMiscAmountId
+          aggregateExpression: TextAggExp
+        - fieldName: uniqueIdId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpHistoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpHistoriesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpHistories
+      orderableFields:
+        - fieldName: attendeeQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: commentsId
+          orderByExpression: String1OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: meetingRfpId
+          orderByExpression: String1OrderByExp
+        - fieldName: postEventReportExists
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: roomBlockQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: roomPickupQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: siteDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalAudioVisualRentalAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalFoodAndBevAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalGuestRoomAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalMeetingRoomRentalAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: totalMiscAmountId
+          orderByExpression: String1OrderByExp
+        - fieldName: uniqueIdId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpHistoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpHistories
+  objectType: MeetingrfpHistories
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_histories
+  filterExpressionType: MeetingrfpHistoriesBoolExp
+  aggregateExpression: MeetingrfpHistoriesAggExp
+  orderByExpression: MeetingrfpHistoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpHistories
+      subscription:
+        rootField: meetingrfpHistories
+    selectUniques:
+      - queryRootField: meetingrfpHistoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpHistoriesById
+    filterInputTypeName: MeetingrfpHistoriesFilterInput
+    aggregate:
+      queryRootField: meetingrfpHistoriesAggregate
+      subscription:
+        rootField: meetingrfpHistoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpHistories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

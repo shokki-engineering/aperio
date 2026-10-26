@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRoomAmenityPrefsObject
+  fields:
+    - name: existsCode
+      type: Enum
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: qualityLevel
+      type: String_1
+    - name: quantity
+      type: Int32
+    - name: roomAmenity
+      type: Enum
+    - name: roomGender
+      type: Enum
+    - name: sharedRoom
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileRoomAmenityPrefsObject
+    inputTypeName: InsertProfileRoomAmenityPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_room_amenity_prefs_object
+      fieldMapping:
+        existsCode:
+          column:
+            name: exists_code
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        qualityLevel:
+          column:
+            name: quality_level
+        quantity:
+          column:
+            name: quantity
+        roomAmenity:
+          column:
+            name: room_amenity
+        roomGender:
+          column:
+            name: room_gender
+        sharedRoom:
+          column:
+            name: shared_room
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRoomAmenityPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - existsCode
+          - hotelPrefId
+          - id
+          - preferLevel
+          - qualityLevel
+          - quantity
+          - roomAmenity
+          - roomGender
+          - sharedRoom
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRoomAmenityPrefsResponse
+  description: Responses from the 'insert_profile_room_amenity_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileRoomAmenityPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileRoomAmenityPrefsResponse
+    inputTypeName: InsertProfileRoomAmenityPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_room_amenity_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRoomAmenityPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileRoomAmenityPrefs
+  outputType: InsertProfileRoomAmenityPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileRoomAmenityPrefsObject!]!"
+    - name: postCheck
+      type: ProfileRoomAmenityPrefsBoolExp
+      description: Insert permission predicate over the 'profile_room_amenity_prefs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_room_amenity_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileRoomAmenityPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_room_amenity_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileRoomAmenityPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportCategories
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: locationCategoriesId
+      type: String_1!
+    - name: locationCategoryCode
+      type: String_1
+    - name: preferLevel
+      type: Enum
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventreportCategories
+    inputTypeName: EventreportCategoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_categories
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        locationCategoriesId:
+          column:
+            name: location_categories_id
+        locationCategoryCode:
+          column:
+            name: location_category_code
+        preferLevel:
+          column:
+            name: prefer_level
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportCategories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - locationCategoriesId
+          - locationCategoryCode
+          - preferLevel
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportCategoriesBoolExp
+  operand:
+    object:
+      type: EventreportCategories
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationCategoriesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationCategoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: EventreportEventreportPreferLevelBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: EventreportEventreportFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportCategoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportCategoriesAggExp
+  operand:
+    object:
+      aggregatedType: EventreportCategories
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: locationCategoriesId
+          aggregateExpression: TextAggExp
+        - fieldName: locationCategoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: EventreportEventreportPreferLevelAggExp
+        - fieldName: textFormat
+          aggregateExpression: EventreportEventreportFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportCategoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportCategoriesOrderByExp
+  operand:
+    object:
+      orderedType: EventreportCategories
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: locationCategoriesId
+          orderByExpression: String1OrderByExp
+        - fieldName: locationCategoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportCategoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportCategories
+  objectType: EventreportCategories
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_categories
+  filterExpressionType: EventreportCategoriesBoolExp
+  aggregateExpression: EventreportCategoriesAggExp
+  orderByExpression: EventreportCategoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportCategories
+      subscription:
+        rootField: eventreportCategories
+    selectUniques:
+      - queryRootField: eventreportCategoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportCategoriesById
+    filterInputTypeName: EventreportCategoriesFilterInput
+    aggregate:
+      queryRootField: eventreportCategoriesAggregate
+      subscription:
+        rootField: eventreportCategoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportCategories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

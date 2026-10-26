@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleStreetNmbrs
+  fields:
+    - name: id
+      type: String_1!
+    - name: poBox
+      type: String_1
+    - name: ruralRouteNmbr
+      type: String_1
+    - name: streetDirection
+      type: String_1
+    - name: streetNmbrSuffix
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleStreetNmbrs
+    inputTypeName: BookingruleStreetNmbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_street_nmbrs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        poBox:
+          column:
+            name: po_box
+        ruralRouteNmbr:
+          column:
+            name: rural_route_nmbr
+        streetDirection:
+          column:
+            name: street_direction
+        streetNmbrSuffix:
+          column:
+            name: street_nmbr_suffix
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleStreetNmbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - poBox
+          - ruralRouteNmbr
+          - streetDirection
+          - streetNmbrSuffix
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleStreetNmbrsBoolExp
+  operand:
+    object:
+      type: BookingruleStreetNmbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: poBox
+          booleanExpressionType: TextBoolExp
+        - fieldName: ruralRouteNmbr
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetDirection
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetNmbrSuffix
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleStreetNmbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleStreetNmbrsAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleStreetNmbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: poBox
+          aggregateExpression: TextAggExp
+        - fieldName: ruralRouteNmbr
+          aggregateExpression: TextAggExp
+        - fieldName: streetDirection
+          aggregateExpression: TextAggExp
+        - fieldName: streetNmbrSuffix
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleStreetNmbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleStreetNmbrsOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleStreetNmbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: poBox
+          orderByExpression: String1OrderByExp
+        - fieldName: ruralRouteNmbr
+          orderByExpression: String1OrderByExp
+        - fieldName: streetDirection
+          orderByExpression: String1OrderByExp
+        - fieldName: streetNmbrSuffix
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleStreetNmbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleStreetNmbrs
+  objectType: BookingruleStreetNmbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_street_nmbrs
+  filterExpressionType: BookingruleStreetNmbrsBoolExp
+  aggregateExpression: BookingruleStreetNmbrsAggExp
+  orderByExpression: BookingruleStreetNmbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleStreetNmbrs
+      subscription:
+        rootField: bookingruleStreetNmbrs
+    selectUniques:
+      - queryRootField: bookingruleStreetNmbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleStreetNmbrsById
+    filterInputTypeName: BookingruleStreetNmbrsFilterInput
+    aggregate:
+      queryRootField: bookingruleStreetNmbrsAggregate
+      subscription:
+        rootField: bookingruleStreetNmbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleStreetNmbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

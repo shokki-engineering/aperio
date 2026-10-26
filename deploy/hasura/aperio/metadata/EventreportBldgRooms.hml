@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportBldgRooms
+  fields:
+    - name: addressInfoId
+      type: String_1!
+    - name: bldgNameIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventreportBldgRooms
+    inputTypeName: EventreportBldgRoomsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_bldg_rooms
+      fieldMapping:
+        addressInfoId:
+          column:
+            name: address_info_id
+        bldgNameIndicator:
+          column:
+            name: bldg_name_indicator
+        id:
+          column:
+            name: id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportBldgRooms
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressInfoId
+          - bldgNameIndicator
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportBldgRoomsBoolExp
+  operand:
+    object:
+      type: EventreportBldgRooms
+      comparableFields:
+        - fieldName: addressInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bldgNameIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportBldgRoomsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportBldgRoomsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportBldgRooms
+      aggregatableFields:
+        - fieldName: addressInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: bldgNameIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportBldgRoomsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportBldgRoomsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportBldgRooms
+      orderableFields:
+        - fieldName: addressInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: bldgNameIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportBldgRoomsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportBldgRooms
+  objectType: EventreportBldgRooms
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_bldg_rooms
+  filterExpressionType: EventreportBldgRoomsBoolExp
+  aggregateExpression: EventreportBldgRoomsAggExp
+  orderByExpression: EventreportBldgRoomsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportBldgRooms
+      subscription:
+        rootField: eventreportBldgRooms
+    selectUniques:
+      - queryRootField: eventreportBldgRoomsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportBldgRoomsById
+    filterInputTypeName: EventreportBldgRoomsFilterInput
+    aggregate:
+      queryRootField: eventreportBldgRoomsAggregate
+      subscription:
+        rootField: eventreportBldgRoomsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportBldgRooms
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

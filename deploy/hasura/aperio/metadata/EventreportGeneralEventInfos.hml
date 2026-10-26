@@ -1,0 +1,331 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportGeneralEventInfos
+  fields:
+    - name: acronym
+      type: String_1
+    - name: attendeeGuestProgramIndicator
+      type: Boolean_1
+    - name: childrenInvitedIndicator
+      type: Boolean_1
+    - name: destinationServiceProviderCodes
+      type: String_1
+    - name: eventLocationId
+      type: String_1
+    - name: eventReportRphs
+      type: "[String_1]"
+    - name: exhibitionInfoId
+      type: String_1
+    - name: foodAndBeverageInfoId
+      type: String_1
+    - name: frequency
+      type: Enum
+    - name: functionSpaceInfoId
+      type: String_1
+    - name: housingInfoId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+    - name: offsiteVenueIndicator
+      type: Boolean_1
+    - name: scope
+      type: Enum
+    - name: shuttleServiceIndicator
+      type: Boolean_1
+    - name: spouseInvitedIndicator
+      type: Boolean_1
+    - name: type
+      type: Enum
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: EventreportGeneralEventInfos
+    inputTypeName: EventreportGeneralEventInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_general_event_infos
+      fieldMapping:
+        acronym:
+          column:
+            name: acronym
+        attendeeGuestProgramIndicator:
+          column:
+            name: attendee_guest_program_indicator
+        childrenInvitedIndicator:
+          column:
+            name: children_invited_indicator
+        destinationServiceProviderCodes:
+          column:
+            name: destination_service_provider_codes
+        eventLocationId:
+          column:
+            name: event_location_id
+        eventReportRphs:
+          column:
+            name: event_report_rphs
+        exhibitionInfoId:
+          column:
+            name: exhibition_info_id
+        foodAndBeverageInfoId:
+          column:
+            name: food_and_beverage_info_id
+        frequency:
+          column:
+            name: frequency
+        functionSpaceInfoId:
+          column:
+            name: function_space_info_id
+        housingInfoId:
+          column:
+            name: housing_info_id
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        offsiteVenueIndicator:
+          column:
+            name: offsite_venue_indicator
+        scope:
+          column:
+            name: scope
+        shuttleServiceIndicator:
+          column:
+            name: shuttle_service_indicator
+        spouseInvitedIndicator:
+          column:
+            name: spouse_invited_indicator
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportGeneralEventInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acronym
+          - attendeeGuestProgramIndicator
+          - childrenInvitedIndicator
+          - destinationServiceProviderCodes
+          - eventLocationId
+          - eventReportRphs
+          - exhibitionInfoId
+          - foodAndBeverageInfoId
+          - frequency
+          - functionSpaceInfoId
+          - housingInfoId
+          - id
+          - name
+          - offsiteVenueIndicator
+          - scope
+          - shuttleServiceIndicator
+          - spouseInvitedIndicator
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportGeneralEventInfosBoolExp
+  operand:
+    object:
+      type: EventreportGeneralEventInfos
+      comparableFields:
+        - fieldName: acronym
+          booleanExpressionType: TextBoolExp
+        - fieldName: attendeeGuestProgramIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: childrenInvitedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: destinationServiceProviderCodes
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventLocationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: exhibitionInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: foodAndBeverageInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: frequency
+          booleanExpressionType: EventreportEventreportFrequencyBoolExp
+        - fieldName: functionSpaceInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: housingInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: offsiteVenueIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: scope
+          booleanExpressionType: EventreportEventreportScopeBoolExp
+        - fieldName: shuttleServiceIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: spouseInvitedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: type
+          booleanExpressionType: EventreportEventreportEventTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportGeneralEventInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportGeneralEventInfosAggExp
+  operand:
+    object:
+      aggregatedType: EventreportGeneralEventInfos
+      aggregatableFields:
+        - fieldName: acronym
+          aggregateExpression: TextAggExp
+        - fieldName: attendeeGuestProgramIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: childrenInvitedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: destinationServiceProviderCodes
+          aggregateExpression: TextAggExp
+        - fieldName: eventLocationId
+          aggregateExpression: TextAggExp
+        - fieldName: exhibitionInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: foodAndBeverageInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: frequency
+          aggregateExpression: EventreportEventreportFrequencyAggExp
+        - fieldName: functionSpaceInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: housingInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: offsiteVenueIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: scope
+          aggregateExpression: EventreportEventreportScopeAggExp
+        - fieldName: shuttleServiceIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: spouseInvitedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: type
+          aggregateExpression: EventreportEventreportEventTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportGeneralEventInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportGeneralEventInfosOrderByExp
+  operand:
+    object:
+      orderedType: EventreportGeneralEventInfos
+      orderableFields:
+        - fieldName: acronym
+          orderByExpression: String1OrderByExp
+        - fieldName: attendeeGuestProgramIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: childrenInvitedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: destinationServiceProviderCodes
+          orderByExpression: String1OrderByExp
+        - fieldName: eventLocationId
+          orderByExpression: String1OrderByExp
+        - fieldName: exhibitionInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: foodAndBeverageInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: frequency
+          orderByExpression: EnumOrderByExp
+        - fieldName: functionSpaceInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: housingInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: offsiteVenueIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: scope
+          orderByExpression: EnumOrderByExp
+        - fieldName: shuttleServiceIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: spouseInvitedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportGeneralEventInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportGeneralEventInfos
+  objectType: EventreportGeneralEventInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_general_event_infos
+  filterExpressionType: EventreportGeneralEventInfosBoolExp
+  aggregateExpression: EventreportGeneralEventInfosAggExp
+  orderByExpression: EventreportGeneralEventInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportGeneralEventInfos
+      subscription:
+        rootField: eventreportGeneralEventInfos
+    selectUniques:
+      - queryRootField: eventreportGeneralEventInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportGeneralEventInfosById
+    filterInputTypeName: EventreportGeneralEventInfosFilterInput
+    aggregate:
+      queryRootField: eventreportGeneralEventInfosAggregate
+      subscription:
+        rootField: eventreportGeneralEventInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportGeneralEventInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

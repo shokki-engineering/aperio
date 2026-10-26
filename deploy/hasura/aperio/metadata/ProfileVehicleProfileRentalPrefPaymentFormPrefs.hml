@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+  fields:
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: rph
+      type: String_1
+    - name: vehicleProfileRentalPrefId
+      type: String_1!
+  graphql:
+    typeName: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+    inputTypeName: ProfileVehicleProfileRentalPrefPaymentFormPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_vehicle_profile_rental_pref_payment_form_prefs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        rph:
+          column:
+            name: rph
+        vehicleProfileRentalPrefId:
+          column:
+            name: vehicle_profile_rental_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - preferLevel
+          - rph
+          - vehicleProfileRentalPrefId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefPaymentFormPrefsBoolExp
+  operand:
+    object:
+      type: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: vehicleProfileRentalPrefId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileVehicleProfileRentalPrefPaymentFormPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefPaymentFormPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: vehicleProfileRentalPrefId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileVehicleProfileRentalPrefPaymentFormPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileVehicleProfileRentalPrefPaymentFormPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: vehicleProfileRentalPrefId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileVehicleProfileRentalPrefPaymentFormPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+  objectType: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_vehicle_profile_rental_pref_payment_form_prefs
+  filterExpressionType: ProfileVehicleProfileRentalPrefPaymentFormPrefsBoolExp
+  aggregateExpression: ProfileVehicleProfileRentalPrefPaymentFormPrefsAggExp
+  orderByExpression: ProfileVehicleProfileRentalPrefPaymentFormPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileVehicleProfileRentalPrefPaymentFormPrefs
+      subscription:
+        rootField: profileVehicleProfileRentalPrefPaymentFormPrefs
+    selectUniques:
+      - queryRootField: profileVehicleProfileRentalPrefPaymentFormPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileVehicleProfileRentalPrefPaymentFormPrefsById
+    filterInputTypeName: ProfileVehicleProfileRentalPrefPaymentFormPrefsFilterInput
+    aggregate:
+      queryRootField: profileVehicleProfileRentalPrefPaymentFormPrefsAggregate
+      subscription:
+        rootField: profileVehicleProfileRentalPrefPaymentFormPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileVehicleProfileRentalPrefPaymentFormPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

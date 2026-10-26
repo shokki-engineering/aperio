@@ -1,0 +1,204 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductParagraphsObject
+  fields:
+    - name: additionalGuestAmountId
+      type: String_1!
+    - name: cancelPenaltyId
+      type: String_1!
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: feeId
+      type: String_1!
+    - name: guaranteePaymentId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: paragraphNumber
+      type: Int32
+    - name: purgeDayId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: roomTypeId
+      type: String_1!
+    - name: taxId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+  graphql:
+    typeName: InsertHotelproductParagraphsObject
+    inputTypeName: InsertHotelproductParagraphsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_paragraphs_object
+      fieldMapping:
+        additionalGuestAmountId:
+          column:
+            name: additional_guest_amount_id
+        cancelPenaltyId:
+          column:
+            name: cancel_penalty_id
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        displayName:
+          column:
+            name: display_name
+        feeId:
+          column:
+            name: fee_id
+        guaranteePaymentId:
+          column:
+            name: guarantee_payment_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        purgeDayId:
+          column:
+            name: purge_day_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        roomTypeId:
+          column:
+            name: room_type_id
+        taxId:
+          column:
+            name: tax_id
+        uris:
+          column:
+            name: uris
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductParagraphsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - additionalGuestAmountId
+          - cancelPenaltyId
+          - createDateTime
+          - creatorId
+          - displayName
+          - feeId
+          - guaranteePaymentId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - paragraphNumber
+          - purgeDayId
+          - ratePlanId
+          - roomTypeId
+          - taxId
+          - uris
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductParagraphsResponse
+  description: Responses from the 'insert_hotelproduct_paragraphs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductParagraphs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductParagraphsResponse
+    inputTypeName: InsertHotelproductParagraphsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_paragraphs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductParagraphsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductParagraphs
+  outputType: InsertHotelproductParagraphsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductParagraphsObject!]!"
+    - name: postCheck
+      type: HotelproductParagraphsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_paragraphs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_paragraphs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductParagraphs
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_paragraphs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductParagraphs
+  permissions:
+    - role: admin
+      allowExecution: true
+

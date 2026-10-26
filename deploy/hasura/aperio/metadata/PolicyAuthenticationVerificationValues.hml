@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyAuthenticationVerificationValues
+  fields:
+    - name: id
+      type: String_1!
+    - name: plainText
+      type: String_1
+    - name: secureId
+      type: String_1
+    - name: secureOrPlainTextCase
+      type: Enum
+  graphql:
+    typeName: PolicyAuthenticationVerificationValues
+    inputTypeName: PolicyAuthenticationVerificationValuesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_authentication_verification_values
+      fieldMapping:
+        id:
+          column:
+            name: id
+        plainText:
+          column:
+            name: plain_text
+        secureId:
+          column:
+            name: secure_id
+        secureOrPlainTextCase:
+          column:
+            name: secure_or_plain_text_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - plainText
+          - secureId
+          - secureOrPlainTextCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyAuthenticationVerificationValuesBoolExp
+  operand:
+    object:
+      type: PolicyAuthenticationVerificationValues
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: plainText
+          booleanExpressionType: TextBoolExp
+        - fieldName: secureId
+          booleanExpressionType: TextBoolExp
+        - fieldName: secureOrPlainTextCase
+          booleanExpressionType: PolicyPolicyAuthenticationVerificationValueSecureOrPlaF7011CfcBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyAuthenticationVerificationValuesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyAuthenticationVerificationValuesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyAuthenticationVerificationValues
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: plainText
+          aggregateExpression: TextAggExp
+        - fieldName: secureId
+          aggregateExpression: TextAggExp
+        - fieldName: secureOrPlainTextCase
+          aggregateExpression: PolicyPolicyAuthenticationVerificationValueSecureOrPlaF7011CfcAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyAuthenticationVerificationValuesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyAuthenticationVerificationValuesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyAuthenticationVerificationValues
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: plainText
+          orderByExpression: String1OrderByExp
+        - fieldName: secureId
+          orderByExpression: String1OrderByExp
+        - fieldName: secureOrPlainTextCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyAuthenticationVerificationValuesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyAuthenticationVerificationValues
+  objectType: PolicyAuthenticationVerificationValues
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_authentication_verification_values
+  filterExpressionType: PolicyAuthenticationVerificationValuesBoolExp
+  aggregateExpression: PolicyAuthenticationVerificationValuesAggExp
+  orderByExpression: PolicyAuthenticationVerificationValuesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyAuthenticationVerificationValues
+      subscription:
+        rootField: policyAuthenticationVerificationValues
+    selectUniques:
+      - queryRootField: policyAuthenticationVerificationValuesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyAuthenticationVerificationValuesById
+    filterInputTypeName: PolicyAuthenticationVerificationValuesFilterInput
+    aggregate:
+      queryRootField: policyAuthenticationVerificationValuesAggregate
+      subscription:
+        rootField: policyAuthenticationVerificationValuesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

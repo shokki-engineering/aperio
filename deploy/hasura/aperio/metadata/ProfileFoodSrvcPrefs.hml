@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileFoodSrvcPrefs
+  fields:
+    - name: foodSrvcType
+      type: Enum
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileFoodSrvcPrefs
+    inputTypeName: ProfileFoodSrvcPrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_food_srvc_prefs
+      fieldMapping:
+        foodSrvcType:
+          column:
+            name: food_srvc_type
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileFoodSrvcPrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - foodSrvcType
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileFoodSrvcPrefsBoolExp
+  operand:
+    object:
+      type: ProfileFoodSrvcPrefs
+      comparableFields:
+        - fieldName: foodSrvcType
+          booleanExpressionType: ProfileProfileMainCuisineCodeBoolExp
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileFoodSrvcPrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileFoodSrvcPrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileFoodSrvcPrefs
+      aggregatableFields:
+        - fieldName: foodSrvcType
+          aggregateExpression: ProfileProfileMainCuisineCodeAggExp
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileFoodSrvcPrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileFoodSrvcPrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileFoodSrvcPrefs
+      orderableFields:
+        - fieldName: foodSrvcType
+          orderByExpression: EnumOrderByExp
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileFoodSrvcPrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileFoodSrvcPrefs
+  objectType: ProfileFoodSrvcPrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_food_srvc_prefs
+  filterExpressionType: ProfileFoodSrvcPrefsBoolExp
+  aggregateExpression: ProfileFoodSrvcPrefsAggExp
+  orderByExpression: ProfileFoodSrvcPrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileFoodSrvcPrefs
+      subscription:
+        rootField: profileFoodSrvcPrefs
+    selectUniques:
+      - queryRootField: profileFoodSrvcPrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileFoodSrvcPrefsById
+    filterInputTypeName: ProfileFoodSrvcPrefsFilterInput
+    aggregate:
+      queryRootField: profileFoodSrvcPrefsAggregate
+      subscription:
+        rootField: profileFoodSrvcPrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileFoodSrvcPrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

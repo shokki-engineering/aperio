@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoRecreationDetailsObject
+  fields:
+    - name: code
+      type: Enum
+    - name: codeDetail
+      type: String_1
+    - name: existsCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: recreationId
+      type: String_1!
+  graphql:
+    typeName: InsertAreainfoRecreationDetailsObject
+    inputTypeName: InsertAreainfoRecreationDetailsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_recreation_details_object
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeDetail:
+          column:
+            name: code_detail
+        existsCode:
+          column:
+            name: exists_code
+        id:
+          column:
+            name: id
+        recreationId:
+          column:
+            name: recreation_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoRecreationDetailsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeDetail
+          - existsCode
+          - id
+          - recreationId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertAreainfoRecreationDetailsResponse
+  description: Responses from the 'insert_areainfo_recreation_details' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AreainfoRecreationDetails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertAreainfoRecreationDetailsResponse
+    inputTypeName: InsertAreainfoRecreationDetailsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_areainfo_recreation_details_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertAreainfoRecreationDetailsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertAreainfoRecreationDetails
+  outputType: InsertAreainfoRecreationDetailsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertAreainfoRecreationDetailsObject!]!"
+    - name: postCheck
+      type: AreainfoRecreationDetailsBoolExp
+      description: Insert permission predicate over the 'areainfo_recreation_details'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_areainfo_recreation_details
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertAreainfoRecreationDetails
+    rootFieldKind: Mutation
+  description: Insert into the areainfo_recreation_details table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertAreainfoRecreationDetails
+  permissions:
+    - role: admin
+      allowExecution: true
+

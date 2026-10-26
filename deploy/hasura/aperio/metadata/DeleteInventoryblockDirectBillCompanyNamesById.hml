@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteInventoryblockDirectBillCompanyNamesByIdResponse
+  description: Responses from the
+    'delete_inventoryblock_direct_bill_company_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[InventoryblockDirectBillCompanyNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteInventoryblockDirectBillCompanyNamesByIdResponse
+    inputTypeName: DeleteInventoryblockDirectBillCompanyNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_inventoryblock_direct_bill_company_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteInventoryblockDirectBillCompanyNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteInventoryblockDirectBillCompanyNamesById
+  outputType: DeleteInventoryblockDirectBillCompanyNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: InventoryblockDirectBillCompanyNamesBoolExp
+      description: Delete permission predicate over the
+        'inventoryblock_direct_bill_company_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_inventoryblock_direct_bill_company_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteInventoryblockDirectBillCompanyNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'inventoryblock_direct_bill_company_names'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteInventoryblockDirectBillCompanyNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

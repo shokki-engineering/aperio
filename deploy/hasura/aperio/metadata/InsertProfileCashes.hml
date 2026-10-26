@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCashesObject
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertProfileCashesObject
+    inputTypeName: InsertProfileCashesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_cashes_object
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCashesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileCashesResponse
+  description: Responses from the 'insert_profile_cashes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileCashesResponse
+    inputTypeName: InsertProfileCashesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_cashes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileCashesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileCashes
+  outputType: InsertProfileCashesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileCashesObject!]!"
+    - name: postCheck
+      type: ProfileCashesBoolExp
+      description: Insert permission predicate over the 'profile_cashes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_cashes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileCashes
+    rootFieldKind: Mutation
+  description: Insert into the profile_cashes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileCashes
+  permissions:
+    - role: admin
+      allowExecution: true
+

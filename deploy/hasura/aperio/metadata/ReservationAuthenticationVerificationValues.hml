@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationAuthenticationVerificationValues
+  fields:
+    - name: id
+      type: String_1!
+    - name: plainText
+      type: String_1
+    - name: secureId
+      type: String_1
+    - name: secureOrPlainTextCase
+      type: Enum
+  graphql:
+    typeName: ReservationAuthenticationVerificationValues
+    inputTypeName: ReservationAuthenticationVerificationValuesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_authentication_verification_values
+      fieldMapping:
+        id:
+          column:
+            name: id
+        plainText:
+          column:
+            name: plain_text
+        secureId:
+          column:
+            name: secure_id
+        secureOrPlainTextCase:
+          column:
+            name: secure_or_plain_text_case
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - plainText
+          - secureId
+          - secureOrPlainTextCase
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationAuthenticationVerificationValuesBoolExp
+  operand:
+    object:
+      type: ReservationAuthenticationVerificationValues
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: plainText
+          booleanExpressionType: TextBoolExp
+        - fieldName: secureId
+          booleanExpressionType: TextBoolExp
+        - fieldName: secureOrPlainTextCase
+          booleanExpressionType: ReservationReservationAuthenticationVerificationValueSecureO7418Fde6BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationAuthenticationVerificationValuesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationAuthenticationVerificationValuesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationAuthenticationVerificationValues
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: plainText
+          aggregateExpression: TextAggExp
+        - fieldName: secureId
+          aggregateExpression: TextAggExp
+        - fieldName: secureOrPlainTextCase
+          aggregateExpression: ReservationReservationAuthenticationVerificationValueSecureO7418Fde6AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationAuthenticationVerificationValuesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationAuthenticationVerificationValuesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationAuthenticationVerificationValues
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: plainText
+          orderByExpression: String1OrderByExp
+        - fieldName: secureId
+          orderByExpression: String1OrderByExp
+        - fieldName: secureOrPlainTextCase
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationAuthenticationVerificationValuesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationAuthenticationVerificationValues
+  objectType: ReservationAuthenticationVerificationValues
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_authentication_verification_values
+  filterExpressionType: ReservationAuthenticationVerificationValuesBoolExp
+  aggregateExpression: ReservationAuthenticationVerificationValuesAggExp
+  orderByExpression: ReservationAuthenticationVerificationValuesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationAuthenticationVerificationValues
+      subscription:
+        rootField: reservationAuthenticationVerificationValues
+    selectUniques:
+      - queryRootField: reservationAuthenticationVerificationValuesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationAuthenticationVerificationValuesById
+    filterInputTypeName: ReservationAuthenticationVerificationValuesFilterInput
+    aggregate:
+      queryRootField: reservationAuthenticationVerificationValuesAggregate
+      subscription:
+        rootField: reservationAuthenticationVerificationValuesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationAuthenticationVerificationValues
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

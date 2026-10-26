@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeletePolicyTaxByIdResponse
+  description: Responses from the 'delete_policy_tax_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyTax!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeletePolicyTaxByIdResponse
+    inputTypeName: DeletePolicyTaxByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_policy_tax_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeletePolicyTaxByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeletePolicyTaxById
+  outputType: DeletePolicyTaxByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: PolicyTaxBoolExp
+      description: Delete permission predicate over the 'policy_tax' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_policy_tax_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deletePolicyTaxById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'policy_tax' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeletePolicyTaxById
+  permissions:
+    - role: admin
+      allowExecution: true
+

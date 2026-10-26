@@ -1,0 +1,361 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: TransientrfpResource
+  fields:
+    - name: accountSpecificInfoId
+      type: String_1
+    - name: areaId
+      type: String_1
+    - name: brandCode
+      type: String_1
+    - name: brandDisplayName
+      type: String_1
+    - name: chainCode
+      type: String_1
+    - name: chainDisplayName
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: hotelAddressId
+      type: String_1
+    - name: hotelCityCode
+      type: String_1
+    - name: hotelCode
+      type: String_1
+    - name: hotelCodeContext
+      type: String_1
+    - name: hotelDisplayName
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: intermediaryPropertyCode
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: ttIcode
+      type: Int32
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: TransientrfpResource
+    inputTypeName: TransientrfpResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: transientrfp_resource
+      fieldMapping:
+        accountSpecificInfoId:
+          column:
+            name: account_specific_info_id
+        areaId:
+          column:
+            name: area_id
+        brandCode:
+          column:
+            name: brand_code
+        brandDisplayName:
+          column:
+            name: brand_display_name
+        chainCode:
+          column:
+            name: chain_code
+        chainDisplayName:
+          column:
+            name: chain_display_name
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        hotelAddressId:
+          column:
+            name: hotel_address_id
+        hotelCityCode:
+          column:
+            name: hotel_city_code
+        hotelCode:
+          column:
+            name: hotel_code
+        hotelCodeContext:
+          column:
+            name: hotel_code_context
+        hotelDisplayName:
+          column:
+            name: hotel_display_name
+        id:
+          column:
+            name: id
+        intermediaryPropertyCode:
+          column:
+            name: intermediary_property_code
+        name:
+          column:
+            name: name
+        ttIcode:
+          column:
+            name: tt_icode
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: TransientrfpResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accountSpecificInfoId
+          - areaId
+          - brandCode
+          - brandDisplayName
+          - chainCode
+          - chainDisplayName
+          - createTime
+          - deleteTime
+          - etag
+          - expireTime
+          - hotelAddressId
+          - hotelCityCode
+          - hotelCode
+          - hotelCodeContext
+          - hotelDisplayName
+          - id
+          - intermediaryPropertyCode
+          - name
+          - ttIcode
+          - uid
+          - updateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: TransientrfpResourceBoolExp
+  operand:
+    object:
+      type: TransientrfpResource
+      comparableFields:
+        - fieldName: accountSpecificInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: areaId
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: brandDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: deleteTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: hotelAddressId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelCodeContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: intermediaryPropertyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: ttIcode
+          booleanExpressionType: Int4BoolExp
+        - fieldName: uid
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: TransientrfpResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: TransientrfpResourceAggExp
+  operand:
+    object:
+      aggregatedType: TransientrfpResource
+      aggregatableFields:
+        - fieldName: accountSpecificInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: areaId
+          aggregateExpression: TextAggExp
+        - fieldName: brandCode
+          aggregateExpression: TextAggExp
+        - fieldName: brandDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: chainCode
+          aggregateExpression: TextAggExp
+        - fieldName: chainDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: deleteTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: hotelAddressId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCode
+          aggregateExpression: TextAggExp
+        - fieldName: hotelCodeContext
+          aggregateExpression: TextAggExp
+        - fieldName: hotelDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: intermediaryPropertyCode
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: ttIcode
+          aggregateExpression: Int4AggExp
+        - fieldName: uid
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: TransientrfpResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: TransientrfpResourceOrderByExp
+  operand:
+    object:
+      orderedType: TransientrfpResource
+      orderableFields:
+        - fieldName: accountSpecificInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: areaId
+          orderByExpression: String1OrderByExp
+        - fieldName: brandCode
+          orderByExpression: String1OrderByExp
+        - fieldName: brandDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: chainCode
+          orderByExpression: String1OrderByExp
+        - fieldName: chainDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: deleteTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: hotelAddressId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCode
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelCodeContext
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: intermediaryPropertyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: ttIcode
+          orderByExpression: Int32OrderByExp
+        - fieldName: uid
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: TransientrfpResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: TransientrfpResource
+  objectType: TransientrfpResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: transientrfp_resource
+  filterExpressionType: TransientrfpResourceBoolExp
+  aggregateExpression: TransientrfpResourceAggExp
+  orderByExpression: TransientrfpResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: transientrfpResource
+      subscription:
+        rootField: transientrfpResource
+    selectUniques:
+      - queryRootField: transientrfpResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: transientrfpResourceById
+    filterInputTypeName: TransientrfpResourceFilterInput
+    aggregate:
+      queryRootField: transientrfpResourceAggregate
+      subscription:
+        rootField: transientrfpResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: TransientrfpResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

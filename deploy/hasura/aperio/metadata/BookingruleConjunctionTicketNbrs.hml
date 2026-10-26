@@ -1,0 +1,151 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleConjunctionTicketNbrs
+  fields:
+    - name: coupons
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: ticketId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleConjunctionTicketNbrs
+    inputTypeName: BookingruleConjunctionTicketNbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_conjunction_ticket_nbrs
+      fieldMapping:
+        coupons:
+          column:
+            name: coupons
+        id:
+          column:
+            name: id
+        ticketId:
+          column:
+            name: ticket_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleConjunctionTicketNbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - coupons
+          - id
+          - ticketId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleConjunctionTicketNbrsBoolExp
+  operand:
+    object:
+      type: BookingruleConjunctionTicketNbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: ticketId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleConjunctionTicketNbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleConjunctionTicketNbrsAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleConjunctionTicketNbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: ticketId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleConjunctionTicketNbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleConjunctionTicketNbrsOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleConjunctionTicketNbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: ticketId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleConjunctionTicketNbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleConjunctionTicketNbrs
+  objectType: BookingruleConjunctionTicketNbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_conjunction_ticket_nbrs
+  filterExpressionType: BookingruleConjunctionTicketNbrsBoolExp
+  aggregateExpression: BookingruleConjunctionTicketNbrsAggExp
+  orderByExpression: BookingruleConjunctionTicketNbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleConjunctionTicketNbrs
+      subscription:
+        rootField: bookingruleConjunctionTicketNbrs
+    selectUniques:
+      - queryRootField: bookingruleConjunctionTicketNbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleConjunctionTicketNbrsById
+    filterInputTypeName: BookingruleConjunctionTicketNbrsFilterInput
+    aggregate:
+      queryRootField: bookingruleConjunctionTicketNbrsAggregate
+      subscription:
+        rootField: bookingruleConjunctionTicketNbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleConjunctionTicketNbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

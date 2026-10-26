@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleLocationCode
+  fields:
+    - name: cityCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: locationCodesId
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: stateProvinceCode
+      type: String_1
+  graphql:
+    typeName: BookingruleLocationCode
+    inputTypeName: BookingruleLocationCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_location_code
+      fieldMapping:
+        cityCode:
+          column:
+            name: city_code
+        id:
+          column:
+            name: id
+        locationCodesId:
+          column:
+            name: location_codes_id
+        regionCode:
+          column:
+            name: region_code
+        stateProvinceCode:
+          column:
+            name: state_province_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleLocationCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cityCode
+          - id
+          - locationCodesId
+          - regionCode
+          - stateProvinceCode
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleLocationCodeBoolExp
+  operand:
+    object:
+      type: BookingruleLocationCode
+      comparableFields:
+        - fieldName: cityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: locationCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: regionCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: stateProvinceCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleLocationCodeBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleLocationCodeAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleLocationCode
+      aggregatableFields:
+        - fieldName: cityCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: locationCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: regionCode
+          aggregateExpression: TextAggExp
+        - fieldName: stateProvinceCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleLocationCodeAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleLocationCodeOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleLocationCode
+      orderableFields:
+        - fieldName: cityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: locationCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: regionCode
+          orderByExpression: String1OrderByExp
+        - fieldName: stateProvinceCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleLocationCodeOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleLocationCode
+  objectType: BookingruleLocationCode
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_location_code
+  filterExpressionType: BookingruleLocationCodeBoolExp
+  aggregateExpression: BookingruleLocationCodeAggExp
+  orderByExpression: BookingruleLocationCodeOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleLocationCode
+      subscription:
+        rootField: bookingruleLocationCode
+    selectUniques:
+      - queryRootField: bookingruleLocationCodeById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleLocationCodeById
+    filterInputTypeName: BookingruleLocationCodeFilterInput
+    aggregate:
+      queryRootField: bookingruleLocationCodeAggregate
+      subscription:
+        rootField: bookingruleLocationCodeAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleLocationCode
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

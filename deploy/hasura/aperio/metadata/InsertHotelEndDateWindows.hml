@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelEndDateWindowsObject
+  fields:
+    - name: dow
+      type: Enum
+    - name: earliestId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: latestId
+      type: String_1
+  graphql:
+    typeName: InsertHotelEndDateWindowsObject
+    inputTypeName: InsertHotelEndDateWindowsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_end_date_windows_object
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelEndDateWindowsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelEndDateWindowsResponse
+  description: Responses from the 'insert_hotel_end_date_windows' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelEndDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelEndDateWindowsResponse
+    inputTypeName: InsertHotelEndDateWindowsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_end_date_windows_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelEndDateWindowsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelEndDateWindows
+  outputType: InsertHotelEndDateWindowsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelEndDateWindowsObject!]!"
+    - name: postCheck
+      type: HotelEndDateWindowsBoolExp
+      description: Insert permission predicate over the 'hotel_end_date_windows' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_end_date_windows
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelEndDateWindows
+    rootFieldKind: Mutation
+  description: Insert into the hotel_end_date_windows table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelEndDateWindows
+  permissions:
+    - role: admin
+      allowExecution: true
+

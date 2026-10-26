@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileEmailsObject
+  fields:
+    - name: contactPersonId
+      type: String_1!
+    - name: defaultValue
+      type: Boolean_1
+    - name: emailType
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: paymentCardId
+      type: String_1!
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: textFormat
+      type: Enum
+    - name: valid
+      type: Boolean_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileEmailsObject
+    inputTypeName: InsertProfileEmailsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_emails_object
+      fieldMapping:
+        contactPersonId:
+          column:
+            name: contact_person_id
+        defaultValue:
+          column:
+            name: default_value
+        emailType:
+          column:
+            name: email_type
+        id:
+          column:
+            name: id
+        paymentCardId:
+          column:
+            name: payment_card_id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        textFormat:
+          column:
+            name: text_format
+        valid:
+          column:
+            name: valid
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileEmailsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - contactPersonId
+          - defaultValue
+          - emailType
+          - id
+          - paymentCardId
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - textFormat
+          - valid
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileEmailsResponse
+  description: Responses from the 'insert_profile_emails' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileEmails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileEmailsResponse
+    inputTypeName: InsertProfileEmailsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_emails_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileEmailsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileEmails
+  outputType: InsertProfileEmailsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileEmailsObject!]!"
+    - name: postCheck
+      type: ProfileEmailsBoolExp
+      description: Insert permission predicate over the 'profile_emails' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_emails
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileEmails
+    rootFieldKind: Mutation
+  description: Insert into the profile_emails table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileEmails
+  permissions:
+    - role: admin
+      allowExecution: true
+

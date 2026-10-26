@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRoomtypeDatesByIdResponse
+  description: Responses from the 'delete_roomtype_dates_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeDates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRoomtypeDatesByIdResponse
+    inputTypeName: DeleteRoomtypeDatesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_roomtype_dates_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRoomtypeDatesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRoomtypeDatesById
+  outputType: DeleteRoomtypeDatesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RoomtypeDatesBoolExp
+      description: Delete permission predicate over the 'roomtype_dates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_roomtype_dates_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRoomtypeDatesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'roomtype_dates' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRoomtypeDatesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

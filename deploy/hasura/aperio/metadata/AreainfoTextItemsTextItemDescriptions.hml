@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoTextItemsTextItemDescriptions
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: textFormat
+      type: Enum
+    - name: textItemId
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: AreainfoTextItemsTextItemDescriptions
+    inputTypeName: AreainfoTextItemsTextItemDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_text_items_text_item_descriptions
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        textFormat:
+          column:
+            name: text_format
+        textItemId:
+          column:
+            name: text_item_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - textFormat
+          - textItemId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoTextItemsTextItemDescriptionsBoolExp
+  operand:
+    object:
+      type: AreainfoTextItemsTextItemDescriptions
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: textFormat
+          booleanExpressionType: AreainfoAreainfoVideoItemsVideoItemDescriptionTextFormatBoolExp
+        - fieldName: textItemId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoTextItemsTextItemDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoTextItemsTextItemDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoTextItemsTextItemDescriptions
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: textFormat
+          aggregateExpression: AreainfoAreainfoVideoItemsVideoItemDescriptionTextFormatAggExp
+        - fieldName: textItemId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoTextItemsTextItemDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoTextItemsTextItemDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoTextItemsTextItemDescriptions
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: textItemId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoTextItemsTextItemDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoTextItemsTextItemDescriptions
+  objectType: AreainfoTextItemsTextItemDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_text_items_text_item_descriptions
+  filterExpressionType: AreainfoTextItemsTextItemDescriptionsBoolExp
+  aggregateExpression: AreainfoTextItemsTextItemDescriptionsAggExp
+  orderByExpression: AreainfoTextItemsTextItemDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoTextItemsTextItemDescriptions
+      subscription:
+        rootField: areainfoTextItemsTextItemDescriptions
+    selectUniques:
+      - queryRootField: areainfoTextItemsTextItemDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoTextItemsTextItemDescriptionsById
+    filterInputTypeName: AreainfoTextItemsTextItemDescriptionsFilterInput
+    aggregate:
+      queryRootField: areainfoTextItemsTextItemDescriptionsAggregate
+      subscription:
+        rootField: areainfoTextItemsTextItemDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoTextItemsTextItemDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

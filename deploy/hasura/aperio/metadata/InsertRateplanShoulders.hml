@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanShouldersObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: postShoulderEndId
+      type: String_1
+    - name: postShoulderSellLimit
+      type: Int32
+    - name: preShoulderSellLimit
+      type: Int32
+    - name: preShoulderStartId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: shoulderRph
+      type: String_1
+  graphql:
+    typeName: InsertRateplanShouldersObject
+    inputTypeName: InsertRateplanShouldersObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_shoulders_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        postShoulderEndId:
+          column:
+            name: post_shoulder_end_id
+        postShoulderSellLimit:
+          column:
+            name: post_shoulder_sell_limit
+        preShoulderSellLimit:
+          column:
+            name: pre_shoulder_sell_limit
+        preShoulderStartId:
+          column:
+            name: pre_shoulder_start_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        shoulderRph:
+          column:
+            name: shoulder_rph
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanShouldersObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - postShoulderEndId
+          - postShoulderSellLimit
+          - preShoulderSellLimit
+          - preShoulderStartId
+          - ratePlanId
+          - shoulderRph
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanShouldersResponse
+  description: Responses from the 'insert_rateplan_shoulders' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanShoulders!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanShouldersResponse
+    inputTypeName: InsertRateplanShouldersResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_shoulders_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanShouldersResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanShoulders
+  outputType: InsertRateplanShouldersResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanShouldersObject!]!"
+    - name: postCheck
+      type: RateplanShouldersBoolExp
+      description: Insert permission predicate over the 'rateplan_shoulders' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_shoulders
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanShoulders
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_shoulders table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanShoulders
+  permissions:
+    - role: admin
+      allowExecution: true
+

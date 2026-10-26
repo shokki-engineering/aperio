@@ -1,0 +1,127 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePropertyAmenityPrefsObject
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: propertyAmenityType
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfilePropertyAmenityPrefsObject
+    inputTypeName: InsertProfilePropertyAmenityPrefsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_property_amenity_prefs_object
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        propertyAmenityType:
+          column:
+            name: property_amenity_type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePropertyAmenityPrefsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - propertyAmenityType
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfilePropertyAmenityPrefsResponse
+  description: Responses from the 'insert_profile_property_amenity_prefs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePropertyAmenityPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfilePropertyAmenityPrefsResponse
+    inputTypeName: InsertProfilePropertyAmenityPrefsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_property_amenity_prefs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfilePropertyAmenityPrefsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfilePropertyAmenityPrefs
+  outputType: InsertProfilePropertyAmenityPrefsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfilePropertyAmenityPrefsObject!]!"
+    - name: postCheck
+      type: ProfilePropertyAmenityPrefsBoolExp
+      description: Insert permission predicate over the
+        'profile_property_amenity_prefs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_property_amenity_prefs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfilePropertyAmenityPrefs
+    rootFieldKind: Mutation
+  description: Insert into the profile_property_amenity_prefs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfilePropertyAmenityPrefs
+  permissions:
+    - role: admin
+      allowExecution: true
+

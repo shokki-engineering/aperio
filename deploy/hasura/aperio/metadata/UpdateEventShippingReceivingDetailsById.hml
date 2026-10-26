@@ -1,0 +1,188 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventShippingReceivingDetailsId
+  description: Update the 'id' column in the 'event_shipping_receiving_details' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventShippingReceivingDetailsId
+    inputTypeName: UpdateColumnEventShippingReceivingDetailsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_shipping_receiving_details_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventShippingReceivingDetailsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventShippingReceivingDetailsPrivateVehicleDeliveryQuantity
+  description: Update the 'private_vehicle_delivery_quantity' column in the
+    'event_shipping_receiving_details' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventShippingReceivingDetailsPrivateVehicleDeliveryQuantity
+    inputTypeName: UpdateColumnEventShippingReceivingDetailsPrivateVehicleDeliveryQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_shipping_receiving_details_private_vehicle_delivery_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventShippingReceivingDetailsPrivateVehicleDeliveryQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventShippingReceivingDetailsByIdUpdateColumns
+  description: Update the columns of the 'event_shipping_receiving_details' collection
+  fields:
+    - name: id
+      type: UpdateColumnEventShippingReceivingDetailsId
+      description: Update the 'id' column in the 'event_shipping_receiving_details'
+        collection.
+    - name: privateVehicleDeliveryQuantity
+      type: UpdateColumnEventShippingReceivingDetailsPrivateVehicleDeliveryQuantity
+      description: Update the 'private_vehicle_delivery_quantity' column in the
+        'event_shipping_receiving_details' collection.
+  graphql:
+    typeName: UpdateEventShippingReceivingDetailsByIdUpdateColumns
+    inputTypeName: UpdateEventShippingReceivingDetailsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_shipping_receiving_details_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        privateVehicleDeliveryQuantity:
+          column:
+            name: private_vehicle_delivery_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventShippingReceivingDetailsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - privateVehicleDeliveryQuantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventShippingReceivingDetailsByIdResponse
+  description: Responses from the 'update_event_shipping_receiving_details_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventShippingReceivingDetails!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventShippingReceivingDetailsByIdResponse
+    inputTypeName: UpdateEventShippingReceivingDetailsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_shipping_receiving_details_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventShippingReceivingDetailsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventShippingReceivingDetailsById
+  outputType: UpdateEventShippingReceivingDetailsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventShippingReceivingDetailsBoolExp
+      description: Update permission post-condition predicate over the
+        'event_shipping_receiving_details' collection
+    - name: preCheck
+      type: EventShippingReceivingDetailsBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_shipping_receiving_details' collection
+    - name: updateColumns
+      type: UpdateEventShippingReceivingDetailsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_shipping_receiving_details_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventShippingReceivingDetailsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_shipping_receiving_details' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventShippingReceivingDetailsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

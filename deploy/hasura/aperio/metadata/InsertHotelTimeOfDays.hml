@@ -1,0 +1,110 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelTimeOfDaysObject
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: InsertHotelTimeOfDaysObject
+    inputTypeName: InsertHotelTimeOfDaysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_time_of_days_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelTimeOfDaysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelTimeOfDaysResponse
+  description: Responses from the 'insert_hotel_time_of_days' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelTimeOfDaysResponse
+    inputTypeName: InsertHotelTimeOfDaysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotel_time_of_days_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelTimeOfDaysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelTimeOfDays
+  outputType: InsertHotelTimeOfDaysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelTimeOfDaysObject!]!"
+    - name: postCheck
+      type: HotelTimeOfDaysBoolExp
+      description: Insert permission predicate over the 'hotel_time_of_days' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotel_time_of_days
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelTimeOfDays
+    rootFieldKind: Mutation
+  description: Insert into the hotel_time_of_days table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelTimeOfDays
+  permissions:
+    - role: admin
+      allowExecution: true
+

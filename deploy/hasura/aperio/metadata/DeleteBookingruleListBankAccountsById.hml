@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteBookingruleListBankAccountsByIdResponse
+  description: Responses from the 'delete_bookingrule_list_bank_accounts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleListBankAccounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteBookingruleListBankAccountsByIdResponse
+    inputTypeName: DeleteBookingruleListBankAccountsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_bookingrule_list_bank_accounts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteBookingruleListBankAccountsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteBookingruleListBankAccountsById
+  outputType: DeleteBookingruleListBankAccountsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: BookingruleListBankAccountsBoolExp
+      description: Delete permission predicate over the
+        'bookingrule_list_bank_accounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_bookingrule_list_bank_accounts_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteBookingruleListBankAccountsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'bookingrule_list_bank_accounts' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteBookingruleListBankAccountsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

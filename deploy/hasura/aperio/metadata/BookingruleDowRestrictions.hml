@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleDowRestrictions
+  fields:
+    - name: arrivalWeekdayId
+      type: String_1
+    - name: availableWeekdayId
+      type: String_1
+    - name: departureWeekdayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: requiredWeekdayId
+      type: String_1
+  graphql:
+    typeName: BookingruleDowRestrictions
+    inputTypeName: BookingruleDowRestrictionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_dow_restrictions
+      fieldMapping:
+        arrivalWeekdayId:
+          column:
+            name: arrival_weekday_id
+        availableWeekdayId:
+          column:
+            name: available_weekday_id
+        departureWeekdayId:
+          column:
+            name: departure_weekday_id
+        id:
+          column:
+            name: id
+        requiredWeekdayId:
+          column:
+            name: required_weekday_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleDowRestrictions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - arrivalWeekdayId
+          - availableWeekdayId
+          - departureWeekdayId
+          - id
+          - requiredWeekdayId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleDowRestrictionsBoolExp
+  operand:
+    object:
+      type: BookingruleDowRestrictions
+      comparableFields:
+        - fieldName: arrivalWeekdayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: availableWeekdayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: departureWeekdayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: requiredWeekdayId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleDowRestrictionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleDowRestrictionsAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleDowRestrictions
+      aggregatableFields:
+        - fieldName: arrivalWeekdayId
+          aggregateExpression: TextAggExp
+        - fieldName: availableWeekdayId
+          aggregateExpression: TextAggExp
+        - fieldName: departureWeekdayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: requiredWeekdayId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleDowRestrictionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleDowRestrictionsOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleDowRestrictions
+      orderableFields:
+        - fieldName: arrivalWeekdayId
+          orderByExpression: String1OrderByExp
+        - fieldName: availableWeekdayId
+          orderByExpression: String1OrderByExp
+        - fieldName: departureWeekdayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: requiredWeekdayId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleDowRestrictionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleDowRestrictions
+  objectType: BookingruleDowRestrictions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_dow_restrictions
+  filterExpressionType: BookingruleDowRestrictionsBoolExp
+  aggregateExpression: BookingruleDowRestrictionsAggExp
+  orderByExpression: BookingruleDowRestrictionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleDowRestrictions
+      subscription:
+        rootField: bookingruleDowRestrictions
+    selectUniques:
+      - queryRootField: bookingruleDowRestrictionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleDowRestrictionsById
+    filterInputTypeName: BookingruleDowRestrictionsFilterInput
+    aggregate:
+      queryRootField: bookingruleDowRestrictionsAggregate
+      subscription:
+        rootField: bookingruleDowRestrictionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleDowRestrictions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

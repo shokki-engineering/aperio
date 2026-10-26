@@ -1,0 +1,309 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventExhibitorInfosDomesticQuantity
+  description: Update the 'domestic_quantity' column in the
+    'event_exhibitor_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventExhibitorInfosDomesticQuantity
+    inputTypeName: UpdateColumnEventExhibitorInfosDomesticQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_exhibitor_infos_domestic_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventExhibitorInfosDomesticQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventExhibitorInfosExpectedTotalQuantity
+  description: Update the 'expected_total_quantity' column in the
+    'event_exhibitor_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventExhibitorInfosExpectedTotalQuantity
+    inputTypeName: UpdateColumnEventExhibitorInfosExpectedTotalQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_exhibitor_infos_expected_total_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventExhibitorInfosExpectedTotalQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventExhibitorInfosId
+  description: Update the 'id' column in the 'event_exhibitor_infos' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventExhibitorInfosId
+    inputTypeName: UpdateColumnEventExhibitorInfosIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_exhibitor_infos_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventExhibitorInfosId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventExhibitorInfosInternationalQuantity
+  description: Update the 'international_quantity' column in the
+    'event_exhibitor_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventExhibitorInfosInternationalQuantity
+    inputTypeName: UpdateColumnEventExhibitorInfosInternationalQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_exhibitor_infos_international_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventExhibitorInfosInternationalQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnEventExhibitorInfosPreRegisteredQuantity
+  description: Update the 'pre_registered_quantity' column in the
+    'event_exhibitor_infos' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnEventExhibitorInfosPreRegisteredQuantity
+    inputTypeName: UpdateColumnEventExhibitorInfosPreRegisteredQuantityInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_exhibitor_infos_pre_registered_quantity
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventExhibitorInfosPreRegisteredQuantity
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventExhibitorInfosByIdUpdateColumns
+  description: Update the columns of the 'event_exhibitor_infos' collection
+  fields:
+    - name: domesticQuantity
+      type: UpdateColumnEventExhibitorInfosDomesticQuantity
+      description: Update the 'domestic_quantity' column in the
+        'event_exhibitor_infos' collection.
+    - name: expectedTotalQuantity
+      type: UpdateColumnEventExhibitorInfosExpectedTotalQuantity
+      description: Update the 'expected_total_quantity' column in the
+        'event_exhibitor_infos' collection.
+    - name: id
+      type: UpdateColumnEventExhibitorInfosId
+      description: Update the 'id' column in the 'event_exhibitor_infos' collection.
+    - name: internationalQuantity
+      type: UpdateColumnEventExhibitorInfosInternationalQuantity
+      description: Update the 'international_quantity' column in the
+        'event_exhibitor_infos' collection.
+    - name: preRegisteredQuantity
+      type: UpdateColumnEventExhibitorInfosPreRegisteredQuantity
+      description: Update the 'pre_registered_quantity' column in the
+        'event_exhibitor_infos' collection.
+  graphql:
+    typeName: UpdateEventExhibitorInfosByIdUpdateColumns
+    inputTypeName: UpdateEventExhibitorInfosByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_exhibitor_infos_by_id_update_columns
+      fieldMapping:
+        domesticQuantity:
+          column:
+            name: domestic_quantity
+        expectedTotalQuantity:
+          column:
+            name: expected_total_quantity
+        id:
+          column:
+            name: id
+        internationalQuantity:
+          column:
+            name: international_quantity
+        preRegisteredQuantity:
+          column:
+            name: pre_registered_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventExhibitorInfosByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - domesticQuantity
+          - expectedTotalQuantity
+          - id
+          - internationalQuantity
+          - preRegisteredQuantity
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateEventExhibitorInfosByIdResponse
+  description: Responses from the 'update_event_exhibitor_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventExhibitorInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateEventExhibitorInfosByIdResponse
+    inputTypeName: UpdateEventExhibitorInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_event_exhibitor_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateEventExhibitorInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateEventExhibitorInfosById
+  outputType: UpdateEventExhibitorInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: EventExhibitorInfosBoolExp
+      description: Update permission post-condition predicate over the
+        'event_exhibitor_infos' collection
+    - name: preCheck
+      type: EventExhibitorInfosBoolExp
+      description: Update permission pre-condition predicate over the
+        'event_exhibitor_infos' collection
+    - name: updateColumns
+      type: UpdateEventExhibitorInfosByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_event_exhibitor_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateEventExhibitorInfosById
+    rootFieldKind: Mutation
+  description: Update any row on the 'event_exhibitor_infos' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateEventExhibitorInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

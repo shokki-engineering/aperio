@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteReservationDirectBillCompanyNamesByIdResponse
+  description: Responses from the
+    'delete_reservation_direct_bill_company_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationDirectBillCompanyNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteReservationDirectBillCompanyNamesByIdResponse
+    inputTypeName: DeleteReservationDirectBillCompanyNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_reservation_direct_bill_company_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteReservationDirectBillCompanyNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteReservationDirectBillCompanyNamesById
+  outputType: DeleteReservationDirectBillCompanyNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: ReservationDirectBillCompanyNamesBoolExp
+      description: Delete permission predicate over the
+        'reservation_direct_bill_company_names' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_reservation_direct_bill_company_names_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteReservationDirectBillCompanyNamesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'reservation_direct_bill_company_names'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteReservationDirectBillCompanyNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

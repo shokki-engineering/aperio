@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationMapUrlsObject
+  fields:
+    - name: bottomRightLatitudeId
+      type: String_1
+    - name: bottomRightLongitudeId
+      type: String_1
+    - name: height
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: topLeftLatitudeId
+      type: String_1
+    - name: topLeftLongitudeId
+      type: String_1
+    - name: value
+      type: String_1
+    - name: width
+      type: Int32
+    - name: zoomFactor
+      type: Int32
+  graphql:
+    typeName: InsertReservationMapUrlsObject
+    inputTypeName: InsertReservationMapUrlsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_map_urls_object
+      fieldMapping:
+        bottomRightLatitudeId:
+          column:
+            name: bottom_right_latitude_id
+        bottomRightLongitudeId:
+          column:
+            name: bottom_right_longitude_id
+        height:
+          column:
+            name: height
+        id:
+          column:
+            name: id
+        topLeftLatitudeId:
+          column:
+            name: top_left_latitude_id
+        topLeftLongitudeId:
+          column:
+            name: top_left_longitude_id
+        value:
+          column:
+            name: value
+        width:
+          column:
+            name: width
+        zoomFactor:
+          column:
+            name: zoom_factor
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationMapUrlsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bottomRightLatitudeId
+          - bottomRightLongitudeId
+          - height
+          - id
+          - topLeftLatitudeId
+          - topLeftLongitudeId
+          - value
+          - width
+          - zoomFactor
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationMapUrlsResponse
+  description: Responses from the 'insert_reservation_map_urls' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationMapUrls!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationMapUrlsResponse
+    inputTypeName: InsertReservationMapUrlsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_map_urls_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationMapUrlsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationMapUrls
+  outputType: InsertReservationMapUrlsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationMapUrlsObject!]!"
+    - name: postCheck
+      type: ReservationMapUrlsBoolExp
+      description: Insert permission predicate over the 'reservation_map_urls' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_map_urls
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationMapUrls
+    rootFieldKind: Mutation
+  description: Insert into the reservation_map_urls table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationMapUrls
+  permissions:
+    - role: admin
+      allowExecution: true
+

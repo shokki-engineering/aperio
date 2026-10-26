@@ -1,0 +1,285 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCompartmentsExtension
+  description: Update the 'extension' column in the 'profile_compartments' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCompartmentsExtension
+    inputTypeName: UpdateColumnProfileCompartmentsExtensionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_compartments_extension
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCompartmentsExtension
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCompartmentsId
+  description: Update the 'id' column in the 'profile_compartments' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCompartmentsId
+    inputTypeName: UpdateColumnProfileCompartmentsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_compartments_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCompartmentsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCompartmentsNumber
+  description: Update the 'number' column in the 'profile_compartments' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCompartmentsNumber
+    inputTypeName: UpdateColumnProfileCompartmentsNumberInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_compartments_number
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCompartmentsNumber
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCompartmentsPosition
+  description: Update the 'position' column in the 'profile_compartments' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCompartmentsPosition
+    inputTypeName: UpdateColumnProfileCompartmentsPositionInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_compartments_position
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCompartmentsPosition
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileCompartmentsValue
+  description: Update the 'value' column in the 'profile_compartments' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileCompartmentsValue
+    inputTypeName: UpdateColumnProfileCompartmentsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_compartments_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileCompartmentsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileCompartmentsByIdUpdateColumns
+  description: Update the columns of the 'profile_compartments' collection
+  fields:
+    - name: extension
+      type: UpdateColumnProfileCompartmentsExtension
+      description: Update the 'extension' column in the 'profile_compartments' collection.
+    - name: id
+      type: UpdateColumnProfileCompartmentsId
+      description: Update the 'id' column in the 'profile_compartments' collection.
+    - name: number
+      type: UpdateColumnProfileCompartmentsNumber
+      description: Update the 'number' column in the 'profile_compartments' collection.
+    - name: position
+      type: UpdateColumnProfileCompartmentsPosition
+      description: Update the 'position' column in the 'profile_compartments' collection.
+    - name: value
+      type: UpdateColumnProfileCompartmentsValue
+      description: Update the 'value' column in the 'profile_compartments' collection.
+  graphql:
+    typeName: UpdateProfileCompartmentsByIdUpdateColumns
+    inputTypeName: UpdateProfileCompartmentsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_compartments_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileCompartmentsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - extension
+          - id
+          - number
+          - position
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileCompartmentsByIdResponse
+  description: Responses from the 'update_profile_compartments_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileCompartments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileCompartmentsByIdResponse
+    inputTypeName: UpdateProfileCompartmentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_compartments_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileCompartmentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileCompartmentsById
+  outputType: UpdateProfileCompartmentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileCompartmentsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_compartments' collection
+    - name: preCheck
+      type: ProfileCompartmentsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_compartments' collection
+    - name: updateColumns
+      type: UpdateProfileCompartmentsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_compartments_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileCompartmentsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_compartments' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileCompartmentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

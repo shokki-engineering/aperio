@@ -1,0 +1,287 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationTimeOfDaysHour
+  description: Update the 'hour' column in the 'reservation_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationTimeOfDaysHour
+    inputTypeName: UpdateColumnReservationTimeOfDaysHourInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_time_of_days_hour
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationTimeOfDaysHour
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationTimeOfDaysId
+  description: Update the 'id' column in the 'reservation_time_of_days' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationTimeOfDaysId
+    inputTypeName: UpdateColumnReservationTimeOfDaysIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_time_of_days_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationTimeOfDaysId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationTimeOfDaysMinute
+  description: Update the 'minute' column in the 'reservation_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationTimeOfDaysMinute
+    inputTypeName: UpdateColumnReservationTimeOfDaysMinuteInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_time_of_days_minute
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationTimeOfDaysMinute
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationTimeOfDaysNanosecond
+  description: Update the 'nanosecond' column in the 'reservation_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationTimeOfDaysNanosecond
+    inputTypeName: UpdateColumnReservationTimeOfDaysNanosecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_time_of_days_nanosecond
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationTimeOfDaysNanosecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationTimeOfDaysSecond
+  description: Update the 'second' column in the 'reservation_time_of_days' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationTimeOfDaysSecond
+    inputTypeName: UpdateColumnReservationTimeOfDaysSecondInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_time_of_days_second
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationTimeOfDaysSecond
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationTimeOfDaysByIdUpdateColumns
+  description: Update the columns of the 'reservation_time_of_days' collection
+  fields:
+    - name: hour
+      type: UpdateColumnReservationTimeOfDaysHour
+      description: Update the 'hour' column in the 'reservation_time_of_days' collection.
+    - name: id
+      type: UpdateColumnReservationTimeOfDaysId
+      description: Update the 'id' column in the 'reservation_time_of_days' collection.
+    - name: minute
+      type: UpdateColumnReservationTimeOfDaysMinute
+      description: Update the 'minute' column in the 'reservation_time_of_days' collection.
+    - name: nanosecond
+      type: UpdateColumnReservationTimeOfDaysNanosecond
+      description: Update the 'nanosecond' column in the 'reservation_time_of_days'
+        collection.
+    - name: second
+      type: UpdateColumnReservationTimeOfDaysSecond
+      description: Update the 'second' column in the 'reservation_time_of_days' collection.
+  graphql:
+    typeName: UpdateReservationTimeOfDaysByIdUpdateColumns
+    inputTypeName: UpdateReservationTimeOfDaysByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_time_of_days_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationTimeOfDaysByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationTimeOfDaysByIdResponse
+  description: Responses from the 'update_reservation_time_of_days_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationTimeOfDays!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationTimeOfDaysByIdResponse
+    inputTypeName: UpdateReservationTimeOfDaysByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_time_of_days_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationTimeOfDaysByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationTimeOfDaysById
+  outputType: UpdateReservationTimeOfDaysByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationTimeOfDaysBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_time_of_days' collection
+    - name: preCheck
+      type: ReservationTimeOfDaysBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_time_of_days' collection
+    - name: updateColumns
+      type: UpdateReservationTimeOfDaysByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_time_of_days_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationTimeOfDaysById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_time_of_days' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationTimeOfDaysById
+  permissions:
+    - role: admin
+      allowExecution: true
+

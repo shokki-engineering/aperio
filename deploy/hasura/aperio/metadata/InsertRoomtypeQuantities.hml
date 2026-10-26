@@ -1,0 +1,132 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeQuantitiesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: maxCribs
+      type: Int32
+    - name: maxRollaways
+      type: Int32
+    - name: maximumAdditionalGuests
+      type: Int32
+    - name: minBillableGuests
+      type: Int32
+    - name: standardNumBeds
+      type: Int32
+  graphql:
+    typeName: InsertRoomtypeQuantitiesObject
+    inputTypeName: InsertRoomtypeQuantitiesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_quantities_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        maxCribs:
+          column:
+            name: max_cribs
+        maxRollaways:
+          column:
+            name: max_rollaways
+        maximumAdditionalGuests:
+          column:
+            name: maximum_additional_guests
+        minBillableGuests:
+          column:
+            name: min_billable_guests
+        standardNumBeds:
+          column:
+            name: standard_num_beds
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeQuantitiesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - maxCribs
+          - maxRollaways
+          - maximumAdditionalGuests
+          - minBillableGuests
+          - standardNumBeds
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeQuantitiesResponse
+  description: Responses from the 'insert_roomtype_quantities' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeQuantities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeQuantitiesResponse
+    inputTypeName: InsertRoomtypeQuantitiesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_quantities_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeQuantitiesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeQuantities
+  outputType: InsertRoomtypeQuantitiesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeQuantitiesObject!]!"
+    - name: postCheck
+      type: RoomtypeQuantitiesBoolExp
+      description: Insert permission predicate over the 'roomtype_quantities' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_quantities
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeQuantities
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_quantities table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeQuantities
+  permissions:
+    - role: admin
+      allowExecution: true
+

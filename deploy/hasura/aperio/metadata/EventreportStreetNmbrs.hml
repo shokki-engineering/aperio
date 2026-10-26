@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportStreetNmbrs
+  fields:
+    - name: id
+      type: String_1!
+    - name: poBox
+      type: String_1
+    - name: ruralRouteNmbr
+      type: String_1
+    - name: streetDirection
+      type: String_1
+    - name: streetNmbrSuffix
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventreportStreetNmbrs
+    inputTypeName: EventreportStreetNmbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_street_nmbrs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        poBox:
+          column:
+            name: po_box
+        ruralRouteNmbr:
+          column:
+            name: rural_route_nmbr
+        streetDirection:
+          column:
+            name: street_direction
+        streetNmbrSuffix:
+          column:
+            name: street_nmbr_suffix
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportStreetNmbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - poBox
+          - ruralRouteNmbr
+          - streetDirection
+          - streetNmbrSuffix
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportStreetNmbrsBoolExp
+  operand:
+    object:
+      type: EventreportStreetNmbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: poBox
+          booleanExpressionType: TextBoolExp
+        - fieldName: ruralRouteNmbr
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetDirection
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetNmbrSuffix
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportStreetNmbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportStreetNmbrsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportStreetNmbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: poBox
+          aggregateExpression: TextAggExp
+        - fieldName: ruralRouteNmbr
+          aggregateExpression: TextAggExp
+        - fieldName: streetDirection
+          aggregateExpression: TextAggExp
+        - fieldName: streetNmbrSuffix
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportStreetNmbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportStreetNmbrsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportStreetNmbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: poBox
+          orderByExpression: String1OrderByExp
+        - fieldName: ruralRouteNmbr
+          orderByExpression: String1OrderByExp
+        - fieldName: streetDirection
+          orderByExpression: String1OrderByExp
+        - fieldName: streetNmbrSuffix
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportStreetNmbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportStreetNmbrs
+  objectType: EventreportStreetNmbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_street_nmbrs
+  filterExpressionType: EventreportStreetNmbrsBoolExp
+  aggregateExpression: EventreportStreetNmbrsAggExp
+  orderByExpression: EventreportStreetNmbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportStreetNmbrs
+      subscription:
+        rootField: eventreportStreetNmbrs
+    selectUniques:
+      - queryRootField: eventreportStreetNmbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportStreetNmbrsById
+    filterInputTypeName: EventreportStreetNmbrsFilterInput
+    aggregate:
+      queryRootField: eventreportStreetNmbrsAggregate
+      subscription:
+        rootField: eventreportStreetNmbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportStreetNmbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

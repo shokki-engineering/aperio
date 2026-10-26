@@ -1,0 +1,105 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPassengerOccupationsObject
+  fields:
+    - name: extension
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: Enum
+  graphql:
+    typeName: InsertProfileRailPassengerOccupationsObject
+    inputTypeName: InsertProfileRailPassengerOccupationsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_passenger_occupations_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPassengerOccupationsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - extension
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileRailPassengerOccupationsResponse
+  description: Responses from the 'insert_profile_rail_passenger_occupations' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileRailPassengerOccupations!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileRailPassengerOccupationsResponse
+    inputTypeName: InsertProfileRailPassengerOccupationsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_rail_passenger_occupations_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileRailPassengerOccupationsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileRailPassengerOccupations
+  outputType: InsertProfileRailPassengerOccupationsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileRailPassengerOccupationsObject!]!"
+    - name: postCheck
+      type: ProfileRailPassengerOccupationsBoolExp
+      description: Insert permission predicate over the
+        'profile_rail_passenger_occupations' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_rail_passenger_occupations
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileRailPassengerOccupations
+    rootFieldKind: Mutation
+  description: Insert into the profile_rail_passenger_occupations table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileRailPassengerOccupations
+  permissions:
+    - role: admin
+      allowExecution: true
+

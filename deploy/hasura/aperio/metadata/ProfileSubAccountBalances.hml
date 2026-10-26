@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileSubAccountBalances
+  fields:
+    - name: balance
+      type: Int32
+    - name: custLoyaltyId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: type
+      type: String_1
+  graphql:
+    typeName: ProfileSubAccountBalances
+    inputTypeName: ProfileSubAccountBalancesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_sub_account_balances
+      fieldMapping:
+        balance:
+          column:
+            name: balance
+        custLoyaltyId:
+          column:
+            name: cust_loyalty_id
+        id:
+          column:
+            name: id
+        type:
+          column:
+            name: type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileSubAccountBalances
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - balance
+          - custLoyaltyId
+          - id
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileSubAccountBalancesBoolExp
+  operand:
+    object:
+      type: ProfileSubAccountBalances
+      comparableFields:
+        - fieldName: balance
+          booleanExpressionType: Int4BoolExp
+        - fieldName: custLoyaltyId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileSubAccountBalancesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileSubAccountBalancesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileSubAccountBalances
+      aggregatableFields:
+        - fieldName: balance
+          aggregateExpression: Int4AggExp
+        - fieldName: custLoyaltyId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileSubAccountBalancesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileSubAccountBalancesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileSubAccountBalances
+      orderableFields:
+        - fieldName: balance
+          orderByExpression: Int32OrderByExp
+        - fieldName: custLoyaltyId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileSubAccountBalancesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileSubAccountBalances
+  objectType: ProfileSubAccountBalances
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_sub_account_balances
+  filterExpressionType: ProfileSubAccountBalancesBoolExp
+  aggregateExpression: ProfileSubAccountBalancesAggExp
+  orderByExpression: ProfileSubAccountBalancesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileSubAccountBalances
+      subscription:
+        rootField: profileSubAccountBalances
+    selectUniques:
+      - queryRootField: profileSubAccountBalancesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileSubAccountBalancesById
+    filterInputTypeName: ProfileSubAccountBalancesFilterInput
+    aggregate:
+      queryRootField: profileSubAccountBalancesAggregate
+      subscription:
+        rootField: profileSubAccountBalancesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileSubAccountBalances
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

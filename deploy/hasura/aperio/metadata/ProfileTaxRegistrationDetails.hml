@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileTaxRegistrationDetails
+  fields:
+    - name: id
+      type: String_1!
+    - name: recipientAddress
+      type: String_1
+    - name: recipientDisplayName
+      type: String_1
+    - name: taxId
+      type: String_1
+  graphql:
+    typeName: ProfileTaxRegistrationDetails
+    inputTypeName: ProfileTaxRegistrationDetailsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_tax_registration_details
+      fieldMapping:
+        id:
+          column:
+            name: id
+        recipientAddress:
+          column:
+            name: recipient_address
+        recipientDisplayName:
+          column:
+            name: recipient_display_name
+        taxId:
+          column:
+            name: tax_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileTaxRegistrationDetails
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - recipientAddress
+          - recipientDisplayName
+          - taxId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileTaxRegistrationDetailsBoolExp
+  operand:
+    object:
+      type: ProfileTaxRegistrationDetails
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: recipientAddress
+          booleanExpressionType: TextBoolExp
+        - fieldName: recipientDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileTaxRegistrationDetailsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileTaxRegistrationDetailsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileTaxRegistrationDetails
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: recipientAddress
+          aggregateExpression: TextAggExp
+        - fieldName: recipientDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: taxId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileTaxRegistrationDetailsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileTaxRegistrationDetailsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileTaxRegistrationDetails
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: recipientAddress
+          orderByExpression: String1OrderByExp
+        - fieldName: recipientDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: taxId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileTaxRegistrationDetailsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileTaxRegistrationDetails
+  objectType: ProfileTaxRegistrationDetails
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_tax_registration_details
+  filterExpressionType: ProfileTaxRegistrationDetailsBoolExp
+  aggregateExpression: ProfileTaxRegistrationDetailsAggExp
+  orderByExpression: ProfileTaxRegistrationDetailsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileTaxRegistrationDetails
+      subscription:
+        rootField: profileTaxRegistrationDetails
+    selectUniques:
+      - queryRootField: profileTaxRegistrationDetailsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileTaxRegistrationDetailsById
+    filterInputTypeName: ProfileTaxRegistrationDetailsFilterInput
+    aggregate:
+      queryRootField: profileTaxRegistrationDetailsAggregate
+      subscription:
+        rootField: profileTaxRegistrationDetailsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileTaxRegistrationDetails
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

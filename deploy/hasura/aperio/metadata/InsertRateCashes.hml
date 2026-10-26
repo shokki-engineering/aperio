@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateCashesObject
+  fields:
+    - name: cashIndicator
+      type: Boolean_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRateCashesObject
+    inputTypeName: InsertRateCashesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_cashes_object
+      fieldMapping:
+        cashIndicator:
+          column:
+            name: cash_indicator
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateCashesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cashIndicator
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateCashesResponse
+  description: Responses from the 'insert_rate_cashes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateCashes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateCashesResponse
+    inputTypeName: InsertRateCashesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rate_cashes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateCashesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateCashes
+  outputType: InsertRateCashesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateCashesObject!]!"
+    - name: postCheck
+      type: RateCashesBoolExp
+      description: Insert permission predicate over the 'rate_cashes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rate_cashes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateCashes
+    rootFieldKind: Mutation
+  description: Insert into the rate_cashes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateCashes
+  permissions:
+    - role: admin
+      allowExecution: true
+

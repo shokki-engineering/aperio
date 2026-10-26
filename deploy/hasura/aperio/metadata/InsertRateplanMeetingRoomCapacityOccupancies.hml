@@ -1,0 +1,128 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanMeetingRoomCapacityOccupanciesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: maxOccupancy
+      type: Int32
+    - name: minOccupancy
+      type: Int32
+    - name: minRoomChargeId
+      type: String_1
+    - name: standardOccupancy
+      type: Int32
+  graphql:
+    typeName: InsertRateplanMeetingRoomCapacityOccupanciesObject
+    inputTypeName: InsertRateplanMeetingRoomCapacityOccupanciesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_meeting_room_capacity_occupancies_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        maxOccupancy:
+          column:
+            name: max_occupancy
+        minOccupancy:
+          column:
+            name: min_occupancy
+        minRoomChargeId:
+          column:
+            name: min_room_charge_id
+        standardOccupancy:
+          column:
+            name: standard_occupancy
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanMeetingRoomCapacityOccupanciesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - maxOccupancy
+          - minOccupancy
+          - minRoomChargeId
+          - standardOccupancy
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanMeetingRoomCapacityOccupanciesResponse
+  description: Responses from the
+    'insert_rateplan_meeting_room_capacity_occupancies' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanMeetingRoomCapacityOccupancies!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanMeetingRoomCapacityOccupanciesResponse
+    inputTypeName: InsertRateplanMeetingRoomCapacityOccupanciesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_meeting_room_capacity_occupancies_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanMeetingRoomCapacityOccupanciesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanMeetingRoomCapacityOccupancies
+  outputType: InsertRateplanMeetingRoomCapacityOccupanciesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanMeetingRoomCapacityOccupanciesObject!]!"
+    - name: postCheck
+      type: RateplanMeetingRoomCapacityOccupanciesBoolExp
+      description: Insert permission predicate over the
+        'rateplan_meeting_room_capacity_occupancies' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_meeting_room_capacity_occupancies
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanMeetingRoomCapacityOccupancies
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_meeting_room_capacity_occupancies table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanMeetingRoomCapacityOccupancies
+  permissions:
+    - role: admin
+      allowExecution: true
+

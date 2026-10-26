@@ -1,0 +1,145 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocations
+  fields:
+    - name: id
+      type: String_1!
+    - name: invBlockRoomId
+      type: String_1!
+    - name: roomTypePickUpStatus
+      type: Enum
+  graphql:
+    typeName: InventoryblockRoomTypeAllocations
+    inputTypeName: InventoryblockRoomTypeAllocationsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_room_type_allocations
+      fieldMapping:
+        id:
+          column:
+            name: id
+        invBlockRoomId:
+          column:
+            name: inv_block_room_id
+        roomTypePickUpStatus:
+          column:
+            name: room_type_pick_up_status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockRoomTypeAllocations
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - invBlockRoomId
+          - roomTypePickUpStatus
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocationsBoolExp
+  operand:
+    object:
+      type: InventoryblockRoomTypeAllocations
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invBlockRoomId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypePickUpStatus
+          booleanExpressionType: InventoryblockInventoryblockInventoryCountTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockRoomTypeAllocationsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocationsAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockRoomTypeAllocations
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invBlockRoomId
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypePickUpStatus
+          aggregateExpression: InventoryblockInventoryblockInventoryCountTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockRoomTypeAllocationsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocationsOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockRoomTypeAllocations
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invBlockRoomId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypePickUpStatus
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockRoomTypeAllocationsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockRoomTypeAllocations
+  objectType: InventoryblockRoomTypeAllocations
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_room_type_allocations
+  filterExpressionType: InventoryblockRoomTypeAllocationsBoolExp
+  aggregateExpression: InventoryblockRoomTypeAllocationsAggExp
+  orderByExpression: InventoryblockRoomTypeAllocationsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockRoomTypeAllocations
+      subscription:
+        rootField: inventoryblockRoomTypeAllocations
+    selectUniques:
+      - queryRootField: inventoryblockRoomTypeAllocationsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockRoomTypeAllocationsById
+    filterInputTypeName: InventoryblockRoomTypeAllocationsFilterInput
+    aggregate:
+      queryRootField: inventoryblockRoomTypeAllocationsAggregate
+      subscription:
+        rootField: inventoryblockRoomTypeAllocationsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockRoomTypeAllocations
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

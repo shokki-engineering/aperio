@@ -1,0 +1,313 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductRoomTypes
+  fields:
+    - name: accessible
+      type: Boolean_1
+    - name: bedTypeCodes
+      type: String_1
+    - name: bedroomCount
+      type: Int32
+    - name: featureAmenities
+      type: String_1
+    - name: hotelProductId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: maxAdultOccupancy
+      type: Int32
+    - name: maxChildOccupancy
+      type: Int32
+    - name: maxInfantOccupancy
+      type: Int32
+    - name: maxOccupancy
+      type: Int32
+    - name: nonSmoking
+      type: Boolean_1
+    - name: roomGender
+      type: Enum
+    - name: roomLocation
+      type: Enum
+    - name: roomQualities
+      type: String_1
+    - name: roomTypeCode
+      type: String_1
+    - name: roomTypeDisplayName
+      type: String_1
+    - name: roomView
+      type: Enum
+  graphql:
+    typeName: HotelproductRoomTypes
+    inputTypeName: HotelproductRoomTypesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_room_types
+      fieldMapping:
+        accessible:
+          column:
+            name: accessible
+        bedTypeCodes:
+          column:
+            name: bed_type_codes
+        bedroomCount:
+          column:
+            name: bedroom_count
+        featureAmenities:
+          column:
+            name: feature_amenities
+        hotelProductId:
+          column:
+            name: hotel_product_id
+        id:
+          column:
+            name: id
+        maxAdultOccupancy:
+          column:
+            name: max_adult_occupancy
+        maxChildOccupancy:
+          column:
+            name: max_child_occupancy
+        maxInfantOccupancy:
+          column:
+            name: max_infant_occupancy
+        maxOccupancy:
+          column:
+            name: max_occupancy
+        nonSmoking:
+          column:
+            name: non_smoking
+        roomGender:
+          column:
+            name: room_gender
+        roomLocation:
+          column:
+            name: room_location
+        roomQualities:
+          column:
+            name: room_qualities
+        roomTypeCode:
+          column:
+            name: room_type_code
+        roomTypeDisplayName:
+          column:
+            name: room_type_display_name
+        roomView:
+          column:
+            name: room_view
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductRoomTypes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessible
+          - bedTypeCodes
+          - bedroomCount
+          - featureAmenities
+          - hotelProductId
+          - id
+          - maxAdultOccupancy
+          - maxChildOccupancy
+          - maxInfantOccupancy
+          - maxOccupancy
+          - nonSmoking
+          - roomGender
+          - roomLocation
+          - roomQualities
+          - roomTypeCode
+          - roomTypeDisplayName
+          - roomView
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductRoomTypesBoolExp
+  operand:
+    object:
+      type: HotelproductRoomTypes
+      comparableFields:
+        - fieldName: accessible
+          booleanExpressionType: BoolBoolExp
+        - fieldName: bedTypeCodes
+          booleanExpressionType: TextBoolExp
+        - fieldName: bedroomCount
+          booleanExpressionType: Int4BoolExp
+        - fieldName: featureAmenities
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelProductId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: maxAdultOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxChildOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxInfantOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: maxOccupancy
+          booleanExpressionType: Int4BoolExp
+        - fieldName: nonSmoking
+          booleanExpressionType: BoolBoolExp
+        - fieldName: roomGender
+          booleanExpressionType: HotelproductHotelproductRoomGenderBoolExp
+        - fieldName: roomLocation
+          booleanExpressionType: HotelproductHotelproductRoomLocationTypeBoolExp
+        - fieldName: roomQualities
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomView
+          booleanExpressionType: HotelproductHotelproductRoomViewTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductRoomTypesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductRoomTypesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductRoomTypes
+      aggregatableFields:
+        - fieldName: accessible
+          aggregateExpression: BoolAggExp
+        - fieldName: bedTypeCodes
+          aggregateExpression: TextAggExp
+        - fieldName: bedroomCount
+          aggregateExpression: Int4AggExp
+        - fieldName: featureAmenities
+          aggregateExpression: TextAggExp
+        - fieldName: hotelProductId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: maxAdultOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: maxChildOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: maxInfantOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: maxOccupancy
+          aggregateExpression: Int4AggExp
+        - fieldName: nonSmoking
+          aggregateExpression: BoolAggExp
+        - fieldName: roomGender
+          aggregateExpression: HotelproductHotelproductRoomGenderAggExp
+        - fieldName: roomLocation
+          aggregateExpression: HotelproductHotelproductRoomLocationTypeAggExp
+        - fieldName: roomQualities
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeCode
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: roomView
+          aggregateExpression: HotelproductHotelproductRoomViewTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductRoomTypesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductRoomTypesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductRoomTypes
+      orderableFields:
+        - fieldName: accessible
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: bedTypeCodes
+          orderByExpression: String1OrderByExp
+        - fieldName: bedroomCount
+          orderByExpression: Int32OrderByExp
+        - fieldName: featureAmenities
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelProductId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: maxAdultOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxChildOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxInfantOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: maxOccupancy
+          orderByExpression: Int32OrderByExp
+        - fieldName: nonSmoking
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: roomGender
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomLocation
+          orderByExpression: EnumOrderByExp
+        - fieldName: roomQualities
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: roomView
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductRoomTypesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductRoomTypes
+  objectType: HotelproductRoomTypes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_room_types
+  filterExpressionType: HotelproductRoomTypesBoolExp
+  aggregateExpression: HotelproductRoomTypesAggExp
+  orderByExpression: HotelproductRoomTypesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductRoomTypes
+      subscription:
+        rootField: hotelproductRoomTypes
+    selectUniques:
+      - queryRootField: hotelproductRoomTypesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductRoomTypesById
+    filterInputTypeName: HotelproductRoomTypesFilterInput
+    aggregate:
+      queryRootField: hotelproductRoomTypesAggregate
+      subscription:
+        rootField: hotelproductRoomTypesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductRoomTypes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

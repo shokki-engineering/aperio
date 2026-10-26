@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PromotionListItems
+  fields:
+    - name: descriptionId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: PromotionListItems
+    inputTypeName: PromotionListItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: promotion_list_items
+      fieldMapping:
+        descriptionId:
+          column:
+            name: description_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PromotionListItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - descriptionId
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PromotionListItemsBoolExp
+  operand:
+    object:
+      type: PromotionListItems
+      comparableFields:
+        - fieldName: descriptionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: textFormat
+          booleanExpressionType: PromotionPromotionTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PromotionListItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PromotionListItemsAggExp
+  operand:
+    object:
+      aggregatedType: PromotionListItems
+      aggregatableFields:
+        - fieldName: descriptionId
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: textFormat
+          aggregateExpression: PromotionPromotionTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PromotionListItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PromotionListItemsOrderByExp
+  operand:
+    object:
+      orderedType: PromotionListItems
+      orderableFields:
+        - fieldName: descriptionId
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PromotionListItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PromotionListItems
+  objectType: PromotionListItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: promotion_list_items
+  filterExpressionType: PromotionListItemsBoolExp
+  aggregateExpression: PromotionListItemsAggExp
+  orderByExpression: PromotionListItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: promotionListItems
+      subscription:
+        rootField: promotionListItems
+    selectUniques:
+      - queryRootField: promotionListItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: promotionListItemsById
+    filterInputTypeName: PromotionListItemsFilterInput
+    aggregate:
+      queryRootField: promotionListItemsAggregate
+      subscription:
+        rootField: promotionListItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PromotionListItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

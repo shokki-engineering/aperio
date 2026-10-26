@@ -1,0 +1,235 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductPaymentCardsObject
+  fields:
+    - name: addressId
+      type: String_1
+    - name: cardCodeId
+      type: String_1
+    - name: cardHolderDisplayName
+      type: String_1
+    - name: cardHolderNameDetailsId
+      type: String_1
+    - name: cardHolderRph
+      type: String_1
+    - name: cardNumberId
+      type: String_1
+    - name: cardTypeId
+      type: String_1
+    - name: companyCardReference
+      type: String_1
+    - name: effectiveMonthYear
+      type: String_1
+    - name: expiryMonthYear
+      type: String_1
+    - name: extendedPayment
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: issueRegionCode
+      type: String_1
+    - name: issuerId
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: secure
+      type: Boolean_1
+    - name: seriesCodeId
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: signatureOnFileHeld
+      type: Boolean_1
+    - name: signatureOnFileId
+      type: String_1
+    - name: threeDomainSecurityId
+      type: String_1
+  graphql:
+    typeName: InsertHotelproductPaymentCardsObject
+    inputTypeName: InsertHotelproductPaymentCardsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_payment_cards_object
+      fieldMapping:
+        addressId:
+          column:
+            name: address_id
+        cardCodeId:
+          column:
+            name: card_code_id
+        cardHolderDisplayName:
+          column:
+            name: card_holder_display_name
+        cardHolderNameDetailsId:
+          column:
+            name: card_holder_name_details_id
+        cardHolderRph:
+          column:
+            name: card_holder_rph
+        cardNumberId:
+          column:
+            name: card_number_id
+        cardTypeId:
+          column:
+            name: card_type_id
+        companyCardReference:
+          column:
+            name: company_card_reference
+        effectiveMonthYear:
+          column:
+            name: effective_month_year
+        expiryMonthYear:
+          column:
+            name: expiry_month_year
+        extendedPayment:
+          column:
+            name: extended_payment
+        id:
+          column:
+            name: id
+        issueRegionCode:
+          column:
+            name: issue_region_code
+        issuerId:
+          column:
+            name: issuer_id
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        secure:
+          column:
+            name: secure
+        seriesCodeId:
+          column:
+            name: series_code_id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        signatureOnFileHeld:
+          column:
+            name: signature_on_file_held
+        signatureOnFileId:
+          column:
+            name: signature_on_file_id
+        threeDomainSecurityId:
+          column:
+            name: three_domain_security_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductPaymentCardsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressId
+          - cardCodeId
+          - cardHolderDisplayName
+          - cardHolderNameDetailsId
+          - cardHolderRph
+          - cardNumberId
+          - cardTypeId
+          - companyCardReference
+          - effectiveMonthYear
+          - expiryMonthYear
+          - extendedPayment
+          - id
+          - issueRegionCode
+          - issuerId
+          - remark
+          - rph
+          - secure
+          - seriesCodeId
+          - shareMarketInd
+          - shareSynchInd
+          - signatureOnFileHeld
+          - signatureOnFileId
+          - threeDomainSecurityId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertHotelproductPaymentCardsResponse
+  description: Responses from the 'insert_hotelproduct_payment_cards' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductPaymentCards!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertHotelproductPaymentCardsResponse
+    inputTypeName: InsertHotelproductPaymentCardsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_hotelproduct_payment_cards_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertHotelproductPaymentCardsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertHotelproductPaymentCards
+  outputType: InsertHotelproductPaymentCardsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertHotelproductPaymentCardsObject!]!"
+    - name: postCheck
+      type: HotelproductPaymentCardsBoolExp
+      description: Insert permission predicate over the 'hotelproduct_payment_cards'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_hotelproduct_payment_cards
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertHotelproductPaymentCards
+    rootFieldKind: Mutation
+  description: Insert into the hotelproduct_payment_cards table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertHotelproductPaymentCards
+  permissions:
+    - role: admin
+      allowExecution: true
+

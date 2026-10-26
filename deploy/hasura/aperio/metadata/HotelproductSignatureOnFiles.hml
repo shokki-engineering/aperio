@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelproductSignatureOnFiles
+  fields:
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: signatureOnFile
+      type: Boolean_1
+  graphql:
+    typeName: HotelproductSignatureOnFiles
+    inputTypeName: HotelproductSignatureOnFilesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotelproduct_signature_on_files
+      fieldMapping:
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        signatureOnFile:
+          column:
+            name: signature_on_file
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelproductSignatureOnFiles
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - signatureOnFile
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelproductSignatureOnFilesBoolExp
+  operand:
+    object:
+      type: HotelproductSignatureOnFiles
+      comparableFields:
+        - fieldName: effectiveDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: expireDateExclusive
+          booleanExpressionType: BoolBoolExp
+        - fieldName: expireDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: signatureOnFile
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelproductSignatureOnFilesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelproductSignatureOnFilesAggExp
+  operand:
+    object:
+      aggregatedType: HotelproductSignatureOnFiles
+      aggregatableFields:
+        - fieldName: effectiveDayId
+          aggregateExpression: TextAggExp
+        - fieldName: expireDateExclusive
+          aggregateExpression: BoolAggExp
+        - fieldName: expireDayId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: signatureOnFile
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelproductSignatureOnFilesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelproductSignatureOnFilesOrderByExp
+  operand:
+    object:
+      orderedType: HotelproductSignatureOnFiles
+      orderableFields:
+        - fieldName: effectiveDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: expireDateExclusive
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: expireDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: signatureOnFile
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelproductSignatureOnFilesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelproductSignatureOnFiles
+  objectType: HotelproductSignatureOnFiles
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotelproduct_signature_on_files
+  filterExpressionType: HotelproductSignatureOnFilesBoolExp
+  aggregateExpression: HotelproductSignatureOnFilesAggExp
+  orderByExpression: HotelproductSignatureOnFilesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelproductSignatureOnFiles
+      subscription:
+        rootField: hotelproductSignatureOnFiles
+    selectUniques:
+      - queryRootField: hotelproductSignatureOnFilesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelproductSignatureOnFilesById
+    filterInputTypeName: HotelproductSignatureOnFilesFilterInput
+    aggregate:
+      queryRootField: hotelproductSignatureOnFilesAggregate
+      subscription:
+        rootField: hotelproductSignatureOnFilesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelproductSignatureOnFiles
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

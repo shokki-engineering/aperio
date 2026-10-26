@@ -1,0 +1,217 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationMapUrls
+  fields:
+    - name: bottomRightLatitudeId
+      type: String_1
+    - name: bottomRightLongitudeId
+      type: String_1
+    - name: height
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: topLeftLatitudeId
+      type: String_1
+    - name: topLeftLongitudeId
+      type: String_1
+    - name: value
+      type: String_1
+    - name: width
+      type: Int32
+    - name: zoomFactor
+      type: Int32
+  graphql:
+    typeName: ReservationMapUrls
+    inputTypeName: ReservationMapUrlsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_map_urls
+      fieldMapping:
+        bottomRightLatitudeId:
+          column:
+            name: bottom_right_latitude_id
+        bottomRightLongitudeId:
+          column:
+            name: bottom_right_longitude_id
+        height:
+          column:
+            name: height
+        id:
+          column:
+            name: id
+        topLeftLatitudeId:
+          column:
+            name: top_left_latitude_id
+        topLeftLongitudeId:
+          column:
+            name: top_left_longitude_id
+        value:
+          column:
+            name: value
+        width:
+          column:
+            name: width
+        zoomFactor:
+          column:
+            name: zoom_factor
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationMapUrls
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bottomRightLatitudeId
+          - bottomRightLongitudeId
+          - height
+          - id
+          - topLeftLatitudeId
+          - topLeftLongitudeId
+          - value
+          - width
+          - zoomFactor
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationMapUrlsBoolExp
+  operand:
+    object:
+      type: ReservationMapUrls
+      comparableFields:
+        - fieldName: bottomRightLatitudeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: bottomRightLongitudeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: height
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: topLeftLatitudeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: topLeftLongitudeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+        - fieldName: width
+          booleanExpressionType: Int4BoolExp
+        - fieldName: zoomFactor
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationMapUrlsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationMapUrlsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationMapUrls
+      aggregatableFields:
+        - fieldName: bottomRightLatitudeId
+          aggregateExpression: TextAggExp
+        - fieldName: bottomRightLongitudeId
+          aggregateExpression: TextAggExp
+        - fieldName: height
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: topLeftLatitudeId
+          aggregateExpression: TextAggExp
+        - fieldName: topLeftLongitudeId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+        - fieldName: width
+          aggregateExpression: Int4AggExp
+        - fieldName: zoomFactor
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationMapUrlsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationMapUrlsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationMapUrls
+      orderableFields:
+        - fieldName: bottomRightLatitudeId
+          orderByExpression: String1OrderByExp
+        - fieldName: bottomRightLongitudeId
+          orderByExpression: String1OrderByExp
+        - fieldName: height
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: topLeftLatitudeId
+          orderByExpression: String1OrderByExp
+        - fieldName: topLeftLongitudeId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+        - fieldName: width
+          orderByExpression: Int32OrderByExp
+        - fieldName: zoomFactor
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationMapUrlsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationMapUrls
+  objectType: ReservationMapUrls
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_map_urls
+  filterExpressionType: ReservationMapUrlsBoolExp
+  aggregateExpression: ReservationMapUrlsAggExp
+  orderByExpression: ReservationMapUrlsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationMapUrls
+      subscription:
+        rootField: reservationMapUrls
+    selectUniques:
+      - queryRootField: reservationMapUrlsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationMapUrlsById
+    filterInputTypeName: ReservationMapUrlsFilterInput
+    aggregate:
+      queryRootField: reservationMapUrlsAggregate
+      subscription:
+        rootField: reservationMapUrlsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationMapUrls
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,252 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileResourceObject
+  fields:
+    - name: accessesId
+      type: String_1
+    - name: affiliationsId
+      type: String_1
+    - name: agreementsId
+      type: String_1
+    - name: companyInfoId
+      type: String_1
+    - name: createTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: customerId
+      type: String_1
+    - name: deleteTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: id
+      type: String_1!
+    - name: lastModifierId
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: optOutTime
+      type: Timestamptz
+    - name: optinStatus
+      type: Enum
+    - name: optinTime
+      type: Timestamptz
+    - name: prefCollectionsId
+      type: String_1
+    - name: profileType
+      type: Enum
+    - name: purgeDayId
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareAllMarketInd
+      type: Enum
+    - name: shareAllOptOutInd
+      type: Enum
+    - name: shareAllSynchInd
+      type: Enum
+    - name: statusCodes
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertProfileResourceObject
+    inputTypeName: InsertProfileResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_resource_object
+      fieldMapping:
+        accessesId:
+          column:
+            name: accesses_id
+        affiliationsId:
+          column:
+            name: affiliations_id
+        agreementsId:
+          column:
+            name: agreements_id
+        companyInfoId:
+          column:
+            name: company_info_id
+        createTime:
+          column:
+            name: create_time
+        creatorId:
+          column:
+            name: creator_id
+        customerId:
+          column:
+            name: customer_id
+        deleteTime:
+          column:
+            name: delete_time
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        id:
+          column:
+            name: id
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        name:
+          column:
+            name: name
+        optOutTime:
+          column:
+            name: opt_out_time
+        optinStatus:
+          column:
+            name: optin_status
+        optinTime:
+          column:
+            name: optin_time
+        prefCollectionsId:
+          column:
+            name: pref_collections_id
+        profileType:
+          column:
+            name: profile_type
+        purgeDayId:
+          column:
+            name: purge_day_id
+        rph:
+          column:
+            name: rph
+        shareAllMarketInd:
+          column:
+            name: share_all_market_ind
+        shareAllOptOutInd:
+          column:
+            name: share_all_opt_out_ind
+        shareAllSynchInd:
+          column:
+            name: share_all_synch_ind
+        statusCodes:
+          column:
+            name: status_codes
+        uid:
+          column:
+            name: uid
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - accessesId
+          - affiliationsId
+          - agreementsId
+          - companyInfoId
+          - createTime
+          - creatorId
+          - customerId
+          - deleteTime
+          - etag
+          - expireTime
+          - id
+          - lastModifierId
+          - name
+          - optOutTime
+          - optinStatus
+          - optinTime
+          - prefCollectionsId
+          - profileType
+          - purgeDayId
+          - rph
+          - shareAllMarketInd
+          - shareAllOptOutInd
+          - shareAllSynchInd
+          - statusCodes
+          - uid
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileResourceResponse
+  description: Responses from the 'insert_profile_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileResourceResponse
+    inputTypeName: InsertProfileResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileResource
+  outputType: InsertProfileResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileResourceObject!]!"
+    - name: postCheck
+      type: ProfileResourceBoolExp
+      description: Insert permission predicate over the 'profile_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileResource
+    rootFieldKind: Mutation
+  description: Insert into the profile_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

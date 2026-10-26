@@ -1,0 +1,135 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileAccommodationClass
+  fields:
+    - name: extension
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: value
+      type: Enum
+  graphql:
+    typeName: ProfileAccommodationClass
+    inputTypeName: ProfileAccommodationClassInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_accommodation_class
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileAccommodationClass
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - extension
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileAccommodationClassBoolExp
+  operand:
+    object:
+      type: ProfileAccommodationClass
+      comparableFields:
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: ProfileAccommodationClassEnumBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileAccommodationClassBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileAccommodationClassAggExp
+  operand:
+    object:
+      aggregatedType: ProfileAccommodationClass
+      aggregatableFields:
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: ProfileAccommodationClassEnumAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileAccommodationClassAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileAccommodationClassOrderByExp
+  operand:
+    object:
+      orderedType: ProfileAccommodationClass
+      orderableFields:
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileAccommodationClassOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileAccommodationClass
+  objectType: ProfileAccommodationClass
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_accommodation_class
+  filterExpressionType: ProfileAccommodationClassBoolExp
+  aggregateExpression: ProfileAccommodationClassAggExp
+  orderByExpression: ProfileAccommodationClassOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileAccommodationClass
+      subscription:
+        rootField: profileAccommodationClass
+    selectUniques:
+      - queryRootField: profileAccommodationClassById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileAccommodationClassById
+    filterInputTypeName: ProfileAccommodationClassFilterInput
+    aggregate:
+      queryRootField: profileAccommodationClassAggregate
+      subscription:
+        rootField: profileAccommodationClassAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileAccommodationClass
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

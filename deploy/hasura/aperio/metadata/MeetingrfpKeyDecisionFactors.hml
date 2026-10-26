@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpKeyDecisionFactors
+  fields:
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: proposalSpecId
+      type: String_1!
+    - name: ranking
+      type: Int32
+  graphql:
+    typeName: MeetingrfpKeyDecisionFactors
+    inputTypeName: MeetingrfpKeyDecisionFactorsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_key_decision_factors
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        proposalSpecId:
+          column:
+            name: proposal_spec_id
+        ranking:
+          column:
+            name: ranking
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpKeyDecisionFactors
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - proposalSpecId
+          - ranking
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpKeyDecisionFactorsBoolExp
+  operand:
+    object:
+      type: MeetingrfpKeyDecisionFactors
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: proposalSpecId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ranking
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpKeyDecisionFactorsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpKeyDecisionFactorsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpKeyDecisionFactors
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: proposalSpecId
+          aggregateExpression: TextAggExp
+        - fieldName: ranking
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpKeyDecisionFactorsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpKeyDecisionFactorsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpKeyDecisionFactors
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: proposalSpecId
+          orderByExpression: String1OrderByExp
+        - fieldName: ranking
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpKeyDecisionFactorsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpKeyDecisionFactors
+  objectType: MeetingrfpKeyDecisionFactors
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_key_decision_factors
+  filterExpressionType: MeetingrfpKeyDecisionFactorsBoolExp
+  aggregateExpression: MeetingrfpKeyDecisionFactorsAggExp
+  orderByExpression: MeetingrfpKeyDecisionFactorsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpKeyDecisionFactors
+      subscription:
+        rootField: meetingrfpKeyDecisionFactors
+    selectUniques:
+      - queryRootField: meetingrfpKeyDecisionFactorsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpKeyDecisionFactorsById
+    filterInputTypeName: MeetingrfpKeyDecisionFactorsFilterInput
+    aggregate:
+      queryRootField: meetingrfpKeyDecisionFactorsAggregate
+      subscription:
+        rootField: meetingrfpKeyDecisionFactorsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpKeyDecisionFactors
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

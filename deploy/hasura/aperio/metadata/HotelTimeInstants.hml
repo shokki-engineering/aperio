@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelTimeInstants
+  fields:
+    - name: crossDateAllowedIndicator
+      type: Boolean_1
+    - name: earlyWindow
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: lateWindow
+      type: String_1
+    - name: valueId
+      type: String_1
+  graphql:
+    typeName: HotelTimeInstants
+    inputTypeName: HotelTimeInstantsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_time_instants
+      fieldMapping:
+        crossDateAllowedIndicator:
+          column:
+            name: cross_date_allowed_indicator
+        earlyWindow:
+          column:
+            name: early_window
+        id:
+          column:
+            name: id
+        lateWindow:
+          column:
+            name: late_window
+        valueId:
+          column:
+            name: value_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelTimeInstants
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - crossDateAllowedIndicator
+          - earlyWindow
+          - id
+          - lateWindow
+          - valueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelTimeInstantsBoolExp
+  operand:
+    object:
+      type: HotelTimeInstants
+      comparableFields:
+        - fieldName: crossDateAllowedIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: earlyWindow
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lateWindow
+          booleanExpressionType: TextBoolExp
+        - fieldName: valueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelTimeInstantsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelTimeInstantsAggExp
+  operand:
+    object:
+      aggregatedType: HotelTimeInstants
+      aggregatableFields:
+        - fieldName: crossDateAllowedIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: earlyWindow
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lateWindow
+          aggregateExpression: TextAggExp
+        - fieldName: valueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelTimeInstantsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelTimeInstantsOrderByExp
+  operand:
+    object:
+      orderedType: HotelTimeInstants
+      orderableFields:
+        - fieldName: crossDateAllowedIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: earlyWindow
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lateWindow
+          orderByExpression: String1OrderByExp
+        - fieldName: valueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelTimeInstantsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelTimeInstants
+  objectType: HotelTimeInstants
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_time_instants
+  filterExpressionType: HotelTimeInstantsBoolExp
+  aggregateExpression: HotelTimeInstantsAggExp
+  orderByExpression: HotelTimeInstantsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelTimeInstants
+      subscription:
+        rootField: hotelTimeInstants
+    selectUniques:
+      - queryRootField: hotelTimeInstantsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelTimeInstantsById
+    filterInputTypeName: HotelTimeInstantsFilterInput
+    aggregate:
+      queryRootField: hotelTimeInstantsAggregate
+      subscription:
+        rootField: hotelTimeInstantsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelTimeInstants
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

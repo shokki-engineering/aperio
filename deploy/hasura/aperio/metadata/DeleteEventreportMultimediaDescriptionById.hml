@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventreportMultimediaDescriptionByIdResponse
+  description: Responses from the
+    'delete_eventreport_multimedia_description_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventreportMultimediaDescription!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventreportMultimediaDescriptionByIdResponse
+    inputTypeName: DeleteEventreportMultimediaDescriptionByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_eventreport_multimedia_description_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventreportMultimediaDescriptionByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventreportMultimediaDescriptionById
+  outputType: DeleteEventreportMultimediaDescriptionByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: EventreportMultimediaDescriptionBoolExp
+      description: Delete permission predicate over the
+        'eventreport_multimedia_description' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_eventreport_multimedia_description_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventreportMultimediaDescriptionById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'eventreport_multimedia_description'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventreportMultimediaDescriptionById
+  permissions:
+    - role: admin
+      allowExecution: true
+

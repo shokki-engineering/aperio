@@ -1,0 +1,277 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportEventContacts
+  fields:
+    - name: birthDayId
+      type: String_1
+    - name: communicationMethodCode
+      type: Enum
+    - name: contactType
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentDistribMethodCode
+      type: Enum
+    - name: emergencyFlag
+      type: Boolean_1
+    - name: generalEventInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: personDisplayNameId
+      type: String_1
+    - name: relation
+      type: String_1
+    - name: role
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: EventreportEventContacts
+    inputTypeName: EventreportEventContactsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_event_contacts
+      fieldMapping:
+        birthDayId:
+          column:
+            name: birth_day_id
+        communicationMethodCode:
+          column:
+            name: communication_method_code
+        contactType:
+          column:
+            name: contact_type
+        defaultValue:
+          column:
+            name: default_value
+        documentDistribMethodCode:
+          column:
+            name: document_distrib_method_code
+        emergencyFlag:
+          column:
+            name: emergency_flag
+        generalEventInfoId:
+          column:
+            name: general_event_info_id
+        id:
+          column:
+            name: id
+        personDisplayNameId:
+          column:
+            name: person_display_name_id
+        relation:
+          column:
+            name: relation
+        role:
+          column:
+            name: role
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportEventContacts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - birthDayId
+          - communicationMethodCode
+          - contactType
+          - defaultValue
+          - documentDistribMethodCode
+          - emergencyFlag
+          - generalEventInfoId
+          - id
+          - personDisplayNameId
+          - relation
+          - role
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportEventContactsBoolExp
+  operand:
+    object:
+      type: EventreportEventContacts
+      comparableFields:
+        - fieldName: birthDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: communicationMethodCode
+          booleanExpressionType: EventreportEventreportDistributionTypeBoolExp
+        - fieldName: contactType
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentDistribMethodCode
+          booleanExpressionType: EventreportEventreportDistributionTypeBoolExp
+        - fieldName: emergencyFlag
+          booleanExpressionType: BoolBoolExp
+        - fieldName: generalEventInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: personDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: relation
+          booleanExpressionType: TextBoolExp
+        - fieldName: role
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: EventreportPostEventSiteReportContactShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: EventreportPostEventSiteReportContactShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportEventContactsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportEventContactsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportEventContacts
+      aggregatableFields:
+        - fieldName: birthDayId
+          aggregateExpression: TextAggExp
+        - fieldName: communicationMethodCode
+          aggregateExpression: EventreportEventreportDistributionTypeAggExp
+        - fieldName: contactType
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentDistribMethodCode
+          aggregateExpression: EventreportEventreportDistributionTypeAggExp
+        - fieldName: emergencyFlag
+          aggregateExpression: BoolAggExp
+        - fieldName: generalEventInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: personDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: relation
+          aggregateExpression: TextAggExp
+        - fieldName: role
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: EventreportPostEventSiteReportContactShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: EventreportPostEventSiteReportContactShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportEventContactsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportEventContactsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportEventContacts
+      orderableFields:
+        - fieldName: birthDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: communicationMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: contactType
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentDistribMethodCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: emergencyFlag
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: generalEventInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: personDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: relation
+          orderByExpression: String1OrderByExp
+        - fieldName: role
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportEventContactsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportEventContacts
+  objectType: EventreportEventContacts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_event_contacts
+  filterExpressionType: EventreportEventContactsBoolExp
+  aggregateExpression: EventreportEventContactsAggExp
+  orderByExpression: EventreportEventContactsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportEventContacts
+      subscription:
+        rootField: eventreportEventContacts
+    selectUniques:
+      - queryRootField: eventreportEventContactsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportEventContactsById
+    filterInputTypeName: EventreportEventContactsFilterInput
+    aggregate:
+      queryRootField: eventreportEventContactsAggregate
+      subscription:
+        rootField: eventreportEventContactsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportEventContacts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

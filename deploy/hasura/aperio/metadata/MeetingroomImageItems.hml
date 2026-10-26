@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomImageItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: MeetingroomImageItems
+    inputTypeName: MeetingroomImageItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_image_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomImageItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomImageItemsBoolExp
+  operand:
+    object:
+      type: MeetingroomImageItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomImageItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomImageItemsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomImageItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomImageItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomImageItemsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomImageItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomImageItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomImageItems
+  objectType: MeetingroomImageItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_image_items
+  filterExpressionType: MeetingroomImageItemsBoolExp
+  aggregateExpression: MeetingroomImageItemsAggExp
+  orderByExpression: MeetingroomImageItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomImageItems
+      subscription:
+        rootField: meetingroomImageItems
+    selectUniques:
+      - queryRootField: meetingroomImageItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomImageItemsById
+    filterInputTypeName: MeetingroomImageItemsFilterInput
+    aggregate:
+      queryRootField: meetingroomImageItemsAggregate
+      subscription:
+        rootField: meetingroomImageItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomImageItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

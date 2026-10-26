@@ -1,0 +1,109 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleLosPatternsObject
+  fields:
+    - name: fullPatternLos
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertBookingruleLosPatternsObject
+    inputTypeName: InsertBookingruleLosPatternsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_los_patterns_object
+      fieldMapping:
+        fullPatternLos:
+          column:
+            name: full_pattern_los
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleLosPatternsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fullPatternLos
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleLosPatternsResponse
+  description: Responses from the 'insert_bookingrule_los_patterns' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleLosPatterns!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleLosPatternsResponse
+    inputTypeName: InsertBookingruleLosPatternsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_los_patterns_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleLosPatternsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleLosPatterns
+  outputType: InsertBookingruleLosPatternsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleLosPatternsObject!]!"
+    - name: postCheck
+      type: BookingruleLosPatternsBoolExp
+      description: Insert permission predicate over the 'bookingrule_los_patterns'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_los_patterns
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleLosPatterns
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_los_patterns table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleLosPatterns
+  permissions:
+    - role: admin
+      allowExecution: true
+

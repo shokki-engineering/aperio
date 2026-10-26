@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoRefPoints
+  fields:
+    - name: id
+      type: String_1!
+    - name: lastUpdateTime
+      type: Timestamptz
+  graphql:
+    typeName: AreainfoRefPoints
+    inputTypeName: AreainfoRefPointsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_ref_points
+      fieldMapping:
+        id:
+          column:
+            name: id
+        lastUpdateTime:
+          column:
+            name: last_update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoRefPoints
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - lastUpdateTime
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoRefPointsBoolExp
+  operand:
+    object:
+      type: AreainfoRefPoints
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastUpdateTime
+          booleanExpressionType: TimestamptzBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoRefPointsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoRefPointsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoRefPoints
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lastUpdateTime
+          aggregateExpression: TimestamptzAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoRefPointsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoRefPointsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoRefPoints
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lastUpdateTime
+          orderByExpression: TimestamptzOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoRefPointsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoRefPoints
+  objectType: AreainfoRefPoints
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_ref_points
+  filterExpressionType: AreainfoRefPointsBoolExp
+  aggregateExpression: AreainfoRefPointsAggExp
+  orderByExpression: AreainfoRefPointsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoRefPoints
+      subscription:
+        rootField: areainfoRefPoints
+    selectUniques:
+      - queryRootField: areainfoRefPointsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoRefPointsById
+    filterInputTypeName: AreainfoRefPointsFilterInput
+    aggregate:
+      queryRootField: areainfoRefPointsAggregate
+      subscription:
+        rootField: areainfoRefPointsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoRefPoints
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

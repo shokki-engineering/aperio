@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateGuarantees
+  fields:
+    - name: deadlineId
+      type: String_1
+    - name: guaranteeCode
+      type: String_1
+    - name: guaranteeType
+      type: Enum
+    - name: holdClockId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: rateId
+      type: String_1!
+    - name: retributionType
+      type: Enum
+  graphql:
+    typeName: RateGuarantees
+    inputTypeName: RateGuaranteesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_guarantees
+      fieldMapping:
+        deadlineId:
+          column:
+            name: deadline_id
+        guaranteeCode:
+          column:
+            name: guarantee_code
+        guaranteeType:
+          column:
+            name: guarantee_type
+        holdClockId:
+          column:
+            name: hold_clock_id
+        id:
+          column:
+            name: id
+        rateId:
+          column:
+            name: rate_id
+        retributionType:
+          column:
+            name: retribution_type
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateGuarantees
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - deadlineId
+          - guaranteeCode
+          - guaranteeType
+          - holdClockId
+          - id
+          - rateId
+          - retributionType
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateGuaranteesBoolExp
+  operand:
+    object:
+      type: RateGuarantees
+      comparableFields:
+        - fieldName: deadlineId
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeType
+          booleanExpressionType: RateRateGuaranteeGuaranteeTypeBoolExp
+        - fieldName: holdClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateId
+          booleanExpressionType: TextBoolExp
+        - fieldName: retributionType
+          booleanExpressionType: RateRateGuaranteeRetributionTypeBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateGuaranteesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateGuaranteesAggExp
+  operand:
+    object:
+      aggregatedType: RateGuarantees
+      aggregatableFields:
+        - fieldName: deadlineId
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeCode
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeType
+          aggregateExpression: RateRateGuaranteeGuaranteeTypeAggExp
+        - fieldName: holdClockId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: rateId
+          aggregateExpression: TextAggExp
+        - fieldName: retributionType
+          aggregateExpression: RateRateGuaranteeRetributionTypeAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateGuaranteesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateGuaranteesOrderByExp
+  operand:
+    object:
+      orderedType: RateGuarantees
+      orderableFields:
+        - fieldName: deadlineId
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeCode
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeType
+          orderByExpression: EnumOrderByExp
+        - fieldName: holdClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: rateId
+          orderByExpression: String1OrderByExp
+        - fieldName: retributionType
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateGuaranteesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateGuarantees
+  objectType: RateGuarantees
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_guarantees
+  filterExpressionType: RateGuaranteesBoolExp
+  aggregateExpression: RateGuaranteesAggExp
+  orderByExpression: RateGuaranteesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateGuarantees
+      subscription:
+        rootField: rateGuarantees
+    selectUniques:
+      - queryRootField: rateGuaranteesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateGuaranteesById
+    filterInputTypeName: RateGuaranteesFilterInput
+    aggregate:
+      queryRootField: rateGuaranteesAggregate
+      subscription:
+        rootField: rateGuaranteesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateGuarantees
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

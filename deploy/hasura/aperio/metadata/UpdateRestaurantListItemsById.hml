@@ -1,0 +1,382 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsFormatted
+  description: Update the 'formatted' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: Boolean_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsFormatted
+    inputTypeName: UpdateColumnRestaurantListItemsFormattedInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_formatted
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsFormatted
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsId
+  description: Update the 'id' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsId
+    inputTypeName: UpdateColumnRestaurantListItemsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsLanguageCode
+  description: Update the 'language_code' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsLanguageCode
+    inputTypeName: UpdateColumnRestaurantListItemsLanguageCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_language_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsLanguageCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsListItem
+  description: Update the 'list_item' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: Int32
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsListItem
+    inputTypeName: UpdateColumnRestaurantListItemsListItemInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_list_item
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsListItem
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsParagraphId
+  description: Update the 'paragraph_id' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsParagraphId
+    inputTypeName: UpdateColumnRestaurantListItemsParagraphIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_paragraph_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsParagraphId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsTextFormat
+  description: Update the 'text_format' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsTextFormat
+    inputTypeName: UpdateColumnRestaurantListItemsTextFormatInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_text_format
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsTextFormat
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnRestaurantListItemsValue
+  description: Update the 'value' column in the 'restaurant_list_items' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnRestaurantListItemsValue
+    inputTypeName: UpdateColumnRestaurantListItemsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_restaurant_list_items_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnRestaurantListItemsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestaurantListItemsByIdUpdateColumns
+  description: Update the columns of the 'restaurant_list_items' collection
+  fields:
+    - name: formatted
+      type: UpdateColumnRestaurantListItemsFormatted
+      description: Update the 'formatted' column in the 'restaurant_list_items' collection.
+    - name: id
+      type: UpdateColumnRestaurantListItemsId
+      description: Update the 'id' column in the 'restaurant_list_items' collection.
+    - name: languageCode
+      type: UpdateColumnRestaurantListItemsLanguageCode
+      description: Update the 'language_code' column in the 'restaurant_list_items'
+        collection.
+    - name: listItem
+      type: UpdateColumnRestaurantListItemsListItem
+      description: Update the 'list_item' column in the 'restaurant_list_items' collection.
+    - name: paragraphId
+      type: UpdateColumnRestaurantListItemsParagraphId
+      description: Update the 'paragraph_id' column in the 'restaurant_list_items'
+        collection.
+    - name: textFormat
+      type: UpdateColumnRestaurantListItemsTextFormat
+      description: Update the 'text_format' column in the 'restaurant_list_items'
+        collection.
+    - name: value
+      type: UpdateColumnRestaurantListItemsValue
+      description: Update the 'value' column in the 'restaurant_list_items' collection.
+  graphql:
+    typeName: UpdateRestaurantListItemsByIdUpdateColumns
+    inputTypeName: UpdateRestaurantListItemsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restaurant_list_items_by_id_update_columns
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestaurantListItemsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateRestaurantListItemsByIdResponse
+  description: Responses from the 'update_restaurant_list_items_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestaurantListItems!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateRestaurantListItemsByIdResponse
+    inputTypeName: UpdateRestaurantListItemsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_restaurant_list_items_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateRestaurantListItemsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateRestaurantListItemsById
+  outputType: UpdateRestaurantListItemsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: RestaurantListItemsBoolExp
+      description: Update permission post-condition predicate over the
+        'restaurant_list_items' collection
+    - name: preCheck
+      type: RestaurantListItemsBoolExp
+      description: Update permission pre-condition predicate over the
+        'restaurant_list_items' collection
+    - name: updateColumns
+      type: UpdateRestaurantListItemsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_restaurant_list_items_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateRestaurantListItemsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'restaurant_list_items' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateRestaurantListItemsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

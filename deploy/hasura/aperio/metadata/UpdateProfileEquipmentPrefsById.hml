@@ -1,0 +1,304 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileEquipmentPrefsCode
+  description: Update the 'code' column in the 'profile_equipment_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileEquipmentPrefsCode
+    inputTypeName: UpdateColumnProfileEquipmentPrefsCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_equipment_prefs_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileEquipmentPrefsCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileEquipmentPrefsCodeContext
+  description: Update the 'code_context' column in the 'profile_equipment_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileEquipmentPrefsCodeContext
+    inputTypeName: UpdateColumnProfileEquipmentPrefsCodeContextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_equipment_prefs_code_context
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileEquipmentPrefsCodeContext
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileEquipmentPrefsId
+  description: Update the 'id' column in the 'profile_equipment_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileEquipmentPrefsId
+    inputTypeName: UpdateColumnProfileEquipmentPrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_equipment_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileEquipmentPrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileEquipmentPrefsPreferLevel
+  description: Update the 'prefer_level' column in the 'profile_equipment_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileEquipmentPrefsPreferLevel
+    inputTypeName: UpdateColumnProfileEquipmentPrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_equipment_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileEquipmentPrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileEquipmentPrefsRailPrefId
+  description: Update the 'rail_pref_id' column in the 'profile_equipment_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileEquipmentPrefsRailPrefId
+    inputTypeName: UpdateColumnProfileEquipmentPrefsRailPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_equipment_prefs_rail_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileEquipmentPrefsRailPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileEquipmentPrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_equipment_prefs' collection
+  fields:
+    - name: code
+      type: UpdateColumnProfileEquipmentPrefsCode
+      description: Update the 'code' column in the 'profile_equipment_prefs' collection.
+    - name: codeContext
+      type: UpdateColumnProfileEquipmentPrefsCodeContext
+      description: Update the 'code_context' column in the 'profile_equipment_prefs'
+        collection.
+    - name: id
+      type: UpdateColumnProfileEquipmentPrefsId
+      description: Update the 'id' column in the 'profile_equipment_prefs' collection.
+    - name: preferLevel
+      type: UpdateColumnProfileEquipmentPrefsPreferLevel
+      description: Update the 'prefer_level' column in the 'profile_equipment_prefs'
+        collection.
+    - name: railPrefId
+      type: UpdateColumnProfileEquipmentPrefsRailPrefId
+      description: Update the 'rail_pref_id' column in the 'profile_equipment_prefs'
+        collection.
+  graphql:
+    typeName: UpdateProfileEquipmentPrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileEquipmentPrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_equipment_prefs_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        codeContext:
+          column:
+            name: code_context
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        railPrefId:
+          column:
+            name: rail_pref_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileEquipmentPrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - codeContext
+          - id
+          - preferLevel
+          - railPrefId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileEquipmentPrefsByIdResponse
+  description: Responses from the 'update_profile_equipment_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileEquipmentPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileEquipmentPrefsByIdResponse
+    inputTypeName: UpdateProfileEquipmentPrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_equipment_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileEquipmentPrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileEquipmentPrefsById
+  outputType: UpdateProfileEquipmentPrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileEquipmentPrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_equipment_prefs' collection
+    - name: preCheck
+      type: ProfileEquipmentPrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_equipment_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileEquipmentPrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_equipment_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileEquipmentPrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_equipment_prefs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileEquipmentPrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

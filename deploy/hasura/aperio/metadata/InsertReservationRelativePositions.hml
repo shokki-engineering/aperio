@@ -1,0 +1,163 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRelativePositionsObject
+  fields:
+    - name: approximateDistance
+      type: Boolean_1
+    - name: direction
+      type: String_1
+    - name: displayName
+      type: String_1
+    - name: distance
+      type: String_1
+    - name: facilityDirection
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: indexPointCode
+      type: Enum
+    - name: nearest
+      type: Boolean_1
+    - name: positionAccuracy
+      type: Enum
+    - name: primaryIndicator
+      type: Boolean_1
+    - name: unitCode
+      type: Enum
+  graphql:
+    typeName: InsertReservationRelativePositionsObject
+    inputTypeName: InsertReservationRelativePositionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_relative_positions_object
+      fieldMapping:
+        approximateDistance:
+          column:
+            name: approximate_distance
+        direction:
+          column:
+            name: direction
+        displayName:
+          column:
+            name: display_name
+        distance:
+          column:
+            name: distance
+        facilityDirection:
+          column:
+            name: facility_direction
+        id:
+          column:
+            name: id
+        indexPointCode:
+          column:
+            name: index_point_code
+        nearest:
+          column:
+            name: nearest
+        positionAccuracy:
+          column:
+            name: position_accuracy
+        primaryIndicator:
+          column:
+            name: primary_indicator
+        unitCode:
+          column:
+            name: unit_code
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRelativePositionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - approximateDistance
+          - direction
+          - displayName
+          - distance
+          - facilityDirection
+          - id
+          - indexPointCode
+          - nearest
+          - positionAccuracy
+          - primaryIndicator
+          - unitCode
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRelativePositionsResponse
+  description: Responses from the 'insert_reservation_relative_positions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRelativePositions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRelativePositionsResponse
+    inputTypeName: InsertReservationRelativePositionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_relative_positions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRelativePositionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRelativePositions
+  outputType: InsertReservationRelativePositionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRelativePositionsObject!]!"
+    - name: postCheck
+      type: ReservationRelativePositionsBoolExp
+      description: Insert permission predicate over the
+        'reservation_relative_positions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_relative_positions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRelativePositions
+    rootFieldKind: Mutation
+  description: Insert into the reservation_relative_positions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRelativePositions
+  permissions:
+    - role: admin
+      allowExecution: true
+

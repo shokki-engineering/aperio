@@ -1,0 +1,102 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanInventoryBlocksObject
+  fields:
+    - name: code
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertRateplanInventoryBlocksObject
+    inputTypeName: InsertRateplanInventoryBlocksObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_inventory_blocks_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanInventoryBlocksObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRateplanInventoryBlocksResponse
+  description: Responses from the 'insert_rateplan_inventory_blocks' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanInventoryBlocks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRateplanInventoryBlocksResponse
+    inputTypeName: InsertRateplanInventoryBlocksResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_rateplan_inventory_blocks_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRateplanInventoryBlocksResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRateplanInventoryBlocks
+  outputType: InsertRateplanInventoryBlocksResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRateplanInventoryBlocksObject!]!"
+    - name: postCheck
+      type: RateplanInventoryBlocksBoolExp
+      description: Insert permission predicate over the 'rateplan_inventory_blocks'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_rateplan_inventory_blocks
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRateplanInventoryBlocks
+    rootFieldKind: Mutation
+  description: Insert into the rateplan_inventory_blocks table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRateplanInventoryBlocks
+  permissions:
+    - role: admin
+      allowExecution: true
+

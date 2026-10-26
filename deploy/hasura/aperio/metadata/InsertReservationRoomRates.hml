@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomRatesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: moreRatesExist
+      type: Boolean_1
+  graphql:
+    typeName: InsertReservationRoomRatesObject
+    inputTypeName: InsertReservationRoomRatesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_rates_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        moreRatesExist:
+          column:
+            name: more_rates_exist
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomRatesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - moreRatesExist
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRoomRatesResponse
+  description: Responses from the 'insert_reservation_room_rates' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRoomRates!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRoomRatesResponse
+    inputTypeName: InsertReservationRoomRatesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_room_rates_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRoomRatesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRoomRates
+  outputType: InsertReservationRoomRatesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRoomRatesObject!]!"
+    - name: postCheck
+      type: ReservationRoomRatesBoolExp
+      description: Insert permission predicate over the 'reservation_room_rates' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_room_rates
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRoomRates
+    rootFieldKind: Mutation
+  description: Insert into the reservation_room_rates table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRoomRates
+  permissions:
+    - role: admin
+      allowExecution: true
+

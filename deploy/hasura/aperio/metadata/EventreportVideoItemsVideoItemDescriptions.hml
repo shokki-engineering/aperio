@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportVideoItemsVideoItemDescriptions
+  fields:
+    - name: caption
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+    - name: videoItemId
+      type: String_1!
+  graphql:
+    typeName: EventreportVideoItemsVideoItemDescriptions
+    inputTypeName: EventreportVideoItemsVideoItemDescriptionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_video_items_video_item_descriptions
+      fieldMapping:
+        caption:
+          column:
+            name: caption
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+        videoItemId:
+          column:
+            name: video_item_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportVideoItemsVideoItemDescriptions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - caption
+          - formatted
+          - id
+          - languageCode
+          - textFormat
+          - value
+          - videoItemId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportVideoItemsVideoItemDescriptionsBoolExp
+  operand:
+    object:
+      type: EventreportVideoItemsVideoItemDescriptions
+      comparableFields:
+        - fieldName: caption
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: EventreportEventreportFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+        - fieldName: videoItemId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportVideoItemsVideoItemDescriptionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportVideoItemsVideoItemDescriptionsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportVideoItemsVideoItemDescriptions
+      aggregatableFields:
+        - fieldName: caption
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: EventreportEventreportFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+        - fieldName: videoItemId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportVideoItemsVideoItemDescriptionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportVideoItemsVideoItemDescriptionsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportVideoItemsVideoItemDescriptions
+      orderableFields:
+        - fieldName: caption
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+        - fieldName: videoItemId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportVideoItemsVideoItemDescriptionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportVideoItemsVideoItemDescriptions
+  objectType: EventreportVideoItemsVideoItemDescriptions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_video_items_video_item_descriptions
+  filterExpressionType: EventreportVideoItemsVideoItemDescriptionsBoolExp
+  aggregateExpression: EventreportVideoItemsVideoItemDescriptionsAggExp
+  orderByExpression: EventreportVideoItemsVideoItemDescriptionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportVideoItemsVideoItemDescriptions
+      subscription:
+        rootField: eventreportVideoItemsVideoItemDescriptions
+    selectUniques:
+      - queryRootField: eventreportVideoItemsVideoItemDescriptionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportVideoItemsVideoItemDescriptionsById
+    filterInputTypeName: EventreportVideoItemsVideoItemDescriptionsFilterInput
+    aggregate:
+      queryRootField: eventreportVideoItemsVideoItemDescriptionsAggregate
+      subscription:
+        rootField: eventreportVideoItemsVideoItemDescriptionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportVideoItemsVideoItemDescriptions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

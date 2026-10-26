@@ -1,0 +1,74 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteMeetingrfpSiteAdditionalInfosByIdResponse
+  description: Responses from the 'delete_meetingrfp_site_additional_infos_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpSiteAdditionalInfos!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteMeetingrfpSiteAdditionalInfosByIdResponse
+    inputTypeName: DeleteMeetingrfpSiteAdditionalInfosByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_meetingrfp_site_additional_infos_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteMeetingrfpSiteAdditionalInfosByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteMeetingrfpSiteAdditionalInfosById
+  outputType: DeleteMeetingrfpSiteAdditionalInfosByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: MeetingrfpSiteAdditionalInfosBoolExp
+      description: Delete permission predicate over the
+        'meetingrfp_site_additional_infos' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_meetingrfp_site_additional_infos_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteMeetingrfpSiteAdditionalInfosById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'meetingrfp_site_additional_infos' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteMeetingrfpSiteAdditionalInfosById
+  permissions:
+    - role: admin
+      allowExecution: true
+

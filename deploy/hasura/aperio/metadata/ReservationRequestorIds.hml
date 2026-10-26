@@ -1,0 +1,205 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRequestorIds
+  fields:
+    - name: companyDisplayNameId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: idContext
+      type: String_1
+    - name: instance
+      type: String_1
+    - name: messagePassword
+      type: String_1
+    - name: name
+      type: String_1
+    - name: type
+      type: Enum!
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: ReservationRequestorIds
+    inputTypeName: ReservationRequestorIdsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_requestor_ids
+      fieldMapping:
+        companyDisplayNameId:
+          column:
+            name: company_display_name_id
+        id:
+          column:
+            name: id
+        idContext:
+          column:
+            name: id_context
+        instance:
+          column:
+            name: instance
+        messagePassword:
+          column:
+            name: message_password
+        name:
+          column:
+            name: name
+        type:
+          column:
+            name: type
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRequestorIds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - companyDisplayNameId
+          - id
+          - idContext
+          - instance
+          - messagePassword
+          - name
+          - type
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRequestorIdsBoolExp
+  operand:
+    object:
+      type: ReservationRequestorIds
+      comparableFields:
+        - fieldName: companyDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: idContext
+          booleanExpressionType: TextBoolExp
+        - fieldName: instance
+          booleanExpressionType: TextBoolExp
+        - fieldName: messagePassword
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: ReservationReservationUniqueIdTypeBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRequestorIdsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRequestorIdsAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRequestorIds
+      aggregatableFields:
+        - fieldName: companyDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: idContext
+          aggregateExpression: TextAggExp
+        - fieldName: instance
+          aggregateExpression: TextAggExp
+        - fieldName: messagePassword
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: ReservationReservationUniqueIdTypeAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRequestorIdsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRequestorIdsOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRequestorIds
+      orderableFields:
+        - fieldName: companyDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: idContext
+          orderByExpression: String1OrderByExp
+        - fieldName: instance
+          orderByExpression: String1OrderByExp
+        - fieldName: messagePassword
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRequestorIdsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRequestorIds
+  objectType: ReservationRequestorIds
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_requestor_ids
+  filterExpressionType: ReservationRequestorIdsBoolExp
+  aggregateExpression: ReservationRequestorIdsAggExp
+  orderByExpression: ReservationRequestorIdsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRequestorIds
+      subscription:
+        rootField: reservationRequestorIds
+    selectUniques:
+      - queryRootField: reservationRequestorIdsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRequestorIdsById
+    filterInputTypeName: ReservationRequestorIdsFilterInput
+    aggregate:
+      queryRootField: reservationRequestorIdsAggregate
+      subscription:
+        rootField: reservationRequestorIdsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRequestorIds
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

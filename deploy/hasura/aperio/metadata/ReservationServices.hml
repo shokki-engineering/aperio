@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationServices
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: ReservationServices
+    inputTypeName: ReservationServicesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_services
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationServices
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationServicesBoolExp
+  operand:
+    object:
+      type: ReservationServices
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationServicesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationServicesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationServices
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationServicesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationServicesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationServices
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationServicesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationServices
+  objectType: ReservationServices
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_services
+  filterExpressionType: ReservationServicesBoolExp
+  aggregateExpression: ReservationServicesAggExp
+  orderByExpression: ReservationServicesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationServices
+      subscription:
+        rootField: reservationServices
+    selectUniques:
+      - queryRootField: reservationServicesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationServicesById
+    filterInputTypeName: ReservationServicesFilterInput
+    aggregate:
+      queryRootField: reservationServicesAggregate
+      subscription:
+        rootField: reservationServicesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationServices
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

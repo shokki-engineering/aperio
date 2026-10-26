@@ -1,0 +1,114 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationPoliciesObject
+  fields:
+    - name: checkOutClockId
+      type: String_1
+    - name: checkinClockId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertReservationPoliciesObject
+    inputTypeName: InsertReservationPoliciesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_policies_object
+      fieldMapping:
+        checkOutClockId:
+          column:
+            name: check_out_clock_id
+        checkinClockId:
+          column:
+            name: checkin_clock_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationPoliciesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - checkOutClockId
+          - checkinClockId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationPoliciesResponse
+  description: Responses from the 'insert_reservation_policies' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationPolicies!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationPoliciesResponse
+    inputTypeName: InsertReservationPoliciesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_policies_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationPoliciesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationPolicies
+  outputType: InsertReservationPoliciesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationPoliciesObject!]!"
+    - name: postCheck
+      type: ReservationPoliciesBoolExp
+      description: Insert permission predicate over the 'reservation_policies' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_policies
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationPolicies
+    rootFieldKind: Mutation
+  description: Insert into the reservation_policies table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationPolicies
+  permissions:
+    - role: admin
+      allowExecution: true
+

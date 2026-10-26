@@ -1,0 +1,122 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRatePlanRestrictionStatusObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: restriction
+      type: Enum
+    - name: sellThroughOpenIndicator
+      type: Boolean_1
+    - name: status
+      type: Enum
+  graphql:
+    typeName: InsertReservationRatePlanRestrictionStatusObject
+    inputTypeName: InsertReservationRatePlanRestrictionStatusObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_rate_plan_restriction_status_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        restriction:
+          column:
+            name: restriction
+        sellThroughOpenIndicator:
+          column:
+            name: sell_through_open_indicator
+        status:
+          column:
+            name: status
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRatePlanRestrictionStatusObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - restriction
+          - sellThroughOpenIndicator
+          - status
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationRatePlanRestrictionStatusResponse
+  description: Responses from the
+    'insert_reservation_rate_plan_restriction_status' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationRatePlanRestrictionStatus!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationRatePlanRestrictionStatusResponse
+    inputTypeName: InsertReservationRatePlanRestrictionStatusResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_rate_plan_restriction_status_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationRatePlanRestrictionStatusResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationRatePlanRestrictionStatus
+  outputType: InsertReservationRatePlanRestrictionStatusResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationRatePlanRestrictionStatusObject!]!"
+    - name: postCheck
+      type: ReservationRatePlanRestrictionStatusBoolExp
+      description: Insert permission predicate over the
+        'reservation_rate_plan_restriction_status' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_rate_plan_restriction_status
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationRatePlanRestrictionStatus
+    rootFieldKind: Mutation
+  description: Insert into the reservation_rate_plan_restriction_status table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationRatePlanRestrictionStatus
+  permissions:
+    - role: admin
+      allowExecution: true
+

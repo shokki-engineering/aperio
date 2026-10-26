@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertRoomtypeDecimalsObject
+    inputTypeName: InsertRoomtypeDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRoomtypeDecimalsResponse
+  description: Responses from the 'insert_roomtype_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RoomtypeDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRoomtypeDecimalsResponse
+    inputTypeName: InsertRoomtypeDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_roomtype_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRoomtypeDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRoomtypeDecimals
+  outputType: InsertRoomtypeDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRoomtypeDecimalsObject!]!"
+    - name: postCheck
+      type: RoomtypeDecimalsBoolExp
+      description: Insert permission predicate over the 'roomtype_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_roomtype_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRoomtypeDecimals
+    rootFieldKind: Mutation
+  description: Insert into the roomtype_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRoomtypeDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReservationRoomRates
+  fields:
+    - name: id
+      type: String_1!
+    - name: moreRatesExist
+      type: Boolean_1
+  graphql:
+    typeName: ReservationRoomRates
+    inputTypeName: ReservationRoomRatesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: reservation_room_rates
+      fieldMapping:
+        id:
+          column:
+            name: id
+        moreRatesExist:
+          column:
+            name: more_rates_exist
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReservationRoomRates
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - moreRatesExist
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReservationRoomRatesBoolExp
+  operand:
+    object:
+      type: ReservationRoomRates
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: moreRatesExist
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReservationRoomRatesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReservationRoomRatesAggExp
+  operand:
+    object:
+      aggregatedType: ReservationRoomRates
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: moreRatesExist
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ReservationRoomRatesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ReservationRoomRatesOrderByExp
+  operand:
+    object:
+      orderedType: ReservationRoomRates
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: moreRatesExist
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ReservationRoomRatesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ReservationRoomRates
+  objectType: ReservationRoomRates
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: reservation_room_rates
+  filterExpressionType: ReservationRoomRatesBoolExp
+  aggregateExpression: ReservationRoomRatesAggExp
+  orderByExpression: ReservationRoomRatesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: reservationRoomRates
+      subscription:
+        rootField: reservationRoomRates
+    selectUniques:
+      - queryRootField: reservationRoomRatesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: reservationRoomRatesById
+    filterInputTypeName: ReservationRoomRatesFilterInput
+    aggregate:
+      queryRootField: reservationRoomRatesAggregate
+      subscription:
+        rootField: reservationRoomRatesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ReservationRoomRates
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

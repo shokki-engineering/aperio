@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileOsiPrefsCode
+  description: Update the 'code' column in the 'profile_osi_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileOsiPrefsCode
+    inputTypeName: UpdateColumnProfileOsiPrefsCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_osi_prefs_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileOsiPrefsCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileOsiPrefsId
+  description: Update the 'id' column in the 'profile_osi_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileOsiPrefsId
+    inputTypeName: UpdateColumnProfileOsiPrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_osi_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileOsiPrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileOsiPrefsOperatorId
+  description: Update the 'operator_id' column in the 'profile_osi_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileOsiPrefsOperatorId
+    inputTypeName: UpdateColumnProfileOsiPrefsOperatorIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_osi_prefs_operator_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileOsiPrefsOperatorId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileOsiPrefsRailPrefId
+  description: Update the 'rail_pref_id' column in the 'profile_osi_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileOsiPrefsRailPrefId
+    inputTypeName: UpdateColumnProfileOsiPrefsRailPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_osi_prefs_rail_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileOsiPrefsRailPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfileOsiPrefsText
+  description: Update the 'text' column in the 'profile_osi_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfileOsiPrefsText
+    inputTypeName: UpdateColumnProfileOsiPrefsTextInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_osi_prefs_text
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfileOsiPrefsText
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileOsiPrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_osi_prefs' collection
+  fields:
+    - name: code
+      type: UpdateColumnProfileOsiPrefsCode
+      description: Update the 'code' column in the 'profile_osi_prefs' collection.
+    - name: id
+      type: UpdateColumnProfileOsiPrefsId
+      description: Update the 'id' column in the 'profile_osi_prefs' collection.
+    - name: operatorId
+      type: UpdateColumnProfileOsiPrefsOperatorId
+      description: Update the 'operator_id' column in the 'profile_osi_prefs' collection.
+    - name: railPrefId
+      type: UpdateColumnProfileOsiPrefsRailPrefId
+      description: Update the 'rail_pref_id' column in the 'profile_osi_prefs' collection.
+    - name: text
+      type: UpdateColumnProfileOsiPrefsText
+      description: Update the 'text' column in the 'profile_osi_prefs' collection.
+  graphql:
+    typeName: UpdateProfileOsiPrefsByIdUpdateColumns
+    inputTypeName: UpdateProfileOsiPrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_osi_prefs_by_id_update_columns
+      fieldMapping:
+        code:
+          column:
+            name: code
+        id:
+          column:
+            name: id
+        operatorId:
+          column:
+            name: operator_id
+        railPrefId:
+          column:
+            name: rail_pref_id
+        text:
+          column:
+            name: text
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileOsiPrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - id
+          - operatorId
+          - railPrefId
+          - text
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfileOsiPrefsByIdResponse
+  description: Responses from the 'update_profile_osi_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileOsiPrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfileOsiPrefsByIdResponse
+    inputTypeName: UpdateProfileOsiPrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_osi_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfileOsiPrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfileOsiPrefsById
+  outputType: UpdateProfileOsiPrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfileOsiPrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_osi_prefs' collection
+    - name: preCheck
+      type: ProfileOsiPrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_osi_prefs' collection
+    - name: updateColumns
+      type: UpdateProfileOsiPrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_osi_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfileOsiPrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_osi_prefs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfileOsiPrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

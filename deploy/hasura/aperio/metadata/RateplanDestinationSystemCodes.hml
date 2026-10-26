@@ -1,0 +1,229 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanDestinationSystemCodes
+  fields:
+    - name: cancelRuleId
+      type: String_1
+    - name: chainRateCodeCrossRef
+      type: String_1
+    - name: chainRateLevelCrossRef
+      type: String_1
+    - name: guaranteeDepositRuleId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: posRuleId
+      type: String_1
+    - name: rateAccessId
+      type: String_1
+    - name: ratePlanId
+      type: String_1!
+    - name: stayLengthsRuleId
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanDestinationSystemCodes
+    inputTypeName: RateplanDestinationSystemCodesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_destination_system_codes
+      fieldMapping:
+        cancelRuleId:
+          column:
+            name: cancel_rule_id
+        chainRateCodeCrossRef:
+          column:
+            name: chain_rate_code_cross_ref
+        chainRateLevelCrossRef:
+          column:
+            name: chain_rate_level_cross_ref
+        guaranteeDepositRuleId:
+          column:
+            name: guarantee_deposit_rule_id
+        id:
+          column:
+            name: id
+        posRuleId:
+          column:
+            name: pos_rule_id
+        rateAccessId:
+          column:
+            name: rate_access_id
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        stayLengthsRuleId:
+          column:
+            name: stay_lengths_rule_id
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanDestinationSystemCodes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - cancelRuleId
+          - chainRateCodeCrossRef
+          - chainRateLevelCrossRef
+          - guaranteeDepositRuleId
+          - id
+          - posRuleId
+          - rateAccessId
+          - ratePlanId
+          - stayLengthsRuleId
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanDestinationSystemCodesBoolExp
+  operand:
+    object:
+      type: RateplanDestinationSystemCodes
+      comparableFields:
+        - fieldName: cancelRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainRateCodeCrossRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: chainRateLevelCrossRef
+          booleanExpressionType: TextBoolExp
+        - fieldName: guaranteeDepositRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: posRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rateAccessId
+          booleanExpressionType: TextBoolExp
+        - fieldName: ratePlanId
+          booleanExpressionType: TextBoolExp
+        - fieldName: stayLengthsRuleId
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanDestinationSystemCodesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanDestinationSystemCodesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanDestinationSystemCodes
+      aggregatableFields:
+        - fieldName: cancelRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: chainRateCodeCrossRef
+          aggregateExpression: TextAggExp
+        - fieldName: chainRateLevelCrossRef
+          aggregateExpression: TextAggExp
+        - fieldName: guaranteeDepositRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: posRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: rateAccessId
+          aggregateExpression: TextAggExp
+        - fieldName: ratePlanId
+          aggregateExpression: TextAggExp
+        - fieldName: stayLengthsRuleId
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanDestinationSystemCodesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanDestinationSystemCodesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanDestinationSystemCodes
+      orderableFields:
+        - fieldName: cancelRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: chainRateCodeCrossRef
+          orderByExpression: String1OrderByExp
+        - fieldName: chainRateLevelCrossRef
+          orderByExpression: String1OrderByExp
+        - fieldName: guaranteeDepositRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: posRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: rateAccessId
+          orderByExpression: String1OrderByExp
+        - fieldName: ratePlanId
+          orderByExpression: String1OrderByExp
+        - fieldName: stayLengthsRuleId
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanDestinationSystemCodesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanDestinationSystemCodes
+  objectType: RateplanDestinationSystemCodes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_destination_system_codes
+  filterExpressionType: RateplanDestinationSystemCodesBoolExp
+  aggregateExpression: RateplanDestinationSystemCodesAggExp
+  orderByExpression: RateplanDestinationSystemCodesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanDestinationSystemCodes
+      subscription:
+        rootField: rateplanDestinationSystemCodes
+    selectUniques:
+      - queryRootField: rateplanDestinationSystemCodesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanDestinationSystemCodesById
+    filterInputTypeName: RateplanDestinationSystemCodesFilterInput
+    aggregate:
+      queryRootField: rateplanDestinationSystemCodesAggregate
+      subscription:
+        rootField: rateplanDestinationSystemCodesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanDestinationSystemCodes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

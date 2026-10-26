@@ -1,0 +1,271 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoStartDateWindowsDow
+  description: Update the 'dow' column in the 'affiliationinfo_start_date_windows'
+    collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoStartDateWindowsDow
+    inputTypeName: UpdateColumnAffiliationinfoStartDateWindowsDowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_start_date_windows_dow
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoStartDateWindowsDow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoStartDateWindowsEarliestId
+  description: Update the 'earliest_id' column in the
+    'affiliationinfo_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoStartDateWindowsEarliestId
+    inputTypeName: UpdateColumnAffiliationinfoStartDateWindowsEarliestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_start_date_windows_earliest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoStartDateWindowsEarliestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoStartDateWindowsId
+  description: Update the 'id' column in the 'affiliationinfo_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoStartDateWindowsId
+    inputTypeName: UpdateColumnAffiliationinfoStartDateWindowsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_start_date_windows_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoStartDateWindowsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnAffiliationinfoStartDateWindowsLatestId
+  description: Update the 'latest_id' column in the
+    'affiliationinfo_start_date_windows' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnAffiliationinfoStartDateWindowsLatestId
+    inputTypeName: UpdateColumnAffiliationinfoStartDateWindowsLatestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_affiliationinfo_start_date_windows_latest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnAffiliationinfoStartDateWindowsLatestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoStartDateWindowsByIdUpdateColumns
+  description: Update the columns of the 'affiliationinfo_start_date_windows' collection
+  fields:
+    - name: dow
+      type: UpdateColumnAffiliationinfoStartDateWindowsDow
+      description: Update the 'dow' column in the 'affiliationinfo_start_date_windows'
+        collection.
+    - name: earliestId
+      type: UpdateColumnAffiliationinfoStartDateWindowsEarliestId
+      description: Update the 'earliest_id' column in the
+        'affiliationinfo_start_date_windows' collection.
+    - name: id
+      type: UpdateColumnAffiliationinfoStartDateWindowsId
+      description: Update the 'id' column in the 'affiliationinfo_start_date_windows'
+        collection.
+    - name: latestId
+      type: UpdateColumnAffiliationinfoStartDateWindowsLatestId
+      description: Update the 'latest_id' column in the
+        'affiliationinfo_start_date_windows' collection.
+  graphql:
+    typeName: UpdateAffiliationinfoStartDateWindowsByIdUpdateColumns
+    inputTypeName: UpdateAffiliationinfoStartDateWindowsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_start_date_windows_by_id_update_columns
+      fieldMapping:
+        dow:
+          column:
+            name: dow
+        earliestId:
+          column:
+            name: earliest_id
+        id:
+          column:
+            name: id
+        latestId:
+          column:
+            name: latest_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoStartDateWindowsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - dow
+          - earliestId
+          - id
+          - latestId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateAffiliationinfoStartDateWindowsByIdResponse
+  description: Responses from the
+    'update_affiliationinfo_start_date_windows_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[AffiliationinfoStartDateWindows!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateAffiliationinfoStartDateWindowsByIdResponse
+    inputTypeName: UpdateAffiliationinfoStartDateWindowsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_affiliationinfo_start_date_windows_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateAffiliationinfoStartDateWindowsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateAffiliationinfoStartDateWindowsById
+  outputType: UpdateAffiliationinfoStartDateWindowsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: AffiliationinfoStartDateWindowsBoolExp
+      description: Update permission post-condition predicate over the
+        'affiliationinfo_start_date_windows' collection
+    - name: preCheck
+      type: AffiliationinfoStartDateWindowsBoolExp
+      description: Update permission pre-condition predicate over the
+        'affiliationinfo_start_date_windows' collection
+    - name: updateColumns
+      type: UpdateAffiliationinfoStartDateWindowsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_affiliationinfo_start_date_windows_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateAffiliationinfoStartDateWindowsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'affiliationinfo_start_date_windows'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateAffiliationinfoStartDateWindowsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

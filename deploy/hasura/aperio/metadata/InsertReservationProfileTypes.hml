@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationProfileTypesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: profileType
+      type: Enum
+    - name: viewershipId
+      type: String_1!
+  graphql:
+    typeName: InsertReservationProfileTypesObject
+    inputTypeName: InsertReservationProfileTypesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_profile_types_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        profileType:
+          column:
+            name: profile_type
+        viewershipId:
+          column:
+            name: viewership_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationProfileTypesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - profileType
+          - viewershipId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationProfileTypesResponse
+  description: Responses from the 'insert_reservation_profile_types' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationProfileTypes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationProfileTypesResponse
+    inputTypeName: InsertReservationProfileTypesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_profile_types_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationProfileTypesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationProfileTypes
+  outputType: InsertReservationProfileTypesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationProfileTypesObject!]!"
+    - name: postCheck
+      type: ReservationProfileTypesBoolExp
+      description: Insert permission predicate over the 'reservation_profile_types'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_profile_types
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationProfileTypes
+    rootFieldKind: Mutation
+  description: Insert into the reservation_profile_types table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationProfileTypes
+  permissions:
+    - role: admin
+      allowExecution: true
+

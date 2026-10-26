@@ -1,0 +1,319 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyAddressInfos
+  fields:
+    - name: addressLines
+      type: "[String_1]"
+    - name: cityDisplayName
+      type: String_1
+    - name: countryDisplayNameId
+      type: String_1
+    - name: county
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: postalCode
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: stateProvId
+      type: String_1
+    - name: streetNmbrId
+      type: String_1
+    - name: type
+      type: Enum
+    - name: useType
+      type: Enum
+    - name: valid
+      type: Boolean_1
+  graphql:
+    typeName: PolicyAddressInfos
+    inputTypeName: PolicyAddressInfosInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_address_infos
+      fieldMapping:
+        addressLines:
+          column:
+            name: address_lines
+        cityDisplayName:
+          column:
+            name: city_display_name
+        countryDisplayNameId:
+          column:
+            name: country_display_name_id
+        county:
+          column:
+            name: county
+        defaultValue:
+          column:
+            name: default_value
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        postalCode:
+          column:
+            name: postal_code
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        stateProvId:
+          column:
+            name: state_prov_id
+        streetNmbrId:
+          column:
+            name: street_nmbr_id
+        type:
+          column:
+            name: type
+        useType:
+          column:
+            name: use_type
+        valid:
+          column:
+            name: valid
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyAddressInfos
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - addressLines
+          - cityDisplayName
+          - countryDisplayNameId
+          - county
+          - defaultValue
+          - formatted
+          - id
+          - languageCode
+          - postalCode
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+          - stateProvId
+          - streetNmbrId
+          - type
+          - useType
+          - valid
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyAddressInfosBoolExp
+  operand:
+    object:
+      type: PolicyAddressInfos
+      comparableFields:
+        - fieldName: cityDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryDisplayNameId
+          booleanExpressionType: TextBoolExp
+        - fieldName: county
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: postalCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: PolicyPolicyAcceptedPaymentShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: PolicyPolicyAcceptedPaymentShareSynchIndBoolExp
+        - fieldName: stateProvId
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetNmbrId
+          booleanExpressionType: TextBoolExp
+        - fieldName: type
+          booleanExpressionType: PolicyPolicyCommunicationLocationTypeBoolExp
+        - fieldName: useType
+          booleanExpressionType: PolicyPolicyAddressUseTypeBoolExp
+        - fieldName: valid
+          booleanExpressionType: BoolBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyAddressInfosBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyAddressInfosAggExp
+  operand:
+    object:
+      aggregatedType: PolicyAddressInfos
+      aggregatableFields:
+        - fieldName: cityDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: countryDisplayNameId
+          aggregateExpression: TextAggExp
+        - fieldName: county
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: postalCode
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: PolicyPolicyAcceptedPaymentShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: PolicyPolicyAcceptedPaymentShareSynchIndAggExp
+        - fieldName: stateProvId
+          aggregateExpression: TextAggExp
+        - fieldName: streetNmbrId
+          aggregateExpression: TextAggExp
+        - fieldName: type
+          aggregateExpression: PolicyPolicyCommunicationLocationTypeAggExp
+        - fieldName: useType
+          aggregateExpression: PolicyPolicyAddressUseTypeAggExp
+        - fieldName: valid
+          aggregateExpression: BoolAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyAddressInfosAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyAddressInfosOrderByExp
+  operand:
+    object:
+      orderedType: PolicyAddressInfos
+      orderableFields:
+        - fieldName: cityDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: countryDisplayNameId
+          orderByExpression: String1OrderByExp
+        - fieldName: county
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: postalCode
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: stateProvId
+          orderByExpression: String1OrderByExp
+        - fieldName: streetNmbrId
+          orderByExpression: String1OrderByExp
+        - fieldName: type
+          orderByExpression: EnumOrderByExp
+        - fieldName: useType
+          orderByExpression: EnumOrderByExp
+        - fieldName: valid
+          orderByExpression: Boolean1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyAddressInfosOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyAddressInfos
+  objectType: PolicyAddressInfos
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_address_infos
+  filterExpressionType: PolicyAddressInfosBoolExp
+  aggregateExpression: PolicyAddressInfosAggExp
+  orderByExpression: PolicyAddressInfosOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyAddressInfos
+      subscription:
+        rootField: policyAddressInfos
+    selectUniques:
+      - queryRootField: policyAddressInfosById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyAddressInfosById
+    filterInputTypeName: PolicyAddressInfosFilterInput
+    aggregate:
+      queryRootField: policyAddressInfosAggregate
+      subscription:
+        rootField: policyAddressInfosAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyAddressInfos
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

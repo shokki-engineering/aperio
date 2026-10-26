@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportListItems
+  fields:
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: listItem
+      type: Int32
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: EventreportListItems
+    inputTypeName: EventreportListItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_list_items
+      fieldMapping:
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        listItem:
+          column:
+            name: list_item
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportListItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - formatted
+          - id
+          - languageCode
+          - listItem
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportListItemsBoolExp
+  operand:
+    object:
+      type: EventreportListItems
+      comparableFields:
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: listItem
+          booleanExpressionType: Int4BoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: EventreportEventreportFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportListItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportListItemsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportListItems
+      aggregatableFields:
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: listItem
+          aggregateExpression: Int4AggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: EventreportEventreportFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportListItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportListItemsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportListItems
+      orderableFields:
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: listItem
+          orderByExpression: Int32OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportListItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportListItems
+  objectType: EventreportListItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_list_items
+  filterExpressionType: EventreportListItemsBoolExp
+  aggregateExpression: EventreportListItemsAggExp
+  orderByExpression: EventreportListItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportListItems
+      subscription:
+        rootField: eventreportListItems
+    selectUniques:
+      - queryRootField: eventreportListItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportListItemsById
+    filterInputTypeName: EventreportListItemsFilterInput
+    aggregate:
+      queryRootField: eventreportListItemsAggregate
+      subscription:
+        rootField: eventreportListItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportListItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

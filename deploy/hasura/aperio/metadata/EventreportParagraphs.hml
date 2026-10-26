@@ -1,0 +1,481 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventreportParagraphs
+  fields:
+    - name: attendeeInfoId
+      type: String_1!
+    - name: audioVisualId
+      type: String_1!
+    - name: contactId
+      type: String_1!
+    - name: createDateTime
+      type: Timestamptz
+    - name: creatorId
+      type: String_1
+    - name: dateId
+      type: String_1!
+    - name: displayName
+      type: String_1
+    - name: eventDayFunctionId
+      type: String_1!
+    - name: exhibitionId
+      type: String_1!
+    - name: exhibitorInfoId
+      type: String_1!
+    - name: feeId
+      type: String_1!
+    - name: foodAndBeverageId
+      type: String_1!
+    - name: foodAndBeverageInfoId
+      type: String_1!
+    - name: functionSpaceInfoId
+      type: String_1!
+    - name: generalEventInfoId
+      type: String_1!
+    - name: housingInfoId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: images
+      type: "[String_1]"
+    - name: languageCode
+      type: String_1
+    - name: lastModifierId
+      type: String_1
+    - name: lastModifyDateTime
+      type: Timestamptz
+    - name: menuId
+      type: String_1!
+    - name: paragraphNumber
+      type: Int32
+    - name: postEventSiteReportId
+      type: String_1!
+    - name: purgeDayId
+      type: String_1
+    - name: rfpResponseDetailId
+      type: String_1!
+    - name: roomBlocksId
+      type: String_1!
+    - name: serviceId
+      type: String_1!
+    - name: taxExemptInfoId
+      type: String_1!
+    - name: taxId
+      type: String_1!
+    - name: uris
+      type: "[String_1]"
+    - name: utilityId
+      type: String_1!
+  graphql:
+    typeName: EventreportParagraphs
+    inputTypeName: EventreportParagraphsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: eventreport_paragraphs
+      fieldMapping:
+        attendeeInfoId:
+          column:
+            name: attendee_info_id
+        audioVisualId:
+          column:
+            name: audio_visual_id
+        contactId:
+          column:
+            name: contact_id
+        createDateTime:
+          column:
+            name: create_date_time
+        creatorId:
+          column:
+            name: creator_id
+        dateId:
+          column:
+            name: date_id
+        displayName:
+          column:
+            name: display_name
+        eventDayFunctionId:
+          column:
+            name: event_day_function_id
+        exhibitionId:
+          column:
+            name: exhibition_id
+        exhibitorInfoId:
+          column:
+            name: exhibitor_info_id
+        feeId:
+          column:
+            name: fee_id
+        foodAndBeverageId:
+          column:
+            name: food_and_beverage_id
+        foodAndBeverageInfoId:
+          column:
+            name: food_and_beverage_info_id
+        functionSpaceInfoId:
+          column:
+            name: function_space_info_id
+        generalEventInfoId:
+          column:
+            name: general_event_info_id
+        housingInfoId:
+          column:
+            name: housing_info_id
+        id:
+          column:
+            name: id
+        images:
+          column:
+            name: images
+        languageCode:
+          column:
+            name: language_code
+        lastModifierId:
+          column:
+            name: last_modifier_id
+        lastModifyDateTime:
+          column:
+            name: last_modify_date_time
+        menuId:
+          column:
+            name: menu_id
+        paragraphNumber:
+          column:
+            name: paragraph_number
+        postEventSiteReportId:
+          column:
+            name: post_event_site_report_id
+        purgeDayId:
+          column:
+            name: purge_day_id
+        rfpResponseDetailId:
+          column:
+            name: rfp_response_detail_id
+        roomBlocksId:
+          column:
+            name: room_blocks_id
+        serviceId:
+          column:
+            name: service_id
+        taxExemptInfoId:
+          column:
+            name: tax_exempt_info_id
+        taxId:
+          column:
+            name: tax_id
+        uris:
+          column:
+            name: uris
+        utilityId:
+          column:
+            name: utility_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventreportParagraphs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeInfoId
+          - audioVisualId
+          - contactId
+          - createDateTime
+          - creatorId
+          - dateId
+          - displayName
+          - eventDayFunctionId
+          - exhibitionId
+          - exhibitorInfoId
+          - feeId
+          - foodAndBeverageId
+          - foodAndBeverageInfoId
+          - functionSpaceInfoId
+          - generalEventInfoId
+          - housingInfoId
+          - id
+          - images
+          - languageCode
+          - lastModifierId
+          - lastModifyDateTime
+          - menuId
+          - paragraphNumber
+          - postEventSiteReportId
+          - purgeDayId
+          - rfpResponseDetailId
+          - roomBlocksId
+          - serviceId
+          - taxExemptInfoId
+          - taxId
+          - uris
+          - utilityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventreportParagraphsBoolExp
+  operand:
+    object:
+      type: EventreportParagraphs
+      comparableFields:
+        - fieldName: attendeeInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: audioVisualId
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: createDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: creatorId
+          booleanExpressionType: TextBoolExp
+        - fieldName: dateId
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayFunctionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: exhibitionId
+          booleanExpressionType: TextBoolExp
+        - fieldName: exhibitorInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: feeId
+          booleanExpressionType: TextBoolExp
+        - fieldName: foodAndBeverageId
+          booleanExpressionType: TextBoolExp
+        - fieldName: foodAndBeverageInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: functionSpaceInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: generalEventInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: housingInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifierId
+          booleanExpressionType: TextBoolExp
+        - fieldName: lastModifyDateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: menuId
+          booleanExpressionType: TextBoolExp
+        - fieldName: paragraphNumber
+          booleanExpressionType: Int4BoolExp
+        - fieldName: postEventSiteReportId
+          booleanExpressionType: TextBoolExp
+        - fieldName: purgeDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: rfpResponseDetailId
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomBlocksId
+          booleanExpressionType: TextBoolExp
+        - fieldName: serviceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxExemptInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxId
+          booleanExpressionType: TextBoolExp
+        - fieldName: utilityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventreportParagraphsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventreportParagraphsAggExp
+  operand:
+    object:
+      aggregatedType: EventreportParagraphs
+      aggregatableFields:
+        - fieldName: attendeeInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: audioVisualId
+          aggregateExpression: TextAggExp
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: createDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: creatorId
+          aggregateExpression: TextAggExp
+        - fieldName: dateId
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayFunctionId
+          aggregateExpression: TextAggExp
+        - fieldName: exhibitionId
+          aggregateExpression: TextAggExp
+        - fieldName: exhibitorInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: feeId
+          aggregateExpression: TextAggExp
+        - fieldName: foodAndBeverageId
+          aggregateExpression: TextAggExp
+        - fieldName: foodAndBeverageInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: functionSpaceInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: generalEventInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: housingInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifierId
+          aggregateExpression: TextAggExp
+        - fieldName: lastModifyDateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: menuId
+          aggregateExpression: TextAggExp
+        - fieldName: paragraphNumber
+          aggregateExpression: Int4AggExp
+        - fieldName: postEventSiteReportId
+          aggregateExpression: TextAggExp
+        - fieldName: purgeDayId
+          aggregateExpression: TextAggExp
+        - fieldName: rfpResponseDetailId
+          aggregateExpression: TextAggExp
+        - fieldName: roomBlocksId
+          aggregateExpression: TextAggExp
+        - fieldName: serviceId
+          aggregateExpression: TextAggExp
+        - fieldName: taxExemptInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: taxId
+          aggregateExpression: TextAggExp
+        - fieldName: utilityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: EventreportParagraphsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventreportParagraphsOrderByExp
+  operand:
+    object:
+      orderedType: EventreportParagraphs
+      orderableFields:
+        - fieldName: attendeeInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: audioVisualId
+          orderByExpression: String1OrderByExp
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: createDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: creatorId
+          orderByExpression: String1OrderByExp
+        - fieldName: dateId
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayFunctionId
+          orderByExpression: String1OrderByExp
+        - fieldName: exhibitionId
+          orderByExpression: String1OrderByExp
+        - fieldName: exhibitorInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: feeId
+          orderByExpression: String1OrderByExp
+        - fieldName: foodAndBeverageId
+          orderByExpression: String1OrderByExp
+        - fieldName: foodAndBeverageInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: functionSpaceInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: generalEventInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: housingInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifierId
+          orderByExpression: String1OrderByExp
+        - fieldName: lastModifyDateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: menuId
+          orderByExpression: String1OrderByExp
+        - fieldName: paragraphNumber
+          orderByExpression: Int32OrderByExp
+        - fieldName: postEventSiteReportId
+          orderByExpression: String1OrderByExp
+        - fieldName: purgeDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: rfpResponseDetailId
+          orderByExpression: String1OrderByExp
+        - fieldName: roomBlocksId
+          orderByExpression: String1OrderByExp
+        - fieldName: serviceId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxExemptInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: taxId
+          orderByExpression: String1OrderByExp
+        - fieldName: utilityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventreportParagraphsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventreportParagraphs
+  objectType: EventreportParagraphs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: eventreport_paragraphs
+  filterExpressionType: EventreportParagraphsBoolExp
+  aggregateExpression: EventreportParagraphsAggExp
+  orderByExpression: EventreportParagraphsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventreportParagraphs
+      subscription:
+        rootField: eventreportParagraphs
+    selectUniques:
+      - queryRootField: eventreportParagraphsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventreportParagraphsById
+    filterInputTypeName: EventreportParagraphsFilterInput
+    aggregate:
+      queryRootField: eventreportParagraphsAggregate
+      subscription:
+        rootField: eventreportParagraphsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventreportParagraphs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoVideoItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: AreainfoVideoItems
+    inputTypeName: AreainfoVideoItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_video_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoVideoItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoVideoItemsBoolExp
+  operand:
+    object:
+      type: AreainfoVideoItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoVideoItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoVideoItemsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoVideoItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoVideoItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoVideoItemsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoVideoItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoVideoItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoVideoItems
+  objectType: AreainfoVideoItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_video_items
+  filterExpressionType: AreainfoVideoItemsBoolExp
+  aggregateExpression: AreainfoVideoItemsAggExp
+  orderByExpression: AreainfoVideoItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoVideoItems
+      subscription:
+        rootField: areainfoVideoItems
+    selectUniques:
+      - queryRootField: areainfoVideoItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoVideoItemsById
+    filterInputTypeName: AreainfoVideoItemsFilterInput
+    aggregate:
+      queryRootField: areainfoVideoItemsAggregate
+      subscription:
+        rootField: areainfoVideoItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoVideoItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

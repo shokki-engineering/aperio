@@ -1,0 +1,117 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoTextItems
+  fields:
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: AreainfoTextItems
+    inputTypeName: AreainfoTextItemsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_text_items
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoTextItems
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoTextItemsBoolExp
+  operand:
+    object:
+      type: AreainfoTextItems
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoTextItemsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoTextItemsAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoTextItems
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoTextItemsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoTextItemsOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoTextItems
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoTextItemsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoTextItems
+  objectType: AreainfoTextItems
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_text_items
+  filterExpressionType: AreainfoTextItemsBoolExp
+  aggregateExpression: AreainfoTextItemsAggExp
+  orderByExpression: AreainfoTextItemsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoTextItems
+      subscription:
+        rootField: areainfoTextItems
+    selectUniques:
+      - queryRootField: areainfoTextItemsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoTextItemsById
+    filterInputTypeName: AreainfoTextItemsFilterInput
+    aggregate:
+      queryRootField: areainfoTextItemsAggregate
+      subscription:
+        rootField: areainfoTextItemsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoTextItems
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

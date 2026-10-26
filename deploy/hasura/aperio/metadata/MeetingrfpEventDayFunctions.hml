@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingrfpEventDayFunctions
+  fields:
+    - name: attendeeQuantity
+      type: Int32
+    - name: commentsId
+      type: String_1
+    - name: endClockId
+      type: String_1!
+    - name: eventDayId
+      type: String_1!
+    - name: eventDisplayName
+      type: String_1!
+    - name: eventType
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: roomSetup
+      type: Enum
+    - name: startClockId
+      type: String_1!
+    - name: twentyFourHourHold
+      type: Boolean_1
+    - name: unit
+      type: String_1
+    - name: unitCode
+      type: Enum
+    - name: unitQuantityId
+      type: String_1
+  graphql:
+    typeName: MeetingrfpEventDayFunctions
+    inputTypeName: MeetingrfpEventDayFunctionsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingrfp_event_day_functions
+      fieldMapping:
+        attendeeQuantity:
+          column:
+            name: attendee_quantity
+        commentsId:
+          column:
+            name: comments_id
+        endClockId:
+          column:
+            name: end_clock_id
+        eventDayId:
+          column:
+            name: event_day_id
+        eventDisplayName:
+          column:
+            name: event_display_name
+        eventType:
+          column:
+            name: event_type
+        id:
+          column:
+            name: id
+        roomSetup:
+          column:
+            name: room_setup
+        startClockId:
+          column:
+            name: start_clock_id
+        twentyFourHourHold:
+          column:
+            name: twenty_four_hour_hold
+        unit:
+          column:
+            name: unit
+        unitCode:
+          column:
+            name: unit_code
+        unitQuantityId:
+          column:
+            name: unit_quantity_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingrfpEventDayFunctions
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - attendeeQuantity
+          - commentsId
+          - endClockId
+          - eventDayId
+          - eventDisplayName
+          - eventType
+          - id
+          - roomSetup
+          - startClockId
+          - twentyFourHourHold
+          - unit
+          - unitCode
+          - unitQuantityId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingrfpEventDayFunctionsBoolExp
+  operand:
+    object:
+      type: MeetingrfpEventDayFunctions
+      comparableFields:
+        - fieldName: attendeeQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: commentsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: endClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDayId
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventDisplayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventType
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomSetup
+          booleanExpressionType: MeetingrfpMeetingrfpMeetingRoomFormatCodeBoolExp
+        - fieldName: startClockId
+          booleanExpressionType: TextBoolExp
+        - fieldName: twentyFourHourHold
+          booleanExpressionType: BoolBoolExp
+        - fieldName: unit
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCode
+          booleanExpressionType: MeetingrfpMeetingrfpUnitOfMeasureCodeBoolExp
+        - fieldName: unitQuantityId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingrfpEventDayFunctionsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingrfpEventDayFunctionsAggExp
+  operand:
+    object:
+      aggregatedType: MeetingrfpEventDayFunctions
+      aggregatableFields:
+        - fieldName: attendeeQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: commentsId
+          aggregateExpression: TextAggExp
+        - fieldName: endClockId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDayId
+          aggregateExpression: TextAggExp
+        - fieldName: eventDisplayName
+          aggregateExpression: TextAggExp
+        - fieldName: eventType
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: roomSetup
+          aggregateExpression: MeetingrfpMeetingrfpMeetingRoomFormatCodeAggExp
+        - fieldName: startClockId
+          aggregateExpression: TextAggExp
+        - fieldName: twentyFourHourHold
+          aggregateExpression: BoolAggExp
+        - fieldName: unit
+          aggregateExpression: TextAggExp
+        - fieldName: unitCode
+          aggregateExpression: MeetingrfpMeetingrfpUnitOfMeasureCodeAggExp
+        - fieldName: unitQuantityId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingrfpEventDayFunctionsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingrfpEventDayFunctionsOrderByExp
+  operand:
+    object:
+      orderedType: MeetingrfpEventDayFunctions
+      orderableFields:
+        - fieldName: attendeeQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: commentsId
+          orderByExpression: String1OrderByExp
+        - fieldName: endClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDayId
+          orderByExpression: String1OrderByExp
+        - fieldName: eventDisplayName
+          orderByExpression: String1OrderByExp
+        - fieldName: eventType
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: roomSetup
+          orderByExpression: EnumOrderByExp
+        - fieldName: startClockId
+          orderByExpression: String1OrderByExp
+        - fieldName: twentyFourHourHold
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: unit
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: unitQuantityId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingrfpEventDayFunctionsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingrfpEventDayFunctions
+  objectType: MeetingrfpEventDayFunctions
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingrfp_event_day_functions
+  filterExpressionType: MeetingrfpEventDayFunctionsBoolExp
+  aggregateExpression: MeetingrfpEventDayFunctionsAggExp
+  orderByExpression: MeetingrfpEventDayFunctionsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingrfpEventDayFunctions
+      subscription:
+        rootField: meetingrfpEventDayFunctions
+    selectUniques:
+      - queryRootField: meetingrfpEventDayFunctionsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingrfpEventDayFunctionsById
+    filterInputTypeName: MeetingrfpEventDayFunctionsFilterInput
+    aggregate:
+      queryRootField: meetingrfpEventDayFunctionsAggregate
+      subscription:
+        rootField: meetingrfpEventDayFunctionsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingrfpEventDayFunctions
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

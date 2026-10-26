@@ -1,0 +1,150 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTravelClubsObject
+  fields:
+    - name: affiliationsId
+      type: String_1!
+    - name: clubMemberDisplayNameId
+      type: String_1
+    - name: effectiveDayId
+      type: String_1
+    - name: expireDateExclusive
+      type: Boolean_1
+    - name: expireDayId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: travelClubDisplayNameId
+      type: String_1!
+  graphql:
+    typeName: InsertProfileTravelClubsObject
+    inputTypeName: InsertProfileTravelClubsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_travel_clubs_object
+      fieldMapping:
+        affiliationsId:
+          column:
+            name: affiliations_id
+        clubMemberDisplayNameId:
+          column:
+            name: club_member_display_name_id
+        effectiveDayId:
+          column:
+            name: effective_day_id
+        expireDateExclusive:
+          column:
+            name: expire_date_exclusive
+        expireDayId:
+          column:
+            name: expire_day_id
+        id:
+          column:
+            name: id
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        travelClubDisplayNameId:
+          column:
+            name: travel_club_display_name_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTravelClubsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affiliationsId
+          - clubMemberDisplayNameId
+          - effectiveDayId
+          - expireDateExclusive
+          - expireDayId
+          - id
+          - shareMarketInd
+          - shareSynchInd
+          - travelClubDisplayNameId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileTravelClubsResponse
+  description: Responses from the 'insert_profile_travel_clubs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileTravelClubs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileTravelClubsResponse
+    inputTypeName: InsertProfileTravelClubsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_travel_clubs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileTravelClubsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileTravelClubs
+  outputType: InsertProfileTravelClubsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileTravelClubsObject!]!"
+    - name: postCheck
+      type: ProfileTravelClubsBoolExp
+      description: Insert permission predicate over the 'profile_travel_clubs' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_travel_clubs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileTravelClubs
+    rootFieldKind: Mutation
+  description: Insert into the profile_travel_clubs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileTravelClubs
+  permissions:
+    - role: admin
+      allowExecution: true
+

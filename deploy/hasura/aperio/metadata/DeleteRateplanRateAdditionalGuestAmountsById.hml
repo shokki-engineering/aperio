@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanRateAdditionalGuestAmountsByIdResponse
+  description: Responses from the
+    'delete_rateplan_rate_additional_guest_amounts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanRateAdditionalGuestAmounts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanRateAdditionalGuestAmountsByIdResponse
+    inputTypeName: DeleteRateplanRateAdditionalGuestAmountsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_rate_additional_guest_amounts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanRateAdditionalGuestAmountsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanRateAdditionalGuestAmountsById
+  outputType: DeleteRateplanRateAdditionalGuestAmountsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanRateAdditionalGuestAmountsBoolExp
+      description: Delete permission predicate over the
+        'rateplan_rate_additional_guest_amounts' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_rate_additional_guest_amounts_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanRateAdditionalGuestAmountsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_rate_additional_guest_amounts'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanRateAdditionalGuestAmountsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

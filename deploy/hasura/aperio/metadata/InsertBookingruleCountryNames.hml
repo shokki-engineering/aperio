@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleCountryNamesObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: regionCode
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertBookingruleCountryNamesObject
+    inputTypeName: InsertBookingruleCountryNamesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_country_names_object
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleCountryNamesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleCountryNamesResponse
+  description: Responses from the 'insert_bookingrule_country_names' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleCountryNamesResponse
+    inputTypeName: InsertBookingruleCountryNamesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_country_names_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleCountryNamesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleCountryNames
+  outputType: InsertBookingruleCountryNamesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleCountryNamesObject!]!"
+    - name: postCheck
+      type: BookingruleCountryNamesBoolExp
+      description: Insert permission predicate over the 'bookingrule_country_names'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_country_names
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleCountryNames
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_country_names table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleCountryNames
+  permissions:
+    - role: admin
+      allowExecution: true
+

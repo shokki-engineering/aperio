@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateDecimals
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateDecimals
+    inputTypeName: RateDecimalsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_decimals
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateDecimals
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateDecimalsBoolExp
+  operand:
+    object:
+      type: RateDecimals
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateDecimalsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateDecimalsAggExp
+  operand:
+    object:
+      aggregatedType: RateDecimals
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateDecimalsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateDecimalsOrderByExp
+  operand:
+    object:
+      orderedType: RateDecimals
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateDecimalsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateDecimals
+  objectType: RateDecimals
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_decimals
+  filterExpressionType: RateDecimalsBoolExp
+  aggregateExpression: RateDecimalsAggExp
+  orderByExpression: RateDecimalsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateDecimals
+      subscription:
+        rootField: rateDecimals
+    selectUniques:
+      - queryRootField: rateDecimalsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateDecimalsById
+    filterInputTypeName: RateDecimalsFilterInput
+    aggregate:
+      queryRootField: rateDecimalsAggregate
+      subscription:
+        rootField: rateDecimalsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateDecimals
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

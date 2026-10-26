@@ -1,0 +1,193 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanFormattedTextTexts
+  fields:
+    - name: commentId
+      type: String_1!
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: paragraphId
+      type: String_1!
+    - name: textFormat
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateplanFormattedTextTexts
+    inputTypeName: RateplanFormattedTextTextsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_formatted_text_texts
+      fieldMapping:
+        commentId:
+          column:
+            name: comment_id
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        paragraphId:
+          column:
+            name: paragraph_id
+        textFormat:
+          column:
+            name: text_format
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanFormattedTextTexts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commentId
+          - formatted
+          - id
+          - languageCode
+          - paragraphId
+          - textFormat
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanFormattedTextTextsBoolExp
+  operand:
+    object:
+      type: RateplanFormattedTextTexts
+      comparableFields:
+        - fieldName: commentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: paragraphId
+          booleanExpressionType: TextBoolExp
+        - fieldName: textFormat
+          booleanExpressionType: RateplanRateplanFormattedTextTextTextFormatBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanFormattedTextTextsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanFormattedTextTextsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanFormattedTextTexts
+      aggregatableFields:
+        - fieldName: commentId
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: paragraphId
+          aggregateExpression: TextAggExp
+        - fieldName: textFormat
+          aggregateExpression: RateplanRateplanFormattedTextTextTextFormatAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanFormattedTextTextsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanFormattedTextTextsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanFormattedTextTexts
+      orderableFields:
+        - fieldName: commentId
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: paragraphId
+          orderByExpression: String1OrderByExp
+        - fieldName: textFormat
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanFormattedTextTextsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanFormattedTextTexts
+  objectType: RateplanFormattedTextTexts
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_formatted_text_texts
+  filterExpressionType: RateplanFormattedTextTextsBoolExp
+  aggregateExpression: RateplanFormattedTextTextsAggExp
+  orderByExpression: RateplanFormattedTextTextsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanFormattedTextTexts
+      subscription:
+        rootField: rateplanFormattedTextTexts
+    selectUniques:
+      - queryRootField: rateplanFormattedTextTextsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanFormattedTextTextsById
+    filterInputTypeName: RateplanFormattedTextTextsFilterInput
+    aggregate:
+      queryRootField: rateplanFormattedTextTextsAggregate
+      subscription:
+        rootField: rateplanFormattedTextTextsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanFormattedTextTexts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

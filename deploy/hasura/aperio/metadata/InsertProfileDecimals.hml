@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertProfileDecimalsObject
+    inputTypeName: InsertProfileDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertProfileDecimalsResponse
+  description: Responses from the 'insert_profile_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfileDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertProfileDecimalsResponse
+    inputTypeName: InsertProfileDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_profile_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertProfileDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertProfileDecimals
+  outputType: InsertProfileDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertProfileDecimalsObject!]!"
+    - name: postCheck
+      type: ProfileDecimalsBoolExp
+      description: Insert permission predicate over the 'profile_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_profile_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertProfileDecimals
+    rootFieldKind: Mutation
+  description: Insert into the profile_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertProfileDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

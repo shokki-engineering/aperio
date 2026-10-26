@@ -1,0 +1,301 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ContactPhones
+  fields:
+    - name: areaCityCode
+      type: String_1
+    - name: contactId
+      type: String_1!
+    - name: countryAccessCode
+      type: String_1
+    - name: defaultValue
+      type: Boolean_1
+    - name: extension
+      type: String_1
+    - name: formatted
+      type: Boolean_1
+    - name: id
+      type: String_1!
+    - name: phoneLocationType
+      type: Enum
+    - name: phoneNumber
+      type: String_1!
+    - name: phoneTechType
+      type: Enum
+    - name: phoneUseType
+      type: Enum
+    - name: pin
+      type: String_1
+    - name: remark
+      type: String_1
+    - name: rph
+      type: String_1
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+  graphql:
+    typeName: ContactPhones
+    inputTypeName: ContactPhonesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: contact_phones
+      fieldMapping:
+        areaCityCode:
+          column:
+            name: area_city_code
+        contactId:
+          column:
+            name: contact_id
+        countryAccessCode:
+          column:
+            name: country_access_code
+        defaultValue:
+          column:
+            name: default_value
+        extension:
+          column:
+            name: extension
+        formatted:
+          column:
+            name: formatted
+        id:
+          column:
+            name: id
+        phoneLocationType:
+          column:
+            name: phone_location_type
+        phoneNumber:
+          column:
+            name: phone_number
+        phoneTechType:
+          column:
+            name: phone_tech_type
+        phoneUseType:
+          column:
+            name: phone_use_type
+        pin:
+          column:
+            name: pin
+        remark:
+          column:
+            name: remark
+        rph:
+          column:
+            name: rph
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ContactPhones
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - areaCityCode
+          - contactId
+          - countryAccessCode
+          - defaultValue
+          - extension
+          - formatted
+          - id
+          - phoneLocationType
+          - phoneNumber
+          - phoneTechType
+          - phoneUseType
+          - pin
+          - remark
+          - rph
+          - shareMarketInd
+          - shareSynchInd
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ContactPhonesBoolExp
+  operand:
+    object:
+      type: ContactPhones
+      comparableFields:
+        - fieldName: areaCityCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: contactId
+          booleanExpressionType: TextBoolExp
+        - fieldName: countryAccessCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: extension
+          booleanExpressionType: TextBoolExp
+        - fieldName: formatted
+          booleanExpressionType: BoolBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneLocationType
+          booleanExpressionType: ContactContactPhoneLocationTypeBoolExp
+        - fieldName: phoneNumber
+          booleanExpressionType: TextBoolExp
+        - fieldName: phoneTechType
+          booleanExpressionType: ContactContactPhoneTechnologyTypeBoolExp
+        - fieldName: phoneUseType
+          booleanExpressionType: ContactContactPhoneUseTypeBoolExp
+        - fieldName: pin
+          booleanExpressionType: TextBoolExp
+        - fieldName: remark
+          booleanExpressionType: TextBoolExp
+        - fieldName: rph
+          booleanExpressionType: TextBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: ContactContactPhoneShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: ContactContactPhoneShareSynchIndBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ContactPhonesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ContactPhonesAggExp
+  operand:
+    object:
+      aggregatedType: ContactPhones
+      aggregatableFields:
+        - fieldName: areaCityCode
+          aggregateExpression: TextAggExp
+        - fieldName: contactId
+          aggregateExpression: TextAggExp
+        - fieldName: countryAccessCode
+          aggregateExpression: TextAggExp
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: extension
+          aggregateExpression: TextAggExp
+        - fieldName: formatted
+          aggregateExpression: BoolAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: phoneLocationType
+          aggregateExpression: ContactContactPhoneLocationTypeAggExp
+        - fieldName: phoneNumber
+          aggregateExpression: TextAggExp
+        - fieldName: phoneTechType
+          aggregateExpression: ContactContactPhoneTechnologyTypeAggExp
+        - fieldName: phoneUseType
+          aggregateExpression: ContactContactPhoneUseTypeAggExp
+        - fieldName: pin
+          aggregateExpression: TextAggExp
+        - fieldName: remark
+          aggregateExpression: TextAggExp
+        - fieldName: rph
+          aggregateExpression: TextAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: ContactContactPhoneShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: ContactContactPhoneShareSynchIndAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ContactPhonesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ContactPhonesOrderByExp
+  operand:
+    object:
+      orderedType: ContactPhones
+      orderableFields:
+        - fieldName: areaCityCode
+          orderByExpression: String1OrderByExp
+        - fieldName: contactId
+          orderByExpression: String1OrderByExp
+        - fieldName: countryAccessCode
+          orderByExpression: String1OrderByExp
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: extension
+          orderByExpression: String1OrderByExp
+        - fieldName: formatted
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneLocationType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneNumber
+          orderByExpression: String1OrderByExp
+        - fieldName: phoneTechType
+          orderByExpression: EnumOrderByExp
+        - fieldName: phoneUseType
+          orderByExpression: EnumOrderByExp
+        - fieldName: pin
+          orderByExpression: String1OrderByExp
+        - fieldName: remark
+          orderByExpression: String1OrderByExp
+        - fieldName: rph
+          orderByExpression: String1OrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ContactPhonesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ContactPhones
+  objectType: ContactPhones
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: contact_phones
+  filterExpressionType: ContactPhonesBoolExp
+  aggregateExpression: ContactPhonesAggExp
+  orderByExpression: ContactPhonesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: contactPhones
+      subscription:
+        rootField: contactPhones
+    selectUniques:
+      - queryRootField: contactPhonesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: contactPhonesById
+    filterInputTypeName: ContactPhonesFilterInput
+    aggregate:
+      queryRootField: contactPhonesAggregate
+      subscription:
+        rootField: contactPhonesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ContactPhones
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

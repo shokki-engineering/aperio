@@ -1,0 +1,225 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleCountryNamesId
+  description: Update the 'id' column in the 'bookingrule_country_names' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleCountryNamesId
+    inputTypeName: UpdateColumnBookingruleCountryNamesIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_country_names_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleCountryNamesId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleCountryNamesRegionCode
+  description: Update the 'region_code' column in the 'bookingrule_country_names' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleCountryNamesRegionCode
+    inputTypeName: UpdateColumnBookingruleCountryNamesRegionCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_country_names_region_code
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleCountryNamesRegionCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnBookingruleCountryNamesValue
+  description: Update the 'value' column in the 'bookingrule_country_names' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnBookingruleCountryNamesValue
+    inputTypeName: UpdateColumnBookingruleCountryNamesValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_bookingrule_country_names_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnBookingruleCountryNamesValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleCountryNamesByIdUpdateColumns
+  description: Update the columns of the 'bookingrule_country_names' collection
+  fields:
+    - name: id
+      type: UpdateColumnBookingruleCountryNamesId
+      description: Update the 'id' column in the 'bookingrule_country_names' collection.
+    - name: regionCode
+      type: UpdateColumnBookingruleCountryNamesRegionCode
+      description: Update the 'region_code' column in the 'bookingrule_country_names'
+        collection.
+    - name: value
+      type: UpdateColumnBookingruleCountryNamesValue
+      description: Update the 'value' column in the 'bookingrule_country_names' collection.
+  graphql:
+    typeName: UpdateBookingruleCountryNamesByIdUpdateColumns
+    inputTypeName: UpdateBookingruleCountryNamesByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_country_names_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        regionCode:
+          column:
+            name: region_code
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleCountryNamesByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - regionCode
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateBookingruleCountryNamesByIdResponse
+  description: Responses from the 'update_bookingrule_country_names_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleCountryNames!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateBookingruleCountryNamesByIdResponse
+    inputTypeName: UpdateBookingruleCountryNamesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_bookingrule_country_names_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateBookingruleCountryNamesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateBookingruleCountryNamesById
+  outputType: UpdateBookingruleCountryNamesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: BookingruleCountryNamesBoolExp
+      description: Update permission post-condition predicate over the
+        'bookingrule_country_names' collection
+    - name: preCheck
+      type: BookingruleCountryNamesBoolExp
+      description: Update permission pre-condition predicate over the
+        'bookingrule_country_names' collection
+    - name: updateColumns
+      type: UpdateBookingruleCountryNamesByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_bookingrule_country_names_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateBookingruleCountryNamesById
+    rootFieldKind: Mutation
+  description: Update any row on the 'bookingrule_country_names' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateBookingruleCountryNamesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

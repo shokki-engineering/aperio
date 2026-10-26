@@ -1,0 +1,101 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionDecimalsObject
+  fields:
+    - name: id
+      type: String_1!
+    - name: value
+      type: String_1
+  graphql:
+    typeName: InsertCommissionDecimalsObject
+    inputTypeName: InsertCommissionDecimalsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_decimals_object
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionDecimalsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertCommissionDecimalsResponse
+  description: Responses from the 'insert_commission_decimals' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CommissionDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertCommissionDecimalsResponse
+    inputTypeName: InsertCommissionDecimalsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_commission_decimals_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertCommissionDecimalsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertCommissionDecimals
+  outputType: InsertCommissionDecimalsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertCommissionDecimalsObject!]!"
+    - name: postCheck
+      type: CommissionDecimalsBoolExp
+      description: Insert permission predicate over the 'commission_decimals' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_commission_decimals
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertCommissionDecimals
+    rootFieldKind: Mutation
+  description: Insert into the commission_decimals table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertCommissionDecimals
+  permissions:
+    - role: admin
+      allowExecution: true
+

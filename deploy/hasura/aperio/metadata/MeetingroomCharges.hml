@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: MeetingroomCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: MeetingroomCharges
+    inputTypeName: MeetingroomChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: meetingroom_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: MeetingroomCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: MeetingroomChargesBoolExp
+  operand:
+    object:
+      type: MeetingroomCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: MeetingroomChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: MeetingroomChargesAggExp
+  operand:
+    object:
+      aggregatedType: MeetingroomCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: MeetingroomChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: MeetingroomChargesOrderByExp
+  operand:
+    object:
+      orderedType: MeetingroomCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: MeetingroomChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: MeetingroomCharges
+  objectType: MeetingroomCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: meetingroom_charges
+  filterExpressionType: MeetingroomChargesBoolExp
+  aggregateExpression: MeetingroomChargesAggExp
+  orderByExpression: MeetingroomChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: meetingroomCharges
+      subscription:
+        rootField: meetingroomCharges
+    selectUniques:
+      - queryRootField: meetingroomChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: meetingroomChargesById
+    filterInputTypeName: MeetingroomChargesFilterInput
+    aggregate:
+      queryRootField: meetingroomChargesAggregate
+      subscription:
+        rootField: meetingroomChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: MeetingroomCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

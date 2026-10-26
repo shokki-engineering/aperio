@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileSecurityFeaturePrefs
+  fields:
+    - name: hotelPrefId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: preferLevel
+      type: Enum
+    - name: value
+      type: String_1
+  graphql:
+    typeName: ProfileSecurityFeaturePrefs
+    inputTypeName: ProfileSecurityFeaturePrefsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_security_feature_prefs
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileSecurityFeaturePrefs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileSecurityFeaturePrefsBoolExp
+  operand:
+    object:
+      type: ProfileSecurityFeaturePrefs
+      comparableFields:
+        - fieldName: hotelPrefId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: preferLevel
+          booleanExpressionType: ProfileProfilePreferLevelBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileSecurityFeaturePrefsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileSecurityFeaturePrefsAggExp
+  operand:
+    object:
+      aggregatedType: ProfileSecurityFeaturePrefs
+      aggregatableFields:
+        - fieldName: hotelPrefId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: preferLevel
+          aggregateExpression: ProfileProfilePreferLevelAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileSecurityFeaturePrefsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileSecurityFeaturePrefsOrderByExp
+  operand:
+    object:
+      orderedType: ProfileSecurityFeaturePrefs
+      orderableFields:
+        - fieldName: hotelPrefId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: preferLevel
+          orderByExpression: EnumOrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileSecurityFeaturePrefsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileSecurityFeaturePrefs
+  objectType: ProfileSecurityFeaturePrefs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_security_feature_prefs
+  filterExpressionType: ProfileSecurityFeaturePrefsBoolExp
+  aggregateExpression: ProfileSecurityFeaturePrefsAggExp
+  orderByExpression: ProfileSecurityFeaturePrefsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileSecurityFeaturePrefs
+      subscription:
+        rootField: profileSecurityFeaturePrefs
+    selectUniques:
+      - queryRootField: profileSecurityFeaturePrefsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileSecurityFeaturePrefsById
+    filterInputTypeName: ProfileSecurityFeaturePrefsFilterInput
+    aggregate:
+      queryRootField: profileSecurityFeaturePrefsAggregate
+      subscription:
+        rootField: profileSecurityFeaturePrefsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileSecurityFeaturePrefs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

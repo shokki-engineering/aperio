@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AffiliationinfoBrands
+  fields:
+    - name: affiliationInfoId
+      type: String_1!
+    - name: categoryCode
+      type: String_1
+    - name: codeDetail
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: marketing
+      type: String_1
+    - name: uri
+      type: String_1
+  graphql:
+    typeName: AffiliationinfoBrands
+    inputTypeName: AffiliationinfoBrandsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: affiliationinfo_brands
+      fieldMapping:
+        affiliationInfoId:
+          column:
+            name: affiliation_info_id
+        categoryCode:
+          column:
+            name: category_code
+        codeDetail:
+          column:
+            name: code_detail
+        id:
+          column:
+            name: id
+        marketing:
+          column:
+            name: marketing
+        uri:
+          column:
+            name: uri
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AffiliationinfoBrands
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affiliationInfoId
+          - categoryCode
+          - codeDetail
+          - id
+          - marketing
+          - uri
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AffiliationinfoBrandsBoolExp
+  operand:
+    object:
+      type: AffiliationinfoBrands
+      comparableFields:
+        - fieldName: affiliationInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: categoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: codeDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: marketing
+          booleanExpressionType: TextBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AffiliationinfoBrandsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AffiliationinfoBrandsAggExp
+  operand:
+    object:
+      aggregatedType: AffiliationinfoBrands
+      aggregatableFields:
+        - fieldName: affiliationInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: categoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: codeDetail
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: marketing
+          aggregateExpression: TextAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AffiliationinfoBrandsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AffiliationinfoBrandsOrderByExp
+  operand:
+    object:
+      orderedType: AffiliationinfoBrands
+      orderableFields:
+        - fieldName: affiliationInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: categoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: codeDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: marketing
+          orderByExpression: String1OrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AffiliationinfoBrandsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AffiliationinfoBrands
+  objectType: AffiliationinfoBrands
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: affiliationinfo_brands
+  filterExpressionType: AffiliationinfoBrandsBoolExp
+  aggregateExpression: AffiliationinfoBrandsAggExp
+  orderByExpression: AffiliationinfoBrandsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: affiliationinfoBrands
+      subscription:
+        rootField: affiliationinfoBrands
+    selectUniques:
+      - queryRootField: affiliationinfoBrandsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: affiliationinfoBrandsById
+    filterInputTypeName: AffiliationinfoBrandsFilterInput
+    aggregate:
+      queryRootField: affiliationinfoBrandsAggregate
+      subscription:
+        rootField: affiliationinfoBrandsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AffiliationinfoBrands
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

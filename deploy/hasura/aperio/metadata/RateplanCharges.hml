@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanCharges
+    inputTypeName: RateplanChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanChargesBoolExp
+  operand:
+    object:
+      type: RateplanCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanChargesAggExp
+  operand:
+    object:
+      aggregatedType: RateplanCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanChargesOrderByExp
+  operand:
+    object:
+      orderedType: RateplanCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanCharges
+  objectType: RateplanCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_charges
+  filterExpressionType: RateplanChargesBoolExp
+  aggregateExpression: RateplanChargesAggExp
+  orderByExpression: RateplanChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanCharges
+      subscription:
+        rootField: rateplanCharges
+    selectUniques:
+      - queryRootField: rateplanChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanChargesById
+    filterInputTypeName: RateplanChargesFilterInput
+    aggregate:
+      queryRootField: rateplanChargesAggregate
+      subscription:
+        rootField: rateplanChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

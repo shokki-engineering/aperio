@@ -1,0 +1,120 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyMoneysObject
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: InsertPolicyMoneysObject
+    inputTypeName: InsertPolicyMoneysObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_moneys_object
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyMoneysObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertPolicyMoneysResponse
+  description: Responses from the 'insert_policy_moneys' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[PolicyMoneys!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertPolicyMoneysResponse
+    inputTypeName: InsertPolicyMoneysResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_policy_moneys_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertPolicyMoneysResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertPolicyMoneys
+  outputType: InsertPolicyMoneysResponse!
+  arguments:
+    - name: objects
+      type: "[InsertPolicyMoneysObject!]!"
+    - name: postCheck
+      type: PolicyMoneysBoolExp
+      description: Insert permission predicate over the 'policy_moneys' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_policy_moneys
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertPolicyMoneys
+    rootFieldKind: Mutation
+  description: Insert into the policy_moneys table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertPolicyMoneys
+  permissions:
+    - role: admin
+      allowExecution: true
+

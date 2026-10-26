@@ -1,0 +1,108 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleTaxesObject
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: InsertBookingruleTaxesObject
+    inputTypeName: InsertBookingruleTaxesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_taxes_object
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleTaxesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingruleTaxesResponse
+  description: Responses from the 'insert_bookingrule_taxes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingruleTaxes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingruleTaxesResponse
+    inputTypeName: InsertBookingruleTaxesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_bookingrule_taxes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingruleTaxesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingruleTaxes
+  outputType: InsertBookingruleTaxesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingruleTaxesObject!]!"
+    - name: postCheck
+      type: BookingruleTaxesBoolExp
+      description: Insert permission predicate over the 'bookingrule_taxes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_bookingrule_taxes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingruleTaxes
+    rootFieldKind: Mutation
+  description: Insert into the bookingrule_taxes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingruleTaxes
+  permissions:
+    - role: admin
+      allowExecution: true
+

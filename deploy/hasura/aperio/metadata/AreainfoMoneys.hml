@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: AreainfoMoneys
+  fields:
+    - name: currencyCode
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: nanoUnits
+      type: Int32
+    - name: units
+      type: Int64
+  graphql:
+    typeName: AreainfoMoneys
+    inputTypeName: AreainfoMoneysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: areainfo_moneys
+      fieldMapping:
+        currencyCode:
+          column:
+            name: currency_code
+        id:
+          column:
+            name: id
+        nanoUnits:
+          column:
+            name: nano_units
+        units:
+          column:
+            name: units
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: AreainfoMoneys
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - currencyCode
+          - id
+          - nanoUnits
+          - units
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: AreainfoMoneysBoolExp
+  operand:
+    object:
+      type: AreainfoMoneys
+      comparableFields:
+        - fieldName: currencyCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: nanoUnits
+          booleanExpressionType: Int4BoolExp
+        - fieldName: units
+          booleanExpressionType: Int8BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: AreainfoMoneysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: AreainfoMoneysAggExp
+  operand:
+    object:
+      aggregatedType: AreainfoMoneys
+      aggregatableFields:
+        - fieldName: currencyCode
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: nanoUnits
+          aggregateExpression: Int4AggExp
+        - fieldName: units
+          aggregateExpression: Int8AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: AreainfoMoneysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: AreainfoMoneysOrderByExp
+  operand:
+    object:
+      orderedType: AreainfoMoneys
+      orderableFields:
+        - fieldName: currencyCode
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: nanoUnits
+          orderByExpression: Int32OrderByExp
+        - fieldName: units
+          orderByExpression: Int64OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: AreainfoMoneysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: AreainfoMoneys
+  objectType: AreainfoMoneys
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: areainfo_moneys
+  filterExpressionType: AreainfoMoneysBoolExp
+  aggregateExpression: AreainfoMoneysAggExp
+  orderByExpression: AreainfoMoneysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: areainfoMoneys
+      subscription:
+        rootField: areainfoMoneys
+    selectUniques:
+      - queryRootField: areainfoMoneysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: areainfoMoneysById
+    filterInputTypeName: AreainfoMoneysFilterInput
+    aggregate:
+      queryRootField: areainfoMoneysAggregate
+      subscription:
+        rootField: areainfoMoneysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: AreainfoMoneys
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

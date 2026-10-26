@@ -1,0 +1,265 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocation
+  fields:
+    - name: allocationId
+      type: String_1
+    - name: allowGeneralInv
+      type: Boolean_1
+    - name: compRoomFactor
+      type: Int32
+    - name: compRoomQuantity
+      type: Int32
+    - name: duration
+      type: String_1
+    - name: endDateIndicator
+      type: Boolean_1
+    - name: endId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: procureBlockCode
+      type: String_1
+    - name: roomTypeAllocationsId
+      type: String_1!
+    - name: sellLimit
+      type: Int32
+    - name: startId
+      type: String_1
+    - name: unitCount
+      type: Int32
+  graphql:
+    typeName: InventoryblockRoomTypeAllocation
+    inputTypeName: InventoryblockRoomTypeAllocationInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: inventoryblock_room_type_allocation
+      fieldMapping:
+        allocationId:
+          column:
+            name: allocation_id
+        allowGeneralInv:
+          column:
+            name: allow_general_inv
+        compRoomFactor:
+          column:
+            name: comp_room_factor
+        compRoomQuantity:
+          column:
+            name: comp_room_quantity
+        duration:
+          column:
+            name: duration
+        endDateIndicator:
+          column:
+            name: end_date_indicator
+        endId:
+          column:
+            name: end_id
+        id:
+          column:
+            name: id
+        procureBlockCode:
+          column:
+            name: procure_block_code
+        roomTypeAllocationsId:
+          column:
+            name: room_type_allocations_id
+        sellLimit:
+          column:
+            name: sell_limit
+        startId:
+          column:
+            name: start_id
+        unitCount:
+          column:
+            name: unit_count
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InventoryblockRoomTypeAllocation
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - allocationId
+          - allowGeneralInv
+          - compRoomFactor
+          - compRoomQuantity
+          - duration
+          - endDateIndicator
+          - endId
+          - id
+          - procureBlockCode
+          - roomTypeAllocationsId
+          - sellLimit
+          - startId
+          - unitCount
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocationBoolExp
+  operand:
+    object:
+      type: InventoryblockRoomTypeAllocation
+      comparableFields:
+        - fieldName: allocationId
+          booleanExpressionType: TextBoolExp
+        - fieldName: allowGeneralInv
+          booleanExpressionType: BoolBoolExp
+        - fieldName: compRoomFactor
+          booleanExpressionType: Int4BoolExp
+        - fieldName: compRoomQuantity
+          booleanExpressionType: Int4BoolExp
+        - fieldName: duration
+          booleanExpressionType: TextBoolExp
+        - fieldName: endDateIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: endId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: procureBlockCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: roomTypeAllocationsId
+          booleanExpressionType: TextBoolExp
+        - fieldName: sellLimit
+          booleanExpressionType: Int4BoolExp
+        - fieldName: startId
+          booleanExpressionType: TextBoolExp
+        - fieldName: unitCount
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: InventoryblockRoomTypeAllocationBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocationAggExp
+  operand:
+    object:
+      aggregatedType: InventoryblockRoomTypeAllocation
+      aggregatableFields:
+        - fieldName: allocationId
+          aggregateExpression: TextAggExp
+        - fieldName: allowGeneralInv
+          aggregateExpression: BoolAggExp
+        - fieldName: compRoomFactor
+          aggregateExpression: Int4AggExp
+        - fieldName: compRoomQuantity
+          aggregateExpression: Int4AggExp
+        - fieldName: duration
+          aggregateExpression: TextAggExp
+        - fieldName: endDateIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: endId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: procureBlockCode
+          aggregateExpression: TextAggExp
+        - fieldName: roomTypeAllocationsId
+          aggregateExpression: TextAggExp
+        - fieldName: sellLimit
+          aggregateExpression: Int4AggExp
+        - fieldName: startId
+          aggregateExpression: TextAggExp
+        - fieldName: unitCount
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: InventoryblockRoomTypeAllocationAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: InventoryblockRoomTypeAllocationOrderByExp
+  operand:
+    object:
+      orderedType: InventoryblockRoomTypeAllocation
+      orderableFields:
+        - fieldName: allocationId
+          orderByExpression: String1OrderByExp
+        - fieldName: allowGeneralInv
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: compRoomFactor
+          orderByExpression: Int32OrderByExp
+        - fieldName: compRoomQuantity
+          orderByExpression: Int32OrderByExp
+        - fieldName: duration
+          orderByExpression: String1OrderByExp
+        - fieldName: endDateIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: endId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: procureBlockCode
+          orderByExpression: String1OrderByExp
+        - fieldName: roomTypeAllocationsId
+          orderByExpression: String1OrderByExp
+        - fieldName: sellLimit
+          orderByExpression: Int32OrderByExp
+        - fieldName: startId
+          orderByExpression: String1OrderByExp
+        - fieldName: unitCount
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: InventoryblockRoomTypeAllocationOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: InventoryblockRoomTypeAllocation
+  objectType: InventoryblockRoomTypeAllocation
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: inventoryblock_room_type_allocation
+  filterExpressionType: InventoryblockRoomTypeAllocationBoolExp
+  aggregateExpression: InventoryblockRoomTypeAllocationAggExp
+  orderByExpression: InventoryblockRoomTypeAllocationOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: inventoryblockRoomTypeAllocation
+      subscription:
+        rootField: inventoryblockRoomTypeAllocation
+    selectUniques:
+      - queryRootField: inventoryblockRoomTypeAllocationById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: inventoryblockRoomTypeAllocationById
+    filterInputTypeName: InventoryblockRoomTypeAllocationFilterInput
+    aggregate:
+      queryRootField: inventoryblockRoomTypeAllocationAggregate
+      subscription:
+        rootField: inventoryblockRoomTypeAllocationAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: InventoryblockRoomTypeAllocation
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

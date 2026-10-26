@@ -1,0 +1,76 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteHotelproductGuaranteePaymentAmountPercentsByIdResponse
+  description: Responses from the
+    'delete_hotelproduct_guarantee_payment_amount_percents_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[HotelproductGuaranteePaymentAmountPercents!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteHotelproductGuaranteePaymentAmountPercentsByIdResponse
+    inputTypeName: DeleteHotelproductGuaranteePaymentAmountPercentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_hotelproduct_guarantee_payment_amount_percents_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteHotelproductGuaranteePaymentAmountPercentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteHotelproductGuaranteePaymentAmountPercentsById
+  outputType: DeleteHotelproductGuaranteePaymentAmountPercentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: HotelproductGuaranteePaymentAmountPercentsBoolExp
+      description: Delete permission predicate over the
+        'hotelproduct_guarantee_payment_amount_percents' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_hotelproduct_guarantee_payment_amount_percents_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteHotelproductGuaranteePaymentAmountPercentsById
+    rootFieldKind: Mutation
+  description: Delete any row on the
+    'hotelproduct_guarantee_payment_amount_percents' collection using the 'id'
+    key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteHotelproductGuaranteePaymentAmountPercentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

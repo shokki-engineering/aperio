@@ -1,0 +1,247 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: PolicyPersonNames
+  fields:
+    - name: defaultValue
+      type: Boolean_1
+    - name: documentId
+      type: String_1
+    - name: givenNames
+      type: "[String_1]"
+    - name: id
+      type: String_1!
+    - name: languageCode
+      type: String_1
+    - name: middleNames
+      type: "[String_1]"
+    - name: namePrefixes
+      type: "[String_1]"
+    - name: nameSuffixes
+      type: "[String_1]"
+    - name: nameTitles
+      type: "[String_1]"
+    - name: nameType
+      type: Enum
+    - name: shareMarketInd
+      type: Enum
+    - name: shareSynchInd
+      type: Enum
+    - name: surname
+      type: String_1!
+    - name: surnamePrefix
+      type: String_1
+  graphql:
+    typeName: PolicyPersonNames
+    inputTypeName: PolicyPersonNamesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: policy_person_names
+      fieldMapping:
+        defaultValue:
+          column:
+            name: default_value
+        documentId:
+          column:
+            name: document_id
+        givenNames:
+          column:
+            name: given_names
+        id:
+          column:
+            name: id
+        languageCode:
+          column:
+            name: language_code
+        middleNames:
+          column:
+            name: middle_names
+        namePrefixes:
+          column:
+            name: name_prefixes
+        nameSuffixes:
+          column:
+            name: name_suffixes
+        nameTitles:
+          column:
+            name: name_titles
+        nameType:
+          column:
+            name: name_type
+        shareMarketInd:
+          column:
+            name: share_market_ind
+        shareSynchInd:
+          column:
+            name: share_synch_ind
+        surname:
+          column:
+            name: surname
+        surnamePrefix:
+          column:
+            name: surname_prefix
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: PolicyPersonNames
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - defaultValue
+          - documentId
+          - givenNames
+          - id
+          - languageCode
+          - middleNames
+          - namePrefixes
+          - nameSuffixes
+          - nameTitles
+          - nameType
+          - shareMarketInd
+          - shareSynchInd
+          - surname
+          - surnamePrefix
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PolicyPersonNamesBoolExp
+  operand:
+    object:
+      type: PolicyPersonNames
+      comparableFields:
+        - fieldName: defaultValue
+          booleanExpressionType: BoolBoolExp
+        - fieldName: documentId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: languageCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: nameType
+          booleanExpressionType: PolicyPolicyNameTypeBoolExp
+        - fieldName: shareMarketInd
+          booleanExpressionType: PolicyPolicyAcceptedPaymentShareMarketIndBoolExp
+        - fieldName: shareSynchInd
+          booleanExpressionType: PolicyPolicyAcceptedPaymentShareSynchIndBoolExp
+        - fieldName: surname
+          booleanExpressionType: TextBoolExp
+        - fieldName: surnamePrefix
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PolicyPersonNamesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PolicyPersonNamesAggExp
+  operand:
+    object:
+      aggregatedType: PolicyPersonNames
+      aggregatableFields:
+        - fieldName: defaultValue
+          aggregateExpression: BoolAggExp
+        - fieldName: documentId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: languageCode
+          aggregateExpression: TextAggExp
+        - fieldName: nameType
+          aggregateExpression: PolicyPolicyNameTypeAggExp
+        - fieldName: shareMarketInd
+          aggregateExpression: PolicyPolicyAcceptedPaymentShareMarketIndAggExp
+        - fieldName: shareSynchInd
+          aggregateExpression: PolicyPolicyAcceptedPaymentShareSynchIndAggExp
+        - fieldName: surname
+          aggregateExpression: TextAggExp
+        - fieldName: surnamePrefix
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: PolicyPersonNamesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PolicyPersonNamesOrderByExp
+  operand:
+    object:
+      orderedType: PolicyPersonNames
+      orderableFields:
+        - fieldName: defaultValue
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: documentId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: languageCode
+          orderByExpression: String1OrderByExp
+        - fieldName: nameType
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareMarketInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: shareSynchInd
+          orderByExpression: EnumOrderByExp
+        - fieldName: surname
+          orderByExpression: String1OrderByExp
+        - fieldName: surnamePrefix
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: PolicyPersonNamesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: PolicyPersonNames
+  objectType: PolicyPersonNames
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: policy_person_names
+  filterExpressionType: PolicyPersonNamesBoolExp
+  aggregateExpression: PolicyPersonNamesAggExp
+  orderByExpression: PolicyPersonNamesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: policyPersonNames
+      subscription:
+        rootField: policyPersonNames
+    selectUniques:
+      - queryRootField: policyPersonNamesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: policyPersonNamesById
+    filterInputTypeName: PolicyPersonNamesFilterInput
+    aggregate:
+      queryRootField: policyPersonNamesAggregate
+      subscription:
+        rootField: policyPersonNamesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: PolicyPersonNames
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

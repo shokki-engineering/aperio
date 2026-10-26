@@ -1,0 +1,177 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpDecimalsId
+  description: Update the 'id' column in the 'meetingrfp_decimals' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpDecimalsId
+    inputTypeName: UpdateColumnMeetingrfpDecimalsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_decimals_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpDecimalsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnMeetingrfpDecimalsValue
+  description: Update the 'value' column in the 'meetingrfp_decimals' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnMeetingrfpDecimalsValue
+    inputTypeName: UpdateColumnMeetingrfpDecimalsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_meetingrfp_decimals_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnMeetingrfpDecimalsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpDecimalsByIdUpdateColumns
+  description: Update the columns of the 'meetingrfp_decimals' collection
+  fields:
+    - name: id
+      type: UpdateColumnMeetingrfpDecimalsId
+      description: Update the 'id' column in the 'meetingrfp_decimals' collection.
+    - name: value
+      type: UpdateColumnMeetingrfpDecimalsValue
+      description: Update the 'value' column in the 'meetingrfp_decimals' collection.
+  graphql:
+    typeName: UpdateMeetingrfpDecimalsByIdUpdateColumns
+    inputTypeName: UpdateMeetingrfpDecimalsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_decimals_by_id_update_columns
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpDecimalsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateMeetingrfpDecimalsByIdResponse
+  description: Responses from the 'update_meetingrfp_decimals_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[MeetingrfpDecimals!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateMeetingrfpDecimalsByIdResponse
+    inputTypeName: UpdateMeetingrfpDecimalsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_meetingrfp_decimals_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateMeetingrfpDecimalsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateMeetingrfpDecimalsById
+  outputType: UpdateMeetingrfpDecimalsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: MeetingrfpDecimalsBoolExp
+      description: Update permission post-condition predicate over the
+        'meetingrfp_decimals' collection
+    - name: preCheck
+      type: MeetingrfpDecimalsBoolExp
+      description: Update permission pre-condition predicate over the
+        'meetingrfp_decimals' collection
+    - name: updateColumns
+      type: UpdateMeetingrfpDecimalsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_meetingrfp_decimals_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateMeetingrfpDecimalsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'meetingrfp_decimals' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateMeetingrfpDecimalsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

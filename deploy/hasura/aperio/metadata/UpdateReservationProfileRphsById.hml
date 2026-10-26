@@ -1,0 +1,225 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationProfileRphsId
+  description: Update the 'id' column in the 'reservation_profile_rphs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationProfileRphsId
+    inputTypeName: UpdateColumnReservationProfileRphsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_profile_rphs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationProfileRphsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationProfileRphsResGuestId
+  description: Update the 'res_guest_id' column in the 'reservation_profile_rphs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationProfileRphsResGuestId
+    inputTypeName: UpdateColumnReservationProfileRphsResGuestIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_profile_rphs_res_guest_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationProfileRphsResGuestId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnReservationProfileRphsRph
+  description: Update the 'rph' column in the 'reservation_profile_rphs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnReservationProfileRphsRph
+    inputTypeName: UpdateColumnReservationProfileRphsRphInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_reservation_profile_rphs_rph
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnReservationProfileRphsRph
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationProfileRphsByIdUpdateColumns
+  description: Update the columns of the 'reservation_profile_rphs' collection
+  fields:
+    - name: id
+      type: UpdateColumnReservationProfileRphsId
+      description: Update the 'id' column in the 'reservation_profile_rphs' collection.
+    - name: resGuestId
+      type: UpdateColumnReservationProfileRphsResGuestId
+      description: Update the 'res_guest_id' column in the 'reservation_profile_rphs'
+        collection.
+    - name: rph
+      type: UpdateColumnReservationProfileRphsRph
+      description: Update the 'rph' column in the 'reservation_profile_rphs' collection.
+  graphql:
+    typeName: UpdateReservationProfileRphsByIdUpdateColumns
+    inputTypeName: UpdateReservationProfileRphsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_profile_rphs_by_id_update_columns
+      fieldMapping:
+        id:
+          column:
+            name: id
+        resGuestId:
+          column:
+            name: res_guest_id
+        rph:
+          column:
+            name: rph
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationProfileRphsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - resGuestId
+          - rph
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateReservationProfileRphsByIdResponse
+  description: Responses from the 'update_reservation_profile_rphs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationProfileRphs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateReservationProfileRphsByIdResponse
+    inputTypeName: UpdateReservationProfileRphsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_reservation_profile_rphs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateReservationProfileRphsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateReservationProfileRphsById
+  outputType: UpdateReservationProfileRphsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ReservationProfileRphsBoolExp
+      description: Update permission post-condition predicate over the
+        'reservation_profile_rphs' collection
+    - name: preCheck
+      type: ReservationProfileRphsBoolExp
+      description: Update permission pre-condition predicate over the
+        'reservation_profile_rphs' collection
+    - name: updateColumns
+      type: UpdateReservationProfileRphsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_reservation_profile_rphs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateReservationProfileRphsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'reservation_profile_rphs' collection using
+    the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateReservationProfileRphsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,115 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationResGuestRphsObject
+  fields:
+    - name: billingInstructionCodeId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: rph
+      type: String_1!
+  graphql:
+    typeName: InsertReservationResGuestRphsObject
+    inputTypeName: InsertReservationResGuestRphsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_res_guest_rphs_object
+      fieldMapping:
+        billingInstructionCodeId:
+          column:
+            name: billing_instruction_code_id
+        id:
+          column:
+            name: id
+        rph:
+          column:
+            name: rph
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationResGuestRphsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingInstructionCodeId
+          - id
+          - rph
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertReservationResGuestRphsResponse
+  description: Responses from the 'insert_reservation_res_guest_rphs' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ReservationResGuestRphs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertReservationResGuestRphsResponse
+    inputTypeName: InsertReservationResGuestRphsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_reservation_res_guest_rphs_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertReservationResGuestRphsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertReservationResGuestRphs
+  outputType: InsertReservationResGuestRphsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertReservationResGuestRphsObject!]!"
+    - name: postCheck
+      type: ReservationResGuestRphsBoolExp
+      description: Insert permission predicate over the 'reservation_res_guest_rphs'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_reservation_res_guest_rphs
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertReservationResGuestRphs
+    rootFieldKind: Mutation
+  description: Insert into the reservation_res_guest_rphs table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertReservationResGuestRphs
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,228 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionResourceObject
+  fields:
+    - name: bookingLimit
+      type: Int32
+    - name: bookingLimitMessageType
+      type: Enum
+    - name: bookingThreshold
+      type: Int32
+    - name: createTime
+      type: Timestamptz
+    - name: deleteTime
+      type: Timestamptz
+    - name: deltaId
+      type: String_1
+    - name: etag
+      type: String_1
+    - name: expireTime
+      type: Timestamptz
+    - name: hotelId
+      type: String_1!
+    - name: hurdleRateId
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: locatorId
+      type: Int32
+    - name: name
+      type: String_1!
+    - name: override
+      type: Boolean_1
+    - name: ratePlanId
+      type: String_1!
+    - name: restrictionStatusId
+      type: String_1
+    - name: roomGender
+      type: Enum
+    - name: sharedRoom
+      type: Boolean_1
+    - name: stayLengthsId
+      type: String_1
+    - name: uid
+      type: String_1
+    - name: uniqueIdId
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertRestrictionResourceObject
+    inputTypeName: InsertRestrictionResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_resource_object
+      fieldMapping:
+        bookingLimit:
+          column:
+            name: booking_limit
+        bookingLimitMessageType:
+          column:
+            name: booking_limit_message_type
+        bookingThreshold:
+          column:
+            name: booking_threshold
+        createTime:
+          column:
+            name: create_time
+        deleteTime:
+          column:
+            name: delete_time
+        deltaId:
+          column:
+            name: delta_id
+        etag:
+          column:
+            name: etag
+        expireTime:
+          column:
+            name: expire_time
+        hotelId:
+          column:
+            name: hotel_id
+        hurdleRateId:
+          column:
+            name: hurdle_rate_id
+        id:
+          column:
+            name: id
+        locatorId:
+          column:
+            name: locator_id
+        name:
+          column:
+            name: name
+        override:
+          column:
+            name: override
+        ratePlanId:
+          column:
+            name: rate_plan_id
+        restrictionStatusId:
+          column:
+            name: restriction_status_id
+        roomGender:
+          column:
+            name: room_gender
+        sharedRoom:
+          column:
+            name: shared_room
+        stayLengthsId:
+          column:
+            name: stay_lengths_id
+        uid:
+          column:
+            name: uid
+        uniqueIdId:
+          column:
+            name: unique_id_id
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingLimit
+          - bookingLimitMessageType
+          - bookingThreshold
+          - createTime
+          - deleteTime
+          - deltaId
+          - etag
+          - expireTime
+          - hotelId
+          - hurdleRateId
+          - id
+          - locatorId
+          - name
+          - override
+          - ratePlanId
+          - restrictionStatusId
+          - roomGender
+          - sharedRoom
+          - stayLengthsId
+          - uid
+          - uniqueIdId
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertRestrictionResourceResponse
+  description: Responses from the 'insert_restriction_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RestrictionResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertRestrictionResourceResponse
+    inputTypeName: InsertRestrictionResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_restriction_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertRestrictionResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertRestrictionResource
+  outputType: InsertRestrictionResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertRestrictionResourceObject!]!"
+    - name: postCheck
+      type: RestrictionResourceBoolExp
+      description: Insert permission predicate over the 'restriction_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_restriction_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertRestrictionResource
+    rootFieldKind: Mutation
+  description: Insert into the restriction_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertRestrictionResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

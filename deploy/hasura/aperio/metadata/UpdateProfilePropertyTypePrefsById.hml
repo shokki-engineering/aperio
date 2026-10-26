@@ -1,0 +1,309 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePropertyTypePrefsHotelPrefId
+  description: Update the 'hotel_pref_id' column in the
+    'profile_property_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePropertyTypePrefsHotelPrefId
+    inputTypeName: UpdateColumnProfilePropertyTypePrefsHotelPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_property_type_prefs_hotel_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePropertyTypePrefsHotelPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePropertyTypePrefsId
+  description: Update the 'id' column in the 'profile_property_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePropertyTypePrefsId
+    inputTypeName: UpdateColumnProfilePropertyTypePrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_property_type_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePropertyTypePrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePropertyTypePrefsPreferLevel
+  description: Update the 'prefer_level' column in the
+    'profile_property_type_prefs' collection
+  fields:
+    - name: set
+      type: Enum
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePropertyTypePrefsPreferLevel
+    inputTypeName: UpdateColumnProfilePropertyTypePrefsPreferLevelInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_property_type_prefs_prefer_level
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePropertyTypePrefsPreferLevel
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePropertyTypePrefsPropertyType
+  description: Update the 'property_type' column in the
+    'profile_property_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePropertyTypePrefsPropertyType
+    inputTypeName: UpdateColumnProfilePropertyTypePrefsPropertyTypeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_property_type_prefs_property_type
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePropertyTypePrefsPropertyType
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePropertyTypePrefsValue
+  description: Update the 'value' column in the 'profile_property_type_prefs' collection
+  fields:
+    - name: set
+      type: String_1
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePropertyTypePrefsValue
+    inputTypeName: UpdateColumnProfilePropertyTypePrefsValueInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_property_type_prefs_value
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePropertyTypePrefsValue
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePropertyTypePrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_property_type_prefs' collection
+  fields:
+    - name: hotelPrefId
+      type: UpdateColumnProfilePropertyTypePrefsHotelPrefId
+      description: Update the 'hotel_pref_id' column in the
+        'profile_property_type_prefs' collection.
+    - name: id
+      type: UpdateColumnProfilePropertyTypePrefsId
+      description: Update the 'id' column in the 'profile_property_type_prefs' collection.
+    - name: preferLevel
+      type: UpdateColumnProfilePropertyTypePrefsPreferLevel
+      description: Update the 'prefer_level' column in the
+        'profile_property_type_prefs' collection.
+    - name: propertyType
+      type: UpdateColumnProfilePropertyTypePrefsPropertyType
+      description: Update the 'property_type' column in the
+        'profile_property_type_prefs' collection.
+    - name: value
+      type: UpdateColumnProfilePropertyTypePrefsValue
+      description: Update the 'value' column in the 'profile_property_type_prefs'
+        collection.
+  graphql:
+    typeName: UpdateProfilePropertyTypePrefsByIdUpdateColumns
+    inputTypeName: UpdateProfilePropertyTypePrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_property_type_prefs_by_id_update_columns
+      fieldMapping:
+        hotelPrefId:
+          column:
+            name: hotel_pref_id
+        id:
+          column:
+            name: id
+        preferLevel:
+          column:
+            name: prefer_level
+        propertyType:
+          column:
+            name: property_type
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePropertyTypePrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hotelPrefId
+          - id
+          - preferLevel
+          - propertyType
+          - value
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePropertyTypePrefsByIdResponse
+  description: Responses from the 'update_profile_property_type_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePropertyTypePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfilePropertyTypePrefsByIdResponse
+    inputTypeName: UpdateProfilePropertyTypePrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_property_type_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePropertyTypePrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfilePropertyTypePrefsById
+  outputType: UpdateProfilePropertyTypePrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfilePropertyTypePrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_property_type_prefs' collection
+    - name: preCheck
+      type: ProfilePropertyTypePrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_property_type_prefs' collection
+    - name: updateColumns
+      type: UpdateProfilePropertyTypePrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_property_type_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfilePropertyTypePrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_property_type_prefs' collection
+    using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfilePropertyTypePrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

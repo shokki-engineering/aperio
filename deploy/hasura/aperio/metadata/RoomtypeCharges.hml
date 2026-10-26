@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RoomtypeCharges
+  fields:
+    - name: amountId
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RoomtypeCharges
+    inputTypeName: RoomtypeChargesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: roomtype_charges
+      fieldMapping:
+        amountId:
+          column:
+            name: amount_id
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RoomtypeCharges
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amountId
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RoomtypeChargesBoolExp
+  operand:
+    object:
+      type: RoomtypeCharges
+      comparableFields:
+        - fieldName: amountId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RoomtypeChargesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RoomtypeChargesAggExp
+  operand:
+    object:
+      aggregatedType: RoomtypeCharges
+      aggregatableFields:
+        - fieldName: amountId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RoomtypeChargesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RoomtypeChargesOrderByExp
+  operand:
+    object:
+      orderedType: RoomtypeCharges
+      orderableFields:
+        - fieldName: amountId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RoomtypeChargesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RoomtypeCharges
+  objectType: RoomtypeCharges
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: roomtype_charges
+  filterExpressionType: RoomtypeChargesBoolExp
+  aggregateExpression: RoomtypeChargesAggExp
+  orderByExpression: RoomtypeChargesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: roomtypeCharges
+      subscription:
+        rootField: roomtypeCharges
+    selectUniques:
+      - queryRootField: roomtypeChargesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: roomtypeChargesById
+    filterInputTypeName: RoomtypeChargesFilterInput
+    aggregate:
+      queryRootField: roomtypeChargesAggregate
+      subscription:
+        rootField: roomtypeChargesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RoomtypeCharges
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

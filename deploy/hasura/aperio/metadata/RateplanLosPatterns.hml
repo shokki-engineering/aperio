@@ -1,0 +1,133 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateplanLosPatterns
+  fields:
+    - name: fullPatternLos
+      type: String_1
+    - name: id
+      type: String_1!
+  graphql:
+    typeName: RateplanLosPatterns
+    inputTypeName: RateplanLosPatternsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rateplan_los_patterns
+      fieldMapping:
+        fullPatternLos:
+          column:
+            name: full_pattern_los
+        id:
+          column:
+            name: id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateplanLosPatterns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fullPatternLos
+          - id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateplanLosPatternsBoolExp
+  operand:
+    object:
+      type: RateplanLosPatterns
+      comparableFields:
+        - fieldName: fullPatternLos
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateplanLosPatternsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateplanLosPatternsAggExp
+  operand:
+    object:
+      aggregatedType: RateplanLosPatterns
+      aggregatableFields:
+        - fieldName: fullPatternLos
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateplanLosPatternsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateplanLosPatternsOrderByExp
+  operand:
+    object:
+      orderedType: RateplanLosPatterns
+      orderableFields:
+        - fieldName: fullPatternLos
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateplanLosPatternsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateplanLosPatterns
+  objectType: RateplanLosPatterns
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rateplan_los_patterns
+  filterExpressionType: RateplanLosPatternsBoolExp
+  aggregateExpression: RateplanLosPatternsAggExp
+  orderByExpression: RateplanLosPatternsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateplanLosPatterns
+      subscription:
+        rootField: rateplanLosPatterns
+    selectUniques:
+      - queryRootField: rateplanLosPatternsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateplanLosPatternsById
+    filterInputTypeName: RateplanLosPatternsFilterInput
+    aggregate:
+      queryRootField: rateplanLosPatternsAggregate
+      subscription:
+        rootField: rateplanLosPatternsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateplanLosPatterns
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

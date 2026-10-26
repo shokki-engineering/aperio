@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleBookingChannelCode
+  fields:
+    - name: bookingChannelCodesId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: restrictedDisplayIndicator
+      type: Boolean_1
+    - name: sort
+      type: Int32
+    - name: value
+      type: String_1
+  graphql:
+    typeName: BookingruleBookingChannelCode
+    inputTypeName: BookingruleBookingChannelCodeInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_booking_channel_code
+      fieldMapping:
+        bookingChannelCodesId:
+          column:
+            name: booking_channel_codes_id
+        id:
+          column:
+            name: id
+        restrictedDisplayIndicator:
+          column:
+            name: restricted_display_indicator
+        sort:
+          column:
+            name: sort
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleBookingChannelCode
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookingChannelCodesId
+          - id
+          - restrictedDisplayIndicator
+          - sort
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleBookingChannelCodeBoolExp
+  operand:
+    object:
+      type: BookingruleBookingChannelCode
+      comparableFields:
+        - fieldName: bookingChannelCodesId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: restrictedDisplayIndicator
+          booleanExpressionType: BoolBoolExp
+        - fieldName: sort
+          booleanExpressionType: Int4BoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleBookingChannelCodeBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleBookingChannelCodeAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleBookingChannelCode
+      aggregatableFields:
+        - fieldName: bookingChannelCodesId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: restrictedDisplayIndicator
+          aggregateExpression: BoolAggExp
+        - fieldName: sort
+          aggregateExpression: Int4AggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleBookingChannelCodeAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleBookingChannelCodeOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleBookingChannelCode
+      orderableFields:
+        - fieldName: bookingChannelCodesId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: restrictedDisplayIndicator
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: sort
+          orderByExpression: Int32OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleBookingChannelCodeOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleBookingChannelCode
+  objectType: BookingruleBookingChannelCode
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_booking_channel_code
+  filterExpressionType: BookingruleBookingChannelCodeBoolExp
+  aggregateExpression: BookingruleBookingChannelCodeAggExp
+  orderByExpression: BookingruleBookingChannelCodeOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleBookingChannelCode
+      subscription:
+        rootField: bookingruleBookingChannelCode
+    selectUniques:
+      - queryRootField: bookingruleBookingChannelCodeById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleBookingChannelCodeById
+    filterInputTypeName: BookingruleBookingChannelCodeFilterInput
+    aggregate:
+      queryRootField: bookingruleBookingChannelCodeAggregate
+      subscription:
+        rootField: bookingruleBookingChannelCodeAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleBookingChannelCode
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

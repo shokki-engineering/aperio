@@ -1,0 +1,181 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: RateStreetNmbrs
+  fields:
+    - name: id
+      type: String_1!
+    - name: poBox
+      type: String_1
+    - name: ruralRouteNmbr
+      type: String_1
+    - name: streetDirection
+      type: String_1
+    - name: streetNmbrSuffix
+      type: String_1
+    - name: value
+      type: String_1
+  graphql:
+    typeName: RateStreetNmbrs
+    inputTypeName: RateStreetNmbrsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: rate_street_nmbrs
+      fieldMapping:
+        id:
+          column:
+            name: id
+        poBox:
+          column:
+            name: po_box
+        ruralRouteNmbr:
+          column:
+            name: rural_route_nmbr
+        streetDirection:
+          column:
+            name: street_direction
+        streetNmbrSuffix:
+          column:
+            name: street_nmbr_suffix
+        value:
+          column:
+            name: value
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: RateStreetNmbrs
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - id
+          - poBox
+          - ruralRouteNmbr
+          - streetDirection
+          - streetNmbrSuffix
+          - value
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: RateStreetNmbrsBoolExp
+  operand:
+    object:
+      type: RateStreetNmbrs
+      comparableFields:
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: poBox
+          booleanExpressionType: TextBoolExp
+        - fieldName: ruralRouteNmbr
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetDirection
+          booleanExpressionType: TextBoolExp
+        - fieldName: streetNmbrSuffix
+          booleanExpressionType: TextBoolExp
+        - fieldName: value
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: RateStreetNmbrsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: RateStreetNmbrsAggExp
+  operand:
+    object:
+      aggregatedType: RateStreetNmbrs
+      aggregatableFields:
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: poBox
+          aggregateExpression: TextAggExp
+        - fieldName: ruralRouteNmbr
+          aggregateExpression: TextAggExp
+        - fieldName: streetDirection
+          aggregateExpression: TextAggExp
+        - fieldName: streetNmbrSuffix
+          aggregateExpression: TextAggExp
+        - fieldName: value
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: RateStreetNmbrsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: RateStreetNmbrsOrderByExp
+  operand:
+    object:
+      orderedType: RateStreetNmbrs
+      orderableFields:
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: poBox
+          orderByExpression: String1OrderByExp
+        - fieldName: ruralRouteNmbr
+          orderByExpression: String1OrderByExp
+        - fieldName: streetDirection
+          orderByExpression: String1OrderByExp
+        - fieldName: streetNmbrSuffix
+          orderByExpression: String1OrderByExp
+        - fieldName: value
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: RateStreetNmbrsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: RateStreetNmbrs
+  objectType: RateStreetNmbrs
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: rate_street_nmbrs
+  filterExpressionType: RateStreetNmbrsBoolExp
+  aggregateExpression: RateStreetNmbrsAggExp
+  orderByExpression: RateStreetNmbrsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: rateStreetNmbrs
+      subscription:
+        rootField: rateStreetNmbrs
+    selectUniques:
+      - queryRootField: rateStreetNmbrsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: rateStreetNmbrsById
+    filterInputTypeName: RateStreetNmbrsFilterInput
+    aggregate:
+      queryRootField: rateStreetNmbrsAggregate
+      subscription:
+        rootField: rateStreetNmbrsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: RateStreetNmbrs
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

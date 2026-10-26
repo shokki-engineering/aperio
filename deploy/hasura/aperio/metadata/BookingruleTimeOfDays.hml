@@ -1,0 +1,153 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: BookingruleTimeOfDays
+  fields:
+    - name: hour
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: minute
+      type: Int32
+    - name: nanosecond
+      type: Int32
+    - name: second
+      type: Int32
+  graphql:
+    typeName: BookingruleTimeOfDays
+    inputTypeName: BookingruleTimeOfDaysInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: bookingrule_time_of_days
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: BookingruleTimeOfDays
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - hour
+          - id
+          - minute
+          - nanosecond
+          - second
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: BookingruleTimeOfDaysBoolExp
+  operand:
+    object:
+      type: BookingruleTimeOfDays
+      comparableFields:
+        - fieldName: hour
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: minute
+          booleanExpressionType: Int4BoolExp
+        - fieldName: nanosecond
+          booleanExpressionType: Int4BoolExp
+        - fieldName: second
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: BookingruleTimeOfDaysBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: BookingruleTimeOfDaysAggExp
+  operand:
+    object:
+      aggregatedType: BookingruleTimeOfDays
+      aggregatableFields:
+        - fieldName: hour
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: minute
+          aggregateExpression: Int4AggExp
+        - fieldName: nanosecond
+          aggregateExpression: Int4AggExp
+        - fieldName: second
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: BookingruleTimeOfDaysAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: BookingruleTimeOfDaysOrderByExp
+  operand:
+    object:
+      orderedType: BookingruleTimeOfDays
+      orderableFields:
+        - fieldName: hour
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: minute
+          orderByExpression: Int32OrderByExp
+        - fieldName: nanosecond
+          orderByExpression: Int32OrderByExp
+        - fieldName: second
+          orderByExpression: Int32OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: BookingruleTimeOfDaysOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: BookingruleTimeOfDays
+  objectType: BookingruleTimeOfDays
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: bookingrule_time_of_days
+  filterExpressionType: BookingruleTimeOfDaysBoolExp
+  aggregateExpression: BookingruleTimeOfDaysAggExp
+  orderByExpression: BookingruleTimeOfDaysOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: bookingruleTimeOfDays
+      subscription:
+        rootField: bookingruleTimeOfDays
+    selectUniques:
+      - queryRootField: bookingruleTimeOfDaysById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: bookingruleTimeOfDaysById
+    filterInputTypeName: BookingruleTimeOfDaysFilterInput
+    aggregate:
+      queryRootField: bookingruleTimeOfDaysAggregate
+      subscription:
+        rootField: bookingruleTimeOfDaysAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: BookingruleTimeOfDays
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

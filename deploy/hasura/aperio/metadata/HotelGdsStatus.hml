@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HotelGdsStatus
+  fields:
+    - name: code
+      type: String_1
+    - name: gdsInfoId
+      type: String_1!
+    - name: hotelStatusCode
+      type: Enum
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1
+  graphql:
+    typeName: HotelGdsStatus
+    inputTypeName: HotelGdsStatusInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: hotel_gds_status
+      fieldMapping:
+        code:
+          column:
+            name: code
+        gdsInfoId:
+          column:
+            name: gds_info_id
+        hotelStatusCode:
+          column:
+            name: hotel_status_code
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HotelGdsStatus
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - code
+          - gdsInfoId
+          - hotelStatusCode
+          - id
+          - name
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HotelGdsStatusBoolExp
+  operand:
+    object:
+      type: HotelGdsStatus
+      comparableFields:
+        - fieldName: code
+          booleanExpressionType: TextBoolExp
+        - fieldName: gdsInfoId
+          booleanExpressionType: TextBoolExp
+        - fieldName: hotelStatusCode
+          booleanExpressionType: HotelHotelStatusCodeBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HotelGdsStatusBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: HotelGdsStatusAggExp
+  operand:
+    object:
+      aggregatedType: HotelGdsStatus
+      aggregatableFields:
+        - fieldName: code
+          aggregateExpression: TextAggExp
+        - fieldName: gdsInfoId
+          aggregateExpression: TextAggExp
+        - fieldName: hotelStatusCode
+          aggregateExpression: HotelHotelStatusCodeAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: HotelGdsStatusAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: HotelGdsStatusOrderByExp
+  operand:
+    object:
+      orderedType: HotelGdsStatus
+      orderableFields:
+        - fieldName: code
+          orderByExpression: String1OrderByExp
+        - fieldName: gdsInfoId
+          orderByExpression: String1OrderByExp
+        - fieldName: hotelStatusCode
+          orderByExpression: EnumOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: HotelGdsStatusOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: HotelGdsStatus
+  objectType: HotelGdsStatus
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: hotel_gds_status
+  filterExpressionType: HotelGdsStatusBoolExp
+  aggregateExpression: HotelGdsStatusAggExp
+  orderByExpression: HotelGdsStatusOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: hotelGdsStatus
+      subscription:
+        rootField: hotelGdsStatus
+    selectUniques:
+      - queryRootField: hotelGdsStatusById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: hotelGdsStatusById
+    filterInputTypeName: HotelGdsStatusFilterInput
+    aggregate:
+      queryRootField: hotelGdsStatusAggregate
+      subscription:
+        rootField: hotelGdsStatusAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: HotelGdsStatus
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

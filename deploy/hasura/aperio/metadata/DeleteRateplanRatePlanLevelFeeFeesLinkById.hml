@@ -1,0 +1,75 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteRateplanRatePlanLevelFeeFeesLinkByIdResponse
+  description: Responses from the
+    'delete_rateplan_rate_plan_level_fee_fees_link_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[RateplanRatePlanLevelFeeFeesLink!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteRateplanRatePlanLevelFeeFeesLinkByIdResponse
+    inputTypeName: DeleteRateplanRatePlanLevelFeeFeesLinkByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_rateplan_rate_plan_level_fee_fees_link_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteRateplanRatePlanLevelFeeFeesLinkByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteRateplanRatePlanLevelFeeFeesLinkById
+  outputType: DeleteRateplanRatePlanLevelFeeFeesLinkByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: RateplanRatePlanLevelFeeFeesLinkBoolExp
+      description: Delete permission predicate over the
+        'rateplan_rate_plan_level_fee_fees_link' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_rateplan_rate_plan_level_fee_fees_link_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteRateplanRatePlanLevelFeeFeesLinkById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'rateplan_rate_plan_level_fee_fees_link'
+    collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteRateplanRatePlanLevelFeeFeesLinkById
+  permissions:
+    - role: admin
+      allowExecution: true
+

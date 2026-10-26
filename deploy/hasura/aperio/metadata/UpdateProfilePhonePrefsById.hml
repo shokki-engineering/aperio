@@ -1,0 +1,224 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePhonePrefsCommonPrefId
+  description: Update the 'common_pref_id' column in the 'profile_phone_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePhonePrefsCommonPrefId
+    inputTypeName: UpdateColumnProfilePhonePrefsCommonPrefIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_phone_prefs_common_pref_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePhonePrefsCommonPrefId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePhonePrefsId
+  description: Update the 'id' column in the 'profile_phone_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePhonePrefsId
+    inputTypeName: UpdateColumnProfilePhonePrefsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_phone_prefs_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePhonePrefsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnProfilePhonePrefsTelephoneId
+  description: Update the 'telephone_id' column in the 'profile_phone_prefs' collection
+  fields:
+    - name: set
+      type: String_1!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnProfilePhonePrefsTelephoneId
+    inputTypeName: UpdateColumnProfilePhonePrefsTelephoneIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_profile_phone_prefs_telephone_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnProfilePhonePrefsTelephoneId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePhonePrefsByIdUpdateColumns
+  description: Update the columns of the 'profile_phone_prefs' collection
+  fields:
+    - name: commonPrefId
+      type: UpdateColumnProfilePhonePrefsCommonPrefId
+      description: Update the 'common_pref_id' column in the 'profile_phone_prefs'
+        collection.
+    - name: id
+      type: UpdateColumnProfilePhonePrefsId
+      description: Update the 'id' column in the 'profile_phone_prefs' collection.
+    - name: telephoneId
+      type: UpdateColumnProfilePhonePrefsTelephoneId
+      description: Update the 'telephone_id' column in the 'profile_phone_prefs' collection.
+  graphql:
+    typeName: UpdateProfilePhonePrefsByIdUpdateColumns
+    inputTypeName: UpdateProfilePhonePrefsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_phone_prefs_by_id_update_columns
+      fieldMapping:
+        commonPrefId:
+          column:
+            name: common_pref_id
+        id:
+          column:
+            name: id
+        telephoneId:
+          column:
+            name: telephone_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePhonePrefsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - commonPrefId
+          - id
+          - telephoneId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateProfilePhonePrefsByIdResponse
+  description: Responses from the 'update_profile_phone_prefs_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[ProfilePhonePrefs!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateProfilePhonePrefsByIdResponse
+    inputTypeName: UpdateProfilePhonePrefsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_profile_phone_prefs_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateProfilePhonePrefsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateProfilePhonePrefsById
+  outputType: UpdateProfilePhonePrefsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: postCheck
+      type: ProfilePhonePrefsBoolExp
+      description: Update permission post-condition predicate over the
+        'profile_phone_prefs' collection
+    - name: preCheck
+      type: ProfilePhonePrefsBoolExp
+      description: Update permission pre-condition predicate over the
+        'profile_phone_prefs' collection
+    - name: updateColumns
+      type: UpdateProfilePhonePrefsByIdUpdateColumns!
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: update_profile_phone_prefs_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateProfilePhonePrefsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'profile_phone_prefs' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateProfilePhonePrefsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

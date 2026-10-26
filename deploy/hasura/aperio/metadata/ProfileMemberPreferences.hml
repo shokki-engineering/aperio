@@ -1,0 +1,163 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ProfileMemberPreferences
+  fields:
+    - name: awardsPreference
+      type: Enum
+    - name: awareness
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: promotionCode
+      type: String_1
+    - name: promotionVendorCodes
+      type: "[String_1]"
+  graphql:
+    typeName: ProfileMemberPreferences
+    inputTypeName: ProfileMemberPreferencesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: profile_member_preferences
+      fieldMapping:
+        awardsPreference:
+          column:
+            name: awards_preference
+        awareness:
+          column:
+            name: awareness
+        id:
+          column:
+            name: id
+        promotionCode:
+          column:
+            name: promotion_code
+        promotionVendorCodes:
+          column:
+            name: promotion_vendor_codes
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ProfileMemberPreferences
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - awardsPreference
+          - awareness
+          - id
+          - promotionCode
+          - promotionVendorCodes
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProfileMemberPreferencesBoolExp
+  operand:
+    object:
+      type: ProfileMemberPreferences
+      comparableFields:
+        - fieldName: awardsPreference
+          booleanExpressionType: ProfileAwardsPreferenceBoolExp
+        - fieldName: awareness
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: promotionCode
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProfileMemberPreferencesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProfileMemberPreferencesAggExp
+  operand:
+    object:
+      aggregatedType: ProfileMemberPreferences
+      aggregatableFields:
+        - fieldName: awardsPreference
+          aggregateExpression: ProfileAwardsPreferenceAggExp
+        - fieldName: awareness
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: promotionCode
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: ProfileMemberPreferencesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: ProfileMemberPreferencesOrderByExp
+  operand:
+    object:
+      orderedType: ProfileMemberPreferences
+      orderableFields:
+        - fieldName: awardsPreference
+          orderByExpression: EnumOrderByExp
+        - fieldName: awareness
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: promotionCode
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: ProfileMemberPreferencesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: ProfileMemberPreferences
+  objectType: ProfileMemberPreferences
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: profile_member_preferences
+  filterExpressionType: ProfileMemberPreferencesBoolExp
+  aggregateExpression: ProfileMemberPreferencesAggExp
+  orderByExpression: ProfileMemberPreferencesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: profileMemberPreferences
+      subscription:
+        rootField: profileMemberPreferences
+    selectUniques:
+      - queryRootField: profileMemberPreferencesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: profileMemberPreferencesById
+    filterInputTypeName: ProfileMemberPreferencesFilterInput
+    aggregate:
+      queryRootField: profileMemberPreferencesAggregate
+      subscription:
+        rootField: profileMemberPreferencesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: ProfileMemberPreferences
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
