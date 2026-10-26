@@ -19,7 +19,6 @@ import (
 	reservationv1 "buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/hotel/booking/reservation/v1"
 	"context"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/filterx"
-	"github.com/shokki-engineering/aperio/internal/database/hasura/otaql"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"gorm.io/gorm"
 	"time"
@@ -147,21 +146,17 @@ func NewBatchIn(u *repox.Unit, opts ...Option) Batch {
 		opt(&o)
 	}
 	_ = o
-	if svc := u.Conn().GraphQL; svc != nil {
-		return &graphQLBatch{u: u, svc: svc, retention: o.retention}
-	}
 	return &gormBatch{u: u, db: u.Conn().Gorm, retention: o.retention}
 }
 
 // options collects the per-resource customizations the factories thread into
 // the adapters they build.
 type options struct {
-	references              *repox.References
-	projections             *repox.Projections
-	reservationHooks        ReservationHooks
-	reservationOverrides    map[string]filterx.SQLHandler
-	reservationGQLOverrides map[string]filterx.GraphQLHandler
-	retention               time.Duration
+	references           *repox.References
+	projections          *repox.Projections
+	reservationHooks     ReservationHooks
+	reservationOverrides map[string]filterx.SQLHandler
+	retention            time.Duration
 }
 
 // Option customizes the adapters a factory builds.
@@ -206,52 +201,13 @@ func WithReservationListOverride(field string, h filterx.SQLHandler) Option {
 	}
 }
 
-// WithReservationGraphQLListOverride substitutes the generated filter dispatch
-// for one Reservation filter field on the GraphQL adapters.
-func WithReservationGraphQLListOverride(field string, h filterx.GraphQLHandler) Option {
-	return func(o *options) {
-		if o.reservationGQLOverrides == nil {
-			o.reservationGQLOverrides = map[string]filterx.GraphQLHandler{}
-		}
-		o.reservationGQLOverrides[field] = h
-	}
-}
-
-// New picks the adapter set for the live handle in conn: GraphQL when a
-// client connection is present, otherwise GORM.
+// New picks the adapter set for the live handle in conn.
 //
 // When conn carries a ChangeObserver, every write the returned repositories
 // make is reported to it (see observe).
 func New(conn repox.Conn, opts ...Option) Repositories {
 	opts = append([]Option{WithReferences(conn.References), WithProjections(conn.Projections)}, opts...)
-	if conn.GraphQL != nil {
-		return observe(NewGraphQL(conn.GraphQL, opts...), conn.Changes)
-	}
 	return observe(NewGorm(conn.Gorm, opts...), conn.Changes)
-}
-
-// NewGraphQL builds the GraphQL adapter set over svc.
-func NewGraphQL(svc *otaql.Service, opts ...Option) Repositories {
-	var o options
-	for _, opt := range opts {
-		opt(&o)
-	}
-	repos := Repositories{
-		Reservations: &GraphQLReservationRepository{Svc: svc, Hooks: o.reservationHooks, Refs: o.references, ListOverrides: o.reservationGQLOverrides, Retention: o.retention},
-	}
-	if p := o.projections; p != nil {
-		if p.Watches("hotel.opentravel.org/Reservation") {
-			r := repos.Reservations
-			repos.Reservations = &projectedReservationRepository{ReservationRepository: r, run: func(ctx context.Context, f func(ReservationRepository) ([]repox.Change, error)) error {
-				changes, err := f(r)
-				if err != nil {
-					return err
-				}
-				return p.ProjectGraphQLAfter(ctx, repox.Conn{GraphQL: svc}, changes)
-			}}
-		}
-	}
-	return guard(repos, o.references)
 }
 
 // NewGorm builds the GORM adapter set over db.

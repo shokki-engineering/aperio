@@ -36,9 +36,6 @@ import (
 
 	"github.com/shokki-engineering/aperio/internal/database/gorm/filterx"
 	"github.com/shokki-engineering/aperio/internal/database/gorm/gormx"
-	otaql "github.com/shokki-engineering/aperio/internal/database/hasura/otaql"
-	"github.com/the-protobuf-project/runtime-go/network/graphql"
-	"github.com/the-protobuf-project/runtime-go/network/runtime"
 )
 
 // Error sentinels the repository interfaces speak. Callers translate them to
@@ -70,8 +67,7 @@ var (
 
 // Conn bundles the live backend handles a repository factory can adapt.
 type Conn struct {
-	Gorm    *gorm.DB
-	GraphQL *otaql.Service
+	Gorm *gorm.DB
 	// References, when set, enforces reference integrity across databases
 	// and services for every repository and Batch built from this Conn:
 	// writes resolve their external references, deletes consult referrers,
@@ -129,8 +125,6 @@ type Unit struct {
 	after   []func(ctx context.Context)
 	gorm    []func(ctx context.Context, tx *gorm.DB) error
 	locks   []string // no_overlap keys of the rows queued for insert
-	ahead   []func(ctx context.Context) error
-	gql     []func(ctx context.Context, ops *Ops) (Check, error)
 	names   []string
 	changes []Change // what the queued writes change, for Conn.Projections
 	err     error    // the first queueing error; Commit returns it and writes nothing
@@ -150,20 +144,6 @@ func (u *Unit) Conn() Conn { return u.conn }
 func (u *Unit) QueueGorm(locks []string, op func(ctx context.Context, tx *gorm.DB) error) {
 	u.locks = append(u.locks, locks...)
 	u.gorm = append(u.gorm, op)
-}
-
-// QueueGraphQL queues a write for the commit request. op runs when Commit
-// does, before the request is sent: it may read, then adds its mutations to
-// ops, and may return a Check to run once the request has been answered.
-func (u *Unit) QueueGraphQL(op func(ctx context.Context, ops *Ops) (Check, error)) {
-	u.gql = append(u.gql, op)
-}
-
-// QueueGraphQLAhead queues a write Commit sends on its own, before the
-// request holding the rest: a guarded write whose failure must stop the
-// commit but which the engine reports only as touching no row.
-func (u *Unit) QueueGraphQLAhead(op func(ctx context.Context) error) {
-	u.ahead = append(u.ahead, op)
 }
 
 // Before queues a check Commit runs ahead of every write, outside the
@@ -253,9 +233,6 @@ func (u *Unit) commit(ctx context.Context) error {
 	if u.err != nil {
 		return u.err
 	}
-	if u.conn.GraphQL != nil {
-		return u.commitGraphQL(ctx)
-	}
 	if len(u.gorm) == 0 && len(u.changes) == 0 {
 		return nil
 	}
@@ -280,86 +257,6 @@ func (u *Unit) commit(ctx context.Context) error {
 		u.conn.Projections.Publish(ctx, committed)
 	}
 	return err
-}
-
-func (u *Unit) commitGraphQL(ctx context.Context) error {
-	if err := loadPriors(ctx, Conn{GraphQL: u.conn.GraphQL}, u.changes); err != nil {
-		return err
-	}
-	for _, op := range u.ahead {
-		if err := op(ctx); err != nil {
-			return err
-		}
-	}
-	var (
-		ops    Ops
-		checks []Check
-	)
-	for _, op := range u.gql {
-		check, err := op(ctx, &ops)
-		if err != nil {
-			return err
-		}
-		if check != nil {
-			checks = append(checks, check)
-		}
-	}
-	committed, err := u.conn.Projections.GraphQL(ctx, u.conn, &ops, u.changes)
-	if err != nil {
-		return err
-	}
-	tx := u.conn.GraphQL.Mutation.Tx()
-	for _, op := range ops {
-		tx.Add(op)
-	}
-	failed := tx.Commit(ctx)
-	for _, check := range checks {
-		if err := check(ctx, failed); err != nil {
-			return err
-		}
-	}
-	if failed == nil {
-		u.conn.Projections.Publish(ctx, committed)
-	}
-	return MapGraphQLErr(failed)
-}
-
-// Check is what a queued GraphQL write knows after the request is answered.
-// failed is the request's error, nil when it was applied. On success a check
-// reports a write that took no effect (a guarded update whose row is gone);
-// on failure it reports whether the failure was its own (a guard the record
-// no longer matches, read again). nil means nothing to report.
-type Check func(ctx context.Context, failed error) error
-
-// Ops are the mutations of one GraphQL request, in order. Add has the shape of
-// runtime.Tx's, so the generated write fragments queue onto either.
-type Ops []runtime.BatchOp
-
-// Add appends op.
-func (o *Ops) Add(op runtime.BatchOp) *Ops {
-	*o = append(*o, op)
-	return o
-}
-
-// MapGraphQLErr translates the client's errors onto the repox sentinels, as
-// each schema's GraphQL adapters do.
-func MapGraphQLErr(err error) error {
-	switch {
-	case err == nil:
-		return nil
-	case errors.Is(err, graphql.ErrConflict):
-		return ErrConflict
-	// The engine reports a database rejection as text: an exclusion
-	// constraint is a conflict, a unique one a duplicate.
-	case strings.Contains(err.Error(), "violates exclusion constraint"):
-		return fmt.Errorf("%w: %v", ErrConflict, err)
-	case strings.Contains(err.Error(), "violates unique constraint"):
-		return fmt.Errorf("%w: %v", ErrAlreadyExists, err)
-	case strings.Contains(err.Error(), "violates foreign key constraint"):
-		return ForeignKeyError(err)
-	default:
-		return err
-	}
 }
 
 // ListInput is the request shape every repository List takes: AIP page
