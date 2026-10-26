@@ -3,7 +3,7 @@
 // 	protoc-gen-store v1.6.5+dirty
 // 	protoc (unknown)
 //
-// database: ota
+// database: aperio
 // package:  telemetry
 //
 // First-party telemetry adapter: the stores' gormx.Telemetry and the SQL-level gorm plugin.

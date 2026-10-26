@@ -6,25 +6,29 @@ module github.com/shokki-engineering/aperio
 go 1.26.10
 
 require (
-	buf.build/gen/go/shokki-engineering/protobuf-ota/grpc/go v1.6.2-20261026050701-bb88093022b1.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.12-20260825204119-511051f7f437.2
 	buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go v1.36.12-20261026050701-bb88093022b1.2
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.32.0
 	github.com/lib/pq v1.12.3
+	github.com/the-protobuf-project/cache v0.3.0
+	github.com/the-protobuf-project/mcp v1.7.4
 	github.com/the-protobuf-project/runtime-go/agents v0.0.0-20261024145511-26d67bc81588
-	github.com/the-protobuf-project/runtime-go/cache v0.0.0-20261024145511-26d67bc81588
-	github.com/the-protobuf-project/runtime-go/events v0.0.0-20261024145511-26d67bc81588
-	github.com/the-protobuf-project/runtime-go/grpc v0.0.0-20261024145511-26d67bc81588
-	github.com/the-protobuf-project/runtime-go/network v0.0.0-20261024145511-26d67bc81588
-	github.com/the-protobuf-project/telemetry/telemetry-go v0.0.0-20261023093202-d14384d7957b
+	github.com/the-protobuf-project/runtime-go/cache v0.0.0-20261026065720-541ce4d35466
+	github.com/the-protobuf-project/runtime-go/events v0.0.0-20261026065720-541ce4d35466
+	github.com/the-protobuf-project/runtime-go/grpc v0.0.0-20261026065720-541ce4d35466
+	github.com/the-protobuf-project/runtime-go/network v0.0.0-20261026065720-541ce4d35466
+	github.com/the-protobuf-project/service v0.1.0
+	github.com/the-protobuf-project/store v1.6.5
+	github.com/the-protobuf-project/telemetry/telemetry-go v0.0.0-20261021175734-19bcab17b113
+	google.golang.org/genproto v0.0.0-20261019180522-ce908d29299b
+	google.golang.org/genproto/googleapis/api v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf v1.36.12
-	gorm.io/driver/postgres v1.6.3
 	gorm.io/gorm v1.31.2
 )
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.12-20260825204119-511051f7f437.2 // indirect
 	buf.build/go/protovalidate v1.4.0 // indirect
 	cel.dev/cel-go v0.32.0 // indirect
 	cel.dev/expr v0.25.3 // indirect
@@ -57,10 +61,6 @@ require (
 	github.com/grafana/pyroscope-go v1.4.3 // indirect
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.12 // indirect
 	github.com/hasura/go-graphql-client v0.16.0 // indirect
-	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
-	github.com/jackc/pgx/v5 v5.10.0 // indirect
-	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
@@ -123,5 +123,4 @@ require (
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20261019180522-ce908d29299b // indirect
 )

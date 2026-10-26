@@ -3,7 +3,7 @@
 // 	protoc-gen-store v1.6.5+dirty
 // 	protoc (unknown)
 //
-// database: ota
+// database: aperio
 // package:  filterx
 //
 // Shared AIP-160 filter / AIP-132 order_by / paginated-list engines driven by the generated per-schema specs.

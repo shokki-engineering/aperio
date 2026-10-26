@@ -3,7 +3,7 @@
 // 	protoc-gen-store v1.6.5+dirty
 // 	protoc (unknown)
 //
-// database: ota
+// database: aperio
 // package:  gormx
 //
 // Shared GORM runtime: ListOptions, the generic Store interface, the GenericStore engine, and EnsureSchemas.
