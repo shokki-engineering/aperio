@@ -1,0 +1,95 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.stay.v1;
+
+import "aperio/stay/v1/stay.proto";
+import "aperio/stay/v1/stay_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1";
+option java_multiple_files = true;
+option java_outer_classname = "StayServiceProto";
+option java_package = "engineering.shokki.aperio.stay.v1";
+
+// StayService: Stays at a venue: reservations of its rooms, booked in freebusy, and their arrival and departure.
+service StayService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Stays"
+      version: "1.0.0"
+      description: "Stays at a venue: reservations of its rooms, booked in freebusy, and their arrival and departure."
+    }
+  };
+
+  // Retrieves one reservation.
+  rpc GetReservation(GetReservationRequest) returns (Reservation) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/reservations/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists reservations.
+  rpc ListReservations(ListReservationsRequest) returns (ListReservationsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/reservations"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a reservation.
+  rpc CreateReservation(CreateReservationRequest) returns (Reservation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/reservations"
+      body: "reservation"
+    };
+    option (google.api.method_signature) = "parent,reservation,reservation_id";
+  }
+
+  // Updates a reservation. Only the fields in update_mask are written.
+  rpc UpdateReservation(UpdateReservationRequest) returns (Reservation) {
+    option (google.api.http) = {
+      patch: "/v1/{reservation.name=venues/*/reservations/*}"
+      body: "reservation"
+    };
+    option (google.api.method_signature) = "reservation,update_mask";
+  }
+
+  // Confirms a pending reservation: its rooms stay taken.
+  rpc ConfirmReservation(ConfirmReservationRequest) returns (Reservation) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/reservations/*}:confirm"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Cancels a reservation and releases its rooms.
+  rpc CancelReservation(CancelReservationRequest) returns (Reservation) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/reservations/*}:cancel"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Records the guests' arrival at the venue.
+  rpc ArriveReservation(ArriveReservationRequest) returns (Reservation) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/reservations/*}:arrive"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Records the guests' departure.
+  rpc DepartReservation(DepartReservationRequest) returns (Reservation) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/reservations/*}:depart"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+}

@@ -1,0 +1,87 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.guest.v1;
+
+import "aperio/guest/v1/guest.proto";
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestMessagesProto";
+option java_package = "engineering.shokki.aperio.guest.v1";
+
+// Request message for GetContact.
+message GetContactRequest {
+  // The name of the contact to retrieve.
+  // Format: contacts/{contact}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.guest.v1/Contact"
+  ];
+}
+
+// Request message for ListContacts.
+message ListContactsRequest {
+  // The maximum number of contacts to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
+  ];
+
+  // A page token from a previous ListContacts call.
+  string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. display_name:"sharma".
+  string filter = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListContacts.
+message ListContactsResponse {
+  // The contacts.
+  repeated Contact contacts = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateContact.
+message CreateContactRequest {
+  // The contact to create.
+  Contact contact = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string contact_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateContact.
+message UpdateContactRequest {
+  // The contact to update, by its name.
+  Contact contact = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}

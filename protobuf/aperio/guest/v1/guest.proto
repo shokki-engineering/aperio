@@ -1,0 +1,129 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.guest.v1;
+
+import "aperio/guest/v1/enums.proto";
+import "aperio/type/v1/types.proto";
+import "buf/validate/validate.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "protobuf/opentravel/common/profile/v1/types/accesses.proto";
+import "protobuf/opentravel/common/profile/v1/types/customer.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestProto";
+option java_package = "engineering.shokki.aperio.guest.v1";
+
+// A Contact is a person or a company aperio deals with: a guest, a couple
+// booking their wedding, a company booking an offsite, an agent. Leads,
+// bookings, quotes, invoices and payments all name one, so a guest who comes
+// back is the same contact with their history.
+//
+// A person's name and address are OpenTravel's PersonName and Address, the
+// shapes channels send guests in, so a booking from Booking.com fills a
+// contact without translation.
+message Contact {
+  // Contacts are found by name, phone and email far more than by anything
+  // else.
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: ["update_time"]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.guest.v1/Contact"
+    pattern: "contacts/{contact}"
+    singular: "contact"
+    plural: "contacts"
+  };
+
+  // The contact name.
+  // Format: contacts/{contact}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^contacts/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Whether the contact is a person or a company.
+  ContactKind kind = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // How the contact is shown and searched: a person's full name or a
+  // company's name.
+  string display_name = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A person's name in parts -- title, given names, surname -- as OpenTravel
+  // carries it (PersonName).
+  protobuf.opentravel.common.profile.v1.types.PersonName name_parts = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // The company a person works for, or the company itself.
+  string company_display_name = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (store.v1.query) = {search: true}
+  ];
+
+  // Phone numbers, the first the one to call.
+  repeated aperio.type.v1.Phone phones = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // Email addresses, the first the one to write to.
+  repeated string emails = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).repeated.items.string.email = true
+  ];
+
+  // Postal addresses, as OpenTravel carries them.
+  repeated protobuf.opentravel.common.profile.v1.types.Address addresses = 8 [(google.api.field_behavior) = OPTIONAL];
+
+  // A business contact's GST registration: invoices to it are B2B and carry
+  // its GSTIN.
+  aperio.type.v1.Gst gst = 9 [(google.api.field_behavior) = OPTIONAL];
+
+  // What the contact eats, carried onto every booking made for them.
+  repeated aperio.type.v1.DietaryRequirement dietary_requirements = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // Whether the contact agreed to receive offers.
+  bool marketing_consent = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Free-form labels, e.g. "vip", "planner", "corporate".
+  repeated string tags = 12 [(google.api.field_behavior) = OPTIONAL];
+
+  // Anything else worth knowing.
+  string notes = 13 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 10000
+  ];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 15 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 16 [(google.api.field_behavior) = OPTIONAL];
+
+  // The E.164 numbers of phones, kept by the server from them: what a
+  // caller, or a guest at the website, is found by.
+  repeated string phone_numbers = 17 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.query) = {search: true}
+  ];
+}

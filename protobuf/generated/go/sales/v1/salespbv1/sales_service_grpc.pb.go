@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,99 +22,43 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SalesService_GetDish_FullMethodName            = "/aperio.sales.v1.SalesService/GetDish"
-	SalesService_ListDishes_FullMethodName         = "/aperio.sales.v1.SalesService/ListDishes"
-	SalesService_CreateDish_FullMethodName         = "/aperio.sales.v1.SalesService/CreateDish"
-	SalesService_UpdateDish_FullMethodName         = "/aperio.sales.v1.SalesService/UpdateDish"
-	SalesService_DeleteDish_FullMethodName         = "/aperio.sales.v1.SalesService/DeleteDish"
-	SalesService_GetMenu_FullMethodName            = "/aperio.sales.v1.SalesService/GetMenu"
-	SalesService_ListMenus_FullMethodName          = "/aperio.sales.v1.SalesService/ListMenus"
-	SalesService_CreateMenu_FullMethodName         = "/aperio.sales.v1.SalesService/CreateMenu"
-	SalesService_UpdateMenu_FullMethodName         = "/aperio.sales.v1.SalesService/UpdateMenu"
-	SalesService_DeleteMenu_FullMethodName         = "/aperio.sales.v1.SalesService/DeleteMenu"
-	SalesService_GetFixedPackage_FullMethodName    = "/aperio.sales.v1.SalesService/GetFixedPackage"
-	SalesService_ListFixedPackages_FullMethodName  = "/aperio.sales.v1.SalesService/ListFixedPackages"
-	SalesService_CreateFixedPackage_FullMethodName = "/aperio.sales.v1.SalesService/CreateFixedPackage"
-	SalesService_UpdateFixedPackage_FullMethodName = "/aperio.sales.v1.SalesService/UpdateFixedPackage"
-	SalesService_DeleteFixedPackage_FullMethodName = "/aperio.sales.v1.SalesService/DeleteFixedPackage"
-	SalesService_GetSeason_FullMethodName          = "/aperio.sales.v1.SalesService/GetSeason"
-	SalesService_ListSeasons_FullMethodName        = "/aperio.sales.v1.SalesService/ListSeasons"
-	SalesService_CreateSeason_FullMethodName       = "/aperio.sales.v1.SalesService/CreateSeason"
-	SalesService_UpdateSeason_FullMethodName       = "/aperio.sales.v1.SalesService/UpdateSeason"
-	SalesService_DeleteSeason_FullMethodName       = "/aperio.sales.v1.SalesService/DeleteSeason"
-	SalesService_GetPriceRule_FullMethodName       = "/aperio.sales.v1.SalesService/GetPriceRule"
-	SalesService_ListPriceRules_FullMethodName     = "/aperio.sales.v1.SalesService/ListPriceRules"
-	SalesService_CreatePriceRule_FullMethodName    = "/aperio.sales.v1.SalesService/CreatePriceRule"
-	SalesService_UpdatePriceRule_FullMethodName    = "/aperio.sales.v1.SalesService/UpdatePriceRule"
-	SalesService_DeletePriceRule_FullMethodName    = "/aperio.sales.v1.SalesService/DeletePriceRule"
-	SalesService_GetQuote_FullMethodName           = "/aperio.sales.v1.SalesService/GetQuote"
-	SalesService_ListQuotes_FullMethodName         = "/aperio.sales.v1.SalesService/ListQuotes"
-	SalesService_CreateQuote_FullMethodName        = "/aperio.sales.v1.SalesService/CreateQuote"
-	SalesService_UpdateQuote_FullMethodName        = "/aperio.sales.v1.SalesService/UpdateQuote"
-	SalesService_DeleteQuote_FullMethodName        = "/aperio.sales.v1.SalesService/DeleteQuote"
-	SalesService_SendQuote_FullMethodName          = "/aperio.sales.v1.SalesService/SendQuote"
-	SalesService_AcceptQuote_FullMethodName        = "/aperio.sales.v1.SalesService/AcceptQuote"
-	SalesService_DeclineQuote_FullMethodName       = "/aperio.sales.v1.SalesService/DeclineQuote"
-	SalesService_ReviseQuote_FullMethodName        = "/aperio.sales.v1.SalesService/ReviseQuote"
-	SalesService_CalculatePrice_FullMethodName     = "/aperio.sales.v1.SalesService/CalculatePrice"
+	SalesService_GetLead_FullMethodName        = "/aperio.sales.v1.SalesService/GetLead"
+	SalesService_ListLeads_FullMethodName      = "/aperio.sales.v1.SalesService/ListLeads"
+	SalesService_CreateLead_FullMethodName     = "/aperio.sales.v1.SalesService/CreateLead"
+	SalesService_UpdateLead_FullMethodName     = "/aperio.sales.v1.SalesService/UpdateLead"
+	SalesService_GetActivity_FullMethodName    = "/aperio.sales.v1.SalesService/GetActivity"
+	SalesService_ListActivities_FullMethodName = "/aperio.sales.v1.SalesService/ListActivities"
+	SalesService_CreateActivity_FullMethodName = "/aperio.sales.v1.SalesService/CreateActivity"
+	SalesService_GetQuote_FullMethodName       = "/aperio.sales.v1.SalesService/GetQuote"
+	SalesService_ListQuotes_FullMethodName     = "/aperio.sales.v1.SalesService/ListQuotes"
+	SalesService_CreateQuote_FullMethodName    = "/aperio.sales.v1.SalesService/CreateQuote"
+	SalesService_UpdateQuote_FullMethodName    = "/aperio.sales.v1.SalesService/UpdateQuote"
+	SalesService_SendQuote_FullMethodName      = "/aperio.sales.v1.SalesService/SendQuote"
+	SalesService_AcceptQuote_FullMethodName    = "/aperio.sales.v1.SalesService/AcceptQuote"
+	SalesService_DeclineQuote_FullMethodName   = "/aperio.sales.v1.SalesService/DeclineQuote"
+	SalesService_ReviseQuote_FullMethodName    = "/aperio.sales.v1.SalesService/ReviseQuote"
 )
 
 // SalesServiceClient is the client API for SalesService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// SalesService: The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests.
+// SalesService: Leads, what was done about them, and the quotes sent to guests: from enquiry to booking.
 type SalesServiceClient interface {
-	// Retrieves one dish.
-	GetDish(ctx context.Context, in *GetDishRequest, opts ...grpc.CallOption) (*Dish, error)
-	// Lists dishes.
-	ListDishes(ctx context.Context, in *ListDishesRequest, opts ...grpc.CallOption) (*ListDishesResponse, error)
-	// Creates a dish.
-	CreateDish(ctx context.Context, in *CreateDishRequest, opts ...grpc.CallOption) (*Dish, error)
-	// Updates a dish. Only the fields in update_mask are written.
-	UpdateDish(ctx context.Context, in *UpdateDishRequest, opts ...grpc.CallOption) (*Dish, error)
-	// Deletes a dish.
-	DeleteDish(ctx context.Context, in *DeleteDishRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Retrieves one menu.
-	GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	// Lists menus.
-	ListMenus(ctx context.Context, in *ListMenusRequest, opts ...grpc.CallOption) (*ListMenusResponse, error)
-	// Creates a menu.
-	CreateMenu(ctx context.Context, in *CreateMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	// Updates a menu. Only the fields in update_mask are written.
-	UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	// Deletes a menu.
-	DeleteMenu(ctx context.Context, in *DeleteMenuRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Retrieves one fixed package.
-	GetFixedPackage(ctx context.Context, in *GetFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error)
-	// Lists fixed packages.
-	ListFixedPackages(ctx context.Context, in *ListFixedPackagesRequest, opts ...grpc.CallOption) (*ListFixedPackagesResponse, error)
-	// Creates a fixed package.
-	CreateFixedPackage(ctx context.Context, in *CreateFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error)
-	// Updates a fixed package. Only the fields in update_mask are written.
-	UpdateFixedPackage(ctx context.Context, in *UpdateFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error)
-	// Deletes a fixed package.
-	DeleteFixedPackage(ctx context.Context, in *DeleteFixedPackageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Retrieves one season.
-	GetSeason(ctx context.Context, in *GetSeasonRequest, opts ...grpc.CallOption) (*Season, error)
-	// Lists seasons.
-	ListSeasons(ctx context.Context, in *ListSeasonsRequest, opts ...grpc.CallOption) (*ListSeasonsResponse, error)
-	// Creates a season.
-	CreateSeason(ctx context.Context, in *CreateSeasonRequest, opts ...grpc.CallOption) (*Season, error)
-	// Updates a season. Only the fields in update_mask are written.
-	UpdateSeason(ctx context.Context, in *UpdateSeasonRequest, opts ...grpc.CallOption) (*Season, error)
-	// Deletes a season.
-	DeleteSeason(ctx context.Context, in *DeleteSeasonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// Retrieves one price rule.
-	GetPriceRule(ctx context.Context, in *GetPriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error)
-	// Lists price rules.
-	ListPriceRules(ctx context.Context, in *ListPriceRulesRequest, opts ...grpc.CallOption) (*ListPriceRulesResponse, error)
-	// Creates a price rule.
-	CreatePriceRule(ctx context.Context, in *CreatePriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error)
-	// Updates a price rule. Only the fields in update_mask are written.
-	UpdatePriceRule(ctx context.Context, in *UpdatePriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error)
-	// Deletes a price rule.
-	DeletePriceRule(ctx context.Context, in *DeletePriceRuleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Retrieves one lead.
+	GetLead(ctx context.Context, in *GetLeadRequest, opts ...grpc.CallOption) (*Lead, error)
+	// Lists leads.
+	ListLeads(ctx context.Context, in *ListLeadsRequest, opts ...grpc.CallOption) (*ListLeadsResponse, error)
+	// Creates a lead.
+	CreateLead(ctx context.Context, in *CreateLeadRequest, opts ...grpc.CallOption) (*Lead, error)
+	// Updates a lead. Only the fields in update_mask are written.
+	UpdateLead(ctx context.Context, in *UpdateLeadRequest, opts ...grpc.CallOption) (*Lead, error)
+	// Retrieves one activity.
+	GetActivity(ctx context.Context, in *GetActivityRequest, opts ...grpc.CallOption) (*Activity, error)
+	// Lists activities.
+	ListActivities(ctx context.Context, in *ListActivitiesRequest, opts ...grpc.CallOption) (*ListActivitiesResponse, error)
+	// Creates an activity.
+	CreateActivity(ctx context.Context, in *CreateActivityRequest, opts ...grpc.CallOption) (*Activity, error)
 	// Retrieves one quote.
 	GetQuote(ctx context.Context, in *GetQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
 	// Lists quotes.
@@ -124,8 +67,6 @@ type SalesServiceClient interface {
 	CreateQuote(ctx context.Context, in *CreateQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
 	// Updates a quote. Only the fields in update_mask are written.
 	UpdateQuote(ctx context.Context, in *UpdateQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	// Deletes a quote.
-	DeleteQuote(ctx context.Context, in *DeleteQuoteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Sends a draft quote to the guest, fixing its prices.
 	SendQuote(ctx context.Context, in *SendQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
 	// Accepts a sent quote: makes the reservation or event it offers, and wins its lead.
@@ -134,10 +75,6 @@ type SalesServiceClient interface {
 	DeclineQuote(ctx context.Context, in *DeclineQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
 	// Revises a sent or declined quote: makes a new draft from it, which supersedes it.
 	ReviseQuote(ctx context.Context, in *ReviseQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	// Prices a menu, fixed package, space or dish for a date: its base price with
-	// the matching price rule of the highest priority applied. The one way
-	// aperio prices anything -- quotes, the website and agents all ask it.
-	CalculatePrice(ctx context.Context, in *CalculatePriceRequest, opts ...grpc.CallOption) (*CalculatePriceResponse, error)
 }
 
 type salesServiceClient struct {
@@ -148,250 +85,70 @@ func NewSalesServiceClient(cc grpc.ClientConnInterface) SalesServiceClient {
 	return &salesServiceClient{cc}
 }
 
-func (c *salesServiceClient) GetDish(ctx context.Context, in *GetDishRequest, opts ...grpc.CallOption) (*Dish, error) {
+func (c *salesServiceClient) GetLead(ctx context.Context, in *GetLeadRequest, opts ...grpc.CallOption) (*Lead, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Dish)
-	err := c.cc.Invoke(ctx, SalesService_GetDish_FullMethodName, in, out, cOpts...)
+	out := new(Lead)
+	err := c.cc.Invoke(ctx, SalesService_GetLead_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *salesServiceClient) ListDishes(ctx context.Context, in *ListDishesRequest, opts ...grpc.CallOption) (*ListDishesResponse, error) {
+func (c *salesServiceClient) ListLeads(ctx context.Context, in *ListLeadsRequest, opts ...grpc.CallOption) (*ListLeadsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListDishesResponse)
-	err := c.cc.Invoke(ctx, SalesService_ListDishes_FullMethodName, in, out, cOpts...)
+	out := new(ListLeadsResponse)
+	err := c.cc.Invoke(ctx, SalesService_ListLeads_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *salesServiceClient) CreateDish(ctx context.Context, in *CreateDishRequest, opts ...grpc.CallOption) (*Dish, error) {
+func (c *salesServiceClient) CreateLead(ctx context.Context, in *CreateLeadRequest, opts ...grpc.CallOption) (*Lead, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Dish)
-	err := c.cc.Invoke(ctx, SalesService_CreateDish_FullMethodName, in, out, cOpts...)
+	out := new(Lead)
+	err := c.cc.Invoke(ctx, SalesService_CreateLead_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *salesServiceClient) UpdateDish(ctx context.Context, in *UpdateDishRequest, opts ...grpc.CallOption) (*Dish, error) {
+func (c *salesServiceClient) UpdateLead(ctx context.Context, in *UpdateLeadRequest, opts ...grpc.CallOption) (*Lead, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Dish)
-	err := c.cc.Invoke(ctx, SalesService_UpdateDish_FullMethodName, in, out, cOpts...)
+	out := new(Lead)
+	err := c.cc.Invoke(ctx, SalesService_UpdateLead_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *salesServiceClient) DeleteDish(ctx context.Context, in *DeleteDishRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *salesServiceClient) GetActivity(ctx context.Context, in *GetActivityRequest, opts ...grpc.CallOption) (*Activity, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, SalesService_DeleteDish_FullMethodName, in, out, cOpts...)
+	out := new(Activity)
+	err := c.cc.Invoke(ctx, SalesService_GetActivity_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *salesServiceClient) GetMenu(ctx context.Context, in *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
+func (c *salesServiceClient) ListActivities(ctx context.Context, in *ListActivitiesRequest, opts ...grpc.CallOption) (*ListActivitiesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Menu)
-	err := c.cc.Invoke(ctx, SalesService_GetMenu_FullMethodName, in, out, cOpts...)
+	out := new(ListActivitiesResponse)
+	err := c.cc.Invoke(ctx, SalesService_ListActivities_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *salesServiceClient) ListMenus(ctx context.Context, in *ListMenusRequest, opts ...grpc.CallOption) (*ListMenusResponse, error) {
+func (c *salesServiceClient) CreateActivity(ctx context.Context, in *CreateActivityRequest, opts ...grpc.CallOption) (*Activity, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListMenusResponse)
-	err := c.cc.Invoke(ctx, SalesService_ListMenus_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) CreateMenu(ctx context.Context, in *CreateMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Menu)
-	err := c.cc.Invoke(ctx, SalesService_CreateMenu_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) UpdateMenu(ctx context.Context, in *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Menu)
-	err := c.cc.Invoke(ctx, SalesService_UpdateMenu_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) DeleteMenu(ctx context.Context, in *DeleteMenuRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, SalesService_DeleteMenu_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) GetFixedPackage(ctx context.Context, in *GetFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(FixedPackage)
-	err := c.cc.Invoke(ctx, SalesService_GetFixedPackage_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) ListFixedPackages(ctx context.Context, in *ListFixedPackagesRequest, opts ...grpc.CallOption) (*ListFixedPackagesResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFixedPackagesResponse)
-	err := c.cc.Invoke(ctx, SalesService_ListFixedPackages_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) CreateFixedPackage(ctx context.Context, in *CreateFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(FixedPackage)
-	err := c.cc.Invoke(ctx, SalesService_CreateFixedPackage_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) UpdateFixedPackage(ctx context.Context, in *UpdateFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(FixedPackage)
-	err := c.cc.Invoke(ctx, SalesService_UpdateFixedPackage_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) DeleteFixedPackage(ctx context.Context, in *DeleteFixedPackageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, SalesService_DeleteFixedPackage_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) GetSeason(ctx context.Context, in *GetSeasonRequest, opts ...grpc.CallOption) (*Season, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Season)
-	err := c.cc.Invoke(ctx, SalesService_GetSeason_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) ListSeasons(ctx context.Context, in *ListSeasonsRequest, opts ...grpc.CallOption) (*ListSeasonsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListSeasonsResponse)
-	err := c.cc.Invoke(ctx, SalesService_ListSeasons_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) CreateSeason(ctx context.Context, in *CreateSeasonRequest, opts ...grpc.CallOption) (*Season, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Season)
-	err := c.cc.Invoke(ctx, SalesService_CreateSeason_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) UpdateSeason(ctx context.Context, in *UpdateSeasonRequest, opts ...grpc.CallOption) (*Season, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Season)
-	err := c.cc.Invoke(ctx, SalesService_UpdateSeason_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) DeleteSeason(ctx context.Context, in *DeleteSeasonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, SalesService_DeleteSeason_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) GetPriceRule(ctx context.Context, in *GetPriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PriceRule)
-	err := c.cc.Invoke(ctx, SalesService_GetPriceRule_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) ListPriceRules(ctx context.Context, in *ListPriceRulesRequest, opts ...grpc.CallOption) (*ListPriceRulesResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListPriceRulesResponse)
-	err := c.cc.Invoke(ctx, SalesService_ListPriceRules_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) CreatePriceRule(ctx context.Context, in *CreatePriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PriceRule)
-	err := c.cc.Invoke(ctx, SalesService_CreatePriceRule_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) UpdatePriceRule(ctx context.Context, in *UpdatePriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PriceRule)
-	err := c.cc.Invoke(ctx, SalesService_UpdatePriceRule_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *salesServiceClient) DeletePriceRule(ctx context.Context, in *DeletePriceRuleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, SalesService_DeletePriceRule_FullMethodName, in, out, cOpts...)
+	out := new(Activity)
+	err := c.cc.Invoke(ctx, SalesService_CreateActivity_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -438,16 +195,6 @@ func (c *salesServiceClient) UpdateQuote(ctx context.Context, in *UpdateQuoteReq
 	return out, nil
 }
 
-func (c *salesServiceClient) DeleteQuote(ctx context.Context, in *DeleteQuoteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, SalesService_DeleteQuote_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *salesServiceClient) SendQuote(ctx context.Context, in *SendQuoteRequest, opts ...grpc.CallOption) (*Quote, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Quote)
@@ -488,72 +235,26 @@ func (c *salesServiceClient) ReviseQuote(ctx context.Context, in *ReviseQuoteReq
 	return out, nil
 }
 
-func (c *salesServiceClient) CalculatePrice(ctx context.Context, in *CalculatePriceRequest, opts ...grpc.CallOption) (*CalculatePriceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CalculatePriceResponse)
-	err := c.cc.Invoke(ctx, SalesService_CalculatePrice_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // SalesServiceServer is the server API for SalesService service.
 // All implementations must embed UnimplementedSalesServiceServer
 // for forward compatibility.
 //
-// SalesService: The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests.
+// SalesService: Leads, what was done about them, and the quotes sent to guests: from enquiry to booking.
 type SalesServiceServer interface {
-	// Retrieves one dish.
-	GetDish(context.Context, *GetDishRequest) (*Dish, error)
-	// Lists dishes.
-	ListDishes(context.Context, *ListDishesRequest) (*ListDishesResponse, error)
-	// Creates a dish.
-	CreateDish(context.Context, *CreateDishRequest) (*Dish, error)
-	// Updates a dish. Only the fields in update_mask are written.
-	UpdateDish(context.Context, *UpdateDishRequest) (*Dish, error)
-	// Deletes a dish.
-	DeleteDish(context.Context, *DeleteDishRequest) (*emptypb.Empty, error)
-	// Retrieves one menu.
-	GetMenu(context.Context, *GetMenuRequest) (*Menu, error)
-	// Lists menus.
-	ListMenus(context.Context, *ListMenusRequest) (*ListMenusResponse, error)
-	// Creates a menu.
-	CreateMenu(context.Context, *CreateMenuRequest) (*Menu, error)
-	// Updates a menu. Only the fields in update_mask are written.
-	UpdateMenu(context.Context, *UpdateMenuRequest) (*Menu, error)
-	// Deletes a menu.
-	DeleteMenu(context.Context, *DeleteMenuRequest) (*emptypb.Empty, error)
-	// Retrieves one fixed package.
-	GetFixedPackage(context.Context, *GetFixedPackageRequest) (*FixedPackage, error)
-	// Lists fixed packages.
-	ListFixedPackages(context.Context, *ListFixedPackagesRequest) (*ListFixedPackagesResponse, error)
-	// Creates a fixed package.
-	CreateFixedPackage(context.Context, *CreateFixedPackageRequest) (*FixedPackage, error)
-	// Updates a fixed package. Only the fields in update_mask are written.
-	UpdateFixedPackage(context.Context, *UpdateFixedPackageRequest) (*FixedPackage, error)
-	// Deletes a fixed package.
-	DeleteFixedPackage(context.Context, *DeleteFixedPackageRequest) (*emptypb.Empty, error)
-	// Retrieves one season.
-	GetSeason(context.Context, *GetSeasonRequest) (*Season, error)
-	// Lists seasons.
-	ListSeasons(context.Context, *ListSeasonsRequest) (*ListSeasonsResponse, error)
-	// Creates a season.
-	CreateSeason(context.Context, *CreateSeasonRequest) (*Season, error)
-	// Updates a season. Only the fields in update_mask are written.
-	UpdateSeason(context.Context, *UpdateSeasonRequest) (*Season, error)
-	// Deletes a season.
-	DeleteSeason(context.Context, *DeleteSeasonRequest) (*emptypb.Empty, error)
-	// Retrieves one price rule.
-	GetPriceRule(context.Context, *GetPriceRuleRequest) (*PriceRule, error)
-	// Lists price rules.
-	ListPriceRules(context.Context, *ListPriceRulesRequest) (*ListPriceRulesResponse, error)
-	// Creates a price rule.
-	CreatePriceRule(context.Context, *CreatePriceRuleRequest) (*PriceRule, error)
-	// Updates a price rule. Only the fields in update_mask are written.
-	UpdatePriceRule(context.Context, *UpdatePriceRuleRequest) (*PriceRule, error)
-	// Deletes a price rule.
-	DeletePriceRule(context.Context, *DeletePriceRuleRequest) (*emptypb.Empty, error)
+	// Retrieves one lead.
+	GetLead(context.Context, *GetLeadRequest) (*Lead, error)
+	// Lists leads.
+	ListLeads(context.Context, *ListLeadsRequest) (*ListLeadsResponse, error)
+	// Creates a lead.
+	CreateLead(context.Context, *CreateLeadRequest) (*Lead, error)
+	// Updates a lead. Only the fields in update_mask are written.
+	UpdateLead(context.Context, *UpdateLeadRequest) (*Lead, error)
+	// Retrieves one activity.
+	GetActivity(context.Context, *GetActivityRequest) (*Activity, error)
+	// Lists activities.
+	ListActivities(context.Context, *ListActivitiesRequest) (*ListActivitiesResponse, error)
+	// Creates an activity.
+	CreateActivity(context.Context, *CreateActivityRequest) (*Activity, error)
 	// Retrieves one quote.
 	GetQuote(context.Context, *GetQuoteRequest) (*Quote, error)
 	// Lists quotes.
@@ -562,8 +263,6 @@ type SalesServiceServer interface {
 	CreateQuote(context.Context, *CreateQuoteRequest) (*Quote, error)
 	// Updates a quote. Only the fields in update_mask are written.
 	UpdateQuote(context.Context, *UpdateQuoteRequest) (*Quote, error)
-	// Deletes a quote.
-	DeleteQuote(context.Context, *DeleteQuoteRequest) (*emptypb.Empty, error)
 	// Sends a draft quote to the guest, fixing its prices.
 	SendQuote(context.Context, *SendQuoteRequest) (*Quote, error)
 	// Accepts a sent quote: makes the reservation or event it offers, and wins its lead.
@@ -572,10 +271,6 @@ type SalesServiceServer interface {
 	DeclineQuote(context.Context, *DeclineQuoteRequest) (*Quote, error)
 	// Revises a sent or declined quote: makes a new draft from it, which supersedes it.
 	ReviseQuote(context.Context, *ReviseQuoteRequest) (*Quote, error)
-	// Prices a menu, fixed package, space or dish for a date: its base price with
-	// the matching price rule of the highest priority applied. The one way
-	// aperio prices anything -- quotes, the website and agents all ask it.
-	CalculatePrice(context.Context, *CalculatePriceRequest) (*CalculatePriceResponse, error)
 	mustEmbedUnimplementedSalesServiceServer()
 }
 
@@ -586,80 +281,26 @@ type SalesServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedSalesServiceServer struct{}
 
-func (UnimplementedSalesServiceServer) GetDish(context.Context, *GetDishRequest) (*Dish, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetDish not implemented")
+func (UnimplementedSalesServiceServer) GetLead(context.Context, *GetLeadRequest) (*Lead, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetLead not implemented")
 }
-func (UnimplementedSalesServiceServer) ListDishes(context.Context, *ListDishesRequest) (*ListDishesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListDishes not implemented")
+func (UnimplementedSalesServiceServer) ListLeads(context.Context, *ListLeadsRequest) (*ListLeadsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListLeads not implemented")
 }
-func (UnimplementedSalesServiceServer) CreateDish(context.Context, *CreateDishRequest) (*Dish, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateDish not implemented")
+func (UnimplementedSalesServiceServer) CreateLead(context.Context, *CreateLeadRequest) (*Lead, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateLead not implemented")
 }
-func (UnimplementedSalesServiceServer) UpdateDish(context.Context, *UpdateDishRequest) (*Dish, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateDish not implemented")
+func (UnimplementedSalesServiceServer) UpdateLead(context.Context, *UpdateLeadRequest) (*Lead, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateLead not implemented")
 }
-func (UnimplementedSalesServiceServer) DeleteDish(context.Context, *DeleteDishRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteDish not implemented")
+func (UnimplementedSalesServiceServer) GetActivity(context.Context, *GetActivityRequest) (*Activity, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetActivity not implemented")
 }
-func (UnimplementedSalesServiceServer) GetMenu(context.Context, *GetMenuRequest) (*Menu, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetMenu not implemented")
+func (UnimplementedSalesServiceServer) ListActivities(context.Context, *ListActivitiesRequest) (*ListActivitiesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListActivities not implemented")
 }
-func (UnimplementedSalesServiceServer) ListMenus(context.Context, *ListMenusRequest) (*ListMenusResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListMenus not implemented")
-}
-func (UnimplementedSalesServiceServer) CreateMenu(context.Context, *CreateMenuRequest) (*Menu, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateMenu not implemented")
-}
-func (UnimplementedSalesServiceServer) UpdateMenu(context.Context, *UpdateMenuRequest) (*Menu, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateMenu not implemented")
-}
-func (UnimplementedSalesServiceServer) DeleteMenu(context.Context, *DeleteMenuRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteMenu not implemented")
-}
-func (UnimplementedSalesServiceServer) GetFixedPackage(context.Context, *GetFixedPackageRequest) (*FixedPackage, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetFixedPackage not implemented")
-}
-func (UnimplementedSalesServiceServer) ListFixedPackages(context.Context, *ListFixedPackagesRequest) (*ListFixedPackagesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListFixedPackages not implemented")
-}
-func (UnimplementedSalesServiceServer) CreateFixedPackage(context.Context, *CreateFixedPackageRequest) (*FixedPackage, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateFixedPackage not implemented")
-}
-func (UnimplementedSalesServiceServer) UpdateFixedPackage(context.Context, *UpdateFixedPackageRequest) (*FixedPackage, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateFixedPackage not implemented")
-}
-func (UnimplementedSalesServiceServer) DeleteFixedPackage(context.Context, *DeleteFixedPackageRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteFixedPackage not implemented")
-}
-func (UnimplementedSalesServiceServer) GetSeason(context.Context, *GetSeasonRequest) (*Season, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetSeason not implemented")
-}
-func (UnimplementedSalesServiceServer) ListSeasons(context.Context, *ListSeasonsRequest) (*ListSeasonsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListSeasons not implemented")
-}
-func (UnimplementedSalesServiceServer) CreateSeason(context.Context, *CreateSeasonRequest) (*Season, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateSeason not implemented")
-}
-func (UnimplementedSalesServiceServer) UpdateSeason(context.Context, *UpdateSeasonRequest) (*Season, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateSeason not implemented")
-}
-func (UnimplementedSalesServiceServer) DeleteSeason(context.Context, *DeleteSeasonRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteSeason not implemented")
-}
-func (UnimplementedSalesServiceServer) GetPriceRule(context.Context, *GetPriceRuleRequest) (*PriceRule, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetPriceRule not implemented")
-}
-func (UnimplementedSalesServiceServer) ListPriceRules(context.Context, *ListPriceRulesRequest) (*ListPriceRulesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListPriceRules not implemented")
-}
-func (UnimplementedSalesServiceServer) CreatePriceRule(context.Context, *CreatePriceRuleRequest) (*PriceRule, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreatePriceRule not implemented")
-}
-func (UnimplementedSalesServiceServer) UpdatePriceRule(context.Context, *UpdatePriceRuleRequest) (*PriceRule, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdatePriceRule not implemented")
-}
-func (UnimplementedSalesServiceServer) DeletePriceRule(context.Context, *DeletePriceRuleRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeletePriceRule not implemented")
+func (UnimplementedSalesServiceServer) CreateActivity(context.Context, *CreateActivityRequest) (*Activity, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateActivity not implemented")
 }
 func (UnimplementedSalesServiceServer) GetQuote(context.Context, *GetQuoteRequest) (*Quote, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetQuote not implemented")
@@ -673,9 +314,6 @@ func (UnimplementedSalesServiceServer) CreateQuote(context.Context, *CreateQuote
 func (UnimplementedSalesServiceServer) UpdateQuote(context.Context, *UpdateQuoteRequest) (*Quote, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateQuote not implemented")
 }
-func (UnimplementedSalesServiceServer) DeleteQuote(context.Context, *DeleteQuoteRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteQuote not implemented")
-}
 func (UnimplementedSalesServiceServer) SendQuote(context.Context, *SendQuoteRequest) (*Quote, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendQuote not implemented")
 }
@@ -687,9 +325,6 @@ func (UnimplementedSalesServiceServer) DeclineQuote(context.Context, *DeclineQuo
 }
 func (UnimplementedSalesServiceServer) ReviseQuote(context.Context, *ReviseQuoteRequest) (*Quote, error) {
 	return nil, status.Error(codes.Unimplemented, "method ReviseQuote not implemented")
-}
-func (UnimplementedSalesServiceServer) CalculatePrice(context.Context, *CalculatePriceRequest) (*CalculatePriceResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CalculatePrice not implemented")
 }
 func (UnimplementedSalesServiceServer) mustEmbedUnimplementedSalesServiceServer() {}
 func (UnimplementedSalesServiceServer) testEmbeddedByValue()                      {}
@@ -712,452 +347,128 @@ func RegisterSalesServiceServer(s grpc.ServiceRegistrar, srv SalesServiceServer)
 	s.RegisterService(&SalesService_ServiceDesc, srv)
 }
 
-func _SalesService_GetDish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetDishRequest)
+func _SalesService_GetLead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLeadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).GetDish(ctx, in)
+		return srv.(SalesServiceServer).GetLead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_GetDish_FullMethodName,
+		FullMethod: SalesService_GetLead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).GetDish(ctx, req.(*GetDishRequest))
+		return srv.(SalesServiceServer).GetLead(ctx, req.(*GetLeadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_ListDishes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListDishesRequest)
+func _SalesService_ListLeads_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListLeadsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).ListDishes(ctx, in)
+		return srv.(SalesServiceServer).ListLeads(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_ListDishes_FullMethodName,
+		FullMethod: SalesService_ListLeads_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).ListDishes(ctx, req.(*ListDishesRequest))
+		return srv.(SalesServiceServer).ListLeads(ctx, req.(*ListLeadsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_CreateDish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDishRequest)
+func _SalesService_CreateLead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateLeadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).CreateDish(ctx, in)
+		return srv.(SalesServiceServer).CreateLead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_CreateDish_FullMethodName,
+		FullMethod: SalesService_CreateLead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).CreateDish(ctx, req.(*CreateDishRequest))
+		return srv.(SalesServiceServer).CreateLead(ctx, req.(*CreateLeadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_UpdateDish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateDishRequest)
+func _SalesService_UpdateLead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateLeadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).UpdateDish(ctx, in)
+		return srv.(SalesServiceServer).UpdateLead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_UpdateDish_FullMethodName,
+		FullMethod: SalesService_UpdateLead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).UpdateDish(ctx, req.(*UpdateDishRequest))
+		return srv.(SalesServiceServer).UpdateLead(ctx, req.(*UpdateLeadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_DeleteDish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteDishRequest)
+func _SalesService_GetActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).DeleteDish(ctx, in)
+		return srv.(SalesServiceServer).GetActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_DeleteDish_FullMethodName,
+		FullMethod: SalesService_GetActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).DeleteDish(ctx, req.(*DeleteDishRequest))
+		return srv.(SalesServiceServer).GetActivity(ctx, req.(*GetActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_GetMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMenuRequest)
+func _SalesService_ListActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListActivitiesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).GetMenu(ctx, in)
+		return srv.(SalesServiceServer).ListActivities(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_GetMenu_FullMethodName,
+		FullMethod: SalesService_ListActivities_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).GetMenu(ctx, req.(*GetMenuRequest))
+		return srv.(SalesServiceServer).ListActivities(ctx, req.(*ListActivitiesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_ListMenus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListMenusRequest)
+func _SalesService_CreateActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SalesServiceServer).ListMenus(ctx, in)
+		return srv.(SalesServiceServer).CreateActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SalesService_ListMenus_FullMethodName,
+		FullMethod: SalesService_CreateActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).ListMenus(ctx, req.(*ListMenusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_CreateMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateMenuRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).CreateMenu(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_CreateMenu_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).CreateMenu(ctx, req.(*CreateMenuRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_UpdateMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateMenuRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).UpdateMenu(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_UpdateMenu_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).UpdateMenu(ctx, req.(*UpdateMenuRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_DeleteMenu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteMenuRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).DeleteMenu(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_DeleteMenu_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).DeleteMenu(ctx, req.(*DeleteMenuRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_GetFixedPackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetFixedPackageRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).GetFixedPackage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_GetFixedPackage_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).GetFixedPackage(ctx, req.(*GetFixedPackageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_ListFixedPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFixedPackagesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).ListFixedPackages(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_ListFixedPackages_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).ListFixedPackages(ctx, req.(*ListFixedPackagesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_CreateFixedPackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateFixedPackageRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).CreateFixedPackage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_CreateFixedPackage_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).CreateFixedPackage(ctx, req.(*CreateFixedPackageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_UpdateFixedPackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateFixedPackageRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).UpdateFixedPackage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_UpdateFixedPackage_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).UpdateFixedPackage(ctx, req.(*UpdateFixedPackageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_DeleteFixedPackage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteFixedPackageRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).DeleteFixedPackage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_DeleteFixedPackage_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).DeleteFixedPackage(ctx, req.(*DeleteFixedPackageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_GetSeason_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSeasonRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).GetSeason(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_GetSeason_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).GetSeason(ctx, req.(*GetSeasonRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_ListSeasons_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSeasonsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).ListSeasons(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_ListSeasons_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).ListSeasons(ctx, req.(*ListSeasonsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_CreateSeason_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateSeasonRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).CreateSeason(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_CreateSeason_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).CreateSeason(ctx, req.(*CreateSeasonRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_UpdateSeason_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateSeasonRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).UpdateSeason(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_UpdateSeason_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).UpdateSeason(ctx, req.(*UpdateSeasonRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_DeleteSeason_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteSeasonRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).DeleteSeason(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_DeleteSeason_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).DeleteSeason(ctx, req.(*DeleteSeasonRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_GetPriceRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPriceRuleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).GetPriceRule(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_GetPriceRule_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).GetPriceRule(ctx, req.(*GetPriceRuleRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_ListPriceRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPriceRulesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).ListPriceRules(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_ListPriceRules_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).ListPriceRules(ctx, req.(*ListPriceRulesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_CreatePriceRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreatePriceRuleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).CreatePriceRule(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_CreatePriceRule_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).CreatePriceRule(ctx, req.(*CreatePriceRuleRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_UpdatePriceRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePriceRuleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).UpdatePriceRule(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_UpdatePriceRule_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).UpdatePriceRule(ctx, req.(*UpdatePriceRuleRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SalesService_DeletePriceRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeletePriceRuleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).DeletePriceRule(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_DeletePriceRule_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).DeletePriceRule(ctx, req.(*DeletePriceRuleRequest))
+		return srv.(SalesServiceServer).CreateActivity(ctx, req.(*CreateActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1234,24 +545,6 @@ func _SalesService_UpdateQuote_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_DeleteQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteQuoteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).DeleteQuote(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_DeleteQuote_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).DeleteQuote(ctx, req.(*DeleteQuoteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _SalesService_SendQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SendQuoteRequest)
 	if err := dec(in); err != nil {
@@ -1324,24 +617,6 @@ func _SalesService_ReviseQuote_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SalesService_CalculatePrice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CalculatePriceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SalesServiceServer).CalculatePrice(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SalesService_CalculatePrice_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SalesServiceServer).CalculatePrice(ctx, req.(*CalculatePriceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // SalesService_ServiceDesc is the grpc.ServiceDesc for SalesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1350,104 +625,32 @@ var SalesService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*SalesServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetDish",
-			Handler:    _SalesService_GetDish_Handler,
+			MethodName: "GetLead",
+			Handler:    _SalesService_GetLead_Handler,
 		},
 		{
-			MethodName: "ListDishes",
-			Handler:    _SalesService_ListDishes_Handler,
+			MethodName: "ListLeads",
+			Handler:    _SalesService_ListLeads_Handler,
 		},
 		{
-			MethodName: "CreateDish",
-			Handler:    _SalesService_CreateDish_Handler,
+			MethodName: "CreateLead",
+			Handler:    _SalesService_CreateLead_Handler,
 		},
 		{
-			MethodName: "UpdateDish",
-			Handler:    _SalesService_UpdateDish_Handler,
+			MethodName: "UpdateLead",
+			Handler:    _SalesService_UpdateLead_Handler,
 		},
 		{
-			MethodName: "DeleteDish",
-			Handler:    _SalesService_DeleteDish_Handler,
+			MethodName: "GetActivity",
+			Handler:    _SalesService_GetActivity_Handler,
 		},
 		{
-			MethodName: "GetMenu",
-			Handler:    _SalesService_GetMenu_Handler,
+			MethodName: "ListActivities",
+			Handler:    _SalesService_ListActivities_Handler,
 		},
 		{
-			MethodName: "ListMenus",
-			Handler:    _SalesService_ListMenus_Handler,
-		},
-		{
-			MethodName: "CreateMenu",
-			Handler:    _SalesService_CreateMenu_Handler,
-		},
-		{
-			MethodName: "UpdateMenu",
-			Handler:    _SalesService_UpdateMenu_Handler,
-		},
-		{
-			MethodName: "DeleteMenu",
-			Handler:    _SalesService_DeleteMenu_Handler,
-		},
-		{
-			MethodName: "GetFixedPackage",
-			Handler:    _SalesService_GetFixedPackage_Handler,
-		},
-		{
-			MethodName: "ListFixedPackages",
-			Handler:    _SalesService_ListFixedPackages_Handler,
-		},
-		{
-			MethodName: "CreateFixedPackage",
-			Handler:    _SalesService_CreateFixedPackage_Handler,
-		},
-		{
-			MethodName: "UpdateFixedPackage",
-			Handler:    _SalesService_UpdateFixedPackage_Handler,
-		},
-		{
-			MethodName: "DeleteFixedPackage",
-			Handler:    _SalesService_DeleteFixedPackage_Handler,
-		},
-		{
-			MethodName: "GetSeason",
-			Handler:    _SalesService_GetSeason_Handler,
-		},
-		{
-			MethodName: "ListSeasons",
-			Handler:    _SalesService_ListSeasons_Handler,
-		},
-		{
-			MethodName: "CreateSeason",
-			Handler:    _SalesService_CreateSeason_Handler,
-		},
-		{
-			MethodName: "UpdateSeason",
-			Handler:    _SalesService_UpdateSeason_Handler,
-		},
-		{
-			MethodName: "DeleteSeason",
-			Handler:    _SalesService_DeleteSeason_Handler,
-		},
-		{
-			MethodName: "GetPriceRule",
-			Handler:    _SalesService_GetPriceRule_Handler,
-		},
-		{
-			MethodName: "ListPriceRules",
-			Handler:    _SalesService_ListPriceRules_Handler,
-		},
-		{
-			MethodName: "CreatePriceRule",
-			Handler:    _SalesService_CreatePriceRule_Handler,
-		},
-		{
-			MethodName: "UpdatePriceRule",
-			Handler:    _SalesService_UpdatePriceRule_Handler,
-		},
-		{
-			MethodName: "DeletePriceRule",
-			Handler:    _SalesService_DeletePriceRule_Handler,
+			MethodName: "CreateActivity",
+			Handler:    _SalesService_CreateActivity_Handler,
 		},
 		{
 			MethodName: "GetQuote",
@@ -1466,10 +669,6 @@ var SalesService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SalesService_UpdateQuote_Handler,
 		},
 		{
-			MethodName: "DeleteQuote",
-			Handler:    _SalesService_DeleteQuote_Handler,
-		},
-		{
 			MethodName: "SendQuote",
 			Handler:    _SalesService_SendQuote_Handler,
 		},
@@ -1484,10 +683,6 @@ var SalesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReviseQuote",
 			Handler:    _SalesService_ReviseQuote_Handler,
-		},
-		{
-			MethodName: "CalculatePrice",
-			Handler:    _SalesService_CalculatePrice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

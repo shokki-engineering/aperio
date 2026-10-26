@@ -9,7 +9,6 @@ import "aperio/venue/v1/venue.proto";
 import "aperio/venue/v1/venue_messages.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
-import "google/protobuf/empty.proto";
 import "mcp/v1/annotations.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1;venuepbv1";
@@ -58,12 +57,6 @@ service VenueService {
     option (google.api.method_signature) = "venue,update_mask";
   }
 
-  // Deletes a venue.
-  rpc DeleteVenue(DeleteVenueRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {delete: "/v1/{name=venues/*}"};
-    option (google.api.method_signature) = "name";
-  }
-
   // Retrieves one space.
   rpc GetSpace(GetSpaceRequest) returns (Space) {
     option (google.api.http) = {get: "/v1/{name=venues/*/spaces/*}"};
@@ -92,11 +85,5 @@ service VenueService {
       body: "space"
     };
     option (google.api.method_signature) = "space,update_mask";
-  }
-
-  // Deletes a space.
-  rpc DeleteSpace(DeleteSpaceRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {delete: "/v1/{name=venues/*/spaces/*}"};
-    option (google.api.method_signature) = "name";
   }
 }

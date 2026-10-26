@@ -1,0 +1,253 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.stay.v1;
+
+import "aperio/type/v1/enums.proto";
+import "aperio/type/v1/types.proto";
+import "buf/validate/validate.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
+import "google/type/money.proto";
+import "protobuf/opentravel/hotel/booking/reservation/v1/types/res_guest.proto";
+import "protobuf/opentravel/hotel/booking/reservation/v1/types/room_stay.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1";
+option java_multiple_files = true;
+option java_outer_classname = "StayProto";
+option java_package = "engineering.shokki.aperio.stay.v1";
+
+// A Reservation is a stay: rooms at a venue for a span of nights, booked
+// directly, from a lead, or by a channel.
+//
+// What is searched and reported on is aperio's own -- the dates, the rooms,
+// the channel, the state -- and is stored as columns, so "who arrives
+// today" is one indexed read. What a channel sends is kept as it sent it:
+// the room stays and guests are OpenTravel's RoomStay and ResGuest, so an
+// OTA_HotelResNotif from Booking.com is stored without translation and sent
+// back unchanged.
+//
+// The rooms are freebusy's: a reservation is a freebusy hold made into a
+// freebusy reservation for each room line, named in freebusy_reservations.
+message Reservation {
+  // Arrivals, departures and in-house are read by date; a channel's
+  // reservation is found by its confirmation number.
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: [
+          "arrival_date",
+          "departure_date"
+        ]
+      },
+      {
+        columns: [
+          "channel",
+          "channel_reference"
+        ]
+      },
+      {
+        columns: [
+          "state",
+          "update_time"
+        ]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.stay.v1/Reservation"
+    pattern: "venues/{venue}/reservations/{reservation}"
+    singular: "reservation"
+    plural: "reservations"
+  };
+
+  // The reservation name.
+  // Format: venues/{venue}/reservations/{reservation}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/reservations/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The guest the reservation is for, who is billed.
+  // Format: contacts/{contact}
+  string contact = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.guest.v1/Contact",
+    (buf.validate.field).string.pattern = "^contacts/[^/]+$"
+  ];
+
+  // The lead it was won from, if any.
+  // Format: leads/{lead}
+  string lead = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Lead",
+    (buf.validate.field).string.pattern = "^leads/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The event the stay is for, when its guests are an event's: a wedding's
+  // room block.
+  // Format: venues/{venue}/events/{event}
+  string event = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.event.v1/Event",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/events/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Where the reservation came from.
+  aperio.type.v1.Channel channel = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The channel's own number for the reservation (OTA ResID_Value), which
+  // every modification and cancellation from the channel names.
+  string channel_reference = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE,
+    (store.v1.query) = {search: true}
+  ];
+
+  // Lifecycle state, moved by the custom methods.
+  State state = 7 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.column) = {default_value: "PENDING"}
+  ];
+
+  // The night of arrival.
+  google.type.Date arrival_date = 8 [(google.api.field_behavior) = REQUIRED];
+
+  // The day of departure; the stay is the nights before it.
+  google.type.Date departure_date = 9 [(google.api.field_behavior) = REQUIRED];
+
+  // How many adults stay.
+  int32 adults = 10 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // How many children stay besides the adults.
+  int32 children = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The rooms booked, by room type.
+  repeated RoomLine rooms = 12 [(google.api.field_behavior) = REQUIRED];
+
+  // The stay in OpenTravel's words -- rates by night, room types, guest
+  // counts, guarantee, total -- as a channel sent it or as it is sent to one.
+  repeated protobuf.opentravel.hotel.booking.reservation.v1.types.RoomStay room_stays = 13 [(google.api.field_behavior) = OPTIONAL];
+
+  // The guests in OpenTravel's words: their profiles, arrival and departure
+  // times, loyalty numbers.
+  repeated protobuf.opentravel.hotel.booking.reservation.v1.types.ResGuest res_guests = 14 [(google.api.field_behavior) = OPTIONAL];
+
+  // What the guests may or may not eat.
+  repeated aperio.type.v1.DietaryRequirement dietary_requirements = 15 [(google.api.field_behavior) = OPTIONAL];
+
+  // What the guests asked for: a cot, an early check-in, a cake.
+  repeated aperio.type.v1.SpecialRequest special_requests = 16 [(google.api.field_behavior) = OPTIONAL];
+
+  // What the stay costs in all, before payments: the accepted quote's total,
+  // or the channel's.
+  google.type.Money total = 17 [(google.api.field_behavior) = OPTIONAL];
+
+  // The quote the reservation was booked on, if any.
+  // Format: venues/{venue}/quotes/{quote}
+  string quote = 18 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Quote",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/quotes/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The freebusy reservations holding the rooms, one per room line.
+  // Format: reservations/{reservation}
+  repeated string freebusy_reservations = 19 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.resource_reference).type = "freebusy.reservation.v1/Reservation"
+  ];
+
+  // Anything else the front desk should know.
+  string notes = 20 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 10000
+  ];
+
+  // Why it was cancelled. Set by CancelReservation.
+  string cancel_reason = 21 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the guests arrived. Set by ArriveReservation.
+  google.protobuf.Timestamp arrive_time = 22 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the guests left. Set by DepartReservation.
+  google.protobuf.Timestamp depart_time = 23 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When it was cancelled.
+  google.protobuf.Timestamp cancel_time = 24 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 25 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 26 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 27 [(google.api.field_behavior) = OPTIONAL];
+
+  // Where a reservation is in its life.
+  enum State {
+    // Default; never persisted.
+    STATE_UNSPECIFIED = 0;
+
+    // Taken, its rooms held, not yet confirmed: awaiting payment or a
+    // guarantee.
+    STATE_PENDING = 1;
+
+    // Confirmed.
+    STATE_CONFIRMED = 2;
+
+    // The guests have arrived.
+    STATE_CHECKED_IN = 3;
+
+    // The guests have left.
+    STATE_CHECKED_OUT = 4;
+
+    // Cancelled; its rooms released.
+    STATE_CANCELLED = 5;
+
+    // The guests never came.
+    STATE_NO_SHOW = 6;
+  }
+}
+
+// RoomLine is some rooms of one type, booked for every night of a stay.
+message RoomLine {
+  // The room type.
+  // Format: venues/{venue}/spaces/{space}
+  string space = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Space",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/spaces/[^/]+$"
+  ];
+
+  // How many rooms of it.
+  int32 rooms = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // The rate plan sold, by its code on the channels (OTA RatePlanCode).
+  string rate_plan_code = 3 [(google.api.field_behavior) = OPTIONAL];
+}

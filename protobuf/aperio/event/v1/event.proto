@@ -1,0 +1,283 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.event.v1;
+
+import "aperio/type/v1/enums.proto";
+import "aperio/type/v1/types.proto";
+import "aperio/venue/v1/enums.proto";
+import "buf/validate/validate.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1;eventpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EventProto";
+option java_package = "engineering.shokki.aperio.event.v1";
+
+// An Event is an occasion held at a venue: a wedding, a conference, a
+// birthday. It is the booking a hall lead becomes, and it may run over days,
+// as its sessions do -- a wedding is a mehendi, a sangeet, a ceremony and a
+// reception, each in its own space at its own time.
+//
+// Rooms for its guests are reservations naming the event.
+message Event {
+  // Events are read by date and state.
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: [
+          "state",
+          "update_time"
+        ]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.event.v1/Event"
+    pattern: "venues/{venue}/events/{event}"
+    singular: "event"
+    plural: "events"
+  };
+
+  // The event name.
+  // Format: venues/{venue}/events/{event}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/events/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The event's title, e.g. "Sharma–Iyer wedding".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // The host, who is billed.
+  // Format: contacts/{contact}
+  string contact = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.guest.v1/Contact",
+    (buf.validate.field).string.pattern = "^contacts/[^/]+$"
+  ];
+
+  // The lead it was won from, if any.
+  // Format: leads/{lead}
+  string lead = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Lead",
+    (buf.validate.field).string.pattern = "^leads/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The occasion.
+  aperio.type.v1.EventType event_type = 5 [(google.api.field_behavior) = REQUIRED];
+
+  // Lifecycle state, moved by the custom methods.
+  State state = 6 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.column) = {default_value: "TENTATIVE"}
+  ];
+
+  // The days the event runs over, from its first session to its last.
+  aperio.type.v1.DateRange dates = 7 [(google.api.field_behavior) = REQUIRED];
+
+  // How many guests are expected at the largest session.
+  int32 guests = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The quote the event was booked on.
+  // Format: venues/{venue}/quotes/{quote}
+  string quote = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.sales.v1/Quote",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/quotes/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // What the host asked for across the event: decor, a band, fireworks.
+  repeated aperio.type.v1.SpecialRequest special_requests = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // The event's coordinator on the venue's side.
+  // Format: users/{user}
+  string coordinator = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "users.shokki.engineering/User",
+    (store.v1.reference) = {on_delete: ON_DELETE_ALLOW},
+    (buf.validate.field).string.pattern = "^users/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Anything else the team should know.
+  string notes = 12 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 10000
+  ];
+
+  // Why it was cancelled. Set by CancelEvent.
+  string cancel_reason = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When it was cancelled.
+  google.protobuf.Timestamp cancel_time = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 15 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 16 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 17 [(google.api.field_behavior) = OPTIONAL];
+
+  // Where an event is in its life.
+  enum State {
+    // Default; never persisted.
+    STATE_UNSPECIFIED = 0;
+
+    // Its spaces held, the booking not yet confirmed: awaiting the advance.
+    STATE_TENTATIVE = 1;
+
+    // Confirmed.
+    STATE_CONFIRMED = 2;
+
+    // Held.
+    STATE_COMPLETED = 3;
+
+    // Cancelled; its spaces released.
+    STATE_CANCELLED = 4;
+  }
+}
+
+// A Session is one part of an event, in one space at one time -- what an
+// Indian wedding calls a function: the sangeet on the lawn on Friday evening,
+// the reception in the ballroom on Saturday night; a conference's keynote
+// and its gala dinner. Each has its own layout, headcount and menu, and its
+// own dietary counts for the kitchen. (Not "Function": that word is reserved
+// in too many languages to be a field name.)
+message Session {
+  // A day's sessions are read across every event, by time.
+  option (entity.v1.table) = {
+    id: ID_STRATEGY_ULID
+    indexes: [
+      {
+        columns: [
+          "start_time",
+          "end_time"
+        ]
+      }
+    ]
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.event.v1/Session"
+    pattern: "venues/{venue}/events/{event}/sessions/{session}"
+    singular: "session"
+    plural: "sessions"
+  };
+
+  // The session name.
+  // Format: venues/{venue}/events/{event}/sessions/{session}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/events/[^/]+/sessions/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The session's title, e.g. "Sangeet".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // The occasion of this part, when it differs from the event's.
+  aperio.type.v1.EventType event_type = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Where it is held.
+  // Format: venues/{venue}/spaces/{space}
+  string space = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Space",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/spaces/[^/]+$"
+  ];
+
+  // When guests arrive.
+  google.protobuf.Timestamp start_time = 5 [(google.api.field_behavior) = REQUIRED];
+
+  // When it ends.
+  google.protobuf.Timestamp end_time = 6 [(google.api.field_behavior) = REQUIRED];
+
+  // When the space is taken from, for setting up; the start_time when empty.
+  google.protobuf.Timestamp setup_time = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // When the space is free again, after clearing; the end_time when empty.
+  google.protobuf.Timestamp teardown_time = 8 [(google.api.field_behavior) = OPTIONAL];
+
+  // How the space is set.
+  aperio.venue.v1.Layout layout = 9 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many guests are expected.
+  int32 guests = 10 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // The count the host guarantees to pay for, given before the day.
+  int32 guaranteed_guests = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The menu served.
+  // Format: venues/{venue}/menus/{menu}
+  string menu = 12 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.catalog.v1/Menu",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/menus/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // How many plates of each kind: "180 vegetarian, 25 Jain, 4 nut-free".
+  repeated aperio.type.v1.DietaryRequirement dietary_requirements = 13 [(google.api.field_behavior) = OPTIONAL];
+
+  // What the host asked for at this session.
+  repeated aperio.type.v1.SpecialRequest special_requests = 14 [(google.api.field_behavior) = OPTIONAL];
+
+  // The freebusy reservation holding the space, setup to teardown.
+  // Format: reservations/{reservation}
+  string freebusy_reservation = 15 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.resource_reference).type = "freebusy.reservation.v1/Reservation"
+  ];
+
+  // Anything else the team should know.
+  string notes = 16 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 10000
+  ];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 17 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 18 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 19 [(google.api.field_behavior) = OPTIONAL];
+}

@@ -6,35 +6,21 @@ Generated from Protobuf by protoc-gen-store. Source of truth is the `.proto` fil
 
 | Models | Enums |
 | ---: | ---: |
-| 7 | 4 |
+| 3 | 5 |
 
 ## Entity relationships
 
 ```mermaid
 erDiagram
     direction LR
-    Dish {
+    Activity {
         string id PK
-        string venue_id FK
+        string lead_id FK
     }
-    FixedPackage {
+    Lead {
         string id PK
-        string menu FK
-        string venue_id FK
-    }
-    FixedPackageSpaces {
-        string id PK
-        string fixed_package_id FK
-        string space_id FK
-    }
-    Menu {
-        string id PK
-        string venue_id FK
-    }
-    PriceRule {
-        string id PK
-        string season FK
-        string venue_id FK
+        string contact FK
+        string venue FK
     }
     Quote {
         string id PK
@@ -42,34 +28,18 @@ erDiagram
         string lead FK
         string venue_id FK
     }
-    Season {
-        string id PK
-        string venue_id FK
-    }
     Contact {
-        string externalStub PK
-    }
-    Lead {
-        string externalStub PK
-    }
-    Space {
         string externalStub PK
     }
     Venue {
         string externalStub PK
     }
-    Dish }o--|| Venue : "venue_id"
-    FixedPackage }o--|| Menu : "menu"
-    FixedPackage }o--|| Venue : "venue_id"
-    FixedPackageSpaces }o--|| FixedPackage : "fixed_package_id"
-    FixedPackageSpaces }o--|| Space : "space_id"
-    Menu }o--|| Venue : "venue_id"
-    PriceRule }o--|| Season : "season"
-    PriceRule }o--|| Venue : "venue_id"
+    Activity }o--|| Lead : "lead_id"
+    Lead }o--|| Contact : "contact"
+    Lead }o--|| Venue : "venue"
     Quote }o--|| Contact : "contact"
     Quote }o--|| Lead : "lead"
     Quote }o--|| Venue : "venue_id"
-    Season }o--|| Venue : "venue_id"
 ```
 
 ## Subfolders

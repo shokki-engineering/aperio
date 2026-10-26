@@ -14,7 +14,6 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -30,181 +29,86 @@ var File_aperio_sales_v1_sales_service_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_service_proto_rawDesc = "" +
 	"\n" +
-	"#aperio/sales/v1/sales_service.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a$aperio/sales/v1/sales_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18mcp/v1/annotations.proto2\xad(\n" +
-	"\fSalesService\x12n\n" +
-	"\aGetDish\x12\x1f.aperio.sales.v1.GetDishRequest\x1a\x15.aperio.sales.v1.Dish\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{name=venues/*/dishes/*}\x12\x84\x01\n" +
+	"#aperio/sales/v1/sales_service.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a$aperio/sales/v1/sales_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xc8\x10\n" +
+	"\fSalesService\x12d\n" +
+	"\aGetLead\x12\x1f.aperio.sales.v1.GetLeadRequest\x1a\x15.aperio.sales.v1.Lead\"!\xdaA\x04name\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/{name=leads/*}\x12h\n" +
+	"\tListLeads\x12!.aperio.sales.v1.ListLeadsRequest\x1a\".aperio.sales.v1.ListLeadsResponse\"\x14\xdaA\x00\x82\xd3\xe4\x93\x02\v\x12\t/v1/leads\x12o\n" +
 	"\n" +
-	"ListDishes\x12\".aperio.sales.v1.ListDishesRequest\x1a#.aperio.sales.v1.ListDishesResponse\"-\xdaA\x06parent\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{parent=venues/*}/dishes\x12\x89\x01\n" +
+	"CreateLead\x12\".aperio.sales.v1.CreateLeadRequest\x1a\x15.aperio.sales.v1.Lead\"&\xdaA\flead,lead_id\x82\xd3\xe4\x93\x02\x11:\x04lead\"\t/v1/leads\x12\x81\x01\n" +
 	"\n" +
-	"CreateDish\x12\".aperio.sales.v1.CreateDishRequest\x1a\x15.aperio.sales.v1.Dish\"@\xdaA\x13parent,dish,dish_id\x82\xd3\xe4\x93\x02$:\x04dish\"\x1c/v1/{parent=venues/*}/dishes\x12\x8b\x01\n" +
-	"\n" +
-	"UpdateDish\x12\".aperio.sales.v1.UpdateDishRequest\x1a\x15.aperio.sales.v1.Dish\"B\xdaA\x10dish,update_mask\x82\xd3\xe4\x93\x02):\x04dish2!/v1/{dish.name=venues/*/dishes/*}\x12u\n" +
-	"\n" +
-	"DeleteDish\x12\".aperio.sales.v1.DeleteDishRequest\x1a\x16.google.protobuf.Empty\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/{name=venues/*/dishes/*}\x12m\n" +
-	"\aGetMenu\x12\x1f.aperio.sales.v1.GetMenuRequest\x1a\x15.aperio.sales.v1.Menu\"*\xdaA\x04name\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v1/{name=venues/*/menus/*}\x12\x80\x01\n" +
-	"\tListMenus\x12!.aperio.sales.v1.ListMenusRequest\x1a\".aperio.sales.v1.ListMenusResponse\",\xdaA\x06parent\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v1/{parent=venues/*}/menus\x12\x88\x01\n" +
-	"\n" +
-	"CreateMenu\x12\".aperio.sales.v1.CreateMenuRequest\x1a\x15.aperio.sales.v1.Menu\"?\xdaA\x13parent,menu,menu_id\x82\xd3\xe4\x93\x02#:\x04menu\"\x1b/v1/{parent=venues/*}/menus\x12\x8a\x01\n" +
-	"\n" +
-	"UpdateMenu\x12\".aperio.sales.v1.UpdateMenuRequest\x1a\x15.aperio.sales.v1.Menu\"A\xdaA\x10menu,update_mask\x82\xd3\xe4\x93\x02(:\x04menu2 /v1/{menu.name=venues/*/menus/*}\x12t\n" +
-	"\n" +
-	"DeleteMenu\x12\".aperio.sales.v1.DeleteMenuRequest\x1a\x16.google.protobuf.Empty\"*\xdaA\x04name\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/{name=venues/*/menus/*}\x12\x8d\x01\n" +
-	"\x0fGetFixedPackage\x12'.aperio.sales.v1.GetFixedPackageRequest\x1a\x1d.aperio.sales.v1.FixedPackage\"2\xdaA\x04name\x82\xd3\xe4\x93\x02%\x12#/v1/{name=venues/*/fixedPackages/*}\x12\xa0\x01\n" +
-	"\x11ListFixedPackages\x12).aperio.sales.v1.ListFixedPackagesRequest\x1a*.aperio.sales.v1.ListFixedPackagesResponse\"4\xdaA\x06parent\x82\xd3\xe4\x93\x02%\x12#/v1/{parent=venues/*}/fixedPackages\x12\xc3\x01\n" +
-	"\x12CreateFixedPackage\x12*.aperio.sales.v1.CreateFixedPackageRequest\x1a\x1d.aperio.sales.v1.FixedPackage\"b\xdaA%parent,fixed_package,fixed_package_id\x82\xd3\xe4\x93\x024:\rfixed_package\"#/v1/{parent=venues/*}/fixedPackages\x12\xc5\x01\n" +
-	"\x12UpdateFixedPackage\x12*.aperio.sales.v1.UpdateFixedPackageRequest\x1a\x1d.aperio.sales.v1.FixedPackage\"d\xdaA\x19fixed_package,update_mask\x82\xd3\xe4\x93\x02B:\rfixed_package21/v1/{fixed_package.name=venues/*/fixedPackages/*}\x12\x8c\x01\n" +
-	"\x12DeleteFixedPackage\x12*.aperio.sales.v1.DeleteFixedPackageRequest\x1a\x16.google.protobuf.Empty\"2\xdaA\x04name\x82\xd3\xe4\x93\x02%*#/v1/{name=venues/*/fixedPackages/*}\x12u\n" +
-	"\tGetSeason\x12!.aperio.sales.v1.GetSeasonRequest\x1a\x17.aperio.sales.v1.Season\",\xdaA\x04name\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{name=venues/*/seasons/*}\x12\x88\x01\n" +
-	"\vListSeasons\x12#.aperio.sales.v1.ListSeasonsRequest\x1a$.aperio.sales.v1.ListSeasonsResponse\".\xdaA\x06parent\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{parent=venues/*}/seasons\x12\x96\x01\n" +
-	"\fCreateSeason\x12$.aperio.sales.v1.CreateSeasonRequest\x1a\x17.aperio.sales.v1.Season\"G\xdaA\x17parent,season,season_id\x82\xd3\xe4\x93\x02':\x06season\"\x1d/v1/{parent=venues/*}/seasons\x12\x98\x01\n" +
-	"\fUpdateSeason\x12$.aperio.sales.v1.UpdateSeasonRequest\x1a\x17.aperio.sales.v1.Season\"I\xdaA\x12season,update_mask\x82\xd3\xe4\x93\x02.:\x06season2$/v1/{season.name=venues/*/seasons/*}\x12z\n" +
-	"\fDeleteSeason\x12$.aperio.sales.v1.DeleteSeasonRequest\x1a\x16.google.protobuf.Empty\",\xdaA\x04name\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=venues/*/seasons/*}\x12\x81\x01\n" +
-	"\fGetPriceRule\x12$.aperio.sales.v1.GetPriceRuleRequest\x1a\x1a.aperio.sales.v1.PriceRule\"/\xdaA\x04name\x82\xd3\xe4\x93\x02\"\x12 /v1/{name=venues/*/priceRules/*}\x12\x94\x01\n" +
-	"\x0eListPriceRules\x12&.aperio.sales.v1.ListPriceRulesRequest\x1a'.aperio.sales.v1.ListPriceRulesResponse\"1\xdaA\x06parent\x82\xd3\xe4\x93\x02\"\x12 /v1/{parent=venues/*}/priceRules\x12\xae\x01\n" +
-	"\x0fCreatePriceRule\x12'.aperio.sales.v1.CreatePriceRuleRequest\x1a\x1a.aperio.sales.v1.PriceRule\"V\xdaA\x1fparent,price_rule,price_rule_id\x82\xd3\xe4\x93\x02.:\n" +
-	"price_rule\" /v1/{parent=venues/*}/priceRules\x12\xb0\x01\n" +
-	"\x0fUpdatePriceRule\x12'.aperio.sales.v1.UpdatePriceRuleRequest\x1a\x1a.aperio.sales.v1.PriceRule\"X\xdaA\x16price_rule,update_mask\x82\xd3\xe4\x93\x029:\n" +
-	"price_rule2+/v1/{price_rule.name=venues/*/priceRules/*}\x12\x83\x01\n" +
-	"\x0fDeletePriceRule\x12'.aperio.sales.v1.DeletePriceRuleRequest\x1a\x16.google.protobuf.Empty\"/\xdaA\x04name\x82\xd3\xe4\x93\x02\"* /v1/{name=venues/*/priceRules/*}\x12q\n" +
+	"UpdateLead\x12\".aperio.sales.v1.UpdateLeadRequest\x1a\x15.aperio.sales.v1.Lead\"8\xdaA\x10lead,update_mask\x82\xd3\xe4\x93\x02\x1f:\x04lead2\x17/v1/{lead.name=leads/*}\x12}\n" +
+	"\vGetActivity\x12#.aperio.sales.v1.GetActivityRequest\x1a\x19.aperio.sales.v1.Activity\".\xdaA\x04name\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{name=leads/*/activities/*}\x12\x93\x01\n" +
+	"\x0eListActivities\x12&.aperio.sales.v1.ListActivitiesRequest\x1a'.aperio.sales.v1.ListActivitiesResponse\"0\xdaA\x06parent\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{parent=leads/*}/activities\x12\xa4\x01\n" +
+	"\x0eCreateActivity\x12&.aperio.sales.v1.CreateActivityRequest\x1a\x19.aperio.sales.v1.Activity\"O\xdaA\x1bparent,activity,activity_id\x82\xd3\xe4\x93\x02+:\bactivity\"\x1f/v1/{parent=leads/*}/activities\x12q\n" +
 	"\bGetQuote\x12 .aperio.sales.v1.GetQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{name=venues/*/quotes/*}\x12\x84\x01\n" +
 	"\n" +
 	"ListQuotes\x12\".aperio.sales.v1.ListQuotesRequest\x1a#.aperio.sales.v1.ListQuotesResponse\"-\xdaA\x06parent\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{parent=venues/*}/quotes\x12\x8f\x01\n" +
 	"\vCreateQuote\x12#.aperio.sales.v1.CreateQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"C\xdaA\x15parent,quote,quote_id\x82\xd3\xe4\x93\x02%:\x05quote\"\x1c/v1/{parent=venues/*}/quotes\x12\x91\x01\n" +
-	"\vUpdateQuote\x12#.aperio.sales.v1.UpdateQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"E\xdaA\x11quote,update_mask\x82\xd3\xe4\x93\x02+:\x05quote2\"/v1/{quote.name=venues/*/quotes/*}\x12w\n" +
-	"\vDeleteQuote\x12#.aperio.sales.v1.DeleteQuoteRequest\x1a\x16.google.protobuf.Empty\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/{name=venues/*/quotes/*}\x12{\n" +
+	"\vUpdateQuote\x12#.aperio.sales.v1.UpdateQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"E\xdaA\x11quote,update_mask\x82\xd3\xe4\x93\x02+:\x05quote2\"/v1/{quote.name=venues/*/quotes/*}\x12{\n" +
 	"\tSendQuote\x12!.aperio.sales.v1.SendQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"3\xdaA\x04name\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/{name=venues/*/quotes/*}:send\x12\x81\x01\n" +
 	"\vAcceptQuote\x12#.aperio.sales.v1.AcceptQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/quotes/*}:accept\x12\x84\x01\n" +
 	"\fDeclineQuote\x12$.aperio.sales.v1.DeclineQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"6\xdaA\x04name\x82\xd3\xe4\x93\x02):\x01*\"$/v1/{name=venues/*/quotes/*}:decline\x12\x81\x01\n" +
-	"\vReviseQuote\x12#.aperio.sales.v1.ReviseQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/quotes/*}:revise\x12\xab\x01\n" +
-	"\x0eCalculatePrice\x12&.aperio.sales.v1.CalculatePriceRequest\x1a'.aperio.sales.v1.CalculatePriceResponse\"H\xdaA\x17venue,item,service_date\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{venue=venues/*}:calculatePrice\x1a\xba\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18\x99\x01\n" +
-	"\x96\x01\n" +
-	"\x05Sales\x12\x051.0.0\x1a\x85\x01The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests.B\xdf\x01\n" +
+	"\vReviseQuote\x12#.aperio.sales.v1.ReviseQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/quotes/*}:revise\x1a\x8a\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18j\n" +
+	"h\n" +
+	"\x05Sales\x12\x051.0.0\x1aXLeads, what was done about them, and the quotes sent to guests: from enquiry to booking.B\xdf\x01\n" +
 	"\x13com.aperio.sales.v1B\x11SalesServiceProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1\xa2\x02\x03ASX\xaa\x02\x0fAperio.Sales.V1\xca\x02\x0fAperio\\Sales\\V1\xe2\x02\x1bAperio\\Sales\\V1\\GPBMetadata\xea\x02\x11Aperio::Sales::V1b\x06proto3"
 
 var file_aperio_sales_v1_sales_service_proto_goTypes = []any{
-	(*GetDishRequest)(nil),            // 0: aperio.sales.v1.GetDishRequest
-	(*ListDishesRequest)(nil),         // 1: aperio.sales.v1.ListDishesRequest
-	(*CreateDishRequest)(nil),         // 2: aperio.sales.v1.CreateDishRequest
-	(*UpdateDishRequest)(nil),         // 3: aperio.sales.v1.UpdateDishRequest
-	(*DeleteDishRequest)(nil),         // 4: aperio.sales.v1.DeleteDishRequest
-	(*GetMenuRequest)(nil),            // 5: aperio.sales.v1.GetMenuRequest
-	(*ListMenusRequest)(nil),          // 6: aperio.sales.v1.ListMenusRequest
-	(*CreateMenuRequest)(nil),         // 7: aperio.sales.v1.CreateMenuRequest
-	(*UpdateMenuRequest)(nil),         // 8: aperio.sales.v1.UpdateMenuRequest
-	(*DeleteMenuRequest)(nil),         // 9: aperio.sales.v1.DeleteMenuRequest
-	(*GetFixedPackageRequest)(nil),    // 10: aperio.sales.v1.GetFixedPackageRequest
-	(*ListFixedPackagesRequest)(nil),  // 11: aperio.sales.v1.ListFixedPackagesRequest
-	(*CreateFixedPackageRequest)(nil), // 12: aperio.sales.v1.CreateFixedPackageRequest
-	(*UpdateFixedPackageRequest)(nil), // 13: aperio.sales.v1.UpdateFixedPackageRequest
-	(*DeleteFixedPackageRequest)(nil), // 14: aperio.sales.v1.DeleteFixedPackageRequest
-	(*GetSeasonRequest)(nil),          // 15: aperio.sales.v1.GetSeasonRequest
-	(*ListSeasonsRequest)(nil),        // 16: aperio.sales.v1.ListSeasonsRequest
-	(*CreateSeasonRequest)(nil),       // 17: aperio.sales.v1.CreateSeasonRequest
-	(*UpdateSeasonRequest)(nil),       // 18: aperio.sales.v1.UpdateSeasonRequest
-	(*DeleteSeasonRequest)(nil),       // 19: aperio.sales.v1.DeleteSeasonRequest
-	(*GetPriceRuleRequest)(nil),       // 20: aperio.sales.v1.GetPriceRuleRequest
-	(*ListPriceRulesRequest)(nil),     // 21: aperio.sales.v1.ListPriceRulesRequest
-	(*CreatePriceRuleRequest)(nil),    // 22: aperio.sales.v1.CreatePriceRuleRequest
-	(*UpdatePriceRuleRequest)(nil),    // 23: aperio.sales.v1.UpdatePriceRuleRequest
-	(*DeletePriceRuleRequest)(nil),    // 24: aperio.sales.v1.DeletePriceRuleRequest
-	(*GetQuoteRequest)(nil),           // 25: aperio.sales.v1.GetQuoteRequest
-	(*ListQuotesRequest)(nil),         // 26: aperio.sales.v1.ListQuotesRequest
-	(*CreateQuoteRequest)(nil),        // 27: aperio.sales.v1.CreateQuoteRequest
-	(*UpdateQuoteRequest)(nil),        // 28: aperio.sales.v1.UpdateQuoteRequest
-	(*DeleteQuoteRequest)(nil),        // 29: aperio.sales.v1.DeleteQuoteRequest
-	(*SendQuoteRequest)(nil),          // 30: aperio.sales.v1.SendQuoteRequest
-	(*AcceptQuoteRequest)(nil),        // 31: aperio.sales.v1.AcceptQuoteRequest
-	(*DeclineQuoteRequest)(nil),       // 32: aperio.sales.v1.DeclineQuoteRequest
-	(*ReviseQuoteRequest)(nil),        // 33: aperio.sales.v1.ReviseQuoteRequest
-	(*CalculatePriceRequest)(nil),     // 34: aperio.sales.v1.CalculatePriceRequest
-	(*Dish)(nil),                      // 35: aperio.sales.v1.Dish
-	(*ListDishesResponse)(nil),        // 36: aperio.sales.v1.ListDishesResponse
-	(*emptypb.Empty)(nil),             // 37: google.protobuf.Empty
-	(*Menu)(nil),                      // 38: aperio.sales.v1.Menu
-	(*ListMenusResponse)(nil),         // 39: aperio.sales.v1.ListMenusResponse
-	(*FixedPackage)(nil),              // 40: aperio.sales.v1.FixedPackage
-	(*ListFixedPackagesResponse)(nil), // 41: aperio.sales.v1.ListFixedPackagesResponse
-	(*Season)(nil),                    // 42: aperio.sales.v1.Season
-	(*ListSeasonsResponse)(nil),       // 43: aperio.sales.v1.ListSeasonsResponse
-	(*PriceRule)(nil),                 // 44: aperio.sales.v1.PriceRule
-	(*ListPriceRulesResponse)(nil),    // 45: aperio.sales.v1.ListPriceRulesResponse
-	(*Quote)(nil),                     // 46: aperio.sales.v1.Quote
-	(*ListQuotesResponse)(nil),        // 47: aperio.sales.v1.ListQuotesResponse
-	(*CalculatePriceResponse)(nil),    // 48: aperio.sales.v1.CalculatePriceResponse
+	(*GetLeadRequest)(nil),         // 0: aperio.sales.v1.GetLeadRequest
+	(*ListLeadsRequest)(nil),       // 1: aperio.sales.v1.ListLeadsRequest
+	(*CreateLeadRequest)(nil),      // 2: aperio.sales.v1.CreateLeadRequest
+	(*UpdateLeadRequest)(nil),      // 3: aperio.sales.v1.UpdateLeadRequest
+	(*GetActivityRequest)(nil),     // 4: aperio.sales.v1.GetActivityRequest
+	(*ListActivitiesRequest)(nil),  // 5: aperio.sales.v1.ListActivitiesRequest
+	(*CreateActivityRequest)(nil),  // 6: aperio.sales.v1.CreateActivityRequest
+	(*GetQuoteRequest)(nil),        // 7: aperio.sales.v1.GetQuoteRequest
+	(*ListQuotesRequest)(nil),      // 8: aperio.sales.v1.ListQuotesRequest
+	(*CreateQuoteRequest)(nil),     // 9: aperio.sales.v1.CreateQuoteRequest
+	(*UpdateQuoteRequest)(nil),     // 10: aperio.sales.v1.UpdateQuoteRequest
+	(*SendQuoteRequest)(nil),       // 11: aperio.sales.v1.SendQuoteRequest
+	(*AcceptQuoteRequest)(nil),     // 12: aperio.sales.v1.AcceptQuoteRequest
+	(*DeclineQuoteRequest)(nil),    // 13: aperio.sales.v1.DeclineQuoteRequest
+	(*ReviseQuoteRequest)(nil),     // 14: aperio.sales.v1.ReviseQuoteRequest
+	(*Lead)(nil),                   // 15: aperio.sales.v1.Lead
+	(*ListLeadsResponse)(nil),      // 16: aperio.sales.v1.ListLeadsResponse
+	(*Activity)(nil),               // 17: aperio.sales.v1.Activity
+	(*ListActivitiesResponse)(nil), // 18: aperio.sales.v1.ListActivitiesResponse
+	(*Quote)(nil),                  // 19: aperio.sales.v1.Quote
+	(*ListQuotesResponse)(nil),     // 20: aperio.sales.v1.ListQuotesResponse
 }
 var file_aperio_sales_v1_sales_service_proto_depIdxs = []int32{
-	0,  // 0: aperio.sales.v1.SalesService.GetDish:input_type -> aperio.sales.v1.GetDishRequest
-	1,  // 1: aperio.sales.v1.SalesService.ListDishes:input_type -> aperio.sales.v1.ListDishesRequest
-	2,  // 2: aperio.sales.v1.SalesService.CreateDish:input_type -> aperio.sales.v1.CreateDishRequest
-	3,  // 3: aperio.sales.v1.SalesService.UpdateDish:input_type -> aperio.sales.v1.UpdateDishRequest
-	4,  // 4: aperio.sales.v1.SalesService.DeleteDish:input_type -> aperio.sales.v1.DeleteDishRequest
-	5,  // 5: aperio.sales.v1.SalesService.GetMenu:input_type -> aperio.sales.v1.GetMenuRequest
-	6,  // 6: aperio.sales.v1.SalesService.ListMenus:input_type -> aperio.sales.v1.ListMenusRequest
-	7,  // 7: aperio.sales.v1.SalesService.CreateMenu:input_type -> aperio.sales.v1.CreateMenuRequest
-	8,  // 8: aperio.sales.v1.SalesService.UpdateMenu:input_type -> aperio.sales.v1.UpdateMenuRequest
-	9,  // 9: aperio.sales.v1.SalesService.DeleteMenu:input_type -> aperio.sales.v1.DeleteMenuRequest
-	10, // 10: aperio.sales.v1.SalesService.GetFixedPackage:input_type -> aperio.sales.v1.GetFixedPackageRequest
-	11, // 11: aperio.sales.v1.SalesService.ListFixedPackages:input_type -> aperio.sales.v1.ListFixedPackagesRequest
-	12, // 12: aperio.sales.v1.SalesService.CreateFixedPackage:input_type -> aperio.sales.v1.CreateFixedPackageRequest
-	13, // 13: aperio.sales.v1.SalesService.UpdateFixedPackage:input_type -> aperio.sales.v1.UpdateFixedPackageRequest
-	14, // 14: aperio.sales.v1.SalesService.DeleteFixedPackage:input_type -> aperio.sales.v1.DeleteFixedPackageRequest
-	15, // 15: aperio.sales.v1.SalesService.GetSeason:input_type -> aperio.sales.v1.GetSeasonRequest
-	16, // 16: aperio.sales.v1.SalesService.ListSeasons:input_type -> aperio.sales.v1.ListSeasonsRequest
-	17, // 17: aperio.sales.v1.SalesService.CreateSeason:input_type -> aperio.sales.v1.CreateSeasonRequest
-	18, // 18: aperio.sales.v1.SalesService.UpdateSeason:input_type -> aperio.sales.v1.UpdateSeasonRequest
-	19, // 19: aperio.sales.v1.SalesService.DeleteSeason:input_type -> aperio.sales.v1.DeleteSeasonRequest
-	20, // 20: aperio.sales.v1.SalesService.GetPriceRule:input_type -> aperio.sales.v1.GetPriceRuleRequest
-	21, // 21: aperio.sales.v1.SalesService.ListPriceRules:input_type -> aperio.sales.v1.ListPriceRulesRequest
-	22, // 22: aperio.sales.v1.SalesService.CreatePriceRule:input_type -> aperio.sales.v1.CreatePriceRuleRequest
-	23, // 23: aperio.sales.v1.SalesService.UpdatePriceRule:input_type -> aperio.sales.v1.UpdatePriceRuleRequest
-	24, // 24: aperio.sales.v1.SalesService.DeletePriceRule:input_type -> aperio.sales.v1.DeletePriceRuleRequest
-	25, // 25: aperio.sales.v1.SalesService.GetQuote:input_type -> aperio.sales.v1.GetQuoteRequest
-	26, // 26: aperio.sales.v1.SalesService.ListQuotes:input_type -> aperio.sales.v1.ListQuotesRequest
-	27, // 27: aperio.sales.v1.SalesService.CreateQuote:input_type -> aperio.sales.v1.CreateQuoteRequest
-	28, // 28: aperio.sales.v1.SalesService.UpdateQuote:input_type -> aperio.sales.v1.UpdateQuoteRequest
-	29, // 29: aperio.sales.v1.SalesService.DeleteQuote:input_type -> aperio.sales.v1.DeleteQuoteRequest
-	30, // 30: aperio.sales.v1.SalesService.SendQuote:input_type -> aperio.sales.v1.SendQuoteRequest
-	31, // 31: aperio.sales.v1.SalesService.AcceptQuote:input_type -> aperio.sales.v1.AcceptQuoteRequest
-	32, // 32: aperio.sales.v1.SalesService.DeclineQuote:input_type -> aperio.sales.v1.DeclineQuoteRequest
-	33, // 33: aperio.sales.v1.SalesService.ReviseQuote:input_type -> aperio.sales.v1.ReviseQuoteRequest
-	34, // 34: aperio.sales.v1.SalesService.CalculatePrice:input_type -> aperio.sales.v1.CalculatePriceRequest
-	35, // 35: aperio.sales.v1.SalesService.GetDish:output_type -> aperio.sales.v1.Dish
-	36, // 36: aperio.sales.v1.SalesService.ListDishes:output_type -> aperio.sales.v1.ListDishesResponse
-	35, // 37: aperio.sales.v1.SalesService.CreateDish:output_type -> aperio.sales.v1.Dish
-	35, // 38: aperio.sales.v1.SalesService.UpdateDish:output_type -> aperio.sales.v1.Dish
-	37, // 39: aperio.sales.v1.SalesService.DeleteDish:output_type -> google.protobuf.Empty
-	38, // 40: aperio.sales.v1.SalesService.GetMenu:output_type -> aperio.sales.v1.Menu
-	39, // 41: aperio.sales.v1.SalesService.ListMenus:output_type -> aperio.sales.v1.ListMenusResponse
-	38, // 42: aperio.sales.v1.SalesService.CreateMenu:output_type -> aperio.sales.v1.Menu
-	38, // 43: aperio.sales.v1.SalesService.UpdateMenu:output_type -> aperio.sales.v1.Menu
-	37, // 44: aperio.sales.v1.SalesService.DeleteMenu:output_type -> google.protobuf.Empty
-	40, // 45: aperio.sales.v1.SalesService.GetFixedPackage:output_type -> aperio.sales.v1.FixedPackage
-	41, // 46: aperio.sales.v1.SalesService.ListFixedPackages:output_type -> aperio.sales.v1.ListFixedPackagesResponse
-	40, // 47: aperio.sales.v1.SalesService.CreateFixedPackage:output_type -> aperio.sales.v1.FixedPackage
-	40, // 48: aperio.sales.v1.SalesService.UpdateFixedPackage:output_type -> aperio.sales.v1.FixedPackage
-	37, // 49: aperio.sales.v1.SalesService.DeleteFixedPackage:output_type -> google.protobuf.Empty
-	42, // 50: aperio.sales.v1.SalesService.GetSeason:output_type -> aperio.sales.v1.Season
-	43, // 51: aperio.sales.v1.SalesService.ListSeasons:output_type -> aperio.sales.v1.ListSeasonsResponse
-	42, // 52: aperio.sales.v1.SalesService.CreateSeason:output_type -> aperio.sales.v1.Season
-	42, // 53: aperio.sales.v1.SalesService.UpdateSeason:output_type -> aperio.sales.v1.Season
-	37, // 54: aperio.sales.v1.SalesService.DeleteSeason:output_type -> google.protobuf.Empty
-	44, // 55: aperio.sales.v1.SalesService.GetPriceRule:output_type -> aperio.sales.v1.PriceRule
-	45, // 56: aperio.sales.v1.SalesService.ListPriceRules:output_type -> aperio.sales.v1.ListPriceRulesResponse
-	44, // 57: aperio.sales.v1.SalesService.CreatePriceRule:output_type -> aperio.sales.v1.PriceRule
-	44, // 58: aperio.sales.v1.SalesService.UpdatePriceRule:output_type -> aperio.sales.v1.PriceRule
-	37, // 59: aperio.sales.v1.SalesService.DeletePriceRule:output_type -> google.protobuf.Empty
-	46, // 60: aperio.sales.v1.SalesService.GetQuote:output_type -> aperio.sales.v1.Quote
-	47, // 61: aperio.sales.v1.SalesService.ListQuotes:output_type -> aperio.sales.v1.ListQuotesResponse
-	46, // 62: aperio.sales.v1.SalesService.CreateQuote:output_type -> aperio.sales.v1.Quote
-	46, // 63: aperio.sales.v1.SalesService.UpdateQuote:output_type -> aperio.sales.v1.Quote
-	37, // 64: aperio.sales.v1.SalesService.DeleteQuote:output_type -> google.protobuf.Empty
-	46, // 65: aperio.sales.v1.SalesService.SendQuote:output_type -> aperio.sales.v1.Quote
-	46, // 66: aperio.sales.v1.SalesService.AcceptQuote:output_type -> aperio.sales.v1.Quote
-	46, // 67: aperio.sales.v1.SalesService.DeclineQuote:output_type -> aperio.sales.v1.Quote
-	46, // 68: aperio.sales.v1.SalesService.ReviseQuote:output_type -> aperio.sales.v1.Quote
-	48, // 69: aperio.sales.v1.SalesService.CalculatePrice:output_type -> aperio.sales.v1.CalculatePriceResponse
-	35, // [35:70] is the sub-list for method output_type
-	0,  // [0:35] is the sub-list for method input_type
+	0,  // 0: aperio.sales.v1.SalesService.GetLead:input_type -> aperio.sales.v1.GetLeadRequest
+	1,  // 1: aperio.sales.v1.SalesService.ListLeads:input_type -> aperio.sales.v1.ListLeadsRequest
+	2,  // 2: aperio.sales.v1.SalesService.CreateLead:input_type -> aperio.sales.v1.CreateLeadRequest
+	3,  // 3: aperio.sales.v1.SalesService.UpdateLead:input_type -> aperio.sales.v1.UpdateLeadRequest
+	4,  // 4: aperio.sales.v1.SalesService.GetActivity:input_type -> aperio.sales.v1.GetActivityRequest
+	5,  // 5: aperio.sales.v1.SalesService.ListActivities:input_type -> aperio.sales.v1.ListActivitiesRequest
+	6,  // 6: aperio.sales.v1.SalesService.CreateActivity:input_type -> aperio.sales.v1.CreateActivityRequest
+	7,  // 7: aperio.sales.v1.SalesService.GetQuote:input_type -> aperio.sales.v1.GetQuoteRequest
+	8,  // 8: aperio.sales.v1.SalesService.ListQuotes:input_type -> aperio.sales.v1.ListQuotesRequest
+	9,  // 9: aperio.sales.v1.SalesService.CreateQuote:input_type -> aperio.sales.v1.CreateQuoteRequest
+	10, // 10: aperio.sales.v1.SalesService.UpdateQuote:input_type -> aperio.sales.v1.UpdateQuoteRequest
+	11, // 11: aperio.sales.v1.SalesService.SendQuote:input_type -> aperio.sales.v1.SendQuoteRequest
+	12, // 12: aperio.sales.v1.SalesService.AcceptQuote:input_type -> aperio.sales.v1.AcceptQuoteRequest
+	13, // 13: aperio.sales.v1.SalesService.DeclineQuote:input_type -> aperio.sales.v1.DeclineQuoteRequest
+	14, // 14: aperio.sales.v1.SalesService.ReviseQuote:input_type -> aperio.sales.v1.ReviseQuoteRequest
+	15, // 15: aperio.sales.v1.SalesService.GetLead:output_type -> aperio.sales.v1.Lead
+	16, // 16: aperio.sales.v1.SalesService.ListLeads:output_type -> aperio.sales.v1.ListLeadsResponse
+	15, // 17: aperio.sales.v1.SalesService.CreateLead:output_type -> aperio.sales.v1.Lead
+	15, // 18: aperio.sales.v1.SalesService.UpdateLead:output_type -> aperio.sales.v1.Lead
+	17, // 19: aperio.sales.v1.SalesService.GetActivity:output_type -> aperio.sales.v1.Activity
+	18, // 20: aperio.sales.v1.SalesService.ListActivities:output_type -> aperio.sales.v1.ListActivitiesResponse
+	17, // 21: aperio.sales.v1.SalesService.CreateActivity:output_type -> aperio.sales.v1.Activity
+	19, // 22: aperio.sales.v1.SalesService.GetQuote:output_type -> aperio.sales.v1.Quote
+	20, // 23: aperio.sales.v1.SalesService.ListQuotes:output_type -> aperio.sales.v1.ListQuotesResponse
+	19, // 24: aperio.sales.v1.SalesService.CreateQuote:output_type -> aperio.sales.v1.Quote
+	19, // 25: aperio.sales.v1.SalesService.UpdateQuote:output_type -> aperio.sales.v1.Quote
+	19, // 26: aperio.sales.v1.SalesService.SendQuote:output_type -> aperio.sales.v1.Quote
+	19, // 27: aperio.sales.v1.SalesService.AcceptQuote:output_type -> aperio.sales.v1.Quote
+	19, // 28: aperio.sales.v1.SalesService.DeclineQuote:output_type -> aperio.sales.v1.Quote
+	19, // 29: aperio.sales.v1.SalesService.ReviseQuote:output_type -> aperio.sales.v1.Quote
+	15, // [15:30] is the sub-list for method output_type
+	0,  // [0:15] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

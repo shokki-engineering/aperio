@@ -10,64 +10,101 @@ option java_multiple_files = true;
 option java_outer_classname = "EnumsProto";
 option java_package = "engineering.shokki.aperio.sales.v1";
 
-// Course is the course a dish is served in.
-enum Course {
+// LeadKind is what a lead wants to book.
+enum LeadKind {
   // Default; never set.
-  COURSE_UNSPECIFIED = 0;
+  LEAD_KIND_UNSPECIFIED = 0;
 
-  // A welcome drink.
-  COURSE_WELCOME_DRINK = 1;
+  // Rooms at the resort.
+  LEAD_KIND_STAY = 1;
 
-  // A starter or snack, passed or plated.
-  COURSE_STARTER = 2;
+  // An event in a hall or space.
+  LEAD_KIND_EVENT = 2;
 
-  // A soup.
-  COURSE_SOUP = 3;
-
-  // A salad.
-  COURSE_SALAD = 4;
-
-  // A main course.
-  COURSE_MAIN = 5;
-
-  // A bread.
-  COURSE_BREAD = 6;
-
-  // A rice or biryani.
-  COURSE_RICE = 7;
-
-  // A dal, raita or side.
-  COURSE_SIDE = 8;
-
-  // A dessert.
-  COURSE_DESSERT = 9;
-
-  // A beverage.
-  COURSE_BEVERAGE = 10;
-
-  // A live counter: chaat, pasta, dosa, tandoor.
-  COURSE_LIVE_COUNTER = 11;
-
-  // Another course.
-  COURSE_OTHER = 12;
+  // An event and rooms for its guests, as a destination wedding or an
+  // offsite.
+  LEAD_KIND_EVENT_WITH_STAY = 3;
 }
 
-// PriceTarget is the kind of thing a price rule prices.
-enum PriceTarget {
+// Stage is where a lead is in the sales pipeline.
+enum Stage {
   // Default; never set.
-  PRICE_TARGET_UNSPECIFIED = 0;
+  STAGE_UNSPECIFIED = 0;
 
-  // Plate menus and their add-ons.
-  PRICE_TARGET_MENU = 1;
+  // Just in; nobody has spoken to the guest.
+  STAGE_NEW = 1;
 
-  // Fixed packages.
-  PRICE_TARGET_FIXED_PACKAGE = 2;
+  // Spoken to; requirements gathered.
+  STAGE_CONTACTED = 2;
 
-  // Spaces: a hall's hire, a room type's nightly rate.
-  PRICE_TARGET_SPACE = 3;
+  // A site visit is booked or done.
+  STAGE_SITE_VISIT = 3;
 
-  // Dishes sold on their own.
-  PRICE_TARGET_DISH = 4;
+  // A quote has been sent.
+  STAGE_PROPOSAL = 4;
+
+  // Price, dates or inclusions are being negotiated.
+  STAGE_NEGOTIATION = 5;
+
+  // Won: a quote was accepted and the booking made.
+  STAGE_WON = 6;
+
+  // Lost.
+  STAGE_LOST = 7;
+}
+
+// LostReason is why a lead was lost.
+enum LostReason {
+  // Default; not lost, or not said.
+  LOST_REASON_UNSPECIFIED = 0;
+
+  // The guest found the price too high.
+  LOST_REASON_PRICE = 1;
+
+  // The dates were not available.
+  LOST_REASON_DATES = 2;
+
+  // The guest booked another venue.
+  LOST_REASON_COMPETITOR = 3;
+
+  // The space or the rooms were too small or too few.
+  LOST_REASON_CAPACITY = 4;
+
+  // The guest called off or postponed their plans.
+  LOST_REASON_CANCELLED_PLANS = 5;
+
+  // The guest stopped responding.
+  LOST_REASON_NO_RESPONSE = 6;
+
+  // Another reason, described in the lead's lost_detail.
+  LOST_REASON_OTHER = 7;
+}
+
+// ActivityKind is what kind of touch an activity was.
+enum ActivityKind {
+  // Default; never set.
+  ACTIVITY_KIND_UNSPECIFIED = 0;
+
+  // A phone call.
+  ACTIVITY_KIND_CALL = 1;
+
+  // An email.
+  ACTIVITY_KIND_EMAIL = 2;
+
+  // A WhatsApp message.
+  ACTIVITY_KIND_WHATSAPP = 3;
+
+  // A meeting.
+  ACTIVITY_KIND_MEETING = 4;
+
+  // A visit to the venue.
+  ACTIVITY_KIND_SITE_VISIT = 5;
+
+  // A quote was sent.
+  ACTIVITY_KIND_QUOTE_SENT = 6;
+
+  // A note to the file.
+  ACTIVITY_KIND_NOTE = 7;
 }
 
 // LineKind is what a quote line sells.

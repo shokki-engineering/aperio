@@ -1,0 +1,29 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.pricing.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1;pricingpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.pricing.v1";
+
+// PriceTarget is the kind of thing a price rule prices.
+enum PriceTarget {
+  // Default; never set.
+  PRICE_TARGET_UNSPECIFIED = 0;
+
+  // Plate menus and their add-ons.
+  PRICE_TARGET_MENU = 1;
+
+  // Fixed packages.
+  PRICE_TARGET_FIXED_PACKAGE = 2;
+
+  // Spaces: a hall's hire, a room type's nightly rate.
+  PRICE_TARGET_SPACE = 3;
+
+  // Dishes sold on their own.
+  PRICE_TARGET_DISH = 4;
+}

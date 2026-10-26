@@ -86,26 +86,6 @@ message UpdateVenueRequest {
   bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
-// Request message for DeleteVenue.
-message DeleteVenueRequest {
-  // The name of the venue to delete.
-  // Format: venues/{venue}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-
-  // Delete its spaces, bookings and records too; without it, a
-  // venue that has any fails with FAILED_PRECONDITION.
-  bool force = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
 // Request message for GetSpace.
 message GetSpaceRequest {
   // The name of the space to retrieve.
@@ -187,21 +167,5 @@ message UpdateSpaceRequest {
   google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeleteSpace.
-message DeleteSpaceRequest {
-  // The name of the space to delete.
-  // Format: venues/{venue}/spaces/{space}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.venue.v1/Space"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
   bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
 }

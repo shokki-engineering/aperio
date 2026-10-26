@@ -12,66 +12,106 @@
 //
 // store — https://github.com/the-protobuf-project/store
 
-/// Course is the course a dish is served in.
-enum Course {
-  /// A welcome drink.
-  WELCOME_DRINK
+/// LeadKind is what a lead wants to book.
+enum LeadKind {
+  /// Rooms at the resort.
+  STAY
 
-  /// A starter or snack, passed or plated.
-  STARTER
+  /// An event in a hall or space.
+  EVENT
 
-  /// A soup.
-  SOUP
+  /// An event and rooms for its guests, as a destination wedding or an offsite.
+  EVENT_WITH_STAY
 
-  /// A salad.
-  SALAD
-
-  /// A main course.
-  MAIN
-
-  /// A bread.
-  BREAD
-
-  /// A rice or biryani.
-  RICE
-
-  /// A dal, raita or side.
-  SIDE
-
-  /// A dessert.
-  DESSERT
-
-  /// A beverage.
-  BEVERAGE
-
-  /// A live counter: chaat, pasta, dosa, tandoor.
-  LIVE_COUNTER
-
-  /// Another course.
-  OTHER
-
-  /// Maps the enum to the "course" type in the database.
-  @@map("course")
+  /// Maps the enum to the "lead_kind" type in the database.
+  @@map("lead_kind")
   /// Maps the enum to the "sales" schema in the database.
   @@schema("sales")
 }
 
-/// PriceTarget is the kind of thing a price rule prices.
-enum PriceTarget {
-  /// Plate menus and their add-ons.
-  MENU
+/// Stage is where a lead is in the sales pipeline.
+enum Stage {
+  /// Just in; nobody has spoken to the guest.
+  NEW
 
-  /// Fixed packages.
-  FIXED_PACKAGE
+  /// Spoken to; requirements gathered.
+  CONTACTED
 
-  /// Spaces: a hall's hire, a room type's nightly rate.
-  SPACE
+  /// A site visit is booked or done.
+  SITE_VISIT
 
-  /// Dishes sold on their own.
-  DISH
+  /// A quote has been sent.
+  PROPOSAL
 
-  /// Maps the enum to the "price_target" type in the database.
-  @@map("price_target")
+  /// Price, dates or inclusions are being negotiated.
+  NEGOTIATION
+
+  /// Won: a quote was accepted and the booking made.
+  WON
+
+  /// Lost.
+  LOST
+
+  /// Maps the enum to the "stage" type in the database.
+  @@map("stage")
+  /// Maps the enum to the "sales" schema in the database.
+  @@schema("sales")
+}
+
+/// LostReason is why a lead was lost.
+enum LostReason {
+  /// The guest found the price too high.
+  PRICE
+
+  /// The dates were not available.
+  DATES
+
+  /// The guest booked another venue.
+  COMPETITOR
+
+  /// The space or the rooms were too small or too few.
+  CAPACITY
+
+  /// The guest called off or postponed their plans.
+  CANCELLED_PLANS
+
+  /// The guest stopped responding.
+  NO_RESPONSE
+
+  /// Another reason, described in the lead's lost_detail.
+  OTHER
+
+  /// Maps the enum to the "lost_reason" type in the database.
+  @@map("lost_reason")
+  /// Maps the enum to the "sales" schema in the database.
+  @@schema("sales")
+}
+
+/// ActivityKind is what kind of touch an activity was.
+enum ActivityKind {
+  /// A phone call.
+  CALL
+
+  /// An email.
+  EMAIL
+
+  /// A WhatsApp message.
+  WHATSAPP
+
+  /// A meeting.
+  MEETING
+
+  /// A visit to the venue.
+  SITE_VISIT
+
+  /// A quote was sent.
+  QUOTE_SENT
+
+  /// A note to the file.
+  NOTE
+
+  /// Maps the enum to the "activity_kind" type in the database.
+  @@map("activity_kind")
   /// Maps the enum to the "sales" schema in the database.
   @@schema("sales")
 }

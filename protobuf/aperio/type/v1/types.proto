@@ -8,9 +8,12 @@ package aperio.type.v1;
 import "aperio/type/v1/enums.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
 import "google/type/date.proto";
 import "google/type/decimal.proto";
+import "google/type/money.proto";
 import "protobuf/opentravel/common/profile/v1/enums/meal.proto";
+import "protobuf/opentravel/hotel/booking/reservation/v1/types/special_request.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1;typepbv1";
 option java_multiple_files = true;
@@ -113,4 +116,42 @@ message Tax {
 
   // The GST rate as a percentage, e.g. "18" or "5".
   google.type.Decimal gst_rate = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// SpecialRequest is something a guest or a host asked for, and where the
+// venue is with it: a cot in the room, an early check-in, a cake at
+// midnight, a ramp at the stage.
+//
+// What a channel sent is kept as it sent it, as OpenTravel's SpecialRequest;
+// the rest is the venue's work on it.
+message SpecialRequest {
+  // The request, in a line.
+  string summary = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ];
+
+  // Which team it falls to.
+  RequestCategory category = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Where the venue is with it.
+  RequestProgress progress = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // When it has to be done by.
+  google.protobuf.Timestamp due_time = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // What it is charged, when it is not free.
+  google.type.Money charge = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // The request as a channel sent it, in OpenTravel's words.
+  protobuf.opentravel.hotel.booking.reservation.v1.types.SpecialRequest ota = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // What was done, or why not.
+  string notes = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
 }

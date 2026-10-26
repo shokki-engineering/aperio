@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -26,8 +25,6 @@ const (
 	OperationsService_GetServiceRequest_FullMethodName         = "/aperio.operations.v1.OperationsService/GetServiceRequest"
 	OperationsService_ListServiceRequests_FullMethodName       = "/aperio.operations.v1.OperationsService/ListServiceRequests"
 	OperationsService_CreateServiceRequest_FullMethodName      = "/aperio.operations.v1.OperationsService/CreateServiceRequest"
-	OperationsService_UpdateServiceRequest_FullMethodName      = "/aperio.operations.v1.OperationsService/UpdateServiceRequest"
-	OperationsService_DeleteServiceRequest_FullMethodName      = "/aperio.operations.v1.OperationsService/DeleteServiceRequest"
 	OperationsService_AcknowledgeServiceRequest_FullMethodName = "/aperio.operations.v1.OperationsService/AcknowledgeServiceRequest"
 	OperationsService_StartServiceRequest_FullMethodName       = "/aperio.operations.v1.OperationsService/StartServiceRequest"
 	OperationsService_CompleteServiceRequest_FullMethodName    = "/aperio.operations.v1.OperationsService/CompleteServiceRequest"
@@ -46,10 +43,6 @@ type OperationsServiceClient interface {
 	ListServiceRequests(ctx context.Context, in *ListServiceRequestsRequest, opts ...grpc.CallOption) (*ListServiceRequestsResponse, error)
 	// Creates a service request.
 	CreateServiceRequest(ctx context.Context, in *CreateServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
-	// Updates a service request. Only the fields in update_mask are written.
-	UpdateServiceRequest(ctx context.Context, in *UpdateServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
-	// Deletes a service request.
-	DeleteServiceRequest(ctx context.Context, in *DeleteServiceRequestRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Takes up an open service request for its department.
 	AcknowledgeServiceRequest(ctx context.Context, in *AcknowledgeServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 	// Marks an acknowledged service request as on its way.
@@ -92,26 +85,6 @@ func (c *operationsServiceClient) CreateServiceRequest(ctx context.Context, in *
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ServiceRequest)
 	err := c.cc.Invoke(ctx, OperationsService_CreateServiceRequest_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *operationsServiceClient) UpdateServiceRequest(ctx context.Context, in *UpdateServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ServiceRequest)
-	err := c.cc.Invoke(ctx, OperationsService_UpdateServiceRequest_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *operationsServiceClient) DeleteServiceRequest(ctx context.Context, in *DeleteServiceRequestRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, OperationsService_DeleteServiceRequest_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -170,10 +143,6 @@ type OperationsServiceServer interface {
 	ListServiceRequests(context.Context, *ListServiceRequestsRequest) (*ListServiceRequestsResponse, error)
 	// Creates a service request.
 	CreateServiceRequest(context.Context, *CreateServiceRequestRequest) (*ServiceRequest, error)
-	// Updates a service request. Only the fields in update_mask are written.
-	UpdateServiceRequest(context.Context, *UpdateServiceRequestRequest) (*ServiceRequest, error)
-	// Deletes a service request.
-	DeleteServiceRequest(context.Context, *DeleteServiceRequestRequest) (*emptypb.Empty, error)
 	// Takes up an open service request for its department.
 	AcknowledgeServiceRequest(context.Context, *AcknowledgeServiceRequestRequest) (*ServiceRequest, error)
 	// Marks an acknowledged service request as on its way.
@@ -200,12 +169,6 @@ func (UnimplementedOperationsServiceServer) ListServiceRequests(context.Context,
 }
 func (UnimplementedOperationsServiceServer) CreateServiceRequest(context.Context, *CreateServiceRequestRequest) (*ServiceRequest, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateServiceRequest not implemented")
-}
-func (UnimplementedOperationsServiceServer) UpdateServiceRequest(context.Context, *UpdateServiceRequestRequest) (*ServiceRequest, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateServiceRequest not implemented")
-}
-func (UnimplementedOperationsServiceServer) DeleteServiceRequest(context.Context, *DeleteServiceRequestRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteServiceRequest not implemented")
 }
 func (UnimplementedOperationsServiceServer) AcknowledgeServiceRequest(context.Context, *AcknowledgeServiceRequestRequest) (*ServiceRequest, error) {
 	return nil, status.Error(codes.Unimplemented, "method AcknowledgeServiceRequest not implemented")
@@ -290,42 +253,6 @@ func _OperationsService_CreateServiceRequest_Handler(srv interface{}, ctx contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OperationsServiceServer).CreateServiceRequest(ctx, req.(*CreateServiceRequestRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OperationsService_UpdateServiceRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateServiceRequestRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OperationsServiceServer).UpdateServiceRequest(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OperationsService_UpdateServiceRequest_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationsServiceServer).UpdateServiceRequest(ctx, req.(*UpdateServiceRequestRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OperationsService_DeleteServiceRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteServiceRequestRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OperationsServiceServer).DeleteServiceRequest(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OperationsService_DeleteServiceRequest_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationsServiceServer).DeleteServiceRequest(ctx, req.(*DeleteServiceRequestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -420,14 +347,6 @@ var OperationsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateServiceRequest",
 			Handler:    _OperationsService_CreateServiceRequest_Handler,
-		},
-		{
-			MethodName: "UpdateServiceRequest",
-			Handler:    _OperationsService_UpdateServiceRequest_Handler,
-		},
-		{
-			MethodName: "DeleteServiceRequest",
-			Handler:    _OperationsService_DeleteServiceRequest_Handler,
 		},
 		{
 			MethodName: "AcknowledgeServiceRequest",

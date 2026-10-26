@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -27,12 +26,10 @@ const (
 	VenueService_ListVenues_FullMethodName  = "/aperio.venue.v1.VenueService/ListVenues"
 	VenueService_CreateVenue_FullMethodName = "/aperio.venue.v1.VenueService/CreateVenue"
 	VenueService_UpdateVenue_FullMethodName = "/aperio.venue.v1.VenueService/UpdateVenue"
-	VenueService_DeleteVenue_FullMethodName = "/aperio.venue.v1.VenueService/DeleteVenue"
 	VenueService_GetSpace_FullMethodName    = "/aperio.venue.v1.VenueService/GetSpace"
 	VenueService_ListSpaces_FullMethodName  = "/aperio.venue.v1.VenueService/ListSpaces"
 	VenueService_CreateSpace_FullMethodName = "/aperio.venue.v1.VenueService/CreateSpace"
 	VenueService_UpdateSpace_FullMethodName = "/aperio.venue.v1.VenueService/UpdateSpace"
-	VenueService_DeleteSpace_FullMethodName = "/aperio.venue.v1.VenueService/DeleteSpace"
 )
 
 // VenueServiceClient is the client API for VenueService service.
@@ -49,8 +46,6 @@ type VenueServiceClient interface {
 	CreateVenue(ctx context.Context, in *CreateVenueRequest, opts ...grpc.CallOption) (*Venue, error)
 	// Updates a venue. Only the fields in update_mask are written.
 	UpdateVenue(ctx context.Context, in *UpdateVenueRequest, opts ...grpc.CallOption) (*Venue, error)
-	// Deletes a venue.
-	DeleteVenue(ctx context.Context, in *DeleteVenueRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Retrieves one space.
 	GetSpace(ctx context.Context, in *GetSpaceRequest, opts ...grpc.CallOption) (*Space, error)
 	// Lists spaces.
@@ -59,8 +54,6 @@ type VenueServiceClient interface {
 	CreateSpace(ctx context.Context, in *CreateSpaceRequest, opts ...grpc.CallOption) (*Space, error)
 	// Updates a space. Only the fields in update_mask are written.
 	UpdateSpace(ctx context.Context, in *UpdateSpaceRequest, opts ...grpc.CallOption) (*Space, error)
-	// Deletes a space.
-	DeleteSpace(ctx context.Context, in *DeleteSpaceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type venueServiceClient struct {
@@ -111,16 +104,6 @@ func (c *venueServiceClient) UpdateVenue(ctx context.Context, in *UpdateVenueReq
 	return out, nil
 }
 
-func (c *venueServiceClient) DeleteVenue(ctx context.Context, in *DeleteVenueRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, VenueService_DeleteVenue_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *venueServiceClient) GetSpace(ctx context.Context, in *GetSpaceRequest, opts ...grpc.CallOption) (*Space, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Space)
@@ -161,16 +144,6 @@ func (c *venueServiceClient) UpdateSpace(ctx context.Context, in *UpdateSpaceReq
 	return out, nil
 }
 
-func (c *venueServiceClient) DeleteSpace(ctx context.Context, in *DeleteSpaceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, VenueService_DeleteSpace_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // VenueServiceServer is the server API for VenueService service.
 // All implementations must embed UnimplementedVenueServiceServer
 // for forward compatibility.
@@ -185,8 +158,6 @@ type VenueServiceServer interface {
 	CreateVenue(context.Context, *CreateVenueRequest) (*Venue, error)
 	// Updates a venue. Only the fields in update_mask are written.
 	UpdateVenue(context.Context, *UpdateVenueRequest) (*Venue, error)
-	// Deletes a venue.
-	DeleteVenue(context.Context, *DeleteVenueRequest) (*emptypb.Empty, error)
 	// Retrieves one space.
 	GetSpace(context.Context, *GetSpaceRequest) (*Space, error)
 	// Lists spaces.
@@ -195,8 +166,6 @@ type VenueServiceServer interface {
 	CreateSpace(context.Context, *CreateSpaceRequest) (*Space, error)
 	// Updates a space. Only the fields in update_mask are written.
 	UpdateSpace(context.Context, *UpdateSpaceRequest) (*Space, error)
-	// Deletes a space.
-	DeleteSpace(context.Context, *DeleteSpaceRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedVenueServiceServer()
 }
 
@@ -219,9 +188,6 @@ func (UnimplementedVenueServiceServer) CreateVenue(context.Context, *CreateVenue
 func (UnimplementedVenueServiceServer) UpdateVenue(context.Context, *UpdateVenueRequest) (*Venue, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateVenue not implemented")
 }
-func (UnimplementedVenueServiceServer) DeleteVenue(context.Context, *DeleteVenueRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteVenue not implemented")
-}
 func (UnimplementedVenueServiceServer) GetSpace(context.Context, *GetSpaceRequest) (*Space, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSpace not implemented")
 }
@@ -233,9 +199,6 @@ func (UnimplementedVenueServiceServer) CreateSpace(context.Context, *CreateSpace
 }
 func (UnimplementedVenueServiceServer) UpdateSpace(context.Context, *UpdateSpaceRequest) (*Space, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateSpace not implemented")
-}
-func (UnimplementedVenueServiceServer) DeleteSpace(context.Context, *DeleteSpaceRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteSpace not implemented")
 }
 func (UnimplementedVenueServiceServer) mustEmbedUnimplementedVenueServiceServer() {}
 func (UnimplementedVenueServiceServer) testEmbeddedByValue()                      {}
@@ -330,24 +293,6 @@ func _VenueService_UpdateVenue_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VenueService_DeleteVenue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteVenueRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(VenueServiceServer).DeleteVenue(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: VenueService_DeleteVenue_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VenueServiceServer).DeleteVenue(ctx, req.(*DeleteVenueRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _VenueService_GetSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSpaceRequest)
 	if err := dec(in); err != nil {
@@ -420,24 +365,6 @@ func _VenueService_UpdateSpace_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VenueService_DeleteSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteSpaceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(VenueServiceServer).DeleteSpace(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: VenueService_DeleteSpace_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VenueServiceServer).DeleteSpace(ctx, req.(*DeleteSpaceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // VenueService_ServiceDesc is the grpc.ServiceDesc for VenueService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -462,10 +389,6 @@ var VenueService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _VenueService_UpdateVenue_Handler,
 		},
 		{
-			MethodName: "DeleteVenue",
-			Handler:    _VenueService_DeleteVenue_Handler,
-		},
-		{
 			MethodName: "GetSpace",
 			Handler:    _VenueService_GetSpace_Handler,
 		},
@@ -480,10 +403,6 @@ var VenueService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateSpace",
 			Handler:    _VenueService_UpdateSpace_Handler,
-		},
-		{
-			MethodName: "DeleteSpace",
-			Handler:    _VenueService_DeleteSpace_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

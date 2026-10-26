@@ -12,11 +12,14 @@ package typepbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	enums "buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/common/profile/v1/enums"
+	types "buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/hotel/booking/reservation/v1/types"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	date "google.golang.org/genproto/googleapis/type/date"
 	decimal "google.golang.org/genproto/googleapis/type/decimal"
+	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -366,11 +369,116 @@ func (x *Tax) GetGstRate() *decimal.Decimal {
 	return nil
 }
 
+// SpecialRequest is something a guest or a host asked for, and where the
+// venue is with it: a cot in the room, an early check-in, a cake at
+// midnight, a ramp at the stage.
+//
+// What a channel sent is kept as it sent it, as OpenTravel's SpecialRequest;
+// the rest is the venue's work on it.
+type SpecialRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The request, in a line.
+	Summary string `protobuf:"bytes,1,opt,name=summary,proto3" json:"summary,omitempty"`
+	// Which team it falls to.
+	Category RequestCategory `protobuf:"varint,2,opt,name=category,proto3,enum=aperio.type.v1.RequestCategory" json:"category,omitempty"`
+	// Where the venue is with it.
+	Progress RequestProgress `protobuf:"varint,3,opt,name=progress,proto3,enum=aperio.type.v1.RequestProgress" json:"progress,omitempty"`
+	// When it has to be done by.
+	DueTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=due_time,json=dueTime,proto3" json:"due_time,omitempty"`
+	// What it is charged, when it is not free.
+	Charge *money.Money `protobuf:"bytes,5,opt,name=charge,proto3" json:"charge,omitempty"`
+	// The request as a channel sent it, in OpenTravel's words.
+	Ota *types.SpecialRequest `protobuf:"bytes,6,opt,name=ota,proto3" json:"ota,omitempty"`
+	// What was done, or why not.
+	Notes         string `protobuf:"bytes,7,opt,name=notes,proto3" json:"notes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpecialRequest) Reset() {
+	*x = SpecialRequest{}
+	mi := &file_aperio_type_v1_types_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpecialRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpecialRequest) ProtoMessage() {}
+
+func (x *SpecialRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_type_v1_types_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpecialRequest.ProtoReflect.Descriptor instead.
+func (*SpecialRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_type_v1_types_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SpecialRequest) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *SpecialRequest) GetCategory() RequestCategory {
+	if x != nil {
+		return x.Category
+	}
+	return RequestCategory_REQUEST_CATEGORY_UNSPECIFIED
+}
+
+func (x *SpecialRequest) GetProgress() RequestProgress {
+	if x != nil {
+		return x.Progress
+	}
+	return RequestProgress_REQUEST_PROGRESS_UNSPECIFIED
+}
+
+func (x *SpecialRequest) GetDueTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DueTime
+	}
+	return nil
+}
+
+func (x *SpecialRequest) GetCharge() *money.Money {
+	if x != nil {
+		return x.Charge
+	}
+	return nil
+}
+
+func (x *SpecialRequest) GetOta() *types.SpecialRequest {
+	if x != nil {
+		return x.Ota
+	}
+	return nil
+}
+
+func (x *SpecialRequest) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
 var File_aperio_type_v1_types_proto protoreflect.FileDescriptor
 
 const file_aperio_type_v1_types_proto_rawDesc = "" +
 	"\n" +
-	"\x1aaperio/type/v1/types.proto\x12\x0eaperio.type.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x16google/type/date.proto\x1a\x19google/type/decimal.proto\x1a6protobuf/opentravel/common/profile/v1/enums/meal.proto\"\xd0\x01\n" +
+	"\x1aaperio/type/v1/types.proto\x12\x0eaperio.type.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x19google/type/decimal.proto\x1a\x17google/type/money.proto\x1a6protobuf/opentravel/common/profile/v1/enums/meal.proto\x1aLprotobuf/opentravel/hotel/booking/reservation/v1/types/special_request.proto\"\xd0\x01\n" +
 	"\x03Gst\x12Q\n" +
 	"\x05gstin\x18\x01 \x01(\tB;\xe2A\x01\x02\xbaH4r220^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$R\x05gstin\x129\n" +
 	"\x12legal_display_name\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\x10legalDisplayName\x12;\n" +
@@ -393,7 +501,15 @@ const file_aperio_type_v1_types_proto_rawDesc = "" +
 	"\x03Tax\x129\n" +
 	"\fhsn_sac_code\x18\x01 \x01(\tB\x17\xe2A\x01\x02\xbaH\x10r\x0e2\f^[0-9]{4,8}$R\n" +
 	"hsnSacCode\x125\n" +
-	"\bgst_rate\x18\x02 \x01(\v2\x14.google.type.DecimalB\x04\xe2A\x01\x02R\agstRateB\xd0\x01\n" +
+	"\bgst_rate\x18\x02 \x01(\v2\x14.google.type.DecimalB\x04\xe2A\x01\x02R\agstRate\"\xb3\x03\n" +
+	"\x0eSpecialRequest\x12(\n" +
+	"\asummary\x18\x01 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xf4\x03R\asummary\x12A\n" +
+	"\bcategory\x18\x02 \x01(\x0e2\x1f.aperio.type.v1.RequestCategoryB\x04\xe2A\x01\x01R\bcategory\x12A\n" +
+	"\bprogress\x18\x03 \x01(\x0e2\x1f.aperio.type.v1.RequestProgressB\x04\xe2A\x01\x01R\bprogress\x12;\n" +
+	"\bdue_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x01R\adueTime\x120\n" +
+	"\x06charge\x18\x05 \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x01R\x06charge\x12^\n" +
+	"\x03ota\x18\x06 \x01(\v2F.protobuf.opentravel.hotel.booking.reservation.v1.types.SpecialRequestB\x04\xe2A\x01\x01R\x03ota\x12\"\n" +
+	"\x05notes\x18\a \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\x05notesB\xd0\x01\n" +
 	"\x12com.aperio.type.v1B\n" +
 	"TypesProtoP\x01ZTgithub.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1;typepbv1\xa2\x02\x03ATX\xaa\x02\x0eAperio.Type.V1\xca\x02\x0eAperio\\Type\\V1\xe2\x02\x1aAperio\\Type\\V1\\GPBMetadata\xea\x02\x10Aperio::Type::V1b\x06proto3"
 
@@ -409,33 +525,44 @@ func file_aperio_type_v1_types_proto_rawDescGZIP() []byte {
 	return file_aperio_type_v1_types_proto_rawDescData
 }
 
-var file_aperio_type_v1_types_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_aperio_type_v1_types_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_aperio_type_v1_types_proto_goTypes = []any{
-	(*Gst)(nil),                // 0: aperio.type.v1.Gst
-	(*DateRange)(nil),          // 1: aperio.type.v1.DateRange
-	(*Phone)(nil),              // 2: aperio.type.v1.Phone
-	(*DietaryRequirement)(nil), // 3: aperio.type.v1.DietaryRequirement
-	(*Tax)(nil),                // 4: aperio.type.v1.Tax
-	(*date.Date)(nil),          // 5: google.type.Date
-	(PhoneKind)(0),             // 6: aperio.type.v1.PhoneKind
-	(Diet)(0),                  // 7: aperio.type.v1.Diet
-	(Allergen)(0),              // 8: aperio.type.v1.Allergen
-	(enums.Meal)(0),            // 9: protobuf.opentravel.common.profile.v1.enums.Meal
-	(*decimal.Decimal)(nil),    // 10: google.type.Decimal
+	(*Gst)(nil),                   // 0: aperio.type.v1.Gst
+	(*DateRange)(nil),             // 1: aperio.type.v1.DateRange
+	(*Phone)(nil),                 // 2: aperio.type.v1.Phone
+	(*DietaryRequirement)(nil),    // 3: aperio.type.v1.DietaryRequirement
+	(*Tax)(nil),                   // 4: aperio.type.v1.Tax
+	(*SpecialRequest)(nil),        // 5: aperio.type.v1.SpecialRequest
+	(*date.Date)(nil),             // 6: google.type.Date
+	(PhoneKind)(0),                // 7: aperio.type.v1.PhoneKind
+	(Diet)(0),                     // 8: aperio.type.v1.Diet
+	(Allergen)(0),                 // 9: aperio.type.v1.Allergen
+	(enums.Meal)(0),               // 10: protobuf.opentravel.common.profile.v1.enums.Meal
+	(*decimal.Decimal)(nil),       // 11: google.type.Decimal
+	(RequestCategory)(0),          // 12: aperio.type.v1.RequestCategory
+	(RequestProgress)(0),          // 13: aperio.type.v1.RequestProgress
+	(*timestamppb.Timestamp)(nil), // 14: google.protobuf.Timestamp
+	(*money.Money)(nil),           // 15: google.type.Money
+	(*types.SpecialRequest)(nil),  // 16: protobuf.opentravel.hotel.booking.reservation.v1.types.SpecialRequest
 }
 var file_aperio_type_v1_types_proto_depIdxs = []int32{
-	5,  // 0: aperio.type.v1.DateRange.start_date:type_name -> google.type.Date
-	5,  // 1: aperio.type.v1.DateRange.end_date:type_name -> google.type.Date
-	6,  // 2: aperio.type.v1.Phone.kind:type_name -> aperio.type.v1.PhoneKind
-	7,  // 3: aperio.type.v1.DietaryRequirement.diet:type_name -> aperio.type.v1.Diet
-	8,  // 4: aperio.type.v1.DietaryRequirement.allergens:type_name -> aperio.type.v1.Allergen
-	9,  // 5: aperio.type.v1.DietaryRequirement.ota_meal:type_name -> protobuf.opentravel.common.profile.v1.enums.Meal
-	10, // 6: aperio.type.v1.Tax.gst_rate:type_name -> google.type.Decimal
-	7,  // [7:7] is the sub-list for method output_type
-	7,  // [7:7] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	6,  // 0: aperio.type.v1.DateRange.start_date:type_name -> google.type.Date
+	6,  // 1: aperio.type.v1.DateRange.end_date:type_name -> google.type.Date
+	7,  // 2: aperio.type.v1.Phone.kind:type_name -> aperio.type.v1.PhoneKind
+	8,  // 3: aperio.type.v1.DietaryRequirement.diet:type_name -> aperio.type.v1.Diet
+	9,  // 4: aperio.type.v1.DietaryRequirement.allergens:type_name -> aperio.type.v1.Allergen
+	10, // 5: aperio.type.v1.DietaryRequirement.ota_meal:type_name -> protobuf.opentravel.common.profile.v1.enums.Meal
+	11, // 6: aperio.type.v1.Tax.gst_rate:type_name -> google.type.Decimal
+	12, // 7: aperio.type.v1.SpecialRequest.category:type_name -> aperio.type.v1.RequestCategory
+	13, // 8: aperio.type.v1.SpecialRequest.progress:type_name -> aperio.type.v1.RequestProgress
+	14, // 9: aperio.type.v1.SpecialRequest.due_time:type_name -> google.protobuf.Timestamp
+	15, // 10: aperio.type.v1.SpecialRequest.charge:type_name -> google.type.Money
+	16, // 11: aperio.type.v1.SpecialRequest.ota:type_name -> protobuf.opentravel.hotel.booking.reservation.v1.types.SpecialRequest
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_aperio_type_v1_types_proto_init() }
@@ -450,7 +577,7 @@ func file_aperio_type_v1_types_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_type_v1_types_proto_rawDesc), len(file_aperio_type_v1_types_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -14,7 +14,6 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -288,135 +287,6 @@ func (x *CreateServiceRequestRequest) GetValidateOnly() bool {
 	return false
 }
 
-// Request message for UpdateServiceRequest.
-type UpdateServiceRequestRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The service request to update, by its name.
-	ServiceRequest *ServiceRequest `protobuf:"bytes,1,opt,name=service_request,json=serviceRequest,proto3" json:"service_request,omitempty"`
-	// The fields to update; all populated fields when empty.
-	UpdateMask *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
-	// Validate the request without updating anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateServiceRequestRequest) Reset() {
-	*x = UpdateServiceRequestRequest{}
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateServiceRequestRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateServiceRequestRequest) ProtoMessage() {}
-
-func (x *UpdateServiceRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateServiceRequestRequest.ProtoReflect.Descriptor instead.
-func (*UpdateServiceRequestRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *UpdateServiceRequestRequest) GetServiceRequest() *ServiceRequest {
-	if x != nil {
-		return x.ServiceRequest
-	}
-	return nil
-}
-
-func (x *UpdateServiceRequestRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
-	if x != nil {
-		return x.UpdateMask
-	}
-	return nil
-}
-
-func (x *UpdateServiceRequestRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for DeleteServiceRequest.
-type DeleteServiceRequestRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the service request to delete.
-	// Format: venues/{venue}/serviceRequests/{service_request}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteServiceRequestRequest) Reset() {
-	*x = DeleteServiceRequestRequest{}
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteServiceRequestRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteServiceRequestRequest) ProtoMessage() {}
-
-func (x *DeleteServiceRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteServiceRequestRequest.ProtoReflect.Descriptor instead.
-func (*DeleteServiceRequestRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *DeleteServiceRequestRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteServiceRequestRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteServiceRequestRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
 // Request message for AcknowledgeServiceRequest.
 type AcknowledgeServiceRequestRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -431,7 +301,7 @@ type AcknowledgeServiceRequestRequest struct {
 
 func (x *AcknowledgeServiceRequestRequest) Reset() {
 	*x = AcknowledgeServiceRequestRequest{}
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[6]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -443,7 +313,7 @@ func (x *AcknowledgeServiceRequestRequest) String() string {
 func (*AcknowledgeServiceRequestRequest) ProtoMessage() {}
 
 func (x *AcknowledgeServiceRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[6]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -456,7 +326,7 @@ func (x *AcknowledgeServiceRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AcknowledgeServiceRequestRequest.ProtoReflect.Descriptor instead.
 func (*AcknowledgeServiceRequestRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{6}
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AcknowledgeServiceRequestRequest) GetName() string {
@@ -487,7 +357,7 @@ type StartServiceRequestRequest struct {
 
 func (x *StartServiceRequestRequest) Reset() {
 	*x = StartServiceRequestRequest{}
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[7]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -499,7 +369,7 @@ func (x *StartServiceRequestRequest) String() string {
 func (*StartServiceRequestRequest) ProtoMessage() {}
 
 func (x *StartServiceRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[7]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -512,7 +382,7 @@ func (x *StartServiceRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartServiceRequestRequest.ProtoReflect.Descriptor instead.
 func (*StartServiceRequestRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{7}
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StartServiceRequestRequest) GetName() string {
@@ -543,7 +413,7 @@ type CompleteServiceRequestRequest struct {
 
 func (x *CompleteServiceRequestRequest) Reset() {
 	*x = CompleteServiceRequestRequest{}
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[8]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -555,7 +425,7 @@ func (x *CompleteServiceRequestRequest) String() string {
 func (*CompleteServiceRequestRequest) ProtoMessage() {}
 
 func (x *CompleteServiceRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[8]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -568,7 +438,7 @@ func (x *CompleteServiceRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteServiceRequestRequest.ProtoReflect.Descriptor instead.
 func (*CompleteServiceRequestRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{8}
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CompleteServiceRequestRequest) GetName() string {
@@ -601,7 +471,7 @@ type CancelServiceRequestRequest struct {
 
 func (x *CancelServiceRequestRequest) Reset() {
 	*x = CancelServiceRequestRequest{}
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[9]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -613,7 +483,7 @@ func (x *CancelServiceRequestRequest) String() string {
 func (*CancelServiceRequestRequest) ProtoMessage() {}
 
 func (x *CancelServiceRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[9]
+	mi := &file_aperio_operations_v1_operations_messages_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -626,7 +496,7 @@ func (x *CancelServiceRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelServiceRequestRequest.ProtoReflect.Descriptor instead.
 func (*CancelServiceRequestRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{9}
+	return file_aperio_operations_v1_operations_messages_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CancelServiceRequestRequest) GetName() string {
@@ -654,7 +524,7 @@ var File_aperio_operations_v1_operations_messages_proto protoreflect.FileDescrip
 
 const file_aperio_operations_v1_operations_messages_proto_rawDesc = "" +
 	"\n" +
-	".aperio/operations/v1/operations_messages.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"\\\n" +
+	".aperio/operations/v1/operations_messages.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\"\\\n" +
 	"\x18GetServiceRequestRequest\x12@\n" +
 	"\x04name\x18\x01 \x01(\tB,\xe2A\x01\x02\xfaA%\n" +
 	"#aperio.operations.v1/ServiceRequestR\x04name\"\xf3\x01\n" +
@@ -672,17 +542,7 @@ const file_aperio_operations_v1_operations_messages_proto_rawDesc = "" +
 	"\x06parent\x18\x01 \x01(\tB,\xe2A\x01\x02\xfaA%\x12#aperio.operations.v1/ServiceRequestR\x06parent\x12S\n" +
 	"\x0fservice_request\x18\x02 \x01(\v2$.aperio.operations.v1.ServiceRequestB\x04\xe2A\x01\x02R\x0eserviceRequest\x12`\n" +
 	"\x12service_request_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\x10serviceRequestId\x12)\n" +
-	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xe0\x01\n" +
-	"\x1bUpdateServiceRequestRequest\x12S\n" +
-	"\x0fservice_request\x18\x01 \x01(\v2$.aperio.operations.v1.ServiceRequestB\x04\xe2A\x01\x02R\x0eserviceRequest\x12A\n" +
-	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
-	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xa4\x01\n" +
-	"\x1bDeleteServiceRequestRequest\x12@\n" +
-	"\x04name\x18\x01 \x01(\tB,\xe2A\x01\x02\xfaA%\n" +
-	"#aperio.operations.v1/ServiceRequestR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"~\n" +
+	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"~\n" +
 	" AcknowledgeServiceRequestRequest\x12@\n" +
 	"\x04name\x18\x01 \x01(\tB,\xe2A\x01\x02\xfaA%\n" +
 	"#aperio.operations.v1/ServiceRequestR\x04name\x12\x18\n" +
@@ -714,31 +574,26 @@ func file_aperio_operations_v1_operations_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_operations_v1_operations_messages_proto_rawDescData
 }
 
-var file_aperio_operations_v1_operations_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_aperio_operations_v1_operations_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_aperio_operations_v1_operations_messages_proto_goTypes = []any{
 	(*GetServiceRequestRequest)(nil),         // 0: aperio.operations.v1.GetServiceRequestRequest
 	(*ListServiceRequestsRequest)(nil),       // 1: aperio.operations.v1.ListServiceRequestsRequest
 	(*ListServiceRequestsResponse)(nil),      // 2: aperio.operations.v1.ListServiceRequestsResponse
 	(*CreateServiceRequestRequest)(nil),      // 3: aperio.operations.v1.CreateServiceRequestRequest
-	(*UpdateServiceRequestRequest)(nil),      // 4: aperio.operations.v1.UpdateServiceRequestRequest
-	(*DeleteServiceRequestRequest)(nil),      // 5: aperio.operations.v1.DeleteServiceRequestRequest
-	(*AcknowledgeServiceRequestRequest)(nil), // 6: aperio.operations.v1.AcknowledgeServiceRequestRequest
-	(*StartServiceRequestRequest)(nil),       // 7: aperio.operations.v1.StartServiceRequestRequest
-	(*CompleteServiceRequestRequest)(nil),    // 8: aperio.operations.v1.CompleteServiceRequestRequest
-	(*CancelServiceRequestRequest)(nil),      // 9: aperio.operations.v1.CancelServiceRequestRequest
-	(*ServiceRequest)(nil),                   // 10: aperio.operations.v1.ServiceRequest
-	(*fieldmaskpb.FieldMask)(nil),            // 11: google.protobuf.FieldMask
+	(*AcknowledgeServiceRequestRequest)(nil), // 4: aperio.operations.v1.AcknowledgeServiceRequestRequest
+	(*StartServiceRequestRequest)(nil),       // 5: aperio.operations.v1.StartServiceRequestRequest
+	(*CompleteServiceRequestRequest)(nil),    // 6: aperio.operations.v1.CompleteServiceRequestRequest
+	(*CancelServiceRequestRequest)(nil),      // 7: aperio.operations.v1.CancelServiceRequestRequest
+	(*ServiceRequest)(nil),                   // 8: aperio.operations.v1.ServiceRequest
 }
 var file_aperio_operations_v1_operations_messages_proto_depIdxs = []int32{
-	10, // 0: aperio.operations.v1.ListServiceRequestsResponse.service_requests:type_name -> aperio.operations.v1.ServiceRequest
-	10, // 1: aperio.operations.v1.CreateServiceRequestRequest.service_request:type_name -> aperio.operations.v1.ServiceRequest
-	10, // 2: aperio.operations.v1.UpdateServiceRequestRequest.service_request:type_name -> aperio.operations.v1.ServiceRequest
-	11, // 3: aperio.operations.v1.UpdateServiceRequestRequest.update_mask:type_name -> google.protobuf.FieldMask
-	4,  // [4:4] is the sub-list for method output_type
-	4,  // [4:4] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	8, // 0: aperio.operations.v1.ListServiceRequestsResponse.service_requests:type_name -> aperio.operations.v1.ServiceRequest
+	8, // 1: aperio.operations.v1.CreateServiceRequestRequest.service_request:type_name -> aperio.operations.v1.ServiceRequest
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_aperio_operations_v1_operations_messages_proto_init() }
@@ -753,7 +608,7 @@ func file_aperio_operations_v1_operations_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_operations_v1_operations_messages_proto_rawDesc), len(file_aperio_operations_v1_operations_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

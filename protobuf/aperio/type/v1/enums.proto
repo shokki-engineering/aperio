@@ -219,3 +219,51 @@ enum Channel {
   // Another source, described where it is recorded.
   CHANNEL_OTHER = 17;
 }
+
+// RequestCategory is which team a special request falls to.
+enum RequestCategory {
+  // Default; not said.
+  REQUEST_CATEGORY_UNSPECIFIED = 0;
+
+  // The room: bedding, a cot, a view, a floor.
+  REQUEST_CATEGORY_ROOM = 1;
+
+  // Arrival and departure: early check-in, late check-out, a transfer.
+  REQUEST_CATEGORY_ARRIVAL = 2;
+
+  // Food and beverage: a cake, a special dish, a bar.
+  REQUEST_CATEGORY_FOOD_BEVERAGE = 3;
+
+  // Decor and flowers: a mandap, a stage, a theme.
+  REQUEST_CATEGORY_DECOR = 4;
+
+  // Sound, light, projection and connectivity.
+  REQUEST_CATEGORY_AV = 5;
+
+  // Access: a wheelchair, a ramp, a ground-floor room.
+  REQUEST_CATEGORY_ACCESSIBILITY = 6;
+
+  // A celebration: an anniversary, a birthday surprise.
+  REQUEST_CATEGORY_CELEBRATION = 7;
+
+  // Anything else.
+  REQUEST_CATEGORY_OTHER = 8;
+}
+
+// RequestProgress is where the venue is with a special request.
+enum RequestProgress {
+  // Default; read as OPEN.
+  REQUEST_PROGRESS_UNSPECIFIED = 0;
+
+  // Received; nobody has taken it up.
+  REQUEST_PROGRESS_OPEN = 1;
+
+  // Taken up by the team it falls to.
+  REQUEST_PROGRESS_ACKNOWLEDGED = 2;
+
+  // Done.
+  REQUEST_PROGRESS_DONE = 3;
+
+  // It cannot be done; the notes say why.
+  REQUEST_PROGRESS_DECLINED = 4;
+}

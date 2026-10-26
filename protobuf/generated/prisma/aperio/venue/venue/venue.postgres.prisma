@@ -53,20 +53,23 @@ model Venue {
   /// The prefix of the venue's invoice series, 1-4 capitals or digits, e.g. "SBR": its tax invoices are numbered SBR/2627/0042, its credit notes SBR/CN2627/007, its proformas SBR/PF2627/015 -- a series per kind and financial year, within GST's 16 characters. Unique among the venues, as invoice numbers are. Required to issue an invoice.
   invoicePrefix String? @unique(map: "venue_resource_invoice_prefix_key") @map("invoice_prefix")
 
-  /// Back-relation: Reservation records that reference this model via venue_id.
-  reservations Reservation[]
+  /// Back-relation: Dish records that reference this model via venue_id.
+  dishes Dish[]
 
-  /// Back-relation: Event records that reference this model via venue_id.
-  events Event[]
+  /// Back-relation: Menu records that reference this model via venue_id.
+  menus Menu[]
 
-  /// Back-relation: Session records that reference this model via venue_id.
-  sessions Session[]
-
-  /// Back-relation: Lead records that reference this model via venue.
-  leads Lead[]
+  /// Back-relation: FixedPackage records that reference this model via venue_id.
+  fixedPackages FixedPackage[]
 
   /// Back-relation: Document records that reference this model via venue_id.
   resource Document[]
+
+  /// Back-relation: Event records that reference this model via venue_id.
+  resource2 Event[]
+
+  /// Back-relation: Session records that reference this model via venue_id.
+  sessions Session[]
 
   /// Back-relation: Invoice records that reference this model via venue_id.
   invoices Invoice[]
@@ -77,23 +80,20 @@ model Venue {
   /// Back-relation: ServiceRequest records that reference this model via venue_id.
   serviceRequests ServiceRequest[]
 
-  /// Back-relation: Dish records that reference this model via venue_id.
-  dishes Dish[]
-
-  /// Back-relation: Menu records that reference this model via venue_id.
-  menus Menu[]
-
-  /// Back-relation: FixedPackage records that reference this model via venue_id.
-  fixedPackages FixedPackage[]
-
   /// Back-relation: Season records that reference this model via venue_id.
   seasons Season[]
 
   /// Back-relation: PriceRule records that reference this model via venue_id.
   priceRules PriceRule[]
 
+  /// Back-relation: Lead records that reference this model via venue.
+  leads Lead[]
+
   /// Back-relation: Quote records that reference this model via venue_id.
   quotes Quote[]
+
+  /// Back-relation: Reservation records that reference this model via venue_id.
+  reservations Reservation[]
 
   /// Back-relation: Space records that reference this model via venue_id.
   spaces Space[]
@@ -146,14 +146,14 @@ model Space {
   /// The freebusy resources booking this space takes from: the rooms of a room type, or the one resource of a hall. Format: resources/{resource}
   resources String[] @map("resources")
 
+  /// Back-relation: FixedPackageSpaces records that reference this model via space_id.
+  fixedPackageSpaces FixedPackageSpaces[]
+
   /// Back-relation: Session records that reference this model via space.
   sessions Session[]
 
   /// Back-relation: ServiceRequest records that reference this model via space.
   serviceRequests ServiceRequest[]
-
-  /// Back-relation: FixedPackageSpaces records that reference this model via space_id.
-  fixedPackageSpaces FixedPackageSpaces[]
 
   /// Index on [update_time].
   @@index([updateTime])

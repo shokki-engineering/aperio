@@ -1,0 +1,192 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.pricing.v1;
+
+import "aperio/pricing/v1/enums.proto";
+import "aperio/type/v1/types.proto";
+import "buf/validate/validate.proto";
+import "cache/v1/annotations.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/dayofweek.proto";
+import "google/type/decimal.proto";
+import "google/type/money.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1;pricingpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "PricingProto";
+option java_package = "engineering.shokki.aperio.pricing.v1";
+
+// A Season is a named set of dates prices change on: "Wedding season"
+// (November to February), "Diwali week", "Monsoon", "Weekends". Seasons say
+// when; price rules say how much.
+//
+// A season that recurs yearly is matched on month and day, so "Wedding
+// season, 1 Nov -- 28 Feb" is next year's too without anyone editing it.
+message Season {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Seasons are read with every price.
+  option (cache.v1.cache) = {
+    enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.pricing.v1.season.venue.{venue}"
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.pricing.v1/Season"
+    pattern: "venues/{venue}/seasons/{season}"
+    singular: "season"
+    plural: "seasons"
+  };
+
+  // The season name.
+  // Format: venues/{venue}/seasons/{season}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/seasons/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The season as staff know it, e.g. "Wedding season".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // The dates it covers. Empty for a season of weekdays only ("Weekends").
+  repeated aperio.type.v1.DateRange dates = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Whether the dates recur every year, matched on month and day.
+  bool recurs_yearly = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // The days of the week it covers; every day when empty. With dates, only
+  // those days within them: "Fridays to Sundays of wedding season".
+  repeated google.type.DayOfWeek weekdays = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A PriceRule changes the price of what a venue sells in a season: "plate
+// menus +15% in wedding season", "the ballroom ₹2,50,000 on weekends",
+// "Deluxe rooms -20% in monsoon", "₹100 off a plate above 500 guests".
+//
+// Prices are never stored per date. The price of anything on a date is its
+// base price with the one matching rule of the highest priority applied --
+// matching its target, its season and its guest count -- so prices change on
+// their own as the seasons turn, and changing a rule changes every price it
+// covers at once. A quote fixes its prices when it is sent, so a later rule
+// does not change what a guest was offered.
+message PriceRule {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Rules are read with every price.
+  option (cache.v1.cache) = {
+    enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.pricing.v1.pricerule.venue.{venue}"
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.pricing.v1/PriceRule"
+    pattern: "venues/{venue}/priceRules/{price_rule}"
+    singular: "priceRule"
+    plural: "priceRules"
+  };
+
+  // The price rule name.
+  // Format: venues/{venue}/priceRules/{price_rule}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/priceRules/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The rule as staff know it, e.g. "Wedding season menus".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ];
+
+  // The season the rule applies in; every date when empty.
+  // Format: venues/{venue}/seasons/{season}
+  string season = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.pricing.v1/Season",
+    (buf.validate.field).string.pattern = "^venues/[^/]+/seasons/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // What kind of thing the rule prices.
+  PriceTarget target = 4 [(google.api.field_behavior) = REQUIRED];
+
+  // The items it prices: menus, fixed packages, spaces or dishes of the
+  // target's kind. Every item of the kind when empty.
+  repeated string items = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "*"
+  ];
+
+  // The fewest guests the rule applies to: a volume discount.
+  int32 min_guests = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // How the rule changes the price.
+  oneof adjustment {
+    // The price, replacing the base price.
+    google.type.Money fixed_price = 7;
+
+    // A percentage added to the base price; negative for a discount.
+    google.type.Decimal percent = 8;
+
+    // An amount added to the base price; negative for a discount.
+    google.type.Money amount = 9;
+  }
+
+  // Which rule wins when several match: the highest priority.
+  int32 priority = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // Whether the rule is applied.
+  bool active = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 14 [(google.api.field_behavior) = OPTIONAL];
+}

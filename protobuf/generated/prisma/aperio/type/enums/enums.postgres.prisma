@@ -5,12 +5,59 @@
 // source: aperio/type/v1/enums.proto
 //
 // database: aperio
-// schemas:  booking
+// schemas:  event, finance
 //
 // annotations: entity.v1 1.6.7, store.v1 1.6.7
 // engine:      protokit v1.3.6
 //
 // store — https://github.com/the-protobuf-project/store
+
+/// EventType is the occasion an event is held for.
+enum EventType {
+  /// A wedding ceremony.
+  WEDDING
+
+  /// A wedding reception.
+  RECEPTION
+
+  /// An engagement or ring ceremony.
+  ENGAGEMENT
+
+  /// A mehendi, sangeet or haldi.
+  PRE_WEDDING
+
+  /// A birthday.
+  BIRTHDAY
+
+  /// An anniversary.
+  ANNIVERSARY
+
+  /// Another family or social gathering.
+  SOCIAL
+
+  /// A religious function or puja.
+  RELIGIOUS
+
+  /// A corporate meeting or training.
+  MEETING
+
+  /// A conference or seminar.
+  CONFERENCE
+
+  /// A corporate offsite or retreat.
+  OFFSITE
+
+  /// A product launch, exhibition or brand event.
+  LAUNCH
+
+  /// Another occasion.
+  OTHER
+
+  /// Maps the enum to the "event_type" type in the database.
+  @@map("event_type")
+  /// Maps the enum to the "event" schema in the database.
+  @@schema("event")
+}
 
 /// Channel is where a lead or a booking came from.
 enum Channel {
@@ -67,53 +114,6 @@ enum Channel {
 
   /// Maps the enum to the "channel" type in the database.
   @@map("channel")
-  /// Maps the enum to the "booking" schema in the database.
-  @@schema("booking")
-}
-
-/// EventType is the occasion an event is held for.
-enum EventType {
-  /// A wedding ceremony.
-  WEDDING
-
-  /// A wedding reception.
-  RECEPTION
-
-  /// An engagement or ring ceremony.
-  ENGAGEMENT
-
-  /// A mehendi, sangeet or haldi.
-  PRE_WEDDING
-
-  /// A birthday.
-  BIRTHDAY
-
-  /// An anniversary.
-  ANNIVERSARY
-
-  /// Another family or social gathering.
-  SOCIAL
-
-  /// A religious function or puja.
-  RELIGIOUS
-
-  /// A corporate meeting or training.
-  MEETING
-
-  /// A conference or seminar.
-  CONFERENCE
-
-  /// A corporate offsite or retreat.
-  OFFSITE
-
-  /// A product launch, exhibition or brand event.
-  LAUNCH
-
-  /// Another occasion.
-  OTHER
-
-  /// Maps the enum to the "event_type" type in the database.
-  @@map("event_type")
-  /// Maps the enum to the "booking" schema in the database.
-  @@schema("booking")
+  /// Maps the enum to the "finance" schema in the database.
+  @@schema("finance")
 }

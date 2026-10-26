@@ -1,0 +1,114 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.event.v1;
+
+import "aperio/event/v1/event.proto";
+import "aperio/event/v1/event_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/empty.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/event/v1/eventpbv1;eventpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EventServiceProto";
+option java_package = "engineering.shokki.aperio.event.v1";
+
+// EventService: Events at a venue -- weddings, conferences, parties -- and their sessions, each holding a hall for its time.
+service EventService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Events"
+      version: "1.0.0"
+      description: "Events at a venue -- weddings, conferences, parties -- and their sessions, each holding a hall for its time."
+    }
+  };
+
+  // Retrieves one event.
+  rpc GetEvent(GetEventRequest) returns (Event) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/events/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists events.
+  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/events"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates an event.
+  rpc CreateEvent(CreateEventRequest) returns (Event) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/events"
+      body: "event"
+    };
+    option (google.api.method_signature) = "parent,event,event_id";
+  }
+
+  // Updates an event. Only the fields in update_mask are written.
+  rpc UpdateEvent(UpdateEventRequest) returns (Event) {
+    option (google.api.http) = {
+      patch: "/v1/{event.name=venues/*/events/*}"
+      body: "event"
+    };
+    option (google.api.method_signature) = "event,update_mask";
+  }
+
+  // Confirms a tentative event: its spaces stay taken.
+  rpc ConfirmEvent(ConfirmEventRequest) returns (Event) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/events/*}:confirm"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Cancels an event and releases the spaces of its sessions.
+  rpc CancelEvent(CancelEventRequest) returns (Event) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/events/*}:cancel"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one session.
+  rpc GetSession(GetSessionRequest) returns (Session) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/events/*/sessions/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists sessions.
+  rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*/events/*}/sessions"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a session.
+  rpc CreateSession(CreateSessionRequest) returns (Session) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*/events/*}/sessions"
+      body: "session"
+    };
+    option (google.api.method_signature) = "parent,session,session_id";
+  }
+
+  // Updates a session. Only the fields in update_mask are written.
+  rpc UpdateSession(UpdateSessionRequest) returns (Session) {
+    option (google.api.http) = {
+      patch: "/v1/{session.name=venues/*/events/*/sessions/*}"
+      body: "session"
+    };
+    option (google.api.method_signature) = "session,update_mask";
+  }
+
+  // Deletes a session.
+  rpc DeleteSession(DeleteSessionRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/events/*/sessions/*}"};
+    option (google.api.method_signature) = "name";
+  }
+}

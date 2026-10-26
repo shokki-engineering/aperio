@@ -11,7 +11,6 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/encoding/protojson"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/the-protobuf-project/runtime-go/agents/mcp"
 )
@@ -21,11 +20,9 @@ var OperationsService_AcknowledgeServiceRequestSchemaJSON = `{"description":"Tak
 var OperationsService_CancelServiceRequestSchemaJSON = `{"description":"Calls off a service request.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the service request to cancel. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"},"reason":{"description":"Why, in the caller's words; kept on the service request.","maxLength":2000,"type":"string"}},"required":["name"],"type":"object"}`
 var OperationsService_CompleteServiceRequestSchemaJSON = `{"description":"Marks a service request done; the requester is told.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the service request to complete. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"}},"required":["name"],"type":"object"}`
 var OperationsService_CreateServiceRequestSchemaJSON = `{"description":"Creates a service request.","properties":{"parent":{"description":"The parent the service request is created under. Format: venues/{venue}","type":"string"},"service_request":{"description":"The service request to create.","properties":{"assignee":{"anyOf":[{"const":""},{"pattern":"^users/[^/]+$"}],"description":"Who is doing it. Format: users/{user}","type":"string"},"booking":{"description":"The reservation or event it is for, which it is charged to.","type":"string"},"charge":{"description":"What it is charged, when it is not free.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"department":{"description":"The department it goes to.","enum":["DEPARTMENT_UNSPECIFIED","DEPARTMENT_PANTRY","DEPARTMENT_KITCHEN","DEPARTMENT_HOUSEKEEPING","DEPARTMENT_MAINTENANCE","DEPARTMENT_IT_AV","DEPARTMENT_FRONT_DESK","DEPARTMENT_BANQUET","DEPARTMENT_SECURITY"],"type":"string"},"due_time":{"description":"When it is wanted by; as soon as possible when empty.","format":"date-time","type":["string","null"]},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"items":{"items":{"description":"What is wanted, with how many of each.","properties":{"dish":{"description":"The dish or drink, when it is one from the kitchen's catalogue.","type":"string"},"display_name":{"description":"What it is, as the request says it; the dish's name when empty.","maxLength":200,"type":"string"},"notes":{"description":"How it is wanted, e.g. \"no sugar\", \"chilled\".","maxLength":500,"type":"string"},"quantity":{"description":"How many.","minimum":1,"type":"integer"}},"required":["quantity"],"type":"object"},"type":"array"},"location":{"description":"The room, desk or spot within the space, e.g. \"204\" or \"stage left\".","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/serviceRequests/[^/]+$"}],"description":"The service request name. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"},"notes":{"description":"Anything else: \"no sugar\", \"use the back stairs\", why it was cancelled.","maxLength":2000,"type":"string"},"priority":{"description":"How soon.","enum":["PRIORITY_UNSPECIFIED","PRIORITY_LOW","PRIORITY_NORMAL","PRIORITY_URGENT"],"type":"string"},"requester":{"description":"Who asked: a staff member or a guest's contact.","type":"string"},"space":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/spaces/[^/]+$"}],"description":"Where it is wanted: a room type's room, a hall, a meeting room. Format: venues/{venue}/spaces/{space}","type":"string"},"summary":{"description":"The request in a line, e.g. \"Coffee and water for the 11:00 board meeting\".","maxLength":500,"minLength":1,"type":"string"}},"required":["summary","department"],"type":"object"},"service_request_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","service_request"],"type":"object"}`
-var OperationsService_DeleteServiceRequestSchemaJSON = `{"description":"Deletes a service request.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the service request to delete. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
 var OperationsService_GetServiceRequestSchemaJSON = `{"description":"Retrieves one service request.","properties":{"name":{"description":"The name of the service request to retrieve. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"}},"required":["name"],"type":"object"}`
 var OperationsService_ListServiceRequestsSchemaJSON = `{"description":"Lists service requests.","properties":{"filter":{"description":"An AIP-160 filter, e.g. department = DEPARTMENT_PANTRY AND state = STATE_OPEN.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of service requests to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListServiceRequests call.","type":"string"},"parent":{"description":"The parent whose service requests to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
 var OperationsService_StartServiceRequestSchemaJSON = `{"description":"Marks an acknowledged service request as on its way.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the service request to start. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"}},"required":["name"],"type":"object"}`
-var OperationsService_UpdateServiceRequestSchemaJSON = `{"description":"Updates a service request. Only the fields in update_mask are written.","properties":{"service_request":{"description":"The service request to update, by its name.","properties":{"assignee":{"anyOf":[{"const":""},{"pattern":"^users/[^/]+$"}],"description":"Who is doing it. Format: users/{user}","type":"string"},"booking":{"description":"The reservation or event it is for, which it is charged to.","type":"string"},"charge":{"description":"What it is charged, when it is not free.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"department":{"description":"The department it goes to.","enum":["DEPARTMENT_UNSPECIFIED","DEPARTMENT_PANTRY","DEPARTMENT_KITCHEN","DEPARTMENT_HOUSEKEEPING","DEPARTMENT_MAINTENANCE","DEPARTMENT_IT_AV","DEPARTMENT_FRONT_DESK","DEPARTMENT_BANQUET","DEPARTMENT_SECURITY"],"type":"string"},"due_time":{"description":"When it is wanted by; as soon as possible when empty.","format":"date-time","type":["string","null"]},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"items":{"items":{"description":"What is wanted, with how many of each.","properties":{"dish":{"description":"The dish or drink, when it is one from the kitchen's catalogue.","type":"string"},"display_name":{"description":"What it is, as the request says it; the dish's name when empty.","maxLength":200,"type":"string"},"notes":{"description":"How it is wanted, e.g. \"no sugar\", \"chilled\".","maxLength":500,"type":"string"},"quantity":{"description":"How many.","minimum":1,"type":"integer"}},"required":["quantity"],"type":"object"},"type":"array"},"location":{"description":"The room, desk or spot within the space, e.g. \"204\" or \"stage left\".","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/serviceRequests/[^/]+$"}],"description":"The service request name. Format: venues/{venue}/serviceRequests/{service_request}","type":"string"},"notes":{"description":"Anything else: \"no sugar\", \"use the back stairs\", why it was cancelled.","maxLength":2000,"type":"string"},"priority":{"description":"How soon.","enum":["PRIORITY_UNSPECIFIED","PRIORITY_LOW","PRIORITY_NORMAL","PRIORITY_URGENT"],"type":"string"},"requester":{"description":"Who asked: a staff member or a guest's contact.","type":"string"},"space":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/spaces/[^/]+$"}],"description":"Where it is wanted: a room type's room, a hall, a meeting room. Format: venues/{venue}/spaces/{space}","type":"string"},"summary":{"description":"The request in a line, e.g. \"Coffee and water for the 11:00 board meeting\".","maxLength":500,"minLength":1,"type":"string"}},"required":["summary","department"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["service_request"],"type":"object"}`
 
 // JSON schemas for each RPC method's response, advertised as the tool's
 // outputSchema and satisfied by the structuredContent each handler returns.
@@ -33,11 +30,9 @@ var OperationsService_AcknowledgeServiceRequestOutputSchemaJSON = ``
 var OperationsService_CancelServiceRequestOutputSchemaJSON = ``
 var OperationsService_CompleteServiceRequestOutputSchemaJSON = ``
 var OperationsService_CreateServiceRequestOutputSchemaJSON = ``
-var OperationsService_DeleteServiceRequestOutputSchemaJSON = ``
 var OperationsService_GetServiceRequestOutputSchemaJSON = ``
 var OperationsService_ListServiceRequestsOutputSchemaJSON = ``
 var OperationsService_StartServiceRequestOutputSchemaJSON = ``
-var OperationsService_UpdateServiceRequestOutputSchemaJSON = ``
 
 // MCP tool descriptors. Each pairs a schema with a tool name and description
 // so that LLM clients can discover and invoke the underlying RPCs.
@@ -46,11 +41,9 @@ var (
 	OperationsService_CancelServiceRequestTool      = newTool("operations_service-cancel_service_request_v1", `Calls off a service request.`, OperationsService_CancelServiceRequestSchemaJSON, OperationsService_CancelServiceRequestOutputSchemaJSON, nil, "", nil)
 	OperationsService_CompleteServiceRequestTool    = newTool("operations_service-complete_service_request_v1", `Marks a service request done; the requester is told.`, OperationsService_CompleteServiceRequestSchemaJSON, OperationsService_CompleteServiceRequestOutputSchemaJSON, nil, "", nil)
 	OperationsService_CreateServiceRequestTool      = newTool("operations_service-create_service_request_v1", `Creates a service request.`, OperationsService_CreateServiceRequestSchemaJSON, OperationsService_CreateServiceRequestOutputSchemaJSON, nil, "", nil)
-	OperationsService_DeleteServiceRequestTool      = newTool("operations_service-delete_service_request_v1", `Deletes a service request.`, OperationsService_DeleteServiceRequestSchemaJSON, OperationsService_DeleteServiceRequestOutputSchemaJSON, nil, "", nil)
 	OperationsService_GetServiceRequestTool         = newTool("operations_service-get_service_request_v1", `Retrieves one service request.`, OperationsService_GetServiceRequestSchemaJSON, OperationsService_GetServiceRequestOutputSchemaJSON, nil, "", nil)
 	OperationsService_ListServiceRequestsTool       = newTool("operations_service-list_service_requests_v1", `Lists service requests.`, OperationsService_ListServiceRequestsSchemaJSON, OperationsService_ListServiceRequestsOutputSchemaJSON, nil, "", nil)
 	OperationsService_StartServiceRequestTool       = newTool("operations_service-start_service_request_v1", `Marks an acknowledged service request as on its way.`, OperationsService_StartServiceRequestSchemaJSON, OperationsService_StartServiceRequestOutputSchemaJSON, nil, "", nil)
-	OperationsService_UpdateServiceRequestTool      = newTool("operations_service-update_service_request_v1", `Updates a service request. Only the fields in update_mask are written.`, OperationsService_UpdateServiceRequestSchemaJSON, OperationsService_UpdateServiceRequestOutputSchemaJSON, nil, "", nil)
 )
 
 // OperationsServiceMCPServer is the interface that users implement to handle MCP
@@ -63,11 +56,9 @@ type OperationsServiceMCPServer interface {
 	CancelServiceRequest(ctx context.Context, req *CancelServiceRequestRequest) (*ServiceRequest, error)
 	CompleteServiceRequest(ctx context.Context, req *CompleteServiceRequestRequest) (*ServiceRequest, error)
 	CreateServiceRequest(ctx context.Context, req *CreateServiceRequestRequest) (*ServiceRequest, error)
-	DeleteServiceRequest(ctx context.Context, req *DeleteServiceRequestRequest) (*emptypb.Empty, error)
 	GetServiceRequest(ctx context.Context, req *GetServiceRequestRequest) (*ServiceRequest, error)
 	ListServiceRequests(ctx context.Context, req *ListServiceRequestsRequest) (*ListServiceRequestsResponse, error)
 	StartServiceRequest(ctx context.Context, req *StartServiceRequestRequest) (*ServiceRequest, error)
-	UpdateServiceRequest(ctx context.Context, req *UpdateServiceRequestRequest) (*ServiceRequest, error)
 }
 
 // OperationsServiceMCPClient is the gRPC client interface used when forwarding MCP
@@ -77,11 +68,9 @@ type OperationsServiceMCPClient interface {
 	CancelServiceRequest(ctx context.Context, req *CancelServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 	CompleteServiceRequest(ctx context.Context, req *CompleteServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 	CreateServiceRequest(ctx context.Context, req *CreateServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
-	DeleteServiceRequest(ctx context.Context, req *DeleteServiceRequestRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetServiceRequest(ctx context.Context, req *GetServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 	ListServiceRequests(ctx context.Context, req *ListServiceRequestsRequest, opts ...grpc.CallOption) (*ListServiceRequestsResponse, error)
 	StartServiceRequest(ctx context.Context, req *StartServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
-	UpdateServiceRequest(ctx context.Context, req *UpdateServiceRequestRequest, opts ...grpc.CallOption) (*ServiceRequest, error)
 }
 
 // RegisterOperationsServiceMCPHandler registers all OperationsService RPC methods as MCP
@@ -191,31 +180,6 @@ func RegisterOperationsServiceMCPHandler(s *mcp.Server, srv OperationsServiceMCP
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(OperationsService_DeleteServiceRequestTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteServiceRequestRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.operations.v1.OperationsService/DeleteServiceRequest", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeleteServiceRequest(ctx, req.(*DeleteServiceRequestRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*emptypb.Empty)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
 		tool := mcp.PrepareToolWithExtras(OperationsService_GetServiceRequestTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -278,31 +242,6 @@ func RegisterOperationsServiceMCPHandler(s *mcp.Server, srv OperationsServiceMCP
 			// middleware sees this call exactly as it would the wire RPC.
 			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.operations.v1.OperationsService/StartServiceRequest", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
 				return srv.StartServiceRequest(ctx, req.(*StartServiceRequestRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*ServiceRequest)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(OperationsService_UpdateServiceRequestTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateServiceRequestRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.operations.v1.OperationsService/UpdateServiceRequest", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.UpdateServiceRequest(ctx, req.(*UpdateServiceRequestRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
@@ -459,27 +398,6 @@ func ForwardToOperationsServiceMCPClient(s *mcp.Server, client OperationsService
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(OperationsService_DeleteServiceRequestTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteServiceRequestRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeleteServiceRequest(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
 		tool := mcp.PrepareToolWithExtras(OperationsService_GetServiceRequestTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -532,27 +450,6 @@ func ForwardToOperationsServiceMCPClient(s *mcp.Server, client OperationsService
 			}
 			ctx = mcp.ForwardMetadata(ctx)
 			resp, err := client.StartServiceRequest(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(OperationsService_UpdateServiceRequestTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateServiceRequestRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.UpdateServiceRequest(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}

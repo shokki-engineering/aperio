@@ -659,10 +659,10 @@ const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12*\n" +
 	"\n" +
-	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\"\x9d\x01\n" +
-	"\x13ConfirmStayResponse\x12D\n" +
-	"\vreservation\x18\x01 \x01(\tB\"\xfaA\x1f\n" +
-	"\x1daperio.booking.v1/ReservationR\vreservation\x12(\n" +
+	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\"\x9a\x01\n" +
+	"\x13ConfirmStayResponse\x12A\n" +
+	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
+	"\x1aaperio.stay.v1/ReservationR\vreservation\x12(\n" +
 	"\x05total\x18\x02 \x01(\v2\x12.google.type.MoneyR\x05total\x12\x16\n" +
 	"\x06spoken\x18\x03 \x01(\tR\x06spokenB\x84\x02\n" +
 	"\x17com.aperio.concierge.v1B\x16ConciergeMessagesProtoP\x01Zcgithub.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1\xa2\x02\x03ACX\xaa\x02\x13Aperio.Concierge.V1\xca\x02\x13Aperio\\Concierge\\V1\xe2\x02\x1fAperio\\Concierge\\V1\\GPBMetadata\xea\x02\x15Aperio::Concierge::V1b\x06proto3"

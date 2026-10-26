@@ -6,39 +6,106 @@ syntax = "proto3";
 package aperio.sales.v1;
 
 import "aperio/sales/v1/sales.proto";
-import "aperio/type/v1/types.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
-import "google/type/date.proto";
-import "google/type/money.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1";
 option java_multiple_files = true;
 option java_outer_classname = "SalesMessagesProto";
 option java_package = "engineering.shokki.aperio.sales.v1";
 
-// Request message for GetDish.
-message GetDishRequest {
-  // The name of the dish to retrieve.
-  // Format: venues/{venue}/dishes/{dish}
+// Request message for GetLead.
+message GetLeadRequest {
+  // The name of the lead to retrieve.
+  // Format: leads/{lead}
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Dish"
+    (google.api.resource_reference).type = "aperio.sales.v1/Lead"
   ];
 }
 
-// Request message for ListDishes.
-message ListDishesRequest {
-  // The parent whose dishes to list.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/Dish"
+// Request message for ListLeads.
+message ListLeadsRequest {
+  // The maximum number of leads to return; the server may
+  // return fewer. Defaults to 50; at most 1000.
+  int32 page_size = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 1000
+    }
   ];
 
-  // The maximum number of dishes to return; the server may
+  // A page token from a previous ListLeads call.
+  string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-160 filter, e.g. stage = STAGE_PROPOSAL.
+  string filter = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // An AIP-132 ordering, e.g. "create_time desc".
+  string order_by = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListLeads.
+message ListLeadsResponse {
+  // The leads.
+  repeated Lead leads = 1;
+
+  // A token for the next page; empty on the last.
+  string next_page_token = 2;
+}
+
+// Request message for CreateLead.
+message CreateLeadRequest {
+  // The lead to create.
+  Lead lead = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The id to give it, the last segment of its name; the server mints one
+  // when empty.
+  string lead_id = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Validate the request without creating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for UpdateLead.
+message UpdateLeadRequest {
+  // The lead to update, by its name.
+  Lead lead = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The fields to update; all populated fields when empty.
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Validate the request without updating anything.
+  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for GetActivity.
+message GetActivityRequest {
+  // The name of the activity to retrieve.
+  // Format: leads/{lead}/activities/{activity}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.sales.v1/Activity"
+  ];
+}
+
+// Request message for ListActivities.
+message ListActivitiesRequest {
+  // The parent whose activities to list.
+  // Format: leads/{lead}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).child_type = "aperio.sales.v1/Activity"
+  ];
+
+  // The maximum number of activities to return; the server may
   // return fewer. Defaults to 50; at most 1000.
   int32 page_size = 2 [
     (google.api.field_behavior) = OPTIONAL,
@@ -48,40 +115,40 @@ message ListDishesRequest {
     }
   ];
 
-  // A page token from a previous ListDishes call.
+  // A page token from a previous ListActivities call.
   string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 
-  // An AIP-160 filter, e.g. course = COURSE_STARTER.
+  // An AIP-160 filter, e.g. kind = ACTIVITY_KIND_SITE_VISIT.
   string filter = 4 [(google.api.field_behavior) = OPTIONAL];
 
   // An AIP-132 ordering, e.g. "create_time desc".
   string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
-// Response message for ListDishes.
-message ListDishesResponse {
-  // The dishes.
-  repeated Dish dishes = 1;
+// Response message for ListActivities.
+message ListActivitiesResponse {
+  // The activities.
+  repeated Activity activities = 1;
 
   // A token for the next page; empty on the last.
   string next_page_token = 2;
 }
 
-// Request message for CreateDish.
-message CreateDishRequest {
-  // The parent the dish is created under.
-  // Format: venues/{venue}
+// Request message for CreateActivity.
+message CreateActivityRequest {
+  // The parent the activity is created under.
+  // Format: leads/{lead}
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/Dish"
+    (google.api.resource_reference).child_type = "aperio.sales.v1/Activity"
   ];
 
-  // The dish to create.
-  Dish dish = 2 [(google.api.field_behavior) = REQUIRED];
+  // The activity to create.
+  Activity activity = 2 [(google.api.field_behavior) = REQUIRED];
 
   // The id to give it, the last segment of its name; the server mints one
   // when empty.
-  string dish_id = 3 [
+  string activity_id = 3 [
     (google.api.field_behavior) = OPTIONAL,
     (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
@@ -89,434 +156,6 @@ message CreateDishRequest {
 
   // Validate the request without creating anything.
   bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for UpdateDish.
-message UpdateDishRequest {
-  // The dish to update, by its name.
-  Dish dish = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The fields to update; all populated fields when empty.
-  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeleteDish.
-message DeleteDishRequest {
-  // The name of the dish to delete.
-  // Format: venues/{venue}/dishes/{dish}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Dish"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for GetMenu.
-message GetMenuRequest {
-  // The name of the menu to retrieve.
-  // Format: venues/{venue}/menus/{menu}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Menu"
-  ];
-}
-
-// Request message for ListMenus.
-message ListMenusRequest {
-  // The parent whose menus to list.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/Menu"
-  ];
-
-  // The maximum number of menus to return; the server may
-  // return fewer. Defaults to 50; at most 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).int32 = {
-      gte: 0
-      lte: 1000
-    }
-  ];
-
-  // A page token from a previous ListMenus call.
-  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-160 filter, e.g. active = true.
-  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-132 ordering, e.g. "create_time desc".
-  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Response message for ListMenus.
-message ListMenusResponse {
-  // The menus.
-  repeated Menu menus = 1;
-
-  // A token for the next page; empty on the last.
-  string next_page_token = 2;
-}
-
-// Request message for CreateMenu.
-message CreateMenuRequest {
-  // The parent the menu is created under.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/Menu"
-  ];
-
-  // The menu to create.
-  Menu menu = 2 [(google.api.field_behavior) = REQUIRED];
-
-  // The id to give it, the last segment of its name; the server mints one
-  // when empty.
-  string menu_id = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
-
-  // Validate the request without creating anything.
-  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for UpdateMenu.
-message UpdateMenuRequest {
-  // The menu to update, by its name.
-  Menu menu = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The fields to update; all populated fields when empty.
-  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeleteMenu.
-message DeleteMenuRequest {
-  // The name of the menu to delete.
-  // Format: venues/{venue}/menus/{menu}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Menu"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for GetFixedPackage.
-message GetFixedPackageRequest {
-  // The name of the fixed package to retrieve.
-  // Format: venues/{venue}/fixedPackages/{fixed_package}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/FixedPackage"
-  ];
-}
-
-// Request message for ListFixedPackages.
-message ListFixedPackagesRequest {
-  // The parent whose fixed packages to list.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/FixedPackage"
-  ];
-
-  // The maximum number of fixed packages to return; the server may
-  // return fewer. Defaults to 50; at most 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).int32 = {
-      gte: 0
-      lte: 1000
-    }
-  ];
-
-  // A page token from a previous ListFixedPackages call.
-  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-160 filter, e.g. active = true.
-  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-132 ordering, e.g. "create_time desc".
-  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Response message for ListFixedPackages.
-message ListFixedPackagesResponse {
-  // The fixed packages.
-  repeated FixedPackage fixed_packages = 1;
-
-  // A token for the next page; empty on the last.
-  string next_page_token = 2;
-}
-
-// Request message for CreateFixedPackage.
-message CreateFixedPackageRequest {
-  // The parent the fixed package is created under.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/FixedPackage"
-  ];
-
-  // The fixed package to create.
-  FixedPackage fixed_package = 2 [(google.api.field_behavior) = REQUIRED];
-
-  // The id to give it, the last segment of its name; the server mints one
-  // when empty.
-  string fixed_package_id = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
-
-  // Validate the request without creating anything.
-  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for UpdateFixedPackage.
-message UpdateFixedPackageRequest {
-  // The fixed package to update, by its name.
-  FixedPackage fixed_package = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The fields to update; all populated fields when empty.
-  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeleteFixedPackage.
-message DeleteFixedPackageRequest {
-  // The name of the fixed package to delete.
-  // Format: venues/{venue}/fixedPackages/{fixed_package}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/FixedPackage"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for GetSeason.
-message GetSeasonRequest {
-  // The name of the season to retrieve.
-  // Format: venues/{venue}/seasons/{season}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Season"
-  ];
-}
-
-// Request message for ListSeasons.
-message ListSeasonsRequest {
-  // The parent whose seasons to list.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/Season"
-  ];
-
-  // The maximum number of seasons to return; the server may
-  // return fewer. Defaults to 50; at most 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).int32 = {
-      gte: 0
-      lte: 1000
-    }
-  ];
-
-  // A page token from a previous ListSeasons call.
-  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-160 filter, e.g. recurs_yearly = true.
-  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-132 ordering, e.g. "create_time desc".
-  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Response message for ListSeasons.
-message ListSeasonsResponse {
-  // The seasons.
-  repeated Season seasons = 1;
-
-  // A token for the next page; empty on the last.
-  string next_page_token = 2;
-}
-
-// Request message for CreateSeason.
-message CreateSeasonRequest {
-  // The parent the season is created under.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/Season"
-  ];
-
-  // The season to create.
-  Season season = 2 [(google.api.field_behavior) = REQUIRED];
-
-  // The id to give it, the last segment of its name; the server mints one
-  // when empty.
-  string season_id = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
-
-  // Validate the request without creating anything.
-  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for UpdateSeason.
-message UpdateSeasonRequest {
-  // The season to update, by its name.
-  Season season = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The fields to update; all populated fields when empty.
-  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeleteSeason.
-message DeleteSeasonRequest {
-  // The name of the season to delete.
-  // Format: venues/{venue}/seasons/{season}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Season"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for GetPriceRule.
-message GetPriceRuleRequest {
-  // The name of the price rule to retrieve.
-  // Format: venues/{venue}/priceRules/{price_rule}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/PriceRule"
-  ];
-}
-
-// Request message for ListPriceRules.
-message ListPriceRulesRequest {
-  // The parent whose price rules to list.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/PriceRule"
-  ];
-
-  // The maximum number of price rules to return; the server may
-  // return fewer. Defaults to 50; at most 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).int32 = {
-      gte: 0
-      lte: 1000
-    }
-  ];
-
-  // A page token from a previous ListPriceRules call.
-  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-160 filter, e.g. target = PRICE_TARGET_MENU.
-  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
-
-  // An AIP-132 ordering, e.g. "create_time desc".
-  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Response message for ListPriceRules.
-message ListPriceRulesResponse {
-  // The price rules.
-  repeated PriceRule price_rules = 1;
-
-  // A token for the next page; empty on the last.
-  string next_page_token = 2;
-}
-
-// Request message for CreatePriceRule.
-message CreatePriceRuleRequest {
-  // The parent the price rule is created under.
-  // Format: venues/{venue}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).child_type = "aperio.sales.v1/PriceRule"
-  ];
-
-  // The price rule to create.
-  PriceRule price_rule = 2 [(google.api.field_behavior) = REQUIRED];
-
-  // The id to give it, the last segment of its name; the server mints one
-  // when empty.
-  string price_rule_id = 3 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).string.pattern = "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
-    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
-  ];
-
-  // Validate the request without creating anything.
-  bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for UpdatePriceRule.
-message UpdatePriceRuleRequest {
-  // The price rule to update, by its name.
-  PriceRule price_rule = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The fields to update; all populated fields when empty.
-  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeletePriceRule.
-message DeletePriceRuleRequest {
-  // The name of the price rule to delete.
-  // Format: venues/{venue}/priceRules/{price_rule}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/PriceRule"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Request message for GetQuote.
@@ -603,22 +242,6 @@ message UpdateQuoteRequest {
   bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
-// Request message for DeleteQuote.
-message DeleteQuoteRequest {
-  // The name of the quote to delete.
-  // Format: venues/{venue}/quotes/{quote}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.sales.v1/Quote"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
 // Request message for SendQuote.
 message SendQuoteRequest {
   // The name of the quote to send.
@@ -675,58 +298,4 @@ message ReviseQuoteRequest {
 
   // The etag the caller last read; the call fails when it has changed.
   string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for CalculatePrice.
-message CalculatePriceRequest {
-  // The venue whose prices and rules apply.
-  // Format: venues/{venue}
-  string venue = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
-  ];
-
-  // The menu, fixed package, space or dish to price.
-  string item = 2 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "*"
-  ];
-
-  // The date to price it for: the event day, the night of a stay.
-  google.type.Date service_date = 3 [(google.api.field_behavior) = REQUIRED];
-
-  // How many: plates, nights, hours, units. One when empty.
-  int32 quantity = 4 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).int32.gte = 0
-  ];
-
-  // The guests it is for, which a volume rule may match.
-  int32 guests = 5 [
-    (google.api.field_behavior) = OPTIONAL,
-    (buf.validate.field).int32.gte = 0
-  ];
-}
-
-// Response message for CalculatePrice: what the item costs on the date, and
-// why.
-message CalculatePriceResponse {
-  // The item's base price, before any rule.
-  google.type.Money base_price = 1;
-
-  // The rule applied, if one matched.
-  // Format: venues/{venue}/priceRules/{price_rule}
-  string price_rule = 2;
-
-  // The price of one on the date.
-  google.type.Money unit_price = 3;
-
-  // quantity × unit_price, before tax.
-  google.type.Money amount = 4;
-
-  // How GST applies to it.
-  aperio.type.v1.Tax tax = 5;
-
-  // The GST on amount, at the item's rate.
-  google.type.Money tax_amount = 6;
 }

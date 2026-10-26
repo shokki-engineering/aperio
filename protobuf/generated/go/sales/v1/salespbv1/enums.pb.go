@@ -24,158 +24,281 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Course is the course a dish is served in.
-type Course int32
+// LeadKind is what a lead wants to book.
+type LeadKind int32
 
 const (
 	// Default; never set.
-	Course_COURSE_UNSPECIFIED Course = 0
-	// A welcome drink.
-	Course_COURSE_WELCOME_DRINK Course = 1
-	// A starter or snack, passed or plated.
-	Course_COURSE_STARTER Course = 2
-	// A soup.
-	Course_COURSE_SOUP Course = 3
-	// A salad.
-	Course_COURSE_SALAD Course = 4
-	// A main course.
-	Course_COURSE_MAIN Course = 5
-	// A bread.
-	Course_COURSE_BREAD Course = 6
-	// A rice or biryani.
-	Course_COURSE_RICE Course = 7
-	// A dal, raita or side.
-	Course_COURSE_SIDE Course = 8
-	// A dessert.
-	Course_COURSE_DESSERT Course = 9
-	// A beverage.
-	Course_COURSE_BEVERAGE Course = 10
-	// A live counter: chaat, pasta, dosa, tandoor.
-	Course_COURSE_LIVE_COUNTER Course = 11
-	// Another course.
-	Course_COURSE_OTHER Course = 12
+	LeadKind_LEAD_KIND_UNSPECIFIED LeadKind = 0
+	// Rooms at the resort.
+	LeadKind_LEAD_KIND_STAY LeadKind = 1
+	// An event in a hall or space.
+	LeadKind_LEAD_KIND_EVENT LeadKind = 2
+	// An event and rooms for its guests, as a destination wedding or an
+	// offsite.
+	LeadKind_LEAD_KIND_EVENT_WITH_STAY LeadKind = 3
 )
 
-// Enum value maps for Course.
+// Enum value maps for LeadKind.
 var (
-	Course_name = map[int32]string{
-		0:  "COURSE_UNSPECIFIED",
-		1:  "COURSE_WELCOME_DRINK",
-		2:  "COURSE_STARTER",
-		3:  "COURSE_SOUP",
-		4:  "COURSE_SALAD",
-		5:  "COURSE_MAIN",
-		6:  "COURSE_BREAD",
-		7:  "COURSE_RICE",
-		8:  "COURSE_SIDE",
-		9:  "COURSE_DESSERT",
-		10: "COURSE_BEVERAGE",
-		11: "COURSE_LIVE_COUNTER",
-		12: "COURSE_OTHER",
+	LeadKind_name = map[int32]string{
+		0: "LEAD_KIND_UNSPECIFIED",
+		1: "LEAD_KIND_STAY",
+		2: "LEAD_KIND_EVENT",
+		3: "LEAD_KIND_EVENT_WITH_STAY",
 	}
-	Course_value = map[string]int32{
-		"COURSE_UNSPECIFIED":   0,
-		"COURSE_WELCOME_DRINK": 1,
-		"COURSE_STARTER":       2,
-		"COURSE_SOUP":          3,
-		"COURSE_SALAD":         4,
-		"COURSE_MAIN":          5,
-		"COURSE_BREAD":         6,
-		"COURSE_RICE":          7,
-		"COURSE_SIDE":          8,
-		"COURSE_DESSERT":       9,
-		"COURSE_BEVERAGE":      10,
-		"COURSE_LIVE_COUNTER":  11,
-		"COURSE_OTHER":         12,
+	LeadKind_value = map[string]int32{
+		"LEAD_KIND_UNSPECIFIED":     0,
+		"LEAD_KIND_STAY":            1,
+		"LEAD_KIND_EVENT":           2,
+		"LEAD_KIND_EVENT_WITH_STAY": 3,
 	}
 )
 
-func (x Course) Enum() *Course {
-	p := new(Course)
+func (x LeadKind) Enum() *LeadKind {
+	p := new(LeadKind)
 	*p = x
 	return p
 }
 
-func (x Course) String() string {
+func (x LeadKind) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (Course) Descriptor() protoreflect.EnumDescriptor {
+func (LeadKind) Descriptor() protoreflect.EnumDescriptor {
 	return file_aperio_sales_v1_enums_proto_enumTypes[0].Descriptor()
 }
 
-func (Course) Type() protoreflect.EnumType {
+func (LeadKind) Type() protoreflect.EnumType {
 	return &file_aperio_sales_v1_enums_proto_enumTypes[0]
 }
 
-func (x Course) Number() protoreflect.EnumNumber {
+func (x LeadKind) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use Course.Descriptor instead.
-func (Course) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use LeadKind.Descriptor instead.
+func (LeadKind) EnumDescriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_enums_proto_rawDescGZIP(), []int{0}
 }
 
-// PriceTarget is the kind of thing a price rule prices.
-type PriceTarget int32
+// Stage is where a lead is in the sales pipeline.
+type Stage int32
 
 const (
 	// Default; never set.
-	PriceTarget_PRICE_TARGET_UNSPECIFIED PriceTarget = 0
-	// Plate menus and their add-ons.
-	PriceTarget_PRICE_TARGET_MENU PriceTarget = 1
-	// Fixed packages.
-	PriceTarget_PRICE_TARGET_FIXED_PACKAGE PriceTarget = 2
-	// Spaces: a hall's hire, a room type's nightly rate.
-	PriceTarget_PRICE_TARGET_SPACE PriceTarget = 3
-	// Dishes sold on their own.
-	PriceTarget_PRICE_TARGET_DISH PriceTarget = 4
+	Stage_STAGE_UNSPECIFIED Stage = 0
+	// Just in; nobody has spoken to the guest.
+	Stage_STAGE_NEW Stage = 1
+	// Spoken to; requirements gathered.
+	Stage_STAGE_CONTACTED Stage = 2
+	// A site visit is booked or done.
+	Stage_STAGE_SITE_VISIT Stage = 3
+	// A quote has been sent.
+	Stage_STAGE_PROPOSAL Stage = 4
+	// Price, dates or inclusions are being negotiated.
+	Stage_STAGE_NEGOTIATION Stage = 5
+	// Won: a quote was accepted and the booking made.
+	Stage_STAGE_WON Stage = 6
+	// Lost.
+	Stage_STAGE_LOST Stage = 7
 )
 
-// Enum value maps for PriceTarget.
+// Enum value maps for Stage.
 var (
-	PriceTarget_name = map[int32]string{
-		0: "PRICE_TARGET_UNSPECIFIED",
-		1: "PRICE_TARGET_MENU",
-		2: "PRICE_TARGET_FIXED_PACKAGE",
-		3: "PRICE_TARGET_SPACE",
-		4: "PRICE_TARGET_DISH",
+	Stage_name = map[int32]string{
+		0: "STAGE_UNSPECIFIED",
+		1: "STAGE_NEW",
+		2: "STAGE_CONTACTED",
+		3: "STAGE_SITE_VISIT",
+		4: "STAGE_PROPOSAL",
+		5: "STAGE_NEGOTIATION",
+		6: "STAGE_WON",
+		7: "STAGE_LOST",
 	}
-	PriceTarget_value = map[string]int32{
-		"PRICE_TARGET_UNSPECIFIED":   0,
-		"PRICE_TARGET_MENU":          1,
-		"PRICE_TARGET_FIXED_PACKAGE": 2,
-		"PRICE_TARGET_SPACE":         3,
-		"PRICE_TARGET_DISH":          4,
+	Stage_value = map[string]int32{
+		"STAGE_UNSPECIFIED": 0,
+		"STAGE_NEW":         1,
+		"STAGE_CONTACTED":   2,
+		"STAGE_SITE_VISIT":  3,
+		"STAGE_PROPOSAL":    4,
+		"STAGE_NEGOTIATION": 5,
+		"STAGE_WON":         6,
+		"STAGE_LOST":        7,
 	}
 )
 
-func (x PriceTarget) Enum() *PriceTarget {
-	p := new(PriceTarget)
+func (x Stage) Enum() *Stage {
+	p := new(Stage)
 	*p = x
 	return p
 }
 
-func (x PriceTarget) String() string {
+func (x Stage) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (PriceTarget) Descriptor() protoreflect.EnumDescriptor {
+func (Stage) Descriptor() protoreflect.EnumDescriptor {
 	return file_aperio_sales_v1_enums_proto_enumTypes[1].Descriptor()
 }
 
-func (PriceTarget) Type() protoreflect.EnumType {
+func (Stage) Type() protoreflect.EnumType {
 	return &file_aperio_sales_v1_enums_proto_enumTypes[1]
 }
 
-func (x PriceTarget) Number() protoreflect.EnumNumber {
+func (x Stage) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use PriceTarget.Descriptor instead.
-func (PriceTarget) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use Stage.Descriptor instead.
+func (Stage) EnumDescriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_enums_proto_rawDescGZIP(), []int{1}
+}
+
+// LostReason is why a lead was lost.
+type LostReason int32
+
+const (
+	// Default; not lost, or not said.
+	LostReason_LOST_REASON_UNSPECIFIED LostReason = 0
+	// The guest found the price too high.
+	LostReason_LOST_REASON_PRICE LostReason = 1
+	// The dates were not available.
+	LostReason_LOST_REASON_DATES LostReason = 2
+	// The guest booked another venue.
+	LostReason_LOST_REASON_COMPETITOR LostReason = 3
+	// The space or the rooms were too small or too few.
+	LostReason_LOST_REASON_CAPACITY LostReason = 4
+	// The guest called off or postponed their plans.
+	LostReason_LOST_REASON_CANCELLED_PLANS LostReason = 5
+	// The guest stopped responding.
+	LostReason_LOST_REASON_NO_RESPONSE LostReason = 6
+	// Another reason, described in the lead's lost_detail.
+	LostReason_LOST_REASON_OTHER LostReason = 7
+)
+
+// Enum value maps for LostReason.
+var (
+	LostReason_name = map[int32]string{
+		0: "LOST_REASON_UNSPECIFIED",
+		1: "LOST_REASON_PRICE",
+		2: "LOST_REASON_DATES",
+		3: "LOST_REASON_COMPETITOR",
+		4: "LOST_REASON_CAPACITY",
+		5: "LOST_REASON_CANCELLED_PLANS",
+		6: "LOST_REASON_NO_RESPONSE",
+		7: "LOST_REASON_OTHER",
+	}
+	LostReason_value = map[string]int32{
+		"LOST_REASON_UNSPECIFIED":     0,
+		"LOST_REASON_PRICE":           1,
+		"LOST_REASON_DATES":           2,
+		"LOST_REASON_COMPETITOR":      3,
+		"LOST_REASON_CAPACITY":        4,
+		"LOST_REASON_CANCELLED_PLANS": 5,
+		"LOST_REASON_NO_RESPONSE":     6,
+		"LOST_REASON_OTHER":           7,
+	}
+)
+
+func (x LostReason) Enum() *LostReason {
+	p := new(LostReason)
+	*p = x
+	return p
+}
+
+func (x LostReason) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LostReason) Descriptor() protoreflect.EnumDescriptor {
+	return file_aperio_sales_v1_enums_proto_enumTypes[2].Descriptor()
+}
+
+func (LostReason) Type() protoreflect.EnumType {
+	return &file_aperio_sales_v1_enums_proto_enumTypes[2]
+}
+
+func (x LostReason) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LostReason.Descriptor instead.
+func (LostReason) EnumDescriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_enums_proto_rawDescGZIP(), []int{2}
+}
+
+// ActivityKind is what kind of touch an activity was.
+type ActivityKind int32
+
+const (
+	// Default; never set.
+	ActivityKind_ACTIVITY_KIND_UNSPECIFIED ActivityKind = 0
+	// A phone call.
+	ActivityKind_ACTIVITY_KIND_CALL ActivityKind = 1
+	// An email.
+	ActivityKind_ACTIVITY_KIND_EMAIL ActivityKind = 2
+	// A WhatsApp message.
+	ActivityKind_ACTIVITY_KIND_WHATSAPP ActivityKind = 3
+	// A meeting.
+	ActivityKind_ACTIVITY_KIND_MEETING ActivityKind = 4
+	// A visit to the venue.
+	ActivityKind_ACTIVITY_KIND_SITE_VISIT ActivityKind = 5
+	// A quote was sent.
+	ActivityKind_ACTIVITY_KIND_QUOTE_SENT ActivityKind = 6
+	// A note to the file.
+	ActivityKind_ACTIVITY_KIND_NOTE ActivityKind = 7
+)
+
+// Enum value maps for ActivityKind.
+var (
+	ActivityKind_name = map[int32]string{
+		0: "ACTIVITY_KIND_UNSPECIFIED",
+		1: "ACTIVITY_KIND_CALL",
+		2: "ACTIVITY_KIND_EMAIL",
+		3: "ACTIVITY_KIND_WHATSAPP",
+		4: "ACTIVITY_KIND_MEETING",
+		5: "ACTIVITY_KIND_SITE_VISIT",
+		6: "ACTIVITY_KIND_QUOTE_SENT",
+		7: "ACTIVITY_KIND_NOTE",
+	}
+	ActivityKind_value = map[string]int32{
+		"ACTIVITY_KIND_UNSPECIFIED": 0,
+		"ACTIVITY_KIND_CALL":        1,
+		"ACTIVITY_KIND_EMAIL":       2,
+		"ACTIVITY_KIND_WHATSAPP":    3,
+		"ACTIVITY_KIND_MEETING":     4,
+		"ACTIVITY_KIND_SITE_VISIT":  5,
+		"ACTIVITY_KIND_QUOTE_SENT":  6,
+		"ACTIVITY_KIND_NOTE":        7,
+	}
+)
+
+func (x ActivityKind) Enum() *ActivityKind {
+	p := new(ActivityKind)
+	*p = x
+	return p
+}
+
+func (x ActivityKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ActivityKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_aperio_sales_v1_enums_proto_enumTypes[3].Descriptor()
+}
+
+func (ActivityKind) Type() protoreflect.EnumType {
+	return &file_aperio_sales_v1_enums_proto_enumTypes[3]
+}
+
+func (x ActivityKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ActivityKind.Descriptor instead.
+func (ActivityKind) EnumDescriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_enums_proto_rawDescGZIP(), []int{3}
 }
 
 // LineKind is what a quote line sells.
@@ -235,11 +358,11 @@ func (x LineKind) String() string {
 }
 
 func (LineKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_aperio_sales_v1_enums_proto_enumTypes[2].Descriptor()
+	return file_aperio_sales_v1_enums_proto_enumTypes[4].Descriptor()
 }
 
 func (LineKind) Type() protoreflect.EnumType {
-	return &file_aperio_sales_v1_enums_proto_enumTypes[2]
+	return &file_aperio_sales_v1_enums_proto_enumTypes[4]
 }
 
 func (x LineKind) Number() protoreflect.EnumNumber {
@@ -248,35 +371,48 @@ func (x LineKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use LineKind.Descriptor instead.
 func (LineKind) EnumDescriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_enums_proto_rawDescGZIP(), []int{2}
+	return file_aperio_sales_v1_enums_proto_rawDescGZIP(), []int{4}
 }
 
 var File_aperio_sales_v1_enums_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_enums_proto_rawDesc = "" +
 	"\n" +
-	"\x1baperio/sales/v1/enums.proto\x12\x0faperio.sales.v1*\x8a\x02\n" +
-	"\x06Course\x12\x16\n" +
-	"\x12COURSE_UNSPECIFIED\x10\x00\x12\x18\n" +
-	"\x14COURSE_WELCOME_DRINK\x10\x01\x12\x12\n" +
-	"\x0eCOURSE_STARTER\x10\x02\x12\x0f\n" +
-	"\vCOURSE_SOUP\x10\x03\x12\x10\n" +
-	"\fCOURSE_SALAD\x10\x04\x12\x0f\n" +
-	"\vCOURSE_MAIN\x10\x05\x12\x10\n" +
-	"\fCOURSE_BREAD\x10\x06\x12\x0f\n" +
-	"\vCOURSE_RICE\x10\a\x12\x0f\n" +
-	"\vCOURSE_SIDE\x10\b\x12\x12\n" +
-	"\x0eCOURSE_DESSERT\x10\t\x12\x13\n" +
-	"\x0fCOURSE_BEVERAGE\x10\n" +
-	"\x12\x17\n" +
-	"\x13COURSE_LIVE_COUNTER\x10\v\x12\x10\n" +
-	"\fCOURSE_OTHER\x10\f*\x91\x01\n" +
-	"\vPriceTarget\x12\x1c\n" +
-	"\x18PRICE_TARGET_UNSPECIFIED\x10\x00\x12\x15\n" +
-	"\x11PRICE_TARGET_MENU\x10\x01\x12\x1e\n" +
-	"\x1aPRICE_TARGET_FIXED_PACKAGE\x10\x02\x12\x16\n" +
-	"\x12PRICE_TARGET_SPACE\x10\x03\x12\x15\n" +
-	"\x11PRICE_TARGET_DISH\x10\x04*\xc2\x01\n" +
+	"\x1baperio/sales/v1/enums.proto\x12\x0faperio.sales.v1*m\n" +
+	"\bLeadKind\x12\x19\n" +
+	"\x15LEAD_KIND_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eLEAD_KIND_STAY\x10\x01\x12\x13\n" +
+	"\x0fLEAD_KIND_EVENT\x10\x02\x12\x1d\n" +
+	"\x19LEAD_KIND_EVENT_WITH_STAY\x10\x03*\xa2\x01\n" +
+	"\x05Stage\x12\x15\n" +
+	"\x11STAGE_UNSPECIFIED\x10\x00\x12\r\n" +
+	"\tSTAGE_NEW\x10\x01\x12\x13\n" +
+	"\x0fSTAGE_CONTACTED\x10\x02\x12\x14\n" +
+	"\x10STAGE_SITE_VISIT\x10\x03\x12\x12\n" +
+	"\x0eSTAGE_PROPOSAL\x10\x04\x12\x15\n" +
+	"\x11STAGE_NEGOTIATION\x10\x05\x12\r\n" +
+	"\tSTAGE_WON\x10\x06\x12\x0e\n" +
+	"\n" +
+	"STAGE_LOST\x10\a*\xe2\x01\n" +
+	"\n" +
+	"LostReason\x12\x1b\n" +
+	"\x17LOST_REASON_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11LOST_REASON_PRICE\x10\x01\x12\x15\n" +
+	"\x11LOST_REASON_DATES\x10\x02\x12\x1a\n" +
+	"\x16LOST_REASON_COMPETITOR\x10\x03\x12\x18\n" +
+	"\x14LOST_REASON_CAPACITY\x10\x04\x12\x1f\n" +
+	"\x1bLOST_REASON_CANCELLED_PLANS\x10\x05\x12\x1b\n" +
+	"\x17LOST_REASON_NO_RESPONSE\x10\x06\x12\x15\n" +
+	"\x11LOST_REASON_OTHER\x10\a*\xe9\x01\n" +
+	"\fActivityKind\x12\x1d\n" +
+	"\x19ACTIVITY_KIND_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12ACTIVITY_KIND_CALL\x10\x01\x12\x17\n" +
+	"\x13ACTIVITY_KIND_EMAIL\x10\x02\x12\x1a\n" +
+	"\x16ACTIVITY_KIND_WHATSAPP\x10\x03\x12\x19\n" +
+	"\x15ACTIVITY_KIND_MEETING\x10\x04\x12\x1c\n" +
+	"\x18ACTIVITY_KIND_SITE_VISIT\x10\x05\x12\x1c\n" +
+	"\x18ACTIVITY_KIND_QUOTE_SENT\x10\x06\x12\x16\n" +
+	"\x12ACTIVITY_KIND_NOTE\x10\a*\xc2\x01\n" +
 	"\bLineKind\x12\x19\n" +
 	"\x15LINE_KIND_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eLINE_KIND_MENU\x10\x01\x12\x1b\n" +
@@ -301,11 +437,13 @@ func file_aperio_sales_v1_enums_proto_rawDescGZIP() []byte {
 	return file_aperio_sales_v1_enums_proto_rawDescData
 }
 
-var file_aperio_sales_v1_enums_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_aperio_sales_v1_enums_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_aperio_sales_v1_enums_proto_goTypes = []any{
-	(Course)(0),      // 0: aperio.sales.v1.Course
-	(PriceTarget)(0), // 1: aperio.sales.v1.PriceTarget
-	(LineKind)(0),    // 2: aperio.sales.v1.LineKind
+	(LeadKind)(0),     // 0: aperio.sales.v1.LeadKind
+	(Stage)(0),        // 1: aperio.sales.v1.Stage
+	(LostReason)(0),   // 2: aperio.sales.v1.LostReason
+	(ActivityKind)(0), // 3: aperio.sales.v1.ActivityKind
+	(LineKind)(0),     // 4: aperio.sales.v1.LineKind
 }
 var file_aperio_sales_v1_enums_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -325,7 +463,7 @@ func file_aperio_sales_v1_enums_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_sales_v1_enums_proto_rawDesc), len(file_aperio_sales_v1_enums_proto_rawDesc)),
-			NumEnums:      3,
+			NumEnums:      5,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,

@@ -1,0 +1,371 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.catalog.v1;
+
+import "aperio/catalog/v1/enums.proto";
+import "aperio/type/v1/enums.proto";
+import "aperio/type/v1/types.proto";
+import "buf/validate/validate.proto";
+import "cache/v1/annotations.proto";
+import "entity/v1/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/money.proto";
+import "store/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/catalog/v1/catalogpbv1;catalogpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "CatalogProto";
+option java_package = "engineering.shokki.aperio.catalog.v1";
+
+// A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a
+// live chaat counter, a mocktail. It is the catalogue menus are made from, so
+// a dish is described once -- its course, the diets it suits, its allergens --
+// and every menu that offers it says the same.
+//
+// A dish has its own price only when it is sold on its own: à la carte, room
+// service, an add-on to a menu.
+message Dish {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Dishes are read with every menu and change rarely.
+  option (cache.v1.cache) = {
+    enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.catalog.v1.dish.venue.{venue}"
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.catalog.v1/Dish"
+    pattern: "venues/{venue}/dishes/{dish}"
+    singular: "dish"
+    plural: "dishes"
+  };
+
+  // The dish name.
+  // Format: venues/{venue}/dishes/{dish}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/dishes/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The dish as the menu card names it.
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A line about it for the menu card.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The course it is served in.
+  Course course = 4 [(google.api.field_behavior) = REQUIRED];
+
+  // The cuisine, e.g. "North Indian", "Chettinad", "Continental".
+  string cuisine = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (store.v1.query) = {search: true}
+  ];
+
+  // The diets it suits: a paneer tikka is vegetarian and eggetarian, not
+  // Jain.
+  repeated aperio.type.v1.Diet diets = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // What it contains that some guests must not eat.
+  repeated aperio.type.v1.Allergen allergens = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // Its price on its own, before any season's rule: à la carte, room service,
+  // or as an add-on. Empty for a dish only served within a menu.
+  google.type.Money price = 8 [(google.api.field_behavior) = OPTIONAL];
+
+  // How GST applies to it on its own.
+  aperio.type.v1.Tax tax = 9 [(google.api.field_behavior) = OPTIONAL];
+
+  // A photo of it.
+  string image_uri = 10 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.uri = true,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // Whether the kitchen offers it now; an unavailable dish stays on old menus
+  // and quotes but is not offered on new ones.
+  bool available = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 14 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A Menu is a plate menu sold for events at a price per plate: "Silver
+// Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice,
+// 2 desserts". It is a set of courses, each a choice among dishes, with
+// add-ons priced per plate on top.
+//
+// Its plate_price is the base price. What a plate costs on a given date is
+// the base price with the venue's price rules applied (PriceRule), so a
+// wedding-season surcharge needs no edit to the menu.
+message Menu {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Menus are read with every quote.
+  option (cache.v1.cache) = {
+    enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.catalog.v1.menu.venue.{venue}"
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.catalog.v1/Menu"
+    pattern: "venues/{venue}/menus/{menu}"
+    singular: "menu"
+    plural: "menus"
+  };
+
+  // The menu name.
+  // Format: venues/{venue}/menus/{menu}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/menus/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The menu as it is sold, e.g. "Silver Vegetarian".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A line about it for the proposal.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The diets the whole menu suits: a vegetarian menu, a Jain menu.
+  repeated aperio.type.v1.Diet diets = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // The courses, in serving order.
+  repeated MenuCourse courses = 5 [(google.api.field_behavior) = REQUIRED];
+
+  // What can be added, priced per plate on top of the menu.
+  repeated MenuAddOn add_ons = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // The base price of a plate, before any price rule.
+  google.type.Money plate_price = 7 [(google.api.field_behavior) = REQUIRED];
+
+  // The fewest plates the menu is sold for.
+  int32 min_plates = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // How GST applies to it.
+  aperio.type.v1.Tax tax = 9 [(google.api.field_behavior) = REQUIRED];
+
+  // Whether it is offered on new quotes.
+  bool active = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 13 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// MenuCourse is one course of a menu: the dishes on offer, and how many of
+// them the host picks.
+message MenuCourse {
+  // The course.
+  Course course = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // How the proposal heads it, e.g. "Starters (any three)"; the course's name
+  // when empty.
+  string display_name = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many of the dishes the host picks; zero means all are served.
+  int32 choose = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The dishes on offer.
+  // Format: venues/{venue}/dishes/{dish}
+  repeated string dishes = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.catalog.v1/Dish"
+  ];
+}
+
+// MenuAddOn is something added to a menu at a price per plate: a live
+// counter, an extra dessert, a bar.
+message MenuAddOn {
+  // The add-on as the proposal names it.
+  string display_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // The dish it is, when it is one.
+  // Format: venues/{venue}/dishes/{dish}
+  string dish = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.catalog.v1/Dish"
+  ];
+
+  // Its base price per plate, before any price rule.
+  google.type.Money plate_price = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8
+// hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It
+// includes so many guests, and charges each guest beyond them.
+//
+// Its price is the base price; what it costs on a date is the base price with
+// the venue's price rules applied, as a menu's is.
+message FixedPackage {
+  option (entity.v1.table) = {id: ID_STRATEGY_ULID};
+
+  // Packages are read with every quote.
+  option (cache.v1.cache) = {
+    enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.catalog.v1.fixedpackage.venue.{venue}"
+    ttl: {seconds: 600}
+    list: {
+      enabled: true
+      ttl: {seconds: 60}
+    }
+  };
+
+  option (google.api.resource) = {
+    type: "aperio.catalog.v1/FixedPackage"
+    pattern: "venues/{venue}/fixedPackages/{fixed_package}"
+    singular: "fixedPackage"
+    plural: "fixedPackages"
+  };
+
+  // The fixed package name.
+  // Format: venues/{venue}/fixedPackages/{fixed_package}
+  string name = 1 [
+    (google.api.field_behavior) = IDENTIFIER,
+    (buf.validate.field).string.pattern = "^venues/[^/]+/fixedPackages/[^/]+$",
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
+  ];
+
+  // The package as it is sold, e.g. "Wedding Gold".
+  string display_name = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    },
+    (store.v1.query) = {search: true}
+  ];
+
+  // A line about it for the proposal.
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 2000
+  ];
+
+  // The spaces it can be held in.
+  // Format: venues/{venue}/spaces/{space}
+  repeated string spaces = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.venue.v1/Space"
+  ];
+
+  // How long the space is had for.
+  google.protobuf.Duration duration = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // The menu included, when food is.
+  // Format: venues/{venue}/menus/{menu}
+  string menu = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference).type = "aperio.catalog.v1/Menu"
+  ];
+
+  // What else is included: decor, a DJ, a bridal suite for the night.
+  repeated PackageInclusion inclusions = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // How many guests the price includes.
+  int32 included_guests = 8 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32.gt = 0
+  ];
+
+  // The base price of the package, before any price rule.
+  google.type.Money price = 9 [(google.api.field_behavior) = REQUIRED];
+
+  // The base price of each guest beyond included_guests.
+  google.type.Money extra_guest_price = 10 [(google.api.field_behavior) = OPTIONAL];
+
+  // How GST applies to it.
+  aperio.type.v1.Tax tax = 11 [(google.api.field_behavior) = REQUIRED];
+
+  // Whether it is offered on new quotes.
+  bool active = 12 [(google.api.field_behavior) = OPTIONAL];
+
+  // Creation timestamp.
+  google.protobuf.Timestamp create_time = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Last-modification timestamp.
+  google.protobuf.Timestamp update_time = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Opaque version for optimistic concurrency (AIP-154).
+  string etag = 15 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// PackageInclusion is one thing a fixed package includes.
+message PackageInclusion {
+  // What it is, as the proposal says it.
+  string display_name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // How many, when it is counted: 2 bridal rooms, 4 hours of a DJ.
+  int32 quantity = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32.gte = 0
+  ];
+}

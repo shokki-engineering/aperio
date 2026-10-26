@@ -1,0 +1,113 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.pricing.v1;
+
+import "aperio/pricing/v1/pricing.proto";
+import "aperio/pricing/v1/pricing_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/empty.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/pricing/v1/pricingpbv1;pricingpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "PricingServiceProto";
+option java_package = "engineering.shokki.aperio.pricing.v1";
+
+// PricingService: Seasons and price rules, and the price of anything a venue sells on a date.
+service PricingService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Pricing"
+      version: "1.0.0"
+      description: "Seasons and price rules, and the price of anything a venue sells on a date."
+    }
+  };
+
+  // Retrieves one season.
+  rpc GetSeason(GetSeasonRequest) returns (Season) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/seasons/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists seasons.
+  rpc ListSeasons(ListSeasonsRequest) returns (ListSeasonsResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/seasons"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a season.
+  rpc CreateSeason(CreateSeasonRequest) returns (Season) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/seasons"
+      body: "season"
+    };
+    option (google.api.method_signature) = "parent,season,season_id";
+  }
+
+  // Updates a season. Only the fields in update_mask are written.
+  rpc UpdateSeason(UpdateSeasonRequest) returns (Season) {
+    option (google.api.http) = {
+      patch: "/v1/{season.name=venues/*/seasons/*}"
+      body: "season"
+    };
+    option (google.api.method_signature) = "season,update_mask";
+  }
+
+  // Deletes a season.
+  rpc DeleteSeason(DeleteSeasonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/seasons/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Retrieves one price rule.
+  rpc GetPriceRule(GetPriceRuleRequest) returns (PriceRule) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/priceRules/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists price rules.
+  rpc ListPriceRules(ListPriceRulesRequest) returns (ListPriceRulesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/priceRules"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a price rule.
+  rpc CreatePriceRule(CreatePriceRuleRequest) returns (PriceRule) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/priceRules"
+      body: "price_rule"
+    };
+    option (google.api.method_signature) = "parent,price_rule,price_rule_id";
+  }
+
+  // Updates a price rule. Only the fields in update_mask are written.
+  rpc UpdatePriceRule(UpdatePriceRuleRequest) returns (PriceRule) {
+    option (google.api.http) = {
+      patch: "/v1/{price_rule.name=venues/*/priceRules/*}"
+      body: "price_rule"
+    };
+    option (google.api.method_signature) = "price_rule,update_mask";
+  }
+
+  // Deletes a price rule.
+  rpc DeletePriceRule(DeletePriceRuleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/{name=venues/*/priceRules/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Prices a menu, fixed package, space or dish for a date: its base price with
+  // the matching price rule of the highest priority applied. The one way
+  // aperio prices anything -- quotes, the website and agents all ask it.
+  rpc CalculatePrice(CalculatePriceRequest) returns (CalculatePriceResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:calculatePrice"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,item,service_date";
+  }
+}

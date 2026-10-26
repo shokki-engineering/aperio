@@ -11,124 +11,63 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/encoding/protojson"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/the-protobuf-project/runtime-go/agents/mcp"
 )
 
 // JSON schemas for each RPC method, used as the inputSchema for MCP tools.
 var SalesService_AcceptQuoteSchemaJSON = `{"description":"Accepts a sent quote: makes the reservation or event it offers, and wins its lead.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the quote to accept. Format: venues/{venue}/quotes/{quote}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_CalculatePriceSchemaJSON = `{"description":"Prices a menu, fixed package, space or dish for a date: its base price with the matching price rule of the highest priority applied. The one way aperio prices anything -- quotes, the website and agents all ask it.","properties":{"guests":{"description":"The guests it is for, which a volume rule may match.","minimum":0,"type":"integer"},"item":{"description":"The menu, fixed package, space or dish to price.","type":"string"},"quantity":{"description":"How many: plates, nights, hours, units. One when empty.","minimum":0,"type":"integer"},"service_date":{"description":"The date to price it for: the event day, the night of a stay.","properties":{"day":{"description":"Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.","type":"integer"},"month":{"description":"Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.","type":"integer"},"year":{"description":"Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.","type":"integer"}},"required":[],"type":"object"},"venue":{"description":"The venue whose prices and rules apply. Format: venues/{venue}","type":"string"}},"required":["venue","item","service_date"],"type":"object"}`
-var SalesService_CreateDishSchemaJSON = `{"description":"Creates a dish.","properties":{"dish":{"description":"The dish to create.","properties":{"allergens":{"items":{"description":"What it contains that some guests must not eat.","enum":["ALLERGEN_UNSPECIFIED","ALLERGEN_PEANUT","ALLERGEN_TREE_NUT","ALLERGEN_MILK","ALLERGEN_EGG","ALLERGEN_GLUTEN","ALLERGEN_SOY","ALLERGEN_FISH","ALLERGEN_SHELLFISH","ALLERGEN_SESAME","ALLERGEN_MUSTARD","ALLERGEN_OTHER"],"type":"string"},"type":"array"},"available":{"description":"Whether the kitchen offers it now; an unavailable dish stays on old menus and quotes but is not offered on new ones.","type":"boolean"},"course":{"description":"The course it is served in.","enum":["COURSE_UNSPECIFIED","COURSE_WELCOME_DRINK","COURSE_STARTER","COURSE_SOUP","COURSE_SALAD","COURSE_MAIN","COURSE_BREAD","COURSE_RICE","COURSE_SIDE","COURSE_DESSERT","COURSE_BEVERAGE","COURSE_LIVE_COUNTER","COURSE_OTHER"],"type":"string"},"cuisine":{"description":"The cuisine, e.g. \"North Indian\", \"Chettinad\", \"Continental\".","type":"string"},"description":{"description":"A line about it for the menu card.","maxLength":2000,"type":"string"},"diets":{"items":{"description":"The diets it suits: a paneer tikka is vegetarian and eggetarian, not Jain.","enum":["DIET_UNSPECIFIED","DIET_VEGETARIAN","DIET_VEGAN","DIET_EGGETARIAN","DIET_NON_VEGETARIAN","DIET_JAIN","DIET_NO_ONION_NO_GARLIC","DIET_SATVIK","DIET_HALAL","DIET_KOSHER","DIET_GLUTEN_FREE","DIET_DAIRY_FREE","DIET_DIABETIC","DIET_LOW_SALT","DIET_CHILD","DIET_OTHER"],"type":"string"},"type":"array"},"display_name":{"description":"The dish as the menu card names it.","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"image_uri":{"anyOf":[{"const":""},{"format":"uri"}],"description":"A photo of it.","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/dishes/[^/]+$"}],"description":"The dish name. Format: venues/{venue}/dishes/{dish}","type":"string"},"price":{"description":"Its price on its own, before any season's rule: à la carte, room service, or as an add-on. Empty for a dish only served within a menu.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"tax":{"description":"How GST applies to it on its own.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"}},"required":["display_name","course"],"type":"object"},"dish_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"parent":{"description":"The parent the dish is created under. Format: venues/{venue}","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","dish"],"type":"object"}`
-var SalesService_CreateFixedPackageSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Creates a fixed package.","properties":{"fixed_package":{"description":"The fixed package to create.","properties":{"active":{"description":"Whether it is offered on new quotes.","type":"boolean"},"description":{"description":"A line about it for the proposal.","maxLength":2000,"type":"string"},"display_name":{"description":"The package as it is sold, e.g. \"Wedding Gold\".","maxLength":200,"minLength":1,"type":"string"},"duration":{"description":"How long the space is had for.","pattern":"^-?[0-9]+(\\.[0-9]+)?s$","type":["string","null"]},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"extra_guest_price":{"$ref":"#/$defs/google.type.Money","description":"The base price of each guest beyond included_guests."},"included_guests":{"description":"How many guests the price includes.","minimum":1,"type":"integer"},"inclusions":{"items":{"description":"What else is included: decor, a DJ, a bridal suite for the night.","properties":{"display_name":{"description":"What it is, as the proposal says it.","minLength":1,"type":"string"},"quantity":{"description":"How many, when it is counted: 2 bridal rooms, 4 hours of a DJ.","minimum":0,"type":"integer"}},"required":["display_name"],"type":"object"},"type":"array"},"menu":{"description":"The menu included, when food is. Format: venues/{venue}/menus/{menu}","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/fixedPackages/[^/]+$"}],"description":"The fixed package name. Format: venues/{venue}/fixedPackages/{fixed_package}","type":"string"},"price":{"$ref":"#/$defs/google.type.Money","description":"The base price of the package, before any price rule."},"spaces":{"items":{"description":"The spaces it can be held in. Format: venues/{venue}/spaces/{space}","type":"string"},"type":"array"},"tax":{"description":"How GST applies to it.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"}},"required":["display_name","included_guests","price","tax"],"type":"object"},"fixed_package_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"parent":{"description":"The parent the fixed package is created under. Format: venues/{venue}","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","fixed_package"],"type":"object"}`
-var SalesService_CreateMenuSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Creates a menu.","properties":{"menu":{"description":"The menu to create.","properties":{"active":{"description":"Whether it is offered on new quotes.","type":"boolean"},"add_ons":{"items":{"description":"What can be added, priced per plate on top of the menu.","properties":{"dish":{"description":"The dish it is, when it is one.","type":"string"},"display_name":{"description":"The add-on as the proposal names it.","minLength":1,"type":"string"},"plate_price":{"$ref":"#/$defs/google.type.Money","description":"Its base price per plate, before any price rule."}},"required":["display_name","plate_price"],"type":"object"},"type":"array"},"courses":{"items":{"description":"The courses, in serving order.","properties":{"choose":{"description":"How many of the dishes the host picks; zero means all are served.","minimum":0,"type":"integer"},"course":{"description":"The course.","enum":["COURSE_UNSPECIFIED","COURSE_WELCOME_DRINK","COURSE_STARTER","COURSE_SOUP","COURSE_SALAD","COURSE_MAIN","COURSE_BREAD","COURSE_RICE","COURSE_SIDE","COURSE_DESSERT","COURSE_BEVERAGE","COURSE_LIVE_COUNTER","COURSE_OTHER"],"type":"string"},"dishes":{"items":{"description":"The dishes on offer.","type":"string"},"type":"array"},"display_name":{"description":"How the proposal heads it, e.g. \"Starters (any three)\"; the course's name when empty.","type":"string"}},"required":["course","dishes"],"type":"object"},"type":"array"},"description":{"description":"A line about it for the proposal.","maxLength":2000,"type":"string"},"diets":{"items":{"description":"The diets the whole menu suits: a vegetarian menu, a Jain menu.","enum":["DIET_UNSPECIFIED","DIET_VEGETARIAN","DIET_VEGAN","DIET_EGGETARIAN","DIET_NON_VEGETARIAN","DIET_JAIN","DIET_NO_ONION_NO_GARLIC","DIET_SATVIK","DIET_HALAL","DIET_KOSHER","DIET_GLUTEN_FREE","DIET_DAIRY_FREE","DIET_DIABETIC","DIET_LOW_SALT","DIET_CHILD","DIET_OTHER"],"type":"string"},"type":"array"},"display_name":{"description":"The menu as it is sold, e.g. \"Silver Vegetarian\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"min_plates":{"description":"The fewest plates the menu is sold for.","minimum":0,"type":"integer"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/menus/[^/]+$"}],"description":"The menu name. Format: venues/{venue}/menus/{menu}","type":"string"},"plate_price":{"$ref":"#/$defs/google.type.Money","description":"The base price of a plate, before any price rule."},"tax":{"description":"How GST applies to it.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"}},"required":["display_name","courses","plate_price","tax"],"type":"object"},"menu_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"parent":{"description":"The parent the menu is created under. Format: venues/{venue}","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","menu"],"type":"object"}`
-var SalesService_CreatePriceRuleSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Creates a price rule.","properties":{"parent":{"description":"The parent the price rule is created under. Format: venues/{venue}","type":"string"},"price_rule":{"anyOf":[{"$comment":"Protobuf oneOf group.","oneOf":[{"properties":{"fixed_price":{"$ref":"#/$defs/google.type.Money","description":"The price, replacing the base price."}},"required":["fixed_price"]},{"properties":{"percent":{"description":"A percentage added to the base price; negative for a discount.","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"}},"required":["percent"]},{"properties":{"amount":{"$ref":"#/$defs/google.type.Money","description":"An amount added to the base price; negative for a discount."}},"required":["amount"]}]}],"description":"The price rule to create.","properties":{"active":{"description":"Whether the rule is applied.","type":"boolean"},"display_name":{"description":"The rule as staff know it, e.g. \"Wedding season menus\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"items":{"items":{"description":"The items it prices: menus, fixed packages, spaces or dishes of the target's kind. Every item of the kind when empty.","type":"string"},"type":"array"},"min_guests":{"description":"The fewest guests the rule applies to: a volume discount.","minimum":0,"type":"integer"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/priceRules/[^/]+$"}],"description":"The price rule name. Format: venues/{venue}/priceRules/{price_rule}","type":"string"},"priority":{"description":"Which rule wins when several match: the highest priority.","type":"integer"},"season":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/seasons/[^/]+$"}],"description":"The season the rule applies in; every date when empty. Format: venues/{venue}/seasons/{season}","type":"string"},"target":{"description":"What kind of thing the rule prices.","enum":["PRICE_TARGET_UNSPECIFIED","PRICE_TARGET_MENU","PRICE_TARGET_FIXED_PACKAGE","PRICE_TARGET_SPACE","PRICE_TARGET_DISH"],"type":"string"}},"required":["display_name","target"],"type":"object"},"price_rule_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","price_rule"],"type":"object"}`
+var SalesService_CreateActivitySchemaJSON = `{"description":"Creates an activity.","properties":{"activity":{"description":"The activity to create.","properties":{"author":{"anyOf":[{"const":""},{"pattern":"^users/[^/]+$"}],"description":"Who did it. Format: users/{user}","type":"string"},"details":{"description":"The rest of it.","maxLength":10000,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"kind":{"description":"What happened.","enum":["ACTIVITY_KIND_UNSPECIFIED","ACTIVITY_KIND_CALL","ACTIVITY_KIND_EMAIL","ACTIVITY_KIND_WHATSAPP","ACTIVITY_KIND_MEETING","ACTIVITY_KIND_SITE_VISIT","ACTIVITY_KIND_QUOTE_SENT","ACTIVITY_KIND_NOTE"],"type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^leads/[^/]+/activities/[^/]+$"}],"description":"The activity name. Format: leads/{lead}/activities/{activity}","type":"string"},"occur_time":{"description":"When it happened.","format":"date-time","type":["string","null"]},"summary":{"description":"What was said or done, in a line.","maxLength":500,"minLength":1,"type":"string"}},"required":["kind","occur_time","summary"],"type":"object"},"activity_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"parent":{"description":"The parent the activity is created under. Format: leads/{lead}","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","activity"],"type":"object"}`
+var SalesService_CreateLeadSchemaJSON = `{"$defs":{"google.type.Date":{"properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"}},"description":"Creates a lead.","properties":{"lead":{"description":"The lead to create.","properties":{"budget":{"description":"What the guest means to spend, in all.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"contact":{"description":"Who is asking. Format: contacts/{contact}","pattern":"^contacts/[^/]+$","type":"string"},"dates":{"items":{"description":"The dates asked for, in order of preference.","properties":{"end_date":{"$ref":"#/$defs/google.type.Date","description":"The last day, inclusive; the same as start_date for one day."},"start_date":{"$ref":"#/$defs/google.type.Date","description":"The first day."}},"required":["start_date","end_date"],"type":"object"},"type":"array"},"dates_flexible":{"description":"Whether the guest would take other dates.","type":"boolean"},"display_name":{"description":"A short title for the pipeline, e.g. \"Sharma–Iyer wedding, Dec 2026\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"event_type":{"description":"The occasion, for an event.","enum":["EVENT_TYPE_UNSPECIFIED","EVENT_TYPE_WEDDING","EVENT_TYPE_RECEPTION","EVENT_TYPE_ENGAGEMENT","EVENT_TYPE_PRE_WEDDING","EVENT_TYPE_BIRTHDAY","EVENT_TYPE_ANNIVERSARY","EVENT_TYPE_SOCIAL","EVENT_TYPE_RELIGIOUS","EVENT_TYPE_MEETING","EVENT_TYPE_CONFERENCE","EVENT_TYPE_OFFSITE","EVENT_TYPE_LAUNCH","EVENT_TYPE_OTHER"],"type":"string"},"guests":{"description":"How many guests are expected.","minimum":0,"type":"integer"},"kind":{"description":"What the guest wants to book.","enum":["LEAD_KIND_UNSPECIFIED","LEAD_KIND_STAY","LEAD_KIND_EVENT","LEAD_KIND_EVENT_WITH_STAY"],"type":"string"},"lost_detail":{"description":"More on why it was lost: the competitor, the price asked for.","type":"string"},"lost_reason":{"description":"Why the lead was lost, once it is.","enum":["LOST_REASON_UNSPECIFIED","LOST_REASON_PRICE","LOST_REASON_DATES","LOST_REASON_COMPETITOR","LOST_REASON_CAPACITY","LOST_REASON_CANCELLED_PLANS","LOST_REASON_NO_RESPONSE","LOST_REASON_OTHER"],"type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^leads/[^/]+$"}],"description":"The lead name. Format: leads/{lead}","type":"string"},"next_follow_up_time":{"description":"When the owner is next to get in touch.","format":"date-time","type":["string","null"]},"owner":{"anyOf":[{"const":""},{"pattern":"^users/[^/]+$"}],"description":"The salesperson who owns the lead. Format: users/{user}","type":"string"},"requirements":{"description":"What the guest needs that the rest does not say: decor, a mandap, a band, a vegetarian-only kitchen.","maxLength":10000,"type":"string"},"rooms":{"description":"How many rooms are wanted, for a stay or an event's guests.","minimum":0,"type":"integer"},"source":{"description":"Where the lead came from.","enum":["CHANNEL_UNSPECIFIED","CHANNEL_WEBSITE","CHANNEL_PHONE","CHANNEL_WALK_IN","CHANNEL_EMAIL","CHANNEL_WHATSAPP","CHANNEL_INSTAGRAM","CHANNEL_FACEBOOK","CHANNEL_REFERRAL","CHANNEL_BOOKING_COM","CHANNEL_AIRBNB","CHANNEL_MAKEMYTRIP","CHANNEL_GOIBIBO","CHANNEL_AGODA","CHANNEL_EXPEDIA","CHANNEL_CHANNEL_MANAGER","CHANNEL_RFP","CHANNEL_OTHER"],"type":"string"},"source_detail":{"description":"More on the source: the campaign, the referrer, the agent.","type":"string"},"stage":{"description":"Where the lead is in the pipeline.","enum":["STAGE_UNSPECIFIED","STAGE_NEW","STAGE_CONTACTED","STAGE_SITE_VISIT","STAGE_PROPOSAL","STAGE_NEGOTIATION","STAGE_WON","STAGE_LOST"],"type":"string"},"venue":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+$"}],"description":"The venue asked about; empty while the guest is still choosing. Format: venues/{venue}","type":"string"}},"required":["display_name","contact","kind"],"type":"object"},"lead_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["lead"],"type":"object"}`
 var SalesService_CreateQuoteSchemaJSON = `{"$defs":{"google.type.Date":{"properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"},"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Creates a quote.","properties":{"parent":{"description":"The parent the quote is created under. Format: venues/{venue}","type":"string"},"quote":{"description":"The quote to create.","properties":{"advance":{"$ref":"#/$defs/google.type.Money","description":"The advance asked for to confirm, e.g. 25% of the total."},"contact":{"description":"The guest it is for, who is billed. Format: contacts/{contact}","pattern":"^contacts/[^/]+$","type":"string"},"dates":{"description":"The dates quoted for.","properties":{"end_date":{"$ref":"#/$defs/google.type.Date","description":"The last day, inclusive; the same as start_date for one day."},"start_date":{"$ref":"#/$defs/google.type.Date","description":"The first day."}},"required":["start_date","end_date"],"type":"object"},"display_name":{"description":"The quote's title, e.g. \"Sharma–Iyer wedding -- option B\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"event_type":{"description":"The occasion, for an event quote.","enum":["EVENT_TYPE_UNSPECIFIED","EVENT_TYPE_WEDDING","EVENT_TYPE_RECEPTION","EVENT_TYPE_ENGAGEMENT","EVENT_TYPE_PRE_WEDDING","EVENT_TYPE_BIRTHDAY","EVENT_TYPE_ANNIVERSARY","EVENT_TYPE_SOCIAL","EVENT_TYPE_RELIGIOUS","EVENT_TYPE_MEETING","EVENT_TYPE_CONFERENCE","EVENT_TYPE_OFFSITE","EVENT_TYPE_LAUNCH","EVENT_TYPE_OTHER"],"type":"string"},"guests":{"description":"The guests quoted for.","minimum":0,"type":"integer"},"lead":{"anyOf":[{"const":""},{"pattern":"^leads/[^/]+$"}],"description":"The lead it answers. Format: leads/{lead}","type":"string"},"lines":{"items":{"description":"The lines, in the order the proposal shows them.","properties":{"description":{"description":"The line as the proposal shows it; the item's name when empty.","maxLength":2000,"type":"string"},"item":{"description":"The menu, fixed package, space or dish it sells; empty for a service or a discount described in full.","type":"string"},"kind":{"description":"What the line sells.","enum":["LINE_KIND_UNSPECIFIED","LINE_KIND_MENU","LINE_KIND_FIXED_PACKAGE","LINE_KIND_SPACE","LINE_KIND_ROOM","LINE_KIND_DISH","LINE_KIND_SERVICE","LINE_KIND_DISCOUNT"],"type":"string"},"price_override":{"description":"Whether unit_price was set by hand: a negotiated price no rule changes.","type":"boolean"},"quantity":{"description":"How many: plates, nights of a room, hours, units.","minimum":1,"type":"integer"},"service_date":{"$ref":"#/$defs/google.type.Date","description":"The date the line is priced for: the event day, the first night."},"tax":{"description":"How GST applies to the line; the item's when empty.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"},"unit_price":{"$ref":"#/$defs/google.type.Money","description":"The price of one, from CalculatePrice for the service date unless the line sets it by hand."}},"required":["kind","quantity"],"type":"object"},"type":"array"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/quotes/[^/]+$"}],"description":"The quote name. Format: venues/{venue}/quotes/{quote}","type":"string"},"supply_state_code":{"anyOf":[{"const":""},{"pattern":"^[0-9]{2}$"}],"description":"The GST state code of the place of supply: the venue's, for services at the venue. With the venue's registration it decides CGST and SGST or IGST.","type":"string"},"terms":{"description":"The terms: cancellation, payment schedule, what the venue does not allow.","maxLength":20000,"type":"string"},"ttl":{"description":"How long the offer stands once it is sent, e.g. 14 days.","pattern":"^-?[0-9]+(\\.[0-9]+)?s$","type":["string","null"]}},"required":["display_name","contact","dates","lines"],"type":"object"},"quote_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","quote"],"type":"object"}`
-var SalesService_CreateSeasonSchemaJSON = `{"$defs":{"google.type.Date":{"properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"}},"description":"Creates a season.","properties":{"parent":{"description":"The parent the season is created under. Format: venues/{venue}","type":"string"},"season":{"description":"The season to create.","properties":{"dates":{"items":{"description":"The dates it covers. Empty for a season of weekdays only (\"Weekends\").","properties":{"end_date":{"$ref":"#/$defs/google.type.Date","description":"The last day, inclusive; the same as start_date for one day."},"start_date":{"$ref":"#/$defs/google.type.Date","description":"The first day."}},"required":["start_date","end_date"],"type":"object"},"type":"array"},"display_name":{"description":"The season as staff know it, e.g. \"Wedding season\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/seasons/[^/]+$"}],"description":"The season name. Format: venues/{venue}/seasons/{season}","type":"string"},"recurs_yearly":{"description":"Whether the dates recur every year, matched on month and day.","type":"boolean"},"weekdays":{"items":{"description":"The days of the week it covers; every day when empty. With dates, only those days within them: \"Fridays to Sundays of wedding season\".","enum":["DAY_OF_WEEK_UNSPECIFIED","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],"type":"string"},"type":"array"}},"required":["display_name"],"type":"object"},"season_id":{"anyOf":[{"const":""},{"pattern":"^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$"}],"description":"The id to give it, the last segment of its name; the server mints one when empty.","type":"string"},"validate_only":{"description":"Validate the request without creating anything.","type":"boolean"}},"required":["parent","season"],"type":"object"}`
 var SalesService_DeclineQuoteSchemaJSON = `{"description":"Records that the guest declined a sent quote.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the quote to decline. Format: venues/{venue}/quotes/{quote}","type":"string"},"reason":{"description":"Why, in the caller's words; kept on the quote.","maxLength":2000,"type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_DeleteDishSchemaJSON = `{"description":"Deletes a dish.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the dish to delete. Format: venues/{venue}/dishes/{dish}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
-var SalesService_DeleteFixedPackageSchemaJSON = `{"description":"Deletes a fixed package.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the fixed package to delete. Format: venues/{venue}/fixedPackages/{fixed_package}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
-var SalesService_DeleteMenuSchemaJSON = `{"description":"Deletes a menu.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the menu to delete. Format: venues/{venue}/menus/{menu}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
-var SalesService_DeletePriceRuleSchemaJSON = `{"description":"Deletes a price rule.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the price rule to delete. Format: venues/{venue}/priceRules/{price_rule}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
-var SalesService_DeleteQuoteSchemaJSON = `{"description":"Deletes a quote.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the quote to delete. Format: venues/{venue}/quotes/{quote}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
-var SalesService_DeleteSeasonSchemaJSON = `{"description":"Deletes a season.","properties":{"etag":{"description":"The etag the caller last read; the delete fails when it has changed.","type":"string"},"name":{"description":"The name of the season to delete. Format: venues/{venue}/seasons/{season}","type":"string"},"validate_only":{"description":"Validate the request without deleting anything.","type":"boolean"}},"required":["name"],"type":"object"}`
-var SalesService_GetDishSchemaJSON = `{"description":"Retrieves one dish.","properties":{"name":{"description":"The name of the dish to retrieve. Format: venues/{venue}/dishes/{dish}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_GetFixedPackageSchemaJSON = `{"description":"Retrieves one fixed package.","properties":{"name":{"description":"The name of the fixed package to retrieve. Format: venues/{venue}/fixedPackages/{fixed_package}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_GetMenuSchemaJSON = `{"description":"Retrieves one menu.","properties":{"name":{"description":"The name of the menu to retrieve. Format: venues/{venue}/menus/{menu}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_GetPriceRuleSchemaJSON = `{"description":"Retrieves one price rule.","properties":{"name":{"description":"The name of the price rule to retrieve. Format: venues/{venue}/priceRules/{price_rule}","type":"string"}},"required":["name"],"type":"object"}`
+var SalesService_GetActivitySchemaJSON = `{"description":"Retrieves one activity.","properties":{"name":{"description":"The name of the activity to retrieve. Format: leads/{lead}/activities/{activity}","type":"string"}},"required":["name"],"type":"object"}`
+var SalesService_GetLeadSchemaJSON = `{"description":"Retrieves one lead.","properties":{"name":{"description":"The name of the lead to retrieve. Format: leads/{lead}","type":"string"}},"required":["name"],"type":"object"}`
 var SalesService_GetQuoteSchemaJSON = `{"description":"Retrieves one quote.","properties":{"name":{"description":"The name of the quote to retrieve. Format: venues/{venue}/quotes/{quote}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_GetSeasonSchemaJSON = `{"description":"Retrieves one season.","properties":{"name":{"description":"The name of the season to retrieve. Format: venues/{venue}/seasons/{season}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_ListDishesSchemaJSON = `{"description":"Lists dishes.","properties":{"filter":{"description":"An AIP-160 filter, e.g. course = COURSE_STARTER.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of dishes to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListDishes call.","type":"string"},"parent":{"description":"The parent whose dishes to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
-var SalesService_ListFixedPackagesSchemaJSON = `{"description":"Lists fixed packages.","properties":{"filter":{"description":"An AIP-160 filter, e.g. active = true.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of fixed packages to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListFixedPackages call.","type":"string"},"parent":{"description":"The parent whose fixed packages to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
-var SalesService_ListMenusSchemaJSON = `{"description":"Lists menus.","properties":{"filter":{"description":"An AIP-160 filter, e.g. active = true.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of menus to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListMenus call.","type":"string"},"parent":{"description":"The parent whose menus to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
-var SalesService_ListPriceRulesSchemaJSON = `{"description":"Lists price rules.","properties":{"filter":{"description":"An AIP-160 filter, e.g. target = PRICE_TARGET_MENU.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of price rules to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListPriceRules call.","type":"string"},"parent":{"description":"The parent whose price rules to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
+var SalesService_ListActivitiesSchemaJSON = `{"description":"Lists activities.","properties":{"filter":{"description":"An AIP-160 filter, e.g. kind = ACTIVITY_KIND_SITE_VISIT.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of activities to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListActivities call.","type":"string"},"parent":{"description":"The parent whose activities to list. Format: leads/{lead}","type":"string"}},"required":["parent"],"type":"object"}`
+var SalesService_ListLeadsSchemaJSON = `{"description":"Lists leads.","properties":{"filter":{"description":"An AIP-160 filter, e.g. stage = STAGE_PROPOSAL.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of leads to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListLeads call.","type":"string"}},"required":[],"type":"object"}`
 var SalesService_ListQuotesSchemaJSON = `{"description":"Lists quotes.","properties":{"filter":{"description":"An AIP-160 filter, e.g. state = STATE_SENT.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of quotes to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListQuotes call.","type":"string"},"parent":{"description":"The parent whose quotes to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
-var SalesService_ListSeasonsSchemaJSON = `{"description":"Lists seasons.","properties":{"filter":{"description":"An AIP-160 filter, e.g. recurs_yearly = true.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of seasons to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListSeasons call.","type":"string"},"parent":{"description":"The parent whose seasons to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
 var SalesService_ReviseQuoteSchemaJSON = `{"description":"Revises a sent or declined quote: makes a new draft from it, which supersedes it.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the quote to revise. Format: venues/{venue}/quotes/{quote}","type":"string"}},"required":["name"],"type":"object"}`
 var SalesService_SendQuoteSchemaJSON = `{"description":"Sends a draft quote to the guest, fixing its prices.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the quote to send. Format: venues/{venue}/quotes/{quote}","type":"string"}},"required":["name"],"type":"object"}`
-var SalesService_UpdateDishSchemaJSON = `{"description":"Updates a dish. Only the fields in update_mask are written.","properties":{"dish":{"description":"The dish to update, by its name.","properties":{"allergens":{"items":{"description":"What it contains that some guests must not eat.","enum":["ALLERGEN_UNSPECIFIED","ALLERGEN_PEANUT","ALLERGEN_TREE_NUT","ALLERGEN_MILK","ALLERGEN_EGG","ALLERGEN_GLUTEN","ALLERGEN_SOY","ALLERGEN_FISH","ALLERGEN_SHELLFISH","ALLERGEN_SESAME","ALLERGEN_MUSTARD","ALLERGEN_OTHER"],"type":"string"},"type":"array"},"available":{"description":"Whether the kitchen offers it now; an unavailable dish stays on old menus and quotes but is not offered on new ones.","type":"boolean"},"course":{"description":"The course it is served in.","enum":["COURSE_UNSPECIFIED","COURSE_WELCOME_DRINK","COURSE_STARTER","COURSE_SOUP","COURSE_SALAD","COURSE_MAIN","COURSE_BREAD","COURSE_RICE","COURSE_SIDE","COURSE_DESSERT","COURSE_BEVERAGE","COURSE_LIVE_COUNTER","COURSE_OTHER"],"type":"string"},"cuisine":{"description":"The cuisine, e.g. \"North Indian\", \"Chettinad\", \"Continental\".","type":"string"},"description":{"description":"A line about it for the menu card.","maxLength":2000,"type":"string"},"diets":{"items":{"description":"The diets it suits: a paneer tikka is vegetarian and eggetarian, not Jain.","enum":["DIET_UNSPECIFIED","DIET_VEGETARIAN","DIET_VEGAN","DIET_EGGETARIAN","DIET_NON_VEGETARIAN","DIET_JAIN","DIET_NO_ONION_NO_GARLIC","DIET_SATVIK","DIET_HALAL","DIET_KOSHER","DIET_GLUTEN_FREE","DIET_DAIRY_FREE","DIET_DIABETIC","DIET_LOW_SALT","DIET_CHILD","DIET_OTHER"],"type":"string"},"type":"array"},"display_name":{"description":"The dish as the menu card names it.","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"image_uri":{"anyOf":[{"const":""},{"format":"uri"}],"description":"A photo of it.","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/dishes/[^/]+$"}],"description":"The dish name. Format: venues/{venue}/dishes/{dish}","type":"string"},"price":{"description":"Its price on its own, before any season's rule: à la carte, room service, or as an add-on. Empty for a dish only served within a menu.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"tax":{"description":"How GST applies to it on its own.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"}},"required":["display_name","course"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["dish"],"type":"object"}`
-var SalesService_UpdateFixedPackageSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Updates a fixed package. Only the fields in update_mask are written.","properties":{"fixed_package":{"description":"The fixed package to update, by its name.","properties":{"active":{"description":"Whether it is offered on new quotes.","type":"boolean"},"description":{"description":"A line about it for the proposal.","maxLength":2000,"type":"string"},"display_name":{"description":"The package as it is sold, e.g. \"Wedding Gold\".","maxLength":200,"minLength":1,"type":"string"},"duration":{"description":"How long the space is had for.","pattern":"^-?[0-9]+(\\.[0-9]+)?s$","type":["string","null"]},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"extra_guest_price":{"$ref":"#/$defs/google.type.Money","description":"The base price of each guest beyond included_guests."},"included_guests":{"description":"How many guests the price includes.","minimum":1,"type":"integer"},"inclusions":{"items":{"description":"What else is included: decor, a DJ, a bridal suite for the night.","properties":{"display_name":{"description":"What it is, as the proposal says it.","minLength":1,"type":"string"},"quantity":{"description":"How many, when it is counted: 2 bridal rooms, 4 hours of a DJ.","minimum":0,"type":"integer"}},"required":["display_name"],"type":"object"},"type":"array"},"menu":{"description":"The menu included, when food is. Format: venues/{venue}/menus/{menu}","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/fixedPackages/[^/]+$"}],"description":"The fixed package name. Format: venues/{venue}/fixedPackages/{fixed_package}","type":"string"},"price":{"$ref":"#/$defs/google.type.Money","description":"The base price of the package, before any price rule."},"spaces":{"items":{"description":"The spaces it can be held in. Format: venues/{venue}/spaces/{space}","type":"string"},"type":"array"},"tax":{"description":"How GST applies to it.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"}},"required":["display_name","included_guests","price","tax"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["fixed_package"],"type":"object"}`
-var SalesService_UpdateMenuSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Updates a menu. Only the fields in update_mask are written.","properties":{"menu":{"description":"The menu to update, by its name.","properties":{"active":{"description":"Whether it is offered on new quotes.","type":"boolean"},"add_ons":{"items":{"description":"What can be added, priced per plate on top of the menu.","properties":{"dish":{"description":"The dish it is, when it is one.","type":"string"},"display_name":{"description":"The add-on as the proposal names it.","minLength":1,"type":"string"},"plate_price":{"$ref":"#/$defs/google.type.Money","description":"Its base price per plate, before any price rule."}},"required":["display_name","plate_price"],"type":"object"},"type":"array"},"courses":{"items":{"description":"The courses, in serving order.","properties":{"choose":{"description":"How many of the dishes the host picks; zero means all are served.","minimum":0,"type":"integer"},"course":{"description":"The course.","enum":["COURSE_UNSPECIFIED","COURSE_WELCOME_DRINK","COURSE_STARTER","COURSE_SOUP","COURSE_SALAD","COURSE_MAIN","COURSE_BREAD","COURSE_RICE","COURSE_SIDE","COURSE_DESSERT","COURSE_BEVERAGE","COURSE_LIVE_COUNTER","COURSE_OTHER"],"type":"string"},"dishes":{"items":{"description":"The dishes on offer.","type":"string"},"type":"array"},"display_name":{"description":"How the proposal heads it, e.g. \"Starters (any three)\"; the course's name when empty.","type":"string"}},"required":["course","dishes"],"type":"object"},"type":"array"},"description":{"description":"A line about it for the proposal.","maxLength":2000,"type":"string"},"diets":{"items":{"description":"The diets the whole menu suits: a vegetarian menu, a Jain menu.","enum":["DIET_UNSPECIFIED","DIET_VEGETARIAN","DIET_VEGAN","DIET_EGGETARIAN","DIET_NON_VEGETARIAN","DIET_JAIN","DIET_NO_ONION_NO_GARLIC","DIET_SATVIK","DIET_HALAL","DIET_KOSHER","DIET_GLUTEN_FREE","DIET_DAIRY_FREE","DIET_DIABETIC","DIET_LOW_SALT","DIET_CHILD","DIET_OTHER"],"type":"string"},"type":"array"},"display_name":{"description":"The menu as it is sold, e.g. \"Silver Vegetarian\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"min_plates":{"description":"The fewest plates the menu is sold for.","minimum":0,"type":"integer"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/menus/[^/]+$"}],"description":"The menu name. Format: venues/{venue}/menus/{menu}","type":"string"},"plate_price":{"$ref":"#/$defs/google.type.Money","description":"The base price of a plate, before any price rule."},"tax":{"description":"How GST applies to it.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"}},"required":["display_name","courses","plate_price","tax"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["menu"],"type":"object"}`
-var SalesService_UpdatePriceRuleSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Updates a price rule. Only the fields in update_mask are written.","properties":{"price_rule":{"anyOf":[{"$comment":"Protobuf oneOf group.","oneOf":[{"properties":{"fixed_price":{"$ref":"#/$defs/google.type.Money","description":"The price, replacing the base price."}},"required":["fixed_price"]},{"properties":{"percent":{"description":"A percentage added to the base price; negative for a discount.","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"}},"required":["percent"]},{"properties":{"amount":{"$ref":"#/$defs/google.type.Money","description":"An amount added to the base price; negative for a discount."}},"required":["amount"]}]}],"description":"The price rule to update, by its name.","properties":{"active":{"description":"Whether the rule is applied.","type":"boolean"},"display_name":{"description":"The rule as staff know it, e.g. \"Wedding season menus\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"items":{"items":{"description":"The items it prices: menus, fixed packages, spaces or dishes of the target's kind. Every item of the kind when empty.","type":"string"},"type":"array"},"min_guests":{"description":"The fewest guests the rule applies to: a volume discount.","minimum":0,"type":"integer"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/priceRules/[^/]+$"}],"description":"The price rule name. Format: venues/{venue}/priceRules/{price_rule}","type":"string"},"priority":{"description":"Which rule wins when several match: the highest priority.","type":"integer"},"season":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/seasons/[^/]+$"}],"description":"The season the rule applies in; every date when empty. Format: venues/{venue}/seasons/{season}","type":"string"},"target":{"description":"What kind of thing the rule prices.","enum":["PRICE_TARGET_UNSPECIFIED","PRICE_TARGET_MENU","PRICE_TARGET_FIXED_PACKAGE","PRICE_TARGET_SPACE","PRICE_TARGET_DISH"],"type":"string"}},"required":["display_name","target"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["price_rule"],"type":"object"}`
+var SalesService_UpdateLeadSchemaJSON = `{"$defs":{"google.type.Date":{"properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"}},"description":"Updates a lead. Only the fields in update_mask are written.","properties":{"lead":{"description":"The lead to update, by its name.","properties":{"budget":{"description":"What the guest means to spend, in all.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"contact":{"description":"Who is asking. Format: contacts/{contact}","pattern":"^contacts/[^/]+$","type":"string"},"dates":{"items":{"description":"The dates asked for, in order of preference.","properties":{"end_date":{"$ref":"#/$defs/google.type.Date","description":"The last day, inclusive; the same as start_date for one day."},"start_date":{"$ref":"#/$defs/google.type.Date","description":"The first day."}},"required":["start_date","end_date"],"type":"object"},"type":"array"},"dates_flexible":{"description":"Whether the guest would take other dates.","type":"boolean"},"display_name":{"description":"A short title for the pipeline, e.g. \"Sharma–Iyer wedding, Dec 2026\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"event_type":{"description":"The occasion, for an event.","enum":["EVENT_TYPE_UNSPECIFIED","EVENT_TYPE_WEDDING","EVENT_TYPE_RECEPTION","EVENT_TYPE_ENGAGEMENT","EVENT_TYPE_PRE_WEDDING","EVENT_TYPE_BIRTHDAY","EVENT_TYPE_ANNIVERSARY","EVENT_TYPE_SOCIAL","EVENT_TYPE_RELIGIOUS","EVENT_TYPE_MEETING","EVENT_TYPE_CONFERENCE","EVENT_TYPE_OFFSITE","EVENT_TYPE_LAUNCH","EVENT_TYPE_OTHER"],"type":"string"},"guests":{"description":"How many guests are expected.","minimum":0,"type":"integer"},"kind":{"description":"What the guest wants to book.","enum":["LEAD_KIND_UNSPECIFIED","LEAD_KIND_STAY","LEAD_KIND_EVENT","LEAD_KIND_EVENT_WITH_STAY"],"type":"string"},"lost_detail":{"description":"More on why it was lost: the competitor, the price asked for.","type":"string"},"lost_reason":{"description":"Why the lead was lost, once it is.","enum":["LOST_REASON_UNSPECIFIED","LOST_REASON_PRICE","LOST_REASON_DATES","LOST_REASON_COMPETITOR","LOST_REASON_CAPACITY","LOST_REASON_CANCELLED_PLANS","LOST_REASON_NO_RESPONSE","LOST_REASON_OTHER"],"type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^leads/[^/]+$"}],"description":"The lead name. Format: leads/{lead}","type":"string"},"next_follow_up_time":{"description":"When the owner is next to get in touch.","format":"date-time","type":["string","null"]},"owner":{"anyOf":[{"const":""},{"pattern":"^users/[^/]+$"}],"description":"The salesperson who owns the lead. Format: users/{user}","type":"string"},"requirements":{"description":"What the guest needs that the rest does not say: decor, a mandap, a band, a vegetarian-only kitchen.","maxLength":10000,"type":"string"},"rooms":{"description":"How many rooms are wanted, for a stay or an event's guests.","minimum":0,"type":"integer"},"source":{"description":"Where the lead came from.","enum":["CHANNEL_UNSPECIFIED","CHANNEL_WEBSITE","CHANNEL_PHONE","CHANNEL_WALK_IN","CHANNEL_EMAIL","CHANNEL_WHATSAPP","CHANNEL_INSTAGRAM","CHANNEL_FACEBOOK","CHANNEL_REFERRAL","CHANNEL_BOOKING_COM","CHANNEL_AIRBNB","CHANNEL_MAKEMYTRIP","CHANNEL_GOIBIBO","CHANNEL_AGODA","CHANNEL_EXPEDIA","CHANNEL_CHANNEL_MANAGER","CHANNEL_RFP","CHANNEL_OTHER"],"type":"string"},"source_detail":{"description":"More on the source: the campaign, the referrer, the agent.","type":"string"},"stage":{"description":"Where the lead is in the pipeline.","enum":["STAGE_UNSPECIFIED","STAGE_NEW","STAGE_CONTACTED","STAGE_SITE_VISIT","STAGE_PROPOSAL","STAGE_NEGOTIATION","STAGE_WON","STAGE_LOST"],"type":"string"},"venue":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+$"}],"description":"The venue asked about; empty while the guest is still choosing. Format: venues/{venue}","type":"string"}},"required":["display_name","contact","kind"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["lead"],"type":"object"}`
 var SalesService_UpdateQuoteSchemaJSON = `{"$defs":{"google.type.Date":{"properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"},"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Updates a quote. Only the fields in update_mask are written.","properties":{"quote":{"description":"The quote to update, by its name.","properties":{"advance":{"$ref":"#/$defs/google.type.Money","description":"The advance asked for to confirm, e.g. 25% of the total."},"contact":{"description":"The guest it is for, who is billed. Format: contacts/{contact}","pattern":"^contacts/[^/]+$","type":"string"},"dates":{"description":"The dates quoted for.","properties":{"end_date":{"$ref":"#/$defs/google.type.Date","description":"The last day, inclusive; the same as start_date for one day."},"start_date":{"$ref":"#/$defs/google.type.Date","description":"The first day."}},"required":["start_date","end_date"],"type":"object"},"display_name":{"description":"The quote's title, e.g. \"Sharma–Iyer wedding -- option B\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"event_type":{"description":"The occasion, for an event quote.","enum":["EVENT_TYPE_UNSPECIFIED","EVENT_TYPE_WEDDING","EVENT_TYPE_RECEPTION","EVENT_TYPE_ENGAGEMENT","EVENT_TYPE_PRE_WEDDING","EVENT_TYPE_BIRTHDAY","EVENT_TYPE_ANNIVERSARY","EVENT_TYPE_SOCIAL","EVENT_TYPE_RELIGIOUS","EVENT_TYPE_MEETING","EVENT_TYPE_CONFERENCE","EVENT_TYPE_OFFSITE","EVENT_TYPE_LAUNCH","EVENT_TYPE_OTHER"],"type":"string"},"guests":{"description":"The guests quoted for.","minimum":0,"type":"integer"},"lead":{"anyOf":[{"const":""},{"pattern":"^leads/[^/]+$"}],"description":"The lead it answers. Format: leads/{lead}","type":"string"},"lines":{"items":{"description":"The lines, in the order the proposal shows them.","properties":{"description":{"description":"The line as the proposal shows it; the item's name when empty.","maxLength":2000,"type":"string"},"item":{"description":"The menu, fixed package, space or dish it sells; empty for a service or a discount described in full.","type":"string"},"kind":{"description":"What the line sells.","enum":["LINE_KIND_UNSPECIFIED","LINE_KIND_MENU","LINE_KIND_FIXED_PACKAGE","LINE_KIND_SPACE","LINE_KIND_ROOM","LINE_KIND_DISH","LINE_KIND_SERVICE","LINE_KIND_DISCOUNT"],"type":"string"},"price_override":{"description":"Whether unit_price was set by hand: a negotiated price no rule changes.","type":"boolean"},"quantity":{"description":"How many: plates, nights of a room, hours, units.","minimum":1,"type":"integer"},"service_date":{"$ref":"#/$defs/google.type.Date","description":"The date the line is priced for: the event day, the first night."},"tax":{"description":"How GST applies to the line; the item's when empty.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"},"unit_price":{"$ref":"#/$defs/google.type.Money","description":"The price of one, from CalculatePrice for the service date unless the line sets it by hand."}},"required":["kind","quantity"],"type":"object"},"type":"array"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/quotes/[^/]+$"}],"description":"The quote name. Format: venues/{venue}/quotes/{quote}","type":"string"},"supply_state_code":{"anyOf":[{"const":""},{"pattern":"^[0-9]{2}$"}],"description":"The GST state code of the place of supply: the venue's, for services at the venue. With the venue's registration it decides CGST and SGST or IGST.","type":"string"},"terms":{"description":"The terms: cancellation, payment schedule, what the venue does not allow.","maxLength":20000,"type":"string"},"ttl":{"description":"How long the offer stands once it is sent, e.g. 14 days.","pattern":"^-?[0-9]+(\\.[0-9]+)?s$","type":["string","null"]}},"required":["display_name","contact","dates","lines"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["quote"],"type":"object"}`
-var SalesService_UpdateSeasonSchemaJSON = `{"$defs":{"google.type.Date":{"properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"}},"description":"Updates a season. Only the fields in update_mask are written.","properties":{"season":{"description":"The season to update, by its name.","properties":{"dates":{"items":{"description":"The dates it covers. Empty for a season of weekdays only (\"Weekends\").","properties":{"end_date":{"$ref":"#/$defs/google.type.Date","description":"The last day, inclusive; the same as start_date for one day."},"start_date":{"$ref":"#/$defs/google.type.Date","description":"The first day."}},"required":["start_date","end_date"],"type":"object"},"type":"array"},"display_name":{"description":"The season as staff know it, e.g. \"Wedding season\".","maxLength":200,"minLength":1,"type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/seasons/[^/]+$"}],"description":"The season name. Format: venues/{venue}/seasons/{season}","type":"string"},"recurs_yearly":{"description":"Whether the dates recur every year, matched on month and day.","type":"boolean"},"weekdays":{"items":{"description":"The days of the week it covers; every day when empty. With dates, only those days within them: \"Fridays to Sundays of wedding season\".","enum":["DAY_OF_WEEK_UNSPECIFIED","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"],"type":"string"},"type":"array"}},"required":["display_name"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["season"],"type":"object"}`
 
 // JSON schemas for each RPC method's response, advertised as the tool's
 // outputSchema and satisfied by the structuredContent each handler returns.
 var SalesService_AcceptQuoteOutputSchemaJSON = ``
-var SalesService_CalculatePriceOutputSchemaJSON = ``
-var SalesService_CreateDishOutputSchemaJSON = ``
-var SalesService_CreateFixedPackageOutputSchemaJSON = ``
-var SalesService_CreateMenuOutputSchemaJSON = ``
-var SalesService_CreatePriceRuleOutputSchemaJSON = ``
+var SalesService_CreateActivityOutputSchemaJSON = ``
+var SalesService_CreateLeadOutputSchemaJSON = ``
 var SalesService_CreateQuoteOutputSchemaJSON = ``
-var SalesService_CreateSeasonOutputSchemaJSON = ``
 var SalesService_DeclineQuoteOutputSchemaJSON = ``
-var SalesService_DeleteDishOutputSchemaJSON = ``
-var SalesService_DeleteFixedPackageOutputSchemaJSON = ``
-var SalesService_DeleteMenuOutputSchemaJSON = ``
-var SalesService_DeletePriceRuleOutputSchemaJSON = ``
-var SalesService_DeleteQuoteOutputSchemaJSON = ``
-var SalesService_DeleteSeasonOutputSchemaJSON = ``
-var SalesService_GetDishOutputSchemaJSON = ``
-var SalesService_GetFixedPackageOutputSchemaJSON = ``
-var SalesService_GetMenuOutputSchemaJSON = ``
-var SalesService_GetPriceRuleOutputSchemaJSON = ``
+var SalesService_GetActivityOutputSchemaJSON = ``
+var SalesService_GetLeadOutputSchemaJSON = ``
 var SalesService_GetQuoteOutputSchemaJSON = ``
-var SalesService_GetSeasonOutputSchemaJSON = ``
-var SalesService_ListDishesOutputSchemaJSON = ``
-var SalesService_ListFixedPackagesOutputSchemaJSON = ``
-var SalesService_ListMenusOutputSchemaJSON = ``
-var SalesService_ListPriceRulesOutputSchemaJSON = ``
+var SalesService_ListActivitiesOutputSchemaJSON = ``
+var SalesService_ListLeadsOutputSchemaJSON = ``
 var SalesService_ListQuotesOutputSchemaJSON = ``
-var SalesService_ListSeasonsOutputSchemaJSON = ``
 var SalesService_ReviseQuoteOutputSchemaJSON = ``
 var SalesService_SendQuoteOutputSchemaJSON = ``
-var SalesService_UpdateDishOutputSchemaJSON = ``
-var SalesService_UpdateFixedPackageOutputSchemaJSON = ``
-var SalesService_UpdateMenuOutputSchemaJSON = ``
-var SalesService_UpdatePriceRuleOutputSchemaJSON = ``
+var SalesService_UpdateLeadOutputSchemaJSON = ``
 var SalesService_UpdateQuoteOutputSchemaJSON = ``
-var SalesService_UpdateSeasonOutputSchemaJSON = ``
 
 // MCP tool descriptors. Each pairs a schema with a tool name and description
 // so that LLM clients can discover and invoke the underlying RPCs.
 var (
-	SalesService_AcceptQuoteTool        = newTool("sales_service-accept_quote_v1", `Accepts a sent quote: makes the reservation or event it offers, and wins its lead.`, SalesService_AcceptQuoteSchemaJSON, SalesService_AcceptQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_CalculatePriceTool     = newTool("sales_service-calculate_price_v1", `Prices a menu, fixed package, space or dish for a date: its base price with the matching price rule of the highest priority applied. The one way aperio prices anything -- quotes, the website and agents all ask it.`, SalesService_CalculatePriceSchemaJSON, SalesService_CalculatePriceOutputSchemaJSON, nil, "", nil)
-	SalesService_CreateDishTool         = newTool("sales_service-create_dish_v1", `Creates a dish.`, SalesService_CreateDishSchemaJSON, SalesService_CreateDishOutputSchemaJSON, nil, "", nil)
-	SalesService_CreateFixedPackageTool = newTool("sales_service-create_fixed_package_v1", `Creates a fixed package.`, SalesService_CreateFixedPackageSchemaJSON, SalesService_CreateFixedPackageOutputSchemaJSON, nil, "", nil)
-	SalesService_CreateMenuTool         = newTool("sales_service-create_menu_v1", `Creates a menu.`, SalesService_CreateMenuSchemaJSON, SalesService_CreateMenuOutputSchemaJSON, nil, "", nil)
-	SalesService_CreatePriceRuleTool    = newTool("sales_service-create_price_rule_v1", `Creates a price rule.`, SalesService_CreatePriceRuleSchemaJSON, SalesService_CreatePriceRuleOutputSchemaJSON, nil, "", nil)
-	SalesService_CreateQuoteTool        = newTool("sales_service-create_quote_v1", `Creates a quote.`, SalesService_CreateQuoteSchemaJSON, SalesService_CreateQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_CreateSeasonTool       = newTool("sales_service-create_season_v1", `Creates a season.`, SalesService_CreateSeasonSchemaJSON, SalesService_CreateSeasonOutputSchemaJSON, nil, "", nil)
-	SalesService_DeclineQuoteTool       = newTool("sales_service-decline_quote_v1", `Records that the guest declined a sent quote.`, SalesService_DeclineQuoteSchemaJSON, SalesService_DeclineQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_DeleteDishTool         = newTool("sales_service-delete_dish_v1", `Deletes a dish.`, SalesService_DeleteDishSchemaJSON, SalesService_DeleteDishOutputSchemaJSON, nil, "", nil)
-	SalesService_DeleteFixedPackageTool = newTool("sales_service-delete_fixed_package_v1", `Deletes a fixed package.`, SalesService_DeleteFixedPackageSchemaJSON, SalesService_DeleteFixedPackageOutputSchemaJSON, nil, "", nil)
-	SalesService_DeleteMenuTool         = newTool("sales_service-delete_menu_v1", `Deletes a menu.`, SalesService_DeleteMenuSchemaJSON, SalesService_DeleteMenuOutputSchemaJSON, nil, "", nil)
-	SalesService_DeletePriceRuleTool    = newTool("sales_service-delete_price_rule_v1", `Deletes a price rule.`, SalesService_DeletePriceRuleSchemaJSON, SalesService_DeletePriceRuleOutputSchemaJSON, nil, "", nil)
-	SalesService_DeleteQuoteTool        = newTool("sales_service-delete_quote_v1", `Deletes a quote.`, SalesService_DeleteQuoteSchemaJSON, SalesService_DeleteQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_DeleteSeasonTool       = newTool("sales_service-delete_season_v1", `Deletes a season.`, SalesService_DeleteSeasonSchemaJSON, SalesService_DeleteSeasonOutputSchemaJSON, nil, "", nil)
-	SalesService_GetDishTool            = newTool("sales_service-get_dish_v1", `Retrieves one dish.`, SalesService_GetDishSchemaJSON, SalesService_GetDishOutputSchemaJSON, nil, "", nil)
-	SalesService_GetFixedPackageTool    = newTool("sales_service-get_fixed_package_v1", `Retrieves one fixed package.`, SalesService_GetFixedPackageSchemaJSON, SalesService_GetFixedPackageOutputSchemaJSON, nil, "", nil)
-	SalesService_GetMenuTool            = newTool("sales_service-get_menu_v1", `Retrieves one menu.`, SalesService_GetMenuSchemaJSON, SalesService_GetMenuOutputSchemaJSON, nil, "", nil)
-	SalesService_GetPriceRuleTool       = newTool("sales_service-get_price_rule_v1", `Retrieves one price rule.`, SalesService_GetPriceRuleSchemaJSON, SalesService_GetPriceRuleOutputSchemaJSON, nil, "", nil)
-	SalesService_GetQuoteTool           = newTool("sales_service-get_quote_v1", `Retrieves one quote.`, SalesService_GetQuoteSchemaJSON, SalesService_GetQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_GetSeasonTool          = newTool("sales_service-get_season_v1", `Retrieves one season.`, SalesService_GetSeasonSchemaJSON, SalesService_GetSeasonOutputSchemaJSON, nil, "", nil)
-	SalesService_ListDishesTool         = newTool("sales_service-list_dishes_v1", `Lists dishes.`, SalesService_ListDishesSchemaJSON, SalesService_ListDishesOutputSchemaJSON, nil, "", nil)
-	SalesService_ListFixedPackagesTool  = newTool("sales_service-list_fixed_packages_v1", `Lists fixed packages.`, SalesService_ListFixedPackagesSchemaJSON, SalesService_ListFixedPackagesOutputSchemaJSON, nil, "", nil)
-	SalesService_ListMenusTool          = newTool("sales_service-list_menus_v1", `Lists menus.`, SalesService_ListMenusSchemaJSON, SalesService_ListMenusOutputSchemaJSON, nil, "", nil)
-	SalesService_ListPriceRulesTool     = newTool("sales_service-list_price_rules_v1", `Lists price rules.`, SalesService_ListPriceRulesSchemaJSON, SalesService_ListPriceRulesOutputSchemaJSON, nil, "", nil)
-	SalesService_ListQuotesTool         = newTool("sales_service-list_quotes_v1", `Lists quotes.`, SalesService_ListQuotesSchemaJSON, SalesService_ListQuotesOutputSchemaJSON, nil, "", nil)
-	SalesService_ListSeasonsTool        = newTool("sales_service-list_seasons_v1", `Lists seasons.`, SalesService_ListSeasonsSchemaJSON, SalesService_ListSeasonsOutputSchemaJSON, nil, "", nil)
-	SalesService_ReviseQuoteTool        = newTool("sales_service-revise_quote_v1", `Revises a sent or declined quote: makes a new draft from it, which supersedes it.`, SalesService_ReviseQuoteSchemaJSON, SalesService_ReviseQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_SendQuoteTool          = newTool("sales_service-send_quote_v1", `Sends a draft quote to the guest, fixing its prices.`, SalesService_SendQuoteSchemaJSON, SalesService_SendQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_UpdateDishTool         = newTool("sales_service-update_dish_v1", `Updates a dish. Only the fields in update_mask are written.`, SalesService_UpdateDishSchemaJSON, SalesService_UpdateDishOutputSchemaJSON, nil, "", nil)
-	SalesService_UpdateFixedPackageTool = newTool("sales_service-update_fixed_package_v1", `Updates a fixed package. Only the fields in update_mask are written.`, SalesService_UpdateFixedPackageSchemaJSON, SalesService_UpdateFixedPackageOutputSchemaJSON, nil, "", nil)
-	SalesService_UpdateMenuTool         = newTool("sales_service-update_menu_v1", `Updates a menu. Only the fields in update_mask are written.`, SalesService_UpdateMenuSchemaJSON, SalesService_UpdateMenuOutputSchemaJSON, nil, "", nil)
-	SalesService_UpdatePriceRuleTool    = newTool("sales_service-update_price_rule_v1", `Updates a price rule. Only the fields in update_mask are written.`, SalesService_UpdatePriceRuleSchemaJSON, SalesService_UpdatePriceRuleOutputSchemaJSON, nil, "", nil)
-	SalesService_UpdateQuoteTool        = newTool("sales_service-update_quote_v1", `Updates a quote. Only the fields in update_mask are written.`, SalesService_UpdateQuoteSchemaJSON, SalesService_UpdateQuoteOutputSchemaJSON, nil, "", nil)
-	SalesService_UpdateSeasonTool       = newTool("sales_service-update_season_v1", `Updates a season. Only the fields in update_mask are written.`, SalesService_UpdateSeasonSchemaJSON, SalesService_UpdateSeasonOutputSchemaJSON, nil, "", nil)
+	SalesService_AcceptQuoteTool    = newTool("sales_service-accept_quote_v1", `Accepts a sent quote: makes the reservation or event it offers, and wins its lead.`, SalesService_AcceptQuoteSchemaJSON, SalesService_AcceptQuoteOutputSchemaJSON, nil, "", nil)
+	SalesService_CreateActivityTool = newTool("sales_service-create_activity_v1", `Creates an activity.`, SalesService_CreateActivitySchemaJSON, SalesService_CreateActivityOutputSchemaJSON, nil, "", nil)
+	SalesService_CreateLeadTool     = newTool("sales_service-create_lead_v1", `Creates a lead.`, SalesService_CreateLeadSchemaJSON, SalesService_CreateLeadOutputSchemaJSON, nil, "", nil)
+	SalesService_CreateQuoteTool    = newTool("sales_service-create_quote_v1", `Creates a quote.`, SalesService_CreateQuoteSchemaJSON, SalesService_CreateQuoteOutputSchemaJSON, nil, "", nil)
+	SalesService_DeclineQuoteTool   = newTool("sales_service-decline_quote_v1", `Records that the guest declined a sent quote.`, SalesService_DeclineQuoteSchemaJSON, SalesService_DeclineQuoteOutputSchemaJSON, nil, "", nil)
+	SalesService_GetActivityTool    = newTool("sales_service-get_activity_v1", `Retrieves one activity.`, SalesService_GetActivitySchemaJSON, SalesService_GetActivityOutputSchemaJSON, nil, "", nil)
+	SalesService_GetLeadTool        = newTool("sales_service-get_lead_v1", `Retrieves one lead.`, SalesService_GetLeadSchemaJSON, SalesService_GetLeadOutputSchemaJSON, nil, "", nil)
+	SalesService_GetQuoteTool       = newTool("sales_service-get_quote_v1", `Retrieves one quote.`, SalesService_GetQuoteSchemaJSON, SalesService_GetQuoteOutputSchemaJSON, nil, "", nil)
+	SalesService_ListActivitiesTool = newTool("sales_service-list_activities_v1", `Lists activities.`, SalesService_ListActivitiesSchemaJSON, SalesService_ListActivitiesOutputSchemaJSON, nil, "", nil)
+	SalesService_ListLeadsTool      = newTool("sales_service-list_leads_v1", `Lists leads.`, SalesService_ListLeadsSchemaJSON, SalesService_ListLeadsOutputSchemaJSON, nil, "", nil)
+	SalesService_ListQuotesTool     = newTool("sales_service-list_quotes_v1", `Lists quotes.`, SalesService_ListQuotesSchemaJSON, SalesService_ListQuotesOutputSchemaJSON, nil, "", nil)
+	SalesService_ReviseQuoteTool    = newTool("sales_service-revise_quote_v1", `Revises a sent or declined quote: makes a new draft from it, which supersedes it.`, SalesService_ReviseQuoteSchemaJSON, SalesService_ReviseQuoteOutputSchemaJSON, nil, "", nil)
+	SalesService_SendQuoteTool      = newTool("sales_service-send_quote_v1", `Sends a draft quote to the guest, fixing its prices.`, SalesService_SendQuoteSchemaJSON, SalesService_SendQuoteOutputSchemaJSON, nil, "", nil)
+	SalesService_UpdateLeadTool     = newTool("sales_service-update_lead_v1", `Updates a lead. Only the fields in update_mask are written.`, SalesService_UpdateLeadSchemaJSON, SalesService_UpdateLeadOutputSchemaJSON, nil, "", nil)
+	SalesService_UpdateQuoteTool    = newTool("sales_service-update_quote_v1", `Updates a quote. Only the fields in update_mask are written.`, SalesService_UpdateQuoteSchemaJSON, SalesService_UpdateQuoteOutputSchemaJSON, nil, "", nil)
 )
 
 // SalesServiceMCPServer is the interface that users implement to handle MCP
@@ -138,80 +77,40 @@ var (
 // SalesServiceServer automatically satisfies this interface.
 type SalesServiceMCPServer interface {
 	AcceptQuote(ctx context.Context, req *AcceptQuoteRequest) (*Quote, error)
-	CalculatePrice(ctx context.Context, req *CalculatePriceRequest) (*CalculatePriceResponse, error)
-	CreateDish(ctx context.Context, req *CreateDishRequest) (*Dish, error)
-	CreateFixedPackage(ctx context.Context, req *CreateFixedPackageRequest) (*FixedPackage, error)
-	CreateMenu(ctx context.Context, req *CreateMenuRequest) (*Menu, error)
-	CreatePriceRule(ctx context.Context, req *CreatePriceRuleRequest) (*PriceRule, error)
+	CreateActivity(ctx context.Context, req *CreateActivityRequest) (*Activity, error)
+	CreateLead(ctx context.Context, req *CreateLeadRequest) (*Lead, error)
 	CreateQuote(ctx context.Context, req *CreateQuoteRequest) (*Quote, error)
-	CreateSeason(ctx context.Context, req *CreateSeasonRequest) (*Season, error)
 	DeclineQuote(ctx context.Context, req *DeclineQuoteRequest) (*Quote, error)
-	DeleteDish(ctx context.Context, req *DeleteDishRequest) (*emptypb.Empty, error)
-	DeleteFixedPackage(ctx context.Context, req *DeleteFixedPackageRequest) (*emptypb.Empty, error)
-	DeleteMenu(ctx context.Context, req *DeleteMenuRequest) (*emptypb.Empty, error)
-	DeletePriceRule(ctx context.Context, req *DeletePriceRuleRequest) (*emptypb.Empty, error)
-	DeleteQuote(ctx context.Context, req *DeleteQuoteRequest) (*emptypb.Empty, error)
-	DeleteSeason(ctx context.Context, req *DeleteSeasonRequest) (*emptypb.Empty, error)
-	GetDish(ctx context.Context, req *GetDishRequest) (*Dish, error)
-	GetFixedPackage(ctx context.Context, req *GetFixedPackageRequest) (*FixedPackage, error)
-	GetMenu(ctx context.Context, req *GetMenuRequest) (*Menu, error)
-	GetPriceRule(ctx context.Context, req *GetPriceRuleRequest) (*PriceRule, error)
+	GetActivity(ctx context.Context, req *GetActivityRequest) (*Activity, error)
+	GetLead(ctx context.Context, req *GetLeadRequest) (*Lead, error)
 	GetQuote(ctx context.Context, req *GetQuoteRequest) (*Quote, error)
-	GetSeason(ctx context.Context, req *GetSeasonRequest) (*Season, error)
-	ListDishes(ctx context.Context, req *ListDishesRequest) (*ListDishesResponse, error)
-	ListFixedPackages(ctx context.Context, req *ListFixedPackagesRequest) (*ListFixedPackagesResponse, error)
-	ListMenus(ctx context.Context, req *ListMenusRequest) (*ListMenusResponse, error)
-	ListPriceRules(ctx context.Context, req *ListPriceRulesRequest) (*ListPriceRulesResponse, error)
+	ListActivities(ctx context.Context, req *ListActivitiesRequest) (*ListActivitiesResponse, error)
+	ListLeads(ctx context.Context, req *ListLeadsRequest) (*ListLeadsResponse, error)
 	ListQuotes(ctx context.Context, req *ListQuotesRequest) (*ListQuotesResponse, error)
-	ListSeasons(ctx context.Context, req *ListSeasonsRequest) (*ListSeasonsResponse, error)
 	ReviseQuote(ctx context.Context, req *ReviseQuoteRequest) (*Quote, error)
 	SendQuote(ctx context.Context, req *SendQuoteRequest) (*Quote, error)
-	UpdateDish(ctx context.Context, req *UpdateDishRequest) (*Dish, error)
-	UpdateFixedPackage(ctx context.Context, req *UpdateFixedPackageRequest) (*FixedPackage, error)
-	UpdateMenu(ctx context.Context, req *UpdateMenuRequest) (*Menu, error)
-	UpdatePriceRule(ctx context.Context, req *UpdatePriceRuleRequest) (*PriceRule, error)
+	UpdateLead(ctx context.Context, req *UpdateLeadRequest) (*Lead, error)
 	UpdateQuote(ctx context.Context, req *UpdateQuoteRequest) (*Quote, error)
-	UpdateSeason(ctx context.Context, req *UpdateSeasonRequest) (*Season, error)
 }
 
 // SalesServiceMCPClient is the gRPC client interface used when forwarding MCP
 // tool calls to a remote gRPC server. It matches the generated gRPC client stub.
 type SalesServiceMCPClient interface {
 	AcceptQuote(ctx context.Context, req *AcceptQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	CalculatePrice(ctx context.Context, req *CalculatePriceRequest, opts ...grpc.CallOption) (*CalculatePriceResponse, error)
-	CreateDish(ctx context.Context, req *CreateDishRequest, opts ...grpc.CallOption) (*Dish, error)
-	CreateFixedPackage(ctx context.Context, req *CreateFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error)
-	CreateMenu(ctx context.Context, req *CreateMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	CreatePriceRule(ctx context.Context, req *CreatePriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error)
+	CreateActivity(ctx context.Context, req *CreateActivityRequest, opts ...grpc.CallOption) (*Activity, error)
+	CreateLead(ctx context.Context, req *CreateLeadRequest, opts ...grpc.CallOption) (*Lead, error)
 	CreateQuote(ctx context.Context, req *CreateQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	CreateSeason(ctx context.Context, req *CreateSeasonRequest, opts ...grpc.CallOption) (*Season, error)
 	DeclineQuote(ctx context.Context, req *DeclineQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	DeleteDish(ctx context.Context, req *DeleteDishRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteFixedPackage(ctx context.Context, req *DeleteFixedPackageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteMenu(ctx context.Context, req *DeleteMenuRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeletePriceRule(ctx context.Context, req *DeletePriceRuleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteQuote(ctx context.Context, req *DeleteQuoteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteSeason(ctx context.Context, req *DeleteSeasonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetDish(ctx context.Context, req *GetDishRequest, opts ...grpc.CallOption) (*Dish, error)
-	GetFixedPackage(ctx context.Context, req *GetFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error)
-	GetMenu(ctx context.Context, req *GetMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	GetPriceRule(ctx context.Context, req *GetPriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error)
+	GetActivity(ctx context.Context, req *GetActivityRequest, opts ...grpc.CallOption) (*Activity, error)
+	GetLead(ctx context.Context, req *GetLeadRequest, opts ...grpc.CallOption) (*Lead, error)
 	GetQuote(ctx context.Context, req *GetQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	GetSeason(ctx context.Context, req *GetSeasonRequest, opts ...grpc.CallOption) (*Season, error)
-	ListDishes(ctx context.Context, req *ListDishesRequest, opts ...grpc.CallOption) (*ListDishesResponse, error)
-	ListFixedPackages(ctx context.Context, req *ListFixedPackagesRequest, opts ...grpc.CallOption) (*ListFixedPackagesResponse, error)
-	ListMenus(ctx context.Context, req *ListMenusRequest, opts ...grpc.CallOption) (*ListMenusResponse, error)
-	ListPriceRules(ctx context.Context, req *ListPriceRulesRequest, opts ...grpc.CallOption) (*ListPriceRulesResponse, error)
+	ListActivities(ctx context.Context, req *ListActivitiesRequest, opts ...grpc.CallOption) (*ListActivitiesResponse, error)
+	ListLeads(ctx context.Context, req *ListLeadsRequest, opts ...grpc.CallOption) (*ListLeadsResponse, error)
 	ListQuotes(ctx context.Context, req *ListQuotesRequest, opts ...grpc.CallOption) (*ListQuotesResponse, error)
-	ListSeasons(ctx context.Context, req *ListSeasonsRequest, opts ...grpc.CallOption) (*ListSeasonsResponse, error)
 	ReviseQuote(ctx context.Context, req *ReviseQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
 	SendQuote(ctx context.Context, req *SendQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	UpdateDish(ctx context.Context, req *UpdateDishRequest, opts ...grpc.CallOption) (*Dish, error)
-	UpdateFixedPackage(ctx context.Context, req *UpdateFixedPackageRequest, opts ...grpc.CallOption) (*FixedPackage, error)
-	UpdateMenu(ctx context.Context, req *UpdateMenuRequest, opts ...grpc.CallOption) (*Menu, error)
-	UpdatePriceRule(ctx context.Context, req *UpdatePriceRuleRequest, opts ...grpc.CallOption) (*PriceRule, error)
+	UpdateLead(ctx context.Context, req *UpdateLeadRequest, opts ...grpc.CallOption) (*Lead, error)
 	UpdateQuote(ctx context.Context, req *UpdateQuoteRequest, opts ...grpc.CallOption) (*Quote, error)
-	UpdateSeason(ctx context.Context, req *UpdateSeasonRequest, opts ...grpc.CallOption) (*Season, error)
 }
 
 // RegisterSalesServiceMCPHandler registers all SalesService RPC methods as MCP
@@ -246,23 +145,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CalculatePriceTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_CreateActivityTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CalculatePriceRequest
+			var pbReq CreateActivityRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CalculatePrice", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.CalculatePrice(ctx, req.(*CalculatePriceRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreateActivity", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.CreateActivity(ctx, req.(*CreateActivityRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*CalculatePriceResponse)
+			resp := rawResp.(*Activity)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -271,98 +170,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateDishTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_CreateLeadTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateDishRequest
+			var pbReq CreateLeadRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreateDish", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.CreateDish(ctx, req.(*CreateDishRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreateLead", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.CreateLead(ctx, req.(*CreateLeadRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*Dish)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateFixedPackageTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateFixedPackageRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreateFixedPackage", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.CreateFixedPackage(ctx, req.(*CreateFixedPackageRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*FixedPackage)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreateMenu", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.CreateMenu(ctx, req.(*CreateMenuRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*Menu)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreatePriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreatePriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreatePriceRule", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.CreatePriceRule(ctx, req.(*CreatePriceRuleRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*PriceRule)
+			resp := rawResp.(*Lead)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -396,31 +220,6 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateSeasonTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateSeasonRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/CreateSeason", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.CreateSeason(ctx, req.(*CreateSeasonRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*Season)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
 		tool := mcp.PrepareToolWithExtras(SalesService_DeclineQuoteTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -446,23 +245,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteDishTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_GetActivityTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteDishRequest
+			var pbReq GetActivityRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/DeleteDish", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeleteDish(ctx, req.(*DeleteDishRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetActivity", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.GetActivity(ctx, req.(*GetActivityRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*emptypb.Empty)
+			resp := rawResp.(*Activity)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -471,223 +270,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteFixedPackageTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_GetLeadTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteFixedPackageRequest
+			var pbReq GetLeadRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/DeleteFixedPackage", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeleteFixedPackage(ctx, req.(*DeleteFixedPackageRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetLead", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.GetLead(ctx, req.(*GetLeadRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*emptypb.Empty)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/DeleteMenu", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeleteMenu(ctx, req.(*DeleteMenuRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*emptypb.Empty)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeletePriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeletePriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/DeletePriceRule", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeletePriceRule(ctx, req.(*DeletePriceRuleRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*emptypb.Empty)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteQuoteTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteQuoteRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/DeleteQuote", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeleteQuote(ctx, req.(*DeleteQuoteRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*emptypb.Empty)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteSeasonTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteSeasonRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/DeleteSeason", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.DeleteSeason(ctx, req.(*DeleteSeasonRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*emptypb.Empty)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetDishTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetDishRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetDish", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.GetDish(ctx, req.(*GetDishRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*Dish)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetFixedPackageTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetFixedPackageRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetFixedPackage", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.GetFixedPackage(ctx, req.(*GetFixedPackageRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*FixedPackage)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetMenu", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.GetMenu(ctx, req.(*GetMenuRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*Menu)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetPriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetPriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetPriceRule", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.GetPriceRule(ctx, req.(*GetPriceRuleRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*PriceRule)
+			resp := rawResp.(*Lead)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -721,23 +320,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetSeasonTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_ListActivitiesTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetSeasonRequest
+			var pbReq ListActivitiesRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/GetSeason", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.GetSeason(ctx, req.(*GetSeasonRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListActivities", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.ListActivities(ctx, req.(*ListActivitiesRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*Season)
+			resp := rawResp.(*ListActivitiesResponse)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -746,98 +345,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListDishesTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_ListLeadsTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListDishesRequest
+			var pbReq ListLeadsRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListDishes", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.ListDishes(ctx, req.(*ListDishesRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListLeads", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.ListLeads(ctx, req.(*ListLeadsRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*ListDishesResponse)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListFixedPackagesTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListFixedPackagesRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListFixedPackages", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.ListFixedPackages(ctx, req.(*ListFixedPackagesRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*ListFixedPackagesResponse)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListMenusTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListMenusRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListMenus", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.ListMenus(ctx, req.(*ListMenusRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*ListMenusResponse)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListPriceRulesTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListPriceRulesRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListPriceRules", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.ListPriceRules(ctx, req.(*ListPriceRulesRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*ListPriceRulesResponse)
+			resp := rawResp.(*ListLeadsResponse)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -863,31 +387,6 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 				return mcp.HandleError(err)
 			}
 			resp := rawResp.(*ListQuotesResponse)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListSeasonsTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListSeasonsRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/ListSeasons", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.ListSeasons(ctx, req.(*ListSeasonsRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*ListSeasonsResponse)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -946,98 +445,23 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateDishTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_UpdateLeadTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateDishRequest
+			var pbReq UpdateLeadRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			// Dispatch through the unary interceptor chain (when configured) so
 			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/UpdateDish", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.UpdateDish(ctx, req.(*UpdateDishRequest))
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/UpdateLead", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.UpdateLead(ctx, req.(*UpdateLeadRequest))
 			})
 			if err != nil {
 				return mcp.HandleError(err)
 			}
-			resp := rawResp.(*Dish)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateFixedPackageTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateFixedPackageRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/UpdateFixedPackage", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.UpdateFixedPackage(ctx, req.(*UpdateFixedPackageRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*FixedPackage)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/UpdateMenu", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.UpdateMenu(ctx, req.(*UpdateMenuRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*Menu)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdatePriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdatePriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/UpdatePriceRule", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.UpdatePriceRule(ctx, req.(*UpdatePriceRuleRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*PriceRule)
+			resp := rawResp.(*Lead)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -1070,61 +494,18 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 			return structuredResult(out)
 		})
 	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateSeasonTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateSeasonRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			// Dispatch through the unary interceptor chain (when configured) so
-			// middleware sees this call exactly as it would the wire RPC.
-			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.sales.v1.SalesService/UpdateSeason", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
-				return srv.UpdateSeason(ctx, req.(*UpdateSeasonRequest))
-			})
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			resp := rawResp.(*Season)
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
 	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "dish://venues/{venue}/dishes/{dish}",
-		Name:        "Dish",
-		Description: "Dish resource (venues/{venue}/dishes/{dish})",
+		URITemplate: "lead://leads/{lead}",
+		Name:        "Lead",
+		Description: "Lead resource (leads/{lead})",
 		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "dish://venues/{venue}/dishes/{dish}", mcp.DefaultResourceHandler()))
+	}, mcp.ResourceHandlerFor(cfg, "lead://leads/{lead}", mcp.DefaultResourceHandler()))
 	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "menu://venues/{venue}/menus/{menu}",
-		Name:        "Menu",
-		Description: "Menu resource (venues/{venue}/menus/{menu})",
+		URITemplate: "activity://leads/{lead}/activities/{activity}",
+		Name:        "Activity",
+		Description: "Activity resource (leads/{lead}/activities/{activity})",
 		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "menu://venues/{venue}/menus/{menu}", mcp.DefaultResourceHandler()))
-	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "fixedPackage://venues/{venue}/fixedPackages/{fixed_package}",
-		Name:        "FixedPackage",
-		Description: "FixedPackage resource (venues/{venue}/fixedPackages/{fixed_package})",
-		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "fixedPackage://venues/{venue}/fixedPackages/{fixed_package}", mcp.DefaultResourceHandler()))
-	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "season://venues/{venue}/seasons/{season}",
-		Name:        "Season",
-		Description: "Season resource (venues/{venue}/seasons/{season})",
-		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "season://venues/{venue}/seasons/{season}", mcp.DefaultResourceHandler()))
-	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "priceRule://venues/{venue}/priceRules/{price_rule}",
-		Name:        "PriceRule",
-		Description: "PriceRule resource (venues/{venue}/priceRules/{price_rule})",
-		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "priceRule://venues/{venue}/priceRules/{price_rule}", mcp.DefaultResourceHandler()))
+	}, mcp.ResourceHandlerFor(cfg, "activity://leads/{lead}/activities/{activity}", mcp.DefaultResourceHandler()))
 	s.AddResourceTemplate(&mcp.ResourceTemplate{
 		URITemplate: "quote://venues/{venue}/quotes/{quote}",
 		Name:        "Quote",
@@ -1136,7 +517,7 @@ func RegisterSalesServiceMCPHandler(s *mcp.Server, srv SalesServiceMCPServer, op
 		URI:      appResourceURI,
 		Name:     "Sales",
 		MIMEType: "text/html",
-	}, mcp.ResourceHandlerFor(cfg, appResourceURI, mcp.DefaultAppResourceHandler("Sales", "1.0.0", "The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests.")))
+	}, mcp.ResourceHandlerFor(cfg, appResourceURI, mcp.DefaultAppResourceHandler("Sales", "1.0.0", "Leads, what was done about them, and the quotes sent to guests: from enquiry to booking.")))
 }
 
 // SalesServiceMCPDefaultBasePath is the default HTTP path prefix for
@@ -1206,16 +587,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CalculatePriceTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_CreateActivityTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CalculatePriceRequest
+			var pbReq CreateActivityRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.CalculatePrice(ctx, &pbReq)
+			resp, err := client.CreateActivity(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1227,79 +608,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateDishTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_CreateLeadTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateDishRequest
+			var pbReq CreateLeadRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.CreateDish(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateFixedPackageTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateFixedPackageRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.CreateFixedPackage(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.CreateMenu(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreatePriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreatePriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.CreatePriceRule(ctx, &pbReq)
+			resp, err := client.CreateLead(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1332,27 +650,6 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_CreateSeasonTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq CreateSeasonRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.CreateSeason(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
 		tool := mcp.PrepareToolWithExtras(SalesService_DeclineQuoteTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -1374,16 +671,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteDishTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_GetActivityTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteDishRequest
+			var pbReq GetActivityRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeleteDish(ctx, &pbReq)
+			resp, err := client.GetActivity(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1395,184 +692,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteFixedPackageTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_GetLeadTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteFixedPackageRequest
+			var pbReq GetLeadRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeleteFixedPackage(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeleteMenu(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeletePriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeletePriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeletePriceRule(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteQuoteTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteQuoteRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeleteQuote(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_DeleteSeasonTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq DeleteSeasonRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.DeleteSeason(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetDishTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetDishRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.GetDish(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetFixedPackageTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetFixedPackageRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.GetFixedPackage(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.GetMenu(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetPriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetPriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.GetPriceRule(ctx, &pbReq)
+			resp, err := client.GetLead(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1605,16 +734,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_GetSeasonTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_ListActivitiesTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq GetSeasonRequest
+			var pbReq ListActivitiesRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.GetSeason(ctx, &pbReq)
+			resp, err := client.ListActivities(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1626,79 +755,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListDishesTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_ListLeadsTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListDishesRequest
+			var pbReq ListLeadsRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.ListDishes(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListFixedPackagesTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListFixedPackagesRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.ListFixedPackages(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListMenusTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListMenusRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.ListMenus(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListPriceRulesTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListPriceRulesRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.ListPriceRules(ctx, &pbReq)
+			resp, err := client.ListLeads(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1720,27 +786,6 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 			}
 			ctx = mcp.ForwardMetadata(ctx)
 			resp, err := client.ListQuotes(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_ListSeasonsTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq ListSeasonsRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.ListSeasons(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1794,79 +839,16 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		})
 	}
 	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateDishTool, cfg.ExtraProperties)
+		tool := mcp.PrepareToolWithExtras(SalesService_UpdateLeadTool, cfg.ExtraProperties)
 		tool = mcp.SetToolAppMeta(tool, appResourceURI)
 		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateDishRequest
+			var pbReq UpdateLeadRequest
 			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
 			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
 				return nil, err
 			}
 			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.UpdateDish(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateFixedPackageTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateFixedPackageRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.UpdateFixedPackage(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateMenuTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateMenuRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.UpdateMenu(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdatePriceRuleTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdatePriceRuleRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.UpdatePriceRule(ctx, &pbReq)
+			resp, err := client.UpdateLead(ctx, &pbReq)
 			if err != nil {
 				return mcp.HandleError(err)
 			}
@@ -1898,57 +880,18 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 			return structuredResult(out)
 		})
 	}
-	{
-		tool := mcp.PrepareToolWithExtras(SalesService_UpdateSeasonTool, cfg.ExtraProperties)
-		tool = mcp.SetToolAppMeta(tool, appResourceURI)
-		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var pbReq UpdateSeasonRequest
-			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
-			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
-				return nil, err
-			}
-			ctx = mcp.ForwardMetadata(ctx)
-			resp, err := client.UpdateSeason(ctx, &pbReq)
-			if err != nil {
-				return mcp.HandleError(err)
-			}
-			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
-			if err != nil {
-				return nil, err
-			}
-			return structuredResult(out)
-		})
-	}
 	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "dish://venues/{venue}/dishes/{dish}",
-		Name:        "Dish",
-		Description: "Dish resource (venues/{venue}/dishes/{dish})",
+		URITemplate: "lead://leads/{lead}",
+		Name:        "Lead",
+		Description: "Lead resource (leads/{lead})",
 		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "dish://venues/{venue}/dishes/{dish}", mcp.DefaultResourceHandler()))
+	}, mcp.ResourceHandlerFor(cfg, "lead://leads/{lead}", mcp.DefaultResourceHandler()))
 	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "menu://venues/{venue}/menus/{menu}",
-		Name:        "Menu",
-		Description: "Menu resource (venues/{venue}/menus/{menu})",
+		URITemplate: "activity://leads/{lead}/activities/{activity}",
+		Name:        "Activity",
+		Description: "Activity resource (leads/{lead}/activities/{activity})",
 		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "menu://venues/{venue}/menus/{menu}", mcp.DefaultResourceHandler()))
-	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "fixedPackage://venues/{venue}/fixedPackages/{fixed_package}",
-		Name:        "FixedPackage",
-		Description: "FixedPackage resource (venues/{venue}/fixedPackages/{fixed_package})",
-		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "fixedPackage://venues/{venue}/fixedPackages/{fixed_package}", mcp.DefaultResourceHandler()))
-	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "season://venues/{venue}/seasons/{season}",
-		Name:        "Season",
-		Description: "Season resource (venues/{venue}/seasons/{season})",
-		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "season://venues/{venue}/seasons/{season}", mcp.DefaultResourceHandler()))
-	s.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: "priceRule://venues/{venue}/priceRules/{price_rule}",
-		Name:        "PriceRule",
-		Description: "PriceRule resource (venues/{venue}/priceRules/{price_rule})",
-		MIMEType:    "application/json",
-	}, mcp.ResourceHandlerFor(cfg, "priceRule://venues/{venue}/priceRules/{price_rule}", mcp.DefaultResourceHandler()))
+	}, mcp.ResourceHandlerFor(cfg, "activity://leads/{lead}/activities/{activity}", mcp.DefaultResourceHandler()))
 	s.AddResourceTemplate(&mcp.ResourceTemplate{
 		URITemplate: "quote://venues/{venue}/quotes/{quote}",
 		Name:        "Quote",
@@ -1960,5 +903,5 @@ func ForwardToSalesServiceMCPClient(s *mcp.Server, client SalesServiceMCPClient,
 		URI:      appResourceURI,
 		Name:     "Sales",
 		MIMEType: "text/html",
-	}, mcp.ResourceHandlerFor(cfg, appResourceURI, mcp.DefaultAppResourceHandler("Sales", "1.0.0", "The dishes, plate menus and fixed packages a venue sells, the seasons and price rules that price them, and the quotes sent to guests.")))
+	}, mcp.ResourceHandlerFor(cfg, appResourceURI, mcp.DefaultAppResourceHandler("Sales", "1.0.0", "Leads, what was done about them, and the quotes sent to guests: from enquiry to booking.")))
 }

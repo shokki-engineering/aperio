@@ -1,0 +1,59 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.guest.v1;
+
+import "aperio/guest/v1/guest.proto";
+import "aperio/guest/v1/guest_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestServiceProto";
+option java_package = "engineering.shokki.aperio.guest.v1";
+
+// GuestService: The guests and companies a venue knows: their names, phones, emails, addresses and diets.
+service GuestService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Guests"
+      version: "1.0.0"
+      description: "The guests and companies a venue knows: their names, phones, emails, addresses and diets."
+    }
+  };
+
+  // Retrieves one contact.
+  rpc GetContact(GetContactRequest) returns (Contact) {
+    option (google.api.http) = {get: "/v1/{name=contacts/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists contacts.
+  rpc ListContacts(ListContactsRequest) returns (ListContactsResponse) {
+    option (google.api.http) = {get: "/v1/contacts"};
+    option (google.api.method_signature) = "";
+  }
+
+  // Creates a contact.
+  rpc CreateContact(CreateContactRequest) returns (Contact) {
+    option (google.api.http) = {
+      post: "/v1/contacts"
+      body: "contact"
+    };
+    option (google.api.method_signature) = "contact,contact_id";
+  }
+
+  // Updates a contact. Only the fields in update_mask are written.
+  rpc UpdateContact(UpdateContactRequest) returns (Contact) {
+    option (google.api.http) = {
+      patch: "/v1/{contact.name=contacts/*}"
+      body: "contact"
+    };
+    option (google.api.method_signature) = "contact,update_mask";
+  }
+}

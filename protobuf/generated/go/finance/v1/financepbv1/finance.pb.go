@@ -831,15 +831,15 @@ var File_aperio_finance_v1_finance_proto protoreflect.FileDescriptor
 
 const file_aperio_finance_v1_finance_proto_rawDesc = "" +
 	"\n" +
-	"\x1faperio/finance/v1/finance.proto\x12\x11aperio.finance.v1\x1a\x1daperio/finance/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x19google/type/decimal.proto\x1a\x17google/type/money.proto\x1a google/type/postal_address.proto\x1a\x1astore/v1/annotations.proto\"\x99\r\n" +
+	"\x1faperio/finance/v1/finance.proto\x12\x11aperio.finance.v1\x1a\x1daperio/finance/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x19google/type/decimal.proto\x1a\x17google/type/money.proto\x1a google/type/postal_address.proto\x1a\x1astore/v1/annotations.proto\"\x9b\r\n" +
 	"\aInvoice\x12?\n" +
 	"\x04name\x18\x01 \x01(\tB+\xe2A\x01\b\xbaH$\xd8\x01\x01r\x1f2\x1d^venues/[^/]+/invoices/[^/]+$R\x04name\x12\"\n" +
 	"\x06number\x18\x02 \x01(\tB\n" +
 	"\xe2A\x01\x03\xe2\xb5\x18\x02\x18\x01R\x06number\x129\n" +
 	"\x04kind\x18\x03 \x01(\x0e2\x1e.aperio.finance.v1.InvoiceKindB\x05\xe2A\x02\x02\x05R\x04kind\x12G\n" +
-	"\x05state\x18\x04 \x01(\x0e2 .aperio.finance.v1.Invoice.StateB\x0f\xe2A\x01\x03ڵ\x18\a\x12\x05DRAFTR\x05state\x12O\n" +
-	"\acontact\x18\x05 \x01(\tB5\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.crm.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x126\n" +
+	"\x05state\x18\x04 \x01(\x0e2 .aperio.finance.v1.Invoice.StateB\x0f\xe2A\x01\x03ڵ\x18\a\x12\x05DRAFTR\x05state\x12Q\n" +
+	"\acontact\x18\x05 \x01(\tB7\xe2A\x01\x02\xfaA\x19\n" +
+	"\x17aperio.guest.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x126\n" +
 	"\tbuyer_gst\x18\x06 \x01(\v2\x13.aperio.type.v1.GstB\x04\xe2A\x01\x01R\bbuyerGst\x12I\n" +
 	"\x0fbilling_address\x18\a \x01(\v2\x1a.google.type.PostalAddressB\x04\xe2A\x01\x01R\x0ebillingAddress\x12$\n" +
 	"\abooking\x18\b \x01(\tB\n" +
@@ -898,11 +898,11 @@ const file_aperio_finance_v1_finance_proto_rawDesc = "" +
 	"\x04cgst\x18\b \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x03R\x04cgst\x12,\n" +
 	"\x04sgst\x18\t \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x03R\x04sgst\x12,\n" +
 	"\x04igst\x18\n" +
-	" \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x03R\x04igst\"\xe2\v\n" +
+	" \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x03R\x04igst\"\xe4\v\n" +
 	"\aPayment\x12?\n" +
-	"\x04name\x18\x01 \x01(\tB+\xe2A\x01\b\xbaH$\xd8\x01\x01r\x1f2\x1d^venues/[^/]+/payments/[^/]+$R\x04name\x12O\n" +
-	"\acontact\x18\x02 \x01(\tB5\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.crm.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x12c\n" +
+	"\x04name\x18\x01 \x01(\tB+\xe2A\x01\b\xbaH$\xd8\x01\x01r\x1f2\x1d^venues/[^/]+/payments/[^/]+$R\x04name\x12Q\n" +
+	"\acontact\x18\x02 \x01(\tB7\xe2A\x01\x02\xfaA\x19\n" +
+	"\x17aperio.guest.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x12c\n" +
 	"\ainvoice\x18\x03 \x01(\tBI\xe2A\x01\x01\xfaA\x1b\n" +
 	"\x19aperio.finance.v1/Invoice\xbaH$\xd8\x01\x01r\x1f2\x1d^venues/[^/]+/invoices/[^/]+$R\ainvoice\x12$\n" +
 	"\abooking\x18\x04 \x01(\tB\n" +

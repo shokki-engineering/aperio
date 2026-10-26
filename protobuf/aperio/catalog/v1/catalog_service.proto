@@ -1,0 +1,119 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.catalog.v1;
+
+import "aperio/catalog/v1/catalog.proto";
+import "aperio/catalog/v1/catalog_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/catalog/v1/catalogpbv1;catalogpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "CatalogServiceProto";
+option java_package = "engineering.shokki.aperio.catalog.v1";
+
+// CatalogService: What a venue sells: its dishes, plate menus and fixed packages.
+service CatalogService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Catalog"
+      version: "1.0.0"
+      description: "What a venue sells: its dishes, plate menus and fixed packages."
+    }
+  };
+
+  // Retrieves one dish.
+  rpc GetDish(GetDishRequest) returns (Dish) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/dishes/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists dishes.
+  rpc ListDishes(ListDishesRequest) returns (ListDishesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/dishes"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a dish.
+  rpc CreateDish(CreateDishRequest) returns (Dish) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/dishes"
+      body: "dish"
+    };
+    option (google.api.method_signature) = "parent,dish,dish_id";
+  }
+
+  // Updates a dish. Only the fields in update_mask are written.
+  rpc UpdateDish(UpdateDishRequest) returns (Dish) {
+    option (google.api.http) = {
+      patch: "/v1/{dish.name=venues/*/dishes/*}"
+      body: "dish"
+    };
+    option (google.api.method_signature) = "dish,update_mask";
+  }
+
+  // Retrieves one menu.
+  rpc GetMenu(GetMenuRequest) returns (Menu) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/menus/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists menus.
+  rpc ListMenus(ListMenusRequest) returns (ListMenusResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/menus"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a menu.
+  rpc CreateMenu(CreateMenuRequest) returns (Menu) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/menus"
+      body: "menu"
+    };
+    option (google.api.method_signature) = "parent,menu,menu_id";
+  }
+
+  // Updates a menu. Only the fields in update_mask are written.
+  rpc UpdateMenu(UpdateMenuRequest) returns (Menu) {
+    option (google.api.http) = {
+      patch: "/v1/{menu.name=venues/*/menus/*}"
+      body: "menu"
+    };
+    option (google.api.method_signature) = "menu,update_mask";
+  }
+
+  // Retrieves one fixed package.
+  rpc GetFixedPackage(GetFixedPackageRequest) returns (FixedPackage) {
+    option (google.api.http) = {get: "/v1/{name=venues/*/fixedPackages/*}"};
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists fixed packages.
+  rpc ListFixedPackages(ListFixedPackagesRequest) returns (ListFixedPackagesResponse) {
+    option (google.api.http) = {get: "/v1/{parent=venues/*}/fixedPackages"};
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Creates a fixed package.
+  rpc CreateFixedPackage(CreateFixedPackageRequest) returns (FixedPackage) {
+    option (google.api.http) = {
+      post: "/v1/{parent=venues/*}/fixedPackages"
+      body: "fixed_package"
+    };
+    option (google.api.method_signature) = "parent,fixed_package,fixed_package_id";
+  }
+
+  // Updates a fixed package. Only the fields in update_mask are written.
+  rpc UpdateFixedPackage(UpdateFixedPackageRequest) returns (FixedPackage) {
+    option (google.api.http) = {
+      patch: "/v1/{fixed_package.name=venues/*/fixedPackages/*}"
+      body: "fixed_package"
+    };
+    option (google.api.method_signature) = "fixed_package,update_mask";
+  }
+}

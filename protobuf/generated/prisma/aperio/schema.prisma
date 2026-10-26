@@ -4,7 +4,7 @@
 // 	protoc (unknown)
 //
 // database: aperio
-// schemas:  booking, crm, document, finance, operations, sales, venue
+// schemas:  catalog, document, event, finance, guest, operations, pricing, sales, stay, venue
 //
 // Connection URLs live in aperio.config.ts (Prisma 7 convention).
 // annotations: entity.v1 1.6.7, store.v1 1.6.7
@@ -14,7 +14,7 @@
 
 datasource aperio {
   provider = "postgresql"
-  schemas  = ["booking", "crm", "document", "finance", "operations", "sales", "venue"]
+  schemas  = ["catalog", "document", "event", "finance", "guest", "operations", "pricing", "sales", "stay", "venue"]
   // Operator classes the search indexes are built with. Declared here so
   // `prisma migrate` creates the extension before the index that needs it.
   extensions = [pg_trgm]

@@ -11,10 +11,7 @@ package salespbv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	typepbv1 "github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
-	date "google.golang.org/genproto/googleapis/type/date"
-	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -30,30 +27,30 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Request message for GetDish.
-type GetDishRequest struct {
+// Request message for GetLead.
+type GetLeadRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the dish to retrieve.
-	// Format: venues/{venue}/dishes/{dish}
+	// The name of the lead to retrieve.
+	// Format: leads/{lead}
 	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDishRequest) Reset() {
-	*x = GetDishRequest{}
+func (x *GetLeadRequest) Reset() {
+	*x = GetLeadRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDishRequest) String() string {
+func (x *GetLeadRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDishRequest) ProtoMessage() {}
+func (*GetLeadRequest) ProtoMessage() {}
 
-func (x *GetDishRequest) ProtoReflect() protoreflect.Message {
+func (x *GetLeadRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,51 +62,48 @@ func (x *GetDishRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDishRequest.ProtoReflect.Descriptor instead.
-func (*GetDishRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetLeadRequest.ProtoReflect.Descriptor instead.
+func (*GetLeadRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetDishRequest) GetName() string {
+func (x *GetLeadRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-// Request message for ListDishes.
-type ListDishesRequest struct {
+// Request message for ListLeads.
+type ListLeadsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent whose dishes to list.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of dishes to return; the server may
+	// The maximum number of leads to return; the server may
 	// return fewer. Defaults to 50; at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	// A page token from a previous ListDishes call.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// An AIP-160 filter, e.g. course = COURSE_STARTER.
-	Filter string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// A page token from a previous ListLeads call.
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// An AIP-160 filter, e.g. stage = STAGE_PROPOSAL.
+	Filter string `protobuf:"bytes,3,opt,name=filter,proto3" json:"filter,omitempty"`
 	// An AIP-132 ordering, e.g. "create_time desc".
-	OrderBy       string `protobuf:"bytes,5,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
+	OrderBy       string `protobuf:"bytes,4,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListDishesRequest) Reset() {
-	*x = ListDishesRequest{}
+func (x *ListLeadsRequest) Reset() {
+	*x = ListLeadsRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListDishesRequest) String() string {
+func (x *ListLeadsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListDishesRequest) ProtoMessage() {}
+func (*ListLeadsRequest) ProtoMessage() {}
 
-func (x *ListDishesRequest) ProtoReflect() protoreflect.Message {
+func (x *ListLeadsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -121,71 +115,64 @@ func (x *ListDishesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListDishesRequest.ProtoReflect.Descriptor instead.
-func (*ListDishesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListLeadsRequest.ProtoReflect.Descriptor instead.
+func (*ListLeadsRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ListDishesRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *ListDishesRequest) GetPageSize() int32 {
+func (x *ListLeadsRequest) GetPageSize() int32 {
 	if x != nil {
 		return x.PageSize
 	}
 	return 0
 }
 
-func (x *ListDishesRequest) GetPageToken() string {
+func (x *ListLeadsRequest) GetPageToken() string {
 	if x != nil {
 		return x.PageToken
 	}
 	return ""
 }
 
-func (x *ListDishesRequest) GetFilter() string {
+func (x *ListLeadsRequest) GetFilter() string {
 	if x != nil {
 		return x.Filter
 	}
 	return ""
 }
 
-func (x *ListDishesRequest) GetOrderBy() string {
+func (x *ListLeadsRequest) GetOrderBy() string {
 	if x != nil {
 		return x.OrderBy
 	}
 	return ""
 }
 
-// Response message for ListDishes.
-type ListDishesResponse struct {
+// Response message for ListLeads.
+type ListLeadsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The dishes.
-	Dishes []*Dish `protobuf:"bytes,1,rep,name=dishes,proto3" json:"dishes,omitempty"`
+	// The leads.
+	Leads []*Lead `protobuf:"bytes,1,rep,name=leads,proto3" json:"leads,omitempty"`
 	// A token for the next page; empty on the last.
 	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListDishesResponse) Reset() {
-	*x = ListDishesResponse{}
+func (x *ListLeadsResponse) Reset() {
+	*x = ListLeadsResponse{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListDishesResponse) String() string {
+func (x *ListLeadsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListDishesResponse) ProtoMessage() {}
+func (*ListLeadsResponse) ProtoMessage() {}
 
-func (x *ListDishesResponse) ProtoReflect() protoreflect.Message {
+func (x *ListLeadsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -197,56 +184,53 @@ func (x *ListDishesResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListDishesResponse.ProtoReflect.Descriptor instead.
-func (*ListDishesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListLeadsResponse.ProtoReflect.Descriptor instead.
+func (*ListLeadsResponse) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListDishesResponse) GetDishes() []*Dish {
+func (x *ListLeadsResponse) GetLeads() []*Lead {
 	if x != nil {
-		return x.Dishes
+		return x.Leads
 	}
 	return nil
 }
 
-func (x *ListDishesResponse) GetNextPageToken() string {
+func (x *ListLeadsResponse) GetNextPageToken() string {
 	if x != nil {
 		return x.NextPageToken
 	}
 	return ""
 }
 
-// Request message for CreateDish.
-type CreateDishRequest struct {
+// Request message for CreateLead.
+type CreateLeadRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent the dish is created under.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The dish to create.
-	Dish *Dish `protobuf:"bytes,2,opt,name=dish,proto3" json:"dish,omitempty"`
+	// The lead to create.
+	Lead *Lead `protobuf:"bytes,1,opt,name=lead,proto3" json:"lead,omitempty"`
 	// The id to give it, the last segment of its name; the server mints one
 	// when empty.
-	DishId string `protobuf:"bytes,3,opt,name=dish_id,json=dishId,proto3" json:"dish_id,omitempty"`
+	LeadId string `protobuf:"bytes,2,opt,name=lead_id,json=leadId,proto3" json:"lead_id,omitempty"`
 	// Validate the request without creating anything.
-	ValidateOnly  bool `protobuf:"varint,4,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
+	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateDishRequest) Reset() {
-	*x = CreateDishRequest{}
+func (x *CreateLeadRequest) Reset() {
+	*x = CreateLeadRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateDishRequest) String() string {
+func (x *CreateLeadRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateDishRequest) ProtoMessage() {}
+func (*CreateLeadRequest) ProtoMessage() {}
 
-func (x *CreateDishRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateLeadRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -258,44 +242,37 @@ func (x *CreateDishRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateDishRequest.ProtoReflect.Descriptor instead.
-func (*CreateDishRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateLeadRequest.ProtoReflect.Descriptor instead.
+func (*CreateLeadRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreateDishRequest) GetParent() string {
+func (x *CreateLeadRequest) GetLead() *Lead {
 	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *CreateDishRequest) GetDish() *Dish {
-	if x != nil {
-		return x.Dish
+		return x.Lead
 	}
 	return nil
 }
 
-func (x *CreateDishRequest) GetDishId() string {
+func (x *CreateLeadRequest) GetLeadId() string {
 	if x != nil {
-		return x.DishId
+		return x.LeadId
 	}
 	return ""
 }
 
-func (x *CreateDishRequest) GetValidateOnly() bool {
+func (x *CreateLeadRequest) GetValidateOnly() bool {
 	if x != nil {
 		return x.ValidateOnly
 	}
 	return false
 }
 
-// Request message for UpdateDish.
-type UpdateDishRequest struct {
+// Request message for UpdateLead.
+type UpdateLeadRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The dish to update, by its name.
-	Dish *Dish `protobuf:"bytes,1,opt,name=dish,proto3" json:"dish,omitempty"`
+	// The lead to update, by its name.
+	Lead *Lead `protobuf:"bytes,1,opt,name=lead,proto3" json:"lead,omitempty"`
 	// The fields to update; all populated fields when empty.
 	UpdateMask *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	// Validate the request without updating anything.
@@ -304,20 +281,20 @@ type UpdateDishRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateDishRequest) Reset() {
-	*x = UpdateDishRequest{}
+func (x *UpdateLeadRequest) Reset() {
+	*x = UpdateLeadRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateDishRequest) String() string {
+func (x *UpdateLeadRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateDishRequest) ProtoMessage() {}
+func (*UpdateLeadRequest) ProtoMessage() {}
 
-func (x *UpdateDishRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateLeadRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -329,60 +306,56 @@ func (x *UpdateDishRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateDishRequest.ProtoReflect.Descriptor instead.
-func (*UpdateDishRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateLeadRequest.ProtoReflect.Descriptor instead.
+func (*UpdateLeadRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UpdateDishRequest) GetDish() *Dish {
+func (x *UpdateLeadRequest) GetLead() *Lead {
 	if x != nil {
-		return x.Dish
+		return x.Lead
 	}
 	return nil
 }
 
-func (x *UpdateDishRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+func (x *UpdateLeadRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
 	if x != nil {
 		return x.UpdateMask
 	}
 	return nil
 }
 
-func (x *UpdateDishRequest) GetValidateOnly() bool {
+func (x *UpdateLeadRequest) GetValidateOnly() bool {
 	if x != nil {
 		return x.ValidateOnly
 	}
 	return false
 }
 
-// Request message for DeleteDish.
-type DeleteDishRequest struct {
+// Request message for GetActivity.
+type GetActivityRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the dish to delete.
-	// Format: venues/{venue}/dishes/{dish}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
+	// The name of the activity to retrieve.
+	// Format: leads/{lead}/activities/{activity}
+	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteDishRequest) Reset() {
-	*x = DeleteDishRequest{}
+func (x *GetActivityRequest) Reset() {
+	*x = GetActivityRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteDishRequest) String() string {
+func (x *GetActivityRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteDishRequest) ProtoMessage() {}
+func (*GetActivityRequest) ProtoMessage() {}
 
-func (x *DeleteDishRequest) ProtoReflect() protoreflect.Message {
+func (x *GetActivityRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -394,56 +367,51 @@ func (x *DeleteDishRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteDishRequest.ProtoReflect.Descriptor instead.
-func (*DeleteDishRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetActivityRequest.ProtoReflect.Descriptor instead.
+func (*GetActivityRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *DeleteDishRequest) GetName() string {
+func (x *GetActivityRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *DeleteDishRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteDishRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for GetMenu.
-type GetMenuRequest struct {
+// Request message for ListActivities.
+type ListActivitiesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the menu to retrieve.
-	// Format: venues/{venue}/menus/{menu}
-	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// The parent whose activities to list.
+	// Format: leads/{lead}
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	// The maximum number of activities to return; the server may
+	// return fewer. Defaults to 50; at most 1000.
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// A page token from a previous ListActivities call.
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// An AIP-160 filter, e.g. kind = ACTIVITY_KIND_SITE_VISIT.
+	Filter string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
+	// An AIP-132 ordering, e.g. "create_time desc".
+	OrderBy       string `protobuf:"bytes,5,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetMenuRequest) Reset() {
-	*x = GetMenuRequest{}
+func (x *ListActivitiesRequest) Reset() {
+	*x = ListActivitiesRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetMenuRequest) String() string {
+func (x *ListActivitiesRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetMenuRequest) ProtoMessage() {}
+func (*ListActivitiesRequest) ProtoMessage() {}
 
-func (x *GetMenuRequest) ProtoReflect() protoreflect.Message {
+func (x *ListActivitiesRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -455,51 +423,71 @@ func (x *GetMenuRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetMenuRequest.ProtoReflect.Descriptor instead.
-func (*GetMenuRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListActivitiesRequest.ProtoReflect.Descriptor instead.
+func (*ListActivitiesRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetMenuRequest) GetName() string {
+func (x *ListActivitiesRequest) GetParent() string {
 	if x != nil {
-		return x.Name
+		return x.Parent
 	}
 	return ""
 }
 
-// Request message for ListMenus.
-type ListMenusRequest struct {
+func (x *ListActivitiesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListActivitiesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListActivitiesRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListActivitiesRequest) GetOrderBy() string {
+	if x != nil {
+		return x.OrderBy
+	}
+	return ""
+}
+
+// Response message for ListActivities.
+type ListActivitiesResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent whose menus to list.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of menus to return; the server may
-	// return fewer. Defaults to 50; at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	// A page token from a previous ListMenus call.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// An AIP-160 filter, e.g. active = true.
-	Filter string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
-	// An AIP-132 ordering, e.g. "create_time desc".
-	OrderBy       string `protobuf:"bytes,5,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
+	// The activities.
+	Activities []*Activity `protobuf:"bytes,1,rep,name=activities,proto3" json:"activities,omitempty"`
+	// A token for the next page; empty on the last.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListMenusRequest) Reset() {
-	*x = ListMenusRequest{}
+func (x *ListActivitiesResponse) Reset() {
+	*x = ListActivitiesResponse{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListMenusRequest) String() string {
+func (x *ListActivitiesResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListMenusRequest) ProtoMessage() {}
+func (*ListActivitiesResponse) ProtoMessage() {}
 
-func (x *ListMenusRequest) ProtoReflect() protoreflect.Message {
+func (x *ListActivitiesResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -511,71 +499,56 @@ func (x *ListMenusRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListMenusRequest.ProtoReflect.Descriptor instead.
-func (*ListMenusRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListActivitiesResponse.ProtoReflect.Descriptor instead.
+func (*ListActivitiesResponse) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ListMenusRequest) GetParent() string {
+func (x *ListActivitiesResponse) GetActivities() []*Activity {
 	if x != nil {
-		return x.Parent
+		return x.Activities
+	}
+	return nil
+}
+
+func (x *ListActivitiesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
 	}
 	return ""
 }
 
-func (x *ListMenusRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListMenusRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListMenusRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListMenusRequest) GetOrderBy() string {
-	if x != nil {
-		return x.OrderBy
-	}
-	return ""
-}
-
-// Response message for ListMenus.
-type ListMenusResponse struct {
+// Request message for CreateActivity.
+type CreateActivityRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The menus.
-	Menus []*Menu `protobuf:"bytes,1,rep,name=menus,proto3" json:"menus,omitempty"`
-	// A token for the next page; empty on the last.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	// The parent the activity is created under.
+	// Format: leads/{lead}
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	// The activity to create.
+	Activity *Activity `protobuf:"bytes,2,opt,name=activity,proto3" json:"activity,omitempty"`
+	// The id to give it, the last segment of its name; the server mints one
+	// when empty.
+	ActivityId string `protobuf:"bytes,3,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
+	// Validate the request without creating anything.
+	ValidateOnly  bool `protobuf:"varint,4,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListMenusResponse) Reset() {
-	*x = ListMenusResponse{}
+func (x *CreateActivityRequest) Reset() {
+	*x = CreateActivityRequest{}
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListMenusResponse) String() string {
+func (x *CreateActivityRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListMenusResponse) ProtoMessage() {}
+func (*CreateActivityRequest) ProtoMessage() {}
 
-func (x *ListMenusResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateActivityRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -587,1393 +560,33 @@ func (x *ListMenusResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListMenusResponse.ProtoReflect.Descriptor instead.
-func (*ListMenusResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateActivityRequest.ProtoReflect.Descriptor instead.
+func (*CreateActivityRequest) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ListMenusResponse) GetMenus() []*Menu {
-	if x != nil {
-		return x.Menus
-	}
-	return nil
-}
-
-func (x *ListMenusResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-// Request message for CreateMenu.
-type CreateMenuRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent the menu is created under.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The menu to create.
-	Menu *Menu `protobuf:"bytes,2,opt,name=menu,proto3" json:"menu,omitempty"`
-	// The id to give it, the last segment of its name; the server mints one
-	// when empty.
-	MenuId string `protobuf:"bytes,3,opt,name=menu_id,json=menuId,proto3" json:"menu_id,omitempty"`
-	// Validate the request without creating anything.
-	ValidateOnly  bool `protobuf:"varint,4,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateMenuRequest) Reset() {
-	*x = CreateMenuRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateMenuRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateMenuRequest) ProtoMessage() {}
-
-func (x *CreateMenuRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateMenuRequest.ProtoReflect.Descriptor instead.
-func (*CreateMenuRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *CreateMenuRequest) GetParent() string {
+func (x *CreateActivityRequest) GetParent() string {
 	if x != nil {
 		return x.Parent
 	}
 	return ""
 }
 
-func (x *CreateMenuRequest) GetMenu() *Menu {
+func (x *CreateActivityRequest) GetActivity() *Activity {
 	if x != nil {
-		return x.Menu
+		return x.Activity
 	}
 	return nil
 }
 
-func (x *CreateMenuRequest) GetMenuId() string {
+func (x *CreateActivityRequest) GetActivityId() string {
 	if x != nil {
-		return x.MenuId
+		return x.ActivityId
 	}
 	return ""
 }
 
-func (x *CreateMenuRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for UpdateMenu.
-type UpdateMenuRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The menu to update, by its name.
-	Menu *Menu `protobuf:"bytes,1,opt,name=menu,proto3" json:"menu,omitempty"`
-	// The fields to update; all populated fields when empty.
-	UpdateMask *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
-	// Validate the request without updating anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateMenuRequest) Reset() {
-	*x = UpdateMenuRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateMenuRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateMenuRequest) ProtoMessage() {}
-
-func (x *UpdateMenuRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateMenuRequest.ProtoReflect.Descriptor instead.
-func (*UpdateMenuRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *UpdateMenuRequest) GetMenu() *Menu {
-	if x != nil {
-		return x.Menu
-	}
-	return nil
-}
-
-func (x *UpdateMenuRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
-	if x != nil {
-		return x.UpdateMask
-	}
-	return nil
-}
-
-func (x *UpdateMenuRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for DeleteMenu.
-type DeleteMenuRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the menu to delete.
-	// Format: venues/{venue}/menus/{menu}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteMenuRequest) Reset() {
-	*x = DeleteMenuRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteMenuRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteMenuRequest) ProtoMessage() {}
-
-func (x *DeleteMenuRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteMenuRequest.ProtoReflect.Descriptor instead.
-func (*DeleteMenuRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *DeleteMenuRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteMenuRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteMenuRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for GetFixedPackage.
-type GetFixedPackageRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the fixed package to retrieve.
-	// Format: venues/{venue}/fixedPackages/{fixed_package}
-	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetFixedPackageRequest) Reset() {
-	*x = GetFixedPackageRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetFixedPackageRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetFixedPackageRequest) ProtoMessage() {}
-
-func (x *GetFixedPackageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetFixedPackageRequest.ProtoReflect.Descriptor instead.
-func (*GetFixedPackageRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{12}
-}
-
-func (x *GetFixedPackageRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-// Request message for ListFixedPackages.
-type ListFixedPackagesRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent whose fixed packages to list.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of fixed packages to return; the server may
-	// return fewer. Defaults to 50; at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	// A page token from a previous ListFixedPackages call.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// An AIP-160 filter, e.g. active = true.
-	Filter string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
-	// An AIP-132 ordering, e.g. "create_time desc".
-	OrderBy       string `protobuf:"bytes,5,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFixedPackagesRequest) Reset() {
-	*x = ListFixedPackagesRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFixedPackagesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFixedPackagesRequest) ProtoMessage() {}
-
-func (x *ListFixedPackagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFixedPackagesRequest.ProtoReflect.Descriptor instead.
-func (*ListFixedPackagesRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *ListFixedPackagesRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *ListFixedPackagesRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListFixedPackagesRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListFixedPackagesRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListFixedPackagesRequest) GetOrderBy() string {
-	if x != nil {
-		return x.OrderBy
-	}
-	return ""
-}
-
-// Response message for ListFixedPackages.
-type ListFixedPackagesResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The fixed packages.
-	FixedPackages []*FixedPackage `protobuf:"bytes,1,rep,name=fixed_packages,json=fixedPackages,proto3" json:"fixed_packages,omitempty"`
-	// A token for the next page; empty on the last.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFixedPackagesResponse) Reset() {
-	*x = ListFixedPackagesResponse{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFixedPackagesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFixedPackagesResponse) ProtoMessage() {}
-
-func (x *ListFixedPackagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFixedPackagesResponse.ProtoReflect.Descriptor instead.
-func (*ListFixedPackagesResponse) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *ListFixedPackagesResponse) GetFixedPackages() []*FixedPackage {
-	if x != nil {
-		return x.FixedPackages
-	}
-	return nil
-}
-
-func (x *ListFixedPackagesResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-// Request message for CreateFixedPackage.
-type CreateFixedPackageRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent the fixed package is created under.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The fixed package to create.
-	FixedPackage *FixedPackage `protobuf:"bytes,2,opt,name=fixed_package,json=fixedPackage,proto3" json:"fixed_package,omitempty"`
-	// The id to give it, the last segment of its name; the server mints one
-	// when empty.
-	FixedPackageId string `protobuf:"bytes,3,opt,name=fixed_package_id,json=fixedPackageId,proto3" json:"fixed_package_id,omitempty"`
-	// Validate the request without creating anything.
-	ValidateOnly  bool `protobuf:"varint,4,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateFixedPackageRequest) Reset() {
-	*x = CreateFixedPackageRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFixedPackageRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFixedPackageRequest) ProtoMessage() {}
-
-func (x *CreateFixedPackageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFixedPackageRequest.ProtoReflect.Descriptor instead.
-func (*CreateFixedPackageRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *CreateFixedPackageRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *CreateFixedPackageRequest) GetFixedPackage() *FixedPackage {
-	if x != nil {
-		return x.FixedPackage
-	}
-	return nil
-}
-
-func (x *CreateFixedPackageRequest) GetFixedPackageId() string {
-	if x != nil {
-		return x.FixedPackageId
-	}
-	return ""
-}
-
-func (x *CreateFixedPackageRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for UpdateFixedPackage.
-type UpdateFixedPackageRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The fixed package to update, by its name.
-	FixedPackage *FixedPackage `protobuf:"bytes,1,opt,name=fixed_package,json=fixedPackage,proto3" json:"fixed_package,omitempty"`
-	// The fields to update; all populated fields when empty.
-	UpdateMask *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
-	// Validate the request without updating anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateFixedPackageRequest) Reset() {
-	*x = UpdateFixedPackageRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateFixedPackageRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateFixedPackageRequest) ProtoMessage() {}
-
-func (x *UpdateFixedPackageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateFixedPackageRequest.ProtoReflect.Descriptor instead.
-func (*UpdateFixedPackageRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *UpdateFixedPackageRequest) GetFixedPackage() *FixedPackage {
-	if x != nil {
-		return x.FixedPackage
-	}
-	return nil
-}
-
-func (x *UpdateFixedPackageRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
-	if x != nil {
-		return x.UpdateMask
-	}
-	return nil
-}
-
-func (x *UpdateFixedPackageRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for DeleteFixedPackage.
-type DeleteFixedPackageRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the fixed package to delete.
-	// Format: venues/{venue}/fixedPackages/{fixed_package}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFixedPackageRequest) Reset() {
-	*x = DeleteFixedPackageRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFixedPackageRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFixedPackageRequest) ProtoMessage() {}
-
-func (x *DeleteFixedPackageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFixedPackageRequest.ProtoReflect.Descriptor instead.
-func (*DeleteFixedPackageRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *DeleteFixedPackageRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteFixedPackageRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteFixedPackageRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for GetSeason.
-type GetSeasonRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the season to retrieve.
-	// Format: venues/{venue}/seasons/{season}
-	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetSeasonRequest) Reset() {
-	*x = GetSeasonRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetSeasonRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetSeasonRequest) ProtoMessage() {}
-
-func (x *GetSeasonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetSeasonRequest.ProtoReflect.Descriptor instead.
-func (*GetSeasonRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *GetSeasonRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-// Request message for ListSeasons.
-type ListSeasonsRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent whose seasons to list.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of seasons to return; the server may
-	// return fewer. Defaults to 50; at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	// A page token from a previous ListSeasons call.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// An AIP-160 filter, e.g. recurs_yearly = true.
-	Filter string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
-	// An AIP-132 ordering, e.g. "create_time desc".
-	OrderBy       string `protobuf:"bytes,5,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSeasonsRequest) Reset() {
-	*x = ListSeasonsRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSeasonsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSeasonsRequest) ProtoMessage() {}
-
-func (x *ListSeasonsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSeasonsRequest.ProtoReflect.Descriptor instead.
-func (*ListSeasonsRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *ListSeasonsRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *ListSeasonsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListSeasonsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListSeasonsRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListSeasonsRequest) GetOrderBy() string {
-	if x != nil {
-		return x.OrderBy
-	}
-	return ""
-}
-
-// Response message for ListSeasons.
-type ListSeasonsResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The seasons.
-	Seasons []*Season `protobuf:"bytes,1,rep,name=seasons,proto3" json:"seasons,omitempty"`
-	// A token for the next page; empty on the last.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSeasonsResponse) Reset() {
-	*x = ListSeasonsResponse{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSeasonsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSeasonsResponse) ProtoMessage() {}
-
-func (x *ListSeasonsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSeasonsResponse.ProtoReflect.Descriptor instead.
-func (*ListSeasonsResponse) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *ListSeasonsResponse) GetSeasons() []*Season {
-	if x != nil {
-		return x.Seasons
-	}
-	return nil
-}
-
-func (x *ListSeasonsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-// Request message for CreateSeason.
-type CreateSeasonRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent the season is created under.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The season to create.
-	Season *Season `protobuf:"bytes,2,opt,name=season,proto3" json:"season,omitempty"`
-	// The id to give it, the last segment of its name; the server mints one
-	// when empty.
-	SeasonId string `protobuf:"bytes,3,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty"`
-	// Validate the request without creating anything.
-	ValidateOnly  bool `protobuf:"varint,4,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateSeasonRequest) Reset() {
-	*x = CreateSeasonRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateSeasonRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateSeasonRequest) ProtoMessage() {}
-
-func (x *CreateSeasonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateSeasonRequest.ProtoReflect.Descriptor instead.
-func (*CreateSeasonRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *CreateSeasonRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *CreateSeasonRequest) GetSeason() *Season {
-	if x != nil {
-		return x.Season
-	}
-	return nil
-}
-
-func (x *CreateSeasonRequest) GetSeasonId() string {
-	if x != nil {
-		return x.SeasonId
-	}
-	return ""
-}
-
-func (x *CreateSeasonRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for UpdateSeason.
-type UpdateSeasonRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The season to update, by its name.
-	Season *Season `protobuf:"bytes,1,opt,name=season,proto3" json:"season,omitempty"`
-	// The fields to update; all populated fields when empty.
-	UpdateMask *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
-	// Validate the request without updating anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateSeasonRequest) Reset() {
-	*x = UpdateSeasonRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateSeasonRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateSeasonRequest) ProtoMessage() {}
-
-func (x *UpdateSeasonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateSeasonRequest.ProtoReflect.Descriptor instead.
-func (*UpdateSeasonRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *UpdateSeasonRequest) GetSeason() *Season {
-	if x != nil {
-		return x.Season
-	}
-	return nil
-}
-
-func (x *UpdateSeasonRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
-	if x != nil {
-		return x.UpdateMask
-	}
-	return nil
-}
-
-func (x *UpdateSeasonRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for DeleteSeason.
-type DeleteSeasonRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the season to delete.
-	// Format: venues/{venue}/seasons/{season}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteSeasonRequest) Reset() {
-	*x = DeleteSeasonRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteSeasonRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteSeasonRequest) ProtoMessage() {}
-
-func (x *DeleteSeasonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteSeasonRequest.ProtoReflect.Descriptor instead.
-func (*DeleteSeasonRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *DeleteSeasonRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteSeasonRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteSeasonRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for GetPriceRule.
-type GetPriceRuleRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the price rule to retrieve.
-	// Format: venues/{venue}/priceRules/{price_rule}
-	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetPriceRuleRequest) Reset() {
-	*x = GetPriceRuleRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetPriceRuleRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetPriceRuleRequest) ProtoMessage() {}
-
-func (x *GetPriceRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetPriceRuleRequest.ProtoReflect.Descriptor instead.
-func (*GetPriceRuleRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *GetPriceRuleRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-// Request message for ListPriceRules.
-type ListPriceRulesRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent whose price rules to list.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The maximum number of price rules to return; the server may
-	// return fewer. Defaults to 50; at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	// A page token from a previous ListPriceRules call.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// An AIP-160 filter, e.g. target = PRICE_TARGET_MENU.
-	Filter string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
-	// An AIP-132 ordering, e.g. "create_time desc".
-	OrderBy       string `protobuf:"bytes,5,opt,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPriceRulesRequest) Reset() {
-	*x = ListPriceRulesRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPriceRulesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPriceRulesRequest) ProtoMessage() {}
-
-func (x *ListPriceRulesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPriceRulesRequest.ProtoReflect.Descriptor instead.
-func (*ListPriceRulesRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{25}
-}
-
-func (x *ListPriceRulesRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *ListPriceRulesRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListPriceRulesRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListPriceRulesRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListPriceRulesRequest) GetOrderBy() string {
-	if x != nil {
-		return x.OrderBy
-	}
-	return ""
-}
-
-// Response message for ListPriceRules.
-type ListPriceRulesResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The price rules.
-	PriceRules []*PriceRule `protobuf:"bytes,1,rep,name=price_rules,json=priceRules,proto3" json:"price_rules,omitempty"`
-	// A token for the next page; empty on the last.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPriceRulesResponse) Reset() {
-	*x = ListPriceRulesResponse{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPriceRulesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPriceRulesResponse) ProtoMessage() {}
-
-func (x *ListPriceRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPriceRulesResponse.ProtoReflect.Descriptor instead.
-func (*ListPriceRulesResponse) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{26}
-}
-
-func (x *ListPriceRulesResponse) GetPriceRules() []*PriceRule {
-	if x != nil {
-		return x.PriceRules
-	}
-	return nil
-}
-
-func (x *ListPriceRulesResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-// Request message for CreatePriceRule.
-type CreatePriceRuleRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The parent the price rule is created under.
-	// Format: venues/{venue}
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// The price rule to create.
-	PriceRule *PriceRule `protobuf:"bytes,2,opt,name=price_rule,json=priceRule,proto3" json:"price_rule,omitempty"`
-	// The id to give it, the last segment of its name; the server mints one
-	// when empty.
-	PriceRuleId string `protobuf:"bytes,3,opt,name=price_rule_id,json=priceRuleId,proto3" json:"price_rule_id,omitempty"`
-	// Validate the request without creating anything.
-	ValidateOnly  bool `protobuf:"varint,4,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreatePriceRuleRequest) Reset() {
-	*x = CreatePriceRuleRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreatePriceRuleRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreatePriceRuleRequest) ProtoMessage() {}
-
-func (x *CreatePriceRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreatePriceRuleRequest.ProtoReflect.Descriptor instead.
-func (*CreatePriceRuleRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{27}
-}
-
-func (x *CreatePriceRuleRequest) GetParent() string {
-	if x != nil {
-		return x.Parent
-	}
-	return ""
-}
-
-func (x *CreatePriceRuleRequest) GetPriceRule() *PriceRule {
-	if x != nil {
-		return x.PriceRule
-	}
-	return nil
-}
-
-func (x *CreatePriceRuleRequest) GetPriceRuleId() string {
-	if x != nil {
-		return x.PriceRuleId
-	}
-	return ""
-}
-
-func (x *CreatePriceRuleRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for UpdatePriceRule.
-type UpdatePriceRuleRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The price rule to update, by its name.
-	PriceRule *PriceRule `protobuf:"bytes,1,opt,name=price_rule,json=priceRule,proto3" json:"price_rule,omitempty"`
-	// The fields to update; all populated fields when empty.
-	UpdateMask *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
-	// Validate the request without updating anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdatePriceRuleRequest) Reset() {
-	*x = UpdatePriceRuleRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdatePriceRuleRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdatePriceRuleRequest) ProtoMessage() {}
-
-func (x *UpdatePriceRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdatePriceRuleRequest.ProtoReflect.Descriptor instead.
-func (*UpdatePriceRuleRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{28}
-}
-
-func (x *UpdatePriceRuleRequest) GetPriceRule() *PriceRule {
-	if x != nil {
-		return x.PriceRule
-	}
-	return nil
-}
-
-func (x *UpdatePriceRuleRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
-	if x != nil {
-		return x.UpdateMask
-	}
-	return nil
-}
-
-func (x *UpdatePriceRuleRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for DeletePriceRule.
-type DeletePriceRuleRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the price rule to delete.
-	// Format: venues/{venue}/priceRules/{price_rule}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeletePriceRuleRequest) Reset() {
-	*x = DeletePriceRuleRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeletePriceRuleRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeletePriceRuleRequest) ProtoMessage() {}
-
-func (x *DeletePriceRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeletePriceRuleRequest.ProtoReflect.Descriptor instead.
-func (*DeletePriceRuleRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{29}
-}
-
-func (x *DeletePriceRuleRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeletePriceRuleRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeletePriceRuleRequest) GetValidateOnly() bool {
+func (x *CreateActivityRequest) GetValidateOnly() bool {
 	if x != nil {
 		return x.ValidateOnly
 	}
@@ -1992,7 +605,7 @@ type GetQuoteRequest struct {
 
 func (x *GetQuoteRequest) Reset() {
 	*x = GetQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[30]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2004,7 +617,7 @@ func (x *GetQuoteRequest) String() string {
 func (*GetQuoteRequest) ProtoMessage() {}
 
 func (x *GetQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[30]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2017,7 +630,7 @@ func (x *GetQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetQuoteRequest.ProtoReflect.Descriptor instead.
 func (*GetQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{30}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetQuoteRequest) GetName() string {
@@ -2048,7 +661,7 @@ type ListQuotesRequest struct {
 
 func (x *ListQuotesRequest) Reset() {
 	*x = ListQuotesRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[31]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2060,7 +673,7 @@ func (x *ListQuotesRequest) String() string {
 func (*ListQuotesRequest) ProtoMessage() {}
 
 func (x *ListQuotesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[31]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2073,7 +686,7 @@ func (x *ListQuotesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListQuotesRequest.ProtoReflect.Descriptor instead.
 func (*ListQuotesRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{31}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListQuotesRequest) GetParent() string {
@@ -2124,7 +737,7 @@ type ListQuotesResponse struct {
 
 func (x *ListQuotesResponse) Reset() {
 	*x = ListQuotesResponse{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[32]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2136,7 +749,7 @@ func (x *ListQuotesResponse) String() string {
 func (*ListQuotesResponse) ProtoMessage() {}
 
 func (x *ListQuotesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[32]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2149,7 +762,7 @@ func (x *ListQuotesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListQuotesResponse.ProtoReflect.Descriptor instead.
 func (*ListQuotesResponse) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{32}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListQuotesResponse) GetQuotes() []*Quote {
@@ -2185,7 +798,7 @@ type CreateQuoteRequest struct {
 
 func (x *CreateQuoteRequest) Reset() {
 	*x = CreateQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[33]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2197,7 +810,7 @@ func (x *CreateQuoteRequest) String() string {
 func (*CreateQuoteRequest) ProtoMessage() {}
 
 func (x *CreateQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[33]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2210,7 +823,7 @@ func (x *CreateQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateQuoteRequest.ProtoReflect.Descriptor instead.
 func (*CreateQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{33}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateQuoteRequest) GetParent() string {
@@ -2256,7 +869,7 @@ type UpdateQuoteRequest struct {
 
 func (x *UpdateQuoteRequest) Reset() {
 	*x = UpdateQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[34]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2268,7 +881,7 @@ func (x *UpdateQuoteRequest) String() string {
 func (*UpdateQuoteRequest) ProtoMessage() {}
 
 func (x *UpdateQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[34]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2281,7 +894,7 @@ func (x *UpdateQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateQuoteRequest.ProtoReflect.Descriptor instead.
 func (*UpdateQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{34}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UpdateQuoteRequest) GetQuote() *Quote {
@@ -2305,71 +918,6 @@ func (x *UpdateQuoteRequest) GetValidateOnly() bool {
 	return false
 }
 
-// Request message for DeleteQuote.
-type DeleteQuoteRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the quote to delete.
-	// Format: venues/{venue}/quotes/{quote}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteQuoteRequest) Reset() {
-	*x = DeleteQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[35]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteQuoteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteQuoteRequest) ProtoMessage() {}
-
-func (x *DeleteQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[35]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteQuoteRequest.ProtoReflect.Descriptor instead.
-func (*DeleteQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{35}
-}
-
-func (x *DeleteQuoteRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteQuoteRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteQuoteRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
 // Request message for SendQuote.
 type SendQuoteRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -2384,7 +932,7 @@ type SendQuoteRequest struct {
 
 func (x *SendQuoteRequest) Reset() {
 	*x = SendQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[36]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2396,7 +944,7 @@ func (x *SendQuoteRequest) String() string {
 func (*SendQuoteRequest) ProtoMessage() {}
 
 func (x *SendQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[36]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2409,7 +957,7 @@ func (x *SendQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendQuoteRequest.ProtoReflect.Descriptor instead.
 func (*SendQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{36}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *SendQuoteRequest) GetName() string {
@@ -2440,7 +988,7 @@ type AcceptQuoteRequest struct {
 
 func (x *AcceptQuoteRequest) Reset() {
 	*x = AcceptQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[37]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2452,7 +1000,7 @@ func (x *AcceptQuoteRequest) String() string {
 func (*AcceptQuoteRequest) ProtoMessage() {}
 
 func (x *AcceptQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[37]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2465,7 +1013,7 @@ func (x *AcceptQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AcceptQuoteRequest.ProtoReflect.Descriptor instead.
 func (*AcceptQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{37}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *AcceptQuoteRequest) GetName() string {
@@ -2498,7 +1046,7 @@ type DeclineQuoteRequest struct {
 
 func (x *DeclineQuoteRequest) Reset() {
 	*x = DeclineQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[38]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2510,7 +1058,7 @@ func (x *DeclineQuoteRequest) String() string {
 func (*DeclineQuoteRequest) ProtoMessage() {}
 
 func (x *DeclineQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[38]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2523,7 +1071,7 @@ func (x *DeclineQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeclineQuoteRequest.ProtoReflect.Descriptor instead.
 func (*DeclineQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{38}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeclineQuoteRequest) GetName() string {
@@ -2561,7 +1109,7 @@ type ReviseQuoteRequest struct {
 
 func (x *ReviseQuoteRequest) Reset() {
 	*x = ReviseQuoteRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[39]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2573,7 +1121,7 @@ func (x *ReviseQuoteRequest) String() string {
 func (*ReviseQuoteRequest) ProtoMessage() {}
 
 func (x *ReviseQuoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[39]
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2586,7 +1134,7 @@ func (x *ReviseQuoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReviseQuoteRequest.ProtoReflect.Descriptor instead.
 func (*ReviseQuoteRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{39}
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ReviseQuoteRequest) GetName() string {
@@ -2603,330 +1151,53 @@ func (x *ReviseQuoteRequest) GetEtag() string {
 	return ""
 }
 
-// Request message for CalculatePrice.
-type CalculatePriceRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The venue whose prices and rules apply.
-	// Format: venues/{venue}
-	Venue string `protobuf:"bytes,1,opt,name=venue,proto3" json:"venue,omitempty"`
-	// The menu, fixed package, space or dish to price.
-	Item string `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty"`
-	// The date to price it for: the event day, the night of a stay.
-	ServiceDate *date.Date `protobuf:"bytes,3,opt,name=service_date,json=serviceDate,proto3" json:"service_date,omitempty"`
-	// How many: plates, nights, hours, units. One when empty.
-	Quantity int32 `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	// The guests it is for, which a volume rule may match.
-	Guests        int32 `protobuf:"varint,5,opt,name=guests,proto3" json:"guests,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CalculatePriceRequest) Reset() {
-	*x = CalculatePriceRequest{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CalculatePriceRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CalculatePriceRequest) ProtoMessage() {}
-
-func (x *CalculatePriceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CalculatePriceRequest.ProtoReflect.Descriptor instead.
-func (*CalculatePriceRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *CalculatePriceRequest) GetVenue() string {
-	if x != nil {
-		return x.Venue
-	}
-	return ""
-}
-
-func (x *CalculatePriceRequest) GetItem() string {
-	if x != nil {
-		return x.Item
-	}
-	return ""
-}
-
-func (x *CalculatePriceRequest) GetServiceDate() *date.Date {
-	if x != nil {
-		return x.ServiceDate
-	}
-	return nil
-}
-
-func (x *CalculatePriceRequest) GetQuantity() int32 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-func (x *CalculatePriceRequest) GetGuests() int32 {
-	if x != nil {
-		return x.Guests
-	}
-	return 0
-}
-
-// Response message for CalculatePrice: what the item costs on the date, and
-// why.
-type CalculatePriceResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The item's base price, before any rule.
-	BasePrice *money.Money `protobuf:"bytes,1,opt,name=base_price,json=basePrice,proto3" json:"base_price,omitempty"`
-	// The rule applied, if one matched.
-	// Format: venues/{venue}/priceRules/{price_rule}
-	PriceRule string `protobuf:"bytes,2,opt,name=price_rule,json=priceRule,proto3" json:"price_rule,omitempty"`
-	// The price of one on the date.
-	UnitPrice *money.Money `protobuf:"bytes,3,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
-	// quantity × unit_price, before tax.
-	Amount *money.Money `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"`
-	// How GST applies to it.
-	Tax *typepbv1.Tax `protobuf:"bytes,5,opt,name=tax,proto3" json:"tax,omitempty"`
-	// The GST on amount, at the item's rate.
-	TaxAmount     *money.Money `protobuf:"bytes,6,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CalculatePriceResponse) Reset() {
-	*x = CalculatePriceResponse{}
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[41]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CalculatePriceResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CalculatePriceResponse) ProtoMessage() {}
-
-func (x *CalculatePriceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[41]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CalculatePriceResponse.ProtoReflect.Descriptor instead.
-func (*CalculatePriceResponse) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{41}
-}
-
-func (x *CalculatePriceResponse) GetBasePrice() *money.Money {
-	if x != nil {
-		return x.BasePrice
-	}
-	return nil
-}
-
-func (x *CalculatePriceResponse) GetPriceRule() string {
-	if x != nil {
-		return x.PriceRule
-	}
-	return ""
-}
-
-func (x *CalculatePriceResponse) GetUnitPrice() *money.Money {
-	if x != nil {
-		return x.UnitPrice
-	}
-	return nil
-}
-
-func (x *CalculatePriceResponse) GetAmount() *money.Money {
-	if x != nil {
-		return x.Amount
-	}
-	return nil
-}
-
-func (x *CalculatePriceResponse) GetTax() *typepbv1.Tax {
-	if x != nil {
-		return x.Tax
-	}
-	return nil
-}
-
-func (x *CalculatePriceResponse) GetTaxAmount() *money.Money {
-	if x != nil {
-		return x.TaxAmount
-	}
-	return nil
-}
-
 var File_aperio_sales_v1_sales_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\n" +
-	"$aperio/sales/v1/sales_messages.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"C\n" +
-	"\x0eGetDishRequest\x121\n" +
+	"$aperio/sales/v1/sales_messages.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\"C\n" +
+	"\x0eGetLeadRequest\x121\n" +
 	"\x04name\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
-	"\x14aperio.sales.v1/DishR\x04name\"\xdb\x01\n" +
-	"\x11ListDishesRequest\x125\n" +
-	"\x06parent\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\x12\x14aperio.sales.v1/DishR\x06parent\x12+\n" +
+	"\x14aperio.sales.v1/LeadR\x04name\"\xa3\x01\n" +
+	"\x10ListLeadsRequest\x12+\n" +
+	"\tpage_size\x18\x01 \x01(\x05B\x0e\xe2A\x01\x01\xbaH\a\x1a\x05\x18\xe8\a(\x00R\bpageSize\x12#\n" +
+	"\n" +
+	"page_token\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\tpageToken\x12\x1c\n" +
+	"\x06filter\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12\x1f\n" +
+	"\border_by\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"h\n" +
+	"\x11ListLeadsResponse\x12+\n" +
+	"\x05leads\x18\x01 \x03(\v2\x15.aperio.sales.v1.LeadR\x05leads\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xbc\x01\n" +
+	"\x11CreateLeadRequest\x12/\n" +
+	"\x04lead\x18\x01 \x01(\v2\x15.aperio.sales.v1.LeadB\x04\xe2A\x01\x02R\x04lead\x12K\n" +
+	"\alead_id\x18\x02 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\x06leadId\x12)\n" +
+	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xb2\x01\n" +
+	"\x11UpdateLeadRequest\x12/\n" +
+	"\x04lead\x18\x01 \x01(\v2\x15.aperio.sales.v1.LeadB\x04\xe2A\x01\x02R\x04lead\x12A\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
+	"updateMask\x12)\n" +
+	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"K\n" +
+	"\x12GetActivityRequest\x125\n" +
+	"\x04name\x18\x01 \x01(\tB!\xe2A\x01\x02\xfaA\x1a\n" +
+	"\x18aperio.sales.v1/ActivityR\x04name\"\xe3\x01\n" +
+	"\x15ListActivitiesRequest\x129\n" +
+	"\x06parent\x18\x01 \x01(\tB!\xe2A\x01\x02\xfaA\x1a\x12\x18aperio.sales.v1/ActivityR\x06parent\x12+\n" +
 	"\tpage_size\x18\x02 \x01(\x05B\x0e\xe2A\x01\x01\xbaH\a\x1a\x05\x18\xe8\a(\x00R\bpageSize\x12#\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\tpageToken\x12\x1c\n" +
 	"\x06filter\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12\x1f\n" +
-	"\border_by\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"k\n" +
-	"\x12ListDishesResponse\x12-\n" +
-	"\x06dishes\x18\x01 \x03(\v2\x15.aperio.sales.v1.DishR\x06dishes\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf3\x01\n" +
-	"\x11CreateDishRequest\x125\n" +
-	"\x06parent\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\x12\x14aperio.sales.v1/DishR\x06parent\x12/\n" +
-	"\x04dish\x18\x02 \x01(\v2\x15.aperio.sales.v1.DishB\x04\xe2A\x01\x02R\x04dish\x12K\n" +
-	"\adish_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\x06dishId\x12)\n" +
-	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xb2\x01\n" +
-	"\x11UpdateDishRequest\x12/\n" +
-	"\x04dish\x18\x01 \x01(\v2\x15.aperio.sales.v1.DishB\x04\xe2A\x01\x02R\x04dish\x12A\n" +
-	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
-	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x8b\x01\n" +
-	"\x11DeleteDishRequest\x121\n" +
-	"\x04name\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
-	"\x14aperio.sales.v1/DishR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"C\n" +
-	"\x0eGetMenuRequest\x121\n" +
-	"\x04name\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
-	"\x14aperio.sales.v1/MenuR\x04name\"\xda\x01\n" +
-	"\x10ListMenusRequest\x125\n" +
-	"\x06parent\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\x12\x14aperio.sales.v1/MenuR\x06parent\x12+\n" +
-	"\tpage_size\x18\x02 \x01(\x05B\x0e\xe2A\x01\x01\xbaH\a\x1a\x05\x18\xe8\a(\x00R\bpageSize\x12#\n" +
+	"\border_by\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"{\n" +
+	"\x16ListActivitiesResponse\x129\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\tpageToken\x12\x1c\n" +
-	"\x06filter\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12\x1f\n" +
-	"\border_by\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"h\n" +
-	"\x11ListMenusResponse\x12+\n" +
-	"\x05menus\x18\x01 \x03(\v2\x15.aperio.sales.v1.MenuR\x05menus\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf3\x01\n" +
-	"\x11CreateMenuRequest\x125\n" +
-	"\x06parent\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\x12\x14aperio.sales.v1/MenuR\x06parent\x12/\n" +
-	"\x04menu\x18\x02 \x01(\v2\x15.aperio.sales.v1.MenuB\x04\xe2A\x01\x02R\x04menu\x12K\n" +
-	"\amenu_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\x06menuId\x12)\n" +
-	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xb2\x01\n" +
-	"\x11UpdateMenuRequest\x12/\n" +
-	"\x04menu\x18\x01 \x01(\v2\x15.aperio.sales.v1.MenuB\x04\xe2A\x01\x02R\x04menu\x12A\n" +
-	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
-	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x8b\x01\n" +
-	"\x11DeleteMenuRequest\x121\n" +
-	"\x04name\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
-	"\x14aperio.sales.v1/MenuR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"S\n" +
-	"\x16GetFixedPackageRequest\x129\n" +
-	"\x04name\x18\x01 \x01(\tB%\xe2A\x01\x02\xfaA\x1e\n" +
-	"\x1caperio.sales.v1/FixedPackageR\x04name\"\xea\x01\n" +
-	"\x18ListFixedPackagesRequest\x12=\n" +
-	"\x06parent\x18\x01 \x01(\tB%\xe2A\x01\x02\xfaA\x1e\x12\x1caperio.sales.v1/FixedPackageR\x06parent\x12+\n" +
-	"\tpage_size\x18\x02 \x01(\x05B\x0e\xe2A\x01\x01\xbaH\a\x1a\x05\x18\xe8\a(\x00R\bpageSize\x12#\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\tpageToken\x12\x1c\n" +
-	"\x06filter\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12\x1f\n" +
-	"\border_by\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"\x89\x01\n" +
-	"\x19ListFixedPackagesResponse\x12D\n" +
-	"\x0efixed_packages\x18\x01 \x03(\v2\x1d.aperio.sales.v1.FixedPackageR\rfixedPackages\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xad\x02\n" +
-	"\x19CreateFixedPackageRequest\x12=\n" +
-	"\x06parent\x18\x01 \x01(\tB%\xe2A\x01\x02\xfaA\x1e\x12\x1caperio.sales.v1/FixedPackageR\x06parent\x12H\n" +
-	"\rfixed_package\x18\x02 \x01(\v2\x1d.aperio.sales.v1.FixedPackageB\x04\xe2A\x01\x02R\ffixedPackage\x12\\\n" +
-	"\x10fixed_package_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\x0efixedPackageId\x12)\n" +
-	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xd3\x01\n" +
-	"\x19UpdateFixedPackageRequest\x12H\n" +
-	"\rfixed_package\x18\x01 \x01(\v2\x1d.aperio.sales.v1.FixedPackageB\x04\xe2A\x01\x02R\ffixedPackage\x12A\n" +
-	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
-	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x9b\x01\n" +
-	"\x19DeleteFixedPackageRequest\x129\n" +
-	"\x04name\x18\x01 \x01(\tB%\xe2A\x01\x02\xfaA\x1e\n" +
-	"\x1caperio.sales.v1/FixedPackageR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"G\n" +
-	"\x10GetSeasonRequest\x123\n" +
-	"\x04name\x18\x01 \x01(\tB\x1f\xe2A\x01\x02\xfaA\x18\n" +
-	"\x16aperio.sales.v1/SeasonR\x04name\"\xde\x01\n" +
-	"\x12ListSeasonsRequest\x127\n" +
-	"\x06parent\x18\x01 \x01(\tB\x1f\xe2A\x01\x02\xfaA\x18\x12\x16aperio.sales.v1/SeasonR\x06parent\x12+\n" +
-	"\tpage_size\x18\x02 \x01(\x05B\x0e\xe2A\x01\x01\xbaH\a\x1a\x05\x18\xe8\a(\x00R\bpageSize\x12#\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\tpageToken\x12\x1c\n" +
-	"\x06filter\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12\x1f\n" +
-	"\border_by\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"p\n" +
-	"\x13ListSeasonsResponse\x121\n" +
-	"\aseasons\x18\x01 \x03(\v2\x17.aperio.sales.v1.SeasonR\aseasons\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x81\x02\n" +
-	"\x13CreateSeasonRequest\x127\n" +
-	"\x06parent\x18\x01 \x01(\tB\x1f\xe2A\x01\x02\xfaA\x18\x12\x16aperio.sales.v1/SeasonR\x06parent\x125\n" +
-	"\x06season\x18\x02 \x01(\v2\x17.aperio.sales.v1.SeasonB\x04\xe2A\x01\x02R\x06season\x12O\n" +
-	"\tseason_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\bseasonId\x12)\n" +
-	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xba\x01\n" +
-	"\x13UpdateSeasonRequest\x125\n" +
-	"\x06season\x18\x01 \x01(\v2\x17.aperio.sales.v1.SeasonB\x04\xe2A\x01\x02R\x06season\x12A\n" +
-	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
-	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x8f\x01\n" +
-	"\x13DeleteSeasonRequest\x123\n" +
-	"\x04name\x18\x01 \x01(\tB\x1f\xe2A\x01\x02\xfaA\x18\n" +
-	"\x16aperio.sales.v1/SeasonR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"M\n" +
-	"\x13GetPriceRuleRequest\x126\n" +
-	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
-	"\x19aperio.sales.v1/PriceRuleR\x04name\"\xe4\x01\n" +
-	"\x15ListPriceRulesRequest\x12:\n" +
-	"\x06parent\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\x12\x19aperio.sales.v1/PriceRuleR\x06parent\x12+\n" +
-	"\tpage_size\x18\x02 \x01(\x05B\x0e\xe2A\x01\x01\xbaH\a\x1a\x05\x18\xe8\a(\x00R\bpageSize\x12#\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tB\x04\xe2A\x01\x01R\tpageToken\x12\x1c\n" +
-	"\x06filter\x18\x04 \x01(\tB\x04\xe2A\x01\x01R\x06filter\x12\x1f\n" +
-	"\border_by\x18\x05 \x01(\tB\x04\xe2A\x01\x01R\aorderBy\"}\n" +
-	"\x16ListPriceRulesResponse\x12;\n" +
-	"\vprice_rules\x18\x01 \x03(\v2\x1a.aperio.sales.v1.PriceRuleR\n" +
-	"priceRules\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x98\x02\n" +
-	"\x16CreatePriceRuleRequest\x12:\n" +
-	"\x06parent\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\x12\x19aperio.sales.v1/PriceRuleR\x06parent\x12?\n" +
-	"\n" +
-	"price_rule\x18\x02 \x01(\v2\x1a.aperio.sales.v1.PriceRuleB\x04\xe2A\x01\x02R\tpriceRule\x12V\n" +
-	"\rprice_rule_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\vpriceRuleId\x12)\n" +
-	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xc7\x01\n" +
-	"\x16UpdatePriceRuleRequest\x12?\n" +
-	"\n" +
-	"price_rule\x18\x01 \x01(\v2\x1a.aperio.sales.v1.PriceRuleB\x04\xe2A\x01\x02R\tpriceRule\x12A\n" +
-	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
-	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x95\x01\n" +
-	"\x16DeletePriceRuleRequest\x126\n" +
-	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
-	"\x19aperio.sales.v1/PriceRuleR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"E\n" +
+	"activities\x18\x01 \x03(\v2\x19.aperio.sales.v1.ActivityR\n" +
+	"activities\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x8f\x02\n" +
+	"\x15CreateActivityRequest\x129\n" +
+	"\x06parent\x18\x01 \x01(\tB!\xe2A\x01\x02\xfaA\x1a\x12\x18aperio.sales.v1/ActivityR\x06parent\x12;\n" +
+	"\bactivity\x18\x02 \x01(\v2\x19.aperio.sales.v1.ActivityB\x04\xe2A\x01\x02R\bactivity\x12S\n" +
+	"\vactivity_id\x18\x03 \x01(\tB2\xe2A\x01\x01\xbaH+\xd8\x01\x01r&2$^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$R\n" +
+	"activityId\x12)\n" +
+	"\rvalidate_only\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"E\n" +
 	"\x0fGetQuoteRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.sales.v1/QuoteR\x04name\"\xdc\x01\n" +
@@ -2949,11 +1220,6 @@ const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\x05quote\x18\x01 \x01(\v2\x16.aperio.sales.v1.QuoteB\x04\xe2A\x01\x02R\x05quote\x12A\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
 	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x8d\x01\n" +
-	"\x12DeleteQuoteRequest\x122\n" +
-	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.sales.v1/QuoteR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
 	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"`\n" +
 	"\x10SendQuoteRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
@@ -2971,27 +1237,7 @@ const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\x12ReviseQuoteRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.sales.v1/QuoteR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\"\xf7\x01\n" +
-	"\x15CalculatePriceRequest\x124\n" +
-	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.venue.v1/VenueR\x05venue\x12\x1e\n" +
-	"\x04item\x18\x02 \x01(\tB\n" +
-	"\xe2A\x01\x02\xfaA\x03\n" +
-	"\x01*R\x04item\x12:\n" +
-	"\fservice_date\x18\x03 \x01(\v2\x11.google.type.DateB\x04\xe2A\x01\x02R\vserviceDate\x12'\n" +
-	"\bquantity\x18\x04 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\bquantity\x12#\n" +
-	"\x06guests\x18\x05 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\x06guests\"\xa3\x02\n" +
-	"\x16CalculatePriceResponse\x121\n" +
-	"\n" +
-	"base_price\x18\x01 \x01(\v2\x12.google.type.MoneyR\tbasePrice\x12\x1d\n" +
-	"\n" +
-	"price_rule\x18\x02 \x01(\tR\tpriceRule\x121\n" +
-	"\n" +
-	"unit_price\x18\x03 \x01(\v2\x12.google.type.MoneyR\tunitPrice\x12*\n" +
-	"\x06amount\x18\x04 \x01(\v2\x12.google.type.MoneyR\x06amount\x12%\n" +
-	"\x03tax\x18\x05 \x01(\v2\x13.aperio.type.v1.TaxR\x03tax\x121\n" +
-	"\n" +
-	"tax_amount\x18\x06 \x01(\v2\x12.google.type.MoneyR\ttaxAmountB\xe0\x01\n" +
+	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etagB\xe0\x01\n" +
 	"\x13com.aperio.sales.v1B\x12SalesMessagesProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1\xa2\x02\x03ASX\xaa\x02\x0fAperio.Sales.V1\xca\x02\x0fAperio\\Sales\\V1\xe2\x02\x1bAperio\\Sales\\V1\\GPBMetadata\xea\x02\x11Aperio::Sales::V1b\x06proto3"
 
 var (
@@ -3006,97 +1252,47 @@ func file_aperio_sales_v1_sales_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescData
 }
 
-var file_aperio_sales_v1_sales_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
+var file_aperio_sales_v1_sales_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_aperio_sales_v1_sales_messages_proto_goTypes = []any{
-	(*GetDishRequest)(nil),            // 0: aperio.sales.v1.GetDishRequest
-	(*ListDishesRequest)(nil),         // 1: aperio.sales.v1.ListDishesRequest
-	(*ListDishesResponse)(nil),        // 2: aperio.sales.v1.ListDishesResponse
-	(*CreateDishRequest)(nil),         // 3: aperio.sales.v1.CreateDishRequest
-	(*UpdateDishRequest)(nil),         // 4: aperio.sales.v1.UpdateDishRequest
-	(*DeleteDishRequest)(nil),         // 5: aperio.sales.v1.DeleteDishRequest
-	(*GetMenuRequest)(nil),            // 6: aperio.sales.v1.GetMenuRequest
-	(*ListMenusRequest)(nil),          // 7: aperio.sales.v1.ListMenusRequest
-	(*ListMenusResponse)(nil),         // 8: aperio.sales.v1.ListMenusResponse
-	(*CreateMenuRequest)(nil),         // 9: aperio.sales.v1.CreateMenuRequest
-	(*UpdateMenuRequest)(nil),         // 10: aperio.sales.v1.UpdateMenuRequest
-	(*DeleteMenuRequest)(nil),         // 11: aperio.sales.v1.DeleteMenuRequest
-	(*GetFixedPackageRequest)(nil),    // 12: aperio.sales.v1.GetFixedPackageRequest
-	(*ListFixedPackagesRequest)(nil),  // 13: aperio.sales.v1.ListFixedPackagesRequest
-	(*ListFixedPackagesResponse)(nil), // 14: aperio.sales.v1.ListFixedPackagesResponse
-	(*CreateFixedPackageRequest)(nil), // 15: aperio.sales.v1.CreateFixedPackageRequest
-	(*UpdateFixedPackageRequest)(nil), // 16: aperio.sales.v1.UpdateFixedPackageRequest
-	(*DeleteFixedPackageRequest)(nil), // 17: aperio.sales.v1.DeleteFixedPackageRequest
-	(*GetSeasonRequest)(nil),          // 18: aperio.sales.v1.GetSeasonRequest
-	(*ListSeasonsRequest)(nil),        // 19: aperio.sales.v1.ListSeasonsRequest
-	(*ListSeasonsResponse)(nil),       // 20: aperio.sales.v1.ListSeasonsResponse
-	(*CreateSeasonRequest)(nil),       // 21: aperio.sales.v1.CreateSeasonRequest
-	(*UpdateSeasonRequest)(nil),       // 22: aperio.sales.v1.UpdateSeasonRequest
-	(*DeleteSeasonRequest)(nil),       // 23: aperio.sales.v1.DeleteSeasonRequest
-	(*GetPriceRuleRequest)(nil),       // 24: aperio.sales.v1.GetPriceRuleRequest
-	(*ListPriceRulesRequest)(nil),     // 25: aperio.sales.v1.ListPriceRulesRequest
-	(*ListPriceRulesResponse)(nil),    // 26: aperio.sales.v1.ListPriceRulesResponse
-	(*CreatePriceRuleRequest)(nil),    // 27: aperio.sales.v1.CreatePriceRuleRequest
-	(*UpdatePriceRuleRequest)(nil),    // 28: aperio.sales.v1.UpdatePriceRuleRequest
-	(*DeletePriceRuleRequest)(nil),    // 29: aperio.sales.v1.DeletePriceRuleRequest
-	(*GetQuoteRequest)(nil),           // 30: aperio.sales.v1.GetQuoteRequest
-	(*ListQuotesRequest)(nil),         // 31: aperio.sales.v1.ListQuotesRequest
-	(*ListQuotesResponse)(nil),        // 32: aperio.sales.v1.ListQuotesResponse
-	(*CreateQuoteRequest)(nil),        // 33: aperio.sales.v1.CreateQuoteRequest
-	(*UpdateQuoteRequest)(nil),        // 34: aperio.sales.v1.UpdateQuoteRequest
-	(*DeleteQuoteRequest)(nil),        // 35: aperio.sales.v1.DeleteQuoteRequest
-	(*SendQuoteRequest)(nil),          // 36: aperio.sales.v1.SendQuoteRequest
-	(*AcceptQuoteRequest)(nil),        // 37: aperio.sales.v1.AcceptQuoteRequest
-	(*DeclineQuoteRequest)(nil),       // 38: aperio.sales.v1.DeclineQuoteRequest
-	(*ReviseQuoteRequest)(nil),        // 39: aperio.sales.v1.ReviseQuoteRequest
-	(*CalculatePriceRequest)(nil),     // 40: aperio.sales.v1.CalculatePriceRequest
-	(*CalculatePriceResponse)(nil),    // 41: aperio.sales.v1.CalculatePriceResponse
-	(*Dish)(nil),                      // 42: aperio.sales.v1.Dish
-	(*fieldmaskpb.FieldMask)(nil),     // 43: google.protobuf.FieldMask
-	(*Menu)(nil),                      // 44: aperio.sales.v1.Menu
-	(*FixedPackage)(nil),              // 45: aperio.sales.v1.FixedPackage
-	(*Season)(nil),                    // 46: aperio.sales.v1.Season
-	(*PriceRule)(nil),                 // 47: aperio.sales.v1.PriceRule
-	(*Quote)(nil),                     // 48: aperio.sales.v1.Quote
-	(*date.Date)(nil),                 // 49: google.type.Date
-	(*money.Money)(nil),               // 50: google.type.Money
-	(*typepbv1.Tax)(nil),              // 51: aperio.type.v1.Tax
+	(*GetLeadRequest)(nil),         // 0: aperio.sales.v1.GetLeadRequest
+	(*ListLeadsRequest)(nil),       // 1: aperio.sales.v1.ListLeadsRequest
+	(*ListLeadsResponse)(nil),      // 2: aperio.sales.v1.ListLeadsResponse
+	(*CreateLeadRequest)(nil),      // 3: aperio.sales.v1.CreateLeadRequest
+	(*UpdateLeadRequest)(nil),      // 4: aperio.sales.v1.UpdateLeadRequest
+	(*GetActivityRequest)(nil),     // 5: aperio.sales.v1.GetActivityRequest
+	(*ListActivitiesRequest)(nil),  // 6: aperio.sales.v1.ListActivitiesRequest
+	(*ListActivitiesResponse)(nil), // 7: aperio.sales.v1.ListActivitiesResponse
+	(*CreateActivityRequest)(nil),  // 8: aperio.sales.v1.CreateActivityRequest
+	(*GetQuoteRequest)(nil),        // 9: aperio.sales.v1.GetQuoteRequest
+	(*ListQuotesRequest)(nil),      // 10: aperio.sales.v1.ListQuotesRequest
+	(*ListQuotesResponse)(nil),     // 11: aperio.sales.v1.ListQuotesResponse
+	(*CreateQuoteRequest)(nil),     // 12: aperio.sales.v1.CreateQuoteRequest
+	(*UpdateQuoteRequest)(nil),     // 13: aperio.sales.v1.UpdateQuoteRequest
+	(*SendQuoteRequest)(nil),       // 14: aperio.sales.v1.SendQuoteRequest
+	(*AcceptQuoteRequest)(nil),     // 15: aperio.sales.v1.AcceptQuoteRequest
+	(*DeclineQuoteRequest)(nil),    // 16: aperio.sales.v1.DeclineQuoteRequest
+	(*ReviseQuoteRequest)(nil),     // 17: aperio.sales.v1.ReviseQuoteRequest
+	(*Lead)(nil),                   // 18: aperio.sales.v1.Lead
+	(*fieldmaskpb.FieldMask)(nil),  // 19: google.protobuf.FieldMask
+	(*Activity)(nil),               // 20: aperio.sales.v1.Activity
+	(*Quote)(nil),                  // 21: aperio.sales.v1.Quote
 }
 var file_aperio_sales_v1_sales_messages_proto_depIdxs = []int32{
-	42, // 0: aperio.sales.v1.ListDishesResponse.dishes:type_name -> aperio.sales.v1.Dish
-	42, // 1: aperio.sales.v1.CreateDishRequest.dish:type_name -> aperio.sales.v1.Dish
-	42, // 2: aperio.sales.v1.UpdateDishRequest.dish:type_name -> aperio.sales.v1.Dish
-	43, // 3: aperio.sales.v1.UpdateDishRequest.update_mask:type_name -> google.protobuf.FieldMask
-	44, // 4: aperio.sales.v1.ListMenusResponse.menus:type_name -> aperio.sales.v1.Menu
-	44, // 5: aperio.sales.v1.CreateMenuRequest.menu:type_name -> aperio.sales.v1.Menu
-	44, // 6: aperio.sales.v1.UpdateMenuRequest.menu:type_name -> aperio.sales.v1.Menu
-	43, // 7: aperio.sales.v1.UpdateMenuRequest.update_mask:type_name -> google.protobuf.FieldMask
-	45, // 8: aperio.sales.v1.ListFixedPackagesResponse.fixed_packages:type_name -> aperio.sales.v1.FixedPackage
-	45, // 9: aperio.sales.v1.CreateFixedPackageRequest.fixed_package:type_name -> aperio.sales.v1.FixedPackage
-	45, // 10: aperio.sales.v1.UpdateFixedPackageRequest.fixed_package:type_name -> aperio.sales.v1.FixedPackage
-	43, // 11: aperio.sales.v1.UpdateFixedPackageRequest.update_mask:type_name -> google.protobuf.FieldMask
-	46, // 12: aperio.sales.v1.ListSeasonsResponse.seasons:type_name -> aperio.sales.v1.Season
-	46, // 13: aperio.sales.v1.CreateSeasonRequest.season:type_name -> aperio.sales.v1.Season
-	46, // 14: aperio.sales.v1.UpdateSeasonRequest.season:type_name -> aperio.sales.v1.Season
-	43, // 15: aperio.sales.v1.UpdateSeasonRequest.update_mask:type_name -> google.protobuf.FieldMask
-	47, // 16: aperio.sales.v1.ListPriceRulesResponse.price_rules:type_name -> aperio.sales.v1.PriceRule
-	47, // 17: aperio.sales.v1.CreatePriceRuleRequest.price_rule:type_name -> aperio.sales.v1.PriceRule
-	47, // 18: aperio.sales.v1.UpdatePriceRuleRequest.price_rule:type_name -> aperio.sales.v1.PriceRule
-	43, // 19: aperio.sales.v1.UpdatePriceRuleRequest.update_mask:type_name -> google.protobuf.FieldMask
-	48, // 20: aperio.sales.v1.ListQuotesResponse.quotes:type_name -> aperio.sales.v1.Quote
-	48, // 21: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
-	48, // 22: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
-	43, // 23: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
-	49, // 24: aperio.sales.v1.CalculatePriceRequest.service_date:type_name -> google.type.Date
-	50, // 25: aperio.sales.v1.CalculatePriceResponse.base_price:type_name -> google.type.Money
-	50, // 26: aperio.sales.v1.CalculatePriceResponse.unit_price:type_name -> google.type.Money
-	50, // 27: aperio.sales.v1.CalculatePriceResponse.amount:type_name -> google.type.Money
-	51, // 28: aperio.sales.v1.CalculatePriceResponse.tax:type_name -> aperio.type.v1.Tax
-	50, // 29: aperio.sales.v1.CalculatePriceResponse.tax_amount:type_name -> google.type.Money
-	30, // [30:30] is the sub-list for method output_type
-	30, // [30:30] is the sub-list for method input_type
-	30, // [30:30] is the sub-list for extension type_name
-	30, // [30:30] is the sub-list for extension extendee
-	0,  // [0:30] is the sub-list for field type_name
+	18, // 0: aperio.sales.v1.ListLeadsResponse.leads:type_name -> aperio.sales.v1.Lead
+	18, // 1: aperio.sales.v1.CreateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
+	18, // 2: aperio.sales.v1.UpdateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
+	19, // 3: aperio.sales.v1.UpdateLeadRequest.update_mask:type_name -> google.protobuf.FieldMask
+	20, // 4: aperio.sales.v1.ListActivitiesResponse.activities:type_name -> aperio.sales.v1.Activity
+	20, // 5: aperio.sales.v1.CreateActivityRequest.activity:type_name -> aperio.sales.v1.Activity
+	21, // 6: aperio.sales.v1.ListQuotesResponse.quotes:type_name -> aperio.sales.v1.Quote
+	21, // 7: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
+	21, // 8: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
+	19, // 9: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_aperio_sales_v1_sales_messages_proto_init() }
@@ -3111,7 +1307,7 @@ func file_aperio_sales_v1_sales_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_sales_v1_sales_messages_proto_rawDesc), len(file_aperio_sales_v1_sales_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   42,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

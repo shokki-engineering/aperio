@@ -1,0 +1,53 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.catalog.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/catalog/v1/catalogpbv1;catalogpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.catalog.v1";
+
+// Course is the course a dish is served in.
+enum Course {
+  // Default; never set.
+  COURSE_UNSPECIFIED = 0;
+
+  // A welcome drink.
+  COURSE_WELCOME_DRINK = 1;
+
+  // A starter or snack, passed or plated.
+  COURSE_STARTER = 2;
+
+  // A soup.
+  COURSE_SOUP = 3;
+
+  // A salad.
+  COURSE_SALAD = 4;
+
+  // A main course.
+  COURSE_MAIN = 5;
+
+  // A bread.
+  COURSE_BREAD = 6;
+
+  // A rice or biryani.
+  COURSE_RICE = 7;
+
+  // A dal, raita or side.
+  COURSE_SIDE = 8;
+
+  // A dessert.
+  COURSE_DESSERT = 9;
+
+  // A beverage.
+  COURSE_BEVERAGE = 10;
+
+  // A live counter: chaat, pasta, dosa, tandoor.
+  COURSE_LIVE_COUNTER = 11;
+
+  // Another course.
+  COURSE_OTHER = 12;
+}

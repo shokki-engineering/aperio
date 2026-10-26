@@ -332,81 +332,6 @@ func (x *UpdateVenueRequest) GetValidateOnly() bool {
 	return false
 }
 
-// Request message for DeleteVenue.
-type DeleteVenueRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the venue to delete.
-	// Format: venues/{venue}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	// Delete its spaces, bookings and records too; without it, a
-	// venue that has any fails with FAILED_PRECONDITION.
-	Force         bool `protobuf:"varint,4,opt,name=force,proto3" json:"force,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteVenueRequest) Reset() {
-	*x = DeleteVenueRequest{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteVenueRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteVenueRequest) ProtoMessage() {}
-
-func (x *DeleteVenueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteVenueRequest.ProtoReflect.Descriptor instead.
-func (*DeleteVenueRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *DeleteVenueRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteVenueRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteVenueRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-func (x *DeleteVenueRequest) GetForce() bool {
-	if x != nil {
-		return x.Force
-	}
-	return false
-}
-
 // Request message for GetSpace.
 type GetSpaceRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -419,7 +344,7 @@ type GetSpaceRequest struct {
 
 func (x *GetSpaceRequest) Reset() {
 	*x = GetSpaceRequest{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[6]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +356,7 @@ func (x *GetSpaceRequest) String() string {
 func (*GetSpaceRequest) ProtoMessage() {}
 
 func (x *GetSpaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[6]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +369,7 @@ func (x *GetSpaceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSpaceRequest.ProtoReflect.Descriptor instead.
 func (*GetSpaceRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{6}
+	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetSpaceRequest) GetName() string {
@@ -475,7 +400,7 @@ type ListSpacesRequest struct {
 
 func (x *ListSpacesRequest) Reset() {
 	*x = ListSpacesRequest{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[7]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -487,7 +412,7 @@ func (x *ListSpacesRequest) String() string {
 func (*ListSpacesRequest) ProtoMessage() {}
 
 func (x *ListSpacesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[7]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -500,7 +425,7 @@ func (x *ListSpacesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSpacesRequest.ProtoReflect.Descriptor instead.
 func (*ListSpacesRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{7}
+	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListSpacesRequest) GetParent() string {
@@ -551,7 +476,7 @@ type ListSpacesResponse struct {
 
 func (x *ListSpacesResponse) Reset() {
 	*x = ListSpacesResponse{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[8]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -563,7 +488,7 @@ func (x *ListSpacesResponse) String() string {
 func (*ListSpacesResponse) ProtoMessage() {}
 
 func (x *ListSpacesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[8]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -576,7 +501,7 @@ func (x *ListSpacesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSpacesResponse.ProtoReflect.Descriptor instead.
 func (*ListSpacesResponse) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{8}
+	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListSpacesResponse) GetSpaces() []*Space {
@@ -612,7 +537,7 @@ type CreateSpaceRequest struct {
 
 func (x *CreateSpaceRequest) Reset() {
 	*x = CreateSpaceRequest{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[9]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -624,7 +549,7 @@ func (x *CreateSpaceRequest) String() string {
 func (*CreateSpaceRequest) ProtoMessage() {}
 
 func (x *CreateSpaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[9]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -637,7 +562,7 @@ func (x *CreateSpaceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSpaceRequest.ProtoReflect.Descriptor instead.
 func (*CreateSpaceRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{9}
+	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateSpaceRequest) GetParent() string {
@@ -683,7 +608,7 @@ type UpdateSpaceRequest struct {
 
 func (x *UpdateSpaceRequest) Reset() {
 	*x = UpdateSpaceRequest{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[10]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -695,7 +620,7 @@ func (x *UpdateSpaceRequest) String() string {
 func (*UpdateSpaceRequest) ProtoMessage() {}
 
 func (x *UpdateSpaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[10]
+	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -708,7 +633,7 @@ func (x *UpdateSpaceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSpaceRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSpaceRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{10}
+	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UpdateSpaceRequest) GetSpace() *Space {
@@ -726,71 +651,6 @@ func (x *UpdateSpaceRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
 }
 
 func (x *UpdateSpaceRequest) GetValidateOnly() bool {
-	if x != nil {
-		return x.ValidateOnly
-	}
-	return false
-}
-
-// Request message for DeleteSpace.
-type DeleteSpaceRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The name of the space to delete.
-	// Format: venues/{venue}/spaces/{space}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The etag the caller last read; the delete fails when it has changed.
-	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
-	// Validate the request without deleting anything.
-	ValidateOnly  bool `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteSpaceRequest) Reset() {
-	*x = DeleteSpaceRequest{}
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteSpaceRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteSpaceRequest) ProtoMessage() {}
-
-func (x *DeleteSpaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_venue_v1_venue_messages_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteSpaceRequest.ProtoReflect.Descriptor instead.
-func (*DeleteSpaceRequest) Descriptor() ([]byte, []int) {
-	return file_aperio_venue_v1_venue_messages_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *DeleteSpaceRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *DeleteSpaceRequest) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-func (x *DeleteSpaceRequest) GetValidateOnly() bool {
 	if x != nil {
 		return x.ValidateOnly
 	}
@@ -822,13 +682,7 @@ const file_aperio_venue_v1_venue_messages_proto_rawDesc = "" +
 	"\x05venue\x18\x01 \x01(\v2\x16.aperio.venue.v1.VenueB\x04\xe2A\x01\x02R\x05venue\x12A\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
 	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xa9\x01\n" +
-	"\x12DeleteVenueRequest\x122\n" +
-	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.venue.v1/VenueR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\x12\x1a\n" +
-	"\x05force\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\x05force\"E\n" +
+	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"E\n" +
 	"\x0fGetSpaceRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/SpaceR\x04name\"\xdc\x01\n" +
@@ -851,11 +705,6 @@ const file_aperio_venue_v1_venue_messages_proto_rawDesc = "" +
 	"\x05space\x18\x01 \x01(\v2\x16.aperio.venue.v1.SpaceB\x04\xe2A\x01\x02R\x05space\x12A\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
 	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\x8d\x01\n" +
-	"\x12DeleteSpaceRequest\x122\n" +
-	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.venue.v1/SpaceR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12)\n" +
 	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnlyB\xe0\x01\n" +
 	"\x13com.aperio.venue.v1B\x12VenueMessagesProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1;venuepbv1\xa2\x02\x03AVX\xaa\x02\x0fAperio.Venue.V1\xca\x02\x0fAperio\\Venue\\V1\xe2\x02\x1bAperio\\Venue\\V1\\GPBMetadata\xea\x02\x11Aperio::Venue::V1b\x06proto3"
 
@@ -871,33 +720,31 @@ func file_aperio_venue_v1_venue_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_venue_v1_venue_messages_proto_rawDescData
 }
 
-var file_aperio_venue_v1_venue_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_aperio_venue_v1_venue_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_aperio_venue_v1_venue_messages_proto_goTypes = []any{
 	(*GetVenueRequest)(nil),       // 0: aperio.venue.v1.GetVenueRequest
 	(*ListVenuesRequest)(nil),     // 1: aperio.venue.v1.ListVenuesRequest
 	(*ListVenuesResponse)(nil),    // 2: aperio.venue.v1.ListVenuesResponse
 	(*CreateVenueRequest)(nil),    // 3: aperio.venue.v1.CreateVenueRequest
 	(*UpdateVenueRequest)(nil),    // 4: aperio.venue.v1.UpdateVenueRequest
-	(*DeleteVenueRequest)(nil),    // 5: aperio.venue.v1.DeleteVenueRequest
-	(*GetSpaceRequest)(nil),       // 6: aperio.venue.v1.GetSpaceRequest
-	(*ListSpacesRequest)(nil),     // 7: aperio.venue.v1.ListSpacesRequest
-	(*ListSpacesResponse)(nil),    // 8: aperio.venue.v1.ListSpacesResponse
-	(*CreateSpaceRequest)(nil),    // 9: aperio.venue.v1.CreateSpaceRequest
-	(*UpdateSpaceRequest)(nil),    // 10: aperio.venue.v1.UpdateSpaceRequest
-	(*DeleteSpaceRequest)(nil),    // 11: aperio.venue.v1.DeleteSpaceRequest
-	(*Venue)(nil),                 // 12: aperio.venue.v1.Venue
-	(*fieldmaskpb.FieldMask)(nil), // 13: google.protobuf.FieldMask
-	(*Space)(nil),                 // 14: aperio.venue.v1.Space
+	(*GetSpaceRequest)(nil),       // 5: aperio.venue.v1.GetSpaceRequest
+	(*ListSpacesRequest)(nil),     // 6: aperio.venue.v1.ListSpacesRequest
+	(*ListSpacesResponse)(nil),    // 7: aperio.venue.v1.ListSpacesResponse
+	(*CreateSpaceRequest)(nil),    // 8: aperio.venue.v1.CreateSpaceRequest
+	(*UpdateSpaceRequest)(nil),    // 9: aperio.venue.v1.UpdateSpaceRequest
+	(*Venue)(nil),                 // 10: aperio.venue.v1.Venue
+	(*fieldmaskpb.FieldMask)(nil), // 11: google.protobuf.FieldMask
+	(*Space)(nil),                 // 12: aperio.venue.v1.Space
 }
 var file_aperio_venue_v1_venue_messages_proto_depIdxs = []int32{
-	12, // 0: aperio.venue.v1.ListVenuesResponse.venues:type_name -> aperio.venue.v1.Venue
-	12, // 1: aperio.venue.v1.CreateVenueRequest.venue:type_name -> aperio.venue.v1.Venue
-	12, // 2: aperio.venue.v1.UpdateVenueRequest.venue:type_name -> aperio.venue.v1.Venue
-	13, // 3: aperio.venue.v1.UpdateVenueRequest.update_mask:type_name -> google.protobuf.FieldMask
-	14, // 4: aperio.venue.v1.ListSpacesResponse.spaces:type_name -> aperio.venue.v1.Space
-	14, // 5: aperio.venue.v1.CreateSpaceRequest.space:type_name -> aperio.venue.v1.Space
-	14, // 6: aperio.venue.v1.UpdateSpaceRequest.space:type_name -> aperio.venue.v1.Space
-	13, // 7: aperio.venue.v1.UpdateSpaceRequest.update_mask:type_name -> google.protobuf.FieldMask
+	10, // 0: aperio.venue.v1.ListVenuesResponse.venues:type_name -> aperio.venue.v1.Venue
+	10, // 1: aperio.venue.v1.CreateVenueRequest.venue:type_name -> aperio.venue.v1.Venue
+	10, // 2: aperio.venue.v1.UpdateVenueRequest.venue:type_name -> aperio.venue.v1.Venue
+	11, // 3: aperio.venue.v1.UpdateVenueRequest.update_mask:type_name -> google.protobuf.FieldMask
+	12, // 4: aperio.venue.v1.ListSpacesResponse.spaces:type_name -> aperio.venue.v1.Space
+	12, // 5: aperio.venue.v1.CreateSpaceRequest.space:type_name -> aperio.venue.v1.Space
+	12, // 6: aperio.venue.v1.UpdateSpaceRequest.space:type_name -> aperio.venue.v1.Space
+	11, // 7: aperio.venue.v1.UpdateSpaceRequest.update_mask:type_name -> google.protobuf.FieldMask
 	8,  // [8:8] is the sub-list for method output_type
 	8,  // [8:8] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
@@ -917,7 +764,7 @@ func file_aperio_venue_v1_venue_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_venue_v1_venue_messages_proto_rawDesc), len(file_aperio_venue_v1_venue_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

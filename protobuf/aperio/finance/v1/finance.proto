@@ -90,7 +90,7 @@ message Invoice {
   // Format: contacts/{contact}
   string contact = 5 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.crm.v1/Contact",
+    (google.api.resource_reference).type = "aperio.guest.v1/Contact",
     (buf.validate.field).string.pattern = "^contacts/[^/]+$"
   ];
 
@@ -296,7 +296,7 @@ message Payment {
   // Format: contacts/{contact}
   string contact = 2 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.crm.v1/Contact",
+    (google.api.resource_reference).type = "aperio.guest.v1/Contact",
     (buf.validate.field).string.pattern = "^contacts/[^/]+$"
   ];
 

@@ -592,10 +592,10 @@ const file_aperio_operations_v1_operations_proto_rawDesc = "" +
 	"\x05state\n" +
 	"\bdue_time*\r\n" +
 	"\vupdate_time\xd2\xf0\x19#\n" +
-	"!aperio.operations.service_request\"\xbe\x01\n" +
-	"\vRequestItem\x121\n" +
-	"\x04dish\x18\x01 \x01(\tB\x1d\xe2A\x01\x01\xfaA\x16\n" +
-	"\x14aperio.sales.v1/DishR\x04dish\x12/\n" +
+	"!aperio.operations.service_request\"\xc0\x01\n" +
+	"\vRequestItem\x123\n" +
+	"\x04dish\x18\x01 \x01(\tB\x1f\xe2A\x01\x01\xfaA\x18\n" +
+	"\x16aperio.catalog.v1/DishR\x04dish\x12/\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xc8\x01R\vdisplayName\x12'\n" +
 	"\bquantity\x18\x03 \x01(\x05B\v\xe2A\x01\x02\xbaH\x04\x1a\x02 \x00R\bquantity\x12\"\n" +
 	"\x05notes\x18\x04 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xf4\x03R\x05notesB\x85\x02\n" +

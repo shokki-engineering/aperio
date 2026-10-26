@@ -12,13 +12,10 @@ package salespbv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	typepbv1 "github.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1"
-	_ "github.com/the-protobuf-project/cache/plugin/pb/cachepbv1"
 	_ "github.com/the-protobuf-project/store/plugin/entity/pb/entitypbv1"
 	_ "github.com/the-protobuf-project/store/plugin/pb/storepbv1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	date "google.golang.org/genproto/googleapis/type/date"
-	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
-	decimal "google.golang.org/genproto/googleapis/type/decimal"
 	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -102,68 +99,95 @@ func (x Quote_State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Quote_State.Descriptor instead.
 func (Quote_State) EnumDescriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{8, 0}
+	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{2, 0}
 }
 
-// A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a
-// live chaat counter, a mocktail. It is the catalogue menus are made from, so
-// a dish is described once -- its course, the diets it suits, its allergens --
-// and every menu that offers it says the same.
+// A Lead is an enquiry that may become a booking: a couple asking about a
+// December wedding, a company asking for an offsite with forty rooms, a
+// family asking about a week at the resort. It covers both venues and every
+// kind of booking -- a stay, an event, or both, as a wedding with rooms for
+// its guests is.
 //
-// A dish has its own price only when it is sold on its own: à la carte, room
-// service, an add-on to a menu.
-type Dish struct {
+// A lead moves through a sales pipeline, from NEW to WON or LOST, owned by
+// one salesperson with a follow-up date. While it is negotiated its dates
+// can be held in freebusy (`hold`), so they are not sold under it; winning it
+// turns the accepted quote into the booking.
+type Lead struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The dish name.
-	// Format: venues/{venue}/dishes/{dish}
+	// The lead name.
+	// Format: leads/{lead}
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The dish as the menu card names it.
+	// A short title for the pipeline, e.g. "Sharma–Iyer wedding, Dec 2026".
 	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// A line about it for the menu card.
-	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	// The course it is served in.
-	Course Course `protobuf:"varint,4,opt,name=course,proto3,enum=aperio.sales.v1.Course" json:"course,omitempty"`
-	// The cuisine, e.g. "North Indian", "Chettinad", "Continental".
-	Cuisine string `protobuf:"bytes,5,opt,name=cuisine,proto3" json:"cuisine,omitempty"`
-	// The diets it suits: a paneer tikka is vegetarian and eggetarian, not
-	// Jain.
-	Diets []typepbv1.Diet `protobuf:"varint,6,rep,packed,name=diets,proto3,enum=aperio.type.v1.Diet" json:"diets,omitempty"`
-	// What it contains that some guests must not eat.
-	Allergens []typepbv1.Allergen `protobuf:"varint,7,rep,packed,name=allergens,proto3,enum=aperio.type.v1.Allergen" json:"allergens,omitempty"`
-	// Its price on its own, before any season's rule: à la carte, room service,
-	// or as an add-on. Empty for a dish only served within a menu.
-	Price *money.Money `protobuf:"bytes,8,opt,name=price,proto3" json:"price,omitempty"`
-	// How GST applies to it on its own.
-	Tax *typepbv1.Tax `protobuf:"bytes,9,opt,name=tax,proto3" json:"tax,omitempty"`
-	// A photo of it.
-	ImageUri string `protobuf:"bytes,10,opt,name=image_uri,json=imageUri,proto3" json:"image_uri,omitempty"`
-	// Whether the kitchen offers it now; an unavailable dish stays on old menus
-	// and quotes but is not offered on new ones.
-	Available bool `protobuf:"varint,11,opt,name=available,proto3" json:"available,omitempty"`
+	// Who is asking.
+	// Format: contacts/{contact}
+	Contact string `protobuf:"bytes,3,opt,name=contact,proto3" json:"contact,omitempty"`
+	// The venue asked about; empty while the guest is still choosing.
+	// Format: venues/{venue}
+	Venue string `protobuf:"bytes,4,opt,name=venue,proto3" json:"venue,omitempty"`
+	// What the guest wants to book.
+	Kind LeadKind `protobuf:"varint,5,opt,name=kind,proto3,enum=aperio.sales.v1.LeadKind" json:"kind,omitempty"`
+	// The occasion, for an event.
+	EventType typepbv1.EventType `protobuf:"varint,6,opt,name=event_type,json=eventType,proto3,enum=aperio.type.v1.EventType" json:"event_type,omitempty"`
+	// Where the lead came from.
+	Source typepbv1.Channel `protobuf:"varint,7,opt,name=source,proto3,enum=aperio.type.v1.Channel" json:"source,omitempty"`
+	// More on the source: the campaign, the referrer, the agent.
+	SourceDetail string `protobuf:"bytes,8,opt,name=source_detail,json=sourceDetail,proto3" json:"source_detail,omitempty"`
+	// Where the lead is in the pipeline.
+	Stage Stage `protobuf:"varint,9,opt,name=stage,proto3,enum=aperio.sales.v1.Stage" json:"stage,omitempty"`
+	// The dates asked for, in order of preference.
+	Dates []*typepbv1.DateRange `protobuf:"bytes,10,rep,name=dates,proto3" json:"dates,omitempty"`
+	// Whether the guest would take other dates.
+	DatesFlexible bool `protobuf:"varint,11,opt,name=dates_flexible,json=datesFlexible,proto3" json:"dates_flexible,omitempty"`
+	// How many guests are expected.
+	Guests int32 `protobuf:"varint,12,opt,name=guests,proto3" json:"guests,omitempty"`
+	// How many rooms are wanted, for a stay or an event's guests.
+	Rooms int32 `protobuf:"varint,13,opt,name=rooms,proto3" json:"rooms,omitempty"`
+	// What the guest means to spend, in all.
+	Budget *money.Money `protobuf:"bytes,14,opt,name=budget,proto3" json:"budget,omitempty"`
+	// What the guest needs that the rest does not say: decor, a mandap, a band,
+	// a vegetarian-only kitchen.
+	Requirements string `protobuf:"bytes,15,opt,name=requirements,proto3" json:"requirements,omitempty"`
+	// The salesperson who owns the lead.
+	// Format: users/{user}
+	Owner string `protobuf:"bytes,16,opt,name=owner,proto3" json:"owner,omitempty"`
+	// When the owner is next to get in touch.
+	NextFollowUpTime *timestamppb.Timestamp `protobuf:"bytes,17,opt,name=next_follow_up_time,json=nextFollowUpTime,proto3" json:"next_follow_up_time,omitempty"`
+	// Why the lead was lost, once it is.
+	LostReason LostReason `protobuf:"varint,18,opt,name=lost_reason,json=lostReason,proto3,enum=aperio.sales.v1.LostReason" json:"lost_reason,omitempty"`
+	// More on why it was lost: the competitor, the price asked for.
+	LostDetail string `protobuf:"bytes,19,opt,name=lost_detail,json=lostDetail,proto3" json:"lost_detail,omitempty"`
+	// The freebusy hold keeping the lead's first dates while it is negotiated.
+	// Format: holds/{hold}
+	Hold string `protobuf:"bytes,20,opt,name=hold,proto3" json:"hold,omitempty"`
+	// The bookings the lead became, once won.
+	Bookings []string `protobuf:"bytes,21,rep,name=bookings,proto3" json:"bookings,omitempty"`
+	// When the lead was won or lost.
+	CloseTime *timestamppb.Timestamp `protobuf:"bytes,22,opt,name=close_time,json=closeTime,proto3" json:"close_time,omitempty"`
 	// Creation timestamp.
-	CreateTime *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	CreateTime *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Last-modification timestamp.
-	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
+	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,14,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag          string `protobuf:"bytes,25,opt,name=etag,proto3" json:"etag,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Dish) Reset() {
-	*x = Dish{}
+func (x *Lead) Reset() {
+	*x = Lead{}
 	mi := &file_aperio_sales_v1_sales_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Dish) String() string {
+func (x *Lead) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Dish) ProtoMessage() {}
+func (*Lead) ProtoMessage() {}
 
-func (x *Dish) ProtoReflect() protoreflect.Message {
+func (x *Lead) ProtoReflect() protoreflect.Message {
 	mi := &file_aperio_sales_v1_sales_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -175,828 +199,229 @@ func (x *Dish) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Dish.ProtoReflect.Descriptor instead.
-func (*Dish) Descriptor() ([]byte, []int) {
+// Deprecated: Use Lead.ProtoReflect.Descriptor instead.
+func (*Lead) Descriptor() ([]byte, []int) {
 	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Dish) GetName() string {
+func (x *Lead) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *Dish) GetDisplayName() string {
+func (x *Lead) GetDisplayName() string {
 	if x != nil {
 		return x.DisplayName
 	}
 	return ""
 }
 
-func (x *Dish) GetDescription() string {
+func (x *Lead) GetContact() string {
 	if x != nil {
-		return x.Description
+		return x.Contact
 	}
 	return ""
 }
 
-func (x *Dish) GetCourse() Course {
+func (x *Lead) GetVenue() string {
 	if x != nil {
-		return x.Course
-	}
-	return Course_COURSE_UNSPECIFIED
-}
-
-func (x *Dish) GetCuisine() string {
-	if x != nil {
-		return x.Cuisine
+		return x.Venue
 	}
 	return ""
 }
 
-func (x *Dish) GetDiets() []typepbv1.Diet {
+func (x *Lead) GetKind() LeadKind {
 	if x != nil {
-		return x.Diets
+		return x.Kind
 	}
-	return nil
+	return LeadKind_LEAD_KIND_UNSPECIFIED
 }
 
-func (x *Dish) GetAllergens() []typepbv1.Allergen {
+func (x *Lead) GetEventType() typepbv1.EventType {
 	if x != nil {
-		return x.Allergens
+		return x.EventType
 	}
-	return nil
+	return typepbv1.EventType(0)
 }
 
-func (x *Dish) GetPrice() *money.Money {
+func (x *Lead) GetSource() typepbv1.Channel {
 	if x != nil {
-		return x.Price
+		return x.Source
 	}
-	return nil
+	return typepbv1.Channel(0)
 }
 
-func (x *Dish) GetTax() *typepbv1.Tax {
+func (x *Lead) GetSourceDetail() string {
 	if x != nil {
-		return x.Tax
-	}
-	return nil
-}
-
-func (x *Dish) GetImageUri() string {
-	if x != nil {
-		return x.ImageUri
+		return x.SourceDetail
 	}
 	return ""
 }
 
-func (x *Dish) GetAvailable() bool {
+func (x *Lead) GetStage() Stage {
 	if x != nil {
-		return x.Available
+		return x.Stage
 	}
-	return false
+	return Stage_STAGE_UNSPECIFIED
 }
 
-func (x *Dish) GetCreateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreateTime
-	}
-	return nil
-}
-
-func (x *Dish) GetUpdateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdateTime
-	}
-	return nil
-}
-
-func (x *Dish) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-// A Menu is a plate menu sold for events at a price per plate: "Silver
-// Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice,
-// 2 desserts". It is a set of courses, each a choice among dishes, with
-// add-ons priced per plate on top.
-//
-// Its plate_price is the base price. What a plate costs on a given date is
-// the base price with the venue's price rules applied (PriceRule), so a
-// wedding-season surcharge needs no edit to the menu.
-type Menu struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The menu name.
-	// Format: venues/{venue}/menus/{menu}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The menu as it is sold, e.g. "Silver Vegetarian".
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// A line about it for the proposal.
-	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	// The diets the whole menu suits: a vegetarian menu, a Jain menu.
-	Diets []typepbv1.Diet `protobuf:"varint,4,rep,packed,name=diets,proto3,enum=aperio.type.v1.Diet" json:"diets,omitempty"`
-	// The courses, in serving order.
-	Courses []*MenuCourse `protobuf:"bytes,5,rep,name=courses,proto3" json:"courses,omitempty"`
-	// What can be added, priced per plate on top of the menu.
-	AddOns []*MenuAddOn `protobuf:"bytes,6,rep,name=add_ons,json=addOns,proto3" json:"add_ons,omitempty"`
-	// The base price of a plate, before any price rule.
-	PlatePrice *money.Money `protobuf:"bytes,7,opt,name=plate_price,json=platePrice,proto3" json:"plate_price,omitempty"`
-	// The fewest plates the menu is sold for.
-	MinPlates int32 `protobuf:"varint,8,opt,name=min_plates,json=minPlates,proto3" json:"min_plates,omitempty"`
-	// How GST applies to it.
-	Tax *typepbv1.Tax `protobuf:"bytes,9,opt,name=tax,proto3" json:"tax,omitempty"`
-	// Whether it is offered on new quotes.
-	Active bool `protobuf:"varint,10,opt,name=active,proto3" json:"active,omitempty"`
-	// Creation timestamp.
-	CreateTime *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
-	// Last-modification timestamp.
-	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
-	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,13,opt,name=etag,proto3" json:"etag,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Menu) Reset() {
-	*x = Menu{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Menu) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Menu) ProtoMessage() {}
-
-func (x *Menu) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Menu.ProtoReflect.Descriptor instead.
-func (*Menu) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Menu) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *Menu) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
-	}
-	return ""
-}
-
-func (x *Menu) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *Menu) GetDiets() []typepbv1.Diet {
-	if x != nil {
-		return x.Diets
-	}
-	return nil
-}
-
-func (x *Menu) GetCourses() []*MenuCourse {
-	if x != nil {
-		return x.Courses
-	}
-	return nil
-}
-
-func (x *Menu) GetAddOns() []*MenuAddOn {
-	if x != nil {
-		return x.AddOns
-	}
-	return nil
-}
-
-func (x *Menu) GetPlatePrice() *money.Money {
-	if x != nil {
-		return x.PlatePrice
-	}
-	return nil
-}
-
-func (x *Menu) GetMinPlates() int32 {
-	if x != nil {
-		return x.MinPlates
-	}
-	return 0
-}
-
-func (x *Menu) GetTax() *typepbv1.Tax {
-	if x != nil {
-		return x.Tax
-	}
-	return nil
-}
-
-func (x *Menu) GetActive() bool {
-	if x != nil {
-		return x.Active
-	}
-	return false
-}
-
-func (x *Menu) GetCreateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreateTime
-	}
-	return nil
-}
-
-func (x *Menu) GetUpdateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdateTime
-	}
-	return nil
-}
-
-func (x *Menu) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-// MenuCourse is one course of a menu: the dishes on offer, and how many of
-// them the host picks.
-type MenuCourse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The course.
-	Course Course `protobuf:"varint,1,opt,name=course,proto3,enum=aperio.sales.v1.Course" json:"course,omitempty"`
-	// How the proposal heads it, e.g. "Starters (any three)"; the course's name
-	// when empty.
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// How many of the dishes the host picks; zero means all are served.
-	Choose int32 `protobuf:"varint,3,opt,name=choose,proto3" json:"choose,omitempty"`
-	// The dishes on offer.
-	// Format: venues/{venue}/dishes/{dish}
-	Dishes        []string `protobuf:"bytes,4,rep,name=dishes,proto3" json:"dishes,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MenuCourse) Reset() {
-	*x = MenuCourse{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MenuCourse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MenuCourse) ProtoMessage() {}
-
-func (x *MenuCourse) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MenuCourse.ProtoReflect.Descriptor instead.
-func (*MenuCourse) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *MenuCourse) GetCourse() Course {
-	if x != nil {
-		return x.Course
-	}
-	return Course_COURSE_UNSPECIFIED
-}
-
-func (x *MenuCourse) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
-	}
-	return ""
-}
-
-func (x *MenuCourse) GetChoose() int32 {
-	if x != nil {
-		return x.Choose
-	}
-	return 0
-}
-
-func (x *MenuCourse) GetDishes() []string {
-	if x != nil {
-		return x.Dishes
-	}
-	return nil
-}
-
-// MenuAddOn is something added to a menu at a price per plate: a live
-// counter, an extra dessert, a bar.
-type MenuAddOn struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The add-on as the proposal names it.
-	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// The dish it is, when it is one.
-	// Format: venues/{venue}/dishes/{dish}
-	Dish string `protobuf:"bytes,2,opt,name=dish,proto3" json:"dish,omitempty"`
-	// Its base price per plate, before any price rule.
-	PlatePrice    *money.Money `protobuf:"bytes,3,opt,name=plate_price,json=platePrice,proto3" json:"plate_price,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MenuAddOn) Reset() {
-	*x = MenuAddOn{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MenuAddOn) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MenuAddOn) ProtoMessage() {}
-
-func (x *MenuAddOn) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MenuAddOn.ProtoReflect.Descriptor instead.
-func (*MenuAddOn) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *MenuAddOn) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
-	}
-	return ""
-}
-
-func (x *MenuAddOn) GetDish() string {
-	if x != nil {
-		return x.Dish
-	}
-	return ""
-}
-
-func (x *MenuAddOn) GetPlatePrice() *money.Money {
-	if x != nil {
-		return x.PlatePrice
-	}
-	return nil
-}
-
-// A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8
-// hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It
-// includes so many guests, and charges each guest beyond them.
-//
-// Its price is the base price; what it costs on a date is the base price with
-// the venue's price rules applied, as a menu's is.
-type FixedPackage struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The fixed package name.
-	// Format: venues/{venue}/fixedPackages/{fixed_package}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The package as it is sold, e.g. "Wedding Gold".
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// A line about it for the proposal.
-	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	// The spaces it can be held in.
-	// Format: venues/{venue}/spaces/{space}
-	Spaces []string `protobuf:"bytes,4,rep,name=spaces,proto3" json:"spaces,omitempty"`
-	// How long the space is had for.
-	Duration *durationpb.Duration `protobuf:"bytes,5,opt,name=duration,proto3" json:"duration,omitempty"`
-	// The menu included, when food is.
-	// Format: venues/{venue}/menus/{menu}
-	Menu string `protobuf:"bytes,6,opt,name=menu,proto3" json:"menu,omitempty"`
-	// What else is included: decor, a DJ, a bridal suite for the night.
-	Inclusions []*PackageInclusion `protobuf:"bytes,7,rep,name=inclusions,proto3" json:"inclusions,omitempty"`
-	// How many guests the price includes.
-	IncludedGuests int32 `protobuf:"varint,8,opt,name=included_guests,json=includedGuests,proto3" json:"included_guests,omitempty"`
-	// The base price of the package, before any price rule.
-	Price *money.Money `protobuf:"bytes,9,opt,name=price,proto3" json:"price,omitempty"`
-	// The base price of each guest beyond included_guests.
-	ExtraGuestPrice *money.Money `protobuf:"bytes,10,opt,name=extra_guest_price,json=extraGuestPrice,proto3" json:"extra_guest_price,omitempty"`
-	// How GST applies to it.
-	Tax *typepbv1.Tax `protobuf:"bytes,11,opt,name=tax,proto3" json:"tax,omitempty"`
-	// Whether it is offered on new quotes.
-	Active bool `protobuf:"varint,12,opt,name=active,proto3" json:"active,omitempty"`
-	// Creation timestamp.
-	CreateTime *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
-	// Last-modification timestamp.
-	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
-	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,15,opt,name=etag,proto3" json:"etag,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *FixedPackage) Reset() {
-	*x = FixedPackage{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *FixedPackage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FixedPackage) ProtoMessage() {}
-
-func (x *FixedPackage) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FixedPackage.ProtoReflect.Descriptor instead.
-func (*FixedPackage) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *FixedPackage) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *FixedPackage) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
-	}
-	return ""
-}
-
-func (x *FixedPackage) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *FixedPackage) GetSpaces() []string {
-	if x != nil {
-		return x.Spaces
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetDuration() *durationpb.Duration {
-	if x != nil {
-		return x.Duration
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetMenu() string {
-	if x != nil {
-		return x.Menu
-	}
-	return ""
-}
-
-func (x *FixedPackage) GetInclusions() []*PackageInclusion {
-	if x != nil {
-		return x.Inclusions
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetIncludedGuests() int32 {
-	if x != nil {
-		return x.IncludedGuests
-	}
-	return 0
-}
-
-func (x *FixedPackage) GetPrice() *money.Money {
-	if x != nil {
-		return x.Price
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetExtraGuestPrice() *money.Money {
-	if x != nil {
-		return x.ExtraGuestPrice
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetTax() *typepbv1.Tax {
-	if x != nil {
-		return x.Tax
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetActive() bool {
-	if x != nil {
-		return x.Active
-	}
-	return false
-}
-
-func (x *FixedPackage) GetCreateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreateTime
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetUpdateTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdateTime
-	}
-	return nil
-}
-
-func (x *FixedPackage) GetEtag() string {
-	if x != nil {
-		return x.Etag
-	}
-	return ""
-}
-
-// PackageInclusion is one thing a fixed package includes.
-type PackageInclusion struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// What it is, as the proposal says it.
-	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// How many, when it is counted: 2 bridal rooms, 4 hours of a DJ.
-	Quantity      int32 `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *PackageInclusion) Reset() {
-	*x = PackageInclusion{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PackageInclusion) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PackageInclusion) ProtoMessage() {}
-
-func (x *PackageInclusion) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PackageInclusion.ProtoReflect.Descriptor instead.
-func (*PackageInclusion) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *PackageInclusion) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
-	}
-	return ""
-}
-
-func (x *PackageInclusion) GetQuantity() int32 {
-	if x != nil {
-		return x.Quantity
-	}
-	return 0
-}
-
-// A Season is a named set of dates prices change on: "Wedding season"
-// (November to February), "Diwali week", "Monsoon", "Weekends". Seasons say
-// when; price rules say how much.
-//
-// A season that recurs yearly is matched on month and day, so "Wedding
-// season, 1 Nov -- 28 Feb" is next year's too without anyone editing it.
-type Season struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The season name.
-	// Format: venues/{venue}/seasons/{season}
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The season as staff know it, e.g. "Wedding season".
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// The dates it covers. Empty for a season of weekdays only ("Weekends").
-	Dates []*typepbv1.DateRange `protobuf:"bytes,3,rep,name=dates,proto3" json:"dates,omitempty"`
-	// Whether the dates recur every year, matched on month and day.
-	RecursYearly bool `protobuf:"varint,4,opt,name=recurs_yearly,json=recursYearly,proto3" json:"recurs_yearly,omitempty"`
-	// The days of the week it covers; every day when empty. With dates, only
-	// those days within them: "Fridays to Sundays of wedding season".
-	Weekdays []dayofweek.DayOfWeek `protobuf:"varint,5,rep,packed,name=weekdays,proto3,enum=google.type.DayOfWeek" json:"weekdays,omitempty"`
-	// Creation timestamp.
-	CreateTime *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
-	// Last-modification timestamp.
-	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
-	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,8,opt,name=etag,proto3" json:"etag,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Season) Reset() {
-	*x = Season{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Season) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Season) ProtoMessage() {}
-
-func (x *Season) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Season.ProtoReflect.Descriptor instead.
-func (*Season) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *Season) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *Season) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
-	}
-	return ""
-}
-
-func (x *Season) GetDates() []*typepbv1.DateRange {
+func (x *Lead) GetDates() []*typepbv1.DateRange {
 	if x != nil {
 		return x.Dates
 	}
 	return nil
 }
 
-func (x *Season) GetRecursYearly() bool {
+func (x *Lead) GetDatesFlexible() bool {
 	if x != nil {
-		return x.RecursYearly
+		return x.DatesFlexible
 	}
 	return false
 }
 
-func (x *Season) GetWeekdays() []dayofweek.DayOfWeek {
+func (x *Lead) GetGuests() int32 {
 	if x != nil {
-		return x.Weekdays
+		return x.Guests
+	}
+	return 0
+}
+
+func (x *Lead) GetRooms() int32 {
+	if x != nil {
+		return x.Rooms
+	}
+	return 0
+}
+
+func (x *Lead) GetBudget() *money.Money {
+	if x != nil {
+		return x.Budget
 	}
 	return nil
 }
 
-func (x *Season) GetCreateTime() *timestamppb.Timestamp {
+func (x *Lead) GetRequirements() string {
+	if x != nil {
+		return x.Requirements
+	}
+	return ""
+}
+
+func (x *Lead) GetOwner() string {
+	if x != nil {
+		return x.Owner
+	}
+	return ""
+}
+
+func (x *Lead) GetNextFollowUpTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.NextFollowUpTime
+	}
+	return nil
+}
+
+func (x *Lead) GetLostReason() LostReason {
+	if x != nil {
+		return x.LostReason
+	}
+	return LostReason_LOST_REASON_UNSPECIFIED
+}
+
+func (x *Lead) GetLostDetail() string {
+	if x != nil {
+		return x.LostDetail
+	}
+	return ""
+}
+
+func (x *Lead) GetHold() string {
+	if x != nil {
+		return x.Hold
+	}
+	return ""
+}
+
+func (x *Lead) GetBookings() []string {
+	if x != nil {
+		return x.Bookings
+	}
+	return nil
+}
+
+func (x *Lead) GetCloseTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CloseTime
+	}
+	return nil
+}
+
+func (x *Lead) GetCreateTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreateTime
 	}
 	return nil
 }
 
-func (x *Season) GetUpdateTime() *timestamppb.Timestamp {
+func (x *Lead) GetUpdateTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdateTime
 	}
 	return nil
 }
 
-func (x *Season) GetEtag() string {
+func (x *Lead) GetEtag() string {
 	if x != nil {
 		return x.Etag
 	}
 	return ""
 }
 
-// A PriceRule changes the price of what a venue sells in a season: "plate
-// menus +15% in wedding season", "the ballroom ₹2,50,000 on weekends",
-// "Deluxe rooms -20% in monsoon", "₹100 off a plate above 500 guests".
-//
-// Prices are never stored per date. The price of anything on a date is its
-// base price with the one matching rule of the highest priority applied --
-// matching its target, its season and its guest count -- so prices change on
-// their own as the seasons turn, and changing a rule changes every price it
-// covers at once. A quote fixes its prices when it is sent, so a later rule
-// does not change what a guest was offered.
-type PriceRule struct {
+// An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a
+// quote sent. The activities of a lead are its history, newest first.
+type Activity struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The price rule name.
-	// Format: venues/{venue}/priceRules/{price_rule}
+	// The activity name.
+	// Format: leads/{lead}/activities/{activity}
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// The rule as staff know it, e.g. "Wedding season menus".
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	// The season the rule applies in; every date when empty.
-	// Format: venues/{venue}/seasons/{season}
-	Season string `protobuf:"bytes,3,opt,name=season,proto3" json:"season,omitempty"`
-	// What kind of thing the rule prices.
-	Target PriceTarget `protobuf:"varint,4,opt,name=target,proto3,enum=aperio.sales.v1.PriceTarget" json:"target,omitempty"`
-	// The items it prices: menus, fixed packages, spaces or dishes of the
-	// target's kind. Every item of the kind when empty.
-	Items []string `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
-	// The fewest guests the rule applies to: a volume discount.
-	MinGuests int32 `protobuf:"varint,6,opt,name=min_guests,json=minGuests,proto3" json:"min_guests,omitempty"`
-	// How the rule changes the price.
-	//
-	// Types that are valid to be assigned to Adjustment:
-	//
-	//	*PriceRule_FixedPrice
-	//	*PriceRule_Percent
-	//	*PriceRule_Amount
-	Adjustment isPriceRule_Adjustment `protobuf_oneof:"adjustment"`
-	// Which rule wins when several match: the highest priority.
-	Priority int32 `protobuf:"varint,10,opt,name=priority,proto3" json:"priority,omitempty"`
-	// Whether the rule is applied.
-	Active bool `protobuf:"varint,11,opt,name=active,proto3" json:"active,omitempty"`
+	// What happened.
+	Kind ActivityKind `protobuf:"varint,2,opt,name=kind,proto3,enum=aperio.sales.v1.ActivityKind" json:"kind,omitempty"`
+	// When it happened.
+	OccurTime *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=occur_time,json=occurTime,proto3" json:"occur_time,omitempty"`
+	// What was said or done, in a line.
+	Summary string `protobuf:"bytes,4,opt,name=summary,proto3" json:"summary,omitempty"`
+	// The rest of it.
+	Details string `protobuf:"bytes,5,opt,name=details,proto3" json:"details,omitempty"`
+	// Who did it.
+	// Format: users/{user}
+	Author string `protobuf:"bytes,6,opt,name=author,proto3" json:"author,omitempty"`
 	// Creation timestamp.
-	CreateTime *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	CreateTime *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Last-modification timestamp.
-	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
+	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,14,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag          string `protobuf:"bytes,9,opt,name=etag,proto3" json:"etag,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PriceRule) Reset() {
-	*x = PriceRule{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[7]
+func (x *Activity) Reset() {
+	*x = Activity{}
+	mi := &file_aperio_sales_v1_sales_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PriceRule) String() string {
+func (x *Activity) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PriceRule) ProtoMessage() {}
+func (*Activity) ProtoMessage() {}
 
-func (x *PriceRule) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[7]
+func (x *Activity) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1007,146 +432,73 @@ func (x *PriceRule) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PriceRule.ProtoReflect.Descriptor instead.
-func (*PriceRule) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{7}
+// Deprecated: Use Activity.ProtoReflect.Descriptor instead.
+func (*Activity) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PriceRule) GetName() string {
+func (x *Activity) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *PriceRule) GetDisplayName() string {
+func (x *Activity) GetKind() ActivityKind {
 	if x != nil {
-		return x.DisplayName
+		return x.Kind
+	}
+	return ActivityKind_ACTIVITY_KIND_UNSPECIFIED
+}
+
+func (x *Activity) GetOccurTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.OccurTime
+	}
+	return nil
+}
+
+func (x *Activity) GetSummary() string {
+	if x != nil {
+		return x.Summary
 	}
 	return ""
 }
 
-func (x *PriceRule) GetSeason() string {
+func (x *Activity) GetDetails() string {
 	if x != nil {
-		return x.Season
+		return x.Details
 	}
 	return ""
 }
 
-func (x *PriceRule) GetTarget() PriceTarget {
+func (x *Activity) GetAuthor() string {
 	if x != nil {
-		return x.Target
+		return x.Author
 	}
-	return PriceTarget_PRICE_TARGET_UNSPECIFIED
+	return ""
 }
 
-func (x *PriceRule) GetItems() []string {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *PriceRule) GetMinGuests() int32 {
-	if x != nil {
-		return x.MinGuests
-	}
-	return 0
-}
-
-func (x *PriceRule) GetAdjustment() isPriceRule_Adjustment {
-	if x != nil {
-		return x.Adjustment
-	}
-	return nil
-}
-
-func (x *PriceRule) GetFixedPrice() *money.Money {
-	if x != nil {
-		if x, ok := x.Adjustment.(*PriceRule_FixedPrice); ok {
-			return x.FixedPrice
-		}
-	}
-	return nil
-}
-
-func (x *PriceRule) GetPercent() *decimal.Decimal {
-	if x != nil {
-		if x, ok := x.Adjustment.(*PriceRule_Percent); ok {
-			return x.Percent
-		}
-	}
-	return nil
-}
-
-func (x *PriceRule) GetAmount() *money.Money {
-	if x != nil {
-		if x, ok := x.Adjustment.(*PriceRule_Amount); ok {
-			return x.Amount
-		}
-	}
-	return nil
-}
-
-func (x *PriceRule) GetPriority() int32 {
-	if x != nil {
-		return x.Priority
-	}
-	return 0
-}
-
-func (x *PriceRule) GetActive() bool {
-	if x != nil {
-		return x.Active
-	}
-	return false
-}
-
-func (x *PriceRule) GetCreateTime() *timestamppb.Timestamp {
+func (x *Activity) GetCreateTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreateTime
 	}
 	return nil
 }
 
-func (x *PriceRule) GetUpdateTime() *timestamppb.Timestamp {
+func (x *Activity) GetUpdateTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdateTime
 	}
 	return nil
 }
 
-func (x *PriceRule) GetEtag() string {
+func (x *Activity) GetEtag() string {
 	if x != nil {
 		return x.Etag
 	}
 	return ""
 }
-
-type isPriceRule_Adjustment interface {
-	isPriceRule_Adjustment()
-}
-
-type PriceRule_FixedPrice struct {
-	// The price, replacing the base price.
-	FixedPrice *money.Money `protobuf:"bytes,7,opt,name=fixed_price,json=fixedPrice,proto3,oneof"`
-}
-
-type PriceRule_Percent struct {
-	// A percentage added to the base price; negative for a discount.
-	Percent *decimal.Decimal `protobuf:"bytes,8,opt,name=percent,proto3,oneof"`
-}
-
-type PriceRule_Amount struct {
-	// An amount added to the base price; negative for a discount.
-	Amount *money.Money `protobuf:"bytes,9,opt,name=amount,proto3,oneof"`
-}
-
-func (*PriceRule_FixedPrice) isPriceRule_Adjustment() {}
-
-func (*PriceRule_Percent) isPriceRule_Adjustment() {}
-
-func (*PriceRule_Amount) isPriceRule_Adjustment() {}
 
 // A Quote is a priced proposal to a guest: the spaces, rooms, menus and
 // packages they asked for, at the prices of their dates, with GST. A lead
@@ -1221,7 +573,7 @@ type Quote struct {
 
 func (x *Quote) Reset() {
 	*x = Quote{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[8]
+	mi := &file_aperio_sales_v1_sales_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1233,7 +585,7 @@ func (x *Quote) String() string {
 func (*Quote) ProtoMessage() {}
 
 func (x *Quote) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[8]
+	mi := &file_aperio_sales_v1_sales_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1246,7 +598,7 @@ func (x *Quote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Quote.ProtoReflect.Descriptor instead.
 func (*Quote) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{8}
+	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Quote) GetName() string {
@@ -1460,7 +812,7 @@ type QuoteLine struct {
 
 func (x *QuoteLine) Reset() {
 	*x = QuoteLine{}
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[9]
+	mi := &file_aperio_sales_v1_sales_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1472,7 +824,7 @@ func (x *QuoteLine) String() string {
 func (*QuoteLine) ProtoMessage() {}
 
 func (x *QuoteLine) ProtoReflect() protoreflect.Message {
-	mi := &file_aperio_sales_v1_sales_proto_msgTypes[9]
+	mi := &file_aperio_sales_v1_sales_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1485,7 +837,7 @@ func (x *QuoteLine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QuoteLine.ProtoReflect.Descriptor instead.
 func (*QuoteLine) Descriptor() ([]byte, []int) {
-	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{9}
+	return file_aperio_sales_v1_sales_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *QuoteLine) GetKind() LineKind {
@@ -1569,133 +921,73 @@ var File_aperio_sales_v1_sales_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"\n" +
-	"\x1baperio/sales/v1/sales.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1acache/v1/annotations.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x1bgoogle/type/dayofweek.proto\x1a\x19google/type/decimal.proto\x1a\x17google/type/money.proto\x1a\x1astore/v1/annotations.proto\"\xcf\x06\n" +
-	"\x04Dish\x12=\n" +
-	"\x04name\x18\x01 \x01(\tB)\xe2A\x01\b\xbaH\"\xd8\x01\x01r\x1d2\x1b^venues/[^/]+/dishes/[^/]+$R\x04name\x127\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12.\n" +
-	"\vdescription\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\vdescription\x125\n" +
-	"\x06course\x18\x04 \x01(\x0e2\x17.aperio.sales.v1.CourseB\x04\xe2A\x01\x02R\x06course\x12$\n" +
-	"\acuisine\x18\x05 \x01(\tB\n" +
-	"\xe2A\x01\x01\xe2\xb5\x18\x02\x18\x01R\acuisine\x120\n" +
-	"\x05diets\x18\x06 \x03(\x0e2\x14.aperio.type.v1.DietB\x04\xe2A\x01\x01R\x05diets\x12<\n" +
-	"\tallergens\x18\a \x03(\x0e2\x18.aperio.type.v1.AllergenB\x04\xe2A\x01\x01R\tallergens\x12.\n" +
-	"\x05price\x18\b \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x01R\x05price\x12+\n" +
-	"\x03tax\x18\t \x01(\v2\x13.aperio.type.v1.TaxB\x04\xe2A\x01\x01R\x03tax\x12,\n" +
-	"\timage_uri\x18\n" +
-	" \x01(\tB\x0f\xe2A\x01\x01\xbaH\b\xd8\x01\x01r\x03\x88\x01\x01R\bimageUri\x12\"\n" +
-	"\tavailable\x18\v \x01(\bB\x04\xe2A\x01\x01R\tavailable\x12A\n" +
-	"\vcreate_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"createTime\x12A\n" +
-	"\vupdate_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x0e \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x82\x01\xeaAB\n" +
-	"\x14aperio.sales.v1/Dish\x12\x1cvenues/{venue}/dishes/{dish}*\x06dishes2\x04dish\xca\xf3\x18\x02\x18\x01\x8a\xb2\x193\b\x01\x1a\x03\b\xd8\x042\"aperio.sales.v1.dish.venue.{venue}:\x06\b\x01\x12\x02\b<\"\xac\x06\n" +
-	"\x04Menu\x12<\n" +
-	"\x04name\x18\x01 \x01(\tB(\xe2A\x01\b\xbaH!\xd8\x01\x01r\x1c2\x1a^venues/[^/]+/menus/[^/]+$R\x04name\x127\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12.\n" +
-	"\vdescription\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\vdescription\x120\n" +
-	"\x05diets\x18\x04 \x03(\x0e2\x14.aperio.type.v1.DietB\x04\xe2A\x01\x01R\x05diets\x12;\n" +
-	"\acourses\x18\x05 \x03(\v2\x1b.aperio.sales.v1.MenuCourseB\x04\xe2A\x01\x02R\acourses\x129\n" +
-	"\aadd_ons\x18\x06 \x03(\v2\x1a.aperio.sales.v1.MenuAddOnB\x04\xe2A\x01\x01R\x06addOns\x129\n" +
-	"\vplate_price\x18\a \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x02R\n" +
-	"platePrice\x12*\n" +
+	"\x1baperio/sales/v1/sales.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\x1a\x1astore/v1/annotations.proto\"\x82\f\n" +
+	"\x04Lead\x12/\n" +
+	"\x04name\x18\x01 \x01(\tB\x1b\xe2A\x01\b\xbaH\x14\xd8\x01\x01r\x0f2\r^leads/[^/]+$R\x04name\x127\n" +
+	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12Q\n" +
+	"\acontact\x18\x03 \x01(\tB7\xe2A\x01\x02\xfaA\x19\n" +
+	"\x17aperio.guest.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x12L\n" +
+	"\x05venue\x18\x04 \x01(\tB6\xe2A\x01\x01\xfaA\x17\n" +
+	"\x15aperio.venue.v1/Venue\xbaH\x15\xd8\x01\x01r\x102\x0e^venues/[^/]+$R\x05venue\x123\n" +
+	"\x04kind\x18\x05 \x01(\x0e2\x19.aperio.sales.v1.LeadKindB\x04\xe2A\x01\x02R\x04kind\x12>\n" +
 	"\n" +
-	"min_plates\x18\b \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\tminPlates\x12+\n" +
-	"\x03tax\x18\t \x01(\v2\x13.aperio.type.v1.TaxB\x04\xe2A\x01\x02R\x03tax\x12\x1c\n" +
-	"\x06active\x18\n" +
-	" \x01(\bB\x04\xe2A\x01\x01R\x06active\x12A\n" +
-	"\vcreate_time\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"createTime\x12A\n" +
-	"\vupdate_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"updateTime\x12\x18\n" +
-	"\x04etag\x18\r \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x80\x01\xeaA@\n" +
-	"\x14aperio.sales.v1/Menu\x12\x1bvenues/{venue}/menus/{menu}*\x05menus2\x04menu\xca\xf3\x18\x02\x18\x01\x8a\xb2\x193\b\x01\x1a\x03\b\xd8\x042\"aperio.sales.v1.menu.venue.{venue}:\x06\b\x01\x12\x02\b<\"\xc8\x01\n" +
+	"event_type\x18\x06 \x01(\x0e2\x19.aperio.type.v1.EventTypeB\x04\xe2A\x01\x01R\teventType\x125\n" +
+	"\x06source\x18\a \x01(\x0e2\x17.aperio.type.v1.ChannelB\x04\xe2A\x01\x01R\x06source\x12)\n" +
+	"\rsource_detail\x18\b \x01(\tB\x04\xe2A\x01\x01R\fsourceDetail\x12;\n" +
+	"\x05stage\x18\t \x01(\x0e2\x16.aperio.sales.v1.StageB\r\xe2A\x01\x01ڵ\x18\x05\x12\x03NEWR\x05stage\x125\n" +
+	"\x05dates\x18\n" +
+	" \x03(\v2\x19.aperio.type.v1.DateRangeB\x04\xe2A\x01\x01R\x05dates\x12+\n" +
+	"\x0edates_flexible\x18\v \x01(\bB\x04\xe2A\x01\x01R\rdatesFlexible\x12#\n" +
+	"\x06guests\x18\f \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\x06guests\x12!\n" +
+	"\x05rooms\x18\r \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\x05rooms\x120\n" +
+	"\x06budget\x18\x0e \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x01R\x06budget\x120\n" +
+	"\frequirements\x18\x0f \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\x90NR\frequirements\x12Y\n" +
+	"\x05owner\x18\x10 \x01(\tBC\xe2A\x01\x01\xfaA\x1f\n" +
+	"\x1dusers.shokki.engineering/User\xbaH\x14\xd8\x01\x01r\x0f2\r^users/[^/]+$\xea\xb5\x18\x02\b\x02R\x05owner\x12O\n" +
+	"\x13next_follow_up_time\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x01R\x10nextFollowUpTime\x12B\n" +
+	"\vlost_reason\x18\x12 \x01(\x0e2\x1b.aperio.sales.v1.LostReasonB\x04\xe2A\x01\x01R\n" +
+	"lostReason\x12%\n" +
+	"\vlost_detail\x18\x13 \x01(\tB\x04\xe2A\x01\x01R\n" +
+	"lostDetail\x128\n" +
+	"\x04hold\x18\x14 \x01(\tB$\xe2A\x01\x03\xfaA\x1d\n" +
+	"\x1bfreebusy.allocation.v1/HoldR\x04hold\x12 \n" +
+	"\bbookings\x18\x15 \x03(\tB\x04\xe2A\x01\x03R\bbookings\x12?\n" +
 	"\n" +
-	"MenuCourse\x125\n" +
-	"\x06course\x18\x01 \x01(\x0e2\x17.aperio.sales.v1.CourseB\x04\xe2A\x01\x02R\x06course\x12'\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\vdisplayName\x12#\n" +
-	"\x06choose\x18\x03 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\x06choose\x125\n" +
-	"\x06dishes\x18\x04 \x03(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
-	"\x14aperio.sales.v1/DishR\x06dishes\"\xa9\x01\n" +
-	"\tMenuAddOn\x12.\n" +
-	"\fdisplay_name\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\vdisplayName\x121\n" +
-	"\x04dish\x18\x02 \x01(\tB\x1d\xe2A\x01\x01\xfaA\x16\n" +
-	"\x14aperio.sales.v1/DishR\x04dish\x129\n" +
-	"\vplate_price\x18\x03 \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x02R\n" +
-	"platePrice\"\xf9\a\n" +
-	"\fFixedPackage\x12D\n" +
-	"\x04name\x18\x01 \x01(\tB0\xe2A\x01\b\xbaH)\xd8\x01\x01r$2\"^venues/[^/]+/fixedPackages/[^/]+$R\x04name\x127\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12.\n" +
-	"\vdescription\x18\x03 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\xd0\x0fR\vdescription\x126\n" +
-	"\x06spaces\x18\x04 \x03(\tB\x1e\xe2A\x01\x01\xfaA\x17\n" +
-	"\x15aperio.venue.v1/SpaceR\x06spaces\x12;\n" +
-	"\bduration\x18\x05 \x01(\v2\x19.google.protobuf.DurationB\x04\xe2A\x01\x01R\bduration\x121\n" +
-	"\x04menu\x18\x06 \x01(\tB\x1d\xe2A\x01\x01\xfaA\x16\n" +
-	"\x14aperio.sales.v1/MenuR\x04menu\x12G\n" +
-	"\n" +
-	"inclusions\x18\a \x03(\v2!.aperio.sales.v1.PackageInclusionB\x04\xe2A\x01\x01R\n" +
-	"inclusions\x124\n" +
-	"\x0fincluded_guests\x18\b \x01(\x05B\v\xe2A\x01\x02\xbaH\x04\x1a\x02 \x00R\x0eincludedGuests\x12.\n" +
-	"\x05price\x18\t \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x02R\x05price\x12D\n" +
-	"\x11extra_guest_price\x18\n" +
-	" \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x01R\x0fextraGuestPrice\x12+\n" +
-	"\x03tax\x18\v \x01(\v2\x13.aperio.type.v1.TaxB\x04\xe2A\x01\x02R\x03tax\x12\x1c\n" +
-	"\x06active\x18\f \x01(\bB\x04\xe2A\x01\x01R\x06active\x12A\n" +
-	"\vcreate_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
+	"close_time\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcloseTime\x12A\n" +
+	"\vcreate_time\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"createTime\x12A\n" +
-	"\vupdate_time\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
+	"\vupdate_time\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x0f \x01(\tB\x04\xe2A\x01\x01R\x04etag:\xb1\x01\xeaAi\n" +
-	"\x1caperio.sales.v1/FixedPackage\x12,venues/{venue}/fixedPackages/{fixed_package}*\rfixedPackages2\ffixedPackage\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19;\b\x01\x1a\x03\b\xd8\x042*aperio.sales.v1.fixedpackage.venue.{venue}:\x06\b\x01\x12\x02\b<\"k\n" +
-	"\x10PackageInclusion\x12.\n" +
-	"\fdisplay_name\x18\x01 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\vdisplayName\x12'\n" +
-	"\bquantity\x18\x02 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\bquantity\"\xc6\x04\n" +
-	"\x06Season\x12>\n" +
-	"\x04name\x18\x01 \x01(\tB*\xe2A\x01\b\xbaH#\xd8\x01\x01r\x1e2\x1c^venues/[^/]+/seasons/[^/]+$R\x04name\x121\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\vdisplayName\x125\n" +
-	"\x05dates\x18\x03 \x03(\v2\x19.aperio.type.v1.DateRangeB\x04\xe2A\x01\x01R\x05dates\x12)\n" +
-	"\rrecurs_yearly\x18\x04 \x01(\bB\x04\xe2A\x01\x01R\frecursYearly\x128\n" +
-	"\bweekdays\x18\x05 \x03(\x0e2\x16.google.type.DayOfWeekB\x04\xe2A\x01\x01R\bweekdays\x12A\n" +
-	"\vcreate_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"createTime\x12A\n" +
-	"\vupdate_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"updateTime\x12\x18\n" +
-	"\x04etag\x18\b \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x8c\x01\xeaAJ\n" +
-	"\x16aperio.sales.v1/Season\x12\x1fvenues/{venue}/seasons/{season}*\aseasons2\x06season\xca\xf3\x18\x02\x18\x01\x8a\xb2\x195\b\x01\x1a\x03\b\xd8\x042$aperio.sales.v1.season.venue.{venue}:\x06\b\x01\x12\x02\b<\"\x91\a\n" +
-	"\tPriceRule\x12A\n" +
-	"\x04name\x18\x01 \x01(\tB-\xe2A\x01\b\xbaH&\xd8\x01\x01r!2\x1f^venues/[^/]+/priceRules/[^/]+$R\x04name\x121\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\vdisplayName\x12]\n" +
-	"\x06season\x18\x03 \x01(\tBE\xe2A\x01\x01\xfaA\x18\n" +
-	"\x16aperio.sales.v1/Season\xbaH#\xd8\x01\x01r\x1e2\x1c^venues/[^/]+/seasons/[^/]+$R\x06season\x12:\n" +
-	"\x06target\x18\x04 \x01(\x0e2\x1c.aperio.sales.v1.PriceTargetB\x04\xe2A\x01\x02R\x06target\x12 \n" +
-	"\x05items\x18\x05 \x03(\tB\n" +
-	"\xe2A\x01\x01\xfaA\x03\n" +
-	"\x01*R\x05items\x12*\n" +
+	"\x04etag\x18\x19 \x01(\tB\x04\xe2A\x01\x01R\x04etag:w\xeaA1\n" +
+	"\x14aperio.sales.v1/Lead\x12\fleads/{lead}*\x05leads2\x04lead\xca\xf3\x18?\x18\x01*\x1c\n" +
+	"\x05stage\n" +
+	"\x13next_follow_up_time*\x0e\n" +
+	"\x05owner\n" +
+	"\x05stage*\r\n" +
+	"\vupdate_time\"\xf4\x04\n" +
+	"\bActivity\x12@\n" +
+	"\x04name\x18\x01 \x01(\tB,\xe2A\x01\b\xbaH%\xd8\x01\x01r 2\x1e^leads/[^/]+/activities/[^/]+$R\x04name\x127\n" +
+	"\x04kind\x18\x02 \x01(\x0e2\x1d.aperio.sales.v1.ActivityKindB\x04\xe2A\x01\x02R\x04kind\x12?\n" +
 	"\n" +
-	"min_guests\x18\x06 \x01(\x05B\v\xe2A\x01\x01\xbaH\x04\x1a\x02(\x00R\tminGuests\x125\n" +
-	"\vfixed_price\x18\a \x01(\v2\x12.google.type.MoneyH\x00R\n" +
-	"fixedPrice\x120\n" +
-	"\apercent\x18\b \x01(\v2\x14.google.type.DecimalH\x00R\apercent\x12,\n" +
-	"\x06amount\x18\t \x01(\v2\x12.google.type.MoneyH\x00R\x06amount\x12 \n" +
-	"\bpriority\x18\n" +
-	" \x01(\x05B\x04\xe2A\x01\x01R\bpriority\x12\x1c\n" +
-	"\x06active\x18\v \x01(\bB\x04\xe2A\x01\x01R\x06active\x12A\n" +
-	"\vcreate_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
+	"occur_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x02R\toccurTime\x12(\n" +
+	"\asummary\x18\x04 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xf4\x03R\asummary\x12&\n" +
+	"\adetails\x18\x05 \x01(\tB\f\xe2A\x01\x01\xbaH\x05r\x03\x18\x90NR\adetails\x12[\n" +
+	"\x06author\x18\x06 \x01(\tBC\xe2A\x01\x01\xfaA\x1f\n" +
+	"\x1dusers.shokki.engineering/User\xbaH\x14\xd8\x01\x01r\x0f2\r^users/[^/]+$\xea\xb5\x18\x02\b\x02R\x06author\x12A\n" +
+	"\vcreate_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"createTime\x12A\n" +
-	"\vupdate_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
+	"\vupdate_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x0e \x01(\tB\x04\xe2A\x01\x01R\x04etag:\x9f\x01\xeaAZ\n" +
-	"\x19aperio.sales.v1/PriceRule\x12&venues/{venue}/priceRules/{price_rule}*\n" +
-	"priceRules2\tpriceRule\xca\xf3\x18\x02\x18\x01\x8a\xb2\x198\b\x01\x1a\x03\b\xd8\x042'aperio.sales.v1.pricerule.venue.{venue}:\x06\b\x01\x12\x02\b<B\f\n" +
-	"\n" +
-	"adjustment\"\x87\r\n" +
+	"\x04etag\x18\t \x01(\tB\x04\xe2A\x01\x01R\x04etag:]\xeaAT\n" +
+	"\x18aperio.sales.v1/Activity\x12\"leads/{lead}/activities/{activity}*\n" +
+	"activities2\bactivity\xca\xf3\x18\x02\x18\x01\"\x8b\r\n" +
 	"\x05Quote\x12=\n" +
 	"\x04name\x18\x01 \x01(\tB)\xe2A\x01\b\xbaH\"\xd8\x01\x01r\x1d2\x1b^venues/[^/]+/quotes/[^/]+$R\x04name\x121\n" +
-	"\fdisplay_name\x18\x02 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\vdisplayName\x12O\n" +
-	"\acontact\x18\x03 \x01(\tB5\xe2A\x01\x02\xfaA\x17\n" +
-	"\x15aperio.crm.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x12F\n" +
-	"\x04lead\x18\x04 \x01(\tB2\xe2A\x01\x01\xfaA\x14\n" +
-	"\x12aperio.crm.v1/Lead\xbaH\x14\xd8\x01\x01r\x0f2\r^leads/[^/]+$R\x04lead\x12$\n" +
+	"\fdisplay_name\x18\x02 \x01(\tB\x0e\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01R\vdisplayName\x12Q\n" +
+	"\acontact\x18\x03 \x01(\tB7\xe2A\x01\x02\xfaA\x19\n" +
+	"\x17aperio.guest.v1/Contact\xbaH\x14r\x122\x10^contacts/[^/]+$R\acontact\x12H\n" +
+	"\x04lead\x18\x04 \x01(\tB4\xe2A\x01\x01\xfaA\x16\n" +
+	"\x14aperio.sales.v1/Lead\xbaH\x14\xd8\x01\x01r\x0f2\r^leads/[^/]+$R\x04lead\x12$\n" +
 	"\n" +
 	"supersedes\x18\x05 \x01(\tB\x04\xe2A\x01\x03R\n" +
 	"supersedes\x12C\n" +
@@ -1741,7 +1033,7 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"\x04lead\n" +
 	"\vcreate_time*\x14\n" +
 	"\x05state\n" +
-	"\vexpire_time\"\xb6\x04\n" +
+	"\vexpire_time\"\xb8\x04\n" +
 	"\tQuoteLine\x123\n" +
 	"\x04kind\x18\x01 \x01(\x0e2\x19.aperio.sales.v1.LineKindB\x04\xe2A\x01\x02R\x04kind\x12\x1e\n" +
 	"\x04item\x18\x02 \x01(\tB\n" +
@@ -1752,10 +1044,10 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"\bquantity\x18\x05 \x01(\x05B\v\xe2A\x01\x02\xbaH\x04\x1a\x02 \x00R\bquantity\x127\n" +
 	"\n" +
 	"unit_price\x18\x06 \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x01R\tunitPrice\x12+\n" +
-	"\x0eprice_override\x18\a \x01(\bB\x04\xe2A\x01\x01R\rpriceOverride\x12A\n" +
+	"\x0eprice_override\x18\a \x01(\bB\x04\xe2A\x01\x01R\rpriceOverride\x12C\n" +
 	"\n" +
-	"price_rule\x18\b \x01(\tB\"\xe2A\x01\x03\xfaA\x1b\n" +
-	"\x19aperio.sales.v1/PriceRuleR\tpriceRule\x12+\n" +
+	"price_rule\x18\b \x01(\tB$\xe2A\x01\x03\xfaA\x1d\n" +
+	"\x1baperio.pricing.v1/PriceRuleR\tpriceRule\x12+\n" +
 	"\x03tax\x18\t \x01(\v2\x13.aperio.type.v1.TaxB\x04\xe2A\x01\x01R\x03tax\x120\n" +
 	"\x06amount\x18\n" +
 	" \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x03R\x06amount\x127\n" +
@@ -1777,93 +1069,68 @@ func file_aperio_sales_v1_sales_proto_rawDescGZIP() []byte {
 }
 
 var file_aperio_sales_v1_sales_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_aperio_sales_v1_sales_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_aperio_sales_v1_sales_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_aperio_sales_v1_sales_proto_goTypes = []any{
 	(Quote_State)(0),              // 0: aperio.sales.v1.Quote.State
-	(*Dish)(nil),                  // 1: aperio.sales.v1.Dish
-	(*Menu)(nil),                  // 2: aperio.sales.v1.Menu
-	(*MenuCourse)(nil),            // 3: aperio.sales.v1.MenuCourse
-	(*MenuAddOn)(nil),             // 4: aperio.sales.v1.MenuAddOn
-	(*FixedPackage)(nil),          // 5: aperio.sales.v1.FixedPackage
-	(*PackageInclusion)(nil),      // 6: aperio.sales.v1.PackageInclusion
-	(*Season)(nil),                // 7: aperio.sales.v1.Season
-	(*PriceRule)(nil),             // 8: aperio.sales.v1.PriceRule
-	(*Quote)(nil),                 // 9: aperio.sales.v1.Quote
-	(*QuoteLine)(nil),             // 10: aperio.sales.v1.QuoteLine
-	(Course)(0),                   // 11: aperio.sales.v1.Course
-	(typepbv1.Diet)(0),            // 12: aperio.type.v1.Diet
-	(typepbv1.Allergen)(0),        // 13: aperio.type.v1.Allergen
-	(*money.Money)(nil),           // 14: google.type.Money
-	(*typepbv1.Tax)(nil),          // 15: aperio.type.v1.Tax
-	(*timestamppb.Timestamp)(nil), // 16: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),   // 17: google.protobuf.Duration
-	(*typepbv1.DateRange)(nil),    // 18: aperio.type.v1.DateRange
-	(dayofweek.DayOfWeek)(0),      // 19: google.type.DayOfWeek
-	(PriceTarget)(0),              // 20: aperio.sales.v1.PriceTarget
-	(*decimal.Decimal)(nil),       // 21: google.type.Decimal
-	(typepbv1.EventType)(0),       // 22: aperio.type.v1.EventType
-	(LineKind)(0),                 // 23: aperio.sales.v1.LineKind
-	(*date.Date)(nil),             // 24: google.type.Date
+	(*Lead)(nil),                  // 1: aperio.sales.v1.Lead
+	(*Activity)(nil),              // 2: aperio.sales.v1.Activity
+	(*Quote)(nil),                 // 3: aperio.sales.v1.Quote
+	(*QuoteLine)(nil),             // 4: aperio.sales.v1.QuoteLine
+	(LeadKind)(0),                 // 5: aperio.sales.v1.LeadKind
+	(typepbv1.EventType)(0),       // 6: aperio.type.v1.EventType
+	(typepbv1.Channel)(0),         // 7: aperio.type.v1.Channel
+	(Stage)(0),                    // 8: aperio.sales.v1.Stage
+	(*typepbv1.DateRange)(nil),    // 9: aperio.type.v1.DateRange
+	(*money.Money)(nil),           // 10: google.type.Money
+	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
+	(LostReason)(0),               // 12: aperio.sales.v1.LostReason
+	(ActivityKind)(0),             // 13: aperio.sales.v1.ActivityKind
+	(*durationpb.Duration)(nil),   // 14: google.protobuf.Duration
+	(LineKind)(0),                 // 15: aperio.sales.v1.LineKind
+	(*date.Date)(nil),             // 16: google.type.Date
+	(*typepbv1.Tax)(nil),          // 17: aperio.type.v1.Tax
 }
 var file_aperio_sales_v1_sales_proto_depIdxs = []int32{
-	11, // 0: aperio.sales.v1.Dish.course:type_name -> aperio.sales.v1.Course
-	12, // 1: aperio.sales.v1.Dish.diets:type_name -> aperio.type.v1.Diet
-	13, // 2: aperio.sales.v1.Dish.allergens:type_name -> aperio.type.v1.Allergen
-	14, // 3: aperio.sales.v1.Dish.price:type_name -> google.type.Money
-	15, // 4: aperio.sales.v1.Dish.tax:type_name -> aperio.type.v1.Tax
-	16, // 5: aperio.sales.v1.Dish.create_time:type_name -> google.protobuf.Timestamp
-	16, // 6: aperio.sales.v1.Dish.update_time:type_name -> google.protobuf.Timestamp
-	12, // 7: aperio.sales.v1.Menu.diets:type_name -> aperio.type.v1.Diet
-	3,  // 8: aperio.sales.v1.Menu.courses:type_name -> aperio.sales.v1.MenuCourse
-	4,  // 9: aperio.sales.v1.Menu.add_ons:type_name -> aperio.sales.v1.MenuAddOn
-	14, // 10: aperio.sales.v1.Menu.plate_price:type_name -> google.type.Money
-	15, // 11: aperio.sales.v1.Menu.tax:type_name -> aperio.type.v1.Tax
-	16, // 12: aperio.sales.v1.Menu.create_time:type_name -> google.protobuf.Timestamp
-	16, // 13: aperio.sales.v1.Menu.update_time:type_name -> google.protobuf.Timestamp
-	11, // 14: aperio.sales.v1.MenuCourse.course:type_name -> aperio.sales.v1.Course
-	14, // 15: aperio.sales.v1.MenuAddOn.plate_price:type_name -> google.type.Money
-	17, // 16: aperio.sales.v1.FixedPackage.duration:type_name -> google.protobuf.Duration
-	6,  // 17: aperio.sales.v1.FixedPackage.inclusions:type_name -> aperio.sales.v1.PackageInclusion
-	14, // 18: aperio.sales.v1.FixedPackage.price:type_name -> google.type.Money
-	14, // 19: aperio.sales.v1.FixedPackage.extra_guest_price:type_name -> google.type.Money
-	15, // 20: aperio.sales.v1.FixedPackage.tax:type_name -> aperio.type.v1.Tax
-	16, // 21: aperio.sales.v1.FixedPackage.create_time:type_name -> google.protobuf.Timestamp
-	16, // 22: aperio.sales.v1.FixedPackage.update_time:type_name -> google.protobuf.Timestamp
-	18, // 23: aperio.sales.v1.Season.dates:type_name -> aperio.type.v1.DateRange
-	19, // 24: aperio.sales.v1.Season.weekdays:type_name -> google.type.DayOfWeek
-	16, // 25: aperio.sales.v1.Season.create_time:type_name -> google.protobuf.Timestamp
-	16, // 26: aperio.sales.v1.Season.update_time:type_name -> google.protobuf.Timestamp
-	20, // 27: aperio.sales.v1.PriceRule.target:type_name -> aperio.sales.v1.PriceTarget
-	14, // 28: aperio.sales.v1.PriceRule.fixed_price:type_name -> google.type.Money
-	21, // 29: aperio.sales.v1.PriceRule.percent:type_name -> google.type.Decimal
-	14, // 30: aperio.sales.v1.PriceRule.amount:type_name -> google.type.Money
-	16, // 31: aperio.sales.v1.PriceRule.create_time:type_name -> google.protobuf.Timestamp
-	16, // 32: aperio.sales.v1.PriceRule.update_time:type_name -> google.protobuf.Timestamp
-	0,  // 33: aperio.sales.v1.Quote.state:type_name -> aperio.sales.v1.Quote.State
-	22, // 34: aperio.sales.v1.Quote.event_type:type_name -> aperio.type.v1.EventType
-	18, // 35: aperio.sales.v1.Quote.dates:type_name -> aperio.type.v1.DateRange
-	10, // 36: aperio.sales.v1.Quote.lines:type_name -> aperio.sales.v1.QuoteLine
-	14, // 37: aperio.sales.v1.Quote.subtotal:type_name -> google.type.Money
-	14, // 38: aperio.sales.v1.Quote.tax_total:type_name -> google.type.Money
-	14, // 39: aperio.sales.v1.Quote.total:type_name -> google.type.Money
-	14, // 40: aperio.sales.v1.Quote.advance:type_name -> google.type.Money
-	16, // 41: aperio.sales.v1.Quote.expire_time:type_name -> google.protobuf.Timestamp
-	16, // 42: aperio.sales.v1.Quote.send_time:type_name -> google.protobuf.Timestamp
-	16, // 43: aperio.sales.v1.Quote.accept_time:type_name -> google.protobuf.Timestamp
-	16, // 44: aperio.sales.v1.Quote.create_time:type_name -> google.protobuf.Timestamp
-	16, // 45: aperio.sales.v1.Quote.update_time:type_name -> google.protobuf.Timestamp
-	17, // 46: aperio.sales.v1.Quote.ttl:type_name -> google.protobuf.Duration
-	23, // 47: aperio.sales.v1.QuoteLine.kind:type_name -> aperio.sales.v1.LineKind
-	24, // 48: aperio.sales.v1.QuoteLine.service_date:type_name -> google.type.Date
-	14, // 49: aperio.sales.v1.QuoteLine.unit_price:type_name -> google.type.Money
-	15, // 50: aperio.sales.v1.QuoteLine.tax:type_name -> aperio.type.v1.Tax
-	14, // 51: aperio.sales.v1.QuoteLine.amount:type_name -> google.type.Money
-	14, // 52: aperio.sales.v1.QuoteLine.tax_amount:type_name -> google.type.Money
-	53, // [53:53] is the sub-list for method output_type
-	53, // [53:53] is the sub-list for method input_type
-	53, // [53:53] is the sub-list for extension type_name
-	53, // [53:53] is the sub-list for extension extendee
-	0,  // [0:53] is the sub-list for field type_name
+	5,  // 0: aperio.sales.v1.Lead.kind:type_name -> aperio.sales.v1.LeadKind
+	6,  // 1: aperio.sales.v1.Lead.event_type:type_name -> aperio.type.v1.EventType
+	7,  // 2: aperio.sales.v1.Lead.source:type_name -> aperio.type.v1.Channel
+	8,  // 3: aperio.sales.v1.Lead.stage:type_name -> aperio.sales.v1.Stage
+	9,  // 4: aperio.sales.v1.Lead.dates:type_name -> aperio.type.v1.DateRange
+	10, // 5: aperio.sales.v1.Lead.budget:type_name -> google.type.Money
+	11, // 6: aperio.sales.v1.Lead.next_follow_up_time:type_name -> google.protobuf.Timestamp
+	12, // 7: aperio.sales.v1.Lead.lost_reason:type_name -> aperio.sales.v1.LostReason
+	11, // 8: aperio.sales.v1.Lead.close_time:type_name -> google.protobuf.Timestamp
+	11, // 9: aperio.sales.v1.Lead.create_time:type_name -> google.protobuf.Timestamp
+	11, // 10: aperio.sales.v1.Lead.update_time:type_name -> google.protobuf.Timestamp
+	13, // 11: aperio.sales.v1.Activity.kind:type_name -> aperio.sales.v1.ActivityKind
+	11, // 12: aperio.sales.v1.Activity.occur_time:type_name -> google.protobuf.Timestamp
+	11, // 13: aperio.sales.v1.Activity.create_time:type_name -> google.protobuf.Timestamp
+	11, // 14: aperio.sales.v1.Activity.update_time:type_name -> google.protobuf.Timestamp
+	0,  // 15: aperio.sales.v1.Quote.state:type_name -> aperio.sales.v1.Quote.State
+	6,  // 16: aperio.sales.v1.Quote.event_type:type_name -> aperio.type.v1.EventType
+	9,  // 17: aperio.sales.v1.Quote.dates:type_name -> aperio.type.v1.DateRange
+	4,  // 18: aperio.sales.v1.Quote.lines:type_name -> aperio.sales.v1.QuoteLine
+	10, // 19: aperio.sales.v1.Quote.subtotal:type_name -> google.type.Money
+	10, // 20: aperio.sales.v1.Quote.tax_total:type_name -> google.type.Money
+	10, // 21: aperio.sales.v1.Quote.total:type_name -> google.type.Money
+	10, // 22: aperio.sales.v1.Quote.advance:type_name -> google.type.Money
+	11, // 23: aperio.sales.v1.Quote.expire_time:type_name -> google.protobuf.Timestamp
+	11, // 24: aperio.sales.v1.Quote.send_time:type_name -> google.protobuf.Timestamp
+	11, // 25: aperio.sales.v1.Quote.accept_time:type_name -> google.protobuf.Timestamp
+	11, // 26: aperio.sales.v1.Quote.create_time:type_name -> google.protobuf.Timestamp
+	11, // 27: aperio.sales.v1.Quote.update_time:type_name -> google.protobuf.Timestamp
+	14, // 28: aperio.sales.v1.Quote.ttl:type_name -> google.protobuf.Duration
+	15, // 29: aperio.sales.v1.QuoteLine.kind:type_name -> aperio.sales.v1.LineKind
+	16, // 30: aperio.sales.v1.QuoteLine.service_date:type_name -> google.type.Date
+	10, // 31: aperio.sales.v1.QuoteLine.unit_price:type_name -> google.type.Money
+	17, // 32: aperio.sales.v1.QuoteLine.tax:type_name -> aperio.type.v1.Tax
+	10, // 33: aperio.sales.v1.QuoteLine.amount:type_name -> google.type.Money
+	10, // 34: aperio.sales.v1.QuoteLine.tax_amount:type_name -> google.type.Money
+	35, // [35:35] is the sub-list for method output_type
+	35, // [35:35] is the sub-list for method input_type
+	35, // [35:35] is the sub-list for extension type_name
+	35, // [35:35] is the sub-list for extension extendee
+	0,  // [0:35] is the sub-list for field type_name
 }
 
 func init() { file_aperio_sales_v1_sales_proto_init() }
@@ -1872,18 +1139,13 @@ func file_aperio_sales_v1_sales_proto_init() {
 		return
 	}
 	file_aperio_sales_v1_enums_proto_init()
-	file_aperio_sales_v1_sales_proto_msgTypes[7].OneofWrappers = []any{
-		(*PriceRule_FixedPrice)(nil),
-		(*PriceRule_Percent)(nil),
-		(*PriceRule_Amount)(nil),
-	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_sales_v1_sales_proto_rawDesc), len(file_aperio_sales_v1_sales_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   10,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

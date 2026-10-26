@@ -150,11 +150,14 @@ erDiagram
 
 ## Subfolders
 
-- [`booking/`](./booking/README.md)
-- [`crm/`](./crm/README.md)
+- [`catalog/`](./catalog/README.md)
 - [`document/`](./document/README.md)
+- [`event/`](./event/README.md)
 - [`finance/`](./finance/README.md)
+- [`guest/`](./guest/README.md)
 - [`operations/`](./operations/README.md)
+- [`pricing/`](./pricing/README.md)
 - [`sales/`](./sales/README.md)
+- [`stay/`](./stay/README.md)
 - [`type/`](./type/README.md)
 - [`venue/`](./venue/README.md)

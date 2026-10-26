@@ -9,7 +9,6 @@ import "aperio/operations/v1/operations.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/protobuf/field_mask.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1;operationspbv1";
 option java_multiple_files = true;
@@ -86,34 +85,6 @@ message CreateServiceRequestRequest {
 
   // Validate the request without creating anything.
   bool validate_only = 4 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for UpdateServiceRequest.
-message UpdateServiceRequestRequest {
-  // The service request to update, by its name.
-  ServiceRequest service_request = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The fields to update; all populated fields when empty.
-  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without updating anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
-}
-
-// Request message for DeleteServiceRequest.
-message DeleteServiceRequestRequest {
-  // The name of the service request to delete.
-  // Format: venues/{venue}/serviceRequests/{service_request}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "aperio.operations.v1/ServiceRequest"
-  ];
-
-  // The etag the caller last read; the delete fails when it has changed.
-  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Validate the request without deleting anything.
-  bool validate_only = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Request message for AcknowledgeServiceRequest.

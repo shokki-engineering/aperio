@@ -14,7 +14,6 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -30,8 +29,7 @@ var File_aperio_venue_v1_venue_service_proto protoreflect.FileDescriptor
 
 const file_aperio_venue_v1_venue_service_proto_rawDesc = "" +
 	"\n" +
-	"#aperio/venue/v1/venue_service.proto\x12\x0faperio.venue.v1\x1a\x1baperio/venue/v1/venue.proto\x1a$aperio/venue/v1/venue_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18mcp/v1/annotations.proto2\xf8\n" +
-	"\n" +
+	"#aperio/venue/v1/venue_service.proto\x12\x0faperio.venue.v1\x1a\x1baperio/venue/v1/venue.proto\x1a$aperio/venue/v1/venue_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\x8f\t\n" +
 	"\fVenueService\x12h\n" +
 	"\bGetVenue\x12 .aperio.venue.v1.GetVenueRequest\x1a\x16.aperio.venue.v1.Venue\"\"\xdaA\x04name\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/{name=venues/*}\x12l\n" +
 	"\n" +
@@ -39,14 +37,12 @@ const file_aperio_venue_v1_venue_service_proto_rawDesc = "" +
 	"/v1/venues\x12v\n" +
 	"\vCreateVenue\x12#.aperio.venue.v1.CreateVenueRequest\x1a\x16.aperio.venue.v1.Venue\"*\xdaA\x0evenue,venue_id\x82\xd3\xe4\x93\x02\x13:\x05venue\"\n" +
 	"/v1/venues\x12\x88\x01\n" +
-	"\vUpdateVenue\x12#.aperio.venue.v1.UpdateVenueRequest\x1a\x16.aperio.venue.v1.Venue\"<\xdaA\x11venue,update_mask\x82\xd3\xe4\x93\x02\":\x05venue2\x19/v1/{venue.name=venues/*}\x12n\n" +
-	"\vDeleteVenue\x12#.aperio.venue.v1.DeleteVenueRequest\x1a\x16.google.protobuf.Empty\"\"\xdaA\x04name\x82\xd3\xe4\x93\x02\x15*\x13/v1/{name=venues/*}\x12q\n" +
+	"\vUpdateVenue\x12#.aperio.venue.v1.UpdateVenueRequest\x1a\x16.aperio.venue.v1.Venue\"<\xdaA\x11venue,update_mask\x82\xd3\xe4\x93\x02\":\x05venue2\x19/v1/{venue.name=venues/*}\x12q\n" +
 	"\bGetSpace\x12 .aperio.venue.v1.GetSpaceRequest\x1a\x16.aperio.venue.v1.Space\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{name=venues/*/spaces/*}\x12\x84\x01\n" +
 	"\n" +
 	"ListSpaces\x12\".aperio.venue.v1.ListSpacesRequest\x1a#.aperio.venue.v1.ListSpacesResponse\"-\xdaA\x06parent\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/{parent=venues/*}/spaces\x12\x8f\x01\n" +
 	"\vCreateSpace\x12#.aperio.venue.v1.CreateSpaceRequest\x1a\x16.aperio.venue.v1.Space\"C\xdaA\x15parent,space,space_id\x82\xd3\xe4\x93\x02%:\x05space\"\x1c/v1/{parent=venues/*}/spaces\x12\x91\x01\n" +
-	"\vUpdateSpace\x12#.aperio.venue.v1.UpdateSpaceRequest\x1a\x16.aperio.venue.v1.Space\"E\xdaA\x11space,update_mask\x82\xd3\xe4\x93\x02+:\x05space2\"/v1/{space.name=venues/*/spaces/*}\x12w\n" +
-	"\vDeleteSpace\x12#.aperio.venue.v1.DeleteSpaceRequest\x1a\x16.google.protobuf.Empty\"+\xdaA\x04name\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/{name=venues/*/spaces/*}\x1a\x83\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18c\n" +
+	"\vUpdateSpace\x12#.aperio.venue.v1.UpdateSpaceRequest\x1a\x16.aperio.venue.v1.Space\"E\xdaA\x11space,update_mask\x82\xd3\xe4\x93\x02+:\x05space2\"/v1/{space.name=venues/*/spaces/*}\x1a\x83\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18c\n" +
 	"a\n" +
 	"\x06Venues\x12\x051.0.0\x1aPThe venues aperio sells and the spaces each one books: room types, halls, lawns.B\xdf\x01\n" +
 	"\x13com.aperio.venue.v1B\x11VenueServiceProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1;venuepbv1\xa2\x02\x03AVX\xaa\x02\x0fAperio.Venue.V1\xca\x02\x0fAperio\\Venue\\V1\xe2\x02\x1bAperio\\Venue\\V1\\GPBMetadata\xea\x02\x11Aperio::Venue::V1b\x06proto3"
@@ -56,41 +52,34 @@ var file_aperio_venue_v1_venue_service_proto_goTypes = []any{
 	(*ListVenuesRequest)(nil),  // 1: aperio.venue.v1.ListVenuesRequest
 	(*CreateVenueRequest)(nil), // 2: aperio.venue.v1.CreateVenueRequest
 	(*UpdateVenueRequest)(nil), // 3: aperio.venue.v1.UpdateVenueRequest
-	(*DeleteVenueRequest)(nil), // 4: aperio.venue.v1.DeleteVenueRequest
-	(*GetSpaceRequest)(nil),    // 5: aperio.venue.v1.GetSpaceRequest
-	(*ListSpacesRequest)(nil),  // 6: aperio.venue.v1.ListSpacesRequest
-	(*CreateSpaceRequest)(nil), // 7: aperio.venue.v1.CreateSpaceRequest
-	(*UpdateSpaceRequest)(nil), // 8: aperio.venue.v1.UpdateSpaceRequest
-	(*DeleteSpaceRequest)(nil), // 9: aperio.venue.v1.DeleteSpaceRequest
-	(*Venue)(nil),              // 10: aperio.venue.v1.Venue
-	(*ListVenuesResponse)(nil), // 11: aperio.venue.v1.ListVenuesResponse
-	(*emptypb.Empty)(nil),      // 12: google.protobuf.Empty
-	(*Space)(nil),              // 13: aperio.venue.v1.Space
-	(*ListSpacesResponse)(nil), // 14: aperio.venue.v1.ListSpacesResponse
+	(*GetSpaceRequest)(nil),    // 4: aperio.venue.v1.GetSpaceRequest
+	(*ListSpacesRequest)(nil),  // 5: aperio.venue.v1.ListSpacesRequest
+	(*CreateSpaceRequest)(nil), // 6: aperio.venue.v1.CreateSpaceRequest
+	(*UpdateSpaceRequest)(nil), // 7: aperio.venue.v1.UpdateSpaceRequest
+	(*Venue)(nil),              // 8: aperio.venue.v1.Venue
+	(*ListVenuesResponse)(nil), // 9: aperio.venue.v1.ListVenuesResponse
+	(*Space)(nil),              // 10: aperio.venue.v1.Space
+	(*ListSpacesResponse)(nil), // 11: aperio.venue.v1.ListSpacesResponse
 }
 var file_aperio_venue_v1_venue_service_proto_depIdxs = []int32{
 	0,  // 0: aperio.venue.v1.VenueService.GetVenue:input_type -> aperio.venue.v1.GetVenueRequest
 	1,  // 1: aperio.venue.v1.VenueService.ListVenues:input_type -> aperio.venue.v1.ListVenuesRequest
 	2,  // 2: aperio.venue.v1.VenueService.CreateVenue:input_type -> aperio.venue.v1.CreateVenueRequest
 	3,  // 3: aperio.venue.v1.VenueService.UpdateVenue:input_type -> aperio.venue.v1.UpdateVenueRequest
-	4,  // 4: aperio.venue.v1.VenueService.DeleteVenue:input_type -> aperio.venue.v1.DeleteVenueRequest
-	5,  // 5: aperio.venue.v1.VenueService.GetSpace:input_type -> aperio.venue.v1.GetSpaceRequest
-	6,  // 6: aperio.venue.v1.VenueService.ListSpaces:input_type -> aperio.venue.v1.ListSpacesRequest
-	7,  // 7: aperio.venue.v1.VenueService.CreateSpace:input_type -> aperio.venue.v1.CreateSpaceRequest
-	8,  // 8: aperio.venue.v1.VenueService.UpdateSpace:input_type -> aperio.venue.v1.UpdateSpaceRequest
-	9,  // 9: aperio.venue.v1.VenueService.DeleteSpace:input_type -> aperio.venue.v1.DeleteSpaceRequest
-	10, // 10: aperio.venue.v1.VenueService.GetVenue:output_type -> aperio.venue.v1.Venue
-	11, // 11: aperio.venue.v1.VenueService.ListVenues:output_type -> aperio.venue.v1.ListVenuesResponse
-	10, // 12: aperio.venue.v1.VenueService.CreateVenue:output_type -> aperio.venue.v1.Venue
-	10, // 13: aperio.venue.v1.VenueService.UpdateVenue:output_type -> aperio.venue.v1.Venue
-	12, // 14: aperio.venue.v1.VenueService.DeleteVenue:output_type -> google.protobuf.Empty
-	13, // 15: aperio.venue.v1.VenueService.GetSpace:output_type -> aperio.venue.v1.Space
-	14, // 16: aperio.venue.v1.VenueService.ListSpaces:output_type -> aperio.venue.v1.ListSpacesResponse
-	13, // 17: aperio.venue.v1.VenueService.CreateSpace:output_type -> aperio.venue.v1.Space
-	13, // 18: aperio.venue.v1.VenueService.UpdateSpace:output_type -> aperio.venue.v1.Space
-	12, // 19: aperio.venue.v1.VenueService.DeleteSpace:output_type -> google.protobuf.Empty
-	10, // [10:20] is the sub-list for method output_type
-	0,  // [0:10] is the sub-list for method input_type
+	4,  // 4: aperio.venue.v1.VenueService.GetSpace:input_type -> aperio.venue.v1.GetSpaceRequest
+	5,  // 5: aperio.venue.v1.VenueService.ListSpaces:input_type -> aperio.venue.v1.ListSpacesRequest
+	6,  // 6: aperio.venue.v1.VenueService.CreateSpace:input_type -> aperio.venue.v1.CreateSpaceRequest
+	7,  // 7: aperio.venue.v1.VenueService.UpdateSpace:input_type -> aperio.venue.v1.UpdateSpaceRequest
+	8,  // 8: aperio.venue.v1.VenueService.GetVenue:output_type -> aperio.venue.v1.Venue
+	9,  // 9: aperio.venue.v1.VenueService.ListVenues:output_type -> aperio.venue.v1.ListVenuesResponse
+	8,  // 10: aperio.venue.v1.VenueService.CreateVenue:output_type -> aperio.venue.v1.Venue
+	8,  // 11: aperio.venue.v1.VenueService.UpdateVenue:output_type -> aperio.venue.v1.Venue
+	10, // 12: aperio.venue.v1.VenueService.GetSpace:output_type -> aperio.venue.v1.Space
+	11, // 13: aperio.venue.v1.VenueService.ListSpaces:output_type -> aperio.venue.v1.ListSpacesResponse
+	10, // 14: aperio.venue.v1.VenueService.CreateSpace:output_type -> aperio.venue.v1.Space
+	10, // 15: aperio.venue.v1.VenueService.UpdateSpace:output_type -> aperio.venue.v1.Space
+	8,  // [8:16] is the sub-list for method output_type
+	0,  // [0:8] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

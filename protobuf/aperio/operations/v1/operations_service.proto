@@ -9,7 +9,6 @@ import "aperio/operations/v1/operations.proto";
 import "aperio/operations/v1/operations_messages.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
-import "google/protobuf/empty.proto";
 import "mcp/v1/annotations.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/operations/v1/operationspbv1;operationspbv1";
@@ -47,21 +46,6 @@ service OperationsService {
       body: "service_request"
     };
     option (google.api.method_signature) = "parent,service_request,service_request_id";
-  }
-
-  // Updates a service request. Only the fields in update_mask are written.
-  rpc UpdateServiceRequest(UpdateServiceRequestRequest) returns (ServiceRequest) {
-    option (google.api.http) = {
-      patch: "/v1/{service_request.name=venues/*/serviceRequests/*}"
-      body: "service_request"
-    };
-    option (google.api.method_signature) = "service_request,update_mask";
-  }
-
-  // Deletes a service request.
-  rpc DeleteServiceRequest(DeleteServiceRequestRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {delete: "/v1/{name=venues/*/serviceRequests/*}"};
-    option (google.api.method_signature) = "name";
   }
 
   // Takes up an open service request for its department.

@@ -14,7 +14,6 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -30,13 +29,11 @@ var File_aperio_operations_v1_operations_service_proto protoreflect.FileDescript
 
 const file_aperio_operations_v1_operations_service_proto_rawDesc = "" +
 	"\n" +
-	"-aperio/operations/v1/operations_service.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a.aperio/operations/v1/operations_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18mcp/v1/annotations.proto2\xe6\x0e\n" +
+	"-aperio/operations/v1/operations_service.proto\x12\x14aperio.operations.v1\x1a%aperio/operations/v1/operations.proto\x1a.aperio/operations/v1/operations_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xec\v\n" +
 	"\x11OperationsService\x12\x9f\x01\n" +
 	"\x11GetServiceRequest\x12..aperio.operations.v1.GetServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"4\xdaA\x04name\x82\xd3\xe4\x93\x02'\x12%/v1/{name=venues/*/serviceRequests/*}\x12\xb2\x01\n" +
 	"\x13ListServiceRequests\x120.aperio.operations.v1.ListServiceRequestsRequest\x1a1.aperio.operations.v1.ListServiceRequestsResponse\"6\xdaA\x06parent\x82\xd3\xe4\x93\x02'\x12%/v1/{parent=venues/*}/serviceRequests\x12\xdb\x01\n" +
-	"\x14CreateServiceRequest\x121.aperio.operations.v1.CreateServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"j\xdaA)parent,service_request,service_request_id\x82\xd3\xe4\x93\x028:\x0fservice_request\"%/v1/{parent=venues/*}/serviceRequests\x12\xdd\x01\n" +
-	"\x14UpdateServiceRequest\x121.aperio.operations.v1.UpdateServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"l\xdaA\x1bservice_request,update_mask\x82\xd3\xe4\x93\x02H:\x0fservice_request25/v1/{service_request.name=venues/*/serviceRequests/*}\x12\x97\x01\n" +
-	"\x14DeleteServiceRequest\x121.aperio.operations.v1.DeleteServiceRequestRequest\x1a\x16.google.protobuf.Empty\"4\xdaA\x04name\x82\xd3\xe4\x93\x02'*%/v1/{name=venues/*/serviceRequests/*}\x12\xbe\x01\n" +
+	"\x14CreateServiceRequest\x121.aperio.operations.v1.CreateServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"j\xdaA)parent,service_request,service_request_id\x82\xd3\xe4\x93\x028:\x0fservice_request\"%/v1/{parent=venues/*}/serviceRequests\x12\xbe\x01\n" +
 	"\x19AcknowledgeServiceRequest\x126.aperio.operations.v1.AcknowledgeServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"C\xdaA\x04name\x82\xd3\xe4\x93\x026:\x01*\"1/v1/{name=venues/*/serviceRequests/*}:acknowledge\x12\xac\x01\n" +
 	"\x13StartServiceRequest\x120.aperio.operations.v1.StartServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"=\xdaA\x04name\x82\xd3\xe4\x93\x020:\x01*\"+/v1/{name=venues/*/serviceRequests/*}:start\x12\xb5\x01\n" +
 	"\x16CompleteServiceRequest\x123.aperio.operations.v1.CompleteServiceRequestRequest\x1a$.aperio.operations.v1.ServiceRequest\"@\xdaA\x04name\x82\xd3\xe4\x93\x023:\x01*\"./v1/{name=venues/*/serviceRequests/*}:complete\x12\xaf\x01\n" +
@@ -50,40 +47,33 @@ var file_aperio_operations_v1_operations_service_proto_goTypes = []any{
 	(*GetServiceRequestRequest)(nil),         // 0: aperio.operations.v1.GetServiceRequestRequest
 	(*ListServiceRequestsRequest)(nil),       // 1: aperio.operations.v1.ListServiceRequestsRequest
 	(*CreateServiceRequestRequest)(nil),      // 2: aperio.operations.v1.CreateServiceRequestRequest
-	(*UpdateServiceRequestRequest)(nil),      // 3: aperio.operations.v1.UpdateServiceRequestRequest
-	(*DeleteServiceRequestRequest)(nil),      // 4: aperio.operations.v1.DeleteServiceRequestRequest
-	(*AcknowledgeServiceRequestRequest)(nil), // 5: aperio.operations.v1.AcknowledgeServiceRequestRequest
-	(*StartServiceRequestRequest)(nil),       // 6: aperio.operations.v1.StartServiceRequestRequest
-	(*CompleteServiceRequestRequest)(nil),    // 7: aperio.operations.v1.CompleteServiceRequestRequest
-	(*CancelServiceRequestRequest)(nil),      // 8: aperio.operations.v1.CancelServiceRequestRequest
-	(*ServiceRequest)(nil),                   // 9: aperio.operations.v1.ServiceRequest
-	(*ListServiceRequestsResponse)(nil),      // 10: aperio.operations.v1.ListServiceRequestsResponse
-	(*emptypb.Empty)(nil),                    // 11: google.protobuf.Empty
+	(*AcknowledgeServiceRequestRequest)(nil), // 3: aperio.operations.v1.AcknowledgeServiceRequestRequest
+	(*StartServiceRequestRequest)(nil),       // 4: aperio.operations.v1.StartServiceRequestRequest
+	(*CompleteServiceRequestRequest)(nil),    // 5: aperio.operations.v1.CompleteServiceRequestRequest
+	(*CancelServiceRequestRequest)(nil),      // 6: aperio.operations.v1.CancelServiceRequestRequest
+	(*ServiceRequest)(nil),                   // 7: aperio.operations.v1.ServiceRequest
+	(*ListServiceRequestsResponse)(nil),      // 8: aperio.operations.v1.ListServiceRequestsResponse
 }
 var file_aperio_operations_v1_operations_service_proto_depIdxs = []int32{
-	0,  // 0: aperio.operations.v1.OperationsService.GetServiceRequest:input_type -> aperio.operations.v1.GetServiceRequestRequest
-	1,  // 1: aperio.operations.v1.OperationsService.ListServiceRequests:input_type -> aperio.operations.v1.ListServiceRequestsRequest
-	2,  // 2: aperio.operations.v1.OperationsService.CreateServiceRequest:input_type -> aperio.operations.v1.CreateServiceRequestRequest
-	3,  // 3: aperio.operations.v1.OperationsService.UpdateServiceRequest:input_type -> aperio.operations.v1.UpdateServiceRequestRequest
-	4,  // 4: aperio.operations.v1.OperationsService.DeleteServiceRequest:input_type -> aperio.operations.v1.DeleteServiceRequestRequest
-	5,  // 5: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:input_type -> aperio.operations.v1.AcknowledgeServiceRequestRequest
-	6,  // 6: aperio.operations.v1.OperationsService.StartServiceRequest:input_type -> aperio.operations.v1.StartServiceRequestRequest
-	7,  // 7: aperio.operations.v1.OperationsService.CompleteServiceRequest:input_type -> aperio.operations.v1.CompleteServiceRequestRequest
-	8,  // 8: aperio.operations.v1.OperationsService.CancelServiceRequest:input_type -> aperio.operations.v1.CancelServiceRequestRequest
-	9,  // 9: aperio.operations.v1.OperationsService.GetServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	10, // 10: aperio.operations.v1.OperationsService.ListServiceRequests:output_type -> aperio.operations.v1.ListServiceRequestsResponse
-	9,  // 11: aperio.operations.v1.OperationsService.CreateServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	9,  // 12: aperio.operations.v1.OperationsService.UpdateServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	11, // 13: aperio.operations.v1.OperationsService.DeleteServiceRequest:output_type -> google.protobuf.Empty
-	9,  // 14: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	9,  // 15: aperio.operations.v1.OperationsService.StartServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	9,  // 16: aperio.operations.v1.OperationsService.CompleteServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	9,  // 17: aperio.operations.v1.OperationsService.CancelServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
-	9,  // [9:18] is the sub-list for method output_type
-	0,  // [0:9] is the sub-list for method input_type
-	0,  // [0:0] is the sub-list for extension type_name
-	0,  // [0:0] is the sub-list for extension extendee
-	0,  // [0:0] is the sub-list for field type_name
+	0, // 0: aperio.operations.v1.OperationsService.GetServiceRequest:input_type -> aperio.operations.v1.GetServiceRequestRequest
+	1, // 1: aperio.operations.v1.OperationsService.ListServiceRequests:input_type -> aperio.operations.v1.ListServiceRequestsRequest
+	2, // 2: aperio.operations.v1.OperationsService.CreateServiceRequest:input_type -> aperio.operations.v1.CreateServiceRequestRequest
+	3, // 3: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:input_type -> aperio.operations.v1.AcknowledgeServiceRequestRequest
+	4, // 4: aperio.operations.v1.OperationsService.StartServiceRequest:input_type -> aperio.operations.v1.StartServiceRequestRequest
+	5, // 5: aperio.operations.v1.OperationsService.CompleteServiceRequest:input_type -> aperio.operations.v1.CompleteServiceRequestRequest
+	6, // 6: aperio.operations.v1.OperationsService.CancelServiceRequest:input_type -> aperio.operations.v1.CancelServiceRequestRequest
+	7, // 7: aperio.operations.v1.OperationsService.GetServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	8, // 8: aperio.operations.v1.OperationsService.ListServiceRequests:output_type -> aperio.operations.v1.ListServiceRequestsResponse
+	7, // 9: aperio.operations.v1.OperationsService.CreateServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	7, // 10: aperio.operations.v1.OperationsService.AcknowledgeServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	7, // 11: aperio.operations.v1.OperationsService.StartServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	7, // 12: aperio.operations.v1.OperationsService.CompleteServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	7, // 13: aperio.operations.v1.OperationsService.CancelServiceRequest:output_type -> aperio.operations.v1.ServiceRequest
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_aperio_operations_v1_operations_service_proto_init() }

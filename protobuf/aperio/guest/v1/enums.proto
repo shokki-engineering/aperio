@@ -1,0 +1,23 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.guest.v1;
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1;guestpbv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnumsProto";
+option java_package = "engineering.shokki.aperio.guest.v1";
+
+// ContactKind is whether a contact is a person or a company.
+enum ContactKind {
+  // Default; never set.
+  CONTACT_KIND_UNSPECIFIED = 0;
+
+  // A person.
+  CONTACT_KIND_PERSON = 1;
+
+  // A company, a planner or an agency.
+  CONTACT_KIND_COMPANY = 2;
+}

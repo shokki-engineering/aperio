@@ -4,7 +4,7 @@
 // 	protoc (unknown)
 //
 // database: aperio
-// schemas:  booking, crm, document, finance, operations, sales, venue
+// schemas:  catalog, document, event, finance, guest, operations, pricing, sales, stay, venue
 //
 // Prisma 7 configuration; connection URLs are environment-driven.
 // annotations: entity.v1 1.6.7, store.v1 1.6.7

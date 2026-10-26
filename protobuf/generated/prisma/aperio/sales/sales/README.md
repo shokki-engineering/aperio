@@ -6,35 +6,21 @@ Generated from Protobuf by protoc-gen-store. Source of truth is the `.proto` fil
 
 | Models | Enums |
 | ---: | ---: |
-| 7 | 2 |
+| 3 | 1 |
 
 ## Entity relationships
 
 ```mermaid
 erDiagram
     direction LR
-    Dish {
+    Activity {
         string id PK
-        string venue_id FK
+        string lead_id FK
     }
-    FixedPackage {
+    Lead {
         string id PK
-        string menu FK
-        string venue_id FK
-    }
-    FixedPackageSpaces {
-        string id PK
-        string fixed_package_id FK
-        string space_id FK
-    }
-    Menu {
-        string id PK
-        string venue_id FK
-    }
-    PriceRule {
-        string id PK
-        string season FK
-        string venue_id FK
+        string contact FK
+        string venue FK
     }
     Quote {
         string id PK
@@ -42,146 +28,72 @@ erDiagram
         string lead FK
         string venue_id FK
     }
-    Season {
-        string id PK
-        string venue_id FK
-    }
     Contact {
-        string externalStub PK
-    }
-    Lead {
-        string externalStub PK
-    }
-    Space {
         string externalStub PK
     }
     Venue {
         string externalStub PK
     }
-    Dish }o--|| Venue : "venue_id"
-    FixedPackage }o--|| Menu : "menu"
-    FixedPackage }o--|| Venue : "venue_id"
-    FixedPackageSpaces }o--|| FixedPackage : "fixed_package_id"
-    FixedPackageSpaces }o--|| Space : "space_id"
-    Menu }o--|| Venue : "venue_id"
-    PriceRule }o--|| Season : "season"
-    PriceRule }o--|| Venue : "venue_id"
+    Activity }o--|| Lead : "lead_id"
+    Lead }o--|| Contact : "contact"
+    Lead }o--|| Venue : "venue"
     Quote }o--|| Contact : "contact"
     Quote }o--|| Lead : "lead"
     Quote }o--|| Venue : "venue_id"
-    Season }o--|| Venue : "venue_id"
 ```
 
 Schema file: [`sales.postgres.prisma`](./sales.postgres.prisma)
 
-### `Dish` → `dishes`
+### `Lead` → `leads`
 
-A Dish is one item a venue's kitchen makes: paneer tikka, dal makhani, a live chaat counter, a mocktail. It is the catalogue menus are made from, so a dish is described once -- its course, the diets it suits, its allergens -- and every menu that offers it says the same. A dish has its own price only when it is sold on its own: à la carte, room service, an add-on to a menu.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `description` | `VARCHAR(255)` | nullable |
-| `course` | `Course` | not null |
-| `cuisine` | `VARCHAR(255)` | nullable |
-| `diets` | `` | nullable |
-| `allergens` | `` | nullable |
-| `price` | `JSONB` | nullable |
-| `tax` | `JSONB` | nullable |
-| `image_uri` | `VARCHAR(255)` | nullable |
-| `available` | `BOOLEAN` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-
-### `Menu` → `menus`
-
-A Menu is a plate menu sold for events at a price per plate: "Silver Vegetarian -- 2 welcome drinks, any 3 of 6 starters, 4 mains, breads, rice, 2 desserts". It is a set of courses, each a choice among dishes, with add-ons priced per plate on top. Its plate_price is the base price. What a plate costs on a given date is the base price with the venue's price rules applied (PriceRule), so a wedding-season surcharge needs no edit to the menu.
+A Lead is an enquiry that may become a booking: a couple asking about a December wedding, a company asking for an offsite with forty rooms, a family asking about a week at the resort. It covers both venues and every kind of booking -- a stay, an event, or both, as a wedding with rooms for its guests is. A lead moves through a sales pipeline, from NEW to WON or LOST, owned by one salesperson with a follow-up date. While it is negotiated its dates can be held in freebusy (`hold`), so they are not sold under it; winning it turns the accepted quote into the booking.
 
 | Column | Type | Null |
 | --- | --- | --- |
 | `id` | `CHAR(26)` | not null |
 | `name` | `VARCHAR(255)` | not null |
 | `display_name` | `VARCHAR(255)` | not null |
-| `description` | `VARCHAR(255)` | nullable |
-| `diets` | `` | nullable |
-| `courses` | `JSONB` | not null |
-| `add_ons` | `JSONB` | nullable |
-| `plate_price` | `JSONB` | not null |
-| `min_plates` | `INTEGER` | nullable |
-| `tax` | `JSONB` | not null |
-| `active` | `BOOLEAN` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-
-### `FixedPackage` → `fixed_packages`
-
-A FixedPackage is a fixed-price bundle: "Wedding Gold -- the ballroom for 8 hours, stage and floral decor, DJ, 300 plates of Silver Vegetarian". It includes so many guests, and charges each guest beyond them. Its price is the base price; what it costs on a date is the base price with the venue's price rules applied, as a menu's is.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `description` | `VARCHAR(255)` | nullable |
-| `duration` | `INTERVAL` | nullable |
-| `menu` | `VARCHAR(255)` | nullable |
-| `inclusions` | `JSONB` | nullable |
-| `included_guests` | `INTEGER` | not null |
-| `price` | `JSONB` | not null |
-| `extra_guest_price` | `JSONB` | nullable |
-| `tax` | `JSONB` | not null |
-| `active` | `BOOLEAN` | nullable |
-| `create_time` | `TIMESTAMPTZ` | not null |
-| `update_time` | `TIMESTAMPTZ` | not null |
-| `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-
-### `Season` → `seasons`
-
-A Season is a named set of dates prices change on: "Wedding season" (November to February), "Diwali week", "Monsoon", "Weekends". Seasons say when; price rules say how much. A season that recurs yearly is matched on month and day, so "Wedding season, 1 Nov -- 28 Feb" is next year's too without anyone editing it.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
+| `contact` | `CHAR(26)` | not null |
+| `venue` | `CHAR(26)` | nullable |
+| `kind` | `LeadKind` | not null |
+| `event_type` | `EventType` | nullable |
+| `source` | `Channel` | nullable |
+| `source_detail` | `VARCHAR(255)` | nullable |
+| `stage` | `Stage` | nullable |
 | `dates` | `JSONB` | nullable |
-| `recurs_yearly` | `BOOLEAN` | nullable |
-| `weekdays` | `` | nullable |
+| `dates_flexible` | `BOOLEAN` | nullable |
+| `guests` | `INTEGER` | nullable |
+| `rooms` | `INTEGER` | nullable |
+| `budget` | `JSONB` | nullable |
+| `requirements` | `VARCHAR(255)` | nullable |
+| `owner` | `VARCHAR(255)` | nullable |
+| `next_follow_up_time` | `TIMESTAMPTZ` | nullable |
+| `lost_reason` | `LostReason` | nullable |
+| `lost_detail` | `VARCHAR(255)` | nullable |
+| `hold` | `VARCHAR(255)` | nullable |
+| `bookings` | `VARCHAR(255)[]` | nullable |
+| `close_time` | `TIMESTAMPTZ` | nullable |
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
 
-### `PriceRule` → `price_rules`
+### `Activity` → `activities`
 
-A PriceRule changes the price of what a venue sells in a season: "plate menus +15% in wedding season", "the ballroom ₹2,50,000 on weekends", "Deluxe rooms -20% in monsoon", "₹100 off a plate above 500 guests". Prices are never stored per date. The price of anything on a date is its base price with the one matching rule of the highest priority applied -- matching its target, its season and its guest count -- so prices change on their own as the seasons turn, and changing a rule changes every price it covers at once. A quote fixes its prices when it is sent, so a later rule does not change what a guest was offered.
+An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a quote sent. The activities of a lead are its history, newest first.
 
 | Column | Type | Null |
 | --- | --- | --- |
 | `id` | `CHAR(26)` | not null |
 | `name` | `VARCHAR(255)` | not null |
-| `display_name` | `VARCHAR(255)` | not null |
-| `season` | `VARCHAR(255)` | nullable |
-| `target` | `PriceTarget` | not null |
-| `min_guests` | `INTEGER` | nullable |
-| `fixed_price` | `JSONB` | nullable |
-| `percent` | `NUMERIC` | nullable |
-| `amount` | `JSONB` | nullable |
-| `priority` | `INTEGER` | nullable |
-| `active` | `BOOLEAN` | nullable |
+| `kind` | `ActivityKind` | not null |
+| `occur_time` | `TIMESTAMPTZ` | not null |
+| `summary` | `VARCHAR(255)` | not null |
+| `details` | `VARCHAR(255)` | nullable |
+| `author` | `VARCHAR(255)` | nullable |
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
-| `adjustment_case` | `PriceRuleAdjustmentCase` | nullable |
-| `venue_id` | `CHAR(26)` | not null |
-| `items` | `VARCHAR(255)[]` | nullable |
+| `lead_id` | `CHAR(26)` | not null |
 
 ### `Quote` → `quotes`
 
@@ -217,18 +129,6 @@ A Quote is a priced proposal to a guest: the spaces, rooms, menus and packages t
 | `ttl` | `INTERVAL` | nullable |
 | `venue_id` | `CHAR(26)` | not null |
 
-### `FixedPackageSpaces` → `fixed_package_spaces`
-
-Join table for the many-to-many relation FixedPackage.spaces ↔ Space.
-
-| Column | Type | Null |
-| --- | --- | --- |
-| `id` | `CHAR(26)` | not null |
-| `fixed_package_id` | `CHAR(26)` | not null |
-| `space_id` | `CHAR(26)` | not null |
-| `space_name` | `TEXT` | not null |
-
 ### Enums
 
-- `PriceRuleAdjustmentCase`: FIXED_PRICE, PERCENT, AMOUNT
 - `SalesState`: DRAFT, SENT, ACCEPTED, DECLINED, EXPIRED, SUPERSEDED

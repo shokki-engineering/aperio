@@ -6,11 +6,13 @@ Generated from Protobuf by protoc-gen-store. Source of truth is the `.proto` fil
 
 | Models | Enums |
 | ---: | ---: |
-| 0 | 2 |
+| 0 | 4 |
 
 Schema file: [`enums.postgres.prisma`](./enums.postgres.prisma)
 
 ### Enums
 
-- `Course`: WELCOME_DRINK, STARTER, SOUP, SALAD, MAIN, BREAD, RICE, SIDE, DESSERT, BEVERAGE, LIVE_COUNTER, OTHER
-- `PriceTarget`: MENU, FIXED_PACKAGE, SPACE, DISH
+- `LeadKind`: STAY, EVENT, EVENT_WITH_STAY
+- `Stage`: NEW, CONTACTED, SITE_VISIT, PROPOSAL, NEGOTIATION, WON, LOST
+- `LostReason`: PRICE, DATES, COMPETITOR, CAPACITY, CANCELLED_PLANS, NO_RESPONSE, OTHER
+- `ActivityKind`: CALL, EMAIL, WHATSAPP, MEETING, SITE_VISIT, QUOTE_SENT, NOTE

@@ -489,6 +489,144 @@ func (Channel) EnumDescriptor() ([]byte, []int) {
 	return file_aperio_type_v1_enums_proto_rawDescGZIP(), []int{4}
 }
 
+// RequestCategory is which team a special request falls to.
+type RequestCategory int32
+
+const (
+	// Default; not said.
+	RequestCategory_REQUEST_CATEGORY_UNSPECIFIED RequestCategory = 0
+	// The room: bedding, a cot, a view, a floor.
+	RequestCategory_REQUEST_CATEGORY_ROOM RequestCategory = 1
+	// Arrival and departure: early check-in, late check-out, a transfer.
+	RequestCategory_REQUEST_CATEGORY_ARRIVAL RequestCategory = 2
+	// Food and beverage: a cake, a special dish, a bar.
+	RequestCategory_REQUEST_CATEGORY_FOOD_BEVERAGE RequestCategory = 3
+	// Decor and flowers: a mandap, a stage, a theme.
+	RequestCategory_REQUEST_CATEGORY_DECOR RequestCategory = 4
+	// Sound, light, projection and connectivity.
+	RequestCategory_REQUEST_CATEGORY_AV RequestCategory = 5
+	// Access: a wheelchair, a ramp, a ground-floor room.
+	RequestCategory_REQUEST_CATEGORY_ACCESSIBILITY RequestCategory = 6
+	// A celebration: an anniversary, a birthday surprise.
+	RequestCategory_REQUEST_CATEGORY_CELEBRATION RequestCategory = 7
+	// Anything else.
+	RequestCategory_REQUEST_CATEGORY_OTHER RequestCategory = 8
+)
+
+// Enum value maps for RequestCategory.
+var (
+	RequestCategory_name = map[int32]string{
+		0: "REQUEST_CATEGORY_UNSPECIFIED",
+		1: "REQUEST_CATEGORY_ROOM",
+		2: "REQUEST_CATEGORY_ARRIVAL",
+		3: "REQUEST_CATEGORY_FOOD_BEVERAGE",
+		4: "REQUEST_CATEGORY_DECOR",
+		5: "REQUEST_CATEGORY_AV",
+		6: "REQUEST_CATEGORY_ACCESSIBILITY",
+		7: "REQUEST_CATEGORY_CELEBRATION",
+		8: "REQUEST_CATEGORY_OTHER",
+	}
+	RequestCategory_value = map[string]int32{
+		"REQUEST_CATEGORY_UNSPECIFIED":   0,
+		"REQUEST_CATEGORY_ROOM":          1,
+		"REQUEST_CATEGORY_ARRIVAL":       2,
+		"REQUEST_CATEGORY_FOOD_BEVERAGE": 3,
+		"REQUEST_CATEGORY_DECOR":         4,
+		"REQUEST_CATEGORY_AV":            5,
+		"REQUEST_CATEGORY_ACCESSIBILITY": 6,
+		"REQUEST_CATEGORY_CELEBRATION":   7,
+		"REQUEST_CATEGORY_OTHER":         8,
+	}
+)
+
+func (x RequestCategory) Enum() *RequestCategory {
+	p := new(RequestCategory)
+	*p = x
+	return p
+}
+
+func (x RequestCategory) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RequestCategory) Descriptor() protoreflect.EnumDescriptor {
+	return file_aperio_type_v1_enums_proto_enumTypes[5].Descriptor()
+}
+
+func (RequestCategory) Type() protoreflect.EnumType {
+	return &file_aperio_type_v1_enums_proto_enumTypes[5]
+}
+
+func (x RequestCategory) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RequestCategory.Descriptor instead.
+func (RequestCategory) EnumDescriptor() ([]byte, []int) {
+	return file_aperio_type_v1_enums_proto_rawDescGZIP(), []int{5}
+}
+
+// RequestProgress is where the venue is with a special request.
+type RequestProgress int32
+
+const (
+	// Default; read as OPEN.
+	RequestProgress_REQUEST_PROGRESS_UNSPECIFIED RequestProgress = 0
+	// Received; nobody has taken it up.
+	RequestProgress_REQUEST_PROGRESS_OPEN RequestProgress = 1
+	// Taken up by the team it falls to.
+	RequestProgress_REQUEST_PROGRESS_ACKNOWLEDGED RequestProgress = 2
+	// Done.
+	RequestProgress_REQUEST_PROGRESS_DONE RequestProgress = 3
+	// It cannot be done; the notes say why.
+	RequestProgress_REQUEST_PROGRESS_DECLINED RequestProgress = 4
+)
+
+// Enum value maps for RequestProgress.
+var (
+	RequestProgress_name = map[int32]string{
+		0: "REQUEST_PROGRESS_UNSPECIFIED",
+		1: "REQUEST_PROGRESS_OPEN",
+		2: "REQUEST_PROGRESS_ACKNOWLEDGED",
+		3: "REQUEST_PROGRESS_DONE",
+		4: "REQUEST_PROGRESS_DECLINED",
+	}
+	RequestProgress_value = map[string]int32{
+		"REQUEST_PROGRESS_UNSPECIFIED":  0,
+		"REQUEST_PROGRESS_OPEN":         1,
+		"REQUEST_PROGRESS_ACKNOWLEDGED": 2,
+		"REQUEST_PROGRESS_DONE":         3,
+		"REQUEST_PROGRESS_DECLINED":     4,
+	}
+)
+
+func (x RequestProgress) Enum() *RequestProgress {
+	p := new(RequestProgress)
+	*p = x
+	return p
+}
+
+func (x RequestProgress) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RequestProgress) Descriptor() protoreflect.EnumDescriptor {
+	return file_aperio_type_v1_enums_proto_enumTypes[6].Descriptor()
+}
+
+func (RequestProgress) Type() protoreflect.EnumType {
+	return &file_aperio_type_v1_enums_proto_enumTypes[6]
+}
+
+func (x RequestProgress) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RequestProgress.Descriptor instead.
+func (RequestProgress) EnumDescriptor() ([]byte, []int) {
+	return file_aperio_type_v1_enums_proto_rawDescGZIP(), []int{6}
+}
+
 var File_aperio_type_v1_enums_proto protoreflect.FileDescriptor
 
 const file_aperio_type_v1_enums_proto_rawDesc = "" +
@@ -571,7 +709,23 @@ const file_aperio_type_v1_enums_proto_rawDesc = "" +
 	"\x0fCHANNEL_EXPEDIA\x10\x0e\x12\x1b\n" +
 	"\x17CHANNEL_CHANNEL_MANAGER\x10\x0f\x12\x0f\n" +
 	"\vCHANNEL_RFP\x10\x10\x12\x11\n" +
-	"\rCHANNEL_OTHER\x10\x11B\xd0\x01\n" +
+	"\rCHANNEL_OTHER\x10\x11*\xa7\x02\n" +
+	"\x0fRequestCategory\x12 \n" +
+	"\x1cREQUEST_CATEGORY_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15REQUEST_CATEGORY_ROOM\x10\x01\x12\x1c\n" +
+	"\x18REQUEST_CATEGORY_ARRIVAL\x10\x02\x12\"\n" +
+	"\x1eREQUEST_CATEGORY_FOOD_BEVERAGE\x10\x03\x12\x1a\n" +
+	"\x16REQUEST_CATEGORY_DECOR\x10\x04\x12\x17\n" +
+	"\x13REQUEST_CATEGORY_AV\x10\x05\x12\"\n" +
+	"\x1eREQUEST_CATEGORY_ACCESSIBILITY\x10\x06\x12 \n" +
+	"\x1cREQUEST_CATEGORY_CELEBRATION\x10\a\x12\x1a\n" +
+	"\x16REQUEST_CATEGORY_OTHER\x10\b*\xab\x01\n" +
+	"\x0fRequestProgress\x12 \n" +
+	"\x1cREQUEST_PROGRESS_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15REQUEST_PROGRESS_OPEN\x10\x01\x12!\n" +
+	"\x1dREQUEST_PROGRESS_ACKNOWLEDGED\x10\x02\x12\x19\n" +
+	"\x15REQUEST_PROGRESS_DONE\x10\x03\x12\x1d\n" +
+	"\x19REQUEST_PROGRESS_DECLINED\x10\x04B\xd0\x01\n" +
 	"\x12com.aperio.type.v1B\n" +
 	"EnumsProtoP\x01ZTgithub.com/shokki-engineering/aperio/protobuf/generated/go/type/v1/typepbv1;typepbv1\xa2\x02\x03ATX\xaa\x02\x0eAperio.Type.V1\xca\x02\x0eAperio\\Type\\V1\xe2\x02\x1aAperio\\Type\\V1\\GPBMetadata\xea\x02\x10Aperio::Type::V1b\x06proto3"
 
@@ -587,13 +741,15 @@ func file_aperio_type_v1_enums_proto_rawDescGZIP() []byte {
 	return file_aperio_type_v1_enums_proto_rawDescData
 }
 
-var file_aperio_type_v1_enums_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_aperio_type_v1_enums_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
 var file_aperio_type_v1_enums_proto_goTypes = []any{
-	(PhoneKind)(0), // 0: aperio.type.v1.PhoneKind
-	(Diet)(0),      // 1: aperio.type.v1.Diet
-	(Allergen)(0),  // 2: aperio.type.v1.Allergen
-	(EventType)(0), // 3: aperio.type.v1.EventType
-	(Channel)(0),   // 4: aperio.type.v1.Channel
+	(PhoneKind)(0),       // 0: aperio.type.v1.PhoneKind
+	(Diet)(0),            // 1: aperio.type.v1.Diet
+	(Allergen)(0),        // 2: aperio.type.v1.Allergen
+	(EventType)(0),       // 3: aperio.type.v1.EventType
+	(Channel)(0),         // 4: aperio.type.v1.Channel
+	(RequestCategory)(0), // 5: aperio.type.v1.RequestCategory
+	(RequestProgress)(0), // 6: aperio.type.v1.RequestProgress
 }
 var file_aperio_type_v1_enums_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -613,7 +769,7 @@ func file_aperio_type_v1_enums_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_type_v1_enums_proto_rawDesc), len(file_aperio_type_v1_enums_proto_rawDesc)),
-			NumEnums:      5,
+			NumEnums:      7,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
