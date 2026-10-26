@@ -8,9 +8,12 @@ package server
 // suites do) and the freebusy client.
 
 import (
+	"crypto/rand"
+
 	"github.com/shokki-engineering/aperio/internal/config"
 	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/engine"
+	"github.com/shokki-engineering/aperio/internal/telemetry"
 )
 
 // newServices assembles the services on conn, or on a connection opened
@@ -28,5 +31,24 @@ func newServices(conn *database.Connection) (*Services, *engine.Client, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	return New(conn, fb), fb, nil
+	secret, err := holdSecret(config.Get().Concierge.HoldSecret)
+	if err != nil {
+		return nil, nil, err
+	}
+	return New(conn, fb, secret), fb, nil
+}
+
+// holdSecret is the concierge's configured hold secret, or one made for this
+// process when none is: its hold tokens then outlive neither a restart nor a
+// move to another replica, which is said.
+func holdSecret(configured string) ([]byte, error) {
+	if configured != "" {
+		return []byte(configured), nil
+	}
+	secret := make([]byte, 32)
+	if _, err := rand.Read(secret); err != nil {
+		return nil, err
+	}
+	telemetry.Warn("concierge.hold_secret is not set: hold tokens are this process's own; set APERIO_CONCIERGE__HOLD_SECRET")
+	return secret, nil
 }

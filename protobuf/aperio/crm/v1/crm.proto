@@ -121,6 +121,13 @@ message Contact {
 
   // Opaque version for optimistic concurrency (AIP-154).
   string etag = 16 [(google.api.field_behavior) = OPTIONAL];
+
+  // The E.164 numbers of phones, kept by the server from them: what a
+  // caller, or a guest at the website, is found by.
+  repeated string phone_numbers = 17 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.query) = {search: true}
+  ];
 }
 
 // A Lead is an enquiry that may become a booking: a couple asking about a

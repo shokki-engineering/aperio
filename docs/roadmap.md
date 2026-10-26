@@ -61,7 +61,7 @@ service requests (pantry, housekeeping) inside the venue.
 | Area | Status | What exists | What is missing |
 |---|---|---|---|
 | Schema (protos) | Done | 7 packages, 28 files, lint-clean (buf, api-linter) | `Space` base price and tax; `SendQuoteRequest.ttl` |
-| Generated layer | Done | models, stores, repositories, caches, Hasura client, Prisma schema, AIP services, MCP tools | MCP schemas inline everything (`$defs` fix) |
+| Generated layer | Done | models, stores, repositories, caches, Hasura client, Prisma schema, AIP services, MCP tools | -- |
 | Database | Done | Prisma migrations (3), 19 tables in 7 schemas, live round-trip tests (gorm + Hasura) | -- |
 | Hasura DDN | Done (dev) | 85 metadata files, local engine | permissions / roles, production deploy |
 | freebusy connection | Done | `internal/engine`: availability, book, cancel, calendar notes | webhooks in, reconciliation, lead holds |
@@ -75,10 +75,11 @@ service requests (pantry, housekeeping) inside the venue.
 | Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
 | Service requests | Generated only | proto with event option | state methods, notifying staff (pantry, housekeeping), charges to a booking |
 | Channels | Not started | `Channel` enum, OTA types in the schema | Booking.com (OTA), Airbnb, MakeMyTrip adapters; rates and inventory push |
-| Server | Done | `main.go` on the HybridServer, every service on gRPC :50061 and REST :8090; `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | MCP (off: schema size), the cache wired, query tracing, background jobs |
+| Server | Done | `main.go` on the HybridServer, every service on gRPC :50061, REST :8090 and MCP :8091 (108 tools); `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | the cache wired, query tracing, background jobs |
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
 | Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
-| Agents (MCP) | Generated only | MCP tools per method | the `$defs` size fix, task-level tools ("today's arrivals") |
+| Voice | Designed | [voice.md](voice.md): a concierge API for calls, elicitation for consent | everything (M9) |
+| Agents (MCP) | Served | 108 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone): shared messages and enums under `$defs`, code lists over 64 values as patterns, short nested descriptions, no output schemas | reservation tools still ~250 KB (the OpenTravel RoomStay vocabulary); task-level tools ("today's arrivals") |
 
 ## Milestones
 
@@ -125,9 +126,11 @@ before channels, a running server before anyone outside can use any of it.
   every service on gRPC :50061 and REST :8090 through runtime-go's
   HybridServer, with config (koanf, `APERIO_` overrides), telemetry (OTLP),
   health, protovalidate and CORS / TLS when configured; CI workflows.
-- MCP is off: protoc-gen-mcp inlines whole schemas, and the booking
-  service's tool list (16.7 MB, the OpenTravel RoomStay and ResGuest) is
-  past the MCP SDK's 16 MB frame. Emitting `$defs` (M8) turns it back on.
+- MCP is on: protoc-gen-mcp now writes a message shared by several fields,
+  or on a cycle, once under the tool's `$defs` (grpc-mcp-gateway,
+  `plugin/generator/schema_defs.go`). The booking service's tools/list went
+  from 16.7 MB -- past the MCP SDK's 16 MB frame -- to 5 MB; all 7 services
+  serve 108 tools.
 - Left: the cache backend (Redis or Dragonfly) wired into the generated
   caches; query tracing (freebusy's generated `Instrument`); an image --
   freebusy builds its with Bazel -- or a Dockerfile.
@@ -185,12 +188,28 @@ before channels, a running server before anyone outside can use any of it.
 
 ### M8 -- Agents and reporting
 
-- MCP: emit shared `$defs` instead of inlining whole schemas (today a list
-  method's schema is enormous); add task tools -- today's arrivals, the
-  week's events, quote a wedding for 300 in December.
+- MCP: done -- tools/list is 0.9 MB (from over 16 MB): `$defs` for shared
+  messages and enums, and protoc-gen-mcp's max_enum_values=64,
+  short_descriptions and output_schema=false. A reservation tool is still
+  ~250 KB, half structure and half descriptions of the OpenTravel RoomStay
+  vocabulary; the next cut is describing the OpenTravel document fields
+  (room_stays, res_guests) loosely for agents, or task tools that do not
+  take them. Add task tools -- today's arrivals, the week's events, quote a
+  wedding for 300 in December.
 - Reports over Hasura: occupancy, revenue by season, GST returns (GSTR-1
   data), lead conversion.
 - Proposals and invoices as PDFs.
+
+### M9 -- Voice: aperio on a phone call
+
+- A concierge API for agents on a call (`aperio.concierge.v1`): flat,
+  speakable task methods over the existing services -- FindStay, HoldStay,
+  ConfirmStay, EnquireEvent, FindBooking, CancelBooking, RequestService --
+  two-step consent for anything that books or charges, a `spoken` sentence
+  in every reply, the caller known from the call. Design: [voice.md](voice.md).
+- protoc-gen-mcp and runtime-go: elicitation that asks only what is missing,
+  and questions the server raises (with the amount in them).
+- A voice agent on a test number, one language, inbound reservations first.
 
 ## Gaps and risks
 
@@ -208,7 +227,8 @@ before channels, a running server before anyone outside can use any of it.
 - **Document columns are NOT NULL.** The database made `Venue.gst` and
   `address` NOT NULL, so every venue must carry them; check how the store
   generates nullability for document columns before an optional one bites.
-- **MCP size.** Whole-schema inlining makes list tools huge for an agent.
+- **MCP size.** tools/list is 0.9 MB, but a reservation tool's schema is
+  still ~250 KB -- heavy in an agent's context.
 - **The SDK path.** aperio uses `oh-tarnished/freebusy-go-sdk` through a
   `replace`; fix the SDK's module path to drop it, and drop Organizations and
   Sites from its services.

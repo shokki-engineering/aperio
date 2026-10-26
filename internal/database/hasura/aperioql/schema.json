@@ -6154,6 +6154,20 @@
           }
         },
         {
+          "name": "phoneNumbers",
+          "description": "",
+          "args": [],
+          "type": {
+            "kind": "LIST",
+            "name": "",
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "String1",
+              "ofType": null
+            }
+          }
+        },
+        {
           "name": "phones",
           "description": "",
           "args": [],
@@ -16241,6 +16255,20 @@
             "kind": "SCALAR",
             "name": "String1",
             "ofType": null
+          },
+          "defaultValue": null
+        },
+        {
+          "name": "phoneNumbers",
+          "description": "",
+          "type": {
+            "kind": "LIST",
+            "name": "",
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "String1",
+              "ofType": null
+            }
           },
           "defaultValue": null
         },
@@ -41211,6 +41239,30 @@
     },
     {
       "kind": "INPUT_OBJECT",
+      "name": "UpdateColumnCrmContactsPhoneNumbersInput",
+      "description": "Update the 'phone_numbers' column in the 'crm_contacts' collection",
+      "fields": null,
+      "inputFields": [
+        {
+          "name": "set",
+          "description": "Set the column to this value",
+          "type": {
+            "kind": "LIST",
+            "name": "",
+            "ofType": {
+              "kind": "SCALAR",
+              "name": "String1",
+              "ofType": null
+            }
+          },
+          "defaultValue": null
+        }
+      ],
+      "enumValues": null,
+      "interfaces": null
+    },
+    {
+      "kind": "INPUT_OBJECT",
       "name": "UpdateColumnCrmContactsPhonesInput",
       "description": "Update the 'phones' column in the 'crm_contacts' collection",
       "fields": null,
@@ -47159,6 +47211,16 @@
           "type": {
             "kind": "INPUT_OBJECT",
             "name": "UpdateColumnCrmContactsNotesInput",
+            "ofType": null
+          },
+          "defaultValue": null
+        },
+        {
+          "name": "phoneNumbers",
+          "description": "Update the 'phone_numbers' column in the 'crm_contacts' collection.",
+          "type": {
+            "kind": "INPUT_OBJECT",
+            "name": "UpdateColumnCrmContactsPhoneNumbersInput",
             "ofType": null
           },
           "defaultValue": null

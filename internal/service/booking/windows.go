@@ -15,7 +15,6 @@ import (
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/booking/v1/bookingpbv1"
-	"google.golang.org/genproto/googleapis/type/date"
 )
 
 // stayWindow is the window a stay takes in its venue's time zone: from the
@@ -26,7 +25,7 @@ func (h *hooks) stayWindow(ctx context.Context, venueName string, r *bookingpbv1
 	if err != nil {
 		return engine.Window{}, err
 	}
-	w := engine.Window{Start: midnight(r.GetArrivalDate(), loc), End: midnight(r.GetDepartureDate(), loc)}
+	w := engine.Stay(r.GetArrivalDate(), r.GetDepartureDate(), loc)
 	if !w.End.After(w.Start) {
 		return engine.Window{}, servicex.BadField("INVALID_DATES", "reservation.departure_date",
 			"the departure date is not after the arrival date", "Set a departure date after the arrival date")
@@ -84,9 +83,11 @@ func (h *hooks) resources(ctx context.Context, venueName, field, space string) (
 	return sp.GetResources(), nil
 }
 
-// midnight is the start of day d in loc.
-func midnight(d *date.Date, loc *time.Location) time.Time {
-	return time.Date(int(d.GetYear()), time.Month(d.GetMonth()), int(d.GetDay()), 0, 0, 0, 0, loc)
+// RoomsKey is the freebusy booking key of room line i of reservation: what
+// a hold made before the reservation exists (the concierge's) must be keyed
+// by for the reservation to take its rooms from that hold.
+func RoomsKey(reservation string, i int) string {
+	return fmt.Sprintf("%s#rooms/%d", reservation, i)
 }
 
 // release cancels freebusy reservations.

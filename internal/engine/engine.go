@@ -28,6 +28,18 @@ type Engine interface {
 	// window. It takes nothing.
 	Free(ctx context.Context, resources []string, window Window, quantity int32) (bool, error)
 
+	// Hold takes quantity of b.Resources for b.Window for a few minutes --
+	// freebusy's hold, which lapses unless a reservation is made from it --
+	// and returns it. It is idempotent on b.Key, and Book with the same key
+	// makes its reservation from this hold rather than taking another: hold
+	// first while a guest decides, book once they have. ErrUnavailable when
+	// the resources are not free.
+	Hold(ctx context.Context, b Booking) (Hold, error)
+
+	// Held reports whether an active hold was made under key: a booking
+	// whose rooms a hold already has must not count them as taken.
+	Held(ctx context.Context, key string) (bool, error)
+
 	// Book takes quantity of resources for window and returns the freebusy
 	// reservation holding them. It is idempotent on b.Key: a retry with the
 	// same key returns the reservation the first call made rather than taking
@@ -53,6 +65,12 @@ type Note struct {
 	// Window is when; with AllDay, only its dates count, [Start, End) days.
 	Window Window
 	AllDay bool
+}
+
+// Hold is a hold Hold took: freebusy's name for it, and when it lapses.
+type Hold struct {
+	Name   string
+	Expire time.Time
 }
 
 // Window is the span of time a booking takes, [Start, End).

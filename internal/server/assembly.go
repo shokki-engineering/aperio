@@ -8,16 +8,18 @@ package server
 // logic where there is some (booking, sales, finance), and plain generated
 // servers where the standard methods are all there is yet (venue, crm,
 // document, operations). The sales service books an accepted quote through
-// the booking service, and finance confirms a paid booking through it.
+// the booking service, and finance confirms a paid booking through it; the
+// concierge -- the guest's side -- works through all of them.
 
 import (
 	"github.com/shokki-engineering/aperio/internal/database"
-	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/crm"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/document"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/operations"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/booking"
+	"github.com/shokki-engineering/aperio/internal/service/concierge"
+	"github.com/shokki-engineering/aperio/internal/service/crm"
 	"github.com/shokki-engineering/aperio/internal/service/finance"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/crm/v1/crmpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/document/v1/documentpbv1svc"
@@ -40,29 +42,33 @@ type Services struct {
 	Finance    *finance.Server
 	Documents  *documentpbv1svc.DocumentServiceServer
 	Operations *operationspbv1svc.OperationsServiceServer
+	Concierge  *concierge.Server
 }
 
-// New assembles the services on conn, booking through eng. gateways are the
-// payment gateways' adapters (none yet: gateway payments are recorded, and
-// refunded in the gateway's own dashboard).
-func New(conn *database.Connection, eng engine.Engine, gateways ...finance.Gateway) *Services {
+// New assembles the services on conn, booking through eng, sealing the
+// concierge's hold tokens with holdSecret. gateways are the payment
+// gateways' adapters (none yet: gateway payments are recorded, and refunded
+// in the gateway's own dashboard).
+func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gateways ...finance.Gateway) *Services {
 	rc := conn.Repox()
-	venues, people := venue.New(rc), crm.New(rc)
+	venues, people := venue.New(rc), crmRepositories(rc)
 	bookings := booking.New(bookingRepositories(rc), venues, people.Contacts, eng)
+	selling := sales.New(salesRepositories(rc), venues.Venues, people.Leads, bookings)
+	guests := crm.New(people)
 	return &Services{
 		Conn:   conn,
 		Engine: eng,
 		Venues: venuepbv1svc.NewVenueServiceServer(
 			venuepbv1svc.VenueServiceRepositories{Venues: venues.Venues, Spaces: venues.Spaces}, venuepbv1svc.NopVenueServiceHooks{}),
-		CRM: crmpbv1svc.NewCrmServiceServer(
-			crmpbv1svc.CrmServiceRepositories{Contacts: people.Contacts, Leads: people.Leads, Activities: people.Activities}, crmpbv1svc.NopCrmServiceHooks{}),
+		CRM:      guests,
 		Bookings: bookings,
-		Sales:    sales.New(salesRepositories(rc), venues.Venues, people.Leads, bookings),
+		Sales:    selling,
 		Finance:  finance.New(financeRepositories(rc), venues.Venues, bookings, gateways),
 		Documents: documentpbv1svc.NewDocumentServiceServer(
 			documentpbv1svc.DocumentServiceRepositories{Documents: document.New(rc).Documents}, documentpbv1svc.NopDocumentServiceHooks{}),
 		Operations: operationspbv1svc.NewOperationsServiceServer(
 			operationspbv1svc.OperationsServiceRepositories{ServiceRequests: operations.New(rc).ServiceRequests}, operationspbv1svc.NopOperationsServiceHooks{}),
+		Concierge: concierge.New(venues, eng, selling, guests, bookings, holdSecret),
 	}
 }
 

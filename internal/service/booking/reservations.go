@@ -18,8 +18,9 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// BeforeCreateReservation checks that every room line is free for the stay.
-// It takes nothing: validate_only runs it too.
+// BeforeCreateReservation checks that every room line is free for the stay,
+// unless a hold made for the reservation already has the line's rooms. It
+// takes nothing: validate_only runs it too.
 func (h *hooks) BeforeCreateReservation(ctx context.Context, parent string, m *bookingpbv1.Reservation) error {
 	w, err := h.stayWindow(ctx, parent, m)
 	if err != nil {
@@ -29,6 +30,16 @@ func (h *hooks) BeforeCreateReservation(ctx context.Context, parent string, m *b
 		res, err := h.resources(ctx, parent, fmt.Sprintf("reservation.rooms[%d].space", i), line.GetSpace())
 		if err != nil {
 			return err
+		}
+		if m.GetName() != "" {
+			// Rooms a hold already has for this reservation (the concierge's)
+			// are the reservation's own, not taken.
+			if held, err := h.engine.Held(ctx, RoomsKey(m.GetName(), i)); err != nil || held {
+				if err != nil {
+					return err
+				}
+				continue
+			}
 		}
 		free, err := h.engine.Free(ctx, res, w, line.GetRooms())
 		if err != nil {
@@ -57,7 +68,7 @@ func (h *hooks) AfterCreateReservation(ctx context.Context, out *bookingpbv1.Res
 			return h.undoReservation(ctx, out, booked, err)
 		}
 		name, err := h.engine.Book(ctx, engine.Booking{
-			Key:       fmt.Sprintf("%s#rooms/%d", out.GetName(), i),
+			Key:       RoomsKey(out.GetName(), i),
 			Resources: res,
 			Window:    w,
 			Quantity:  line.GetRooms(),

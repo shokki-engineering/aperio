@@ -48,6 +48,8 @@ type CreateInput struct {
 	NameParts json.RawMessage `json:"nameParts,omitzero"`
 	// Notes sets the "notes" column; the zero value is omitted (column default / NULL).
 	Notes string `json:"notes,omitzero"`
+	// PhoneNumbers sets the "phoneNumbers" column; the zero value is omitted (column default / NULL).
+	PhoneNumbers []*string `json:"phoneNumbers,omitzero"`
 	// Phones sets the "phones" column; the zero value is omitted (column default / NULL).
 	Phones json.RawMessage `json:"phones,omitzero"`
 	// Tags sets the "tags" column; the zero value is omitted (column default / NULL).
@@ -86,6 +88,8 @@ type UpdateInput struct {
 	NameParts graphql.Nullable[json.RawMessage] `json:"nameParts"`
 	// Update the 'notes' column in the 'crm_contacts' collection.
 	Notes graphql.Nullable[string] `json:"notes"`
+	// Update the 'phone_numbers' column in the 'crm_contacts' collection.
+	PhoneNumbers graphql.Nullable[[]*string] `json:"phoneNumbers"`
 	// Update the 'phones' column in the 'crm_contacts' collection.
 	Phones graphql.Nullable[json.RawMessage] `json:"phones"`
 	// Update the 'tags' column in the 'crm_contacts' collection.

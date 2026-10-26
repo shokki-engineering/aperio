@@ -37,6 +37,10 @@ func (roomy) Free(context.Context, []string, engine.Window, int32) (bool, error)
 func (roomy) Book(_ context.Context, b engine.Booking) (string, error) {
 	return "reservations/" + b.Key, nil
 }
+func (roomy) Hold(_ context.Context, b engine.Booking) (engine.Hold, error) {
+	return engine.Hold{Name: "holds/" + b.Key}, nil
+}
+func (roomy) Held(context.Context, string) (bool, error)      { return false, nil }
 func (roomy) Cancel(context.Context, string, string) error    { return nil }
 func (roomy) Note(context.Context, string, engine.Note) error { return nil }
 

@@ -77,7 +77,10 @@ type Contact struct {
 	// Last-modification timestamp.
 	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,16,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag string `protobuf:"bytes,16,opt,name=etag,proto3" json:"etag,omitempty"`
+	// The E.164 numbers of phones, kept by the server from them: what a
+	// caller, or a guest at the website, is found by.
+	PhoneNumbers  []string `protobuf:"bytes,17,rep,name=phone_numbers,json=phoneNumbers,proto3" json:"phone_numbers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -222,6 +225,13 @@ func (x *Contact) GetEtag() string {
 		return x.Etag
 	}
 	return ""
+}
+
+func (x *Contact) GetPhoneNumbers() []string {
+	if x != nil {
+		return x.PhoneNumbers
+	}
+	return nil
 }
 
 // A Lead is an enquiry that may become a booking: a couple asking about a
@@ -626,7 +636,7 @@ var File_aperio_crm_v1_crm_proto protoreflect.FileDescriptor
 
 const file_aperio_crm_v1_crm_proto_rawDesc = "" +
 	"\n" +
-	"\x17aperio/crm/v1/crm.proto\x12\raperio.crm.v1\x1a\x19aperio/crm/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\x1a:protobuf/opentravel/common/profile/v1/types/accesses.proto\x1a:protobuf/opentravel/common/profile/v1/types/customer.proto\x1a\x1astore/v1/annotations.proto\"\xf4\a\n" +
+	"\x17aperio/crm/v1/crm.proto\x12\raperio.crm.v1\x1a\x19aperio/crm/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\x1a:protobuf/opentravel/common/profile/v1/types/accesses.proto\x1a:protobuf/opentravel/common/profile/v1/types/customer.proto\x1a\x1astore/v1/annotations.proto\"\xa5\b\n" +
 	"\aContact\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\b\xbaH\x17\xd8\x01\x01r\x122\x10^contacts/[^/]+$R\x04name\x124\n" +
 	"\x04kind\x18\x02 \x01(\x0e2\x1a.aperio.crm.v1.ContactKindB\x04\xe2A\x01\x02R\x04kind\x127\n" +
@@ -648,7 +658,9 @@ const file_aperio_crm_v1_crm_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x10 \x01(\tB\x04\xe2A\x01\x01R\x04etag:V\xeaA>\n" +
+	"\x04etag\x18\x10 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12/\n" +
+	"\rphone_numbers\x18\x11 \x03(\tB\n" +
+	"\xe2A\x01\x03\xe2\xb5\x18\x02\x18\x01R\fphoneNumbers:V\xeaA>\n" +
 	"\x15aperio.crm.v1/Contact\x12\x12contacts/{contact}*\bcontacts2\acontact\xca\xf3\x18\x11\x18\x01*\r\n" +
 	"\vupdate_time\"\xf8\v\n" +
 	"\x04Lead\x12/\n" +

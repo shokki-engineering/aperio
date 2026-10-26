@@ -41,6 +41,8 @@ type AppConfig struct {
 	Cache CacheConfig `koanf:"cache"`
 	// Freebusy is the availability engine aperio books through.
 	Freebusy FreebusyConfig `koanf:"freebusy"`
+	// Concierge is the guest-facing find, hold and book.
+	Concierge ConciergeConfig `koanf:"concierge"`
 }
 
 // AppMeta contains service identity fields.

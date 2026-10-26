@@ -58,6 +58,7 @@ A Contact is a person or a company aperio deals with: a guest, a couple booking 
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `phone_numbers` | `VARCHAR(255)[]` | nullable |
 
 ### `Lead` → `leads`
 

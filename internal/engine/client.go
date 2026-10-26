@@ -52,11 +52,30 @@ func (c *Client) Free(ctx context.Context, resources []string, window Window, qu
 	return res.GetBookable(), nil
 }
 
-// Book holds quantity of b.Resources for b.Window and makes the hold a
-// reservation. Both carry b.Key: the hold as its idempotency key, the
-// reservation as its id, so a retry gets the first call's reservation back.
-func (c *Client) Book(ctx context.Context, b Booking) (string, error) {
-	id := reservationID(b.Key)
+// Hold holds quantity of b.Resources for b.Window, keyed by b.Key.
+func (c *Client) Hold(ctx context.Context, b Booking) (Hold, error) {
+	h, err := c.hold(ctx, b)
+	if err != nil {
+		return Hold{}, err
+	}
+	return Hold{Name: h.GetName(), Expire: h.GetExpireTime().AsTime()}, nil
+}
+
+// Held reports whether the hold made under key is still active.
+func (c *Client) Held(ctx context.Context, key string) (bool, error) {
+	h, err := c.fb.Holds.Get(ctx, &allocationpb.GetHoldRequest{Name: "holds/" + reservationID(key)})
+	switch {
+	case errors.Is(err, freebusy.ErrNotFound):
+		return false, nil
+	case err != nil:
+		return false, fmt.Errorf("engine: get hold: %w", err)
+	}
+	return h.GetState() == allocationpb.HoldState_HOLD_STATE_ACTIVE, nil
+}
+
+// hold is freebusy's CreateHold for b: a retry, or Book after Hold, with
+// the same key gets the first hold back.
+func (c *Client) hold(ctx context.Context, b Booking) (*allocationpb.Hold, error) {
 	hold, err := c.fb.Holds.New(ctx, &allocationpb.CreateHoldRequest{
 		Hold: &allocationpb.Hold{
 			Window:             freebusy.Window(b.Window.Start, b.Window.End),
@@ -64,12 +83,25 @@ func (c *Client) Book(ctx context.Context, b Booking) (string, error) {
 			CandidateResources: b.Resources,
 			IdempotencyKey:     b.Key,
 		},
+		HoldId: reservationID(b.Key), // so Held finds it by the key
 	})
 	switch {
 	case errors.Is(err, freebusy.ErrCapacityExhausted):
-		return "", ErrUnavailable
+		return nil, ErrUnavailable
 	case err != nil:
-		return "", fmt.Errorf("engine: hold: %w", err)
+		return nil, fmt.Errorf("engine: hold: %w", err)
+	}
+	return hold, nil
+}
+
+// Book holds quantity of b.Resources for b.Window and makes the hold a
+// reservation. Both carry b.Key: the hold as its idempotency key, the
+// reservation as its id, so a retry gets the first call's reservation back.
+func (c *Client) Book(ctx context.Context, b Booking) (string, error) {
+	id := reservationID(b.Key)
+	hold, err := c.hold(ctx, b)
+	if err != nil {
+		return "", err
 	}
 	attrs, err := freebusy.NewAttributes(b.Attributes)
 	if err != nil {

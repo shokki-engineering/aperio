@@ -776,6 +776,16 @@ definition:
                 underlying_type:
                   name: text
                   type: named
+            phone_numbers:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             phones:
               type:
                 type: nullable
@@ -2333,6 +2343,16 @@ definition:
                 underlying_type:
                   name: text
                   type: named
+            phone_numbers:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             phones:
               type:
                 type: nullable
@@ -6359,6 +6379,21 @@ definition:
                   name: text
                   type: named
           foreign_keys: {}
+        update_column_crm_contacts_phone_numbers:
+          description: Update the 'phone_numbers' column in the 'crm_contacts' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
+          foreign_keys: {}
         update_column_crm_contacts_phones:
           description: Update the 'phones' column in the 'crm_contacts' collection
           fields:
@@ -9102,6 +9137,13 @@ definition:
                 type: nullable
                 underlying_type:
                   name: update_column_crm_contacts_notes
+                  type: named
+            phone_numbers:
+              description: Update the 'phone_numbers' column in the 'crm_contacts' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_crm_contacts_phone_numbers
                   type: named
             phones:
               description: Update the 'phones' column in the 'crm_contacts' collection.

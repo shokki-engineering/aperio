@@ -35,8 +35,16 @@ plugins:
   - remote: buf.build/grpc-ecosystem/gateway:v2.27.4
     out: protobuf/generated/go
     opt: module=github.com/shokki-engineering/aperio/protobuf/generated/go
+  # MCP tools. The schemas trade completeness for size, as an agent reads
+  # every tool's schema into its context: OpenTravel code lists of more than
+  # 64 values become a pattern with examples, nested field descriptions keep
+  # their first sentence, and no tool declares an outputSchema. The server
+  # validates every request in full regardless.
   - local: protoc-gen-mcp
     out: protobuf/generated/go
     opt:
       - lang=go
       - module=github.com/shokki-engineering/aperio/protobuf/generated/go
+      - max_enum_values=64
+      - short_descriptions=true
+      - output_schema=false

@@ -1,0 +1,63 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.concierge.v1;
+
+import "aperio/concierge/v1/concierge_messages.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "mcp/v1/annotations.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "ConciergeServiceProto";
+option java_package = "engineering.shokki.aperio.concierge.v1";
+
+// ConciergeService: what a guest asks a venue for, as a guest asks it -- on
+// the website, or on a call to a voice agent. Each method is a task over the
+// resource services (pricing, booking, contacts), with flat inputs a form or
+// a conversation can fill, and a sentence in every reply the agent can say.
+// Anything that takes a room is two steps: a hold that expires, then a
+// confirm that needs the hold's token.
+service ConciergeService {
+  option (google.api.default_host) = "aperio.shokki.engineering";
+  option (mcp.v1.service) = {
+    app: {
+      display_name: "Concierge"
+      version: "1.0.0"
+      description: "Find, hold and book a stay at a venue, as a guest asks for it: on the website, or on a call."
+    }
+  };
+
+  // Finds the room types free for the dates and guests, priced, cheapest
+  // first. Takes nothing.
+  rpc FindStay(FindStayRequest) returns (FindStayResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:findStay"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,arrival_date,nights,adults";
+  }
+
+  // Holds rooms of a room type for the dates for a few minutes, and prices
+  // them. Returns a token ConfirmStay books with.
+  rpc HoldStay(HoldStayRequest) returns (HoldStayResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:holdStay"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,space,arrival_date,nights,adults,request_id";
+  }
+
+  // Books a held stay for the guest the hold names. Call it only once the
+  // guest has agreed to the dates, rooms and amount the hold gave.
+  rpc ConfirmStay(ConfirmStayRequest) returns (ConfirmStayResponse) {
+    option (google.api.http) = {
+      post: "/v1/{venue=venues/*}:confirmStay"
+      body: "*"
+    };
+    option (google.api.method_signature) = "venue,hold_token";
+  }
+}

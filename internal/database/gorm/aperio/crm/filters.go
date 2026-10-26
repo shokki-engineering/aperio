@@ -35,6 +35,7 @@ var ContactFilterSpec = filterx.Spec{
 		"name":                 {Column: "name", Kind: filterx.KindText},
 		"name_parts":           {Column: "name_parts", Kind: filterx.KindJSON},
 		"notes":                {Column: "notes", Kind: filterx.KindText},
+		"phone_numbers":        {Column: "phone_numbers", Kind: filterx.KindTags},
 		"tags":                 {Column: "tags", Kind: filterx.KindTags},
 		"update_time":          {Column: "update_time", Kind: filterx.KindTimestamp},
 	},

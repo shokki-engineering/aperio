@@ -218,6 +218,8 @@ type Contact struct {
 	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_contacts_update_time" json:"update_time"`
 	// Opaque version for optimistic concurrency (AIP-154).
 	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
+	// The E.164 numbers of phones, kept by the server from them: what a caller, or a guest at the website, is found by.
+	PhoneNumbers pq.StringArray `gorm:"column:phone_numbers;type:text[];index:idx_contacts_phone_numbers_gin,type:gin" json:"phone_numbers,omitempty"`
 	// Back-relation: Lead records that reference this via contact.
 	Leads []Lead `gorm:"foreignKey:ContactID" json:"leads,omitempty"`
 }

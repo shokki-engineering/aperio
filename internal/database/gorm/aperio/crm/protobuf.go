@@ -506,6 +506,7 @@ func ContactToProto(m *Contact) *crmpbv1.Contact {
 	out.CreateTime = goValToTs(m.CreateTime)
 	out.UpdateTime = goValToTs(m.UpdateTime)
 	out.Etag = fromPtr(m.Etag)
+	out.PhoneNumbers = []string(m.PhoneNumbers)
 	return out
 }
 
@@ -531,6 +532,7 @@ func ContactFromProto(pb *crmpbv1.Contact) *Contact {
 	m.Tags = pq.StringArray(pb.GetTags())
 	m.Notes = toPtr(pb.GetNotes())
 	m.Etag = toPtr(pb.GetEtag())
+	m.PhoneNumbers = pq.StringArray(pb.GetPhoneNumbers())
 	return m
 }
 

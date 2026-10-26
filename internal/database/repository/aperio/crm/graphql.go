@@ -536,6 +536,12 @@ func (r *GraphQLContactRepository) Update(ctx context.Context, in *crmpbv1.Conta
 	return r.update(ctx, in, paths, nil)
 }
 
+// UpdateWithOutputOnly is Update plus the server-owned fields outputPaths
+// names, in the same patch and under the same guard.
+func (r *GraphQLContactRepository) UpdateWithOutputOnly(ctx context.Context, in *crmpbv1.Contact, paths, outputPaths []string) (*crmpbv1.Contact, error) {
+	return r.update(ctx, in, paths, outputPaths)
+}
+
 // update is Update's write, with the server-owned fields outputPaths names
 // (UpdateWithOutputOnly) merged into its patch.
 func (r *GraphQLContactRepository) update(ctx context.Context, in *crmpbv1.Contact, paths, outputPaths []string) (*crmpbv1.Contact, error) {
@@ -554,12 +560,16 @@ func (r *GraphQLContactRepository) update(ctx context.Context, in *crmpbv1.Conta
 	existingPB := contactFromRow(row)
 	merged := proto.Clone(existingPB).(*crmpbv1.Contact)
 	applyContactMask(merged, in, paths)
+	repox.CopyFields(merged, in, outputPaths)
 	if h := r.Hooks.BeforeUpdate; h != nil {
 		if err := h(ctx, existingPB, merged, paths); err != nil {
 			return nil, err
 		}
 	}
 	patch := contactToUpdatePatch(merged)
+	if len(outputPaths) > 0 {
+		contactAddOutputPatch(&patch, merged, outputPaths)
+	}
 	patch.Etag = graphql.Value(repox.NewULID())
 	patch.UpdateTime = graphql.Value(tsToStr(timestamppb.New(time.Now().UTC())))
 	if in.GetEtag() != "" {
@@ -623,7 +633,11 @@ func (r *GraphQLContactRepository) updateOps(ctx context.Context, ops *repox.Ops
 	}
 	merged := proto.Clone(existingPB).(*crmpbv1.Contact)
 	applyContactMask(merged, in, paths)
+	repox.CopyFields(merged, in, outputPaths)
 	patch := contactToUpdatePatch(merged)
+	if len(outputPaths) > 0 {
+		contactAddOutputPatch(&patch, merged, outputPaths)
+	}
 	patch.Etag = graphql.Value(repox.NewULID())
 	patch.UpdateTime = graphql.Value(tsToStr(timestamppb.New(time.Now().UTC())))
 	var utx, atx repox.Ops
@@ -655,6 +669,35 @@ func (r *GraphQLContactRepository) updateOps(ctx context.Context, ops *repox.Ops
 		}
 		return nil
 	}, nil
+}
+
+// UpdateOutputOnly persists the server-owned fields of in that paths names.
+// When in.Etag is set the write is guarded server-side, as in Update.
+func (r *GraphQLContactRepository) UpdateOutputOnly(ctx context.Context, in *crmpbv1.Contact, paths []string) (*crmpbv1.Contact, error) {
+	if len(paths) == 0 {
+		return nil, fmt.Errorf("%w: UpdateOutputOnly needs the fields to write", repox.ErrInvalidArgument)
+	}
+	id, err := r.rowID(ctx, in.GetName())
+	if err != nil {
+		return nil, err
+	}
+	patch := contactToOutputPatch(in, paths)
+	patch.Etag = graphql.Value(repox.NewULID())
+	patch.UpdateTime = graphql.Value(tsToStr(timestamppb.New(time.Now().UTC())))
+	if in.GetEtag() != "" {
+		if _, err := r.Svc.Mutation.Crm.Contacts.UpdateIfMatch(ctx, id, patch, contactsql.Etag.Eq(in.GetEtag())); err != nil {
+			return nil, mapGraphQLErr(err)
+		}
+		return r.get(ctx, id)
+	}
+	resp, err := r.Svc.Mutation.Crm.Contacts.Update(ctx, id, patch)
+	if err != nil {
+		return nil, mapGraphQLErr(err)
+	}
+	if resp.AffectedRows == 0 {
+		return nil, repox.ErrNotFound
+	}
+	return r.get(ctx, id)
 }
 
 // Delete removes the record addressed by its resource name.
@@ -1162,6 +1205,62 @@ func (b *graphQLBatch) UpdateContact(in *crmpbv1.Contact, paths []string) {
 		return r.updateOps(ctx, ops, id, in, paths, nil)
 	})
 	b.u.Record(repox.Change{Type: "aperio.crm.v1/Contact", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getContact)})
+}
+
+// UpdateContactWithOutputOnly queues UpdateWithOutputOnly; in.Etag, when
+// set, guards it inside the batch's request, as UpdateContact's does.
+func (b *graphQLBatch) UpdateContactWithOutputOnly(in *crmpbv1.Contact, paths, outputPaths []string) {
+	if _, err := repox.SplitName(in.GetName(), "contacts"); err != nil {
+		b.u.Fail(err)
+		return
+	}
+	r := &GraphQLContactRepository{Svc: b.svc}
+	queueContactReferences(b.u, in, paths)
+	b.u.QueueGraphQL(func(ctx context.Context, ops *repox.Ops) (repox.Check, error) {
+		id, err := b.rowID(ctx, in.GetName(), r.rowID)
+		if err != nil {
+			return nil, err
+		}
+		return r.updateOps(ctx, ops, id, in, paths, outputPaths)
+	})
+	b.u.Record(repox.Change{Type: "aperio.crm.v1/Contact", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getContact)})
+}
+
+// UpdateContactOutputOnly queues UpdateOutputOnly; in.Etag, when set, guards
+// it, and a guarded update runs ahead of the batch (see graphQLBatch).
+func (b *graphQLBatch) UpdateContactOutputOnly(in *crmpbv1.Contact, paths []string) {
+	if len(paths) == 0 {
+		b.u.Fail(fmt.Errorf("%w: UpdateOutputOnly needs the fields to write", repox.ErrInvalidArgument))
+		return
+	}
+	if _, err := repox.SplitName(in.GetName(), "contacts"); err != nil {
+		b.u.Fail(err)
+		return
+	}
+	r := &GraphQLContactRepository{Svc: b.svc}
+	patch := contactToOutputPatch(in, paths)
+	patch.Etag = graphql.Value(repox.NewULID())
+	patch.UpdateTime = graphql.Value(tsToStr(timestamppb.New(time.Now().UTC())))
+	b.u.Record(repox.Change{Type: "aperio.crm.v1/Contact", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getContact)})
+	if etag := in.GetEtag(); etag != "" {
+		b.u.QueueGraphQLAhead(func(ctx context.Context) error {
+			id, err := b.rowID(ctx, in.GetName(), r.rowID)
+			if err != nil {
+				return err
+			}
+			_, err = b.svc.Mutation.Crm.Contacts.UpdateIfMatch(ctx, id, patch, contactsql.Etag.Eq(etag))
+			return mapGraphQLErr(err)
+		})
+		return
+	}
+	b.u.QueueGraphQL(func(ctx context.Context, ops *repox.Ops) (repox.Check, error) {
+		id, err := b.rowID(ctx, in.GetName(), r.rowID)
+		if err != nil {
+			return nil, err
+		}
+		ops.Add(b.svc.Mutation.Crm.Contacts.UpdateOp(id, patch, new(contactsql.UpdateCrmContactsByIdResponse)))
+		return nil, nil
+	})
 }
 
 // DeleteContact queues the record's removal for good. A record already

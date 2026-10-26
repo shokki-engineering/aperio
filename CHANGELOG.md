@@ -26,6 +26,8 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   (`Venue.invoice_prefix`), Issue, Cancel, Credit.
 - Payments: any currency, invoice paid and due, an advance confirming its
   booking, gateway settle and refund, void.
+- MCP: every service's tools at :8091/mcp, now that protoc-gen-mcp shares
+  types through `$defs`.
 
 ### Changed
 

@@ -230,6 +230,7 @@ func contactToCreateInput(in *crmpbv1.Contact) contactsql.CreateInput {
 	ci.MarketingConsent = in.GetMarketingConsent()
 	ci.Tags = strSliceToPtrs(in.GetTags())
 	ci.Notes = in.GetNotes()
+	ci.PhoneNumbers = strSliceToPtrs(in.GetPhoneNumbers())
 	return ci
 }
 
@@ -266,6 +267,22 @@ func contactToUpdatePatch(merged *crmpbv1.Contact) contactsql.UpdateInput {
 	return patch
 }
 
+// contactToOutputPatch maps the server-owned fields paths names onto
+// a patch, for UpdateOutputOnly: every other column is left as it is.
+func contactToOutputPatch(merged *crmpbv1.Contact, paths []string) contactsql.UpdateInput {
+	var patch contactsql.UpdateInput
+	contactAddOutputPatch(&patch, merged, paths)
+	return patch
+}
+
+// contactAddOutputPatch sets the server-owned fields paths names on
+// patch, for UpdateWithOutputOnly: an update patch carrying them too.
+func contactAddOutputPatch(patch *contactsql.UpdateInput, merged *crmpbv1.Contact, paths []string) {
+	if repox.InMask(paths, "phone_numbers") {
+		patch.PhoneNumbers = graphql.Value(strSliceToPtrs(merged.GetPhoneNumbers()))
+	}
+}
+
 // contactFromRow re-hydrates the proto from a client row, decorating
 // reference names from their stored bare ids.
 func contactFromRow(row *contactsql.CrmContacts) *crmpbv1.Contact {
@@ -289,6 +306,7 @@ func contactFromRow(row *contactsql.CrmContacts) *crmpbv1.Contact {
 	out.Etag = repox.Deref(row.Etag)
 	out.CreateTime = strToTs(row.CreateTime)
 	out.UpdateTime = strToTs(row.UpdateTime)
+	out.PhoneNumbers = strPtrsToSlice(row.PhoneNumbers)
 	return out
 }
 

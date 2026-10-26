@@ -1,0 +1,237 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package aperio.concierge.v1;
+
+import "aperio/type/v1/enums.proto";
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/api/field_info.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
+import "google/type/money.proto";
+
+option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1;conciergepbv1";
+option java_multiple_files = true;
+option java_outer_classname = "ConciergeMessagesProto";
+option java_package = "engineering.shokki.aperio.concierge.v1";
+
+// Request message for FindStay.
+message FindStayRequest {
+  // The venue to stay at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The day of arrival.
+  google.type.Date arrival_date = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // How many nights.
+  int32 nights = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 30
+    }
+  ];
+
+  // How many rooms; one when empty.
+  int32 rooms = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 20
+    }
+  ];
+
+  // How many adults.
+  int32 adults = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 60
+    }
+  ];
+
+  // How many children.
+  int32 children = 6 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 60
+    }
+  ];
+}
+
+// Response message for FindStay.
+message FindStayResponse {
+  // The room types free for the stay, cheapest first; at most three, as many
+  // as a guest weighs at once.
+  repeated StayOption options = 1;
+
+  // The options as a sentence to say.
+  string spoken = 2;
+}
+
+// StayOption is a room type with the rooms asked for free for every night of
+// a stay, and what the stay costs in it.
+message StayOption {
+  // The room type: a space of the venue.
+  // Format: venues/{venue}/spaces/{space}
+  string space = 1 [(google.api.resource_reference).type = "aperio.venue.v1/Space"];
+
+  // The room type as a guest knows it, e.g. "Sea View Deluxe".
+  string display_name = 2;
+
+  reserved 3;
+  reserved "rooms_free";
+
+  // The stay in it -- every room, every night -- before tax.
+  google.type.Money total = 4;
+
+  // The option as a sentence to say.
+  string spoken = 5;
+}
+
+// Request message for HoldStay.
+message HoldStayRequest {
+  // The venue to stay at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The room type, from FindStay.
+  // Format: venues/{venue}/spaces/{space}
+  string space = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Space"
+  ];
+
+  // The day of arrival.
+  google.type.Date arrival_date = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // How many nights.
+  int32 nights = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 30
+    }
+  ];
+
+  // How many rooms; one when empty.
+  int32 rooms = 5 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 20
+    }
+  ];
+
+  // How many adults.
+  int32 adults = 6 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 60
+    }
+  ];
+
+  // How many children.
+  int32 children = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).int32 = {
+      gte: 0
+      lte: 60
+    }
+  ];
+
+  // The guest's name, as the booking is to be under. Asked for when empty.
+  string guest_display_name = 8 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 200
+  ];
+
+  // The guest's phone, which finds a returning guest. Asked for when empty;
+  // on a call, the number calling.
+  string phone = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 32
+  ];
+
+  // The guest's email, for the confirmation; optional.
+  string email = 10 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string.email = true
+  ];
+
+  // Anything the guest asks for: an early check-in, a cot.
+  string special_requests = 11 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).string.max_len = 1000
+  ];
+
+  // Where the guest is asking from: WEBSITE, PHONE, WHATSAPP.
+  aperio.type.v1.Channel channel = 12 [(google.api.field_behavior) = OPTIONAL];
+
+  // A UUID for this attempt: the same one holds the same rooms again rather
+  // than more of them, so a retried request is safe (AIP-155).
+  string request_id = 13 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_info).format = UUID4,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// Response message for HoldStay.
+message HoldStayResponse {
+  // What ConfirmStay books with: the hold, the guest and the price, sealed so
+  // none of them changes on the way.
+  string hold_token = 1;
+
+  // When the hold lapses, freeing the rooms, unless the stay is confirmed.
+  google.protobuf.Timestamp expire_time = 2;
+
+  // The stay before tax: every room, every night.
+  google.type.Money total = 3;
+
+  // The hold as a sentence to say, asking the guest to agree.
+  string spoken = 4;
+}
+
+// Request message for ConfirmStay.
+message ConfirmStayRequest {
+  // The venue the hold is at.
+  // Format: venues/{venue}
+  string venue = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.venue.v1/Venue"
+  ];
+
+  // The token HoldStay returned.
+  string hold_token = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+}
+
+// Response message for ConfirmStay.
+message ConfirmStayResponse {
+  // The booking made: PENDING until its advance is paid.
+  // Format: venues/{venue}/reservations/{reservation}
+  string reservation = 1 [(google.api.resource_reference).type = "aperio.booking.v1/Reservation"];
+
+  // The stay before tax.
+  google.type.Money total = 2;
+
+  // The booking as a sentence to say.
+  string spoken = 3;
+}

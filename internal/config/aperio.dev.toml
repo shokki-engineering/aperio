@@ -13,10 +13,7 @@ version = "v0.1.0"
 environment = "debug"
 enable_http = true
 enable_health = true
-# Off until protoc-gen-mcp shares schemas through $defs: inlined, the
-# OpenTravel types make the booking service's tool list 16.7 MB, past the MCP
-# SDK's 16 MB frame, and MCP fails to start (docs/roadmap.md, M8).
-enable_mcp = false
+enable_mcp = true
 
 [database]
 provider = "gorm"
@@ -47,3 +44,8 @@ insecure = false
 ca_file = ""
 public_url = "http://localhost:8080"
 feeds_secret = ""
+
+[concierge]
+# Seals hold tokens; set through APERIO_CONCIERGE__HOLD_SECRET. Empty, each
+# process makes its own.
+hold_secret = ""

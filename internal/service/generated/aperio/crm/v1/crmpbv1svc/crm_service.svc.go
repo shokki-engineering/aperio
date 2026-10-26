@@ -226,7 +226,7 @@ const crmServiceContactType = "aperio.crm.v1/Contact"
 var (
 	crmServiceContactCollections = []string{"contacts"}
 	crmServiceContactRequired    = []string{"kind", "display_name"}
-	crmServiceContactOutputOnly  = []string{"create_time", "update_time"}
+	crmServiceContactOutputOnly  = []string{"create_time", "update_time", "phone_numbers"}
 )
 
 // createContact is AIP-133's create of in under parent, named name

@@ -27,7 +27,7 @@ What is built and what is next: [docs/roadmap.md](docs/roadmap.md).
 
 ```
  guests, staff, agents, channels
-              |  gRPC :50061 / REST :8090 / MCP :8091
+              |  gRPC :50061 / REST :8090 / MCP :8091/mcp
    +----------v-----------+         freebusy SDK (gRPC)        +-------------+
    | aperio               | ---------------------------------> | freebusy    |
    | services + hooks     |   check, hold -> reserve, cancel,  | own Postgres|
@@ -71,16 +71,18 @@ It follows freebusy's.
 ```sh
 just db up                 # Postgres on 127.0.0.1:5433
 just db deploy             # apply the Prisma migrations
-just run                   # gRPC :50061, REST :8090
+just run                   # gRPC :50061, REST :8090, MCP :8091/mcp
 curl localhost:8090/health
 curl 'localhost:8090/v1/venues?pageSize=10'
 ```
 
 Booking needs freebusy running (`just run` in its checkout, gRPC :50051).
 
-MCP is off until protoc-gen-mcp shares schemas through `$defs`: inlined, the
-OpenTravel types make the booking service's tool list larger than the MCP
-SDK accepts (roadmap, M8).
+Agents connect to every service's tools at once at `http://localhost:8091/mcp`
+(streamable HTTP): 108 tools, 0.9 MB of schemas. The schemas are trimmed for
+an agent's context (`tools/protobuf/buf/go.buf.gen.yaml`): shared types once
+under `$defs`, OpenTravel code lists over 64 values as patterns, short nested
+descriptions, no output schemas. The server validates every request in full.
 
 ## Configuration
 

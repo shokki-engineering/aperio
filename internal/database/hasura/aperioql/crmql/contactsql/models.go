@@ -50,6 +50,8 @@ type CrmContacts struct {
 	NameParts *json.RawMessage `graphql:"nameParts" scalar:"true"`
 	// Notes selects the "notes" field; nil when the column is NULL.
 	Notes *string `graphql:"notes"`
+	// PhoneNumbers selects the "phoneNumbers" field.
+	PhoneNumbers []*string `graphql:"phoneNumbers"`
 	// Phones selects the "phones" field; nil when the column is NULL.
 	Phones *json.RawMessage `graphql:"phones" scalar:"true"`
 	// Tags selects the "tags" field.
@@ -246,6 +248,8 @@ type DeleteCrmContactsByIdResponse struct {
 		NameParts *json.RawMessage `graphql:"nameParts" scalar:"true"`
 		// Notes selects the "notes" field; nil when the column is NULL.
 		Notes *string `graphql:"notes"`
+		// PhoneNumbers selects the "phoneNumbers" field.
+		PhoneNumbers []*string `graphql:"phoneNumbers"`
 		// Phones selects the "phones" field; nil when the column is NULL.
 		Phones *json.RawMessage `graphql:"phones" scalar:"true"`
 		// Tags selects the "tags" field.
@@ -289,6 +293,8 @@ type InsertCrmContactsResponse struct {
 		NameParts *json.RawMessage `graphql:"nameParts" scalar:"true"`
 		// Notes selects the "notes" field; nil when the column is NULL.
 		Notes *string `graphql:"notes"`
+		// PhoneNumbers selects the "phoneNumbers" field.
+		PhoneNumbers []*string `graphql:"phoneNumbers"`
 		// Phones selects the "phones" field; nil when the column is NULL.
 		Phones *json.RawMessage `graphql:"phones" scalar:"true"`
 		// Tags selects the "tags" field.
@@ -332,6 +338,8 @@ type UpdateCrmContactsByIdResponse struct {
 		NameParts *json.RawMessage `graphql:"nameParts" scalar:"true"`
 		// Notes selects the "notes" field; nil when the column is NULL.
 		Notes *string `graphql:"notes"`
+		// PhoneNumbers selects the "phoneNumbers" field.
+		PhoneNumbers []*string `graphql:"phoneNumbers"`
 		// Phones selects the "phones" field; nil when the column is NULL.
 		Phones *json.RawMessage `graphql:"phones" scalar:"true"`
 		// Tags selects the "tags" field.

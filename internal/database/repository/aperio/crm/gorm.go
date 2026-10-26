@@ -474,6 +474,7 @@ var contactColumns = map[string][]string{
 	"create_time":          {"create_time"},
 	"update_time":          {"update_time"},
 	"etag":                 {"etag"},
+	"phone_numbers":        {"phone_numbers"},
 }
 
 // Update persists the masked fields of in; an empty mask replaces every
@@ -484,6 +485,20 @@ func (r *GormContactRepository) Update(ctx context.Context, in *crmpbv1.Contact,
 		return nil, err
 	}
 	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateTx(ctx, tx, key, in, paths, nil) })
+	if err != nil {
+		return nil, repox.MapGormErr(err)
+	}
+	return r.get(ctx, key)
+}
+
+// UpdateWithOutputOnly is Update plus the server-owned fields outputPaths
+// names, in Update's transaction and under its etag guard.
+func (r *GormContactRepository) UpdateWithOutputOnly(ctx context.Context, in *crmpbv1.Contact, paths, outputPaths []string) (*crmpbv1.Contact, error) {
+	key, err := r.rowKey(in.GetName())
+	if err != nil {
+		return nil, err
+	}
+	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateTx(ctx, tx, key, in, paths, outputPaths) })
 	if err != nil {
 		return nil, repox.MapGormErr(err)
 	}
@@ -508,6 +523,7 @@ func (r *GormContactRepository) updateTx(ctx context.Context, tx *gorm.DB, key s
 	existingPB := crm.ContactToProto(&existing)
 	merged := proto.Clone(existingPB).(*crmpbv1.Contact)
 	applyContactMask(merged, in, paths)
+	repox.CopyFields(merged, in, outputPaths)
 	if h := r.Hooks.BeforeUpdate; h != nil {
 		if err := h(ctx, existingPB, merged, paths); err != nil {
 			return err
@@ -528,8 +544,57 @@ func (r *GormContactRepository) updateTx(ctx context.Context, tx *gorm.DB, key s
 	existing.MarketingConsent = next.MarketingConsent
 	existing.Tags = next.Tags
 	existing.Notes = next.Notes
+	if len(outputPaths) > 0 {
+		paths := outputPaths
+		if repox.InMask(paths, "phone_numbers") {
+			existing.PhoneNumbers = next.PhoneNumbers
+		}
+	}
 	existing.Etag = repox.Ptr(repox.NewULID())
 	return crm.NewContactStore(tx).Update(ctx, &existing)
+}
+
+// UpdateOutputOnly persists the server-owned fields of in that paths names, in
+// one transaction guarded by in.Etag.
+func (r *GormContactRepository) UpdateOutputOnly(ctx context.Context, in *crmpbv1.Contact, paths []string) (*crmpbv1.Contact, error) {
+	key, err := r.rowKey(in.GetName())
+	if err != nil {
+		return nil, err
+	}
+	err = r.DB.Transaction(func(tx *gorm.DB) error { return r.updateOutputOnlyTx(ctx, tx, in, paths) })
+	if err != nil {
+		return nil, repox.MapGormErr(err)
+	}
+	return r.get(ctx, key)
+}
+
+// updateOutputOnlyTx is UpdateOutputOnly's write inside tx, which a Batch
+// shares with other writes.
+func (r *GormContactRepository) updateOutputOnlyTx(ctx context.Context, tx *gorm.DB, in *crmpbv1.Contact, paths []string) error {
+	if len(paths) == 0 {
+		return fmt.Errorf("%w: UpdateOutputOnly needs the fields to write", repox.ErrInvalidArgument)
+	}
+	key, err := r.rowKey(in.GetName())
+	if err != nil {
+		return err
+	}
+	{
+		var existing crm.Contact
+		// FOR UPDATE, as in updateTx: concurrent writers holding one etag
+		// take turns, and only the first passes the guard.
+		if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).First(&existing, "id = ?", key).Error; err != nil {
+			return err
+		}
+		if in.GetEtag() != "" && existing.Etag != nil && *existing.Etag != in.GetEtag() {
+			return repox.ErrConflict
+		}
+		next := crm.ContactFromProto(in)
+		if repox.InMask(paths, "phone_numbers") {
+			existing.PhoneNumbers = next.PhoneNumbers
+		}
+		existing.Etag = repox.Ptr(repox.NewULID())
+		return crm.NewContactStore(tx).Update(ctx, &existing)
+	}
 }
 
 // newRow builds the row a Batch inserts for in, and the
@@ -1062,6 +1127,31 @@ func (b *gormBatch) UpdateContact(in *crmpbv1.Contact, paths []string) {
 	queueContactReferences(b.u, in, paths)
 	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
 		return r.updateTx(ctx, tx, key, in, paths, nil)
+	})
+	b.u.Record(repox.Change{Type: "aperio.crm.v1/Contact", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getContact)})
+}
+
+// UpdateContactWithOutputOnly queues UpdateWithOutputOnly; in.Etag, when
+// set, guards it, and a guard that fails rolls the whole batch back.
+func (b *gormBatch) UpdateContactWithOutputOnly(in *crmpbv1.Contact, paths, outputPaths []string) {
+	r := &GormContactRepository{DB: b.db}
+	key, err := r.rowKey(in.GetName())
+	if err != nil {
+		b.u.Fail(err)
+		return
+	}
+	queueContactReferences(b.u, in, paths)
+	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
+		return r.updateTx(ctx, tx, key, in, paths, outputPaths)
+	})
+	b.u.Record(repox.Change{Type: "aperio.crm.v1/Contact", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getContact)})
+}
+
+// UpdateContactOutputOnly queues UpdateOutputOnly; in.Etag, when set, guards it.
+func (b *gormBatch) UpdateContactOutputOnly(in *crmpbv1.Contact, paths []string) {
+	r := &GormContactRepository{DB: b.db}
+	b.u.QueueGorm(nil, func(ctx context.Context, tx *gorm.DB) error {
+		return r.updateOutputOnlyTx(ctx, tx, in, paths)
 	})
 	b.u.Record(repox.Change{Type: "aperio.crm.v1/Contact", Name: in.GetName(), Op: repox.ChangeUpdate, Record: in, LoadPrior: repox.PriorOf(in.GetName(), getContact)})
 }

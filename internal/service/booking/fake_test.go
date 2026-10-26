@@ -10,6 +10,7 @@ import (
 	"context"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/shokki-engineering/aperio/internal/engine"
 )
@@ -56,6 +57,19 @@ func (f *fakeEngine) Free(_ context.Context, resources []string, w engine.Window
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return len(f.free(resources, w)) >= int(quantity), nil
+}
+
+func (f *fakeEngine) Hold(ctx context.Context, b engine.Booking) (engine.Hold, error) {
+	name, err := f.Book(ctx, b) // held as a reservation would be, under the key
+	return engine.Hold{Name: name, Expire: time.Now().Add(15 * time.Minute)}, err
+}
+
+func (f *fakeEngine) Held(_ context.Context, key string) (bool, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	name, ok := f.byKey[key]
+	_, active := f.held[name]
+	return ok && active, nil
 }
 
 func (f *fakeEngine) Book(_ context.Context, b engine.Booking) (string, error) {

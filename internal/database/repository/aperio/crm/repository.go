@@ -89,6 +89,17 @@ type ContactRepository interface {
 	// mutable field. m.Etag, when set, guards against concurrent writes
 	// (repox.ErrConflict).
 	Update(ctx context.Context, m *crmpbv1.Contact, paths []string) (*crmpbv1.Contact, error)
+	// UpdateOutputOnly persists the server-owned (OUTPUT_ONLY) fields of m that
+	// paths names -- a state, an expiry, a computed list. Update refuses them,
+	// since a client may never set them; this is for the service that owns
+	// them. paths must name at least one; m.Etag guards as in Update.
+	UpdateOutputOnly(ctx context.Context, m *crmpbv1.Contact, paths []string) (*crmpbv1.Contact, error)
+	// UpdateWithOutputOnly is Update plus the server-owned (OUTPUT_ONLY)
+	// fields of m that outputPaths names, in the same write under the same
+	// etag guard. paths keeps Update's meaning (an OUTPUT_ONLY path in it is
+	// still ignored, AIP-203). A BeforeUpdate hook that sets one of the
+	// outputPaths fields on the merged record has it written too.
+	UpdateWithOutputOnly(ctx context.Context, m *crmpbv1.Contact, paths, outputPaths []string) (*crmpbv1.Contact, error)
 	// Delete removes the record addressed by its resource name.
 	Delete(ctx context.Context, name string) error
 }
@@ -192,6 +203,12 @@ type Batch interface {
 	// field when paths is empty. m.Etag, when set, guards it; a guard that
 	// fails fails the whole Commit with repox.ErrConflict.
 	UpdateContact(m *crmpbv1.Contact, paths []string)
+	// UpdateContactOutputOnly queues UpdateOutputOnly; m.Etag, when set,
+	// guards it.
+	UpdateContactOutputOnly(m *crmpbv1.Contact, paths []string)
+	// UpdateContactWithOutputOnly queues UpdateWithOutputOnly: Update plus
+	// the server-owned fields outputPaths names, under one guard.
+	UpdateContactWithOutputOnly(m *crmpbv1.Contact, paths, outputPaths []string)
 	// DeleteContact queues the record's removal for good; a record already
 	// gone is not an error.
 	DeleteContact(name string)
@@ -620,6 +637,18 @@ func (o *observedContactRepository) Update(ctx context.Context, m *crmpbv1.Conta
 	return out, err
 }
 
+func (o *observedContactRepository) UpdateOutputOnly(ctx context.Context, m *crmpbv1.Contact, paths []string) (*crmpbv1.Contact, error) {
+	out, err := o.ContactRepository.UpdateOutputOnly(ctx, m, paths)
+	o.changes.Changed(ctx, m.GetName())
+	return out, err
+}
+
+func (o *observedContactRepository) UpdateWithOutputOnly(ctx context.Context, m *crmpbv1.Contact, paths, outputPaths []string) (*crmpbv1.Contact, error) {
+	out, err := o.ContactRepository.UpdateWithOutputOnly(ctx, m, paths, outputPaths)
+	o.changes.Changed(ctx, m.GetName())
+	return out, err
+}
+
 func (o *observedContactRepository) Delete(ctx context.Context, name string) error {
 	err := o.ContactRepository.Delete(ctx, name)
 	o.changes.Changed(ctx, name)
@@ -773,6 +802,30 @@ func (p *projectedContactRepository) Update(ctx context.Context, m *crmpbv1.Cont
 			return nil, err
 		}
 		out, err = r.Update(ctx, m, paths)
+		return repox.WithPrior(changedContact(m.GetName(), repox.ChangeUpdate, out), prior), err
+	})
+	return out, err
+}
+
+func (p *projectedContactRepository) UpdateOutputOnly(ctx context.Context, m *crmpbv1.Contact, paths []string) (out *crmpbv1.Contact, err error) {
+	err = p.run(ctx, func(r ContactRepository) ([]repox.Change, error) {
+		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
+		if err != nil {
+			return nil, err
+		}
+		out, err = r.UpdateOutputOnly(ctx, m, paths)
+		return repox.WithPrior(changedContact(m.GetName(), repox.ChangeUpdate, out), prior), err
+	})
+	return out, err
+}
+
+func (p *projectedContactRepository) UpdateWithOutputOnly(ctx context.Context, m *crmpbv1.Contact, paths, outputPaths []string) (out *crmpbv1.Contact, err error) {
+	err = p.run(ctx, func(r ContactRepository) ([]repox.Change, error) {
+		prior, err := repox.Prior(r.Get(ctx, m.GetName()))
+		if err != nil {
+			return nil, err
+		}
+		out, err = r.UpdateWithOutputOnly(ctx, m, paths, outputPaths)
 		return repox.WithPrior(changedContact(m.GetName(), repox.ChangeUpdate, out), prior), err
 	})
 	return out, err

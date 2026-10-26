@@ -8,6 +8,7 @@ package server
 
 import (
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/booking/v1/bookingpbv1svc"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/concierge/v1/conciergepbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/crm/v1/crmpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/document/v1/documentpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/finance/v1/financepbv1svc"
@@ -29,6 +30,7 @@ func (s *Services) Options() []grpc.Option {
 		financepbv1svc.RegisterAll(financepbv1svc.Servers{FinanceService: s.Finance}),
 		documentpbv1svc.RegisterAll(documentpbv1svc.Servers{DocumentService: s.Documents}),
 		operationspbv1svc.RegisterAll(operationspbv1svc.Servers{OperationsService: s.Operations}),
+		conciergepbv1svc.RegisterAll(conciergepbv1svc.Servers{ConciergeService: s.Concierge}),
 	} {
 		opts = append(opts, o...)
 	}
