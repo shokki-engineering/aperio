@@ -1,19 +1,18 @@
 // Copyright 2026 Srikanth K.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Command aperio-calendar prints, for every bookable space of every venue,
+// Command calendar prints, for every bookable space of every venue,
 // the links to subscribe to its rooms' or halls' calendars. Each calendar is
 // served by freebusy as a read-only .ics feed holding the bookings and the
 // notes aperio puts on them -- guest count, names, emails, phones, address.
 // In Google Calendar: Settings > Add calendar > From URL, and paste a link.
 //
-//	APERIO_DATABASE_URL     postgres DSN or URL of the aperio database
-//	FREEBUSY_ENDPOINT       freebusy's gRPC address (read by the SDK)
-//	FREEBUSY_PUBLIC_URL     freebusy's public HTTPS address, where Google
-//	                        fetches the feeds; a localhost link will not
-//	                        subscribe
-//	FREEBUSY_FEEDS_SECRET   freebusy's [feeds] secret (FREEBUSY_FEEDS__SECRET
-//	                        on the freebusy server)
+// It reads aperio's configuration (internal/config): the database, and
+// [freebusy] -- the endpoint, public_url (freebusy's public HTTPS address,
+// where Google fetches the feeds; a localhost link will not subscribe) and
+// feeds_secret (freebusy's FREEBUSY_FEEDS__SECRET):
+//
+//	APERIO_FREEBUSY__PUBLIC_URL=https://freebusy.example APERIO_FREEBUSY__FEEDS_SECRET=... just calendar-links
 package main
 
 import (
@@ -23,13 +22,12 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/shokki-engineering/aperio/internal/config"
+	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 func main() {
@@ -40,20 +38,25 @@ func main() {
 }
 
 func run(ctx context.Context) error {
-	dsn, public, secret := os.Getenv("APERIO_DATABASE_URL"), os.Getenv("FREEBUSY_PUBLIC_URL"), os.Getenv("FREEBUSY_FEEDS_SECRET")
-	if dsn == "" || public == "" || secret == "" {
-		return errors.New("set APERIO_DATABASE_URL, FREEBUSY_PUBLIC_URL and FREEBUSY_FEEDS_SECRET")
-	}
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: logger.Discard})
+	cfg, err := config.Load()
 	if err != nil {
 		return err
 	}
-	fb, err := engine.Dial(ctx)
+	public, secret := cfg.Freebusy.PublicURL, cfg.Freebusy.FeedsSecret
+	if public == "" || secret == "" {
+		return errors.New("set [freebusy] public_url and feeds_secret (APERIO_FREEBUSY__PUBLIC_URL, APERIO_FREEBUSY__FEEDS_SECRET)")
+	}
+	conn, err := database.Open()
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	fb, err := engine.DialConfig(cfg.Freebusy)
 	if err != nil {
 		return err
 	}
 	defer fb.Close()
-	repos := venue.New(repox.Conn{Gorm: db})
+	repos := venue.New(conn.Repox())
 
 	venues, err := listAll(func(in repox.ListInput) ([]*venuepbv1.Venue, string, error) {
 		return repos.Venues.List(ctx, in)

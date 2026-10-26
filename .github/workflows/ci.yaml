@@ -1,0 +1,114 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Lint, build, unit tests, and the live suites against a Postgres migrated by
+# Prisma -- freebusy's CI, without its Bazel, Helm and kind jobs, which aperio
+# does not have yet (docs/roadmap.md, M3).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Format, vet and buf lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+      # Generated code follows its generator, so only hand-written code --
+      # every file without a "Code generated" header -- is format-checked.
+      - name: gofmt
+        run: |
+          out=$(gofmt -l $(grep -L '^// Code generated' $(git ls-files '*.go')))
+          if [ -n "$out" ]; then echo "$out"; exit 1; fi
+      - run: go vet ./...
+      - run: buf format --diff --exit-code
+      - run: buf lint
+
+  proto:
+    name: Protobuf build and breaking changes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+      - run: buf build -o /dev/null
+      - if: github.event_name == 'pull_request'
+        run: buf breaking --against ".git#branch=origin/${{ github.base_ref }}"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - run: go build ./...
+      - run: go build -o aperio .
+
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: extractions/setup-just@v4
+      - run: just test
+
+  live:
+    name: Live suites (Postgres)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_PASSWORD: postgrespassword
+          POSTGRES_DB: aperio
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      APERIO_DATABASE_URL: postgresql://postgres:postgrespassword@127.0.0.1:5432/aperio
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Migrate with Prisma
+        working-directory: protobuf/generated/prisma/aperio
+        run: |
+          npm install --no-audit --no-fund
+          npx prisma migrate deploy --config aperio.config.ts
+      # Every live suite must run: an unreachable database fails the job
+      # instead of skipping it. One package at a time: they share the database.
+      - name: Live suites
+        env:
+          APERIO_TEST_REQUIRE_LIVE: "1"
+          APERIO_TEST_DATABASE_URL: host=127.0.0.1 port=5432 user=postgres password=postgrespassword dbname=aperio sslmode=disable
+        run: go test -count=1 -p 1 ./...

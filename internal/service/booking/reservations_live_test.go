@@ -8,7 +8,7 @@ package booking_test
 // row left, a failed second line compensated, and cancel giving rooms back.
 //
 //	APERIO_TEST_DATABASE_URL="host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" \
-//	  go test ./internal/service/bookings/ -v
+//	  go test ./internal/service/booking/ -v
 
 import (
 	"context"

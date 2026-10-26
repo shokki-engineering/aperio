@@ -16,7 +16,10 @@ description = "Venue backend: stays, events, leads, quotes, GST invoices and pay
 environment = "production"
 enable_http = true
 enable_health = true
-enable_mcp = true
+# Off until protoc-gen-mcp shares schemas through $defs: inlined, the
+# OpenTravel types make the booking service's tool list 16.7 MB, past the MCP
+# SDK's 16 MB frame, and MCP fails to start (docs/roadmap.md, M8).
+enable_mcp = false
 experimental_http3 = false
 # How long Stop waits for HTTP and gRPC to drain; 0 takes runtime-go's default.
 shutdown_timeout_seconds = 20

@@ -161,4 +161,3 @@ type MCPConfig struct {
 	// sampling, roots), the standalone GET stream and DELETE.
 	Stateless bool `koanf:"stateless"`
 }
-

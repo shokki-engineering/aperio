@@ -5,7 +5,7 @@
 // calendars: the engine.Note the booking service puts on the freebusy
 // calendar of every resource a booking takes. freebusy serves those
 // calendars over CalDAV, and as read-only .ics feeds Google Calendar
-// subscribes to ("From URL"); cmd/aperio-calendar prints each space's link.
+// subscribes to ("From URL"); tools/calendar prints each space's link.
 //
 // A stay is an all-day note from arrival to departure, a session a timed one
 // from setup to teardown, each with its guest count, the guests' names, the

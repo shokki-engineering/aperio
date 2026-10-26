@@ -8,7 +8,7 @@ package finance_test
 // invoice locked against edits, cancelled, and credited in its own series.
 //
 //	APERIO_TEST_DATABASE_URL="host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" \
-//	  go test ./internal/service/billing/ -v
+//	  go test ./internal/service/finance/ -v
 
 import (
 	"context"

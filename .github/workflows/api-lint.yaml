@@ -1,0 +1,38 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Google AIP lint of aperio's protos, as `just lint` runs it: api-linter over
+# the buf-built descriptor set, with api-linter.yaml's one disabled rule
+# (core::0215::foreign-type-reference, which importing OpenTravel's types
+# requires). Any other finding fails.
+
+name: API lint
+
+on:
+  push:
+    branches: [main]
+  # No `branches` filter: gate every PR, whatever branch it targets.
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  aip:
+    name: Google AIP lint (strict)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+      - uses: extractions/setup-just@v4
+      - run: go install github.com/googleapis/api-linter/v2/cmd/api-linter@v2.3.1
+      - run: just lint

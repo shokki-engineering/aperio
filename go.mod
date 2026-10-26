@@ -14,7 +14,7 @@ require (
 	github.com/shokki-engineering/freebusy-go v0.0.0-00010101000000-000000000000
 	github.com/the-protobuf-project/cache v0.3.0
 	github.com/the-protobuf-project/mcp v1.7.4
-	github.com/the-protobuf-project/runtime-go/agents v0.0.0-20261024145511-26d67bc81588
+	github.com/the-protobuf-project/runtime-go/agents v0.0.0-20261026065720-541ce4d35466
 	github.com/the-protobuf-project/runtime-go/cache v0.0.0-20261026065720-541ce4d35466
 	github.com/the-protobuf-project/runtime-go/events v0.0.0-20261026065720-541ce4d35466
 	github.com/the-protobuf-project/runtime-go/grpc v0.0.0-20261026065720-541ce4d35466

@@ -48,7 +48,7 @@ service requests (pantry, housekeeping) inside the venue.
   `Session.freebusy_reservation`, `Space.resources`).
 - **No shared database and no cross-database foreign keys.** The two agree
   through the API: idempotent booking keys, compensation when a step fails
-  (`internal/service/bookings`), and -- still to build -- webhooks and a
+  (`internal/service/booking`), and -- still to build -- webhooks and a
   reconciler for drift.
 - **Hasura DDN** puts a typed GraphQL API over aperio's database
   (connector `aperio_pgsql`, engine `:3281`), which the generated
@@ -66,18 +66,18 @@ service requests (pantry, housekeeping) inside the venue.
 | Hasura DDN | Done (dev) | 85 metadata files, local engine | permissions / roles, production deploy |
 | freebusy connection | Done | `internal/engine`: availability, book, cancel, calendar notes | webhooks in, reconciliation, lead holds |
 | Bookings | Done | stays and sessions booked in freebusy with compensation; state methods; event cancel | holding the hall when a quote is accepted (sessions have no times yet) |
-| Calendars | Done (untested live) | notes on freebusy calendars; signed `.ics` feeds in freebusy; `cmd/aperio-calendar` prints links | a run against a real freebusy; public HTTPS |
+| Calendars | Done (untested live) | notes on freebusy calendars; signed `.ics` feeds in freebusy; `tools/calendar (`just calendar-links`)` prints links | a run against a real freebusy; public HTTPS |
 | Pricing | Done | seasons, price rules, `CalculatePrice`, GST per line | spaces need fixed-price rules (no base price) |
 | Quotes | Done | priced drafts, Send, Decline, Revise, Accept (makes event + stay, wins lead) | expiry job; PDF proposal |
-| Invoices (GST) | Done | `internal/service/billing`: CGST/SGST/IGST per line, rupee rounding, series per venue, kind and year, Issue / Cancel / Credit; live test | raising from a quote, e-invoice IRN, paid / due from payments |
-| Payments | In progress | `internal/service/billing`: any currency at an exchange rate, paid / due and PAID on invoices, an advance confirming its booking, `Settle` for a gateway's webhook (idempotent), Refund (through the gateway) and Void; live test | a gateway adapter (signature check, webhook route, payment links), cheque clearing, receipt vouchers |
+| Invoices (GST) | Done | `internal/service/finance`: CGST/SGST/IGST per line, rupee rounding, series per venue, kind and year, Issue / Cancel / Credit; live test | raising from a quote, e-invoice IRN, paid / due from payments |
+| Payments | In progress | `internal/service/finance`: any currency at an exchange rate, paid / due and PAID on invoices, an advance confirming its booking, `Settle` for a gateway's webhook (idempotent), Refund (through the gateway) and Void; live test | a gateway adapter (signature check, webhook route, payment links), cheque clearing, receipt vouchers |
 | CRM (leads, contacts) | Generated only | standard methods | lead hold in freebusy, follow-ups, lost reasons flow, dedupe contacts |
 | Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
 | Service requests | Generated only | proto with event option | state methods, notifying staff (pantry, housekeeping), charges to a booking |
 | Channels | Not started | `Channel` enum, OTA types in the schema | Booking.com (OTA), Airbnb, MakeMyTrip adapters; rates and inventory push |
-| Server | Not started | -- | `cmd/aperio`: HybridServer, config, telemetry, health |
+| Server | Done | `main.go` on the HybridServer, every service on gRPC :50061 and REST :8090; `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | MCP (off: schema size), the cache wired, query tracing, background jobs |
 | Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
-| Deploy / CI | Not started | compose (Postgres), Hasura dev project | Dockerfile, CI (lint, gen check, tests), release |
+| Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
 | Agents (MCP) | Generated only | MCP tools per method | the `$defs` size fix, task-level tools ("today's arrivals") |
 
 ## Milestones
@@ -98,7 +98,7 @@ before channels, a running server before anyone outside can use any of it.
   a number clash), `CancelInvoice` keeps the number used, `CreditInvoice`
   drafts a credit note that `corrects` it. Only drafts are edited or deleted.
 - Exit, met: a live test issuing, cancelling and crediting, with the series
-  and the GST split checked (`internal/service/billing`).
+  and the GST split checked (`internal/service/finance`).
 - Left for later: raising an invoice from an accepted quote (quote discount
   lines must become line discounts first); the e-invoice IRN; `paid` and
   `due` from payments (M2).
@@ -119,18 +119,22 @@ before channels, a running server before anyone outside can use any of it.
 - Exit: quote -> accept -> advance paid online -> booking confirmed ->
   invoice issued and paid, end to end in one test.
 
-### M3 -- A running server
+### M3 -- A running server (in progress)
 
-- `cmd/aperio`: runtime-go HybridServer serving every service on gRPC, REST
-  (gateway) and MCP; config (koanf, as freebusy), structured logs, OTLP
-  traces, health and readiness.
-- Wiring: gorm and Hasura connections, the cache backend (Redis or
-  Dragonfly), the freebusy client, the sales -> bookings Booker.
+- Done (27 October 2026): the layout follows freebusy's; `main.go` serves
+  every service on gRPC :50061 and REST :8090 through runtime-go's
+  HybridServer, with config (koanf, `APERIO_` overrides), telemetry (OTLP),
+  health, protovalidate and CORS / TLS when configured; CI workflows.
+- MCP is off: protoc-gen-mcp inlines whole schemas, and the booking
+  service's tool list (16.7 MB, the OpenTravel RoomStay and ResGuest) is
+  past the MCP SDK's 16 MB frame. Emitting `$defs` (M8) turns it back on.
+- Left: the cache backend (Redis or Dragonfly) wired into the generated
+  caches; query tracing (freebusy's generated `Instrument`); an image --
+  freebusy builds its with Bazel -- or a Dockerfile.
 - Background jobs: expire sent quotes past `expire_time`; release lead holds;
   reconcile with freebusy (below).
-- Dockerfile, compose for the whole stack (aperio, freebusy, both
-  Postgres, both Hasura, Redis), CI: `just lint`, a generated-code drift
-  check, unit and live tests against compose.
+- Compose for the whole stack (aperio, freebusy, both Postgres, both
+  Hasura, Redis); a generated-code drift check in CI.
 - Exit: `docker compose up` gives a working aperio a frontend can call.
 
 ### M4 -- Staying in step with freebusy
@@ -241,14 +245,14 @@ For every feature:
 - Freebusy: `internal/engine` (check, hold -> reserve, cancel, notes);
   freebusy's read-only signed `.ics` feeds (`internal/caldav/feed.go` in
   freebusy).
-- Bookings: `internal/service/bookings` -- stays, sessions, events, state
+- Bookings: `internal/service/booking` -- stays, sessions, events, state
   methods, compensation; live tests.
 - Calendars: notes with guest count, names, emails, phones, address, diet and
-  requests on the booked rooms' calendars; `cmd/aperio-calendar`.
-- Pricing and quotes: `internal/pricing`, `internal/service/selling` --
+  requests on the booked rooms' calendars; `tools/calendar (`just calendar-links`)`.
+- Pricing and quotes: `internal/pricing`, `internal/service/sales` --
   seasons, rules, GST, quotes through Send / Decline / Revise / Accept;
   unit and live tests.
-- GST invoices: `internal/service/billing` -- CGST/SGST/IGST, numbering
+- GST invoices: `internal/service/finance` -- CGST/SGST/IGST, numbering
   (`Venue.invoice_prefix`, migration `20261026190511_invoice_prefix`),
   Issue / Cancel / Credit; live test.
 - Payments: any currency, invoice paid / due, advance confirms the booking,

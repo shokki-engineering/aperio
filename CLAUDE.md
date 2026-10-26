@@ -11,6 +11,22 @@ written in the OpenTravel vocabulary of
 [protobuf-ota](https://buf.build/shokki-engineering/protobuf-ota), whose types
 they import.
 
+## Layout
+
+- The repository follows freebusy's layout (`../freebusy`): the binary at the
+  root (`main.go`, `app.go`, `build.go`), `internal/config` (koanf, embedded
+  `aperio.release.toml` / `aperio.dev.toml`, `APERIO_<SECTION>__<KEY>`
+  overrides), `internal/telemetry`, `internal/server` (assembly, register,
+  runtime), `internal/database` (connection and the generated layers),
+  `test/live` for what live suites share, and command-line tools under
+  `tools/`, not `cmd/`. When adding a piece freebusy already has, shape it
+  as freebusy's.
+- Hand-written services live in `internal/service/<domain>`, named after the
+  domain as the repository package is. A file that needs both -- a test, the
+  server's assembly -- takes the repositories from a helper in a file of its
+  own (`test/live/<domain>.go`, `internal/server/repositories_<domain>.go`).
+- Every hand-written file stays under 200 lines and is documented.
+
 ## Go imports
 
 - Never alias an import. Refer to a package by the name it declares:

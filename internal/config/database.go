@@ -185,4 +185,3 @@ type CacheConfig struct {
 	// a prefix separates deployments, and an annotation travels with the schema.
 	Prefix string `koanf:"prefix"`
 }
-
