@@ -1,0 +1,415 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: CrmLeads
+  fields:
+    - name: bookings
+      type: "[String_1]"
+    - name: budget
+      type: Json
+    - name: closeTime
+      type: Timestamptz
+    - name: contact
+      type: String_1!
+    - name: createTime
+      type: Timestamptz!
+    - name: dates
+      type: Json
+    - name: datesFlexible
+      type: Boolean_1
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: eventType
+      type: Enum
+    - name: guests
+      type: Int32
+    - name: hold
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: kind
+      type: Enum!
+    - name: lostDetail
+      type: String_1
+    - name: lostReason
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: nextFollowUpTime
+      type: Timestamptz
+    - name: owner
+      type: String_1
+    - name: requirements
+      type: String_1
+    - name: rooms
+      type: Int32
+    - name: source
+      type: Enum
+    - name: sourceDetail
+      type: String_1
+    - name: stage
+      type: Enum
+    - name: updateTime
+      type: Timestamptz!
+    - name: venue
+      type: String_1
+  graphql:
+    typeName: CrmLeads
+    inputTypeName: CrmLeadsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: crm_leads
+      fieldMapping:
+        bookings:
+          column:
+            name: bookings
+        budget:
+          column:
+            name: budget
+        closeTime:
+          column:
+            name: close_time
+        contact:
+          column:
+            name: contact
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        datesFlexible:
+          column:
+            name: dates_flexible
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        eventType:
+          column:
+            name: event_type
+        guests:
+          column:
+            name: guests
+        hold:
+          column:
+            name: hold
+        id:
+          column:
+            name: id
+        kind:
+          column:
+            name: kind
+        lostDetail:
+          column:
+            name: lost_detail
+        lostReason:
+          column:
+            name: lost_reason
+        name:
+          column:
+            name: name
+        nextFollowUpTime:
+          column:
+            name: next_follow_up_time
+        owner:
+          column:
+            name: owner
+        requirements:
+          column:
+            name: requirements
+        rooms:
+          column:
+            name: rooms
+        source:
+          column:
+            name: source
+        sourceDetail:
+          column:
+            name: source_detail
+        stage:
+          column:
+            name: stage
+        updateTime:
+          column:
+            name: update_time
+        venue:
+          column:
+            name: venue
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: CrmLeads
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - bookings
+          - budget
+          - closeTime
+          - contact
+          - createTime
+          - dates
+          - datesFlexible
+          - displayName
+          - etag
+          - eventType
+          - guests
+          - hold
+          - id
+          - kind
+          - lostDetail
+          - lostReason
+          - name
+          - nextFollowUpTime
+          - owner
+          - requirements
+          - rooms
+          - source
+          - sourceDetail
+          - stage
+          - updateTime
+          - venue
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CrmLeadsBoolExp
+  operand:
+    object:
+      type: CrmLeads
+      comparableFields:
+        - fieldName: budget
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: closeTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: contact
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dates
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: datesFlexible
+          booleanExpressionType: BoolBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventType
+          booleanExpressionType: BookingEventTypeBoolExp
+        - fieldName: guests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: hold
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: kind
+          booleanExpressionType: CrmLeadKindBoolExp
+        - fieldName: lostDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: lostReason
+          booleanExpressionType: CrmLostReasonBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: nextFollowUpTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: owner
+          booleanExpressionType: TextBoolExp
+        - fieldName: requirements
+          booleanExpressionType: TextBoolExp
+        - fieldName: rooms
+          booleanExpressionType: Int4BoolExp
+        - fieldName: source
+          booleanExpressionType: BookingChannelBoolExp
+        - fieldName: sourceDetail
+          booleanExpressionType: TextBoolExp
+        - fieldName: stage
+          booleanExpressionType: CrmStageBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venue
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CrmLeadsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CrmLeadsAggExp
+  operand:
+    object:
+      aggregatedType: CrmLeads
+      aggregatableFields:
+        - fieldName: budget
+          aggregateExpression: JsonbAggExp
+        - fieldName: closeTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: contact
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dates
+          aggregateExpression: JsonbAggExp
+        - fieldName: datesFlexible
+          aggregateExpression: BoolAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: eventType
+          aggregateExpression: BookingEventTypeAggExp
+        - fieldName: guests
+          aggregateExpression: Int4AggExp
+        - fieldName: hold
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: kind
+          aggregateExpression: CrmLeadKindAggExp
+        - fieldName: lostDetail
+          aggregateExpression: TextAggExp
+        - fieldName: lostReason
+          aggregateExpression: CrmLostReasonAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: nextFollowUpTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: owner
+          aggregateExpression: TextAggExp
+        - fieldName: requirements
+          aggregateExpression: TextAggExp
+        - fieldName: rooms
+          aggregateExpression: Int4AggExp
+        - fieldName: source
+          aggregateExpression: BookingChannelAggExp
+        - fieldName: sourceDetail
+          aggregateExpression: TextAggExp
+        - fieldName: stage
+          aggregateExpression: CrmStageAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venue
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: CrmLeadsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CrmLeadsOrderByExp
+  operand:
+    object:
+      orderedType: CrmLeads
+      orderableFields:
+        - fieldName: budget
+          orderByExpression: JsonOrderByExp
+        - fieldName: closeTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: contact
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dates
+          orderByExpression: JsonOrderByExp
+        - fieldName: datesFlexible
+          orderByExpression: Boolean1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: eventType
+          orderByExpression: EnumOrderByExp
+        - fieldName: guests
+          orderByExpression: Int32OrderByExp
+        - fieldName: hold
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: kind
+          orderByExpression: EnumOrderByExp
+        - fieldName: lostDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: lostReason
+          orderByExpression: EnumOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: nextFollowUpTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: owner
+          orderByExpression: String1OrderByExp
+        - fieldName: requirements
+          orderByExpression: String1OrderByExp
+        - fieldName: rooms
+          orderByExpression: Int32OrderByExp
+        - fieldName: source
+          orderByExpression: EnumOrderByExp
+        - fieldName: sourceDetail
+          orderByExpression: String1OrderByExp
+        - fieldName: stage
+          orderByExpression: EnumOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venue
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CrmLeadsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: CrmLeads
+  objectType: CrmLeads
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: crm_leads
+  filterExpressionType: CrmLeadsBoolExp
+  aggregateExpression: CrmLeadsAggExp
+  orderByExpression: CrmLeadsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: crmLeads
+      subscription:
+        rootField: crmLeads
+    selectUniques:
+      - queryRootField: crmLeadsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: crmLeadsById
+    filterInputTypeName: CrmLeadsFilterInput
+    aggregate:
+      queryRootField: crmLeadsAggregate
+      subscription:
+        rootField: crmLeadsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: CrmLeads
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

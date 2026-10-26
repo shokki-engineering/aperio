@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteCrmActivitiesByIdResponse
+  description: Responses from the 'delete_crm_activities_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[CrmActivities!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteCrmActivitiesByIdResponse
+    inputTypeName: DeleteCrmActivitiesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_crm_activities_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteCrmActivitiesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteCrmActivitiesById
+  outputType: DeleteCrmActivitiesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: CrmActivitiesBoolExp
+      description: Delete permission predicate over the 'crm_activities' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_crm_activities_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteCrmActivitiesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'crm_activities' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteCrmActivitiesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -1,0 +1,228 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingSessionsObject
+  fields:
+    - name: createTime
+      type: Timestamptz
+    - name: dietaryRequirements
+      type: Json
+    - name: displayName
+      type: String_1!
+    - name: endTime
+      type: Timestamptz!
+    - name: etag
+      type: String_1
+    - name: eventId
+      type: String_1!
+    - name: eventType
+      type: Enum
+    - name: freebusyReservation
+      type: String_1
+    - name: guaranteedGuests
+      type: Int32
+    - name: guests
+      type: Int32!
+    - name: id
+      type: String_1!
+    - name: layout
+      type: Enum
+    - name: menu
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: setupTime
+      type: Timestamptz
+    - name: space
+      type: String_1!
+    - name: specialRequests
+      type: Json
+    - name: startTime
+      type: Timestamptz!
+    - name: teardownTime
+      type: Timestamptz
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertBookingSessionsObject
+    inputTypeName: InsertBookingSessionsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_booking_sessions_object
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        dietaryRequirements:
+          column:
+            name: dietary_requirements
+        displayName:
+          column:
+            name: display_name
+        endTime:
+          column:
+            name: end_time
+        etag:
+          column:
+            name: etag
+        eventId:
+          column:
+            name: event_id
+        eventType:
+          column:
+            name: event_type
+        freebusyReservation:
+          column:
+            name: freebusy_reservation
+        guaranteedGuests:
+          column:
+            name: guaranteed_guests
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        layout:
+          column:
+            name: layout
+        menu:
+          column:
+            name: menu
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        setupTime:
+          column:
+            name: setup_time
+        space:
+          column:
+            name: space
+        specialRequests:
+          column:
+            name: special_requests
+        startTime:
+          column:
+            name: start_time
+        teardownTime:
+          column:
+            name: teardown_time
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingSessionsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - dietaryRequirements
+          - displayName
+          - endTime
+          - etag
+          - eventId
+          - eventType
+          - freebusyReservation
+          - guaranteedGuests
+          - guests
+          - id
+          - layout
+          - menu
+          - name
+          - notes
+          - setupTime
+          - space
+          - specialRequests
+          - startTime
+          - teardownTime
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertBookingSessionsResponse
+  description: Responses from the 'insert_booking_sessions' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[BookingSessions!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertBookingSessionsResponse
+    inputTypeName: InsertBookingSessionsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_booking_sessions_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertBookingSessionsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertBookingSessions
+  outputType: InsertBookingSessionsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertBookingSessionsObject!]!"
+    - name: postCheck
+      type: BookingSessionsBoolExp
+      description: Insert permission predicate over the 'booking_sessions' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_booking_sessions
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertBookingSessions
+    rootFieldKind: Mutation
+  description: Insert into the booking_sessions table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertBookingSessions
+  permissions:
+    - role: admin
+      allowExecution: true
+

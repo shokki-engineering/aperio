@@ -1,0 +1,223 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertOperationsServiceRequestsObject
+  fields:
+    - name: acknowledgeTime
+      type: Timestamptz
+    - name: assignee
+      type: String_1
+    - name: booking
+      type: String_1
+    - name: charge
+      type: Json
+    - name: completeTime
+      type: Timestamptz
+    - name: createTime
+      type: Timestamptz
+    - name: department
+      type: Enum
+    - name: dueTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: items
+      type: Json
+    - name: location
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: priority
+      type: Enum
+    - name: requester
+      type: String_1
+    - name: space
+      type: String_1
+    - name: state
+      type: Enum
+    - name: summary
+      type: String_1!
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertOperationsServiceRequestsObject
+    inputTypeName: InsertOperationsServiceRequestsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_operations_service_requests_object
+      fieldMapping:
+        acknowledgeTime:
+          column:
+            name: acknowledge_time
+        assignee:
+          column:
+            name: assignee
+        booking:
+          column:
+            name: booking
+        charge:
+          column:
+            name: charge
+        completeTime:
+          column:
+            name: complete_time
+        createTime:
+          column:
+            name: create_time
+        department:
+          column:
+            name: department
+        dueTime:
+          column:
+            name: due_time
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        items:
+          column:
+            name: items
+        location:
+          column:
+            name: location
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        priority:
+          column:
+            name: priority
+        requester:
+          column:
+            name: requester
+        space:
+          column:
+            name: space
+        state:
+          column:
+            name: state
+        summary:
+          column:
+            name: summary
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertOperationsServiceRequestsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acknowledgeTime
+          - assignee
+          - booking
+          - charge
+          - completeTime
+          - createTime
+          - department
+          - dueTime
+          - etag
+          - id
+          - items
+          - location
+          - name
+          - notes
+          - priority
+          - requester
+          - space
+          - state
+          - summary
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertOperationsServiceRequestsResponse
+  description: Responses from the 'insert_operations_service_requests' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[OperationsServiceRequests!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertOperationsServiceRequestsResponse
+    inputTypeName: InsertOperationsServiceRequestsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_operations_service_requests_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertOperationsServiceRequestsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertOperationsServiceRequests
+  outputType: InsertOperationsServiceRequestsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertOperationsServiceRequestsObject!]!"
+    - name: postCheck
+      type: OperationsServiceRequestsBoolExp
+      description: Insert permission predicate over the 'operations_service_requests'
+        collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_operations_service_requests
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertOperationsServiceRequests
+    rootFieldKind: Mutation
+  description: Insert into the operations_service_requests table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertOperationsServiceRequests
+  permissions:
+    - role: admin
+      allowExecution: true
+

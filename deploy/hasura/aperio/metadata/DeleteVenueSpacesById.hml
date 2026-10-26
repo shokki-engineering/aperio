@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteVenueSpacesByIdResponse
+  description: Responses from the 'delete_venue_spaces_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[VenueSpaces!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteVenueSpacesByIdResponse
+    inputTypeName: DeleteVenueSpacesByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_venue_spaces_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteVenueSpacesByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteVenueSpacesById
+  outputType: DeleteVenueSpacesByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: VenueSpacesBoolExp
+      description: Delete permission predicate over the 'venue_spaces' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_venue_spaces_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteVenueSpacesById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'venue_spaces' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteVenueSpacesById
+  permissions:
+    - role: admin
+      allowExecution: true
+

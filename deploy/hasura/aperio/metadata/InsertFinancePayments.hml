@@ -1,0 +1,234 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertFinancePaymentsObject
+  fields:
+    - name: amount
+      type: Json!
+    - name: baseAmount
+      type: Json
+    - name: booking
+      type: String_1
+    - name: channel
+      type: Enum
+    - name: contact
+      type: String_1!
+    - name: createTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: exchangeRate
+      type: Bigdecimal
+    - name: gateway
+      type: String_1
+    - name: gatewayReference
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: invoice
+      type: String_1
+    - name: kind
+      type: Enum
+    - name: method
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: receiveTime
+      type: Timestamptz
+    - name: recorder
+      type: String_1
+    - name: reference
+      type: String_1
+    - name: refunds
+      type: String_1
+    - name: state
+      type: Enum
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertFinancePaymentsObject
+    inputTypeName: InsertFinancePaymentsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_finance_payments_object
+      fieldMapping:
+        amount:
+          column:
+            name: amount
+        baseAmount:
+          column:
+            name: base_amount
+        booking:
+          column:
+            name: booking
+        channel:
+          column:
+            name: channel
+        contact:
+          column:
+            name: contact
+        createTime:
+          column:
+            name: create_time
+        etag:
+          column:
+            name: etag
+        exchangeRate:
+          column:
+            name: exchange_rate
+        gateway:
+          column:
+            name: gateway
+        gatewayReference:
+          column:
+            name: gateway_reference
+        id:
+          column:
+            name: id
+        invoice:
+          column:
+            name: invoice
+        kind:
+          column:
+            name: kind
+        method:
+          column:
+            name: method
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        receiveTime:
+          column:
+            name: receive_time
+        recorder:
+          column:
+            name: recorder
+        reference:
+          column:
+            name: reference
+        refunds:
+          column:
+            name: refunds
+        state:
+          column:
+            name: state
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertFinancePaymentsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amount
+          - baseAmount
+          - booking
+          - channel
+          - contact
+          - createTime
+          - etag
+          - exchangeRate
+          - gateway
+          - gatewayReference
+          - id
+          - invoice
+          - kind
+          - method
+          - name
+          - notes
+          - receiveTime
+          - recorder
+          - reference
+          - refunds
+          - state
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertFinancePaymentsResponse
+  description: Responses from the 'insert_finance_payments' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[FinancePayments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertFinancePaymentsResponse
+    inputTypeName: InsertFinancePaymentsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_finance_payments_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertFinancePaymentsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertFinancePayments
+  outputType: InsertFinancePaymentsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertFinancePaymentsObject!]!"
+    - name: postCheck
+      type: FinancePaymentsBoolExp
+      description: Insert permission predicate over the 'finance_payments' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_finance_payments
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertFinancePayments
+    rootFieldKind: Mutation
+  description: Insert into the finance_payments table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertFinancePayments
+  permissions:
+    - role: admin
+      allowExecution: true
+

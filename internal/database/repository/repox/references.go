@@ -3,7 +3,7 @@
 // 	protoc-gen-store v1.6.5+dirty
 // 	protoc (unknown)
 //
-// database: ota
+// database: aperio
 // package:  repox
 //
 // Shared runtime for the generated proto-facing repositories.

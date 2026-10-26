@@ -1,7 +1,7 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# protoc-gen-store + protoc-gen-cache: the database layer from protobuf-ota --
+# protoc-gen-store + protoc-gen-cache: the database layer from aperio's protos --
 # the gorm models, stores, converters and filters, the proto-facing
 # repositories over gorm and Hasura, the typed Hasura client, and the
 # read-through cache decorators over them. Run via `just gen store`, with the
@@ -20,26 +20,21 @@ managed:
     - module: buf.build/googleapis/googleapis
     - module: buf.build/bufbuild/protovalidate
   override:
-    # The OTA messages are the BSR SDK's
-    # (buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go), so
-    # the database layer imports them from there. protobuf-ota commits no
-    # go_package; this prefix reproduces the SDK's import paths, and buf derives
-    # the same package names the BSR does ("rate_planv1" for a path ending in a
-    # version, "types", "codes", "enums" for the sub-packages), so no import is
-    # ever aliased.
+    # The OpenTravel types aperio imports are the BSR SDK's
+    # (buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go),
+    # never generated here. protobuf-ota commits no go_package; this prefix
+    # reproduces the SDK's import paths and package names ("types", "codes",
+    # "reservationv1"), so generated code imports exactly the SDK packages.
     - file_option: go_package_prefix
       value: buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go
       module: buf.build/shokki-engineering/protobuf-ota
 inputs:
-  # Pinned to the commit the SDK versions in go.mod were cut from: an unpinned
-  # module input resolves to the BSR head, and a regen then rewrites every store
-  # to whatever upstream last pushed.
-  - module: buf.build/shokki-engineering/protobuf-ota:bb88093022b144c89092c9fba49c744d
-
+  # aperio's own protos; their go_package is in each file.
+  - directory: protobuf
 plugins:
   # strategy: all is required -- store must see every proto file in one
   # invocation to resolve references and merge every resource's tables into the
-  # one `ota` database. config= maps packages to the database and its schemas.
+  # one `aperio` database. config= maps packages to the database and its schemas.
   - local: protoc-gen-store
     out: internal/database/gorm
     strategy: all
@@ -63,7 +58,7 @@ plugins:
   # Proto-facing repository layer: provider-agnostic CRUD interfaces per
   # resource plus BOTH adapters -- GORM (composing the models, stores,
   # converters and filterx specs from gorm_module) and GraphQL (composing the
-  # otaql client from graphql_module). New(conn) picks the adapter from the
+  # aperioql client from graphql_module). New(conn) picks the adapter from the
   # live handle.
   - local: protoc-gen-store
     out: internal/database/repository
@@ -73,7 +68,7 @@ plugins:
       - config=tools/protobuf/buf/config/store.backend.yaml
       - go_module=github.com/shokki-engineering/aperio/internal/database/repository
       - gorm_module=github.com/shokki-engineering/aperio/internal/database/gorm
-      - graphql_module=github.com/shokki-engineering/aperio/internal/database/hasura/otaql
+      - graphql_module=github.com/shokki-engineering/aperio/internal/database/hasura/aperioql
   # Read-through cache decorators over the generated stores: a <Model>StoreIface
   # implementation wrapping the store from store_module -- same interface in,
   # same interface out. store_module and repository_module are paths, not
@@ -87,10 +82,10 @@ plugins:
       - repository_module=github.com/shokki-engineering/aperio/internal/database/repository
       - config=tools/protobuf/buf/config/cache.yaml
 
-  # Typed Hasura DDN GraphQL client (otaql). The target introspects the engine
+  # Typed Hasura DDN GraphQL client (aperioql). The target introspects the engine
   # named in store.graphql.yaml's graphql: block -- the local DDN engine must be
   # running, its metadata rebuilt by `just hasura regen` after a schema change --
-  # and emits the client under <out>/otaql. strategy: all: one invocation, as
+  # and emits the client under <out>/aperioql. strategy: all: one invocation, as
   # the target reads the endpoint, not the protos.
   - local: protoc-gen-store
     out: internal/database/hasura

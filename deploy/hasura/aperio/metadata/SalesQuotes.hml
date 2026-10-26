@@ -1,0 +1,433 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: SalesQuotes
+  fields:
+    - name: acceptTime
+      type: Timestamptz
+    - name: advance
+      type: Json
+    - name: booking
+      type: String_1
+    - name: contact
+      type: String_1!
+    - name: createTime
+      type: Timestamptz!
+    - name: dates
+      type: Json!
+    - name: declineReason
+      type: String_1
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: eventType
+      type: Enum
+    - name: expireTime
+      type: Timestamptz
+    - name: guests
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: lead
+      type: String_1
+    - name: lines
+      type: Json!
+    - name: name
+      type: String_1!
+    - name: sendTime
+      type: Timestamptz
+    - name: state
+      type: Enum
+    - name: subtotal
+      type: Json
+    - name: supersedes
+      type: String_1
+    - name: supplyStateCode
+      type: String_1
+    - name: taxTotal
+      type: Json
+    - name: terms
+      type: String_1
+    - name: total
+      type: Json
+    - name: ttl
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: SalesQuotes
+    inputTypeName: SalesQuotesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: sales_quotes
+      fieldMapping:
+        acceptTime:
+          column:
+            name: accept_time
+        advance:
+          column:
+            name: advance
+        booking:
+          column:
+            name: booking
+        contact:
+          column:
+            name: contact
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        declineReason:
+          column:
+            name: decline_reason
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        eventType:
+          column:
+            name: event_type
+        expireTime:
+          column:
+            name: expire_time
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        lead:
+          column:
+            name: lead
+        lines:
+          column:
+            name: lines
+        name:
+          column:
+            name: name
+        sendTime:
+          column:
+            name: send_time
+        state:
+          column:
+            name: state
+        subtotal:
+          column:
+            name: subtotal
+        supersedes:
+          column:
+            name: supersedes
+        supplyStateCode:
+          column:
+            name: supply_state_code
+        taxTotal:
+          column:
+            name: tax_total
+        terms:
+          column:
+            name: terms
+        total:
+          column:
+            name: total
+        ttl:
+          column:
+            name: ttl
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: SalesQuotes
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acceptTime
+          - advance
+          - booking
+          - contact
+          - createTime
+          - dates
+          - declineReason
+          - displayName
+          - etag
+          - eventType
+          - expireTime
+          - guests
+          - id
+          - lead
+          - lines
+          - name
+          - sendTime
+          - state
+          - subtotal
+          - supersedes
+          - supplyStateCode
+          - taxTotal
+          - terms
+          - total
+          - ttl
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SalesQuotesBoolExp
+  operand:
+    object:
+      type: SalesQuotes
+      comparableFields:
+        - fieldName: acceptTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: advance
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: booking
+          booleanExpressionType: TextBoolExp
+        - fieldName: contact
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: dates
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: declineReason
+          booleanExpressionType: TextBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: eventType
+          booleanExpressionType: BookingEventTypeBoolExp
+        - fieldName: expireTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: guests
+          booleanExpressionType: Int4BoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: lead
+          booleanExpressionType: TextBoolExp
+        - fieldName: lines
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: sendTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: state
+          booleanExpressionType: SalesSalesStateBoolExp
+        - fieldName: subtotal
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: supersedes
+          booleanExpressionType: TextBoolExp
+        - fieldName: supplyStateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxTotal
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: terms
+          booleanExpressionType: TextBoolExp
+        - fieldName: total
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: ttl
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SalesQuotesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: SalesQuotesAggExp
+  operand:
+    object:
+      aggregatedType: SalesQuotes
+      aggregatableFields:
+        - fieldName: acceptTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: advance
+          aggregateExpression: JsonbAggExp
+        - fieldName: booking
+          aggregateExpression: TextAggExp
+        - fieldName: contact
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: dates
+          aggregateExpression: JsonbAggExp
+        - fieldName: declineReason
+          aggregateExpression: TextAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: eventType
+          aggregateExpression: BookingEventTypeAggExp
+        - fieldName: expireTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: guests
+          aggregateExpression: Int4AggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: lead
+          aggregateExpression: TextAggExp
+        - fieldName: lines
+          aggregateExpression: JsonbAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: sendTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: state
+          aggregateExpression: SalesSalesStateAggExp
+        - fieldName: subtotal
+          aggregateExpression: JsonbAggExp
+        - fieldName: supersedes
+          aggregateExpression: TextAggExp
+        - fieldName: supplyStateCode
+          aggregateExpression: TextAggExp
+        - fieldName: taxTotal
+          aggregateExpression: JsonbAggExp
+        - fieldName: terms
+          aggregateExpression: TextAggExp
+        - fieldName: total
+          aggregateExpression: JsonbAggExp
+        - fieldName: ttl
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: SalesQuotesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: SalesQuotesOrderByExp
+  operand:
+    object:
+      orderedType: SalesQuotes
+      orderableFields:
+        - fieldName: acceptTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: advance
+          orderByExpression: JsonOrderByExp
+        - fieldName: booking
+          orderByExpression: String1OrderByExp
+        - fieldName: contact
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: dates
+          orderByExpression: JsonOrderByExp
+        - fieldName: declineReason
+          orderByExpression: String1OrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: eventType
+          orderByExpression: EnumOrderByExp
+        - fieldName: expireTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: guests
+          orderByExpression: Int32OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: lead
+          orderByExpression: String1OrderByExp
+        - fieldName: lines
+          orderByExpression: JsonOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: sendTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: state
+          orderByExpression: EnumOrderByExp
+        - fieldName: subtotal
+          orderByExpression: JsonOrderByExp
+        - fieldName: supersedes
+          orderByExpression: String1OrderByExp
+        - fieldName: supplyStateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: taxTotal
+          orderByExpression: JsonOrderByExp
+        - fieldName: terms
+          orderByExpression: String1OrderByExp
+        - fieldName: total
+          orderByExpression: JsonOrderByExp
+        - fieldName: ttl
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: SalesQuotesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: SalesQuotes
+  objectType: SalesQuotes
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: sales_quotes
+  filterExpressionType: SalesQuotesBoolExp
+  aggregateExpression: SalesQuotesAggExp
+  orderByExpression: SalesQuotesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: salesQuotes
+      subscription:
+        rootField: salesQuotes
+    selectUniques:
+      - queryRootField: salesQuotesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: salesQuotesById
+    filterInputTypeName: SalesQuotesFilterInput
+    aggregate:
+      queryRootField: salesQuotesAggregate
+      subscription:
+        rootField: salesQuotesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: SalesQuotes
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

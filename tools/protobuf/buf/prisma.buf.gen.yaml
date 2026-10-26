@@ -1,13 +1,13 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# protoc-gen-store, target=prisma: the Prisma schema of the ota database --
+# protoc-gen-store, target=prisma: the Prisma schema of the aperio database --
 # one .prisma file per table under a folder per schema, the Prisma 7 config
-# (ota.config.ts) and its package.json. Prisma owns the migrations
+# (aperio.config.ts) and its package.json. Prisma owns the migrations
 # (`just db migrate`), and Hasura introspects the database they build.
 # Run via `just gen prisma`.
 #
-# clean: false, unlike the other templates: protobuf/generated/prisma/ota/
+# clean: false, unlike the other templates: protobuf/generated/prisma/aperio/
 # migrations is Prisma's history, written by `prisma migrate dev`, and buf's
 # clean would wipe it. The recipe deletes the generated files itself, keeping
 # migrations/, node_modules/ and .env.
@@ -15,16 +15,23 @@ version: v2
 clean: false
 managed:
   enabled: true
+  # googleapis and protovalidate keep their own go_package: their Go packages
+  # are google.golang.org/genproto and buf.build/gen/go/bufbuild/protovalidate.
   disable:
     - module: buf.build/googleapis/googleapis
     - module: buf.build/bufbuild/protovalidate
   override:
+    # The OpenTravel types aperio imports are the BSR SDK's
+    # (buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go),
+    # never generated here. protobuf-ota commits no go_package; this prefix
+    # reproduces the SDK's import paths and package names ("types", "codes",
+    # "reservationv1"), so generated code imports exactly the SDK packages.
     - file_option: go_package_prefix
       value: buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go
       module: buf.build/shokki-engineering/protobuf-ota
 inputs:
-  # Pinned to the same commit as store.buf.gen.yaml.
-  - module: buf.build/shokki-engineering/protobuf-ota:bb88093022b144c89092c9fba49c744d
+  # aperio's own protos; their go_package is in each file.
+  - directory: protobuf
 plugins:
   - local: protoc-gen-store
     out: protobuf/generated/prisma

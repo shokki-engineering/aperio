@@ -2,123 +2,51 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # GraphQL client config for protoc-gen-store's target=graphql entry in
-# store.buf.gen.yaml: the typed Hasura client otaql. Split from
+# store.buf.gen.yaml: the typed Hasura client aperioql. Split from
 # store.backend.yaml, whose stricter config type rejects the graphql and
-# generate keys. It carries the datasource layout too, since the target still
-# reads it -- the same block as store.backend.yaml, cache.yaml and
-# service.yaml.
+# generate keys; it carries the layout too, since the target still reads it.
 
 strip_version: true
 dedupe_schema_table: true
 
 datasources:
-  # protobuf-ota, one rule per resource package. The `**` takes the resource's
-  # v1 package and its v1.types, v1.codes and v1.enums sub-packages into one
-  # schema: the value objects a resource embeds live beside it, and only the
-  # resource's own package tree refers to them (AIP-215). {leaf} would not do:
-  # it names every sub-package's schema "types", "codes" or "enums", pulling the
-  # value objects of all 28 resources into three schemas.
-  #
-  # Every schema name is one word: a multi-word
-  # schema breaks the graphql target, which splits DDN's PascalCase
-  # schema+table model names at the first token. room_type is "roomtype".
-  #
-  # One database, ota, for the upstream catalogue: regenerated when
-  # protobuf-ota releases, not when aperio changes.
-  - match: "protobuf.opentravel.common.profile.**"
-    database: ota
-    schema: profile
-  - match: "protobuf.opentravel.hotel.booking.reservation.**"
-    database: ota
-    schema: reservation
-  - match: "protobuf.opentravel.hotel.booking.stay.**"
-    database: ota
-    schema: stay
-  - match: "protobuf.opentravel.hotel.finance.commission.**"
-    database: ota
-    schema: commission
-  - match: "protobuf.opentravel.hotel.hotel.**"
-    database: ota
-    schema: hotel
-  - match: "protobuf.opentravel.hotel.property.affiliation_info.**"
-    database: ota
-    schema: affiliationinfo
-  - match: "protobuf.opentravel.hotel.property.area_info.**"
-    database: ota
-    schema: areainfo
-  - match: "protobuf.opentravel.hotel.property.contact.**"
-    database: ota
-    schema: contact
-  - match: "protobuf.opentravel.hotel.property.environmental_impact.**"
-    database: ota
-    schema: environmentalimpact
-  - match: "protobuf.opentravel.hotel.property.meeting_room.**"
-    database: ota
-    schema: meetingroom
-  - match: "protobuf.opentravel.hotel.property.multimedia.**"
-    database: ota
-    schema: multimedia
-  - match: "protobuf.opentravel.hotel.property.policy.**"
-    database: ota
-    schema: policy
-  - match: "protobuf.opentravel.hotel.property.promotion.**"
-    database: ota
-    schema: promotion
-  - match: "protobuf.opentravel.hotel.property.restaurant.**"
-    database: ota
-    schema: restaurant
-  - match: "protobuf.opentravel.hotel.property.room_type.**"
-    database: ota
-    schema: roomtype
-  - match: "protobuf.opentravel.hotel.reporting.statistic_report.**"
-    database: ota
-    schema: statisticreport
-  - match: "protobuf.opentravel.hotel.revenue.booking_rule.**"
-    database: ota
-    schema: bookingrule
-  - match: "protobuf.opentravel.hotel.revenue.hotel_product.**"
-    database: ota
-    schema: hotelproduct
-  - match: "protobuf.opentravel.hotel.revenue.inventory.**"
-    database: ota
-    schema: inventory
-  - match: "protobuf.opentravel.hotel.revenue.rate.**"
-    database: ota
-    schema: rate
-  - match: "protobuf.opentravel.hotel.revenue.rate_plan.**"
-    database: ota
-    schema: rateplan
-  - match: "protobuf.opentravel.hotel.revenue.restriction.**"
-    database: ota
-    schema: restriction
-  - match: "protobuf.opentravel.hotel.revenue.summary.**"
-    database: ota
-    schema: summary
-  - match: "protobuf.opentravel.hotel.sales.event.**"
-    database: ota
-    schema: event
-  - match: "protobuf.opentravel.hotel.sales.event_report.**"
-    database: ota
-    schema: eventreport
-  - match: "protobuf.opentravel.hotel.sales.inventory_block.**"
-    database: ota
-    schema: inventoryblock
-  - match: "protobuf.opentravel.hotel.sales.meeting_rfp.**"
-    database: ota
-    schema: meetingrfp
-  - match: "protobuf.opentravel.hotel.sales.transient_rfp.**"
-    database: ota
-    schema: transientrfp
+  # aperio's own protos, one database with a schema per package:
+  # aperio.booking.v1 -> schema "booking". Every leaf is one word, as the
+  # graphql target needs (it splits DDN's PascalCase schema+table names at the
+  # first token).
+  - match: "aperio.**"
+    database: aperio
+    schema: "{leaf}"
 
-# The target introspects the local DDN engine (deploy/hasura) and emits otaql.
-# After a schema change, rebuild the engine first (`just hasura regen`), then
-# regenerate.
+# Message types stored whole: a field of one is a JSONB column holding the
+# message's JSON form (an array, when repeated), not a table of its own.
+#
+#   protobuf.opentravel.**  the OpenTravel vocabulary aperio imports -- room
+#                           stays, guests, hotel information -- kept as a
+#                           channel sends it, however deep it nests.
+#   aperio.**               aperio's own value objects: lines, requirements,
+#                           requests, capacities. A resource is never a
+#                           field's type (resources reference each other by
+#                           name), so this names value objects only.
+#   google.type.**          Money, PostalAddress. The single-column well-known
+#                           types (Date, Decimal, DayOfWeek) keep their column.
+#
+# What is searched and reported on is a top-level field of the resource, and
+# so a column of its own.
+documents:
+  - match: "protobuf.opentravel.**"
+  - match: "aperio.**"
+  - match: "google.type.**"
+
+# The target introspects the local DDN engine (deploy/hasura) and emits
+# aperioql. After a schema change, rebuild the engine first (`just hasura
+# regen`), then regenerate.
 graphql:
   endpoint: http://localhost:3281/graphql
   max_depth: 1 # relation inlining depth
 
 generate:
   - target: graphql
-    package: otaql
-    go_module: github.com/shokki-engineering/aperio/internal/database/hasura/otaql
-    dump_schema: true # keep the introspection snapshot at otaql/schema.json
+    package: aperioql
+    go_module: github.com/shokki-engineering/aperio/internal/database/hasura/aperioql
+    dump_schema: true # keep the introspection snapshot at aperioql/schema.json

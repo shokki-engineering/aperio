@@ -1,0 +1,457 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: FinanceInvoices
+  fields:
+    - name: billingAddress
+      type: Json
+    - name: booking
+      type: String_1
+    - name: buyerGst
+      type: Json
+    - name: cancelReason
+      type: String_1
+    - name: cgst
+      type: Json
+    - name: contact
+      type: String_1!
+    - name: corrects
+      type: String_1
+    - name: createTime
+      type: Timestamptz!
+    - name: due
+      type: Json
+    - name: dueDate
+      type: Date
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: igst
+      type: Json
+    - name: irn
+      type: String_1
+    - name: issueDate
+      type: Date
+    - name: kind
+      type: Enum!
+    - name: lines
+      type: Json!
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: number
+      type: String_1
+    - name: paid
+      type: Json
+    - name: quote
+      type: String_1
+    - name: sgst
+      type: Json
+    - name: state
+      type: Enum
+    - name: supplyStateCode
+      type: String_1!
+    - name: taxableTotal
+      type: Json
+    - name: total
+      type: Json
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: FinanceInvoices
+    inputTypeName: FinanceInvoicesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: finance_invoices
+      fieldMapping:
+        billingAddress:
+          column:
+            name: billing_address
+        booking:
+          column:
+            name: booking
+        buyerGst:
+          column:
+            name: buyer_gst
+        cancelReason:
+          column:
+            name: cancel_reason
+        cgst:
+          column:
+            name: cgst
+        contact:
+          column:
+            name: contact
+        corrects:
+          column:
+            name: corrects
+        createTime:
+          column:
+            name: create_time
+        due:
+          column:
+            name: due
+        dueDate:
+          column:
+            name: due_date
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        igst:
+          column:
+            name: igst
+        irn:
+          column:
+            name: irn
+        issueDate:
+          column:
+            name: issue_date
+        kind:
+          column:
+            name: kind
+        lines:
+          column:
+            name: lines
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        number:
+          column:
+            name: number
+        paid:
+          column:
+            name: paid
+        quote:
+          column:
+            name: quote
+        sgst:
+          column:
+            name: sgst
+        state:
+          column:
+            name: state
+        supplyStateCode:
+          column:
+            name: supply_state_code
+        taxableTotal:
+          column:
+            name: taxable_total
+        total:
+          column:
+            name: total
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: FinanceInvoices
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingAddress
+          - booking
+          - buyerGst
+          - cancelReason
+          - cgst
+          - contact
+          - corrects
+          - createTime
+          - due
+          - dueDate
+          - etag
+          - id
+          - igst
+          - irn
+          - issueDate
+          - kind
+          - lines
+          - name
+          - notes
+          - number
+          - paid
+          - quote
+          - sgst
+          - state
+          - supplyStateCode
+          - taxableTotal
+          - total
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: FinanceInvoicesBoolExp
+  operand:
+    object:
+      type: FinanceInvoices
+      comparableFields:
+        - fieldName: billingAddress
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: booking
+          booleanExpressionType: TextBoolExp
+        - fieldName: buyerGst
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: cancelReason
+          booleanExpressionType: TextBoolExp
+        - fieldName: cgst
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: contact
+          booleanExpressionType: TextBoolExp
+        - fieldName: corrects
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: due
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: dueDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: igst
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: irn
+          booleanExpressionType: TextBoolExp
+        - fieldName: issueDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: kind
+          booleanExpressionType: FinanceInvoiceKindBoolExp
+        - fieldName: lines
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: notes
+          booleanExpressionType: TextBoolExp
+        - fieldName: number
+          booleanExpressionType: TextBoolExp
+        - fieldName: paid
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: quote
+          booleanExpressionType: TextBoolExp
+        - fieldName: sgst
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: state
+          booleanExpressionType: FinanceInvoiceStateBoolExp
+        - fieldName: supplyStateCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: taxableTotal
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: total
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: FinanceInvoicesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: FinanceInvoicesAggExp
+  operand:
+    object:
+      aggregatedType: FinanceInvoices
+      aggregatableFields:
+        - fieldName: billingAddress
+          aggregateExpression: JsonbAggExp
+        - fieldName: booking
+          aggregateExpression: TextAggExp
+        - fieldName: buyerGst
+          aggregateExpression: JsonbAggExp
+        - fieldName: cancelReason
+          aggregateExpression: TextAggExp
+        - fieldName: cgst
+          aggregateExpression: JsonbAggExp
+        - fieldName: contact
+          aggregateExpression: TextAggExp
+        - fieldName: corrects
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: due
+          aggregateExpression: JsonbAggExp
+        - fieldName: dueDate
+          aggregateExpression: DateAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: igst
+          aggregateExpression: JsonbAggExp
+        - fieldName: irn
+          aggregateExpression: TextAggExp
+        - fieldName: issueDate
+          aggregateExpression: DateAggExp
+        - fieldName: kind
+          aggregateExpression: FinanceInvoiceKindAggExp
+        - fieldName: lines
+          aggregateExpression: JsonbAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: notes
+          aggregateExpression: TextAggExp
+        - fieldName: number
+          aggregateExpression: TextAggExp
+        - fieldName: paid
+          aggregateExpression: JsonbAggExp
+        - fieldName: quote
+          aggregateExpression: TextAggExp
+        - fieldName: sgst
+          aggregateExpression: JsonbAggExp
+        - fieldName: state
+          aggregateExpression: FinanceInvoiceStateAggExp
+        - fieldName: supplyStateCode
+          aggregateExpression: TextAggExp
+        - fieldName: taxableTotal
+          aggregateExpression: JsonbAggExp
+        - fieldName: total
+          aggregateExpression: JsonbAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: FinanceInvoicesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: FinanceInvoicesOrderByExp
+  operand:
+    object:
+      orderedType: FinanceInvoices
+      orderableFields:
+        - fieldName: billingAddress
+          orderByExpression: JsonOrderByExp
+        - fieldName: booking
+          orderByExpression: String1OrderByExp
+        - fieldName: buyerGst
+          orderByExpression: JsonOrderByExp
+        - fieldName: cancelReason
+          orderByExpression: String1OrderByExp
+        - fieldName: cgst
+          orderByExpression: JsonOrderByExp
+        - fieldName: contact
+          orderByExpression: String1OrderByExp
+        - fieldName: corrects
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: due
+          orderByExpression: JsonOrderByExp
+        - fieldName: dueDate
+          orderByExpression: DateOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: igst
+          orderByExpression: JsonOrderByExp
+        - fieldName: irn
+          orderByExpression: String1OrderByExp
+        - fieldName: issueDate
+          orderByExpression: DateOrderByExp
+        - fieldName: kind
+          orderByExpression: EnumOrderByExp
+        - fieldName: lines
+          orderByExpression: JsonOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: notes
+          orderByExpression: String1OrderByExp
+        - fieldName: number
+          orderByExpression: String1OrderByExp
+        - fieldName: paid
+          orderByExpression: JsonOrderByExp
+        - fieldName: quote
+          orderByExpression: String1OrderByExp
+        - fieldName: sgst
+          orderByExpression: JsonOrderByExp
+        - fieldName: state
+          orderByExpression: EnumOrderByExp
+        - fieldName: supplyStateCode
+          orderByExpression: String1OrderByExp
+        - fieldName: taxableTotal
+          orderByExpression: JsonOrderByExp
+        - fieldName: total
+          orderByExpression: JsonOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: FinanceInvoicesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: FinanceInvoices
+  objectType: FinanceInvoices
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: finance_invoices
+  filterExpressionType: FinanceInvoicesBoolExp
+  aggregateExpression: FinanceInvoicesAggExp
+  orderByExpression: FinanceInvoicesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: financeInvoices
+      subscription:
+        rootField: financeInvoices
+    selectUniques:
+      - queryRootField: financeInvoicesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: financeInvoicesById
+    filterInputTypeName: FinanceInvoicesFilterInput
+    aggregate:
+      queryRootField: financeInvoicesAggregate
+      subscription:
+        rootField: financeInvoicesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: FinanceInvoices
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

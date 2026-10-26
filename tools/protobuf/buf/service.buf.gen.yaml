@@ -5,22 +5,28 @@
 # repositories -- one gRPC server per service with a hooks interface for the
 # business logic, RegisterAll for gRPC, REST and MCP, and the error reasons.
 # Run via `just gen service`, after `store` (whose repositories the servers
-# persist through) and `ota` (whose gateway and MCP bindings they register).
+# persist through) and `go` (whose gRPC, gateway and MCP stubs they register).
 version: v2
 clean: true
 managed:
   enabled: true
+  # googleapis and protovalidate keep their own go_package: their Go packages
+  # are google.golang.org/genproto and buf.build/gen/go/bufbuild/protovalidate.
   disable:
     - module: buf.build/googleapis/googleapis
     - module: buf.build/bufbuild/protovalidate
   override:
-    # The OTA messages are the BSR SDK's; see store.buf.gen.yaml.
+    # The OpenTravel types aperio imports are the BSR SDK's
+    # (buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go),
+    # never generated here. protobuf-ota commits no go_package; this prefix
+    # reproduces the SDK's import paths and package names ("types", "codes",
+    # "reservationv1"), so generated code imports exactly the SDK packages.
     - file_option: go_package_prefix
       value: buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go
       module: buf.build/shokki-engineering/protobuf-ota
 inputs:
-  # Pinned to the same commit as store.buf.gen.yaml and ota.buf.gen.yaml.
-  - module: buf.build/shokki-engineering/protobuf-ota:bb88093022b144c89092c9fba49c744d
+  # aperio's own protos; their go_package is in each file.
+  - directory: protobuf
 plugins:
   - local: protoc-gen-service
     out: internal/service/generated

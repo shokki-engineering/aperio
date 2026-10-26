@@ -1,0 +1,235 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: VenueSpaces
+  fields:
+    - name: capacity
+      type: Json
+    - name: createTime
+      type: Timestamptz!
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: inventoryCode
+      type: String_1
+    - name: kind
+      type: Enum!
+    - name: name
+      type: String_1!
+    - name: resources
+      type: "[String_1]"
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: VenueSpaces
+    inputTypeName: VenueSpacesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: venue_spaces
+      fieldMapping:
+        capacity:
+          column:
+            name: capacity
+        createTime:
+          column:
+            name: create_time
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        inventoryCode:
+          column:
+            name: inventory_code
+        kind:
+          column:
+            name: kind
+        name:
+          column:
+            name: name
+        resources:
+          column:
+            name: resources
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: VenueSpaces
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - capacity
+          - createTime
+          - displayName
+          - etag
+          - id
+          - inventoryCode
+          - kind
+          - name
+          - resources
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: VenueSpacesBoolExp
+  operand:
+    object:
+      type: VenueSpaces
+      comparableFields:
+        - fieldName: capacity
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: inventoryCode
+          booleanExpressionType: TextBoolExp
+        - fieldName: kind
+          booleanExpressionType: VenueSpaceKindBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: VenueSpacesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: VenueSpacesAggExp
+  operand:
+    object:
+      aggregatedType: VenueSpaces
+      aggregatableFields:
+        - fieldName: capacity
+          aggregateExpression: JsonbAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: inventoryCode
+          aggregateExpression: TextAggExp
+        - fieldName: kind
+          aggregateExpression: VenueSpaceKindAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: VenueSpacesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: VenueSpacesOrderByExp
+  operand:
+    object:
+      orderedType: VenueSpaces
+      orderableFields:
+        - fieldName: capacity
+          orderByExpression: JsonOrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: inventoryCode
+          orderByExpression: String1OrderByExp
+        - fieldName: kind
+          orderByExpression: EnumOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: VenueSpacesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: VenueSpaces
+  objectType: VenueSpaces
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: venue_spaces
+  filterExpressionType: VenueSpacesBoolExp
+  aggregateExpression: VenueSpacesAggExp
+  orderByExpression: VenueSpacesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: venueSpaces
+      subscription:
+        rootField: venueSpaces
+    selectUniques:
+      - queryRootField: venueSpacesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: venueSpacesById
+    filterInputTypeName: VenueSpacesFilterInput
+    aggregate:
+      queryRootField: venueSpacesAggregate
+      subscription:
+        rootField: venueSpacesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: VenueSpaces
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

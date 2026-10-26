@@ -1,0 +1,317 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "field": "insertBookingEvents",
+      "kind": "insert",
+      "resourceType": "aperio.booking.v1/Event",
+      "references": [
+        {
+          "field": "coordinator",
+          "column": "coordinator",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateBookingEventsById",
+      "kind": "update",
+      "resourceType": "aperio.booking.v1/Event",
+      "references": [
+        {
+          "field": "coordinator",
+          "column": "coordinator",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteBookingEventsById",
+      "kind": "delete",
+      "resourceType": "aperio.booking.v1/Event",
+      "pattern": "venues/{venue}/events/{event}",
+      "keyArgument": "keyId",
+      "byIdQuery": "bookingEventsById"
+    },
+    {
+      "field": "deleteBookingReservationsById",
+      "kind": "delete",
+      "resourceType": "aperio.booking.v1/Reservation",
+      "pattern": "venues/{venue}/reservations/{reservation}",
+      "keyArgument": "keyId",
+      "byIdQuery": "bookingReservationsById"
+    },
+    {
+      "field": "insertBookingSessions",
+      "kind": "insert",
+      "resourceType": "aperio.booking.v1/Session",
+      "references": [
+        {
+          "field": "freebusy_reservation",
+          "column": "freebusyReservation",
+          "type": "freebusy.reservation.v1/Reservation",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateBookingSessionsById",
+      "kind": "update",
+      "resourceType": "aperio.booking.v1/Session",
+      "references": [
+        {
+          "field": "freebusy_reservation",
+          "column": "freebusyReservation",
+          "type": "freebusy.reservation.v1/Reservation",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteBookingSessionsById",
+      "kind": "delete",
+      "resourceType": "aperio.booking.v1/Session",
+      "pattern": "venues/{venue}/events/{event}/sessions/{session}",
+      "keyArgument": "keyId",
+      "byIdQuery": "bookingSessionsById"
+    },
+    {
+      "field": "insertCrmActivities",
+      "kind": "insert",
+      "resourceType": "aperio.crm.v1/Activity",
+      "references": [
+        {
+          "field": "author",
+          "column": "author",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateCrmActivitiesById",
+      "kind": "update",
+      "resourceType": "aperio.crm.v1/Activity",
+      "references": [
+        {
+          "field": "author",
+          "column": "author",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteCrmActivitiesById",
+      "kind": "delete",
+      "resourceType": "aperio.crm.v1/Activity",
+      "pattern": "leads/{lead}/activities/{activity}",
+      "keyArgument": "keyId",
+      "byIdQuery": "crmActivitiesById"
+    },
+    {
+      "field": "deleteCrmContactsById",
+      "kind": "delete",
+      "resourceType": "aperio.crm.v1/Contact",
+      "pattern": "contacts/{contact}",
+      "keyArgument": "keyId",
+      "byIdQuery": "crmContactsById"
+    },
+    {
+      "field": "insertCrmLeads",
+      "kind": "insert",
+      "resourceType": "aperio.crm.v1/Lead",
+      "references": [
+        {
+          "field": "owner",
+          "column": "owner",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        },
+        {
+          "field": "hold",
+          "column": "hold",
+          "type": "freebusy.allocation.v1/Hold",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateCrmLeadsById",
+      "kind": "update",
+      "resourceType": "aperio.crm.v1/Lead",
+      "references": [
+        {
+          "field": "owner",
+          "column": "owner",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        },
+        {
+          "field": "hold",
+          "column": "hold",
+          "type": "freebusy.allocation.v1/Hold",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteCrmLeadsById",
+      "kind": "delete",
+      "resourceType": "aperio.crm.v1/Lead",
+      "pattern": "leads/{lead}",
+      "keyArgument": "keyId",
+      "byIdQuery": "crmLeadsById"
+    },
+    {
+      "field": "deleteDocumentResourceById",
+      "kind": "delete",
+      "resourceType": "aperio.document.v1/Document",
+      "pattern": "venues/{venue}/documents/{document}",
+      "keyArgument": "keyId",
+      "byIdQuery": "documentResourceById"
+    },
+    {
+      "field": "deleteFinanceInvoicesById",
+      "kind": "delete",
+      "resourceType": "aperio.finance.v1/Invoice",
+      "pattern": "venues/{venue}/invoices/{invoice}",
+      "keyArgument": "keyId",
+      "byIdQuery": "financeInvoicesById"
+    },
+    {
+      "field": "insertFinancePayments",
+      "kind": "insert",
+      "resourceType": "aperio.finance.v1/Payment",
+      "references": [
+        {
+          "field": "recorder",
+          "column": "recorder",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateFinancePaymentsById",
+      "kind": "update",
+      "resourceType": "aperio.finance.v1/Payment",
+      "references": [
+        {
+          "field": "recorder",
+          "column": "recorder",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteFinancePaymentsById",
+      "kind": "delete",
+      "resourceType": "aperio.finance.v1/Payment",
+      "pattern": "venues/{venue}/payments/{payment}",
+      "keyArgument": "keyId",
+      "byIdQuery": "financePaymentsById"
+    },
+    {
+      "field": "insertOperationsServiceRequests",
+      "kind": "insert",
+      "resourceType": "aperio.operations.v1/ServiceRequest",
+      "references": [
+        {
+          "field": "assignee",
+          "column": "assignee",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "updateOperationsServiceRequestsById",
+      "kind": "update",
+      "resourceType": "aperio.operations.v1/ServiceRequest",
+      "references": [
+        {
+          "field": "assignee",
+          "column": "assignee",
+          "type": "users.shokki.engineering/User",
+          "onDelete": "ON_DELETE_ALLOW"
+        }
+      ]
+    },
+    {
+      "field": "deleteOperationsServiceRequestsById",
+      "kind": "delete",
+      "resourceType": "aperio.operations.v1/ServiceRequest",
+      "pattern": "venues/{venue}/serviceRequests/{service_request}",
+      "keyArgument": "keyId",
+      "byIdQuery": "operationsServiceRequestsById"
+    },
+    {
+      "field": "deleteSalesDishesById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/Dish",
+      "pattern": "venues/{venue}/dishes/{dish}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesDishesById"
+    },
+    {
+      "field": "deleteSalesFixedPackagesById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/FixedPackage",
+      "pattern": "venues/{venue}/fixedPackages/{fixed_package}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesFixedPackagesById"
+    },
+    {
+      "field": "deleteSalesMenusById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/Menu",
+      "pattern": "venues/{venue}/menus/{menu}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesMenusById"
+    },
+    {
+      "field": "deleteSalesPriceRulesById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/PriceRule",
+      "pattern": "venues/{venue}/priceRules/{price_rule}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesPriceRulesById"
+    },
+    {
+      "field": "deleteSalesQuotesById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/Quote",
+      "pattern": "venues/{venue}/quotes/{quote}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesQuotesById"
+    },
+    {
+      "field": "deleteSalesSeasonsById",
+      "kind": "delete",
+      "resourceType": "aperio.sales.v1/Season",
+      "pattern": "venues/{venue}/seasons/{season}",
+      "keyArgument": "keyId",
+      "byIdQuery": "salesSeasonsById"
+    },
+    {
+      "field": "deleteVenueSpacesById",
+      "kind": "delete",
+      "resourceType": "aperio.venue.v1/Space",
+      "pattern": "venues/{venue}/spaces/{space}",
+      "keyArgument": "keyId",
+      "byIdQuery": "venueSpacesById"
+    },
+    {
+      "field": "deleteVenueResourceById",
+      "kind": "delete",
+      "resourceType": "aperio.venue.v1/Venue",
+      "pattern": "venues/{venue}",
+      "keyArgument": "keyId",
+      "byIdQuery": "venueResourceById"
+    }
+  ]
+}

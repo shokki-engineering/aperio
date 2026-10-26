@@ -1,0 +1,42 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The Go stubs of aperio's protos: messages, gRPC, the HTTP gateway and the
+# MCP bindings, one package per proto package (venuepbv1, bookingpbv1, ...)
+# under protobuf/generated/go. Run via `just gen go`.
+version: v2
+clean: true
+managed:
+  enabled: true
+  # googleapis and protovalidate keep their own go_package: their Go packages
+  # are google.golang.org/genproto and buf.build/gen/go/bufbuild/protovalidate.
+  disable:
+    - module: buf.build/googleapis/googleapis
+    - module: buf.build/bufbuild/protovalidate
+  override:
+    # The OpenTravel types aperio imports are the BSR SDK's
+    # (buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go),
+    # never generated here. protobuf-ota commits no go_package; this prefix
+    # reproduces the SDK's import paths and package names ("types", "codes",
+    # "reservationv1"), so generated code imports exactly the SDK packages.
+    - file_option: go_package_prefix
+      value: buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go
+      module: buf.build/shokki-engineering/protobuf-ota
+inputs:
+  # aperio's own protos; their go_package is in each file.
+  - directory: protobuf
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.36.11
+    out: protobuf/generated/go
+    opt: module=github.com/shokki-engineering/aperio/protobuf/generated/go
+  - remote: buf.build/grpc/go:v1.6.0
+    out: protobuf/generated/go
+    opt: module=github.com/shokki-engineering/aperio/protobuf/generated/go
+  - remote: buf.build/grpc-ecosystem/gateway:v2.27.4
+    out: protobuf/generated/go
+    opt: module=github.com/shokki-engineering/aperio/protobuf/generated/go
+  - local: protoc-gen-mcp
+    out: protobuf/generated/go
+    opt:
+      - lang=go
+      - module=github.com/shokki-engineering/aperio/protobuf/generated/go

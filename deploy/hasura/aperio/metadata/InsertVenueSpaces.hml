@@ -1,0 +1,162 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertVenueSpacesObject
+  fields:
+    - name: capacity
+      type: Json
+    - name: createTime
+      type: Timestamptz
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: inventoryCode
+      type: String_1
+    - name: kind
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: resources
+      type: "[String_1]"
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertVenueSpacesObject
+    inputTypeName: InsertVenueSpacesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_venue_spaces_object
+      fieldMapping:
+        capacity:
+          column:
+            name: capacity
+        createTime:
+          column:
+            name: create_time
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        inventoryCode:
+          column:
+            name: inventory_code
+        kind:
+          column:
+            name: kind
+        name:
+          column:
+            name: name
+        resources:
+          column:
+            name: resources
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertVenueSpacesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - capacity
+          - createTime
+          - displayName
+          - etag
+          - id
+          - inventoryCode
+          - kind
+          - name
+          - resources
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertVenueSpacesResponse
+  description: Responses from the 'insert_venue_spaces' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[VenueSpaces!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertVenueSpacesResponse
+    inputTypeName: InsertVenueSpacesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_venue_spaces_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertVenueSpacesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertVenueSpaces
+  outputType: InsertVenueSpacesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertVenueSpacesObject!]!"
+    - name: postCheck
+      type: VenueSpacesBoolExp
+      description: Insert permission predicate over the 'venue_spaces' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_venue_spaces
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertVenueSpaces
+    rootFieldKind: Mutation
+  description: Insert into the venue_spaces table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertVenueSpaces
+  permissions:
+    - role: admin
+      allowExecution: true
+

@@ -3,7 +3,7 @@
 // 	protoc-gen-store v1.6.5+dirty
 // 	protoc (unknown)
 //
-// database: ota
+// database: aperio
 // package:  repox
 //
 // Shared runtime for the generated proto-facing repositories.
@@ -51,6 +51,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/shokki-engineering/aperio/internal/database/gorm/filterx"
+	"github.com/the-protobuf-project/runtime-go/network/graphql"
 )
 
 // ChangeOp is what a write did to a record.
@@ -150,6 +151,9 @@ type Projector interface {
 	// ProjectGorm runs the projection for changes inside tx and reports
 	// what it stored and removed.
 	ProjectGorm(ctx context.Context, tx *gorm.DB, changes []Change) (Committed, error)
+	// ProjectGraphQL runs the projection for changes, adding its mutations
+	// to ops, which are sent in the same request as the writes.
+	ProjectGraphQL(ctx context.Context, conn Conn, ops *Ops, changes []Change) (Committed, error)
 }
 
 // Committed is what one committed write did to one projection: the rows it
@@ -308,6 +312,56 @@ func (p *Projections) Gorm(ctx context.Context, tx *gorm.DB, changes []Change) (
 	return out, nil
 }
 
+// GraphQL runs every projector changes concern, adding their mutations to
+// ops, and returns what they will do once ops commit, for Publish.
+func (p *Projections) GraphQL(ctx context.Context, conn Conn, ops *Ops, changes []Change) ([]Committed, error) {
+	if p == nil {
+		return nil, nil
+	}
+	var out []Committed
+	for _, x := range p.list {
+		if cs := relevant(x, changes); len(cs) > 0 {
+			c, err := x.ProjectGraphQL(ctx, conn, ops, cs)
+			if err != nil {
+				return nil, fmt.Errorf("projection %s: %w", x.ProjectionName(), err)
+			}
+			out = append(out, c)
+		}
+	}
+	return out, nil
+}
+
+// ProjectGraphQLAfter brings the projections up to date with a GraphQL
+// repository write that has already landed, in one request of its own. The
+// engine cannot run the write and the projection in one transaction here --
+// the write's own request is built by the repository and sent before the
+// projection can be computed -- so a failure leaves the projection behind its
+// sources until the next write or a Rebuild: it goes to OnError when set, and
+// is returned as ErrProjectionStale otherwise.
+func (p *Projections) ProjectGraphQLAfter(ctx context.Context, conn Conn, changes []Change) error {
+	if p == nil || len(changes) == 0 {
+		return nil
+	}
+	var ops Ops
+	committed, err := p.GraphQL(ctx, conn, &ops, changes)
+	if err == nil && len(ops) > 0 {
+		tx := conn.GraphQL.Mutation.Tx()
+		for _, op := range ops {
+			tx.Add(op)
+		}
+		err = MapGraphQLErr(tx.Commit(ctx))
+	}
+	if err == nil {
+		p.Publish(ctx, committed)
+		return nil
+	}
+	if p.OnError != nil {
+		p.OnError(ctx, "", err)
+		return nil
+	}
+	return fmt.Errorf("%w: %v", ErrProjectionStale, err)
+}
+
 // --- the projection value ----------------------------------------------------
 
 // ColumnKind is how a projection column stores its field.
@@ -448,6 +502,19 @@ type Projection[T proto.Message] struct {
 	Spec ProjectionSpec
 	// New returns an empty message.
 	New func() T
+	// GraphQL reaches the table through the generated client; nil when the
+	// client has no handler for it.
+	GraphQL *ProjectionGraphQL
+}
+
+// ProjectionGraphQL is a projection table's typed client handlers, generated
+// beside the projection. Rows travel as maps keyed by the client's
+// camelCase field names.
+type ProjectionGraphQL struct {
+	List   func(ctx context.Context, conn Conn, req *graphql.ListRequest) ([]map[string]any, error)
+	Count  func(ctx context.Context, conn Conn, where *graphql.Predicate) (int64, error)
+	Insert func(conn Conn, ops *Ops, row map[string]any) error
+	Delete func(conn Conn, ops *Ops, id string)
 }
 
 // projector is Projection[T].Projector's result.
@@ -473,6 +540,14 @@ func (x *projector[T]) ProjectGorm(ctx context.Context, tx *gorm.DB, changes []C
 	return x.p.applyGorm(ctx, tx, rows)
 }
 
+func (x *projector[T]) ProjectGraphQL(ctx context.Context, conn Conn, ops *Ops, changes []Change) (Committed, error) {
+	rows, err := x.w.Project(ctx, Conn{GraphQL: conn.GraphQL}, changes)
+	if err != nil {
+		return Committed{}, err
+	}
+	return x.p.queueGraphQL(ctx, conn, ops, rows)
+}
+
 // Apply stores rows outside any source write -- for a projection maintained
 // by hand (PROJECTION_MAINTENANCE_MANUAL), or a repair. GORM applies them in
 // one transaction; GraphQL in one request. conn.Projections' Feed hears of
@@ -485,6 +560,18 @@ func (p *Projection[T]) Apply(ctx context.Context, conn Conn, rows ProjectionRow
 // apply is Apply, reporting what it did.
 func (p *Projection[T]) apply(ctx context.Context, conn Conn, rows ProjectionRows[T]) (Committed, error) {
 	var c Committed
+	if conn.GraphQL != nil {
+		var ops Ops
+		var err error
+		if c, err = p.queueGraphQL(ctx, conn, &ops, rows); err != nil {
+			return c, err
+		}
+		if err := commitOps(ctx, conn, ops); err != nil {
+			return c, err
+		}
+		conn.Projections.Publish(ctx, []Committed{c})
+		return c, nil
+	}
 	err := MapGormErr(conn.Gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var err error
 		c, err = p.applyGorm(ctx, tx, rows)
@@ -495,6 +582,17 @@ func (p *Projection[T]) apply(ctx context.Context, conn Conn, rows ProjectionRow
 	}
 	conn.Projections.Publish(ctx, []Committed{c})
 	return c, nil
+}
+
+func commitOps(ctx context.Context, conn Conn, ops Ops) error {
+	if len(ops) == 0 {
+		return nil
+	}
+	tx := conn.GraphQL.Mutation.Tx()
+	for _, op := range ops {
+		tx.Add(op)
+	}
+	return MapGraphQLErr(tx.Commit(ctx))
 }
 
 // RebuildOptions tune Rebuild.
@@ -531,16 +629,30 @@ func (p *Projection[T]) Rebuild(ctx context.Context, conn Conn, w ProjectionWrit
 			return res, err
 		}
 		var c Committed
-		err := conn.Gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-			rows, err := w.Project(ctx, Conn{Gorm: tx}, batch)
+		if conn.GraphQL != nil {
+			rows, err := w.Project(ctx, Conn{GraphQL: conn.GraphQL}, batch)
 			if err != nil {
-				return err
+				return res, err
 			}
-			c, err = p.applyGorm(ctx, tx, rows)
-			return err
-		})
-		if err != nil {
-			return res, MapGormErr(err)
+			var ops Ops
+			if c, err = p.queueGraphQL(ctx, conn, &ops, rows); err != nil {
+				return res, err
+			}
+			if err := commitOps(ctx, conn, ops); err != nil {
+				return res, err
+			}
+		} else {
+			err := conn.Gorm.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+				rows, err := w.Project(ctx, Conn{Gorm: tx}, batch)
+				if err != nil {
+					return err
+				}
+				c, err = p.applyGorm(ctx, tx, rows)
+				return err
+			})
+			if err != nil {
+				return res, MapGormErr(err)
+			}
 		}
 		conn.Projections.Publish(ctx, []Committed{c})
 		res.Batches++
@@ -1477,6 +1589,10 @@ func (p *Projection[T]) Narrow(m T, mask []string) {
 // rows reads one page of raw rows matching in and the next page's token;
 // key maps a column to a row's key for it.
 func (p *Projection[T]) rows(ctx context.Context, conn Conn, in SearchInput) ([]map[string]any, string, filterx.ColumnKey, error) {
+	if conn.GraphQL != nil {
+		rows, next, err := p.rowsGraphQL(ctx, conn, in)
+		return rows, next, filterx.CamelCase, err
+	}
 	terms, err := filterx.OrderTerms(p.Spec.Filter, in.OrderBy)
 	if err != nil {
 		return nil, "", nil, MapFilterxErr(err)
@@ -1601,6 +1717,9 @@ func cursorText(v any) *string {
 
 // Count returns how many rows match in (its page fields ignored).
 func (p *Projection[T]) Count(ctx context.Context, conn Conn, in SearchInput) (int64, error) {
+	if conn.GraphQL != nil {
+		return p.countGraphQL(ctx, conn, in)
+	}
 	where, args, err := p.whereGorm(in)
 	if err != nil {
 		return 0, err
@@ -1621,6 +1740,9 @@ func (p *Projection[T]) Facet(ctx context.Context, conn Conn, in SearchInput, fi
 	expr, err := p.facetExpr(field)
 	if err != nil {
 		return nil, err
+	}
+	if conn.GraphQL != nil {
+		return p.facetGraphQL(ctx, conn, in, field, limit)
 	}
 	where, args, err := p.whereGorm(in)
 	if err != nil {
@@ -1662,4 +1784,348 @@ func (p *Projection[T]) facetExpr(field string) (string, error) {
 	// LookupJSON admits only [A-Za-z0-9_-] segments, so the path is safe
 	// inline.
 	return col(path.Field.Column) + " #>> '{" + strings.Join(path.Path, ",") + "}'", nil
+}
+
+// --- GraphQL -----------------------------------------------------------------
+
+// RowMap reads a generated client row into a map keyed by its camelCase field
+// names (the graphql struct tags), for a projection to decode.
+func RowMap(row any) map[string]any {
+	out := map[string]any{}
+	rv := reflect.Indirect(reflect.ValueOf(row))
+	if rv.Kind() != reflect.Struct {
+		return out
+	}
+	rt := rv.Type()
+	for i := 0; i < rt.NumField(); i++ {
+		name := filterx.GraphQLColumn(rt.Field(i))
+		if name == "" {
+			continue
+		}
+		f := rv.Field(i)
+		if (f.Kind() == reflect.Pointer || f.Kind() == reflect.Interface || f.Kind() == reflect.Slice || f.Kind() == reflect.Map) && f.IsNil() {
+			out[name] = nil
+			continue
+		}
+		if b, err := json.Marshal(f.Interface()); err == nil {
+			var v any
+			dec := json.NewDecoder(strings.NewReader(string(b)))
+			dec.UseNumber()
+			if dec.Decode(&v) == nil {
+				out[name] = v
+				continue
+			}
+		}
+		out[name] = f.Interface()
+	}
+	return out
+}
+
+// Remarshal copies a camelCase row map into a generated client input through
+// JSON, so the input's own field types decide each value's encoding.
+func Remarshal(row map[string]any, input any) error {
+	b, err := json.Marshal(row)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(b, input)
+}
+
+// gqlRow is row keyed by the client's camelCase field names.
+func gqlRow(row map[string]any) map[string]any {
+	out := make(map[string]any, len(row))
+	for k, v := range row {
+		out[filterx.CamelCase(k)] = v
+	}
+	return out
+}
+
+func (p *Projection[T]) gql() (*ProjectionGraphQL, error) {
+	if p.GraphQL == nil {
+		return nil, fmt.Errorf("projection %s: the GraphQL client has no handler for %s", p.Spec.Name, p.Spec.Table)
+	}
+	return p.GraphQL, nil
+}
+
+// queueGraphQL adds rows' mutations to ops -- prunes and deletes by key,
+// then each upsert as a delete-and-insert (DDN has no upsert), in one request
+// -- and reports what they will do once ops commit. Versions come from this
+// process's clock: the engine cannot raise a stored version under the row's
+// lock, so two writers racing on one row may version it out of order.
+func (p *Projection[T]) queueGraphQL(ctx context.Context, conn Conn, ops *Ops, rows ProjectionRows[T]) (Committed, error) {
+	out := Committed{Projection: p.Spec.Name}
+	g, err := p.gql()
+	if err != nil {
+		return out, err
+	}
+	version := time.Now().UnixMicro()
+	gone := map[string]bool{}
+	remove := func(id string) {
+		if !gone[id] {
+			gone[id] = true
+			g.Delete(conn, ops, id)
+			out.merge(Committed{Removed: []RemovedRow{{Key: id, Version: version}}})
+		}
+	}
+	for _, conds := range rows.Prune {
+		ids, err := p.idsGraphQL(ctx, conn, conds)
+		if err != nil {
+			return out, err
+		}
+		for _, id := range ids {
+			remove(id)
+		}
+	}
+	for _, m := range rows.Delete {
+		id, err := p.Key(m)
+		if err != nil {
+			return out, err
+		}
+		remove(id)
+	}
+	for _, m := range rows.Upsert {
+		row, err := p.row(m)
+		if err != nil {
+			return out, err
+		}
+		id := row[p.Spec.KeyColumn].(string)
+		remove(id)
+		row[p.Spec.VersionColumn] = version
+		if err := g.Insert(conn, ops, gqlRow(row)); err != nil {
+			return out, err
+		}
+		out.merge(Committed{Stored: []StoredRow{{Key: id, Version: version, Row: m}}})
+	}
+	return out, nil
+}
+
+// idsGraphQL lists the keys of every row matching conds.
+func (p *Projection[T]) idsGraphQL(ctx context.Context, conn Conn, conds []filterx.Condition) ([]string, error) {
+	var ids []string
+	in := SearchInput{Where: conds, PageSize: 1000}
+	for {
+		rows, next, err := p.rowsGraphQL(ctx, conn, in)
+		if err != nil {
+			return nil, err
+		}
+		for _, r := range rows {
+			if id, ok := r[filterx.CamelCase(p.Spec.KeyColumn)].(string); ok {
+				ids = append(ids, id)
+			}
+		}
+		if next == "" {
+			return ids, nil
+		}
+		in.PageToken = next
+	}
+}
+
+// rowsGraphQL reads one page of raw rows matching in. The range is not
+// expressible in the engine's schema (no range operators), so it is checked
+// here, on the rows read: pages may come back short, even empty, with a
+// next-page token -- the page boundary is the rows read, as for a
+// value-object filter (filterx.HasuraEngine.Via).
+func (p *Projection[T]) rowsGraphQL(ctx context.Context, conn Conn, in SearchInput) ([]map[string]any, string, error) {
+	g, err := p.gql()
+	if err != nil {
+		return nil, "", err
+	}
+	conds, err := filterx.Parse(in.Filter)
+	if err != nil {
+		return nil, "", MapFilterxErr(err)
+	}
+	conds = append(conds, in.Where...)
+	eng := filterx.Hasura[map[string]any](p.Spec.Filter, nil)
+	where, hasWhere, err := eng.Predicate(conds)
+	if err != nil {
+		return nil, "", MapFilterxErr(err)
+	}
+	terms, err := filterx.OrderTerms(p.Spec.Filter, in.OrderBy)
+	if err != nil {
+		return nil, "", MapFilterxErr(err)
+	}
+	order, err := eng.OrderTerms(in.OrderBy)
+	if err != nil {
+		return nil, "", MapFilterxErr(err)
+	}
+	seek, hasSeek, err := eng.Seek(in.OrderBy, in.PageToken)
+	if err != nil {
+		return nil, "", MapFilterxErr(err)
+	}
+	var preds []graphql.Predicate
+	if hasWhere {
+		preds = append(preds, where)
+	}
+	if hasSeek {
+		preds = append(preds, seek)
+	}
+	limit := filterx.PageLimit(filterx.ListInput{PageSize: in.PageSize})
+	req := (&graphql.ListRequest{}).Limit(limit + 1).OrderBy(order...)
+	if len(preds) > 0 {
+		req = req.Where(graphql.And(preds...))
+	}
+	rows, err := g.List(ctx, conn, req)
+	if err != nil {
+		return nil, "", MapGraphQLErr(err)
+	}
+	next := ""
+	if len(rows) > limit {
+		rows = rows[:limit]
+		vals := make([]*string, len(terms))
+		for i, t := range terms {
+			vals[i] = cursorText(rows[len(rows)-1][filterx.CamelCase(t.Column)])
+		}
+		if next, err = filterx.EncodeCursor(terms, vals); err != nil {
+			return nil, "", err
+		}
+	}
+	if in.Range != nil {
+		if p.Spec.Range == "" {
+			return nil, "", fmt.Errorf("%w: projection %s has no range to search", ErrInvalidArgument, p.Spec.Name)
+		}
+		rows = slices.DeleteFunc(rows, func(r map[string]any) bool {
+			s, _ := r[filterx.CamelCase(p.Spec.Range)].(string)
+			spans, err := ParseMultirange(s)
+			return err != nil || !anyContains(spans, *in.Range)
+		})
+	}
+	return rows, next, nil
+}
+
+// anyContains reports whether one of spans covers w.
+func anyContains(spans []Span, w Span) bool {
+	for _, s := range spans {
+		startOK := s.Start.IsZero() || (!w.Start.IsZero() && !w.Start.Before(s.Start))
+		endOK := s.End.IsZero() || (!w.End.IsZero() && !w.End.After(s.End))
+		if startOK && endOK {
+			return true
+		}
+	}
+	return false
+}
+
+// GraphQLScanLimit bounds the rows a GraphQL Count with a range, or a GraphQL
+// Facet, reads to answer: the engine cannot filter by range or group, so they
+// are answered from the rows themselves, and past this many the call fails
+// with ErrInvalidArgument rather than read the table.
+var GraphQLScanLimit = 10000
+
+// scanGraphQL calls f for every row matching in, up to GraphQLScanLimit.
+func (p *Projection[T]) scanGraphQL(ctx context.Context, conn Conn, in SearchInput, f func(map[string]any)) error {
+	in.PageSize, in.PageToken = 1000, ""
+	read := 0
+	for {
+		rows, next, err := p.rowsGraphQL(ctx, conn, in)
+		if err != nil {
+			return err
+		}
+		read += 1000
+		for _, r := range rows {
+			f(r)
+		}
+		if next == "" {
+			return nil
+		}
+		if read >= GraphQLScanLimit {
+			return fmt.Errorf("%w: more than %d rows to scan on GraphQL; narrow the search", ErrInvalidArgument, GraphQLScanLimit)
+		}
+		in.PageToken = next
+	}
+}
+
+func (p *Projection[T]) countGraphQL(ctx context.Context, conn Conn, in SearchInput) (int64, error) {
+	g, err := p.gql()
+	if err != nil {
+		return 0, err
+	}
+	if in.Range == nil {
+		conds, err := filterx.Parse(in.Filter)
+		if err != nil {
+			return 0, MapFilterxErr(err)
+		}
+		where, has, err := filterx.Hasura[map[string]any](p.Spec.Filter, nil).Predicate(append(conds, in.Where...))
+		if err != nil {
+			return 0, MapFilterxErr(err)
+		}
+		if !has {
+			return g.Count(ctx, conn, nil)
+		}
+		return g.Count(ctx, conn, &where)
+	}
+	var n int64
+	err = p.scanGraphQL(ctx, conn, in, func(map[string]any) { n++ })
+	return n, err
+}
+
+func (p *Projection[T]) facetGraphQL(ctx context.Context, conn Conn, in SearchInput, field string, limit int) ([]Bucket, error) {
+	values := func(r map[string]any) []string { return nil }
+	if f, ok := p.Spec.Filter.Fields[field]; ok {
+		key := filterx.CamelCase(f.Column)
+		values = func(r map[string]any) []string {
+			v := r[key]
+			if v == nil {
+				return nil
+			}
+			if items, err := arrayItems(v); err == nil && f.Kind == filterx.KindTags {
+				out := make([]string, 0, len(items))
+				for _, x := range items {
+					out = append(out, fmt.Sprint(x))
+				}
+				return out
+			}
+			return []string{fmt.Sprint(v)}
+		}
+	} else if path, ok, _ := filterx.LookupJSON(p.Spec.Filter, field); ok {
+		key := filterx.CamelCase(path.Field.Column)
+		values = func(r map[string]any) []string {
+			raw, err := jsonRaw(r[key])
+			if err != nil {
+				return nil
+			}
+			var doc any
+			if json.Unmarshal(raw, &doc) != nil {
+				return nil
+			}
+			for _, seg := range path.Path {
+				m, ok := doc.(map[string]any)
+				if !ok {
+					return nil
+				}
+				doc = m[seg]
+			}
+			if doc == nil {
+				return nil
+			}
+			if s, ok := doc.(string); ok {
+				return []string{s}
+			}
+			b, _ := json.Marshal(doc)
+			return []string{string(b)}
+		}
+	}
+	counts := map[string]int64{}
+	if err := p.scanGraphQL(ctx, conn, in, func(r map[string]any) {
+		for _, v := range values(r) {
+			counts[v]++
+		}
+	}); err != nil {
+		return nil, err
+	}
+	out := make([]Bucket, 0, len(counts))
+	for v, n := range counts {
+		out = append(out, Bucket{Value: v, Count: n})
+	}
+	slices.SortFunc(out, func(a, b Bucket) int {
+		if a.Count != b.Count {
+			if a.Count > b.Count {
+				return -1
+			}
+			return 1
+		}
+		return strings.Compare(a.Value, b.Value)
+	})
+	if limit > 0 && len(out) > limit {
+		out = out[:limit]
+	}
+	return out, nil
 }

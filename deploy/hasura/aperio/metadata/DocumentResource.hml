@@ -1,0 +1,307 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DocumentResource
+  fields:
+    - name: category
+      type: Enum!
+    - name: createTime
+      type: Timestamptz!
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: expiryDate
+      type: Date
+    - name: id
+      type: String_1!
+    - name: mimeType
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: sha256
+      type: String_1
+    - name: sizeBytes
+      type: Int64
+    - name: subject
+      type: String_1
+    - name: tags
+      type: "[String_1]"
+    - name: updateTime
+      type: Timestamptz!
+    - name: uri
+      type: String_1!
+    - name: venueId
+      type: String_1!
+    - name: visibility
+      type: Enum
+  graphql:
+    typeName: DocumentResource
+    inputTypeName: DocumentResourceInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: document_resource
+      fieldMapping:
+        category:
+          column:
+            name: category
+        createTime:
+          column:
+            name: create_time
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        expiryDate:
+          column:
+            name: expiry_date
+        id:
+          column:
+            name: id
+        mimeType:
+          column:
+            name: mime_type
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        sha256:
+          column:
+            name: sha256
+        sizeBytes:
+          column:
+            name: size_bytes
+        subject:
+          column:
+            name: subject
+        tags:
+          column:
+            name: tags
+        updateTime:
+          column:
+            name: update_time
+        uri:
+          column:
+            name: uri
+        venueId:
+          column:
+            name: venue_id
+        visibility:
+          column:
+            name: visibility
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DocumentResource
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - category
+          - createTime
+          - displayName
+          - etag
+          - expiryDate
+          - id
+          - mimeType
+          - name
+          - notes
+          - sha256
+          - sizeBytes
+          - subject
+          - tags
+          - updateTime
+          - uri
+          - venueId
+          - visibility
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: DocumentResourceBoolExp
+  operand:
+    object:
+      type: DocumentResource
+      comparableFields:
+        - fieldName: category
+          booleanExpressionType: DocumentCategoryBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: displayName
+          booleanExpressionType: TextBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: expiryDate
+          booleanExpressionType: DateBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: mimeType
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: notes
+          booleanExpressionType: TextBoolExp
+        - fieldName: sha256
+          booleanExpressionType: TextBoolExp
+        - fieldName: sizeBytes
+          booleanExpressionType: Int8BoolExp
+        - fieldName: subject
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: uri
+          booleanExpressionType: TextBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+        - fieldName: visibility
+          booleanExpressionType: DocumentVisibilityBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: DocumentResourceBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: DocumentResourceAggExp
+  operand:
+    object:
+      aggregatedType: DocumentResource
+      aggregatableFields:
+        - fieldName: category
+          aggregateExpression: DocumentCategoryAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: displayName
+          aggregateExpression: TextAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: expiryDate
+          aggregateExpression: DateAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: mimeType
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: notes
+          aggregateExpression: TextAggExp
+        - fieldName: sha256
+          aggregateExpression: TextAggExp
+        - fieldName: sizeBytes
+          aggregateExpression: Int8AggExp
+        - fieldName: subject
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: uri
+          aggregateExpression: TextAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+        - fieldName: visibility
+          aggregateExpression: DocumentVisibilityAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: DocumentResourceAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: DocumentResourceOrderByExp
+  operand:
+    object:
+      orderedType: DocumentResource
+      orderableFields:
+        - fieldName: category
+          orderByExpression: EnumOrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: displayName
+          orderByExpression: String1OrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: expiryDate
+          orderByExpression: DateOrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: mimeType
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: notes
+          orderByExpression: String1OrderByExp
+        - fieldName: sha256
+          orderByExpression: String1OrderByExp
+        - fieldName: sizeBytes
+          orderByExpression: Int64OrderByExp
+        - fieldName: subject
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: uri
+          orderByExpression: String1OrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+        - fieldName: visibility
+          orderByExpression: EnumOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: DocumentResourceOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: DocumentResource
+  objectType: DocumentResource
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: document_resource
+  filterExpressionType: DocumentResourceBoolExp
+  aggregateExpression: DocumentResourceAggExp
+  orderByExpression: DocumentResourceOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: documentResource
+      subscription:
+        rootField: documentResource
+    selectUniques:
+      - queryRootField: documentResourceById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: documentResourceById
+    filterInputTypeName: DocumentResourceFilterInput
+    aggregate:
+      queryRootField: documentResourceAggregate
+      subscription:
+        rootField: documentResourceAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: DocumentResource
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

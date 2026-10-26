@@ -1,0 +1,168 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertVenueResourceObject
+  fields:
+    - name: address
+      type: Json!
+    - name: createTime
+      type: Timestamptz
+    - name: currencyCode
+      type: String_1!
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: gst
+      type: Json!
+    - name: hotelInfo
+      type: Json
+    - name: id
+      type: String_1!
+    - name: kind
+      type: Enum
+    - name: name
+      type: String_1!
+    - name: timeZone
+      type: String_1!
+    - name: updateTime
+      type: Timestamptz!
+  graphql:
+    typeName: InsertVenueResourceObject
+    inputTypeName: InsertVenueResourceObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_venue_resource_object
+      fieldMapping:
+        address:
+          column:
+            name: address
+        createTime:
+          column:
+            name: create_time
+        currencyCode:
+          column:
+            name: currency_code
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        gst:
+          column:
+            name: gst
+        hotelInfo:
+          column:
+            name: hotel_info
+        id:
+          column:
+            name: id
+        kind:
+          column:
+            name: kind
+        name:
+          column:
+            name: name
+        timeZone:
+          column:
+            name: time_zone
+        updateTime:
+          column:
+            name: update_time
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertVenueResourceObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - address
+          - createTime
+          - currencyCode
+          - displayName
+          - etag
+          - gst
+          - hotelInfo
+          - id
+          - kind
+          - name
+          - timeZone
+          - updateTime
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertVenueResourceResponse
+  description: Responses from the 'insert_venue_resource' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[VenueResource!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertVenueResourceResponse
+    inputTypeName: InsertVenueResourceResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_venue_resource_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertVenueResourceResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertVenueResource
+  outputType: InsertVenueResourceResponse!
+  arguments:
+    - name: objects
+      type: "[InsertVenueResourceObject!]!"
+    - name: postCheck
+      type: VenueResourceBoolExp
+      description: Insert permission predicate over the 'venue_resource' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_venue_resource
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertVenueResource
+    rootFieldKind: Mutation
+  description: Insert into the venue_resource table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertVenueResource
+  permissions:
+    - role: admin
+      allowExecution: true
+

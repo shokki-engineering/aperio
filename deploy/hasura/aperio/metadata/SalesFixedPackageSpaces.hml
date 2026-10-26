@@ -1,0 +1,157 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: SalesFixedPackageSpaces
+  fields:
+    - name: fixedPackageId
+      type: String_1!
+    - name: id
+      type: String_1!
+    - name: spaceId
+      type: String_1!
+    - name: spaceName
+      type: String_1!
+  graphql:
+    typeName: SalesFixedPackageSpaces
+    inputTypeName: SalesFixedPackageSpacesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: sales_fixed_package_spaces
+      fieldMapping:
+        fixedPackageId:
+          column:
+            name: fixed_package_id
+        id:
+          column:
+            name: id
+        spaceId:
+          column:
+            name: space_id
+        spaceName:
+          column:
+            name: space_name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: SalesFixedPackageSpaces
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - fixedPackageId
+          - id
+          - spaceId
+          - spaceName
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: SalesFixedPackageSpacesBoolExp
+  operand:
+    object:
+      type: SalesFixedPackageSpaces
+      comparableFields:
+        - fieldName: fixedPackageId
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: spaceId
+          booleanExpressionType: TextBoolExp
+        - fieldName: spaceName
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: SalesFixedPackageSpacesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: SalesFixedPackageSpacesAggExp
+  operand:
+    object:
+      aggregatedType: SalesFixedPackageSpaces
+      aggregatableFields:
+        - fieldName: fixedPackageId
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: spaceId
+          aggregateExpression: TextAggExp
+        - fieldName: spaceName
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: SalesFixedPackageSpacesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: SalesFixedPackageSpacesOrderByExp
+  operand:
+    object:
+      orderedType: SalesFixedPackageSpaces
+      orderableFields:
+        - fieldName: fixedPackageId
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: spaceId
+          orderByExpression: String1OrderByExp
+        - fieldName: spaceName
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: SalesFixedPackageSpacesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: SalesFixedPackageSpaces
+  objectType: SalesFixedPackageSpaces
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: sales_fixed_package_spaces
+  filterExpressionType: SalesFixedPackageSpacesBoolExp
+  aggregateExpression: SalesFixedPackageSpacesAggExp
+  orderByExpression: SalesFixedPackageSpacesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: salesFixedPackageSpaces
+      subscription:
+        rootField: salesFixedPackageSpaces
+    selectUniques:
+      - queryRootField: salesFixedPackageSpacesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: salesFixedPackageSpacesById
+    filterInputTypeName: SalesFixedPackageSpacesFilterInput
+    aggregate:
+      queryRootField: salesFixedPackageSpacesAggregate
+      subscription:
+        rootField: salesFixedPackageSpacesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: SalesFixedPackageSpaces
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

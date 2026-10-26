@@ -1,0 +1,385 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: FinancePayments
+  fields:
+    - name: amount
+      type: Json!
+    - name: baseAmount
+      type: Json
+    - name: booking
+      type: String_1
+    - name: channel
+      type: Enum
+    - name: contact
+      type: String_1!
+    - name: createTime
+      type: Timestamptz!
+    - name: etag
+      type: String_1
+    - name: exchangeRate
+      type: Bigdecimal
+    - name: gateway
+      type: String_1
+    - name: gatewayReference
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: invoice
+      type: String_1
+    - name: kind
+      type: Enum!
+    - name: method
+      type: Enum!
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: receiveTime
+      type: Timestamptz
+    - name: recorder
+      type: String_1
+    - name: reference
+      type: String_1
+    - name: refunds
+      type: String_1
+    - name: state
+      type: Enum
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: FinancePayments
+    inputTypeName: FinancePaymentsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: finance_payments
+      fieldMapping:
+        amount:
+          column:
+            name: amount
+        baseAmount:
+          column:
+            name: base_amount
+        booking:
+          column:
+            name: booking
+        channel:
+          column:
+            name: channel
+        contact:
+          column:
+            name: contact
+        createTime:
+          column:
+            name: create_time
+        etag:
+          column:
+            name: etag
+        exchangeRate:
+          column:
+            name: exchange_rate
+        gateway:
+          column:
+            name: gateway
+        gatewayReference:
+          column:
+            name: gateway_reference
+        id:
+          column:
+            name: id
+        invoice:
+          column:
+            name: invoice
+        kind:
+          column:
+            name: kind
+        method:
+          column:
+            name: method
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        receiveTime:
+          column:
+            name: receive_time
+        recorder:
+          column:
+            name: recorder
+        reference:
+          column:
+            name: reference
+        refunds:
+          column:
+            name: refunds
+        state:
+          column:
+            name: state
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: FinancePayments
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - amount
+          - baseAmount
+          - booking
+          - channel
+          - contact
+          - createTime
+          - etag
+          - exchangeRate
+          - gateway
+          - gatewayReference
+          - id
+          - invoice
+          - kind
+          - method
+          - name
+          - notes
+          - receiveTime
+          - recorder
+          - reference
+          - refunds
+          - state
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: FinancePaymentsBoolExp
+  operand:
+    object:
+      type: FinancePayments
+      comparableFields:
+        - fieldName: amount
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: baseAmount
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: booking
+          booleanExpressionType: TextBoolExp
+        - fieldName: channel
+          booleanExpressionType: BookingChannelBoolExp
+        - fieldName: contact
+          booleanExpressionType: TextBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: exchangeRate
+          booleanExpressionType: NumericBoolExp
+        - fieldName: gateway
+          booleanExpressionType: TextBoolExp
+        - fieldName: gatewayReference
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: invoice
+          booleanExpressionType: TextBoolExp
+        - fieldName: kind
+          booleanExpressionType: FinancePaymentKindBoolExp
+        - fieldName: method
+          booleanExpressionType: FinancePaymentMethodBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: notes
+          booleanExpressionType: TextBoolExp
+        - fieldName: receiveTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: recorder
+          booleanExpressionType: TextBoolExp
+        - fieldName: reference
+          booleanExpressionType: TextBoolExp
+        - fieldName: refunds
+          booleanExpressionType: TextBoolExp
+        - fieldName: state
+          booleanExpressionType: FinancePaymentStateBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: FinancePaymentsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: FinancePaymentsAggExp
+  operand:
+    object:
+      aggregatedType: FinancePayments
+      aggregatableFields:
+        - fieldName: amount
+          aggregateExpression: JsonbAggExp
+        - fieldName: baseAmount
+          aggregateExpression: JsonbAggExp
+        - fieldName: booking
+          aggregateExpression: TextAggExp
+        - fieldName: channel
+          aggregateExpression: BookingChannelAggExp
+        - fieldName: contact
+          aggregateExpression: TextAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: exchangeRate
+          aggregateExpression: NumericAggExp
+        - fieldName: gateway
+          aggregateExpression: TextAggExp
+        - fieldName: gatewayReference
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: invoice
+          aggregateExpression: TextAggExp
+        - fieldName: kind
+          aggregateExpression: FinancePaymentKindAggExp
+        - fieldName: method
+          aggregateExpression: FinancePaymentMethodAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: notes
+          aggregateExpression: TextAggExp
+        - fieldName: receiveTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: recorder
+          aggregateExpression: TextAggExp
+        - fieldName: reference
+          aggregateExpression: TextAggExp
+        - fieldName: refunds
+          aggregateExpression: TextAggExp
+        - fieldName: state
+          aggregateExpression: FinancePaymentStateAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: FinancePaymentsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: FinancePaymentsOrderByExp
+  operand:
+    object:
+      orderedType: FinancePayments
+      orderableFields:
+        - fieldName: amount
+          orderByExpression: JsonOrderByExp
+        - fieldName: baseAmount
+          orderByExpression: JsonOrderByExp
+        - fieldName: booking
+          orderByExpression: String1OrderByExp
+        - fieldName: channel
+          orderByExpression: EnumOrderByExp
+        - fieldName: contact
+          orderByExpression: String1OrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: exchangeRate
+          orderByExpression: BigdecimalOrderByExp
+        - fieldName: gateway
+          orderByExpression: String1OrderByExp
+        - fieldName: gatewayReference
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: invoice
+          orderByExpression: String1OrderByExp
+        - fieldName: kind
+          orderByExpression: EnumOrderByExp
+        - fieldName: method
+          orderByExpression: EnumOrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: notes
+          orderByExpression: String1OrderByExp
+        - fieldName: receiveTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: recorder
+          orderByExpression: String1OrderByExp
+        - fieldName: reference
+          orderByExpression: String1OrderByExp
+        - fieldName: refunds
+          orderByExpression: String1OrderByExp
+        - fieldName: state
+          orderByExpression: EnumOrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: FinancePaymentsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: FinancePayments
+  objectType: FinancePayments
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: finance_payments
+  filterExpressionType: FinancePaymentsBoolExp
+  aggregateExpression: FinancePaymentsAggExp
+  orderByExpression: FinancePaymentsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: financePayments
+      subscription:
+        rootField: financePayments
+    selectUniques:
+      - queryRootField: financePaymentsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: financePaymentsById
+    filterInputTypeName: FinancePaymentsFilterInput
+    aggregate:
+      queryRootField: financePaymentsAggregate
+      subscription:
+        rootField: financePaymentsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: FinancePayments
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

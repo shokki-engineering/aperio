@@ -1,0 +1,72 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteFinancePaymentsByIdResponse
+  description: Responses from the 'delete_finance_payments_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[FinancePayments!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteFinancePaymentsByIdResponse
+    inputTypeName: DeleteFinancePaymentsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: delete_finance_payments_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteFinancePaymentsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteFinancePaymentsById
+  outputType: DeleteFinancePaymentsByIdResponse!
+  arguments:
+    - name: keyId
+      type: String_1!
+    - name: preCheck
+      type: FinancePaymentsBoolExp
+      description: Delete permission predicate over the 'finance_payments' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: delete_finance_payments_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteFinancePaymentsById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'finance_payments' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteFinancePaymentsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

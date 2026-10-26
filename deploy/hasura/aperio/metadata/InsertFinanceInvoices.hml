@@ -1,0 +1,270 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertFinanceInvoicesObject
+  fields:
+    - name: billingAddress
+      type: Json
+    - name: booking
+      type: String_1
+    - name: buyerGst
+      type: Json
+    - name: cancelReason
+      type: String_1
+    - name: cgst
+      type: Json
+    - name: contact
+      type: String_1!
+    - name: corrects
+      type: String_1
+    - name: createTime
+      type: Timestamptz
+    - name: due
+      type: Json
+    - name: dueDate
+      type: Date
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: igst
+      type: Json
+    - name: irn
+      type: String_1
+    - name: issueDate
+      type: Date
+    - name: kind
+      type: Enum
+    - name: lines
+      type: Json!
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: number
+      type: String_1
+    - name: paid
+      type: Json
+    - name: quote
+      type: String_1
+    - name: sgst
+      type: Json
+    - name: state
+      type: Enum
+    - name: supplyStateCode
+      type: String_1!
+    - name: taxableTotal
+      type: Json
+    - name: total
+      type: Json
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertFinanceInvoicesObject
+    inputTypeName: InsertFinanceInvoicesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_finance_invoices_object
+      fieldMapping:
+        billingAddress:
+          column:
+            name: billing_address
+        booking:
+          column:
+            name: booking
+        buyerGst:
+          column:
+            name: buyer_gst
+        cancelReason:
+          column:
+            name: cancel_reason
+        cgst:
+          column:
+            name: cgst
+        contact:
+          column:
+            name: contact
+        corrects:
+          column:
+            name: corrects
+        createTime:
+          column:
+            name: create_time
+        due:
+          column:
+            name: due
+        dueDate:
+          column:
+            name: due_date
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        igst:
+          column:
+            name: igst
+        irn:
+          column:
+            name: irn
+        issueDate:
+          column:
+            name: issue_date
+        kind:
+          column:
+            name: kind
+        lines:
+          column:
+            name: lines
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        number:
+          column:
+            name: number
+        paid:
+          column:
+            name: paid
+        quote:
+          column:
+            name: quote
+        sgst:
+          column:
+            name: sgst
+        state:
+          column:
+            name: state
+        supplyStateCode:
+          column:
+            name: supply_state_code
+        taxableTotal:
+          column:
+            name: taxable_total
+        total:
+          column:
+            name: total
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertFinanceInvoicesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - billingAddress
+          - booking
+          - buyerGst
+          - cancelReason
+          - cgst
+          - contact
+          - corrects
+          - createTime
+          - due
+          - dueDate
+          - etag
+          - id
+          - igst
+          - irn
+          - issueDate
+          - kind
+          - lines
+          - name
+          - notes
+          - number
+          - paid
+          - quote
+          - sgst
+          - state
+          - supplyStateCode
+          - taxableTotal
+          - total
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertFinanceInvoicesResponse
+  description: Responses from the 'insert_finance_invoices' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[FinanceInvoices!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertFinanceInvoicesResponse
+    inputTypeName: InsertFinanceInvoicesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_finance_invoices_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertFinanceInvoicesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertFinanceInvoices
+  outputType: InsertFinanceInvoicesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertFinanceInvoicesObject!]!"
+    - name: postCheck
+      type: FinanceInvoicesBoolExp
+      description: Insert permission predicate over the 'finance_invoices' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_finance_invoices
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertFinanceInvoices
+    rootFieldKind: Mutation
+  description: Insert into the finance_invoices table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertFinanceInvoices
+  permissions:
+    - role: admin
+      allowExecution: true
+

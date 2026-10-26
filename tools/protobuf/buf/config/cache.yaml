@@ -1,203 +1,39 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# protoc-gen-cache's configuration: which proto packages land in which database
-# and schema. It is the layout block of store.backend.yaml, repeated, because
-# the cache plugin decodes its config strictly and store.backend.yaml carries
-# settings only protoc-gen-store reads. The two must agree -- the cache output
-# imports the store's and the repositories' packages by these names.
+# protoc-gen-cache's configuration: the layout block of store.backend.yaml,
+# repeated, because the cache plugin decodes its config strictly and
+# store.backend.yaml carries settings only protoc-gen-store reads. What is
+# cached, and how, is in the protos' (cache.v1.cache) annotations.
 
 strip_version: true
 dedupe_schema_table: true
 
 datasources:
-  # protobuf-ota, one rule per resource package. The `**` takes the resource's
-  # v1 package and its v1.types, v1.codes and v1.enums sub-packages into one
-  # schema: the value objects a resource embeds live beside it, and only the
-  # resource's own package tree refers to them (AIP-215). {leaf} would not do:
-  # it names every sub-package's schema "types", "codes" or "enums", pulling the
-  # value objects of all 28 resources into three schemas.
-  #
-  # Every schema name is one word: a multi-word
-  # schema breaks the graphql target, which splits DDN's PascalCase
-  # schema+table model names at the first token. room_type is "roomtype".
-  #
-  # One database, ota, for the upstream catalogue: regenerated when
-  # protobuf-ota releases, not when aperio changes.
-  - match: "protobuf.opentravel.common.profile.**"
-    database: ota
-    schema: profile
-  - match: "protobuf.opentravel.hotel.booking.reservation.**"
-    database: ota
-    schema: reservation
-  - match: "protobuf.opentravel.hotel.booking.stay.**"
-    database: ota
-    schema: stay
-  - match: "protobuf.opentravel.hotel.finance.commission.**"
-    database: ota
-    schema: commission
-  - match: "protobuf.opentravel.hotel.hotel.**"
-    database: ota
-    schema: hotel
-  - match: "protobuf.opentravel.hotel.property.affiliation_info.**"
-    database: ota
-    schema: affiliationinfo
-  - match: "protobuf.opentravel.hotel.property.area_info.**"
-    database: ota
-    schema: areainfo
-  - match: "protobuf.opentravel.hotel.property.contact.**"
-    database: ota
-    schema: contact
-  - match: "protobuf.opentravel.hotel.property.environmental_impact.**"
-    database: ota
-    schema: environmentalimpact
-  - match: "protobuf.opentravel.hotel.property.meeting_room.**"
-    database: ota
-    schema: meetingroom
-  - match: "protobuf.opentravel.hotel.property.multimedia.**"
-    database: ota
-    schema: multimedia
-  - match: "protobuf.opentravel.hotel.property.policy.**"
-    database: ota
-    schema: policy
-  - match: "protobuf.opentravel.hotel.property.promotion.**"
-    database: ota
-    schema: promotion
-  - match: "protobuf.opentravel.hotel.property.restaurant.**"
-    database: ota
-    schema: restaurant
-  - match: "protobuf.opentravel.hotel.property.room_type.**"
-    database: ota
-    schema: roomtype
-  - match: "protobuf.opentravel.hotel.reporting.statistic_report.**"
-    database: ota
-    schema: statisticreport
-  - match: "protobuf.opentravel.hotel.revenue.booking_rule.**"
-    database: ota
-    schema: bookingrule
-  - match: "protobuf.opentravel.hotel.revenue.hotel_product.**"
-    database: ota
-    schema: hotelproduct
-  - match: "protobuf.opentravel.hotel.revenue.inventory.**"
-    database: ota
-    schema: inventory
-  - match: "protobuf.opentravel.hotel.revenue.rate.**"
-    database: ota
-    schema: rate
-  - match: "protobuf.opentravel.hotel.revenue.rate_plan.**"
-    database: ota
-    schema: rateplan
-  - match: "protobuf.opentravel.hotel.revenue.restriction.**"
-    database: ota
-    schema: restriction
-  - match: "protobuf.opentravel.hotel.revenue.summary.**"
-    database: ota
-    schema: summary
-  - match: "protobuf.opentravel.hotel.sales.event.**"
-    database: ota
-    schema: event
-  - match: "protobuf.opentravel.hotel.sales.event_report.**"
-    database: ota
-    schema: eventreport
-  - match: "protobuf.opentravel.hotel.sales.inventory_block.**"
-    database: ota
-    schema: inventoryblock
-  - match: "protobuf.opentravel.hotel.sales.meeting_rfp.**"
-    database: ota
-    schema: meetingrfp
-  - match: "protobuf.opentravel.hotel.sales.transient_rfp.**"
-    database: ota
-    schema: transientrfp
+  # aperio's own protos, one database with a schema per package:
+  # aperio.booking.v1 -> schema "booking". Every leaf is one word, as the
+  # graphql target needs (it splits DDN's PascalCase schema+table names at the
+  # first token).
+  - match: "aperio.**"
+    database: aperio
+    schema: "{leaf}"
 
-# What is cached, and how: (cache.v1.cache) for resources whose protos cannot
-# carry it -- protobuf-ota allows one annotation vocabulary, its own. The first
-# rule matching a resource message's full name applies.
+# Message types stored whole: a field of one is a JSONB column holding the
+# message's JSON form (an array, when repeated), not a table of its own.
 #
-# A resource nested under a hotel names its namespace, binding {hotel}: on a
-# hit the store's row scoping never runs, so the hotel must be in the key. Each
-# namespace is the one the plugin derives for a resource it can bind itself --
-# the resource type, then the segment and its value.
+#   protobuf.opentravel.**  the OpenTravel vocabulary aperio imports -- room
+#                           stays, guests, hotel information -- kept as a
+#                           channel sends it, however deep it nests.
+#   aperio.**               aperio's own value objects: lines, requirements,
+#                           requests, capacities. A resource is never a
+#                           field's type (resources reference each other by
+#                           name), so this names value objects only.
+#   google.type.**          Money, PostalAddress. The single-column well-known
+#                           types (Date, Decimal, DayOfWeek) keep their column.
 #
-# Descriptive content only, read on every shop and changed by hand: the hotel,
-# its property detail, its rate plans, products and promotions. Read through
-# (ASIDE) for ten minutes; a List page for one, the bound on a page made stale
-# by a write the repositories never saw.
-#
-# Not cached: the daily resources (inventory, rates, restrictions, booking
-# rules, summaries), which an ARI push rewrites by the thousand; reservations,
-# stays and profiles, where a stale read is a wrong booking or a guest's
-# outdated details; and the sales, finance and reporting records, read rarely.
-resources:
-  - match: "protobuf.opentravel.hotel.hotel.v1.Hotel"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    list: {enabled: true, ttl: 1m}
-  # The property singletons (AIP-156) have no List, so no pages to cache, and
-  # no parent segment to bind: each is keyed by its own record.
-  - match: "protobuf.opentravel.hotel.property.affiliation_info.v1.AffiliationInfo"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-  - match: "protobuf.opentravel.hotel.property.area_info.v1.AreaInfo"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-  - match: "protobuf.opentravel.hotel.property.environmental_impact.v1.EnvironmentalImpact"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-  - match: "protobuf.opentravel.hotel.property.contact.v1.Contact"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.contact.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.property.meeting_room.v1.MeetingRoom"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.meetingroom.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.property.multimedia.v1.Multimedia"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.multimedia.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.property.policy.v1.Policy"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.policy.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.property.promotion.v1.Promotion"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.promotion.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.property.restaurant.v1.Restaurant"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.restaurant.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.property.room_type.v1.RoomType"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.roomtype.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.revenue.rate_plan.v1.RatePlan"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.rateplan.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
-  - match: "protobuf.opentravel.hotel.revenue.hotel_product.v1.HotelProduct"
-    strategy: aside
-    ttl: 10m
-    negative_ttl: 30s
-    namespace: "hotel.opentravel.org.hotelproduct.hotel.{hotel}"
-    list: {enabled: true, ttl: 1m}
+# What is searched and reported on is a top-level field of the resource, and
+# so a column of its own.
+documents:
+  - match: "protobuf.opentravel.**"
+  - match: "aperio.**"
+  - match: "google.type.**"

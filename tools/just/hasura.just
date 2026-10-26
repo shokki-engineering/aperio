@@ -15,7 +15,7 @@ default:
     @just --list hasura
 
 # Regenerate the Hasura DDN metadata after the Postgres schema changes (a
-# `just db migrate` that added or renamed tables), then refresh the otaql Go
+# `just db migrate` that added or renamed tables), then refresh the aperioql Go
 # client so the hasura repository layer can use the new shape.
 #
 # DDN serves its GraphQL API from metadata (the .hml models), not live from
@@ -133,12 +133,12 @@ regen domain="":
     done
 
     # 6. Refresh the typed Go client from the now-current schema. protoc-gen-store's
-    #    graphql target introspects the engine and regenerates otaql (along
+    #    graphql target introspects the engine and regenerates aperioql (along
     #    with the other store outputs).
     if [[ "${SKIP_CLIENT:-}" == "1" ]]; then
       log "SKIP_CLIENT=1 — skipping client regeneration"
     else
-      log "regenerating otaql client (buf generate, target=graphql)"
+      log "regenerating aperioql client (buf generate, target=graphql)"
       ( cd "$REPO_ROOT" && buf generate --template tools/protobuf/buf/store.buf.gen.yaml )
     fi
 

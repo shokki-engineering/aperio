@@ -1,0 +1,258 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesQuotesObject
+  fields:
+    - name: acceptTime
+      type: Timestamptz
+    - name: advance
+      type: Json
+    - name: booking
+      type: String_1
+    - name: contact
+      type: String_1!
+    - name: createTime
+      type: Timestamptz
+    - name: dates
+      type: Json!
+    - name: declineReason
+      type: String_1
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: eventType
+      type: Enum
+    - name: expireTime
+      type: Timestamptz
+    - name: guests
+      type: Int32
+    - name: id
+      type: String_1!
+    - name: lead
+      type: String_1
+    - name: lines
+      type: Json!
+    - name: name
+      type: String_1!
+    - name: sendTime
+      type: Timestamptz
+    - name: state
+      type: Enum
+    - name: subtotal
+      type: Json
+    - name: supersedes
+      type: String_1
+    - name: supplyStateCode
+      type: String_1
+    - name: taxTotal
+      type: Json
+    - name: terms
+      type: String_1
+    - name: total
+      type: Json
+    - name: ttl
+      type: String_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: InsertSalesQuotesObject
+    inputTypeName: InsertSalesQuotesObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_quotes_object
+      fieldMapping:
+        acceptTime:
+          column:
+            name: accept_time
+        advance:
+          column:
+            name: advance
+        booking:
+          column:
+            name: booking
+        contact:
+          column:
+            name: contact
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        declineReason:
+          column:
+            name: decline_reason
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        eventType:
+          column:
+            name: event_type
+        expireTime:
+          column:
+            name: expire_time
+        guests:
+          column:
+            name: guests
+        id:
+          column:
+            name: id
+        lead:
+          column:
+            name: lead
+        lines:
+          column:
+            name: lines
+        name:
+          column:
+            name: name
+        sendTime:
+          column:
+            name: send_time
+        state:
+          column:
+            name: state
+        subtotal:
+          column:
+            name: subtotal
+        supersedes:
+          column:
+            name: supersedes
+        supplyStateCode:
+          column:
+            name: supply_state_code
+        taxTotal:
+          column:
+            name: tax_total
+        terms:
+          column:
+            name: terms
+        total:
+          column:
+            name: total
+        ttl:
+          column:
+            name: ttl
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesQuotesObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acceptTime
+          - advance
+          - booking
+          - contact
+          - createTime
+          - dates
+          - declineReason
+          - displayName
+          - etag
+          - eventType
+          - expireTime
+          - guests
+          - id
+          - lead
+          - lines
+          - name
+          - sendTime
+          - state
+          - subtotal
+          - supersedes
+          - supplyStateCode
+          - taxTotal
+          - terms
+          - total
+          - ttl
+          - updateTime
+          - venueId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesQuotesResponse
+  description: Responses from the 'insert_sales_quotes' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[SalesQuotes!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertSalesQuotesResponse
+    inputTypeName: InsertSalesQuotesResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_quotes_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesQuotesResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertSalesQuotes
+  outputType: InsertSalesQuotesResponse!
+  arguments:
+    - name: objects
+      type: "[InsertSalesQuotesObject!]!"
+    - name: postCheck
+      type: SalesQuotesBoolExp
+      description: Insert permission predicate over the 'sales_quotes' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_sales_quotes
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertSalesQuotes
+    rootFieldKind: Mutation
+  description: Insert into the sales_quotes table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertSalesQuotes
+  permissions:
+    - role: admin
+      allowExecution: true
+

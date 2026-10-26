@@ -123,6 +123,9 @@ message Space {
   // Spaces are read with every quote, booking and availability check.
   option (cache.v1.cache) = {
     enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.venue.v1.space.venue.{venue}"
     ttl: {seconds: 600}
     list: {
       enabled: true

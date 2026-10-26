@@ -1,0 +1,361 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: OperationsServiceRequests
+  fields:
+    - name: acknowledgeTime
+      type: Timestamptz
+    - name: assignee
+      type: String_1
+    - name: booking
+      type: String_1
+    - name: charge
+      type: Json
+    - name: completeTime
+      type: Timestamptz
+    - name: createTime
+      type: Timestamptz!
+    - name: department
+      type: Enum!
+    - name: dueTime
+      type: Timestamptz
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: items
+      type: Json
+    - name: location
+      type: String_1
+    - name: name
+      type: String_1!
+    - name: notes
+      type: String_1
+    - name: priority
+      type: Enum
+    - name: requester
+      type: String_1
+    - name: space
+      type: String_1
+    - name: state
+      type: Enum
+    - name: summary
+      type: String_1!
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+  graphql:
+    typeName: OperationsServiceRequests
+    inputTypeName: OperationsServiceRequestsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: operations_service_requests
+      fieldMapping:
+        acknowledgeTime:
+          column:
+            name: acknowledge_time
+        assignee:
+          column:
+            name: assignee
+        booking:
+          column:
+            name: booking
+        charge:
+          column:
+            name: charge
+        completeTime:
+          column:
+            name: complete_time
+        createTime:
+          column:
+            name: create_time
+        department:
+          column:
+            name: department
+        dueTime:
+          column:
+            name: due_time
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        items:
+          column:
+            name: items
+        location:
+          column:
+            name: location
+        name:
+          column:
+            name: name
+        notes:
+          column:
+            name: notes
+        priority:
+          column:
+            name: priority
+        requester:
+          column:
+            name: requester
+        space:
+          column:
+            name: space
+        state:
+          column:
+            name: state
+        summary:
+          column:
+            name: summary
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: OperationsServiceRequests
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - acknowledgeTime
+          - assignee
+          - booking
+          - charge
+          - completeTime
+          - createTime
+          - department
+          - dueTime
+          - etag
+          - id
+          - items
+          - location
+          - name
+          - notes
+          - priority
+          - requester
+          - space
+          - state
+          - summary
+          - updateTime
+          - venueId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: OperationsServiceRequestsBoolExp
+  operand:
+    object:
+      type: OperationsServiceRequests
+      comparableFields:
+        - fieldName: acknowledgeTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: assignee
+          booleanExpressionType: TextBoolExp
+        - fieldName: booking
+          booleanExpressionType: TextBoolExp
+        - fieldName: charge
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: completeTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: createTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: department
+          booleanExpressionType: OperationsDepartmentBoolExp
+        - fieldName: dueTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: etag
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: TextBoolExp
+        - fieldName: items
+          booleanExpressionType: JsonbBoolExp
+        - fieldName: location
+          booleanExpressionType: TextBoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+        - fieldName: notes
+          booleanExpressionType: TextBoolExp
+        - fieldName: priority
+          booleanExpressionType: OperationsPriorityBoolExp
+        - fieldName: requester
+          booleanExpressionType: TextBoolExp
+        - fieldName: space
+          booleanExpressionType: TextBoolExp
+        - fieldName: state
+          booleanExpressionType: OperationsOperationsStateBoolExp
+        - fieldName: summary
+          booleanExpressionType: TextBoolExp
+        - fieldName: updateTime
+          booleanExpressionType: TimestamptzBoolExp
+        - fieldName: venueId
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: OperationsServiceRequestsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: OperationsServiceRequestsAggExp
+  operand:
+    object:
+      aggregatedType: OperationsServiceRequests
+      aggregatableFields:
+        - fieldName: acknowledgeTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: assignee
+          aggregateExpression: TextAggExp
+        - fieldName: booking
+          aggregateExpression: TextAggExp
+        - fieldName: charge
+          aggregateExpression: JsonbAggExp
+        - fieldName: completeTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: createTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: department
+          aggregateExpression: OperationsDepartmentAggExp
+        - fieldName: dueTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: etag
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: TextAggExp
+        - fieldName: items
+          aggregateExpression: JsonbAggExp
+        - fieldName: location
+          aggregateExpression: TextAggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+        - fieldName: notes
+          aggregateExpression: TextAggExp
+        - fieldName: priority
+          aggregateExpression: OperationsPriorityAggExp
+        - fieldName: requester
+          aggregateExpression: TextAggExp
+        - fieldName: space
+          aggregateExpression: TextAggExp
+        - fieldName: state
+          aggregateExpression: OperationsOperationsStateAggExp
+        - fieldName: summary
+          aggregateExpression: TextAggExp
+        - fieldName: updateTime
+          aggregateExpression: TimestamptzAggExp
+        - fieldName: venueId
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+    returnType: Int64
+  graphql:
+    selectTypeName: OperationsServiceRequestsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: OperationsServiceRequestsOrderByExp
+  operand:
+    object:
+      orderedType: OperationsServiceRequests
+      orderableFields:
+        - fieldName: acknowledgeTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: assignee
+          orderByExpression: String1OrderByExp
+        - fieldName: booking
+          orderByExpression: String1OrderByExp
+        - fieldName: charge
+          orderByExpression: JsonOrderByExp
+        - fieldName: completeTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: createTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: department
+          orderByExpression: EnumOrderByExp
+        - fieldName: dueTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: etag
+          orderByExpression: String1OrderByExp
+        - fieldName: id
+          orderByExpression: String1OrderByExp
+        - fieldName: items
+          orderByExpression: JsonOrderByExp
+        - fieldName: location
+          orderByExpression: String1OrderByExp
+        - fieldName: name
+          orderByExpression: String1OrderByExp
+        - fieldName: notes
+          orderByExpression: String1OrderByExp
+        - fieldName: priority
+          orderByExpression: EnumOrderByExp
+        - fieldName: requester
+          orderByExpression: String1OrderByExp
+        - fieldName: space
+          orderByExpression: String1OrderByExp
+        - fieldName: state
+          orderByExpression: EnumOrderByExp
+        - fieldName: summary
+          orderByExpression: String1OrderByExp
+        - fieldName: updateTime
+          orderByExpression: TimestamptzOrderByExp
+        - fieldName: venueId
+          orderByExpression: String1OrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: OperationsServiceRequestsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: OperationsServiceRequests
+  objectType: OperationsServiceRequests
+  source:
+    dataConnectorName: aperio_pgsql
+    collection: operations_service_requests
+  filterExpressionType: OperationsServiceRequestsBoolExp
+  aggregateExpression: OperationsServiceRequestsAggExp
+  orderByExpression: OperationsServiceRequestsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: operationsServiceRequests
+      subscription:
+        rootField: operationsServiceRequests
+    selectUniques:
+      - queryRootField: operationsServiceRequestsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: operationsServiceRequestsById
+    filterInputTypeName: OperationsServiceRequestsFilterInput
+    aggregate:
+      queryRootField: operationsServiceRequestsAggregate
+      subscription:
+        rootField: operationsServiceRequestsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: OperationsServiceRequests
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

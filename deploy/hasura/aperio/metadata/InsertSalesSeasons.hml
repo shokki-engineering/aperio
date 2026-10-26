@@ -1,0 +1,156 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesSeasonsObject
+  fields:
+    - name: createTime
+      type: Timestamptz
+    - name: dates
+      type: Json
+    - name: displayName
+      type: String_1!
+    - name: etag
+      type: String_1
+    - name: id
+      type: String_1!
+    - name: name
+      type: String_1!
+    - name: recursYearly
+      type: Boolean_1
+    - name: updateTime
+      type: Timestamptz!
+    - name: venueId
+      type: String_1!
+    - name: weekdays
+      type: String_1
+  graphql:
+    typeName: InsertSalesSeasonsObject
+    inputTypeName: InsertSalesSeasonsObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_seasons_object
+      fieldMapping:
+        createTime:
+          column:
+            name: create_time
+        dates:
+          column:
+            name: dates
+        displayName:
+          column:
+            name: display_name
+        etag:
+          column:
+            name: etag
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        recursYearly:
+          column:
+            name: recurs_yearly
+        updateTime:
+          column:
+            name: update_time
+        venueId:
+          column:
+            name: venue_id
+        weekdays:
+          column:
+            name: weekdays
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesSeasonsObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createTime
+          - dates
+          - displayName
+          - etag
+          - id
+          - name
+          - recursYearly
+          - updateTime
+          - venueId
+          - weekdays
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertSalesSeasonsResponse
+  description: Responses from the 'insert_sales_seasons' procedure
+  fields:
+    - name: affectedRows
+      type: Int32!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[SalesSeasons!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertSalesSeasonsResponse
+    inputTypeName: InsertSalesSeasonsResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: insert_sales_seasons_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertSalesSeasonsResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertSalesSeasons
+  outputType: InsertSalesSeasonsResponse!
+  arguments:
+    - name: objects
+      type: "[InsertSalesSeasonsObject!]!"
+    - name: postCheck
+      type: SalesSeasonsBoolExp
+      description: Insert permission predicate over the 'sales_seasons' collection
+  source:
+    dataConnectorName: aperio_pgsql
+    dataConnectorCommand:
+      procedure: insert_sales_seasons
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertSalesSeasons
+    rootFieldKind: Mutation
+  description: Insert into the sales_seasons table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertSalesSeasons
+  permissions:
+    - role: admin
+      allowExecution: true
+

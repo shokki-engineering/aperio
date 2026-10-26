@@ -4,11 +4,11 @@
 default:
     @just --list
 
-# Code generation from protobuf-ota: Prisma, store, cache, bindings, services.
+# Code generation from aperio's protos: Go stubs, Prisma, store, cache, services.
 [group('codegen')]
 mod gen 'tools/just/gen.just'
 
-# The ota database's Prisma migrations: migrate, deploy, status.
+# The aperio database's Prisma migrations: migrate, deploy, status.
 [group('db')]
 mod db 'tools/just/db.just'
 

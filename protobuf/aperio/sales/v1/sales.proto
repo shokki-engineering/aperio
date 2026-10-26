@@ -39,6 +39,9 @@ message Dish {
   // Dishes are read with every menu and change rarely.
   option (cache.v1.cache) = {
     enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.sales.v1.dish.venue.{venue}"
     ttl: {seconds: 600}
     list: {
       enabled: true
@@ -135,6 +138,9 @@ message Menu {
   // Menus are read with every quote.
   option (cache.v1.cache) = {
     enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.sales.v1.menu.venue.{venue}"
     ttl: {seconds: 600}
     list: {
       enabled: true
@@ -263,6 +269,9 @@ message FixedPackage {
   // Packages are read with every quote.
   option (cache.v1.cache) = {
     enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.sales.v1.fixedpackage.venue.{venue}"
     ttl: {seconds: 600}
     list: {
       enabled: true
@@ -376,6 +385,9 @@ message Season {
   // Seasons are read with every price.
   option (cache.v1.cache) = {
     enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.sales.v1.season.venue.{venue}"
     ttl: {seconds: 600}
     list: {
       enabled: true
@@ -443,6 +455,9 @@ message PriceRule {
   // Rules are read with every price.
   option (cache.v1.cache) = {
     enabled: true
+    // Bound to the venue: a hit skips the store's scoping, so the venue
+    // must be in the key.
+    namespace: "aperio.sales.v1.pricerule.venue.{venue}"
     ttl: {seconds: 600}
     list: {
       enabled: true

@@ -1,35 +1,41 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# Code generation: protobuf-ota -> database layer + cache, HTTP/MCP bindings,
-# service layer. Invoked as `just gen <recipe>` (e.g. `just gen store`).
-# `just gen` runs `all`. Recipes run from the repo root so buf/template paths
-# resolve unchanged.
+# Code generation from aperio's protos: Go stubs, Prisma schema, database
+# layer + cache, service layer. Invoked as `just gen <recipe>` (e.g.
+# `just gen store`). `just gen` runs `all`. Recipes run from the repo root so
+# buf/template paths resolve unchanged.
 #
-# Every input is buf.build/shokki-engineering/protobuf-ota at the commit the
-# templates pin; the messages and gRPC stubs are the BSR SDK's (go.mod), never
-# generated here. Requires buf, protoc-gen-store, protoc-gen-cache,
-# protoc-gen-mcp and protoc-gen-service on PATH.
+# The OpenTravel types aperio's protos import are the BSR SDK's (go.mod),
+# never generated here. Requires buf, protoc-gen-mcp, protoc-gen-store,
+# protoc-gen-cache and protoc-gen-service on PATH.
 set working-directory := '../..'
 
 # Regenerate everything, in dependency order.
 [group('codegen')]
-all: prisma store ota service
+all: go prisma store service
 
-# The Prisma schema of the ota database (protobuf/generated/prisma/ota). The
-# template does not clean its output -- migrations/ is Prisma's history -- so
-# the generated files are deleted here first, keeping migrations/, node_modules/
-# and .env. After a change, write the migration: `just db migrate <name>`.
+# The Go stubs: messages, gRPC, the HTTP gateway and the MCP bindings.
+[group('codegen')]
+go:
+    buf generate --template tools/protobuf/buf/go.buf.gen.yaml
+    go mod tidy
+
+# The Prisma schema of the aperio database (protobuf/generated/prisma/aperio).
+# The template does not clean its output -- migrations/ is Prisma's history --
+# so the generated files are deleted here first, keeping migrations/,
+# node_modules/ and .env. After a change, write the migration:
+# `just db migrate <name>`.
 [group('codegen')]
 prisma:
-    mkdir -p protobuf/generated/prisma/ota
-    find protobuf/generated/prisma/ota -mindepth 1 -maxdepth 1 ! -name migrations ! -name node_modules ! -name .env -exec rm -rf {} +
+    mkdir -p protobuf/generated/prisma/aperio
+    find protobuf/generated/prisma/aperio -mindepth 1 -maxdepth 1 ! -name migrations ! -name node_modules ! -name .env -exec rm -rf {} +
     buf generate --template tools/protobuf/buf/prisma.buf.gen.yaml
 
 # The database layer and its cache decorators: the gorm models, stores,
 # converters and filters, the proto-facing repositories (over gorm and over
-# Hasura), the typed Hasura client otaql, and the read-through caches
-# cache.yaml's resources rules select.
+# Hasura), the typed Hasura client aperioql, and the read-through caches the
+# protos' (cache.v1.cache) annotations select.
 #
 # The graphql target introspects the live DDN engine, so bring it up first
 # (`just hasura regen`) or this recipe fails at that step.
@@ -38,19 +44,8 @@ store:
     buf generate --template tools/protobuf/buf/store.buf.gen.yaml
     go mod tidy
 
-# The HTTP gateway and MCP bindings for every protobuf-ota service, then
-# otagw points each gateway at the SDK's gRPC package and moves it into its
-# <pkg>gw package.
-[group('codegen')]
-ota:
-    buf generate --template tools/protobuf/buf/ota.buf.gen.yaml
-    go run ./tools/protobuf/otagw
-    go mod tidy
-
 # The service layer over the repositories: the AIP standard-method servers and
-# their hooks, RegisterAll for gRPC, REST and MCP. Run after `store`, whose
-# repositories the servers persist through, and `ota`, whose bindings they
-# register.
+# their hooks, RegisterAll for gRPC, REST and MCP. Run after `go` and `store`.
 [group('codegen')]
 service:
     buf generate --template tools/protobuf/buf/service.buf.gen.yaml
