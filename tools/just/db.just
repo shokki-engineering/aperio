@@ -27,6 +27,15 @@ up:
 migrate name:
     npx prisma migrate dev --name {{ name }} --config aperio.config.ts
 
+# For a layout change made before anything is deployed: every row is lost.
+# DEV ONLY: drop the aperio database and make it again from the migrations.
+[group('db')]
+[confirm('Drop the aperio dev database and every row in it? (y/N)')]
+reset:
+    docker compose -f ../../../../deploy/compose/compose.yaml exec -T postgres \
+        psql -U postgres -v ON_ERROR_STOP=1 -c 'DROP DATABASE IF EXISTS aperio WITH (FORCE)' -c 'CREATE DATABASE aperio'
+    npx prisma migrate deploy --config aperio.config.ts
+
 # Apply pending migrations, writing none: CI and deployments.
 [group('db')]
 deploy:
