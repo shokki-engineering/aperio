@@ -49,6 +49,7 @@ type VenueStoreIface interface {
 	GetByID(ctx context.Context, id string) (*Venue, error)
 	DeleteByID(ctx context.Context, id string) error
 	GetByName(ctx context.Context, v string) (*Venue, error)
+	GetByInvoicePrefix(ctx context.Context, v string) (*Venue, error)
 }
 
 // VenueStore provides typed CRUD access to Venue records.
@@ -170,6 +171,21 @@ func (s *VenueStore) GetByName(ctx context.Context, v string) (*Venue, error) {
 		return s.DB.WithContext(ctx).First(&m, "name = ?", v).Error
 	})
 	tel.RecordOp(ctx, "venue.resource", "get_by_name", time.Since(start), err)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
+// GetByInvoicePrefix fetches the Venue with the given invoice_prefix (a unique column).
+func (s *VenueStore) GetByInvoicePrefix(ctx context.Context, v string) (*Venue, error) {
+	var m Venue
+	tel := gormx.OrNop(s.Telemetry)
+	start := time.Now()
+	err := tel.Span(ctx, "venue.Venue/GetByInvoicePrefix", nil, func(ctx context.Context) error {
+		return s.DB.WithContext(ctx).First(&m, "invoice_prefix = ?", v).Error
+	})
+	tel.RecordOp(ctx, "venue.resource", "get_by_invoice_prefix", time.Since(start), err)
 	if err != nil {
 		return nil, err
 	}

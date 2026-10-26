@@ -459,16 +459,17 @@ func (r *GormVenueRepository) reads(db *gorm.DB, in repox.ListInput) *gorm.DB {
 // venueColumns are the row's columns by the field each stores, for
 // a read mask to leave out.
 var venueColumns = map[string][]string{
-	"display_name":  {"display_name"},
-	"kind":          {"kind"},
-	"address":       {"address"},
-	"time_zone":     {"time_zone"},
-	"currency_code": {"currency_code"},
-	"gst":           {"gst"},
-	"hotel_info":    {"hotel_info"},
-	"create_time":   {"create_time"},
-	"update_time":   {"update_time"},
-	"etag":          {"etag"},
+	"display_name":   {"display_name"},
+	"kind":           {"kind"},
+	"address":        {"address"},
+	"time_zone":      {"time_zone"},
+	"currency_code":  {"currency_code"},
+	"gst":            {"gst"},
+	"hotel_info":     {"hotel_info"},
+	"create_time":    {"create_time"},
+	"update_time":    {"update_time"},
+	"etag":           {"etag"},
+	"invoice_prefix": {"invoice_prefix"},
 }
 
 // Update persists the masked fields of in; an empty mask replaces every
@@ -518,6 +519,7 @@ func (r *GormVenueRepository) updateTx(ctx context.Context, tx *gorm.DB, key str
 	existing.CurrencyCode = next.CurrencyCode
 	existing.Gst = next.Gst
 	existing.HotelInfo = next.HotelInfo
+	existing.InvoicePrefix = next.InvoicePrefix
 	existing.Etag = repox.Ptr(repox.NewULID())
 	return venue.NewVenueStore(tx).Update(ctx, &existing)
 }

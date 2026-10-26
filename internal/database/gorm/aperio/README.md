@@ -673,6 +673,7 @@ A Venue is one property aperio sells: a resort whose rooms are booked by the nig
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `invoice_prefix` | `VARCHAR(255)` | nullable |
 
 ### `Space` → `spaces`
 

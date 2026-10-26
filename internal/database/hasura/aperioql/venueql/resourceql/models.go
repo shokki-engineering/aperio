@@ -40,6 +40,8 @@ type DeleteVenueResourceByIdResponse struct {
 		HotelInfo *json.RawMessage `graphql:"hotelInfo" scalar:"true"`
 		// Id selects the "id" field.
 		Id string `graphql:"id"`
+		// InvoicePrefix selects the "invoicePrefix" field; nil when the column is NULL.
+		InvoicePrefix *string `graphql:"invoicePrefix"`
 		// Kind selects the "kind" field.
 		Kind string `graphql:"kind"`
 		// Name selects the "name" field.
@@ -73,6 +75,8 @@ type InsertVenueResourceResponse struct {
 		HotelInfo *json.RawMessage `graphql:"hotelInfo" scalar:"true"`
 		// Id selects the "id" field.
 		Id string `graphql:"id"`
+		// InvoicePrefix selects the "invoicePrefix" field; nil when the column is NULL.
+		InvoicePrefix *string `graphql:"invoicePrefix"`
 		// Kind selects the "kind" field.
 		Kind string `graphql:"kind"`
 		// Name selects the "name" field.
@@ -106,6 +110,8 @@ type UpdateVenueResourceByIdResponse struct {
 		HotelInfo *json.RawMessage `graphql:"hotelInfo" scalar:"true"`
 		// Id selects the "id" field.
 		Id string `graphql:"id"`
+		// InvoicePrefix selects the "invoicePrefix" field; nil when the column is NULL.
+		InvoicePrefix *string `graphql:"invoicePrefix"`
 		// Kind selects the "kind" field.
 		Kind string `graphql:"kind"`
 		// Name selects the "name" field.
@@ -137,6 +143,8 @@ type VenueResource struct {
 	HotelInfo *json.RawMessage `graphql:"hotelInfo" scalar:"true"`
 	// Id selects the "id" field.
 	Id string `graphql:"id"`
+	// InvoicePrefix selects the "invoicePrefix" field; nil when the column is NULL.
+	InvoicePrefix *string `graphql:"invoicePrefix"`
 	// Kind selects the "kind" field.
 	Kind string `graphql:"kind"`
 	// Name selects the "name" field.
@@ -228,6 +236,17 @@ type VenueResourceAggExp struct {
 		// Min selects the "min" field; nil when the column is NULL.
 		Min *string `graphql:"min"`
 	} `graphql:"id"`
+	// InvoicePrefix selects the "invoicePrefix" field.
+	InvoicePrefix struct {
+		// Count selects the "_count" field.
+		Count graphql.Int64 `graphql:"_count"`
+		// CountDistinct selects the "_count_distinct" field.
+		CountDistinct graphql.Int64 `graphql:"_count_distinct"`
+		// Max selects the "max" field; nil when the column is NULL.
+		Max *string `graphql:"max"`
+		// Min selects the "min" field; nil when the column is NULL.
+		Min *string `graphql:"min"`
+	} `graphql:"invoicePrefix"`
 	// Kind selects the "kind" field.
 	Kind struct {
 		// Count selects the "_count" field.

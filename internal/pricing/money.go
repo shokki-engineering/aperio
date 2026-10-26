@@ -46,10 +46,18 @@ func Money(r *big.Rat, currency string) *money.Money {
 
 // Round is r rounded to currency's minor unit, half away from zero.
 func Round(r *big.Rat, currency string) *big.Rat {
-	scale := big.NewRat(100, 1)
 	if zeroDecimal[currency] {
-		scale = big.NewRat(1, 1)
+		return roundTo(r, big.NewRat(1, 1))
 	}
+	return roundTo(r, big.NewRat(100, 1))
+}
+
+// Whole is r rounded to a whole unit of currency, half away from zero: an
+// invoice's value, which GST rounds to the rupee.
+func Whole(r *big.Rat) *big.Rat { return roundTo(r, big.NewRat(1, 1)) }
+
+// roundTo is r rounded to 1/scale, half away from zero.
+func roundTo(r, scale *big.Rat) *big.Rat {
 	x := new(big.Rat).Mul(r, scale)
 	neg := x.Sign() < 0
 	x.Abs(x)

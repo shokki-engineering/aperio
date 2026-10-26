@@ -20,6 +20,8 @@ definition:
       type: Json
     - name: id
       type: String_1!
+    - name: invoicePrefix
+      type: String_1
     - name: kind
       type: Enum
     - name: name
@@ -59,6 +61,9 @@ definition:
         id:
           column:
             name: id
+        invoicePrefix:
+          column:
+            name: invoice_prefix
         kind:
           column:
             name: kind
@@ -89,6 +94,7 @@ definition:
           - gst
           - hotelInfo
           - id
+          - invoicePrefix
           - kind
           - name
           - timeZone

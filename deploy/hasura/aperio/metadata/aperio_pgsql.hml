@@ -3832,6 +3832,12 @@ definition:
               type:
                 name: text
                 type: named
+            invoice_prefix:
+              type:
+                type: nullable
+                underlying_type:
+                  name: text
+                  type: named
             kind:
               type:
                 type: nullable
@@ -8725,6 +8731,17 @@ definition:
                 name: text
                 type: named
           foreign_keys: {}
+        update_column_venue_resource_invoice_prefix:
+          description: Update the 'invoice_prefix' column in the 'venue_resource' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  name: text
+                  type: named
+          foreign_keys: {}
         update_column_venue_resource_kind:
           description: Update the 'kind' column in the 'venue_resource' collection
           fields:
@@ -10970,6 +10987,13 @@ definition:
                 underlying_type:
                   name: update_column_venue_resource_id
                   type: named
+            invoice_prefix:
+              description: Update the 'invoice_prefix' column in the 'venue_resource' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_venue_resource_invoice_prefix
+                  type: named
             kind:
               description: Update the 'kind' column in the 'venue_resource' collection.
               type:
@@ -11134,6 +11158,12 @@ definition:
               type:
                 name: text
                 type: named
+            invoice_prefix:
+              type:
+                type: nullable
+                underlying_type:
+                  name: text
+                  type: named
             kind:
               type:
                 name: venue_venue_kind

@@ -83,6 +83,8 @@ type Venue struct {
 	UpdateTime time.Time `gorm:"column:update_time;type:timestamptz;not null;autoUpdateTime;index:idx_resource_update_time" json:"update_time"`
 	// Opaque version for optimistic concurrency (AIP-154).
 	Etag *string `gorm:"column:etag" json:"etag,omitempty"`
+	// The prefix of the venue's invoice series, 1-4 capitals or digits, e.g. "SBR": its tax invoices are numbered SBR/2627/0042, its credit notes SBR/CN2627/007, its proformas SBR/PF2627/015 -- a series per kind and financial year, within GST's 16 characters. Unique among the venues, as invoice numbers are. Required to issue an invoice.
+	InvoicePrefix *string `gorm:"column:invoice_prefix;uniqueIndex" json:"invoice_prefix,omitempty"`
 	// Back-relation: Space records that reference this via venue_id.
 	Spaces []Space `gorm:"foreignKey:VenueID" json:"spaces,omitempty"`
 }

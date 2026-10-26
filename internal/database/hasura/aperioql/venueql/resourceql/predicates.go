@@ -20,18 +20,19 @@ import (
 // Filter fields for VenueResource. Build predicates like Address.Eq(v) and combine
 // them with And/Or/Not.
 var (
-	Address      = graphql.JSONField{Col: "address"}
-	CreateTime   = graphql.StringField{Col: "createTime"}
-	CurrencyCode = graphql.StringField{Col: "currencyCode"}
-	DisplayName  = graphql.StringField{Col: "displayName"}
-	Etag         = graphql.StringField{Col: "etag"}
-	Gst          = graphql.JSONField{Col: "gst"}
-	HotelInfo    = graphql.JSONField{Col: "hotelInfo"}
-	Id           = graphql.StringField{Col: "id"}
-	Kind         = graphql.StringField{Col: "kind"}
-	Name         = graphql.StringField{Col: "name"}
-	TimeZone     = graphql.StringField{Col: "timeZone"}
-	UpdateTime   = graphql.StringField{Col: "updateTime"}
+	Address       = graphql.JSONField{Col: "address"}
+	CreateTime    = graphql.StringField{Col: "createTime"}
+	CurrencyCode  = graphql.StringField{Col: "currencyCode"}
+	DisplayName   = graphql.StringField{Col: "displayName"}
+	Etag          = graphql.StringField{Col: "etag"}
+	Gst           = graphql.JSONField{Col: "gst"}
+	HotelInfo     = graphql.JSONField{Col: "hotelInfo"}
+	Id            = graphql.StringField{Col: "id"}
+	InvoicePrefix = graphql.StringField{Col: "invoicePrefix"}
+	Kind          = graphql.StringField{Col: "kind"}
+	Name          = graphql.StringField{Col: "name"}
+	TimeZone      = graphql.StringField{Col: "timeZone"}
+	UpdateTime    = graphql.StringField{Col: "updateTime"}
 )
 
 // And matches rows satisfying every predicate.

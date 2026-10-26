@@ -36,6 +36,8 @@ type CreateInput struct {
 	HotelInfo json.RawMessage `json:"hotelInfo,omitzero"`
 	// Id sets the "id" column (required).
 	Id string `json:"id"`
+	// InvoicePrefix sets the "invoicePrefix" column; the zero value is omitted (column default / NULL).
+	InvoicePrefix string `json:"invoicePrefix,omitzero"`
 	// Kind sets the "kind" column; the zero value is omitted (column default / NULL).
 	Kind string `json:"kind,omitzero"`
 	// Name sets the "name" column (required).
@@ -64,6 +66,8 @@ type UpdateInput struct {
 	HotelInfo graphql.Nullable[json.RawMessage] `json:"hotelInfo"`
 	// Update the 'id' column in the 'venue_resource' collection.
 	Id graphql.Nullable[string] `json:"id"`
+	// Update the 'invoice_prefix' column in the 'venue_resource' collection.
+	InvoicePrefix graphql.Nullable[string] `json:"invoicePrefix"`
 	// Update the 'kind' column in the 'venue_resource' collection.
 	Kind graphql.Nullable[string] `json:"kind"`
 	// Update the 'name' column in the 'venue_resource' collection.

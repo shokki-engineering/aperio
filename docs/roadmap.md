@@ -62,15 +62,15 @@ service requests (pantry, housekeeping) inside the venue.
 |---|---|---|---|
 | Schema (protos) | Done | 7 packages, 28 files, lint-clean (buf, api-linter) | `Space` base price and tax; `SendQuoteRequest.ttl` |
 | Generated layer | Done | models, stores, repositories, caches, Hasura client, Prisma schema, AIP services, MCP tools | MCP schemas inline everything (`$defs` fix) |
-| Database | Done | Prisma migrations, 19 tables in 7 schemas, live round-trip tests (gorm + Hasura) | `invoice_prefix` migration pending (see below) |
+| Database | Done | Prisma migrations (3), 19 tables in 7 schemas, live round-trip tests (gorm + Hasura) | -- |
 | Hasura DDN | Done (dev) | 85 metadata files, local engine | permissions / roles, production deploy |
 | freebusy connection | Done | `internal/engine`: availability, book, cancel, calendar notes | webhooks in, reconciliation, lead holds |
 | Bookings | Done | stays and sessions booked in freebusy with compensation; state methods; event cancel | holding the hall when a quote is accepted (sessions have no times yet) |
 | Calendars | Done (untested live) | notes on freebusy calendars; signed `.ics` feeds in freebusy; `cmd/aperio-calendar` prints links | a run against a real freebusy; public HTTPS |
 | Pricing | Done | seasons, price rules, `CalculatePrice`, GST per line | spaces need fixed-price rules (no base price) |
 | Quotes | Done | priced drafts, Send, Decline, Revise, Accept (makes event + stay, wins lead) | expiry job; PDF proposal |
-| Invoices (GST) | In progress | proto; `Venue.invoice_prefix` added | numbering, CGST/SGST/IGST, Issue/Cancel/Credit, e-invoice IRN |
-| Payments | Not started | proto (any currency, exchange rate, gateway ref) | gateway, webhooks, refunds, advance confirming a booking, invoice paid/due |
+| Invoices (GST) | Done | `internal/service/billing`: CGST/SGST/IGST per line, rupee rounding, series per venue, kind and year, Issue / Cancel / Credit; live test | raising from a quote, e-invoice IRN, paid / due from payments |
+| Payments | In progress | `internal/service/billing`: any currency at an exchange rate, paid / due and PAID on invoices, an advance confirming its booking, `Settle` for a gateway's webhook (idempotent), Refund (through the gateway) and Void; live test | a gateway adapter (signature check, webhook route, payment links), cheque clearing, receipt vouchers |
 | CRM (leads, contacts) | Generated only | standard methods | lead hold in freebusy, follow-ups, lost reasons flow, dedupe contacts |
 | Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
 | Service requests | Generated only | proto with event option | state methods, notifying staff (pantry, housekeeping), charges to a booking |
@@ -85,7 +85,7 @@ service requests (pantry, housekeeping) inside the venue.
 Each milestone ends with something a person can use. Order matters: money
 before channels, a running server before anyone outside can use any of it.
 
-### M1 -- Billing: GST invoices (in progress)
+### M1 -- Billing: GST invoices (done, 27 October 2026)
 
 - `Venue.invoice_prefix` (done in the proto): series `SBR/2627/0042` for tax
   invoices, `SBR/CN2627/007` credit notes, `SBR/PF2627/015` proformas; gap-
@@ -97,19 +97,25 @@ before channels, a running server before anyone outside can use any of it.
 - `IssueInvoice` numbers and dates it in the venue's time zone (retrying on
   a number clash), `CancelInvoice` keeps the number used, `CreditInvoice`
   drafts a credit note that `corrects` it. Only drafts are edited or deleted.
-- Raising an invoice from an accepted quote.
-- Exit: a live test issuing, cancelling and crediting, with the series and
-  the GST split checked.
+- Exit, met: a live test issuing, cancelling and crediting, with the series
+  and the GST split checked (`internal/service/billing`).
+- Left for later: raising an invoice from an accepted quote (quote discount
+  lines must become line discounts first); the e-invoice IRN; `paid` and
+  `due` from payments (M2).
 
-### M2 -- Payments and the money loop
+### M2 -- Payments and the money loop (in progress)
 
-- A payment gateway for Indian cards and UPI (Razorpay or Cashfree; decide)
-  and its webhook, verified by signature; idempotent on the gateway's id.
-- Any currency: `exchange_rate` and `base_amount` in the venue's currency.
-- An advance confirms its booking (PENDING -> CONFIRMED, TENTATIVE ->
-  CONFIRMED); `paid` and `due` on the invoice follow payments and refunds.
-- `RefundPayment`, `VoidPayment`; a receipt voucher for an advance (GST on
-  advances).
+- Done: recording payments in any currency (`base_amount` at
+  `exchange_rate`); `paid`, `due` and PAID on the invoice, summed afresh
+  from its payments; the first receipt confirming a PENDING stay or a
+  TENTATIVE event; a `Gateway` interface and `Settle(outcome)` for its
+  webhook, idempotent on (gateway, gateway_reference); `RefundPayment`
+  through the gateway, `VoidPayment` for anything else.
+- Left: a gateway adapter for Indian cards and UPI (Razorpay or Cashfree;
+  decide) -- its webhook route and signature check, payment links -- and
+  Stripe for foreign cards if wanted; clearing a cheque (the API has no
+  method that moves a PENDING cheque to SUCCEEDED -- a proto change).
+- A receipt voucher for an advance (GST on advances).
 - Exit: quote -> accept -> advance paid online -> booking confirmed ->
   invoice issued and paid, end to end in one test.
 
@@ -242,3 +248,8 @@ For every feature:
 - Pricing and quotes: `internal/pricing`, `internal/service/selling` --
   seasons, rules, GST, quotes through Send / Decline / Revise / Accept;
   unit and live tests.
+- GST invoices: `internal/service/billing` -- CGST/SGST/IGST, numbering
+  (`Venue.invoice_prefix`, migration `20261026190511_invoice_prefix`),
+  Issue / Cancel / Credit; live test.
+- Payments: any currency, invoice paid / due, advance confirms the booking,
+  gateway settle / refund, void; live test.

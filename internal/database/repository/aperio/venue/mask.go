@@ -76,4 +76,7 @@ func applyVenueMask(merged, in *venuepbv1.Venue, paths []string) {
 	if repox.GroupTouched(paths, "hotel_info") {
 		merged.HotelInfo = in.GetHotelInfo()
 	}
+	if repox.InMask(paths, "invoice_prefix") {
+		merged.InvoicePrefix = in.GetInvoicePrefix()
+	}
 }

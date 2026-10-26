@@ -220,6 +220,7 @@ func venueToCreateInput(in *venuepbv1.Venue) resourceql.CreateInput {
 	ci.CurrencyCode = in.GetCurrencyCode()
 	ci.Gst = docToJSON(in.GetGst())
 	ci.HotelInfo = docToJSON(in.GetHotelInfo())
+	ci.InvoicePrefix = in.GetInvoicePrefix()
 	return ci
 }
 
@@ -236,6 +237,11 @@ func venueToUpdatePatch(merged *venuepbv1.Venue) resourceql.UpdateInput {
 	patch.CurrencyCode = graphql.Value(merged.GetCurrencyCode())
 	patch.Gst = graphql.Value(docToJSON(merged.GetGst()))
 	patch.HotelInfo = graphql.Value(docToJSON(merged.GetHotelInfo()))
+	if v := merged.GetInvoicePrefix(); v != "" {
+		patch.InvoicePrefix = graphql.Value(v)
+	} else {
+		patch.InvoicePrefix = graphql.Null[string]()
+	}
 	return patch
 }
 
@@ -254,6 +260,7 @@ func venueFromRow(row *resourceql.VenueResource) *venuepbv1.Venue {
 	out.CurrencyCode = row.CurrencyCode
 	out.Gst = jsonToDoc[typepbv1.Gst](&row.Gst)
 	out.HotelInfo = jsonToDoc[types.HotelInfo](row.HotelInfo)
+	out.InvoicePrefix = repox.Deref(row.InvoicePrefix)
 	out.Etag = repox.Deref(row.Etag)
 	out.CreateTime = strToTs(row.CreateTime)
 	out.UpdateTime = strToTs(row.UpdateTime)

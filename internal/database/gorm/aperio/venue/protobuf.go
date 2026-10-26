@@ -156,6 +156,7 @@ func VenueToProto(m *Venue) *venuepbv1.Venue {
 	out.CreateTime = goValToTs(m.CreateTime)
 	out.UpdateTime = goValToTs(m.UpdateTime)
 	out.Etag = fromPtr(m.Etag)
+	out.InvoicePrefix = fromPtr(m.InvoicePrefix)
 	return out
 }
 
@@ -176,6 +177,7 @@ func VenueFromProto(pb *venuepbv1.Venue) *Venue {
 	m.Gst = docToJSON(pb.GetGst())
 	m.HotelInfo = docToJSON(pb.GetHotelInfo())
 	m.Etag = toPtr(pb.GetEtag())
+	m.InvoicePrefix = toPtr(pb.GetInvoicePrefix())
 	return m
 }
 
