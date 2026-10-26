@@ -1,0 +1,92 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# aperio's production defaults, compiled into the binary. Secrets are blank:
+# a deployment sets them through APERIO_<SECTION>__<KEY> variables, e.g.
+# APERIO_DATABASE__POSTGRES__PASSWORD. The development profile,
+# aperio.dev.toml, is layered over this one (see load.go).
+
+[app]
+name = "aperio"
+version = "v0.1.0"
+description = "Venue backend: stays, events, leads, quotes, GST invoices and payments, booked through freebusy."
+
+[server]
+# development | debug | staging | production
+environment = "production"
+enable_http = true
+enable_health = true
+enable_mcp = true
+experimental_http3 = false
+# How long Stop waits for HTTP and gRPC to drain; 0 takes runtime-go's default.
+shutdown_timeout_seconds = 20
+
+# Beside freebusy's 50051 / 8080 / 8081, so both run on one machine.
+[server.grpc]
+host = "0.0.0.0"
+port = 50061
+
+[server.http]
+host = "0.0.0.0"
+port = 8090
+
+[server.mcp]
+host = "0.0.0.0"
+port = 8091
+transport = "streamable-http"
+# Every service's MCP tools together, at one path an agent connects to.
+path = "/mcp"
+stateless = true
+
+# Browsers on other origins calling the HTTP port (the REST gateway). Off.
+[server.cors]
+enabled = false
+allowed_origins = []
+allowed_methods = []
+allowed_headers = []
+exposed_headers = []
+allow_credentials = false
+max_age_seconds = 600
+
+[server.tls]
+cert_file = ""
+key_file = ""
+
+[database]
+# gorm: Postgres directly; hasura: through the DDN engine.
+provider = "gorm"
+
+[database.postgres]
+host = "127.0.0.1"
+port = 5432
+user = "postgres"
+password = ""
+dbname = "aperio"
+sslmode = "require"
+timezone = "UTC"
+max_open_conns = 25
+max_idle_conns = 25
+conn_max_lifetime_minutes = 30
+conn_max_idle_minutes = 5
+plan_cache_mode = "force_custom_plan"
+
+[database.hasura]
+url = ""
+admin_secret = ""
+
+[cache]
+enabled = false
+address = "127.0.0.1:6379"
+username = ""
+password = ""
+database = 0
+pool_size = 0
+prefix = "aperio"
+
+[freebusy]
+endpoint = ""
+insecure = false
+ca_file = ""
+timeout_seconds = 10
+public_url = ""
+feeds_secret = ""

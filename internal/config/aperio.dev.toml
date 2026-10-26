@@ -1,0 +1,46 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The development profile, layered over aperio.release.toml: the local stack
+# (`just db up`, `just hasura` and a freebusy from its own checkout). Read
+# from this file in a checkout, so edits apply without a rebuild.
+
+[app]
+name = "aperio"
+version = "v0.1.0"
+
+[server]
+environment = "debug"
+enable_http = true
+enable_health = true
+enable_mcp = true
+
+[database]
+provider = "gorm"
+
+[database.postgres]
+host = "127.0.0.1"
+port = 5433
+user = "postgres"
+password = "postgrespassword"
+dbname = "aperio"
+sslmode = "disable"
+timezone = "UTC"
+
+[database.hasura]
+url = "http://localhost:3281/graphql"
+
+[cache]
+enabled = false
+address = "127.0.0.1:6379"
+prefix = "aperio-dev"
+
+# freebusy's dev server (`just run` in its checkout) serves TLS with mkcert's
+# certificate: point ca_file at `$(mkcert -CAROOT)/rootCA.pem`, or set
+# insecure when it runs without TLS.
+[freebusy]
+endpoint = "localhost:50051"
+insecure = false
+ca_file = ""
+public_url = "http://localhost:8080"
+feeds_secret = ""

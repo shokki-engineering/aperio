@@ -21,7 +21,7 @@ require (
 	github.com/the-protobuf-project/runtime-go/network v0.0.0-20261026065720-541ce4d35466
 	github.com/the-protobuf-project/service v0.1.0
 	github.com/the-protobuf-project/store v1.6.5
-	github.com/the-protobuf-project/telemetry/telemetry-go v0.0.0-20261021175734-19bcab17b113
+	github.com/the-protobuf-project/telemetry/telemetry-go v0.0.0-20261023093202-d14384d7957b
 	google.golang.org/genproto v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/genproto/googleapis/api v0.0.0-20261019180522-ce908d29299b
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b
@@ -84,7 +84,9 @@ require (
 	github.com/knadh/koanf/parsers/toml v0.1.0 // indirect
 	github.com/knadh/koanf/parsers/yaml v1.1.1 // indirect
 	github.com/knadh/koanf/providers/env v1.1.0 // indirect
+	github.com/knadh/koanf/providers/env/v2 v2.0.2 // indirect
 	github.com/knadh/koanf/providers/file v1.2.1 // indirect
+	github.com/knadh/koanf/providers/rawbytes v1.0.1 // indirect
 	github.com/knadh/koanf/v2 v2.4.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.4.1 // indirect
 	github.com/mattn/go-colorable v0.1.16 // indirect
@@ -107,8 +109,8 @@ require (
 	github.com/segmentio/encoding v0.5.4 // indirect
 	github.com/stretchr/testify v1.12.1 // indirect
 	github.com/the-protobuf-project/resourcename v0.0.0-20260616190751-3e187a5d3da5 // indirect
-	github.com/the-protobuf-project/runtime-go/observability v0.0.0-20261021171349-70cd275896ec // indirect
-	github.com/the-protobuf-project/runtime-go/telemetry v0.0.0-20261021141431-6d4588022f2b // indirect
+	github.com/the-protobuf-project/runtime-go/observability v0.0.0-20261026065720-541ce4d35466 // indirect
+	github.com/the-protobuf-project/runtime-go/telemetry v0.0.0-20261026065720-541ce4d35466 // indirect
 	github.com/xo/terminfo v1.2.0 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
@@ -131,6 +133,7 @@ require (
 	go.opentelemetry.io/proto/otlp v1.11.1 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.58.0 // indirect
+	golang.org/x/crypto/x509roots/fallback v0.0.0-20261020153306-9f2b28d4331a // indirect
 	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e // indirect
 	golang.org/x/mod v0.42.0 // indirect
 	golang.org/x/net v0.61.0 // indirect
