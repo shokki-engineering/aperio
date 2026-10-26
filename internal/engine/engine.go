@@ -1,0 +1,82 @@
+// Copyright 2026 Srikanth K.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+// Package engine is aperio's connection to freebusy, the engine that knows
+// what is free: whether a venue's rooms or spaces are free for a window,
+// taking them, and giving them back.
+//
+// aperio keeps the booking -- its guests, rooms, menus and money -- and
+// freebusy keeps the time: every reservation and session aperio takes is a
+// freebusy reservation first, named on aperio's record. Engine is the little
+// of freebusy aperio uses, so the booking service can be tested without one
+// (a fake Engine) and served with one (Client).
+package engine
+
+import (
+	"context"
+	"errors"
+	"time"
+)
+
+// ErrUnavailable is returned by Book when the resources are not free for the
+// window: taken by another booking, blocked, or outside their opening hours.
+var ErrUnavailable = errors.New("engine: not available")
+
+// Engine is what aperio asks of freebusy.
+type Engine interface {
+	// Free reports whether quantity of resources are free for the whole of
+	// window. It takes nothing.
+	Free(ctx context.Context, resources []string, window Window, quantity int32) (bool, error)
+
+	// Book takes quantity of resources for window and returns the freebusy
+	// reservation holding them. It is idempotent on b.Key: a retry with the
+	// same key returns the reservation the first call made rather than taking
+	// more. ErrUnavailable when they are not free.
+	Book(ctx context.Context, b Booking) (string, error)
+
+	// Cancel cancels a freebusy reservation, freeing its resources, and
+	// takes its Note off their calendars. One that is already cancelled, or
+	// gone, is not an error.
+	Cancel(ctx context.Context, reservation, reason string) error
+
+	// Note puts n on the calendar of every resource reservation took, or
+	// replaces the one already there: who the booking is for, for whoever
+	// subscribes to the calendar. It blocks nothing -- the reservation does.
+	Note(ctx context.Context, reservation string, n Note) error
+}
+
+// Note is what a booking shows on its resources' calendars.
+type Note struct {
+	Summary     string
+	Description string
+	Location    string
+	// Window is when; with AllDay, only its dates count, [Start, End) days.
+	Window Window
+	AllDay bool
+}
+
+// Window is the span of time a booking takes, [Start, End).
+type Window struct {
+	Start, End time.Time
+}
+
+// Booking is one Book: what to take, for how long, and the key that makes a
+// retry find it.
+type Booking struct {
+	// Key identifies the booking across retries: an aperio record's name and
+	// the line of it, e.g. "venues/v/reservations/r#rooms/0".
+	Key string
+
+	// Resources are the candidates: Quantity of them are taken.
+	Resources []string
+
+	// Window is when.
+	Window Window
+
+	// Quantity is how many of Resources.
+	Quantity int32
+
+	// Attributes are kept on the freebusy reservation, naming the aperio
+	// record it holds the time for.
+	Attributes map[string]any
+}

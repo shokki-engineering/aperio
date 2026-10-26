@@ -1,0 +1,244 @@
+# aperio roadmap
+
+Where aperio is, what is left to build end to end, and in what order. Status
+is as of 26 October 2026. Update this file when a milestone lands or a
+decision is made; it is the one place the plan lives.
+
+## What aperio is
+
+One deployable backend for the venues aperio sells -- a beach resort (rooms,
+any-currency payments) and a wedding and event hall -- on gRPC, REST and MCP:
+stays, events and their sessions, leads, quotes for plate menus and fixed
+packages, seasonal pricing, GST invoices, payments, building documents, and
+service requests (pantry, housekeeping) inside the venue.
+
+## Architecture: two systems, two databases
+
+```
+                 guests, staff, agents, channels (Booking.com, Airbnb, MakeMyTrip)
+                                    |
+                     gRPC / REST / MCP (one aperio deployable)
+                                    |
+   +--------------------------------v---------------------------------+
+   | aperio                                                           |
+   |  hand-written: hooks and custom methods (internal/service/*),    |
+   |  pricing, calendar notes, the engine client                      |
+   |  generated:    AIP services, repositories, caches, Hasura client |
+   +-----------+-------------------------------------+----------------+
+               | gorm (writes)  /  Hasura DDN (reads)|  freebusy-go SDK (gRPC)
+   +-----------v-----------+              +----------v-----------------+
+   | aperio Postgres       |              | freebusy                   |
+   | schemas: venue, crm,  |              | the availability engine:   |
+   | booking, sales,       |   names only | resources, calendars,      |
+   | finance, document,    | <----------> | holds, reservations,       |
+   | operations (19 tables)|  (soft refs) | CalDAV and .ics feeds,     |
+   | migrations: Prisma    |              | webhooks; its own Postgres |
+   | API: Hasura DDN :3281 |              | and its own Hasura         |
+   +-----------------------+              +----------------------------+
+```
+
+- **aperio owns the business**: who is coming, what they pay, what they eat,
+  what was quoted and invoiced. Its schema is aperio's own protos
+  (`protobuf/aperio`), in the OpenTravel vocabulary of protobuf-ota whose
+  types it imports; OpenTravel structures are stored whole as JSONB
+  documents.
+- **freebusy owns time**: whether a room or a hall is free, and taking it.
+  Every stay and session is a freebusy hold made into a reservation first;
+  aperio keeps only the names (`Reservation.freebusy_reservations`,
+  `Session.freebusy_reservation`, `Space.resources`).
+- **No shared database and no cross-database foreign keys.** The two agree
+  through the API: idempotent booking keys, compensation when a step fails
+  (`internal/service/bookings`), and -- still to build -- webhooks and a
+  reconciler for drift.
+- **Hasura DDN** puts a typed GraphQL API over aperio's database
+  (connector `aperio_pgsql`, engine `:3281`), which the generated
+  repositories read through (`aperioql`) and which reporting and the
+  frontend can query directly. freebusy keeps its own Hasura over its own
+  database.
+
+## Status at a glance
+
+| Area | Status | What exists | What is missing |
+|---|---|---|---|
+| Schema (protos) | Done | 7 packages, 28 files, lint-clean (buf, api-linter) | `Space` base price and tax; `SendQuoteRequest.ttl` |
+| Generated layer | Done | models, stores, repositories, caches, Hasura client, Prisma schema, AIP services, MCP tools | MCP schemas inline everything (`$defs` fix) |
+| Database | Done | Prisma migrations, 19 tables in 7 schemas, live round-trip tests (gorm + Hasura) | `invoice_prefix` migration pending (see below) |
+| Hasura DDN | Done (dev) | 85 metadata files, local engine | permissions / roles, production deploy |
+| freebusy connection | Done | `internal/engine`: availability, book, cancel, calendar notes | webhooks in, reconciliation, lead holds |
+| Bookings | Done | stays and sessions booked in freebusy with compensation; state methods; event cancel | holding the hall when a quote is accepted (sessions have no times yet) |
+| Calendars | Done (untested live) | notes on freebusy calendars; signed `.ics` feeds in freebusy; `cmd/aperio-calendar` prints links | a run against a real freebusy; public HTTPS |
+| Pricing | Done | seasons, price rules, `CalculatePrice`, GST per line | spaces need fixed-price rules (no base price) |
+| Quotes | Done | priced drafts, Send, Decline, Revise, Accept (makes event + stay, wins lead) | expiry job; PDF proposal |
+| Invoices (GST) | In progress | proto; `Venue.invoice_prefix` added | numbering, CGST/SGST/IGST, Issue/Cancel/Credit, e-invoice IRN |
+| Payments | Not started | proto (any currency, exchange rate, gateway ref) | gateway, webhooks, refunds, advance confirming a booking, invoice paid/due |
+| CRM (leads, contacts) | Generated only | standard methods | lead hold in freebusy, follow-ups, lost reasons flow, dedupe contacts |
+| Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
+| Service requests | Generated only | proto with event option | state methods, notifying staff (pantry, housekeeping), charges to a booking |
+| Channels | Not started | `Channel` enum, OTA types in the schema | Booking.com (OTA), Airbnb, MakeMyTrip adapters; rates and inventory push |
+| Server | Not started | -- | `cmd/aperio`: HybridServer, config, telemetry, health |
+| Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
+| Deploy / CI | Not started | compose (Postgres), Hasura dev project | Dockerfile, CI (lint, gen check, tests), release |
+| Agents (MCP) | Generated only | MCP tools per method | the `$defs` size fix, task-level tools ("today's arrivals") |
+
+## Milestones
+
+Each milestone ends with something a person can use. Order matters: money
+before channels, a running server before anyone outside can use any of it.
+
+### M1 -- Billing: GST invoices (in progress)
+
+- `Venue.invoice_prefix` (done in the proto): series `SBR/2627/0042` for tax
+  invoices, `SBR/CN2627/007` credit notes, `SBR/PF2627/015` proformas; gap-
+  free per venue, kind and financial year (April to March), at most 16
+  characters.
+- Draft invoices priced on create and edit: taxable value per line (less its
+  discount), CGST + SGST when the place of supply is the venue's state, IGST
+  otherwise; the total rounded to the rupee.
+- `IssueInvoice` numbers and dates it in the venue's time zone (retrying on
+  a number clash), `CancelInvoice` keeps the number used, `CreditInvoice`
+  drafts a credit note that `corrects` it. Only drafts are edited or deleted.
+- Raising an invoice from an accepted quote.
+- Exit: a live test issuing, cancelling and crediting, with the series and
+  the GST split checked.
+
+### M2 -- Payments and the money loop
+
+- A payment gateway for Indian cards and UPI (Razorpay or Cashfree; decide)
+  and its webhook, verified by signature; idempotent on the gateway's id.
+- Any currency: `exchange_rate` and `base_amount` in the venue's currency.
+- An advance confirms its booking (PENDING -> CONFIRMED, TENTATIVE ->
+  CONFIRMED); `paid` and `due` on the invoice follow payments and refunds.
+- `RefundPayment`, `VoidPayment`; a receipt voucher for an advance (GST on
+  advances).
+- Exit: quote -> accept -> advance paid online -> booking confirmed ->
+  invoice issued and paid, end to end in one test.
+
+### M3 -- A running server
+
+- `cmd/aperio`: runtime-go HybridServer serving every service on gRPC, REST
+  (gateway) and MCP; config (koanf, as freebusy), structured logs, OTLP
+  traces, health and readiness.
+- Wiring: gorm and Hasura connections, the cache backend (Redis or
+  Dragonfly), the freebusy client, the sales -> bookings Booker.
+- Background jobs: expire sent quotes past `expire_time`; release lead holds;
+  reconcile with freebusy (below).
+- Dockerfile, compose for the whole stack (aperio, freebusy, both
+  Postgres, both Hasura, Redis), CI: `just lint`, a generated-code drift
+  check, unit and live tests against compose.
+- Exit: `docker compose up` gives a working aperio a frontend can call.
+
+### M4 -- Staying in step with freebusy
+
+- Subscribe to freebusy's WebhookService: a reservation cancelled or moved in
+  freebusy (by an operator, or over CalDAV) updates the aperio booking.
+- A reconciler that walks recent bookings and repairs or flags any whose
+  freebusy reservation is missing or different.
+- Lead holds: a lead's dates held in freebusy (`Lead.hold`) while it is
+  negotiated, released when it is won or lost.
+- Holding the hall on acceptance: an accepted event quote holds its spaces
+  for the event dates until sessions with times replace the hold.
+- Exit: cancelling in freebusy shows in aperio within a minute; a test that
+  breaks the link is caught by the reconciler.
+
+### M5 -- Auth and access
+
+- Staff identity (OIDC), roles (owner, front desk, sales, kitchen,
+  housekeeping, accounts) and per-venue access, enforced in the service
+  layer.
+- Guest-facing access for a quote or a booking by signed link.
+- Hasura roles mirroring them, so direct GraphQL reads see only what the
+  role may.
+- Exit: a kitchen login sees service requests and dietary needs, not
+  invoices.
+
+### M6 -- Operations inside the venue
+
+- Service requests: Acknowledge / Start / Complete / Cancel, with quantities
+  ("3 black coffees to room 204"); notifications to the department (push,
+  WhatsApp); charges posted to the booking.
+- Documents: uploads to object storage (S3-compatible), signed download
+  URLs, expiry reminders for licences and certificates.
+- Daily views: arrivals, departures, in-house guests, today's sessions with
+  covers and dietary counts for the kitchen.
+
+### M7 -- Channels
+
+- Booking.com over OTA (the schema already speaks it): rates, availability
+  and restrictions out (`OTA_HotelRateAmountNotif`, `OTA_HotelAvailNotif`),
+  reservations in (`OTA_HotelResNotif`), mapped to aperio stays booked in
+  freebusy.
+- Airbnb and MakeMyTrip through their APIs or a channel manager (decide);
+  one adapter interface for all.
+- Rates pushed from price rules, so a season changes every channel at once.
+- Exit: a booking made on Booking.com appears in aperio, takes the room in
+  freebusy, and closes it on the other channels.
+
+### M8 -- Agents and reporting
+
+- MCP: emit shared `$defs` instead of inlining whole schemas (today a list
+  method's schema is enormous); add task tools -- today's arrivals, the
+  week's events, quote a wedding for 300 in December.
+- Reports over Hasura: occupancy, revenue by season, GST returns (GSTR-1
+  data), lead conversion.
+- Proposals and invoices as PDFs.
+
+## Gaps and risks
+
+- **Two databases drift.** Compensation covers failures inside a call, not
+  changes made in freebusy directly. Until M4, an operator cancelling in
+  freebusy leaves the aperio booking looking held.
+- **An accepted event does not hold its hall** until sessions with times are
+  added. Two quotes for the same date can both be accepted. (M4)
+- **Spaces have no price or tax.** A hall's hire or a room's night is priced
+  only by a fixed-price rule, and its quote line needs GST set by hand.
+- **Quote ttl is lost.** `Quote.ttl` is input-only and not stored, so every
+  sent quote stands 14 days.
+- **No auth.** Nothing can face a network before M5. freebusy's CalDAV is
+  unauthenticated too; only its signed `.ics` feeds are safe to expose.
+- **Document columns are NOT NULL.** The database made `Venue.gst` and
+  `address` NOT NULL, so every venue must carry them; check how the store
+  generates nullability for document columns before an optional one bites.
+- **MCP size.** Whole-schema inlining makes list tools huge for an agent.
+- **The SDK path.** aperio uses `oh-tarnished/freebusy-go-sdk` through a
+  `replace`; fix the SDK's module path to drop it, and drop Organizations and
+  Sites from its services.
+
+## Decisions to make
+
+| Decision | Options | Needed by |
+|---|---|---|
+| Payment gateway | Razorpay, Cashfree, Stripe (for foreign cards) | M2 |
+| `Space` base price and tax | add to the proto, or keep fixed-price rules | M1 |
+| `SendQuoteRequest.ttl` | add it, or keep 14 days | M3 |
+| Channel strategy for Airbnb / MakeMyTrip | direct APIs, or a channel manager | M7 |
+| Notifications | WhatsApp Business, push, email | M6 |
+| Identity provider | Google Workspace, Keycloak, Clerk | M5 |
+| Cache backend | Redis, Dragonfly | M3 |
+
+## Definition of done
+
+For every feature:
+
+- Protos lint clean (`just lint`); generated code regenerated (`just gen`),
+  never edited; schema changes as Prisma migrations (`just db migrate`) and
+  Hasura metadata regenerated (`just hasura regen`).
+- Business logic only in hooks and custom methods; files under 200 lines,
+  documented.
+- Unit tests for pure logic, live tests against the dev database for flows.
+- This roadmap updated.
+
+## Done so far
+
+- Schema: aperio's protos over OpenTravel types; documents mode (protokit,
+  protoc-gen-store, protoc-gen-cache fixes) took the store from 1,660
+  tables to 19 and Hasura from 6,647 files to 85.
+- Freebusy: `internal/engine` (check, hold -> reserve, cancel, notes);
+  freebusy's read-only signed `.ics` feeds (`internal/caldav/feed.go` in
+  freebusy).
+- Bookings: `internal/service/bookings` -- stays, sessions, events, state
+  methods, compensation; live tests.
+- Calendars: notes with guest count, names, emails, phones, address, diet and
+  requests on the booked rooms' calendars; `cmd/aperio-calendar`.
+- Pricing and quotes: `internal/pricing`, `internal/service/selling` --
+  seasons, rules, GST, quotes through Send / Decline / Revise / Accept;
+  unit and live tests.

@@ -72,7 +72,13 @@ type Venue struct {
 	// Last-modification timestamp.
 	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,12,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag string `protobuf:"bytes,12,opt,name=etag,proto3" json:"etag,omitempty"`
+	// The prefix of the venue's invoice series, 1-4 capitals or digits, e.g.
+	// "SBR": its tax invoices are numbered SBR/2627/0042, its credit notes
+	// SBR/CN2627/007, its proformas SBR/PF2627/015 -- a series per kind and
+	// financial year, within GST's 16 characters. Unique among the venues, as
+	// invoice numbers are. Required to issue an invoice.
+	InvoicePrefix string `protobuf:"bytes,13,opt,name=invoice_prefix,json=invoicePrefix,proto3" json:"invoice_prefix,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -180,6 +186,13 @@ func (x *Venue) GetUpdateTime() *timestamppb.Timestamp {
 func (x *Venue) GetEtag() string {
 	if x != nil {
 		return x.Etag
+	}
+	return ""
+}
+
+func (x *Venue) GetInvoicePrefix() string {
+	if x != nil {
+		return x.InvoicePrefix
 	}
 	return ""
 }
@@ -432,7 +445,7 @@ var File_aperio_venue_v1_venue_proto protoreflect.FileDescriptor
 
 const file_aperio_venue_v1_venue_proto_rawDesc = "" +
 	"\n" +
-	"\x1baperio/venue/v1/venue.proto\x12\x0faperio.venue.v1\x1a\x1aaperio/type/v1/types.proto\x1a\x1baperio/venue/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1acache/v1/annotations.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/type/postal_address.proto\x1a9protobuf/opentravel/hotel/hotel/v1/types/hotel_info.proto\x1a\x1astore/v1/annotations.proto\"\xd1\x05\n" +
+	"\x1baperio/venue/v1/venue.proto\x12\x0faperio.venue.v1\x1a\x1aaperio/type/v1/types.proto\x1a\x1baperio/venue/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1acache/v1/annotations.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/type/postal_address.proto\x1a9protobuf/opentravel/hotel/hotel/v1/types/hotel_info.proto\x1a\x1astore/v1/annotations.proto\"\x9d\x06\n" +
 	"\x05Venue\x120\n" +
 	"\x04name\x18\x01 \x01(\tB\x1c\xe2A\x01\b\xbaH\x15\xd8\x01\x01r\x102\x0e^venues/[^/]+$R\x04name\x127\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x124\n" +
@@ -449,7 +462,8 @@ const file_aperio_venue_v1_venue_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\f \x01(\tB\x04\xe2A\x01\x01R\x04etag:R\xeaA6\n" +
+	"\x04etag\x18\f \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12J\n" +
+	"\x0einvoice_prefix\x18\r \x01(\tB#\xe2A\x01\x01\xbaH\x16\xd8\x01\x01r\x112\x0f^[A-Z0-9]{1,4}$ڵ\x18\x02\x18\x01R\rinvoicePrefix:R\xeaA6\n" +
 	"\x15aperio.venue.v1/Venue\x12\x0evenues/{venue}*\x06venues2\x05venue\xca\xf3\x18\x02\x18\x01\x8a\xb2\x19\x0f\b\x01\x1a\x03\b\xd8\x04:\x06\b\x01\x12\x02\b<J\x04\b\x04\x10\x05R\x04site\"\x98\x05\n" +
 	"\x05Space\x12=\n" +
 	"\x04name\x18\x01 \x01(\tB)\xe2A\x01\b\xbaH\"\xd8\x01\x01r\x1d2\x1b^venues/[^/]+/spaces/[^/]+$R\x04name\x127\n" +
