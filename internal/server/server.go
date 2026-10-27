@@ -129,6 +129,7 @@ func (s *Server) Stop() error {
 		return fmt.Errorf("error closing hybrid server: %w", err)
 	}
 	s.services.waitNotify()
+	s.services.Stays.WaitNotes()
 	return errors.Join(s.services.CloseSearch(context.Background()), s.freebusy.Close(), s.services.Conn.Close())
 }
 

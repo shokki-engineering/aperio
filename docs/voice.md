@@ -24,7 +24,7 @@ screens and integrations, and wrong for a conversation:
 | On a call, a tool must | The resource tools |
 |---|---|
 | take a few flat answers ("12 December, two nights, two adults") | take a whole `Reservation`, OpenTravel `room_stays` and `res_guests` inside |
-| be cheap to read into a voice model's context, which is re-sent every turn | are up to ~250 KB of schema each, 0.9 MB for all 108 |
+| be cheap to read into a voice model's context, which is re-sent every turn | are up to ~250 KB of schema each, 0.9 MB for all 109 |
 | do one thing a caller asks for ("is there a sea-view room") | do one thing a database does (create, update, list) |
 | answer in a sentence the agent can say | answer in a resource the agent must summarise, numbers and all |
 | never charge or book without the caller's spoken yes | take effect on the call |

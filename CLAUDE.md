@@ -54,10 +54,11 @@ they import.
   `internal/server/background.go`; each new `internal/config` section is
   added to `AppConfig`, `aperio.release.toml` and, when it validates,
   `load.go`.
-- Deployment: `Dockerfile` (targets `runtime` and `migrate`),
-  `deploy/compose` (`just stack`), `deploy/helm/aperio` (`just helm
-  check`). A new secret or setting goes into the chart's values, schema
-  and templates too.
+- Deployment: images are Bazel's (`deploy/image`, rules_oci; `just
+  image`): the binary alone on scratch, and the Prisma migrate image;
+  `bazel run //:gazelle` after adding a Go package. `deploy/compose`
+  (`just stack`), `deploy/helm/aperio` (`just helm check`). A new secret
+  or setting goes into the chart's values, schema and templates too.
 - Every hand-written file stays under 200 lines and is documented.
 
 ## Go imports

@@ -8,10 +8,12 @@ package stay
 
 import (
 	"context"
+	"time"
 
 	"github.com/shokki-engineering/aperio/internal/calendar"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
+	"google.golang.org/protobuf/proto"
 )
 
 // AfterUpdateReservation refreshes the stay's notes: its guests, contact or
@@ -20,6 +22,29 @@ func (h *hooks) AfterUpdateReservation(ctx context.Context, m *staypbv1.Reservat
 	h.noteStay(ctx, m)
 	return nil
 }
+
+// noteLater writes r's notes after the call that booked it has answered.
+// A note is best effort -- a failure is logged, and the stay's next edit
+// writes it again -- and writing one is a freebusy calendar event (a write
+// there, and its availability read model recomputed), which the booking
+// need not wait for. WaitNotes waits for those still being written.
+func (h *hooks) noteLater(ctx context.Context, r *staypbv1.Reservation) {
+	r, ctx = proto.Clone(r).(*staypbv1.Reservation), context.WithoutCancel(ctx)
+	h.notes.Add(1)
+	go func() {
+		defer h.notes.Done()
+		ctx, cancel := context.WithTimeout(ctx, noteTimeout)
+		defer cancel()
+		h.noteStay(ctx, r)
+	}()
+}
+
+// noteTimeout bounds writing one stay's notes in the background.
+const noteTimeout = 30 * time.Second
+
+// WaitNotes waits for the notes being written in the background: on
+// shutdown, and in tests that read a note right after a booking.
+func (s *Server) WaitNotes() { s.h.notes.Wait() }
 
 // noteStay notes each room line of r on the calendars of the rooms its
 // freebusy reservation took; line i was booked as freebusy reservation i.

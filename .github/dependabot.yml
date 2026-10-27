@@ -49,15 +49,14 @@ updates:
       actions:
         update-types: [minor, patch]
 
-  # The generated Prisma package. Its package.json is generated
-  # (protoc-gen-store): a bump here is overwritten by the next `just gen
-  # prisma` unless the generator moves too, so only security and major
-  # updates are worth a pull request.
+  # The migrate image's Prisma CLI (deploy/image/prisma): its lockfile is
+  # hand-owned and pins what tools/bazel/prisma.bzl downloads. After a bump,
+  # `just prisma-lock` and the schema engine hashes in MODULE.bazel move too.
+  # The generated package in protobuf/generated/prisma is never a target:
+  # it is protoc-gen-store's output, and CI's drift check fails on any edit
+  # to it -- newer versions there come from the generator.
   - package-ecosystem: npm
-    directory: /protobuf/generated/prisma/aperio
+    directory: /deploy/image/prisma
     schedule:
       interval: weekly
       day: monday
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]

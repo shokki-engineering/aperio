@@ -107,6 +107,11 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
 
 ### Changed
 
+- A stay's calendar notes are written after the booking answers, not
+  before: a note is best effort, and writing one is a freebusy calendar
+  event the booking need not wait for. Measured at 20 bookings a second,
+  ConfirmStay's p95 went from 32 to 17 ms and its p99 from 82 to 27 ms.
+
 - **Breaking:** the API is one service per part of the business: venue,
   catalog, pricing, guest, sales, stay, event, finance, operations,
   document and concierge (97 methods, was 111). Resource names and URLs are

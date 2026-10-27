@@ -108,6 +108,7 @@ func TestLiveReservationLifecycle(t *testing.T) {
 		t.Fatalf("freebusy reservations = %v, active %d; want 1", r.GetFreebusyReservations(), f.fb.Active())
 	}
 	held := r.GetFreebusyReservations()[0]
+	f.svc.WaitNotes() // the note is written after the booking answers
 	if n := f.fb.NoteOf(held); !n.AllDay || !strings.Contains(n.Summary, "Test Guest") || !strings.Contains(n.Summary, "2 rooms") {
 		t.Errorf("calendar note = %+v; want an all-day note naming the guest and 2 rooms", n)
 	}

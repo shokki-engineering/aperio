@@ -90,7 +90,7 @@ gRPC, REST and MCP (109 tools at :8091/mcp).
 | Auth | Done | OIDC (any issuer), six roles with a rule for every RPC, per-venue access, guests' signed links; gRPC, REST and MCP | Hasura roles (generator support); off until `[auth] issuer` is set |
 | Read models and search | Done | `stay.v1.StayNight` in Postgres with an optional OpenSearch copy (`[search] provider`), rebuilt and reindexed when empty | more read models as reports need them |
 | Deploy / CI | Done (not yet released) | images by Bazel (rules_oci: the server on scratch, the Prisma migrations on distroless Node; amd64 + arm64); Compose for the whole stack (`just stack up`); Helm chart verified on kind; CI: lint, build, unit, live (Postgres + Redis), generated-code drift, image, chart; release workflow (GHCR images and chart, signed); Dependabot | first tagged release; a production cluster |
-| Load (k6) | Done | `test/load`: staff reads, guest bookings through real freebusy holds, requests and MCP agents at once; smoke, day, stress and soak profiles with latency budgets. A busy day (80 req/s, 4 bookings/s) on the Compose stack: 0 errors, p95 under 40 ms everywhere; five times that (286 req/s average, 14 bookings/s): 0 errors, every budget kept, ConfirmStay p95 356 ms the first to slow | the breaking point (more than 5x); a run on production-sized hardware; k6 in CI against the stack |
+| Load (k6) | Done | `test/load`: staff reads, guest bookings through real freebusy holds, requests and MCP agents at once; smoke, day, stress and soak profiles with latency budgets. A busy day (80 req/s, 4 bookings/s) on the Compose stack: 0 errors, p95 under 40 ms everywhere; five times that (286 req/s average, 14 bookings/s): 0 errors, every budget kept, ConfirmStay p95 356 ms the first to slow (on one laptop, shared with k6 and both databases; alone at 20 bookings/s it is 17 ms since its calendar notes moved off the request path) | the breaking point (more than 5x); a run on production-sized hardware; k6 in CI against the stack |
 | Concierge / voice | In progress | the seven concierge methods with elicitation | event bookings beyond the enquiry; a LiveKit demo (M9) |
 | Agents (MCP) | Done | a task tool per service, each a few indexed reads: `SummarizeDay`, `SummarizeContact`, `SummarizeSessions`, `SummarizePipeline`, `SummarizeReceivables`, `SummarizeServiceRequests`; tools/list 0.9 MB | documents; reservation tools still ~250 KB |
 
@@ -148,7 +148,8 @@ before channels, a running server before anyone outside can use any of it.
 - Done: Redis list caches over venues, the catalog and pricing, moved on
   by every write; query tracing (the generated gorm plugin); the pool
   monitor; background jobs (quote expiry, the freebusy reconciler); the
-  Dockerfile (runtime and migrate images) and Compose for the whole stack;
+  images built with Bazel (rules_oci: the binary alone on scratch, and the
+  Prisma migrate image) and Compose for the whole stack;
   CI with a generated-code drift check. Exit met: `just stack up` gives an
   aperio a frontend can call (health, REST, MCP, CORS checked).
 
@@ -162,11 +163,6 @@ before channels, a running server before anyone outside can use any of it.
   `plugin/generator/schema_defs.go`). The booking service's tools/list went
   from 16.7 MB -- past the MCP SDK's 16 MB frame -- to 5 MB; all 7 services
   serve 108 tools.
-- Left: the cache backend (Redis or Dragonfly) wired into the generated
-  caches; query tracing (freebusy's generated `Instrument`); an image --
-  freebusy builds its with Bazel -- or a Dockerfile.
-- Background jobs: expire sent quotes past `expire_time`; release lead holds;
-  reconcile with freebusy (below).
 - Compose for the whole stack (aperio, freebusy, both Postgres, both
   Hasura, Redis); a generated-code drift check in CI.
 - Exit: `docker compose up` gives a working aperio a frontend can call.
@@ -298,25 +294,31 @@ before channels, a running server before anyone outside can use any of it.
 
 ## Gaps and risks
 
-- **Two databases drift.** Compensation covers failures inside a call, not
-  changes made in freebusy directly. Until M4, an operator cancelling in
-  freebusy leaves the aperio booking looking held.
-- **An accepted event does not hold its hall** until sessions with times are
-  added. Two quotes for the same date can both be accepted. (M4)
+- **Auth is off until configured.** Without `[auth] issuer` every call is
+  let through (with a warning at startup). Nothing should face a network
+  before an issuer, the link and hold secrets, TLS and CORS are set.
+  freebusy's CalDAV is unauthenticated; only its signed `.ics` feeds are
+  safe to expose.
+- **Guest links can't be issued yet.** `internal/auth` verifies signed links
+  to a quote, stay or invoice, but no method makes one; and ConfirmStay's
+  reply promises payment details that only `RequestPayment` (staff or the
+  frontend) sends.
 - **Spaces have no price or tax.** A hall's hire or a room's night is priced
   only by a fixed-price rule, and its quote line needs GST set by hand.
-- **Quote ttl is lost.** `Quote.ttl` is input-only and not stored, so every
-  sent quote stands 14 days.
-- **No auth.** Nothing can face a network before M5. freebusy's CalDAV is
-  unauthenticated too; only its signed `.ics` feeds are safe to expose.
-- **Document columns are NOT NULL.** The database made `Venue.gst` and
-  `address` NOT NULL, so every venue must carry them; check how the store
-  generates nullability for document columns before an optional one bites.
+- **Document columns are NOT NULL.** A venue without `address` or `gst`
+  can't be created; check how the store generates nullability for document
+  columns before an optional one bites.
+- **Configuration the chart can't carry.** `[freebusy_sync]` has no chart
+  values (its secret only through `extraEnv`), and Booking.com's `hotels`
+  mapping, an array, can't be set by environment variable at all.
 - **MCP size.** tools/list is 0.9 MB, but a reservation tool's schema is
   still ~250 KB -- heavy in an agent's context.
 - **The SDK path.** aperio uses `oh-tarnished/freebusy-go-sdk` through a
-  `replace`; fix the SDK's module path to drop it, and drop Organizations and
-  Sites from its services.
+  `replace` under the module path `github.com/shokki-engineering/freebusy-go`,
+  which doesn't exist -- Dependabot's Go updates fail on it with a 404. Move
+  the SDK to that path (or change its module path) and drop the replace.
+- **freebusy's images are out of step** with each other and with its
+  source; republish them before the stack runs a released freebusy.
 
 ## Decisions to make
 

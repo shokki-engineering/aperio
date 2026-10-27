@@ -100,7 +100,7 @@ func (h *hooks) AfterCreateReservation(ctx context.Context, out *staypbv1.Reserv
 	}
 	proto.Reset(out)
 	proto.Merge(out, updated)
-	h.noteStay(ctx, out)
+	h.noteLater(ctx, out)
 	return nil
 }
 

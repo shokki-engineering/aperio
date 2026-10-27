@@ -12,6 +12,8 @@
 package stay
 
 import (
+	"sync"
+
 	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/search"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/stay/v1/staypbv1svc"
@@ -44,6 +46,9 @@ type hooks struct {
 	repos staypbv1svc.StayServiceRepositories
 	// nights is the stay read model (nights.go): its table, or its copy.
 	nights search.Reader[*staypbv1.StayNight]
+	// notes are the calendar notes being written in the background
+	// (notes.go noteLater).
+	notes sync.WaitGroup
 }
 
 // reservationType is the resource type errors name.
