@@ -1,0 +1,28 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Bzlmod only; Bazel 9 has no WORKSPACE.
+common --enable_bzlmod
+
+# Convenience symlinks (bin, out, testlogs, aperio) under one hidden .bazel/
+# directory instead of four bazel-* entries at the repository root.
+common --symlink_prefix=.bazel/
+
+# Pure Go: no cgo anywhere, so every binary is static and cross-compiles with
+# nothing but the Go toolchain.
+build --@rules_go//go/config:pure
+
+# The live suites read APERIO_TEST_*; pass them through. Unset, they skip
+# (test/live), unless APERIO_TEST_REQUIRE_LIVE=1 makes them fail.
+test --test_env=APERIO_TEST_DATABASE_URL --test_env=APERIO_TEST_GRAPHQL_URL
+test --test_env=APERIO_TEST_REDIS_ADDR --test_env=APERIO_TEST_OPENSEARCH_URL
+test --test_env=APERIO_TEST_REQUIRE_LIVE
+test --test_output=errors
+
+# Release builds stamp the server binary with the tag and commit
+# (tools/bazel/status.sh, the x_defs on //:aperio): `aperio --version`
+# reports them. Unstamped builds say "dev".
+build:release --stamp --workspace_status_command=tools/bazel/status.sh
+
+# A developer's own flags, never committed.
+try-import %workspace%/.bazelrc.user

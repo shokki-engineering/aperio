@@ -1,0 +1,49 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "channel",
+    srcs = [
+        "book.go",
+        "channel.go",
+        "errors.go",
+        "opentravel.go",
+        "outbound.go",
+        "services.go",
+        "stay.go",
+        "sync.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/channel",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/engine",
+        "//internal/service/guest",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "//protobuf/generated/go/pricing/v1/pricingpbv1",
+        "//protobuf/generated/go/stay/v1/staypbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "@build_buf_gen_go_shokki_engineering_protobuf_ota_protocolbuffers_go//protobuf/opentravel/hotel/booking/reservation/v1/codes",
+        "@build_buf_gen_go_shokki_engineering_protobuf_ota_protocolbuffers_go//protobuf/opentravel/hotel/booking/reservation/v1/types",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/money",
+        "@org_golang_google_genproto_googleapis_rpc//errdetails",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//types/known/fieldmaskpb",
+    ],
+)
+
+go_test(
+    name = "channel_test",
+    srcs = ["outbound_test.go"],
+    embed = [":channel"],
+    deps = [
+        "//internal/engine",
+        "//protobuf/generated/go/pricing/v1/pricingpbv1",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "//test/live",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/money",
+    ],
+)

@@ -3,7 +3,7 @@
 
 # Lint, build, unit tests, the live suites against a Postgres migrated by
 # Prisma, the generated code against its generators, both images, and the
-# Helm chart -- freebusy's CI, with a Dockerfile where freebusy has Bazel.
+# Helm chart -- freebusy's CI, Bazel and its images included.
 #
 # Jobs are independent on purpose: a red lint should not hide a red test, and
 # a failed run shows everything wrong in one pass.
@@ -118,28 +118,37 @@ jobs:
       - run: go build ./...
       - run: go build -o aperio .
 
-  # Both Dockerfile targets, for the runner's platform, not pushed: the
-  # release workflow builds and pushes the multi-platform images.
-  image:
-    name: Images (server and migrate)
+  # Bazel builds what `go build` does, from BUILD files Gazelle writes, and
+  # the images: both indexes (linux/amd64 + linux/arm64), not pushed -- the
+  # release workflow pushes them.
+  bazel:
+    name: Bazel build, tests and images
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        target: [runtime, migrate]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+      - uses: bazel-contrib/setup-bazel@104e3eea9447cdaa4b00d0fb46191a3985d26ab3 # 0.19.1
         with:
-          context: .
-          target: ${{ matrix.target }}
-          push: false
-          build-args: |
-            VERSION=ci
-            COMMIT=${{ github.sha }}
-          cache-from: type=gha,scope=${{ matrix.target }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.target }}
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      # The BUILD files are Gazelle's output: one it would rewrite is stale.
+      - name: BUILD files are up to date
+        run: |
+          bazel run //:gazelle
+          git diff --exit-code -- '*.bazel' MODULE.bazel
+      - run: bazel build //...
+      # The live suites skip: no APERIO_TEST_* here (the live job runs them).
+      - run: bazel test //...
+      - run: bazel build //deploy/image:image //deploy/image:migrate
+      # The runner's platform, loaded and run: the server answers its
+      # version, the migrate image starts Prisma.
+      - name: Images run
+        run: |
+          bazel run //deploy/image:load
+          bazel run //deploy/image:load_migrate
+          docker run --rm ghcr.io/shokki-engineering/aperio:latest --version
+          docker run --rm --entrypoint /nodejs/bin/node ghcr.io/shokki-engineering/aperio-migrate:latest \
+            /prisma/node_modules/prisma/build/index.js --version
 
   deploy:
     name: Helm chart

@@ -1,8 +1,10 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# Dependabot: version updates for the Go module, the workflows' actions, the
-# Dockerfile's base images and the Prisma package. Security updates are
+# Dependabot: version updates for the Go module, the workflows' actions and
+# the Prisma package. The images' pins -- the Bazel modules, the Node base's
+# digest and the Prisma CLI's lockfile and schema engine (MODULE.bazel,
+# deploy/image/prisma, `just prisma-lock`) -- move by hand. Security updates are
 # switched on in the repository's settings and arrive whatever the schedule
 # says. workflows/dependabot-auto-merge.yaml merges each pull request once
 # the required CI checks pass.
@@ -45,18 +47,6 @@ updates:
       day: monday
     groups:
       actions:
-        update-types: [minor, patch]
-
-  # The Dockerfile's base images (golang, node, distroless). The ARG-set
-  # versions (GO_VERSION, NODE_VERSION, PRISMA_VERSION) are not seen by
-  # Dependabot and move by hand.
-  - package-ecosystem: docker
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-    groups:
-      docker:
         update-types: [minor, patch]
 
   # The generated Prisma package. Its package.json is generated

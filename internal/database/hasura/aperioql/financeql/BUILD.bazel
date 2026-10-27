@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "financeql",
+    srcs = ["financeql.go"],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/financeql",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/hasura/aperioql/financeql/invoicesql",
+        "//internal/database/hasura/aperioql/financeql/paymentsql",
+        "@com_github_the_protobuf_project_runtime_go_network//runtime",
+    ],
+)

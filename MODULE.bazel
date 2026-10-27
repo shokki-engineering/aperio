@@ -1,0 +1,81 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+"""aperio: the server binary and its container images, built by Bazel.
+
+Go dependencies come from go.mod -- one module, the generated code in
+protobuf/generated/go included -- so Bazel builds exactly what `go build`
+does. Gazelle writes every BUILD.bazel from the Go sources:
+`bazel run //:gazelle`.
+"""
+
+module(name = "aperio")
+
+bazel_dep(name = "rules_go", version = "0.64.2")
+bazel_dep(name = "gazelle", version = "0.54.0")
+bazel_dep(name = "rules_oci", version = "2.3.0")
+bazel_dep(name = "rules_pkg", version = "1.3.0")
+bazel_dep(name = "platforms", version = "1.1.0")
+# expand_template, for the images' stamped version and revision labels.
+bazel_dep(name = "aspect_bazel_lib", version = "2.21.1")
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.from_file(go_mod = "//:go.mod")
+
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+
+# Modules that ship BUILD files of their own, written for their own workspace:
+# Gazelle replaces them with generated ones, as it does for every other module.
+[go_deps.gazelle_override(
+    build_file_generation = "clean",
+    path = path,
+) for path in [
+    # Its own BUILD files load @rules_go by a name a go_deps repository
+    # cannot see.
+    "github.com/the-protobuf-project/mcp",
+    # Its own BUILD files name targets go_default_library, the old convention.
+    "cel.dev/cel-go",
+]]
+
+use_repo(go_deps, "build_buf_gen_go_bufbuild_protovalidate_protocolbuffers_go", "build_buf_gen_go_shokki_engineering_protobuf_ota_protocolbuffers_go", "com_github_coreos_go_oidc_v3", "com_github_go_jose_go_jose_v4", "com_github_google_go_cmp", "com_github_google_uuid", "com_github_grpc_ecosystem_grpc_gateway_v2", "com_github_joho_godotenv", "com_github_knadh_koanf_parsers_toml", "com_github_knadh_koanf_providers_env_v2", "com_github_knadh_koanf_providers_rawbytes", "com_github_knadh_koanf_v2", "com_github_lib_pq", "com_github_modelcontextprotocol_go_sdk", "com_github_oh_tarnished_opensearch_go_sdk", "com_github_shokki_engineering_freebusy_go", "com_github_the_protobuf_project_cache", "com_github_the_protobuf_project_mcp", "com_github_the_protobuf_project_runtime_go_agents", "com_github_the_protobuf_project_runtime_go_cache", "com_github_the_protobuf_project_runtime_go_events", "com_github_the_protobuf_project_runtime_go_grpc", "com_github_the_protobuf_project_runtime_go_network", "com_github_the_protobuf_project_runtime_go_observability", "com_github_the_protobuf_project_runtime_go_telemetry", "com_github_the_protobuf_project_service", "com_github_the_protobuf_project_store", "com_github_the_protobuf_project_telemetry_telemetry_go", "io_gorm_driver_postgres", "io_gorm_gorm", "io_opentelemetry_go_otel", "io_opentelemetry_go_otel_sdk", "org_golang_google_genproto", "org_golang_google_genproto_googleapis_api", "org_golang_google_genproto_googleapis_rpc", "org_golang_google_grpc", "org_golang_google_protobuf", "org_golang_x_crypto_x509roots_fallback", "org_golang_x_sync")
+
+# The migrate image's base: Node on distroless, for the Prisma CLI that
+# applies protobuf/generated/prisma/aperio/migrations (//deploy/image:migrate).
+# Node 22.23.4, libssl3 for the schema engine, the CA bundle, uid 65532; no
+# shell, no package manager.
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "node",
+    digest = "sha256:10747a1323be68f206aed893599d43e6697ad67257e7c42703553f99fbce3d33",
+    image = "gcr.io/distroless/nodejs22-debian13",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64/v8",
+    ],
+    tag = "nonroot",
+)
+use_repo(oci, "node", "node_linux_amd64", "node_linux_arm64_v8")
+
+# The Prisma CLI (prisma 7.10.1, dotenv 16.6.1) from the committed lockfile,
+# and the schema engine its @prisma/engines-version names, per platform
+# (tools/bazel/prisma.bzl).
+prisma = use_extension("//tools/bazel:prisma.bzl", "prisma")
+prisma.cli(
+    name = "prisma_cli",
+    lockfile = "//deploy/image:prisma/package-lock.json",
+    package_dir = "/prisma",
+)
+prisma.engine(
+    name = "prisma_engine_amd64",
+    commit = "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
+    platform = "debian-openssl-3.0.x",
+    sha256 = "5827f56149193f0249b2f4b8a64e60c300c3129ed6514bad0a11c340e1cffad6",
+)
+prisma.engine(
+    name = "prisma_engine_arm64",
+    commit = "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
+    platform = "linux-arm64-openssl-3.0.x",
+    sha256 = "aee61c23442accf150d3b253d3b829c15085ea810fd690c5f38944cd64f9cb0e",
+)
+use_repo(prisma, "prisma_cli", "prisma_engine_amd64", "prisma_engine_arm64")

@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "catalogql",
+    srcs = ["catalogql.go"],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/catalogql",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/hasura/aperioql/catalogql/dishesql",
+        "//internal/database/hasura/aperioql/catalogql/fixedpackagespacesql",
+        "//internal/database/hasura/aperioql/catalogql/fixedpackagesql",
+        "//internal/database/hasura/aperioql/catalogql/menusql",
+        "@com_github_the_protobuf_project_runtime_go_network//runtime",
+    ],
+)

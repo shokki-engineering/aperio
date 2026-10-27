@@ -1,0 +1,63 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "stay",
+    srcs = [
+        "freebusy.go",
+        "nights.go",
+        "nights_search.go",
+        "notes.go",
+        "reservations.go",
+        "server.go",
+        "states.go",
+        "summary.go",
+        "window.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/service/stay",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/booking",
+        "//internal/calendar",
+        "//internal/database/gorm/filterx",
+        "//internal/database/opensearch/aperio/stay",
+        "//internal/database/repository/aperio/stay",
+        "//internal/database/repository/repox",
+        "//internal/engine",
+        "//internal/search",
+        "//internal/service/generated/aperio/stay/v1/staypbv1svc",
+        "//internal/service/generated/servicex",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "//protobuf/generated/go/stay/v1/staypbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)
+
+go_test(
+    name = "stay_test",
+    srcs = [
+        "search_live_test.go",
+        "stay_live_test.go",
+        "summary_live_test.go",
+    ],
+    deps = [
+        ":stay",
+        "//internal/booking",
+        "//internal/config",
+        "//internal/database/opensearch/osx",
+        "//internal/database/repository/aperio/guest",
+        "//internal/database/repository/aperio/venue",
+        "//internal/database/repository/repox",
+        "//internal/search",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "//protobuf/generated/go/stay/v1/staypbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "//test/live",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/postaladdress",
+    ],
+)

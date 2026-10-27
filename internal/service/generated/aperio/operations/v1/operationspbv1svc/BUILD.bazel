@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "operationspbv1svc",
+    srcs = [
+        "feeds.svc.go",
+        "operations_service.svc.go",
+        "register.svc.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/service/generated/aperio/operations/v1/operationspbv1svc",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/repository/aperio/operations",
+        "//internal/database/repository/repox",
+        "//internal/service/generated/servicex",
+        "//protobuf/generated/go/operations/v1/operationspbv1",
+        "@com_github_the_protobuf_project_runtime_go_events//:events",
+        "@com_github_the_protobuf_project_runtime_go_grpc//:grpc",
+        "@org_golang_google_protobuf//encoding/protojson",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

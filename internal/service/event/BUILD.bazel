@@ -1,0 +1,55 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "event",
+    srcs = [
+        "briefs.go",
+        "events.go",
+        "freebusy.go",
+        "notes.go",
+        "server.go",
+        "sessions.go",
+        "summary.go",
+        "window.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/service/event",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/booking",
+        "//internal/calendar",
+        "//internal/database/repository/aperio/catalog",
+        "//internal/database/repository/repox",
+        "//internal/engine",
+        "//internal/service/generated/aperio/event/v1/eventpbv1svc",
+        "//internal/service/generated/servicex",
+        "//protobuf/generated/go/event/v1/eventpbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_protobuf//proto",
+    ],
+)
+
+go_test(
+    name = "event_test",
+    srcs = [
+        "event_live_test.go",
+        "summary_live_test.go",
+    ],
+    deps = [
+        ":event",
+        "//internal/booking",
+        "//internal/database/repository/aperio/guest",
+        "//internal/database/repository/aperio/venue",
+        "//protobuf/generated/go/catalog/v1/catalogpbv1",
+        "//protobuf/generated/go/event/v1/eventpbv1",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "//test/live",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/decimal",
+        "@org_golang_google_genproto//googleapis/type/money",
+        "@org_golang_google_genproto//googleapis/type/postaladdress",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)

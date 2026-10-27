@@ -116,6 +116,10 @@ they import.
   wedding") for every person, guest, caller and title.
 - `just test-live` needs Postgres, Hasura and Redis; the OpenSearch suite
   runs only when `APERIO_TEST_OPENSEARCH_URL` is set.
+- Load: `just load smoke` (every endpoint once, CI-sized) and `just load
+  day` (a busy day for 3 minutes) against `just stack up` -- k6, outside
+  Bazel. A new task tool or guest flow gets a read or a step in
+  `test/load/scenarios`, and a budget in `test/load/aperio.js` thresholds.
 
 ## Repository
 

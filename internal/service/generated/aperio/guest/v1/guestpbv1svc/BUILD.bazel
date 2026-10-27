@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "guestpbv1svc",
+    srcs = [
+        "guest_service.svc.go",
+        "register.svc.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/service/generated/aperio/guest/v1/guestpbv1svc",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/repository/aperio/guest",
+        "//internal/database/repository/repox",
+        "//internal/service/generated/servicex",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "@com_github_the_protobuf_project_runtime_go_grpc//:grpc",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

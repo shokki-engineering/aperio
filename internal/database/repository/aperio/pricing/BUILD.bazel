@@ -1,0 +1,33 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pricing",
+    srcs = [
+        "gorm.go",
+        "graphql.go",
+        "mask.go",
+        "names.go",
+        "protobuf.go",
+        "repository.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/repository/aperio/pricing",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/gorm/aperio/pricing",
+        "//internal/database/gorm/filterx",
+        "//internal/database/hasura/aperioql",
+        "//internal/database/hasura/aperioql/pricingql/pricerulesql",
+        "//internal/database/hasura/aperioql/pricingql/seasonsql",
+        "//internal/database/repository/repox",
+        "//protobuf/generated/go/pricing/v1/pricingpbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "@com_github_the_protobuf_project_runtime_go_network//graphql",
+        "@io_gorm_gorm//:gorm",
+        "@io_gorm_gorm//clause",
+        "@org_golang_google_genproto//googleapis/type/decimal",
+        "@org_golang_google_genproto//googleapis/type/money",
+        "@org_golang_google_protobuf//encoding/protojson",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)

@@ -1,0 +1,55 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "bookingcom",
+    srcs = [
+        "adapter.go",
+        "answer.go",
+        "config.go",
+        "handler.go",
+        "notif.go",
+        "parse.go",
+        "resnotif.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/channel/bookingcom",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/booking",
+        "//internal/channel",
+        "//internal/config",
+        "//internal/pricing",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/money",
+        "@org_golang_google_protobuf//proto",
+    ],
+)
+
+go_test(
+    name = "bookingcom_test",
+    srcs = [
+        "bookingcom_live_test.go",
+        "messages_test.go",
+        "parse_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    embed = [":bookingcom"],
+    deps = [
+        "//internal/booking",
+        "//internal/channel",
+        "//internal/database/repository/aperio/venue",
+        "//internal/service/guest",
+        "//internal/service/stay",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "//protobuf/generated/go/stay/v1/staypbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "//test/live",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/money",
+        "@org_golang_google_genproto//googleapis/type/postaladdress",
+        "@org_golang_google_genproto_googleapis_rpc//errdetails",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+    ],
+)

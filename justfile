@@ -24,6 +24,10 @@ mod stack 'tools/just/stack.just'
 [group('helm')]
 mod helm 'tools/just/helm.just'
 
+# The k6 load test (test/load): just load smoke|day|stress|soak.
+[group('load')]
+mod load 'tools/just/load.just'
+
 # Application (server) -- run, build, test. Settings come from config: the
 # embedded internal/config/aperio.release.toml defaults, overlaid by
 # internal/config/aperio.dev.toml in a checkout. Any key can be overridden from
@@ -47,13 +51,35 @@ build:
     go build ./...
     go build -o bin/aperio .
 
-# Not pushed: CI publishes releases. The names are the ones Compose and the
-# Helm chart run.
-# The images (Dockerfile): the server and its migrations, tagged ghcr.io/shokki-engineering/aperio[-migrate]:<tag>.
-[group('build')]
-image tag="latest":
-    docker build --target runtime --build-arg VERSION={{ if tag == "latest" { "" } else { tag } }} --build-arg COMMIT=$(git rev-parse HEAD) -t ghcr.io/shokki-engineering/aperio:{{ tag }} .
-    docker build --target migrate -t ghcr.io/shokki-engineering/aperio-migrate:{{ tag }} .
+# Bazel (MODULE.bazel, deploy/image/BUILD.bazel): the binary, its tests and
+# the images. Not pushed: CI publishes releases.
+
+# Regenerate the BUILD.bazel files after adding, moving or importing packages.
+[group('bazel')]
+gazelle:
+    bazel run //:gazelle
+
+# Everything through Bazel: build, then the tests (live suites skip).
+[group('bazel')]
+bazel-check:
+    bazel build //...
+    bazel test //...
+
+# The names are the ones Compose and the Helm chart run.
+# The images, this machine's platform, loaded into Docker as ghcr.io/shokki-engineering/aperio[-migrate]:latest.
+[group('bazel')]
+image:
+    bazel run //deploy/image:load
+    bazel run //deploy/image:load_migrate
+
+# The pin moves with Prisma: the schema engine's commit (printed here) and
+# its two sha256 in MODULE.bazel's prisma.engine tags must be updated by
+# hand, from binaries.prisma.sh/all_commits/<commit>/<platform>/schema-engine.gz.sha256.
+# Rewrite the migrate image's Prisma lockfile (deploy/image/prisma) after changing its package.json.
+[group('bazel')]
+prisma-lock:
+    cd deploy/image/prisma && npx --yes npm@11.20.0 install --package-lock-only --ignore-scripts --no-audit --no-fund
+    jq -r '.packages["node_modules/@prisma/engines-version"].version' deploy/image/prisma/package-lock.json
 
 # Format the hand-written Go; generated code follows its generator.
 [group('build')]

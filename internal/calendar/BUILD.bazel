@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "calendar",
+    srcs = [
+        "notes.go",
+        "people.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/calendar",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/engine",
+        "//protobuf/generated/go/event/v1/eventpbv1",
+        "//protobuf/generated/go/guest/v1/guestpbv1",
+        "//protobuf/generated/go/stay/v1/staypbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+    ],
+)

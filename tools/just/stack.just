@@ -14,7 +14,7 @@ set working-directory := '../../deploy/compose'
 default:
     @just --list stack
 
-# Start the stack with the named profiles, building aperio's images when missing; waits for health.
+# Start the stack with the named profiles (aperio's images: pulled, or `just image`); waits for health.
 [group('stack')]
 up *profiles:
     docker compose {{ prepend('--profile ', profiles) }} up -d --wait

@@ -34,7 +34,12 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   availability messages out.
 - Platform (M3): Redis list caches (`[cache]`), query tracing, the pool
   monitor, background jobs, and webhooks served beside the REST gateway.
-- Deployment: a Dockerfile (runtime and migrate images), Compose for the
+- A k6 load test (`test/load`, `just load smoke|day|stress|soak`): staff
+  reads, guest bookings through real freebusy holds, in-house requests and
+  MCP agents at once, with a busy day's latency budgets as thresholds.
+- Deployment: the images built by Bazel with rules_oci (`just image`,
+  `deploy/image`): the server on scratch and the Prisma migrations on
+  distroless Node, each for linux/amd64 and linux/arm64; Compose for the
   whole stack (`just stack`), a Helm chart (`deploy/helm/aperio`, `just
   helm`), CI with a generated-code drift check and image and chart jobs, a
   release workflow, and Dependabot.

@@ -11,6 +11,9 @@
 #   docker compose --profile cache --profile search up -d
 #   docker compose --profile hasura up -d    # + set APERIO_DATABASE_PROVIDER=hasura
 #
+# aperio's images are the registry's, or this checkout's from `just image`
+# (Bazel, deploy/image), which tags them :latest; Compose never builds them.
+#
 # aperio answers on 127.0.0.1:8090 (REST, /health), :50061 (gRPC) and :8091
 # (MCP, /mcp); freebusy on :8080, :50051 and :8081. Every port is published
 # on 127.0.0.1 only: put a TLS-terminating proxy you control in front.
@@ -28,9 +31,6 @@ name: aperio
 services:
   aperio:
     image: ${APERIO_IMAGE:-ghcr.io/shokki-engineering/aperio}:${APERIO_TAG:-latest}
-    build:
-      context: ../..
-      target: runtime
     read_only: true
     restart: unless-stopped
     stop_grace_period: 30s
@@ -84,9 +84,6 @@ services:
   # not seen, then it exits.
   migrate:
     image: ${APERIO_MIGRATE_IMAGE:-ghcr.io/shokki-engineering/aperio-migrate}:${APERIO_TAG:-latest}
-    build:
-      context: ../..
-      target: migrate
     environment:
       APERIO_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/aperio?sslmode=disable
     depends_on:

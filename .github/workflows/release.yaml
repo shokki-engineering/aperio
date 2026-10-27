@@ -11,10 +11,13 @@
 # the chart attached. CI's checks are not repeated here: tag a commit main
 # already passed.
 #
-# The images carry BuildKit's SLSA provenance and SBOM attestations, and
-# everything is signed keylessly with cosign (Sigstore, through this run's
-# GitHub OIDC identity): each image by digest, the chart in the registry,
-# and the release's files (a .sigstore.json bundle beside each).
+# The images are built and pushed by Bazel (rules_oci, deploy/image), the
+# binary and the labels stamped with the tag and commit. Each image carries
+# GitHub's SLSA build provenance and, per platform, an SPDX SBOM (syft)
+# attested with cosign; everything is signed keylessly with cosign
+# (Sigstore, through this run's GitHub OIDC identity): each image by digest,
+# the chart in the registry, and the release's files (a .sigstore.json
+# bundle beside each).
 #
 # A tag with a pre-release part (v1.0.0-rc.1) publishes the same artifacts
 # under its version, does not move the images' `latest` tag, and is marked a
@@ -37,6 +40,8 @@ permissions:
   # Keyless signing: cosign gets a short-lived certificate for this run from
   # Sigstore through GitHub's OIDC token. No signing key to keep.
   id-token: write
+  # The images' build provenance (actions/attest-build-provenance).
+  attestations: write
 
 jobs:
   release:
@@ -67,53 +72,57 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      # cosign signs and attests; crane resolves a pushed tag to its digest
+      # (and each platform's); syft writes the SBOMs.
       - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
-      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
-      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: imjasonh/setup-crane@feee3b6bb0d4c68370f256a4502498c9227e5c6b # v0.7
+      - uses: anchore/sbom-action/download-syft@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
 
-      # The image tags: the version, and latest unless a pre-release.
-      - name: Image tags
+      - uses: bazel-contrib/setup-bazel@104e3eea9447cdaa4b00d0fb46191a3985d26ab3 # 0.19.1
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      # Both indexes (linux/amd64 + linux/arm64), under the version and,
+      # unless a pre-release, latest. --config=release stamps the tag and
+      # commit (tools/bazel/status.sh) into the binary (`aperio --version`)
+      # and both images' version and revision labels.
+      - name: Server and migrate images
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          tags=(--tag "$VERSION")
+          if [ "$PRERELEASE" != true ]; then tags+=(--tag latest); fi
+          bazel run --config=release //deploy/image:push -- "${tags[@]}"
+          bazel run --config=release //deploy/image:push_migrate -- "${tags[@]}"
+          echo "SERVER_DIGEST=$(crane digest "$REGISTRY/aperio:$VERSION")" >> "$GITHUB_ENV"
+          echo "MIGRATE_DIGEST=$(crane digest "$REGISTRY/aperio-migrate:$VERSION")" >> "$GITHUB_ENV"
+
+      - name: Server provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ${{ env.REGISTRY }}/aperio
+          subject-digest: ${{ env.SERVER_DIGEST }}
+          push-to-registry: true
+      - name: Migrate provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ${{ env.REGISTRY }}/aperio-migrate
+          subject-digest: ${{ env.MIGRATE_DIGEST }}
+          push-to-registry: true
+
+      # One SBOM per platform image, attested to that image's digest, as
+      # BuildKit attached them.
+      - name: SBOMs
         run: |
           for name in aperio aperio-migrate; do
-            tags="$REGISTRY/$name:$VERSION"
-            if [ "$PRERELEASE" != true ]; then tags="$tags,$REGISTRY/$name:latest"; fi
-            key=$(echo "$name" | tr 'a-z-' 'A-Z_')
-            echo "${key}_TAGS=$tags" >> "$GITHUB_ENV"
+            for platform in linux/amd64 linux/arm64; do
+              digest="$(crane digest --platform "$platform" "$REGISTRY/$name:$VERSION")"
+              syft "registry:$REGISTRY/$name@$digest" -o spdx-json=sbom.spdx.json
+              cosign attest --yes --type spdxjson --predicate sbom.spdx.json "$REGISTRY/$name@$digest"
+            done
           done
-
-      - name: Server image
-        id: server
-        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-        with:
-          context: .
-          target: runtime
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ env.APERIO_TAGS }}
-          # build.go stamps these into the binary (`aperio --version`).
-          build-args: |
-            VERSION=${{ github.ref_name }}
-            COMMIT=${{ github.sha }}
-          labels: |
-            org.opencontainers.image.version=${{ env.VERSION }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          provenance: mode=max
-          sbom: true
-
-      - name: Migrate image
-        id: migrate
-        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-        with:
-          context: .
-          target: migrate
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ env.APERIO_MIGRATE_TAGS }}
-          labels: |
-            org.opencontainers.image.version=${{ env.VERSION }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          provenance: mode=max
-          sbom: true
 
       - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
       - name: Helm chart
@@ -134,9 +143,6 @@ jobs:
       # Every image (each platform too, --recursive) and the chart, signed by
       # digest.
       - name: Sign images and chart
-        env:
-          SERVER_DIGEST: ${{ steps.server.outputs.digest }}
-          MIGRATE_DIGEST: ${{ steps.migrate.outputs.digest }}
         run: |
           cosign sign --yes --recursive "$REGISTRY/aperio@$SERVER_DIGEST"
           cosign sign --yes --recursive "$REGISTRY/aperio-migrate@$MIGRATE_DIGEST"

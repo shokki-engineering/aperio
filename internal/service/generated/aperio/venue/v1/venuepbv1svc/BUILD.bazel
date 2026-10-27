@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "venuepbv1svc",
+    srcs = [
+        "register.svc.go",
+        "venue_service.svc.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/service/generated/aperio/venue/v1/venuepbv1svc",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/repository/aperio/venue",
+        "//internal/database/repository/repox",
+        "//internal/service/generated/servicex",
+        "//protobuf/generated/go/venue/v1/venuepbv1",
+        "@com_github_the_protobuf_project_runtime_go_grpc//:grpc",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

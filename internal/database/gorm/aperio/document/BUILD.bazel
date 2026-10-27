@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "document",
+    srcs = [
+        "document_store.go",
+        "filters.go",
+        "models.go",
+        "protobuf.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/gorm/aperio/document",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/gorm/filterx",
+        "//internal/database/gorm/gormx",
+        "//protobuf/generated/go/document/v1/documentpbv1",
+        "@com_github_lib_pq//:pq",
+        "@io_gorm_gorm//:gorm",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)

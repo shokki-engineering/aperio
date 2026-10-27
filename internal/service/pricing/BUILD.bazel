@@ -1,0 +1,24 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pricing",
+    srcs = [
+        "price.go",
+        "server.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/service/pricing",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/repository/aperio/venue",
+        "//internal/database/repository/repox",
+        "//internal/pricing",
+        "//internal/service/generated/aperio/catalog/v1/catalogpbv1svc",
+        "//internal/service/generated/aperio/pricing/v1/pricingpbv1svc",
+        "//internal/service/generated/servicex",
+        "//protobuf/generated/go/catalog/v1/catalogpbv1",
+        "//protobuf/generated/go/pricing/v1/pricingpbv1",
+        "//protobuf/generated/go/type/v1/typepbv1",
+        "@org_golang_google_genproto//googleapis/type/date",
+        "@org_golang_google_genproto//googleapis/type/money",
+    ],
+)

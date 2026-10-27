@@ -1,0 +1,35 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "config",
+    srcs = [
+        "auth.go",
+        "channels.go",
+        "concierge.go",
+        "config.go",
+        "database.go",
+        "freebusy.go",
+        "freebusy_sync.go",
+        "load.go",
+        "notify.go",
+        "options.go",
+        "razorpay.go",
+        "search.go",
+    ],
+    embedsrcs = [
+        "aperio.dev.toml",
+        "aperio.release.toml",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/config",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/telemetry",
+        "@com_github_the_protobuf_project_runtime_go_grpc//options",
+    ],
+)
+
+go_test(
+    name = "config_test",
+    srcs = ["config_test.go"],
+    embed = [":config"],
+)

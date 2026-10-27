@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "aperio",
+    srcs = ["migrate.go"],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/gorm/aperio",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/gorm/aperio/catalog",
+        "//internal/database/gorm/aperio/document",
+        "//internal/database/gorm/aperio/event",
+        "//internal/database/gorm/aperio/finance",
+        "//internal/database/gorm/aperio/guest",
+        "//internal/database/gorm/aperio/operations",
+        "//internal/database/gorm/aperio/pricing",
+        "//internal/database/gorm/aperio/sales",
+        "//internal/database/gorm/aperio/stay",
+        "//internal/database/gorm/aperio/venue",
+        "//internal/database/gorm/telemetry",
+        "@io_gorm_gorm//:gorm",
+    ],
+)

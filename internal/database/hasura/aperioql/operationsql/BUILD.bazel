@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "operationsql",
+    srcs = ["operationsql.go"],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/hasura/aperioql/operationsql",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/hasura/aperioql/operationsql/servicerequestsql",
+        "@com_github_the_protobuf_project_runtime_go_network//runtime",
+    ],
+)

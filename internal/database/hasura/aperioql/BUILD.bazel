@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "aperioql",
+    srcs = [
+        "field.go",
+        "service.go",
+    ],
+    importpath = "github.com/shokki-engineering/aperio/internal/database/hasura/aperioql",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/database/hasura/aperioql/catalogql",
+        "//internal/database/hasura/aperioql/documentql",
+        "//internal/database/hasura/aperioql/eventql",
+        "//internal/database/hasura/aperioql/financeql",
+        "//internal/database/hasura/aperioql/guestql",
+        "//internal/database/hasura/aperioql/operationsql",
+        "//internal/database/hasura/aperioql/pricingql",
+        "//internal/database/hasura/aperioql/prismaql",
+        "//internal/database/hasura/aperioql/salesql",
+        "//internal/database/hasura/aperioql/stayql",
+        "//internal/database/hasura/aperioql/venueql",
+        "@com_github_the_protobuf_project_runtime_go_network//graphql",
+        "@com_github_the_protobuf_project_runtime_go_network//runtime",
+    ],
+)
