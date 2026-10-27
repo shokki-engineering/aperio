@@ -1,0 +1,23 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Only with more than one replica: a budget over one pod blocks every drain.
+{{- with .Values.podDisruptionBudget }}
+{{- if and .enabled (gt (int (include "aperio.minReplicas" $)) 1) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aperio.fullname" $ }}
+  labels:
+    {{- include "aperio.labels" $ | nindent 4 }}
+spec:
+  {{- if not (kindIs "invalid" .minAvailable) }}
+  minAvailable: {{ .minAvailable }}
+  {{- else }}
+  maxUnavailable: {{ required "podDisruptionBudget.minAvailable or maxUnavailable is required" .maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "aperio.serverSelector" $ | nindent 6 }}
+{{- end }}
+{{- end }}

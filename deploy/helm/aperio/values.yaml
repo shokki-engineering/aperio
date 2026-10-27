@@ -1,0 +1,371 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# aperio on Kubernetes. Postgres is yours: a managed database, or one you run.
+# freebusy, the availability engine every booking is held in, is too: deploy
+# its own chart and point freebusy.endpoint at its Service. The chart runs the
+# server and, before each install and upgrade, a Job that applies the Prisma
+# migrations (`prisma migrate deploy`).
+#
+# Calls are authenticated only when auth.issuer names an OIDC issuer: until
+# then keep the Service internal (ClusterIP), reachable only by your own
+# workloads, and the Ingress off.
+#
+# Every setting the server reads is internal/config/aperio.release.toml's, as
+# an APERIO_<SECTION>__<KEY> environment variable; the values below set the
+# ones a deployment changes, and extraEnv any other.
+
+# Overrides the resources' base name (<release>-aperio by default).
+fullnameOverride: ""
+
+# Ignored when autoscaling.enabled: the HPA owns the count.
+replicaCount: 2
+
+# The server. tag defaults to the chart's appVersion; a digest
+# (sha256:...) wins over the tag.
+image:
+  repository: ghcr.io/shokki-engineering/aperio
+  tag: ""
+  digest: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+# The Prisma migrations, applied by a pre-install / pre-upgrade hook Job
+# before the new pods start: protobuf/generated/prisma/aperio/migrations in
+# the migrate image, whose entrypoint runs `prisma migrate deploy` against
+# APERIO_DATABASE_URL. Prisma takes an advisory lock, so a Job that overlaps
+# another waits rather than applying twice.
+migrations:
+  enabled: true
+  image:
+    repository: ghcr.io/shokki-engineering/aperio-migrate
+    tag: ""
+    digest: ""
+    pullPolicy: IfNotPresent
+  # Empty: the image's entrypoint and arguments.
+  command: []
+  args: []
+  # Retries before the hook, and with it the install or upgrade, fails.
+  backoffLimit: 3
+  # The whole Job's bound, retries included.
+  activeDeadlineSeconds: 600
+  # How long a finished Job (and its pod's logs) is kept.
+  ttlSecondsAfterFinished: 3600
+  # The Job runs before the chart's ServiceAccount exists on a first install,
+  # so it uses this one: empty is the namespace's default.
+  serviceAccountName: ""
+  # Read APERIO_DATABASE_URL from the existingSecret's database-url key
+  # instead of building it from database.postgres and postgres-password.
+  # Implied when secrets.databaseUrl is set.
+  databaseUrlFromSecret: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+
+database:
+  # gorm (Postgres directly, the production default) or hasura (through a
+  # Hasura DDN engine you run; the migrations still go to Postgres).
+  provider: gorm
+  postgres:
+    host: ""
+    port: 5432
+    user: aperio
+    dbname: aperio
+    # disable | allow | prefer | require | verify-ca | verify-full
+    sslmode: require
+    maxOpenConns: 25
+    maxIdleConns: 25
+  hasura:
+    # The engine's GraphQL endpoint, required when provider is hasura.
+    url: ""
+
+# Secrets. Name an existing Secret (recommended: from your secret store), or
+# let the chart make one from the values below; it holds only those set.
+# Keys, and the variable each one becomes:
+#   postgres-password            APERIO_DATABASE__POSTGRES__PASSWORD (required)
+#   database-url                 the migration Job's APERIO_DATABASE_URL, when
+#                                secrets.databaseUrl or
+#                                migrations.databaseUrlFromSecret is set; else
+#                                it is built from database.postgres and
+#                                postgres-password (keep that one URL-safe:
+#                                openssl rand -hex 24)
+#   hasura-admin-secret          APERIO_DATABASE__HASURA__ADMIN_SECRET
+#   concierge-hold-secret        APERIO_CONCIERGE__HOLD_SECRET: seals hold
+#                                tokens, 32 bytes or more (openssl rand -hex 32).
+#                                Unset, each pod makes its own and a hold made
+#                                on one cannot be confirmed on another.
+#   opensearch-username          APERIO_SEARCH__OPENSEARCH__USERNAME
+#   opensearch-password          APERIO_SEARCH__OPENSEARCH__PASSWORD
+#   freebusy-feeds-secret        APERIO_FREEBUSY__FEEDS_SECRET: freebusy's
+#                                [feeds] secret, which signs calendar links
+#   freebusy-ca.crt              freebusy's CA (PEM), mounted as
+#                                APERIO_FREEBUSY__CA_FILE when freebusy.ca.enabled
+#   redis-password               APERIO_CACHE__PASSWORD
+#   auth-link-secret             APERIO_AUTH__LINK_SECRET: signs guests' links
+#                                to a quote, reservation or invoice; 32 bytes
+#                                or more, the same on every replica
+#   notify-webhook-secret        APERIO_NOTIFY__WEBHOOK__SECRET: the HMAC key
+#                                of notify.provider webhook's signature
+#   whatsapp-token               APERIO_NOTIFY__WHATSAPP__TOKEN
+# The payment gateway ([razorpay]; off while the key id is empty):
+#   razorpay-key-id              APERIO_RAZORPAY__KEY_ID
+#   razorpay-key-secret          APERIO_RAZORPAY__KEY_SECRET
+#   razorpay-webhook-secret      APERIO_RAZORPAY__WEBHOOK_SECRET
+# Booking.com's basic-auth login for POST /channels/bookingcom/reservations
+# (enable it with extraEnv APERIO_CHANNELS__BOOKINGCOM__ENABLED=true and its
+# hotels mapping):
+#   bookingcom-username          APERIO_CHANNELS__BOOKINGCOM__USERNAME
+#   bookingcom-password          APERIO_CHANNELS__BOOKINGCOM__PASSWORD
+secrets:
+  existingSecret: ""
+  postgresPassword: ""
+  databaseUrl: ""
+  hasuraAdminSecret: ""
+  conciergeHoldSecret: ""
+  opensearchUsername: ""
+  opensearchPassword: ""
+  freebusyFeedsSecret: ""
+  freebusyCA: ""
+  redisPassword: ""
+  authLinkSecret: ""
+  notifyWebhookSecret: ""
+  whatsappToken: ""
+  razorpayKeyId: ""
+  razorpayKeySecret: ""
+  razorpayWebhookSecret: ""
+  bookingcomUsername: ""
+  bookingcomPassword: ""
+
+# The freebusy server aperio books through.
+freebusy:
+  # gRPC host:port, e.g. freebusy.freebusy.svc:50051.
+  endpoint: ""
+  # Dial without TLS: a freebusy in the same cluster behind no TLS.
+  insecure: false
+  # Each call's bound; 0 is the SDK's default.
+  timeoutSeconds: 10
+  # freebusy's public HTTPS address, where calendar apps fetch .ics feeds.
+  publicUrl: ""
+  # Trust a CA the system does not: the freebusy-ca.crt key of the Secret
+  # (secrets.freebusyCA, or your existingSecret), mounted read-only.
+  ca:
+    enabled: false
+
+# The read models summaries and agents read.
+search:
+  # postgres or opensearch (a copy kept by the server's indexer; errors and
+  # timeouts fall back to Postgres).
+  provider: postgres
+  # empty | always | never: when a read model is recomputed as a pod starts.
+  rebuildOnStart: empty
+  opensearch:
+    # e.g. https://opensearch.search.svc:9200; credentials go in the Secret.
+    url: ""
+    timeoutMs: 500
+    # empty | always | never: when an index is reloaded as a pod starts.
+    reindexOnStart: empty
+
+# The Redis or Dragonfly behind the generated caches (roadmap M3: the server
+# does not use it yet). The password is the Secret's redis-password.
+cache:
+  enabled: false
+  # host:port
+  address: ""
+  username: ""
+  database: 0
+  prefix: aperio
+
+# Staff sign-in ([auth]): the OIDC issuer whose tokens aperio accepts.
+# Empty, auth is off and every call is let through -- never on a network.
+# Each key is emitted only when set; role_map entries go in extraEnv
+# (APERIO_AUTH__ROLE_MAP__<CLAIM_VALUE>: role).
+auth:
+  # e.g. https://keycloak.example.com/realms/aperio
+  issuer: ""
+  # The client ID tokens must be issued to.
+  audience: ""
+  # Empty: "roles" and "venues".
+  rolesClaim: ""
+  venuesClaim: ""
+  clockSkewSeconds: 0
+
+# Notifications to a venue's departments and its guests ([notify]).
+notify:
+  # log (the default: each message to the log), webhook or whatsapp.
+  provider: log
+  # 0: 10 s.
+  timeoutSeconds: 0
+  # Department -> recipient (an E.164 phone for WhatsApp, a key the webhook's
+  # receiver routes by): pantry, kitchen, housekeeping, maintenance, it_av,
+  # front_desk, banquet, security, default.
+  departments: {}
+  webhook:
+    # Receives each message as a signed JSON POST; the key is the Secret's
+    # notify-webhook-secret.
+    url: ""
+  whatsapp:
+    # Empty: https://graph.facebook.com/v21.0. The token is the Secret's
+    # whatsapp-token.
+    apiUrl: ""
+    phoneNumberId: ""
+    template: ""
+    language: ""
+
+server:
+  # development | debug | staging | production
+  environment: production
+  enableMcp: true
+
+telemetry:
+  # OTLP collector, host:port (gRPC). Empty exports nothing.
+  otlpEndpoint: ""
+  # true when the collector serves TLS.
+  otlpSecure: false
+  environment: production
+  # Labels this deployment's telemetry.
+  site: ""
+  siteName: ""
+
+# Lets browsers on other origins call the REST gateway on the http port.
+cors:
+  enabled: false
+  # Exact origins ("https://app.example.com") or "*" for any.
+  allowedOrigins: []
+  allowedMethods: []
+  allowedHeaders: []
+  exposedHeaders: []
+  # Refused with the "*" origin.
+  allowCredentials: false
+  maxAgeSeconds: 600
+
+# Any other setting, as APERIO_<SECTION>__<KEY>: value (into the ConfigMap).
+extraEnv: {}
+
+# Ports are the server's own (aperio.release.toml) and the Service's.
+service:
+  type: ClusterIP
+  grpcPort: 50061
+  httpPort: 8090
+  mcpPort: 8091
+  annotations: {}
+
+# In-flight calls finish on SIGTERM; this is how long they get. The server's
+# drain bound (server.shutdown_timeout_seconds) is derived from it: this, less
+# preStopSleepSeconds, less 5 s to flush telemetry -- 20 s by default.
+terminationGracePeriodSeconds: 30
+
+# Seconds a terminating pod keeps serving before SIGTERM, so the Service's
+# endpoints drop it before it stops accepting connections. 0 turns it off.
+# The lifecycle sleep action needs Kubernetes 1.30 or later (no shell in the
+# image).
+preStopSleepSeconds: 5
+
+# All three probe GET /health on the http port. The startup probe holds the
+# other two off until the server first answers (failureThreshold x period).
+probes:
+  enabled: true
+  startup:
+    periodSeconds: 2
+    failureThreshold: 60
+  readiness:
+    periodSeconds: 5
+    failureThreshold: 3
+  liveness:
+    periodSeconds: 20
+    failureThreshold: 3
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+  # Empty: CPU only.
+  targetMemoryUtilizationPercentage: null
+
+# Rendered when more than one replica runs (replicaCount, or the HPA's floor).
+podDisruptionBudget:
+  enabled: true
+  # One of the two; minAvailable wins when both are set.
+  minAvailable: 1
+  maxUnavailable: null
+
+# Spread the replicas over nodes (and zones, when the nodes carry the label).
+# Replaced by topologySpreadConstraints when that is set.
+topologySpread:
+  enabled: true
+  maxSkew: 1
+  whenUnsatisfiable: ScheduleAnyway
+topologySpreadConstraints: []
+
+serviceAccount:
+  create: true
+  # Empty: the release's full name (or "default" when create is false).
+  name: ""
+  annotations: {}
+
+# Ingress: set auth.issuer first, or every call is let through.
+ingress:
+  className: ""
+  # REST at /, and the MCP endpoint at mcpPath when set.
+  http:
+    enabled: false
+    annotations: {}
+    hosts: []
+    mcpPath: /mcp
+    # [{secretName: aperio-tls, hosts: [aperio.example.com]}]
+    tls: []
+  # gRPC needs HTTP/2 to the backend: the annotation is ingress-nginx's.
+  grpc:
+    enabled: false
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: GRPC
+    hosts: []
+    tls: []
+
+networkPolicy:
+  enabled: false
+  # Who may reach the server's ports (NetworkPolicyPeer entries). Empty: any
+  # pod in the release's namespace. Add your ingress controller's namespace
+  # when an Ingress is on.
+  from: []
+  # Egress rules (NetworkPolicyEgressRule entries). Empty: egress is not
+  # restricted. Set, egress is limited to these plus DNS.
+  egress: []
+
+# A Prometheus Operator ServiceMonitor. aperio exports its metrics over OTLP
+# (telemetry.otlpEndpoint) and serves no /metrics yet: turn this on for a
+# release that does, or point path at an exporter sidecar's.
+serviceMonitor:
+  enabled: false
+  port: http
+  path: /metrics
+  interval: 30s
+  scrapeTimeout: 10s
+  labels: {}
+
+# `helm test <release>`: a Pod that checks /health and a read API through the
+# Service (templates/tests/smoke.yaml).
+tests:
+  enabled: true
+  image:
+    repository: curlimages/curl
+    tag: "8.11.1"
+    pullPolicy: IfNotPresent
+
+podAnnotations: {}
+podLabels: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+priorityClassName: ""

@@ -1,0 +1,49 @@
+{{- /* Copyright 2026 Srikanth K.
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+Two Ingresses, as controllers configure the backend protocol per Ingress:
+REST (and MCP at ingress.http.mcpPath) over HTTP/1.1, and gRPC over HTTP/2. */}}
+{{- $fullname := include "aperio.fullname" . }}
+{{- range $kind := list "http" "grpc" }}
+{{- $ing := index $.Values.ingress $kind }}
+{{- if $ing.enabled }}
+{{- if not $ing.hosts }}
+{{- fail (printf "ingress.%s.hosts is required when ingress.%s.enabled" $kind $kind) }}
+{{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullname }}{{ if eq $kind "grpc" }}-grpc{{ end }}
+  labels:
+    {{- include "aperio.labels" $ | nindent 4 }}
+  {{- with $ing.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $.Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- with $ing.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- range $host := $ing.hosts }}
+    - host: {{ $host | quote }}
+      http:
+        paths:
+          {{- if and (eq $kind "http") $ing.mcpPath }}
+          - path: {{ $ing.mcpPath }}
+            pathType: Prefix
+            backend:
+              service: { name: {{ $fullname }}, port: { name: mcp } }
+          {{- end }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service: { name: {{ $fullname }}, port: { name: {{ $kind }} } }
+    {{- end }}
+{{- end }}
+{{- end }}

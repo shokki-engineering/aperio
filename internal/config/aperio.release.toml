@@ -127,3 +127,88 @@ timeout_ms = 500
 # -- the repair after an indexer missed changes: restart one replica with it
 # set, then set it back; "never".
 reindex_on_start = "empty"
+
+[notify]
+# Who departments and guests are told through: "log" (the default), "webhook"
+# (a JSON POST signed X-Aperio-Signature: sha256=HMAC of the body) or
+# "whatsapp" (the WhatsApp Business Cloud API). Secrets through
+# APERIO_NOTIFY__WEBHOOK__SECRET and APERIO_NOTIFY__WHATSAPP__TOKEN.
+provider = "log"
+timeout_seconds = 10
+
+[notify.departments]
+# Where each department is told -- pantry, kitchen, housekeeping, maintenance,
+# it_av, front_desk, banquet, security -- or "default": a webhook URL or a
+# WhatsApp number, as the provider takes.
+
+[notify.webhook]
+url = ""
+secret = ""
+
+[notify.whatsapp]
+api_url = ""
+phone_number_id = ""
+token = ""
+template = ""
+language = "en"
+
+[auth]
+# Staff sign-in: any OIDC issuer (Google Workspace, Keycloak, Clerk). Empty
+# issuer turns auth off, with a loud warning -- development only.
+# APERIO_AUTH__ISSUER, APERIO_AUTH__AUDIENCE.
+issuer = ""
+audience = ""
+# The claims carrying a person's roles (owner, front_desk, sales, kitchen,
+# housekeeping, accounts) and venues ("venues/x", or "*" for all); a dotted
+# path such as realm_access.roles works.
+roles_claim = "roles"
+venues_claim = "venues"
+clock_skew_seconds = 60
+# Signs guests' read-only links to a quote, stay or invoice: 32+ random
+# bytes, the same on every replica; APERIO_AUTH__LINK_SECRET.
+link_secret = ""
+
+[auth.role_map]
+# The issuer's group names to aperio's roles, e.g. "aperio-kitchen" = "kitchen".
+
+[channels.bookingcom]
+# Booking.com over OTA XML: serves POST /channels/bookingcom/reservations
+# (OTA_HotelResNotifRQ), with HTTP basic auth through
+# APERIO_CHANNELS__BOOKINGCOM__USERNAME / __PASSWORD -- with either empty,
+# every message is refused.
+enabled = false
+username = ""
+password = ""
+# Each hotel code Booking.com sends, the venue it is, and its room types:
+# [[channels.bookingcom.hotels]]
+# hotel_code = "7777001"
+# venue = "venues/<id>"
+# [[channels.bookingcom.hotels.rooms]]
+# code = "SV-DLX"
+# space = "venues/<id>/spaces/<id>"
+# rate_plan = "BAR"
+
+[razorpay]
+# The payment gateway for Indian cards and UPI: refunds, payment links
+# (RequestPayment) and its webhook at POST /webhooks/razorpay. Off while
+# key_id is empty. Secrets through APERIO_RAZORPAY__KEY_ID, __KEY_SECRET and
+# __WEBHOOK_SECRET.
+base_url = ""  # https://api.razorpay.com/v1 when empty
+key_id = ""
+key_secret = ""
+webhook_secret = ""
+timeout_seconds = 15
+
+[freebusy_sync]
+# The public URL freebusy POSTs its changes to: aperio's REST port and
+# /webhooks/freebusy. Empty, no subscription is made (the reconciler still
+# runs).
+webhook_url = ""
+webhook_id = "aperio"
+# The subscription's whsec_ signing secret, as freebusy's CreateWebhook or
+# RotateWebhookSecret returned it: APERIO_FREEBUSY_SYNC__WEBHOOK_SECRET.
+webhook_secret = ""
+# How often the reconciler walks the live bookings (0 is five minutes) and
+# sent quotes are expired (0 is a minute); below 0 turns a job off.
+reconcile_interval_seconds = 0
+quote_expiry_interval_seconds = 0

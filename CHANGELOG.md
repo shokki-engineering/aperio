@@ -15,6 +15,30 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
 
 ### Added
 
+- Payments (M2): Razorpay payment links (`FinanceService.RequestPayment`),
+  refunds and its signed webhook at `/webhooks/razorpay` (`[razorpay]`);
+  `ClearPayment` for cheques; a receipt voucher for every advance.
+- Staying in step with freebusy (M4): freebusy's webhooks at
+  `/webhooks/freebusy` settle stays and events cancelled or moved there;
+  the subscription is ensured at startup; a reconciler repairs or flags
+  drift; leads hold their dates; an accepted event holds its hall.
+  `SendQuote` takes a `ttl`; sent quotes past it expire (`[freebusy_sync]`).
+- Auth (M5): OIDC staff sign-in from any issuer, six roles with a rule for
+  every RPC, per-venue access and guests' signed links, on gRPC, REST and
+  MCP (`[auth]`; off, with a warning, until an issuer is set).
+- Operations (M6): service-request states; department and guest
+  notifications through a log, a signed webhook or WhatsApp Business
+  (`[notify]`); a completed request's charge posted to its booking's bill.
+- Channels (M7): Booking.com OTA_HotelResNotif in at
+  `/channels/bookingcom/reservations` (`[channels.bookingcom]`), rates and
+  availability messages out.
+- Platform (M3): Redis list caches (`[cache]`), query tracing, the pool
+  monitor, background jobs, and webhooks served beside the REST gateway.
+- Deployment: a Dockerfile (runtime and migrate images), Compose for the
+  whole stack (`just stack`), a Helm chart (`deploy/helm/aperio`, `just
+  helm`), CI with a generated-code drift check and image and chart jobs, a
+  release workflow, and Dependabot.
+
 - The server: `main.go` on runtime-go's HybridServer, every service on gRPC
   (:50061) and REST (:8090); configuration (`internal/config`) and telemetry
   (`internal/telemetry`) as freebusy's.
@@ -67,6 +91,14 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   `ELICITATION_REQUIRED`) that a REST or gRPC client shows as a form; over MCP
   it is an elicitation to a client that declares the capability, and a tool
   error the model asks in its own words to one that does not.
+
+### Fixed
+
+- An issued credit note now settles and reduces what its invoice is due;
+  proformas are no longer counted beside the tax invoice that supersedes
+  them; receipt vouchers can't be paid against.
+- A second acceptance of the same hall on the same day fails instead of
+  double-booking it.
 
 ### Changed
 

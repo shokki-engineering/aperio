@@ -11,11 +11,14 @@
 package database
 
 import (
+	"context"
 	"strings"
+	"sync"
 
 	"github.com/shokki-engineering/aperio/internal/config"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
+	"github.com/the-protobuf-project/runtime-go/cache"
 	"gorm.io/gorm"
 )
 
@@ -31,17 +34,66 @@ const (
 
 // Connection carries the live backend handles plus the provider that
 // selected them. Only the selected provider's handle needs to be set
-// (PgSQLConn for GORM, Hasura for Hasura).
+// (PgSQLConn for GORM, Hasura for Hasura). Build it with Open, or as a
+// literal and then UseCaches; it is not copied once in use.
 type Connection struct {
 	PgSQLConn *gorm.DB
 	Hasura    *aperioql.Service
 	Provider  Provider
 
+	// Caches are the list caches over this connection's repositories; their
+	// fields are nil when the cache is off. Changes reports every write a
+	// repository built from Repox commits to them, which is what keeps a
+	// cached page from outliving a write.
+	Caches  Caches
+	Changes repox.ChangeObserver
 	// Projections keeps the projection tables (the read models, such as
 	// stay.v1.StayNight) current with every write a repository or Batch
 	// built from Repox makes: inside the write's transaction on GORM, right
 	// after it on Hasura.
 	Projections *repox.Projections
+
+	// observers hear every write as Changes does, added through Observe.
+	observers observerList
+	// cacheProvider is the cache UseCaches opened, nil when it is off.
+	cacheProvider cache.Provider
+}
+
+// observerList is the observers Observe added, safe to read while one is
+// being added.
+type observerList struct {
+	mu   sync.RWMutex
+	list []repox.ChangeObserver
+}
+
+// Observe makes o hear every write a repository or Batch built from this
+// connection's Repox commits -- built before this call or after -- alongside
+// Changes. For a service that keeps something derived from records and must
+// drop it when one is written.
+func (c *Connection) Observe(o repox.ChangeObserver) {
+	c.observers.mu.Lock()
+	defer c.observers.mu.Unlock()
+	c.observers.list = append(c.observers.list, o)
+}
+
+// CacheProvider is the cache backend UseCaches opened, or nil when the cache
+// is off.
+func (c *Connection) CacheProvider() cache.Provider { return c.cacheProvider }
+
+// changes is the observer a Repox handle carries: Changes, then every
+// observer Observe added, read at the time of each write.
+type changes struct{ c *Connection }
+
+func (ch changes) Changed(ctx context.Context, name string) {
+	if ch.c.Changes != nil {
+		ch.c.Changes.Changed(ctx, name)
+	}
+	ch.c.observers.mu.RLock()
+	list := ch.c.observers.list
+	ch.c.observers.mu.RUnlock()
+	for _, o := range list {
+		o.Changed(ctx, name)
+	}
 }
 
 // providerFromConfig resolves the configured provider, defaulting to GORM
@@ -58,11 +110,12 @@ func providerFromConfig() Provider {
 // Repox returns the handle the generated repositories take, carrying only
 // the selected provider's connection: repox picks GraphQL whenever that
 // handle is set, so passing both would route a GORM deployment to Hasura.
+// Its Changes is the connection's, so the list caches hear every write.
 func (c *Connection) Repox() repox.Conn {
 	if c.Provider == ProviderHasura {
-		return repox.Conn{GraphQL: c.Hasura, Projections: c.Projections}
+		return repox.Conn{GraphQL: c.Hasura, Changes: changes{c}, Projections: c.Projections}
 	}
-	return repox.Conn{Gorm: c.PgSQLConn, Projections: c.Projections}
+	return repox.Conn{Gorm: c.PgSQLConn, Changes: changes{c}, Projections: c.Projections}
 }
 
 // SearchConn is the handle projection searches read through: GORM whenever

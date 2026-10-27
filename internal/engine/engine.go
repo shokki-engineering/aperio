@@ -22,6 +22,10 @@ import (
 // window: taken by another booking, blocked, or outside their opening hours.
 var ErrUnavailable = errors.New("engine: not available")
 
+// ErrLapsed is returned by ExtendHold for a hold that is no longer active:
+// expired, released, or made into a reservation.
+var ErrLapsed = errors.New("engine: the hold lapsed")
+
 // Engine is what aperio asks of freebusy.
 type Engine interface {
 	// Free reports whether quantity of resources are free for the whole of
@@ -55,6 +59,47 @@ type Engine interface {
 	// replaces the one already there: who the booking is for, for whoever
 	// subscribes to the calendar. It blocks nothing -- the reservation does.
 	Note(ctx context.Context, reservation string, n Note) error
+
+	// ExtendHold pushes hold's expiry to d from now -- freebusy allows a day
+	// at most -- and returns it. ErrLapsed when it is no longer active.
+	ExtendHold(ctx context.Context, hold string, d time.Duration) (Hold, error)
+
+	// ReleaseHold gives hold up, freeing what it took. One already
+	// released, lapsed or gone is not an error.
+	ReleaseHold(ctx context.Context, hold string) error
+
+	// Find is the live reservation Book made under key, or "" when there
+	// is none (never booked, or cancelled since).
+	Find(ctx context.Context, key string) (string, error)
+
+	// Lookup reads reservations as freebusy has them now, in batches rather
+	// than one call each. A reservation freebusy does not know is missing
+	// from the map.
+	Lookup(ctx context.Context, reservations []string) (map[string]Reservation, error)
+}
+
+// State is where a freebusy reservation stands, as aperio reads it.
+type State int
+
+// The states Lookup reports.
+const (
+	// Live holds its resources: pending, confirmed, or being moved.
+	Live State = iota + 1
+	// Ended holds nothing: cancelled, being cancelled, or failed.
+	Ended
+	// Moved was rescheduled: Replacement holds the resources now.
+	Moved
+)
+
+// Reservation is a freebusy reservation as Lookup reads it.
+type Reservation struct {
+	Name   string
+	State  State
+	Window Window
+	// Quantity is how many resources it holds.
+	Quantity int32
+	// Replacement is the reservation a Moved one moved to.
+	Replacement string
 }
 
 // Note is what a booking shows on its resources' calendars.

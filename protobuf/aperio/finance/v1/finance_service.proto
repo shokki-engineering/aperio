@@ -132,6 +132,27 @@ service FinanceService {
     option (google.api.method_signature) = "name";
   }
 
+  // Clears a PENDING cheque or bank transfer once the bank has credited it:
+  // it becomes SUCCEEDED, and counts towards its invoice and its booking.
+  rpc ClearPayment(ClearPaymentRequest) returns (Payment) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/payments/*}:clear"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Asks the guest to pay an issued invoice online: a payment link from the
+  // venue's gateway, for its due amount or a part of it, which the gateway's
+  // webhook settles into a payment.
+  rpc RequestPayment(RequestPaymentRequest) returns (RequestPaymentResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/invoices/*}:requestPayment"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
   // What a venue is owed, for the accounts team and their agents: what is
   // outstanding and overdue, its age, who owes the most, and what came in
   // this month.

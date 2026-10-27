@@ -17,10 +17,12 @@ default:
 install:
     npm install --no-audit --no-fund
 
+# Only the stack's postgres service, with deploy/compose/dev.env's values; the
+# whole stack is `just stack up`.
 # The local Postgres the migrations apply to (127.0.0.1:5433, database aperio).
 [group('db')]
 up:
-    docker compose -f ../../../../deploy/compose/compose.yaml up -d --wait
+    docker compose -f ../../../../deploy/compose/compose.yaml --env-file ../../../../deploy/compose/dev.env up -d --wait postgres
 
 # Write the next migration after the schema changes, and apply it.
 [group('db')]
@@ -32,7 +34,7 @@ migrate name:
 [group('db')]
 [confirm('Drop the aperio dev database and every row in it? (y/N)')]
 reset:
-    docker compose -f ../../../../deploy/compose/compose.yaml exec -T postgres \
+    docker compose -f ../../../../deploy/compose/compose.yaml --env-file ../../../../deploy/compose/dev.env exec -T postgres \
         psql -U postgres -v ON_ERROR_STOP=1 -c 'DROP DATABASE IF EXISTS aperio WITH (FORCE)' -c 'CREATE DATABASE aperio'
     npx prisma migrate deploy --config aperio.config.ts
 

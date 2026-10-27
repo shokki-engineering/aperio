@@ -11,7 +11,7 @@ package finance
 //   - cash, UPI, card, bank transfer and a channel's payout are recorded
 //     after the money moved: SUCCEEDED at once;
 //   - a gateway payment waits for the gateway's webhook, and a cheque for
-//     clearing: PENDING.
+//     clearing (ClearPayment, clearing.go): PENDING.
 //
 // A refund is made by RefundPayment, never created directly.
 
@@ -120,7 +120,7 @@ func (h *hooks) base(ctx context.Context, venueName string, m *financepbv1.Payme
 }
 
 // checkInvoice checks the invoice m is paid against: of the same venue,
-// issued, not a credit note. It takes the invoice's booking when m names
+// issued, not a credit note or a receipt voucher. It takes the invoice's booking when m names
 // none.
 func (h *hooks) checkInvoice(ctx context.Context, venueName string, m *financepbv1.Payment) error {
 	if m.GetInvoice() == "" {
@@ -136,6 +136,9 @@ func (h *hooks) checkInvoice(ctx context.Context, venueName string, m *financepb
 	switch {
 	case inv.GetKind() == financepbv1.InvoiceKind_INVOICE_KIND_CREDIT_NOTE:
 		return servicex.BadField("CREDIT_NOTE", "payment.invoice", "a credit note is not paid", "Refund the payment instead")
+	case inv.GetKind() == financepbv1.InvoiceKind_INVOICE_KIND_RECEIPT_VOUCHER:
+		return servicex.BadField("RECEIPT_VOUCHER", "payment.invoice", "a receipt voucher records a payment; it is not paid",
+			"Pay against the booking's proforma or tax invoice")
 	case inv.GetState() != financepbv1.Invoice_STATE_ISSUED && inv.GetState() != financepbv1.Invoice_STATE_PAID:
 		return servicex.Blocked("INVOICE_NOT_ISSUED", invoiceType, inv.GetName(), "the invoice is "+inv.GetState().String(),
 			"Issue it first, or record the payment without an invoice")

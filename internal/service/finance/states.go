@@ -4,65 +4,25 @@
 package finance
 
 // states.go moves an invoice through its life: DRAFT -> ISSUED (numbered,
-// dated, fixed) -> CANCELLED, its number staying used; and makes a credit
-// note, a new draft correcting an issued tax invoice.
+// dated, fixed; issue.go) -> PAID as payments come in (settle.go), or
+// CANCELLED, its number staying used; and makes a credit note, a new draft
+// correcting an issued tax invoice, which is PAID -- settled against the
+// invoice -- as it is issued.
 
 import (
 	"context"
-	"errors"
 	"slices"
 
-	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/pricing"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1"
-	"google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/protobuf/proto"
 )
 
-// issueAttempts is how often IssueInvoice takes the next number when another
-// issue took the same one first.
-const issueAttempts = 5
-
-// IssueInvoice computes a draft one last time, numbers it in its series and
-// dates it today in the venue's time zone.
+// IssueInvoice issues a draft: numbers it in its series and dates it today
+// in the venue's time zone (issue.go).
 func (s *Server) IssueInvoice(ctx context.Context, req *financepbv1.IssueInvoiceRequest) (*financepbv1.Invoice, error) {
-	return s.move(ctx, "IssueInvoice", req.GetName(), req.GetEtag(), []financepbv1.Invoice_State{financepbv1.Invoice_STATE_DRAFT},
-		func(ctx context.Context, inv *financepbv1.Invoice) (*financepbv1.Invoice, error) {
-			venueName := servicex.ParentOf(inv.GetName())
-			v, err := s.h.venue(ctx, venueName)
-			if err != nil {
-				return nil, err
-			}
-			if v.GetInvoicePrefix() == "" {
-				return nil, servicex.Blocked("NO_INVOICE_PREFIX", venueType, venueName, "the venue has no invoice series",
-					`Set the venue's invoice_prefix, e.g. "SBR"`)
-			}
-			if err := compute(inv, v); err != nil {
-				return nil, err
-			}
-			day := s.h.today(v)
-			stem, err := series(v.GetInvoicePrefix(), inv.GetKind(), day)
-			if err != nil {
-				return nil, servicex.BadField("INVALID_KIND", "invoice.kind", err.Error(), "Set the kind of document")
-			}
-			inv.State = financepbv1.Invoice_STATE_ISSUED
-			inv.IssueDate = &date.Date{Year: int32(day.Year()), Month: int32(day.Month()), Day: int32(day.Day())}
-			etag := inv.GetEtag()
-			for range issueAttempts {
-				if inv.Number, err = s.h.number(ctx, venueName, stem, inv.GetKind()); err != nil {
-					return nil, servicex.Blocked("SERIES_FULL", invoiceType, inv.GetName(), err.Error(), "Change the venue's invoice_prefix to a shorter one")
-				}
-				inv.Etag = etag
-				out, err := s.Repositories().Invoices.UpdateWithOutputOnly(ctx, inv, []string{"lines", "supply_state_code"},
-					append([]string{"state", "number", "issue_date"}, totals...))
-				if !errors.Is(err, repox.ErrAlreadyExists) {
-					return out, err
-				}
-			}
-			return nil, servicex.Blocked("NUMBER_CONTENDED", invoiceType, inv.GetName(),
-				"other invoices kept taking the next number", "Issue it again")
-		})
+	return s.move(ctx, "IssueInvoice", req.GetName(), req.GetEtag(), []financepbv1.Invoice_State{financepbv1.Invoice_STATE_DRAFT}, s.h.issue)
 }
 
 // CancelInvoice cancels an issued invoice nothing has been paid against.

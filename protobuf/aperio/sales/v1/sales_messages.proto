@@ -10,6 +10,7 @@ import "aperio/sales/v1/sales.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/type/money.proto";
@@ -256,6 +257,16 @@ message SendQuoteRequest {
 
   // The etag the caller last read; the call fails when it has changed.
   string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // How long the offer stands once sent: its expire_time is the send time
+  // plus this; 14 days when unset.
+  google.protobuf.Duration ttl = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).duration = {
+      gte: {seconds: 3600}
+      lte: {seconds: 31536000}
+    }
+  ];
 }
 
 // Request message for AcceptQuote.

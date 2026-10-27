@@ -1,34 +1,295 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# aperio's local development database: Postgres holding the aperio database,
-# which Prisma migrates (`just db migrate`) and Hasura DDN serves
-# (deploy/hasura, `just hasura regen`).
+# The whole system on one host: aperio and its Postgres with its migrations,
+# and freebusy -- the availability engine every booking goes through -- with
+# its own Postgres and migrations. By profile: both Hasura DDN engines and
+# their connectors (hasura), Redis (cache), a single-node OpenSearch (search).
 #
-#   docker compose -f deploy/compose/compose.yaml up -d
+#   cp .env.example .env                     # then set every CHANGE_ME
+#   docker compose up -d                     # or: just stack up
+#   docker compose --profile cache --profile search up -d
+#   docker compose --profile hasura up -d    # + set APERIO_DATABASE_PROVIDER=hasura
 #
-# On 127.0.0.1:5433, so it runs beside another project's Postgres on 5432.
-# Nothing here is for production.
+# aperio answers on 127.0.0.1:8090 (REST, /health), :50061 (gRPC) and :8091
+# (MCP, /mcp); freebusy on :8080, :50051 and :8081. Every port is published
+# on 127.0.0.1 only: put a TLS-terminating proxy you control in front.
+#
+# The postgres service is also the development database (`just db up` starts
+# only it, with dev.env's values): on 127.0.0.1:5433, database aperio.
+#
+# Two networks: default (aperio's) and freebusy (freebusy's). Each Hasura
+# connector answers to local.hasura.dev, the name its committed engine build
+# was made against (deploy/hasura/engine/build here, freebusy's own there), so
+# the two must not share a network; the freebusy server sits on both.
 
 name: aperio
 
 services:
+  aperio:
+    image: ${APERIO_IMAGE:-ghcr.io/shokki-engineering/aperio}:${APERIO_TAG:-latest}
+    build:
+      context: ../..
+      target: runtime
+    read_only: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    ports:
+      - "127.0.0.1:${APERIO_GRPC_PORT:-50061}:50061" # gRPC
+      - "127.0.0.1:${APERIO_HTTP_PORT:-8090}:8090" # REST and /health
+      - "127.0.0.1:${APERIO_MCP_PORT:-8091}:8091" # MCP, one endpoint at /mcp
+    environment:
+      APERIO_DATABASE__PROVIDER: ${APERIO_DATABASE_PROVIDER:-gorm}
+      APERIO_DATABASE__POSTGRES__HOST: postgres
+      APERIO_DATABASE__POSTGRES__PORT: "5432"
+      APERIO_DATABASE__POSTGRES__DBNAME: aperio
+      APERIO_DATABASE__POSTGRES__PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      # Inside the stack's own network only.
+      APERIO_DATABASE__POSTGRES__SSLMODE: disable
+      APERIO_DATABASE__HASURA__URL: http://engine:3000/graphql
+      APERIO_CACHE__ENABLED: ${APERIO_CACHE_ENABLED:-false}
+      APERIO_CACHE__ADDRESS: redis:6379
+      APERIO_CACHE__PASSWORD: ${REDIS_PASSWORD:-}
+      APERIO_FREEBUSY__ENDPOINT: freebusy:50051
+      APERIO_FREEBUSY__INSECURE: "true"
+      APERIO_FREEBUSY__PUBLIC_URL: ${FREEBUSY_PUBLIC_URL:-http://localhost:8080}
+      APERIO_FREEBUSY__FEEDS_SECRET: ${FEEDS_SECRET:-}
+      APERIO_CONCIERGE__HOLD_SECRET: ${APERIO_HOLD_SECRET:?set APERIO_HOLD_SECRET in .env}
+      APERIO_AUTH__ISSUER: ${APERIO_AUTH_ISSUER:-}
+      APERIO_AUTH__AUDIENCE: ${APERIO_AUTH_AUDIENCE:-}
+      APERIO_AUTH__LINK_SECRET: ${APERIO_LINK_SECRET:?set APERIO_LINK_SECRET in .env}
+      APERIO_SEARCH__PROVIDER: ${APERIO_SEARCH_PROVIDER:-postgres}
+      APERIO_SEARCH__OPENSEARCH__URL: ${OPENSEARCH_URL:-http://opensearch:9200}
+      APERIO_SEARCH__OPENSEARCH__USERNAME: ${OPENSEARCH_USERNAME:-}
+      APERIO_SEARCH__OPENSEARCH__PASSWORD: ${OPENSEARCH_PASSWORD:-}
+      APERIO_SERVER__CORS__ENABLED: ${APERIO_CORS_ENABLED:-false}
+      APERIO_SERVER__CORS__ALLOWED_ORIGINS: ${APERIO_CORS_ALLOWED_ORIGINS:-}
+      APERIO_SERVER__CORS__ALLOW_CREDENTIALS: ${APERIO_CORS_ALLOW_CREDENTIALS:-false}
+      APERIO_OTLP_ENDPOINT: ${OTLP_ENDPOINT:-}
+      APERIO_TELEMETRY_ENVIRONMENT: ${TELEMETRY_ENVIRONMENT:-production}
+      APERIO_SITE: ${SITE:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      freebusy:
+        condition: service_started
+      # With the hasura profile only; the server exits while the engine is
+      # still starting and is restarted, so it may take a second try.
+      engine:
+        condition: service_started
+        required: false
+
+  # Applies protobuf/generated/prisma/aperio/migrations before the server
+  # starts, and on every `up` after an upgrade; only what the database has
+  # not seen, then it exits.
+  migrate:
+    image: ${APERIO_MIGRATE_IMAGE:-ghcr.io/shokki-engineering/aperio-migrate}:${APERIO_TAG:-latest}
+    build:
+      context: ../..
+      target: migrate
+    environment:
+      APERIO_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/aperio?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:18.6
     restart: unless-stopped
     ports:
-      - "127.0.0.1:5433:5432"
+      - "127.0.0.1:${APERIO_POSTGRES_PORT:-5433}:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
-      POSTGRES_DB: ota
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: aperio
     volumes:
       - postgres:/var/lib/postgresql
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "ota"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "aperio"]
       interval: 2s
       timeout: 5s
       retries: 30
 
+  # freebusy, as its own deploy/compose/compose.yaml runs it.
+  freebusy:
+    image: ${FREEBUSY_IMAGE:-ghcr.io/shokki-engineering/freebusy}:${FREEBUSY_TAG:-latest}
+    read_only: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    ports:
+      - "127.0.0.1:${FREEBUSY_GRPC_PORT:-50051}:50051" # gRPC
+      - "127.0.0.1:${FREEBUSY_HTTP_PORT:-8080}:8080" # REST, /health, the .ics feeds
+      - "127.0.0.1:${FREEBUSY_MCP_PORT:-8081}:8081" # MCP
+    environment:
+      FREEBUSY_DATABASE__PROVIDER: ${FREEBUSY_DATABASE_PROVIDER:-gorm}
+      FREEBUSY_DATABASE__POSTGRES__HOST: freebusy-postgres
+      FREEBUSY_DATABASE__POSTGRES__PASSWORD: ${FREEBUSY_POSTGRES_PASSWORD:?set FREEBUSY_POSTGRES_PASSWORD in .env}
+      FREEBUSY_DATABASE__POSTGRES__SSLMODE: disable
+      FREEBUSY_DATABASE__HASURA__URL: http://freebusy-engine:3000/graphql
+      FREEBUSY_CACHE__ENABLED: ${FREEBUSY_CACHE_ENABLED:-false}
+      FREEBUSY_CACHE__ADDRESS: redis:6379
+      FREEBUSY_CACHE__PASSWORD: ${REDIS_PASSWORD:-}
+      FREEBUSY_SEARCH__PROVIDER: ${FREEBUSY_SEARCH_PROVIDER:-postgres}
+      FREEBUSY_SEARCH__OPENSEARCH__URL: ${OPENSEARCH_URL:-http://opensearch:9200}
+      FREEBUSY_SEARCH__OPENSEARCH__USERNAME: ${OPENSEARCH_USERNAME:-}
+      FREEBUSY_SEARCH__OPENSEARCH__PASSWORD: ${OPENSEARCH_PASSWORD:-}
+      FREEBUSY_FEEDS__SECRET: ${FEEDS_SECRET:-}
+      FREEBUSY_WEBHOOKS__SECRET_KEY: ${WEBHOOK_SECRET_KEY:?set WEBHOOK_SECRET_KEY in .env}
+      FREEBUSY_OTLP_ENDPOINT: ${OTLP_ENDPOINT:-}
+      FREEBUSY_TELEMETRY_ENVIRONMENT: ${TELEMETRY_ENVIRONMENT:-production}
+      FREEBUSY_SITE: ${SITE:-}
+    networks: [default, freebusy]
+    depends_on:
+      freebusy-migrate:
+        condition: service_completed_successfully
+      freebusy-engine:
+        condition: service_started
+        required: false
+
+  freebusy-migrate:
+    image: ${FREEBUSY_MIGRATIONS_IMAGE:-ghcr.io/shokki-engineering/freebusy-migrations}:${FREEBUSY_TAG:-latest}
+    command: ["--url", "postgres://postgres:${FREEBUSY_POSTGRES_PASSWORD}@freebusy-postgres:5432/freebusydb?sslmode=disable"]
+    networks: [freebusy]
+    depends_on:
+      freebusy-postgres:
+        condition: service_healthy
+
+  freebusy-postgres:
+    image: postgres:18.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${FREEBUSY_POSTGRES_PASSWORD}
+      POSTGRES_DB: freebusydb
+    volumes:
+      - freebusy-postgres:/var/lib/postgresql
+    networks: [freebusy]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "freebusydb"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    profiles: [cache]
+    image: redis:8
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-}", "--save", "", "--appendonly", "no"]
+    networks: [default, freebusy]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-}", "--no-auth-warning", "ping"]
+      interval: 5s
+      retries: 10
+
+  # Single node with the security plugin DISABLED -- plain HTTP, no users --
+  # acceptable only on one host with the port bound to 127.0.0.1. A shared
+  # or production cluster runs with security on: an https OPENSEARCH_URL and
+  # OPENSEARCH_USERNAME / OPENSEARCH_PASSWORD.
+  opensearch:
+    profiles: [search]
+    image: opensearchproject/opensearch:3.9.0
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+    ulimits:
+      memlock: {soft: -1, hard: -1}
+      nofile: {soft: 65536, hard: 65536}
+    ports:
+      - "127.0.0.1:${OPENSEARCH_PORT:-9200}:9200"
+    volumes:
+      - opensearch:/usr/share/opensearch/data
+    networks: [default, freebusy]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s'"]
+      interval: 10s
+      retries: 30
+      start_period: 30s
+
+  # aperio's Hasura DDN engine, serving the committed build
+  # (deploy/hasura/engine/build). That build names its connector at
+  # local.hasura.dev:9795 with the token in deploy/hasura/.env.example, which
+  # is why the connector answers to that name and port here.
+  engine:
+    profiles: [hasura]
+    image: ${APERIO_ENGINE_IMAGE:-ghcr.io/shokki-engineering/aperio-engine}:${APERIO_TAG:-latest}
+    build:
+      context: ../hasura/engine
+      dockerfile: Dockerfile.engine
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${APERIO_ENGINE_PORT:-3281}:3000"
+    environment:
+      AUTHN_CONFIG_PATH: /md/auth_config.json
+      ENABLE_CORS: "true"
+      INTROSPECTION_METADATA_FILE: /md/metadata.json
+      METADATA_PATH: /md/open_dd.json
+      OTLP_ENDPOINT: ${ENGINE_OTLP_ENDPOINT:-}
+    depends_on: [connector]
+
+  connector:
+    profiles: [hasura]
+    image: ${APERIO_CONNECTOR_IMAGE:-ghcr.io/shokki-engineering/aperio-connector}:${APERIO_TAG:-latest}
+    build:
+      context: ../hasura/aperio/connector/aperio_pgsql
+      dockerfile: .hasura-connector/Dockerfile.aperio_pgsql
+    restart: unless-stopped
+    environment:
+      CONNECTION_URI: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/aperio
+      HASURA_CONNECTOR_PORT: "9795"
+      HASURA_SERVICE_TOKEN_SECRET: ${APERIO_CONNECTOR_TOKEN:-aperio-local-connector}
+      # Passed only when set: an empty value stops the connector (ndc-sdk
+      # cannot parse it), so it reads .env's OTEL_EXPORTER_OTLP_ENDPOINT as is.
+      OTEL_EXPORTER_OTLP_ENDPOINT:
+      OTEL_SERVICE_NAME: aperio_pgsql
+    networks:
+      default:
+        aliases: [local.hasura.dev]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  # freebusy's engine and connector, from its images (freebusy builds them
+  # from its own deploy/hasura). Its build names local.hasura.dev:9794.
+  freebusy-engine:
+    profiles: [hasura]
+    image: ${FREEBUSY_ENGINE_IMAGE:-ghcr.io/shokki-engineering/freebusy-engine}:${FREEBUSY_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${FREEBUSY_ENGINE_PORT:-3280}:3000"
+    environment:
+      AUTHN_CONFIG_PATH: /md/auth_config.json
+      INTROSPECTION_METADATA_FILE: /md/metadata.json
+      METADATA_PATH: /md/open_dd.json
+      OTLP_ENDPOINT: ${ENGINE_OTLP_ENDPOINT:-}
+    networks: [freebusy]
+    depends_on: [freebusy-connector]
+
+  freebusy-connector:
+    profiles: [hasura]
+    image: ${FREEBUSY_CONNECTOR_IMAGE:-ghcr.io/shokki-engineering/freebusy-connector}:${FREEBUSY_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      CONNECTION_URI: postgresql://postgres:${FREEBUSY_POSTGRES_PASSWORD}@freebusy-postgres:5432/freebusydb
+      HASURA_CONNECTOR_PORT: "9794"
+      HASURA_SERVICE_TOKEN_SECRET: ${FREEBUSY_CONNECTOR_TOKEN:-freebusy-local-connector}
+      # Passed only when set: an empty value stops the connector (ndc-sdk
+      # cannot parse it), so it reads .env's OTEL_EXPORTER_OTLP_ENDPOINT as is.
+      OTEL_EXPORTER_OTLP_ENDPOINT:
+      OTEL_SERVICE_NAME: freebusy_pgsql
+    networks:
+      freebusy:
+        aliases: [local.hasura.dev]
+    depends_on:
+      freebusy-migrate:
+        condition: service_completed_successfully
+
+networks:
+  default:
+  freebusy:
+
 volumes:
   postgres:
+  freebusy-postgres:
+  opensearch:

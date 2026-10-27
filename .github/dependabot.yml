@@ -1,0 +1,73 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Dependabot: version updates for the Go module, the workflows' actions, the
+# Dockerfile's base images and the Prisma package. Security updates are
+# switched on in the repository's settings and arrive whatever the schedule
+# says. workflows/dependabot-auto-merge.yaml merges each pull request once
+# the required CI checks pass.
+#
+# Minor and patch updates are grouped, one pull request per ecosystem a week;
+# a major update comes alone, so its failure names it.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      # Released from one repository; they expect each other's versions.
+      runtime-go:
+        patterns: ["github.com/the-protobuf-project/runtime-go/*"]
+      # The SDK and API are released together; a partial bump does not build.
+      opentelemetry:
+        patterns: ["go.opentelemetry.io/*"]
+      gomod:
+        update-types: [minor, patch]
+    ignore:
+      # The BSR SDKs move with the protos (buf.lock) and a regeneration
+      # (`just gen`), never alone.
+      - dependency-name: "buf.build/gen/go/*"
+      # Generator libraries: the committed code names the plugin versions it
+      # was made with (and ci.yaml's drift check installs those); they move
+      # with a regeneration.
+      - dependency-name: "github.com/the-protobuf-project/mcp"
+      - dependency-name: "github.com/the-protobuf-project/store"
+      - dependency-name: "github.com/the-protobuf-project/service"
+      - dependency-name: "github.com/the-protobuf-project/cache"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        update-types: [minor, patch]
+
+  # The Dockerfile's base images (golang, node, distroless). The ARG-set
+  # versions (GO_VERSION, NODE_VERSION, PRISMA_VERSION) are not seen by
+  # Dependabot and move by hand.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      docker:
+        update-types: [minor, patch]
+
+  # The generated Prisma package. Its package.json is generated
+  # (protoc-gen-store): a bump here is overwritten by the next `just gen
+  # prisma` unless the generator moves too, so only security and major
+  # updates are worth a pull request.
+  - package-ecosystem: npm
+    directory: /protobuf/generated/prisma/aperio
+    schedule:
+      interval: weekly
+      day: monday
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]

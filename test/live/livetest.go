@@ -33,6 +33,8 @@ const (
 	DatabaseURL = "APERIO_TEST_DATABASE_URL"
 	// GraphQLURL is the Hasura DDN engine's GraphQL endpoint.
 	GraphQLURL = "APERIO_TEST_GRAPHQL_URL"
+	// RedisAddr is the cache suites' Redis (or Dragonfly), as host:port.
+	RedisAddr = "APERIO_TEST_REDIS_ADDR"
 )
 
 // Required reports whether live suites must run rather than skip.

@@ -1,0 +1,21 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# What the Dockerfile never reads: the build takes go.mod, the Go sources and
+# the generated Prisma package, nothing local or secret.
+.git
+.github
+.cache
+.claude
+.certs
+.vscode
+.DS_Store
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules
+bin
+deploy
+docs
+*.md
+!protobuf/generated/prisma/aperio/README.md

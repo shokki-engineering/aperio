@@ -11,7 +11,10 @@ package sales
 // The bookings are named after the quote (quote-{id}), so a retry finds
 // what a failed attempt made instead of booking twice; the lead is won before
 // the quote is accepted, so the quote's state is the last thing to change.
-// They start PENDING / TENTATIVE: the advance payment confirms them.
+// They start PENDING / TENTATIVE: the advance payment confirms them. The
+// event holds the halls the quote sells for its days (holds.go), so a second
+// quote for the same hall and date cannot be accepted; the lead's own hold
+// is let go first, as the stay takes its rooms.
 
 import (
 	"context"
@@ -42,8 +45,10 @@ func (s *Server) AcceptQuote(ctx context.Context, req *salespbv1.AcceptQuoteRequ
 			if q.GetExpireTime() != nil && now.After(q.GetExpireTime().AsTime()) {
 				return nil, servicex.Blocked("QUOTE_EXPIRED", quoteType, q.GetName(), "the offer lapsed", "Revise it with ReviseQuote and send it again")
 			}
+			lead := s.releaseLead(ctx, q.GetLead()) // its rooms are the stay's to take
 			booking, bookings, err := s.book(ctx, q)
 			if err != nil {
+				s.holdAgain(ctx, lead)
 				return nil, err
 			}
 			if err := s.win(ctx, q.GetLead(), bookings, now); err != nil {
@@ -81,6 +86,11 @@ func (s *Server) book(ctx context.Context, q *salespbv1.Quote) (string, []string
 			return "", nil, err
 		}
 		eventName = e.GetName()
+		if err := s.holdHalls(ctx, venueName, eventName, q); err != nil {
+			// The hall is another event's: this one is called off.
+			_, _ = s.events.CancelEvent(context.WithoutCancel(ctx), &eventpbv1.CancelEventRequest{Name: eventName, Reason: "its hall could not be held"})
+			return "", nil, err
+		}
 	}
 	if len(rooms) == 0 {
 		return eventName, []string{eventName}, nil

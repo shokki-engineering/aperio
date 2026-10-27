@@ -8,8 +8,11 @@ package aperio.finance.v1;
 import "aperio/finance/v1/finance.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
+import "google/api/field_info.proto";
 import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 import "google/type/date.proto";
 import "google/type/money.proto";
 
@@ -349,4 +352,65 @@ message Debtor {
 
   // The earliest due date among them.
   google.type.Date oldest_due_date = 6;
+}
+
+// Request message for ClearPayment.
+message ClearPaymentRequest {
+  // The name of the payment to clear.
+  // Format: venues/{venue}/payments/{payment}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Payment"
+  ];
+
+  // The etag the caller last read; the call fails when it has changed.
+  string etag = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for RequestPayment.
+message RequestPaymentRequest {
+  // The name of the issued invoice to be paid.
+  // Format: venues/{venue}/invoices/{invoice}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.finance.v1/Invoice"
+  ];
+
+  // What to ask for; the invoice's due amount when unset. Never more.
+  google.type.Money amount = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // How long the link stands; 7 days when unset.
+  google.protobuf.Duration ttl = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).duration = {
+      gte: {seconds: 900}
+      lte: {seconds: 2592000}
+    }
+  ];
+
+  // A UUID for this request: a retry with the same one returns the same link
+  // rather than another (AIP-155).
+  string request_id = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_info).format = UUID4,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// Response message for RequestPayment.
+message RequestPaymentResponse {
+  // The page the guest pays on.
+  string url = 1;
+
+  // The gateway that issued it: "razorpay".
+  string gateway = 2;
+
+  // The gateway's id for the link, which its webhook names.
+  string gateway_reference = 3;
+
+  // What it asks for.
+  google.type.Money amount = 4;
+
+  // When it lapses.
+  google.protobuf.Timestamp expire_time = 5;
 }

@@ -42,6 +42,22 @@ they import.
   (`[search] provider`) -- never by scanning the source tables. Register a
   new one's projector in `internal/server/assembly.go` and `test/live`, and
   its rebuild and copy in `internal/server/prime.go` and `search.go`.
+- Beside the services: `internal/auth` (OIDC, roles for every RPC,
+  per-venue access, signed links), `internal/notify` (notifiers),
+  `internal/gateway/razorpay` (payments), `internal/freebusysync`
+  (freebusy's webhooks, the reconciler), `internal/channel` (sales
+  channels), `internal/search` (read models and their OpenSearch copy). A
+  new RPC needs a rule in `internal/auth/policy_table.go`, or its test
+  fails. Webhooks are mounted with `Services.Route` (internal/server
+  routes.go), beside the REST gateway -- never with runtime-go's
+  `WithHTTPHandler`, which replaces it; background jobs plug into
+  `internal/server/background.go`; each new `internal/config` section is
+  added to `AppConfig`, `aperio.release.toml` and, when it validates,
+  `load.go`.
+- Deployment: `Dockerfile` (targets `runtime` and `migrate`),
+  `deploy/compose` (`just stack`), `deploy/helm/aperio` (`just helm
+  check`). A new secret or setting goes into the chart's values, schema
+  and templates too.
 - Every hand-written file stays under 200 lines and is documented.
 
 ## Go imports
@@ -93,6 +109,13 @@ they import.
 - Every diagram is Mermaid, in a ```` ```mermaid ```` block -- architecture,
   flows, sequences, state machines -- never ASCII art: GitHub renders it, and
   it stays editable as text.
+
+## Tests
+
+- Test data never uses real-sounding names: John Doe (Jane Doe, "Doe
+  wedding") for every person, guest, caller and title.
+- `just test-live` needs Postgres, Hasura and Redis; the OpenSearch suite
+  runs only when `APERIO_TEST_OPENSEARCH_URL` is set.
 
 ## Repository
 

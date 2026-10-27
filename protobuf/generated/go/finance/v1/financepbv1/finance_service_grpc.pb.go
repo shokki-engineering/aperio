@@ -35,6 +35,8 @@ const (
 	FinanceService_UpdatePayment_FullMethodName        = "/aperio.finance.v1.FinanceService/UpdatePayment"
 	FinanceService_RefundPayment_FullMethodName        = "/aperio.finance.v1.FinanceService/RefundPayment"
 	FinanceService_VoidPayment_FullMethodName          = "/aperio.finance.v1.FinanceService/VoidPayment"
+	FinanceService_ClearPayment_FullMethodName         = "/aperio.finance.v1.FinanceService/ClearPayment"
+	FinanceService_RequestPayment_FullMethodName       = "/aperio.finance.v1.FinanceService/RequestPayment"
 	FinanceService_SummarizeReceivables_FullMethodName = "/aperio.finance.v1.FinanceService/SummarizeReceivables"
 )
 
@@ -70,6 +72,13 @@ type FinanceServiceClient interface {
 	RefundPayment(ctx context.Context, in *RefundPaymentRequest, opts ...grpc.CallOption) (*Payment, error)
 	// Voids a payment recorded in error.
 	VoidPayment(ctx context.Context, in *VoidPaymentRequest, opts ...grpc.CallOption) (*Payment, error)
+	// Clears a PENDING cheque or bank transfer once the bank has credited it:
+	// it becomes SUCCEEDED, and counts towards its invoice and its booking.
+	ClearPayment(ctx context.Context, in *ClearPaymentRequest, opts ...grpc.CallOption) (*Payment, error)
+	// Asks the guest to pay an issued invoice online: a payment link from the
+	// venue's gateway, for its due amount or a part of it, which the gateway's
+	// webhook settles into a payment.
+	RequestPayment(ctx context.Context, in *RequestPaymentRequest, opts ...grpc.CallOption) (*RequestPaymentResponse, error)
 	// What a venue is owed, for the accounts team and their agents: what is
 	// outstanding and overdue, its age, who owes the most, and what came in
 	// this month.
@@ -214,6 +223,26 @@ func (c *financeServiceClient) VoidPayment(ctx context.Context, in *VoidPaymentR
 	return out, nil
 }
 
+func (c *financeServiceClient) ClearPayment(ctx context.Context, in *ClearPaymentRequest, opts ...grpc.CallOption) (*Payment, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Payment)
+	err := c.cc.Invoke(ctx, FinanceService_ClearPayment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financeServiceClient) RequestPayment(ctx context.Context, in *RequestPaymentRequest, opts ...grpc.CallOption) (*RequestPaymentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestPaymentResponse)
+	err := c.cc.Invoke(ctx, FinanceService_RequestPayment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *financeServiceClient) SummarizeReceivables(ctx context.Context, in *SummarizeReceivablesRequest, opts ...grpc.CallOption) (*SummarizeReceivablesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SummarizeReceivablesResponse)
@@ -256,6 +285,13 @@ type FinanceServiceServer interface {
 	RefundPayment(context.Context, *RefundPaymentRequest) (*Payment, error)
 	// Voids a payment recorded in error.
 	VoidPayment(context.Context, *VoidPaymentRequest) (*Payment, error)
+	// Clears a PENDING cheque or bank transfer once the bank has credited it:
+	// it becomes SUCCEEDED, and counts towards its invoice and its booking.
+	ClearPayment(context.Context, *ClearPaymentRequest) (*Payment, error)
+	// Asks the guest to pay an issued invoice online: a payment link from the
+	// venue's gateway, for its due amount or a part of it, which the gateway's
+	// webhook settles into a payment.
+	RequestPayment(context.Context, *RequestPaymentRequest) (*RequestPaymentResponse, error)
 	// What a venue is owed, for the accounts team and their agents: what is
 	// outstanding and overdue, its age, who owes the most, and what came in
 	// this month.
@@ -308,6 +344,12 @@ func (UnimplementedFinanceServiceServer) RefundPayment(context.Context, *RefundP
 }
 func (UnimplementedFinanceServiceServer) VoidPayment(context.Context, *VoidPaymentRequest) (*Payment, error) {
 	return nil, status.Error(codes.Unimplemented, "method VoidPayment not implemented")
+}
+func (UnimplementedFinanceServiceServer) ClearPayment(context.Context, *ClearPaymentRequest) (*Payment, error) {
+	return nil, status.Error(codes.Unimplemented, "method ClearPayment not implemented")
+}
+func (UnimplementedFinanceServiceServer) RequestPayment(context.Context, *RequestPaymentRequest) (*RequestPaymentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RequestPayment not implemented")
 }
 func (UnimplementedFinanceServiceServer) SummarizeReceivables(context.Context, *SummarizeReceivablesRequest) (*SummarizeReceivablesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SummarizeReceivables not implemented")
@@ -567,6 +609,42 @@ func _FinanceService_VoidPayment_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinanceService_ClearPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClearPaymentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinanceServiceServer).ClearPayment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinanceService_ClearPayment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinanceServiceServer).ClearPayment(ctx, req.(*ClearPaymentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinanceService_RequestPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestPaymentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinanceServiceServer).RequestPayment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinanceService_RequestPayment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinanceServiceServer).RequestPayment(ctx, req.(*RequestPaymentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FinanceService_SummarizeReceivables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SummarizeReceivablesRequest)
 	if err := dec(in); err != nil {
@@ -643,6 +721,14 @@ var FinanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VoidPayment",
 			Handler:    _FinanceService_VoidPayment_Handler,
+		},
+		{
+			MethodName: "ClearPayment",
+			Handler:    _FinanceService_ClearPayment_Handler,
+		},
+		{
+			MethodName: "RequestPayment",
+			Handler:    _FinanceService_RequestPayment_Handler,
 		},
 		{
 			MethodName: "SummarizeReceivables",

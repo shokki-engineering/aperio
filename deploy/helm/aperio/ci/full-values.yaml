@@ -1,0 +1,91 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Every optional part of the chart on: CI renders, lints and validates it
+# against the Kubernetes schemas. Nothing here is a real credential.
+database:
+  provider: hasura
+  postgres:
+    host: postgres.aperio.svc
+  hasura:
+    url: http://hasura-engine.aperio.svc:3000/graphql
+secrets:
+  postgresPassword: ci-password
+  databaseUrl: postgresql://aperio:ci-password@postgres.aperio.svc:5432/aperio?sslmode=require
+  hasuraAdminSecret: ci-hasura
+  conciergeHoldSecret: 0123456789abcdef0123456789abcdef
+  opensearchUsername: ci
+  opensearchPassword: ci-opensearch
+  freebusyFeedsSecret: ci-feeds
+  freebusyCA: |
+    -----BEGIN CERTIFICATE-----
+    not-a-real-certificate
+    -----END CERTIFICATE-----
+  redisPassword: ci-redis
+  authLinkSecret: fedcba9876543210fedcba9876543210
+  notifyWebhookSecret: ci-notify
+  razorpayKeyId: rzp_test_ci
+  razorpayKeySecret: ci-razorpay
+  razorpayWebhookSecret: ci-razorpay-webhook
+  whatsappToken: ci-whatsapp
+freebusy:
+  endpoint: freebusy.freebusy.svc:50051
+  publicUrl: https://freebusy.example.com
+  ca:
+    enabled: true
+search:
+  provider: opensearch
+  opensearch:
+    url: https://opensearch.search.svc:9200
+cache:
+  enabled: true
+  address: redis.aperio.svc:6379
+auth:
+  issuer: https://id.example.com
+  audience: aperio
+  rolesClaim: realm_access.roles
+notify:
+  provider: whatsapp
+  departments:
+    kitchen: "+910000000000"
+    default: "+910000000001"
+  whatsapp:
+    phoneNumberId: "000000000000000"
+cors:
+  enabled: true
+  allowedOrigins: [https://app.example.com]
+  allowCredentials: true
+telemetry:
+  otlpEndpoint: otel-collector.observability.svc:4317
+  site: ci
+extraEnv:
+  APERIO_SEARCH__OPENSEARCH__INDEX_QUEUE: "2048"
+autoscaling:
+  enabled: true
+  targetMemoryUtilizationPercentage: 80
+ingress:
+  className: nginx
+  http:
+    enabled: true
+    hosts: [aperio.example.com]
+    tls:
+      - secretName: aperio-tls
+        hosts: [aperio.example.com]
+  grpc:
+    enabled: true
+    hosts: [grpc.aperio.example.com]
+networkPolicy:
+  enabled: true
+  from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: ingress-nginx
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+serviceMonitor:
+  enabled: true
+serviceAccount:
+  annotations:
+    iam.example.com/role: aperio

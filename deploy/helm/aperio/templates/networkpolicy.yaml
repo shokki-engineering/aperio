@@ -1,0 +1,42 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Who may reach the server's three ports, and -- when egress rules are given
+# -- where the server may connect (DNS always).
+{{- with .Values.networkPolicy }}
+{{- if .enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aperio.fullname" $ }}
+  labels:
+    {{- include "aperio.labels" $ | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aperio.serverSelector" $ | nindent 6 }}
+  policyTypes:
+    - Ingress
+    {{- if .egress }}
+    - Egress
+    {{- end }}
+  ingress:
+    - from:
+        {{- if .from }}
+        {{- toYaml .from | nindent 8 }}
+        {{- else }}
+        - podSelector: {}
+        {{- end }}
+      ports:
+        - { port: grpc, protocol: TCP }
+        - { port: http, protocol: TCP }
+        - { port: mcp, protocol: TCP }
+  {{- if .egress }}
+  egress:
+    - ports:
+        - { port: 53, protocol: UDP }
+        - { port: 53, protocol: TCP }
+    {{- toYaml .egress | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

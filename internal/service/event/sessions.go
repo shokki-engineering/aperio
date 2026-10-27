@@ -5,7 +5,9 @@ package event
 
 // sessions.go is the hooks around an event's sessions: each takes its space
 // in freebusy for its window (setup to teardown) -- checked before create,
-// booked after, locked against edits, and given back on delete.
+// booked after, locked against edits, and given back on delete. The first
+// session in a hall the event kept since its quote was accepted
+// (booking.HoldHall) replaces that hold with its own booking.
 
 import (
 	"context"
@@ -28,6 +30,15 @@ func (h *hooks) BeforeCreateSession(ctx context.Context, parent string, m *event
 	res, err := h.Resources(ctx, servicex.ParentOf(parent), "session.space", m.GetSpace())
 	if err != nil {
 		return err
+	}
+	// The hall the event has kept since its quote was accepted is its own:
+	// a session within it replaces that hold (AfterCreateSession).
+	held, kept, err := h.HeldHall(ctx, parent, m.GetSpace())
+	if err != nil {
+		return err
+	}
+	if held != "" && !w.Start.Before(kept.Start) && !w.End.After(kept.End) {
+		return nil
 	}
 	free, err := h.Engine.Free(ctx, res, w, 1)
 	if err != nil {
@@ -59,6 +70,15 @@ func (h *hooks) AfterCreateSession(ctx context.Context, out *eventpbv1.Session) 
 	res, err := h.Resources(ctx, servicex.ParentOf(event), "session.space", out.GetSpace())
 	if err != nil {
 		return undo("", err)
+	}
+	if held, _, err := h.HeldHall(ctx, event, out.GetSpace()); err != nil || held != "" {
+		// The session's own booking replaces the event's hold on the hall.
+		if err == nil {
+			err = h.Engine.Cancel(ctx, held, "aperio: replaced by the session "+out.GetName())
+		}
+		if err != nil {
+			return undo("", err)
+		}
 	}
 	booked, err := h.Engine.Book(ctx, engine.Booking{
 		Key:       out.GetName(),

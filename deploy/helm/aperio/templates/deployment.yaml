@@ -1,0 +1,162 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The server: gRPC, the REST gateway (with /health) and MCP, one binary. Its
+# settings are the ConfigMap's; its secrets are read key by key from the
+# Secret. The migrations ran before it, in the hook Job (migrate-job.yaml).
+{{- $secret := include "aperio.secretName" . }}
+{{- $probes := .Values.probes }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aperio.fullname" . }}
+  labels:
+    {{- include "aperio.labels" . | nindent 4 }}
+    app.kubernetes.io/component: server
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      {{- include "aperio.serverSelector" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "aperio.serverSelector" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        # A changed setting or secret rolls the pods.
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- if not .Values.secrets.existingSecret }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "aperio.serviceAccountName" . }}
+      # aperio does not call the Kubernetes API.
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      securityContext:
+        {{- include "aperio.podSecurityContext" . | nindent 8 }}
+      containers:
+        - name: aperio
+          image: {{ include "aperio.image" (dict "image" .Values.image "root" .) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - { name: grpc, containerPort: 50061, protocol: TCP }
+            - { name: http, containerPort: 8090, protocol: TCP }
+            - { name: mcp, containerPort: 8091, protocol: TCP }
+          envFrom:
+            - configMapRef:
+                name: {{ include "aperio.fullname" . }}
+          env:
+            - name: APERIO_DATABASE__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef: { name: {{ $secret }}, key: postgres-password }
+            {{- range $name, $key := dict
+              "APERIO_DATABASE__HASURA__ADMIN_SECRET" "hasura-admin-secret"
+              "APERIO_CONCIERGE__HOLD_SECRET" "concierge-hold-secret"
+              "APERIO_SEARCH__OPENSEARCH__USERNAME" "opensearch-username"
+              "APERIO_SEARCH__OPENSEARCH__PASSWORD" "opensearch-password"
+              "APERIO_FREEBUSY__FEEDS_SECRET" "freebusy-feeds-secret"
+              "APERIO_CACHE__PASSWORD" "redis-password"
+              "APERIO_AUTH__LINK_SECRET" "auth-link-secret"
+              "APERIO_NOTIFY__WEBHOOK__SECRET" "notify-webhook-secret"
+              "APERIO_RAZORPAY__KEY_ID" "razorpay-key-id"
+              "APERIO_RAZORPAY__KEY_SECRET" "razorpay-key-secret"
+              "APERIO_RAZORPAY__WEBHOOK_SECRET" "razorpay-webhook-secret"
+              "APERIO_CHANNELS__BOOKINGCOM__USERNAME" "bookingcom-username"
+              "APERIO_CHANNELS__BOOKINGCOM__PASSWORD" "bookingcom-password"
+              "APERIO_NOTIFY__WHATSAPP__TOKEN" "whatsapp-token" }}
+            {{- include "aperio.secretEnv" (dict "name" $name "secret" $secret "key" $key) | nindent 12 }}
+            {{- end }}
+            # Each replica's own telemetry identity: without it, replicas
+            # exporting the same service.name overwrite each other's metrics.
+            - name: POD_NAME
+              valueFrom: { fieldRef: { fieldPath: metadata.name } }
+            - name: POD_NAMESPACE
+              valueFrom: { fieldRef: { fieldPath: metadata.namespace } }
+            - name: NODE_NAME
+              valueFrom: { fieldRef: { fieldPath: spec.nodeName } }
+            - { name: APERIO_TELEMETRY_INSTANCE_ID, value: "$(POD_NAME)" }
+            - { name: OTEL_RESOURCE_ATTRIBUTES, value: "k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(POD_NAMESPACE),k8s.node.name=$(NODE_NAME),k8s.deployment.name={{ include "aperio.fullname" . }}" }
+          {{- if $probes.enabled }}
+          startupProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: {{ $probes.startup.periodSeconds }}
+            failureThreshold: {{ $probes.startup.failureThreshold }}
+          readinessProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: {{ $probes.readiness.periodSeconds }}
+            failureThreshold: {{ $probes.readiness.failureThreshold }}
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: {{ $probes.liveness.periodSeconds }}
+            failureThreshold: {{ $probes.liveness.failureThreshold }}
+          {{- end }}
+          {{- with .Values.preStopSleepSeconds }}
+          lifecycle:
+            preStop:
+              sleep: { seconds: {{ . }} }
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            {{- include "aperio.securityContext" . | nindent 12 }}
+          volumeMounts:
+            # The root filesystem is read-only; telemetry writes its config
+            # file to the temp directory.
+            - { name: tmp, mountPath: /tmp }
+            {{- if .Values.freebusy.ca.enabled }}
+            - { name: freebusy-ca, mountPath: /etc/aperio/freebusy, readOnly: true }
+            {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: { sizeLimit: 64Mi }
+        {{- if .Values.freebusy.ca.enabled }}
+        - name: freebusy-ca
+          secret:
+            secretName: {{ $secret }}
+            items:
+              - { key: freebusy-ca.crt, path: ca.crt }
+        {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml .Values.topologySpreadConstraints | nindent 8 }}
+      {{- else if .Values.topologySpread.enabled }}
+      topologySpreadConstraints:
+        {{- range $key := list "kubernetes.io/hostname" "topology.kubernetes.io/zone" }}
+        - maxSkew: {{ $.Values.topologySpread.maxSkew }}
+          topologyKey: {{ $key }}
+          whenUnsatisfiable: {{ $.Values.topologySpread.whenUnsatisfiable }}
+          labelSelector:
+            matchLabels:
+              {{- include "aperio.serverSelector" $ | nindent 14 }}
+          matchLabelKeys: [pod-template-hash]
+        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

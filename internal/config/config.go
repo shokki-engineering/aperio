@@ -45,6 +45,18 @@ type AppConfig struct {
 	Concierge ConciergeConfig `koanf:"concierge"`
 	// Search is the read models and their OpenSearch copy.
 	Search SearchConfig `koanf:"search"`
+	// Notify is who departments and guests are told through.
+	Notify NotifyConfig `koanf:"notify"`
+	// Auth is staff sign-in (OIDC) and guests' signed links.
+	Auth AuthConfig `koanf:"auth"`
+	// Channels are the sales channels: Booking.com's credentials and the
+	// venues it sells.
+	Channels ChannelsConfig `koanf:"channels"`
+	// Razorpay is the payment gateway for Indian cards and UPI.
+	Razorpay RazorpayConfig `koanf:"razorpay"`
+	// FreebusySync is how aperio stays in step with freebusy: its webhook
+	// and the reconciler and quote-expiry jobs.
+	FreebusySync FreebusySyncConfig `koanf:"freebusy_sync"`
 }
 
 // AppMeta contains service identity fields.

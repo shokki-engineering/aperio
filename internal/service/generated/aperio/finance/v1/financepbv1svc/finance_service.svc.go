@@ -131,7 +131,7 @@ func (NopFinanceServiceHooks) AfterUpdatePayment(ctx context.Context, m *finance
 //
 // Custom methods are answered by the embedded UnimplementedFinanceServiceServer
 // until you write them: embed *FinanceServiceServer in a type of your own and
-// define IssueInvoice, CancelInvoice, CreditInvoice, RefundPayment, VoidPayment, SummarizeReceivables on it. Define a standard method there too to
+// define IssueInvoice, CancelInvoice, CreditInvoice, RefundPayment, VoidPayment, ClearPayment, RequestPayment, SummarizeReceivables on it. Define a standard method there too to
 // replace the generated one.
 type FinanceServiceServer struct {
 	financepbv1.UnimplementedFinanceServiceServer

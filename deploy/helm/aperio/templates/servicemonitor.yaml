@@ -1,0 +1,27 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# For the Prometheus Operator. See values.yaml: aperio exports over OTLP and
+# serves no /metrics of its own yet.
+{{- with .Values.serviceMonitor }}
+{{- if .enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "aperio.fullname" $ }}
+  labels:
+    {{- include "aperio.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "aperio.serverSelector" $ | nindent 6 }}
+  endpoints:
+    - port: {{ .port }}
+      path: {{ .path }}
+      interval: {{ .interval }}
+      scrapeTimeout: {{ .scrapeTimeout }}
+{{- end }}
+{{- end }}

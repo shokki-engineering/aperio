@@ -120,7 +120,7 @@ func TestLiveAperioRoundTrip(t *testing.T) {
 				Kind:                guestpbv1.ContactKind_CONTACT_KIND_PERSON,
 				DisplayName:         "John Doe",
 				Phones:              []*typepbv1.Phone{{Number: "+919876543210", Kind: typepbv1.PhoneKind_PHONE_KIND_WHATSAPP}},
-				Emails:              []string{"ananya@example.com"},
+				Emails:              []string{"john.doe@example.com"},
 				DietaryRequirements: []*typepbv1.DietaryRequirement{{Diet: typepbv1.Diet_DIET_JAIN}},
 				Tags:                []string{"vip"},
 			}

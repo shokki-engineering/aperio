@@ -1,7 +1,7 @@
 # aperio roadmap
 
 Where aperio is, what is left to build end to end, and in what order. Status
-is as of 26 October 2026. Update this file when a milestone lands or a
+is as of 28 October 2026. Update this file when a milestone lands or a
 decision is made; it is the one place the plan lives.
 
 ## What aperio is
@@ -66,32 +66,32 @@ flowchart TB
 ## Status at a glance
 
 The API is one service per part of the business, each with only the methods
-its resources' lifecycles allow (27 October 2026): venue (8), catalog (12),
-pricing (11), guest (4), sales (15), stay (8), event (11), finance (13),
-operations (7), document (5) and concierge (7) -- 101 methods.
+its resources' lifecycles allow (28 October 2026): venue (8), catalog (12),
+pricing (11), guest (5), sales (16), stay (9), event (12), finance (16),
+operations (8), document (5) and concierge (7) -- 109 methods, served on
+gRPC, REST and MCP (109 tools at :8091/mcp).
 
 | Area | Status | What exists | What is missing |
 |---|---|---|---|
-| Schema (protos) | Done | 7 packages, 28 files, lint-clean (buf, api-linter) | `Space` base price and tax; `SendQuoteRequest.ttl` |
-| Generated layer | Done | models, stores, repositories, caches, Hasura client, Prisma schema, AIP services, MCP tools | -- |
-| Database | Done | Prisma migrations (3), 19 tables in 7 schemas, live round-trip tests (gorm + Hasura) | -- |
-| Hasura DDN | Done (dev) | 85 metadata files, local engine | permissions / roles, production deploy |
-| freebusy connection | Done | `internal/engine`: availability, book, cancel, calendar notes | webhooks in, reconciliation, lead holds |
-| Bookings | Done | stays and sessions booked in freebusy with compensation; state methods; event cancel | holding the hall when a quote is accepted (sessions have no times yet) |
-| Calendars | Done (untested live) | notes on freebusy calendars; signed `.ics` feeds in freebusy; `tools/calendar (`just calendar-links`)` prints links | a run against a real freebusy; public HTTPS |
-| Pricing | Done | seasons, price rules, `CalculatePrice`, GST per line | spaces need fixed-price rules (no base price) |
-| Quotes | Done | priced drafts, Send, Decline, Revise, Accept (makes event + stay, wins lead) | expiry job; PDF proposal |
-| Invoices (GST) | Done | `internal/service/finance`: CGST/SGST/IGST per line, rupee rounding, series per venue, kind and year, Issue / Cancel / Credit; live test | raising from a quote, e-invoice IRN, paid / due from payments |
-| Payments | In progress | `internal/service/finance`: any currency at an exchange rate, paid / due and PAID on invoices, an advance confirming its booking, `Settle` for a gateway's webhook (idempotent), Refund (through the gateway) and Void; live test | a gateway adapter (signature check, webhook route, payment links), cheque clearing, receipt vouchers |
-| Guests and leads | Partly | guest service: contacts with searchable `phone_numbers`; leads and activities in sales | lead hold in freebusy, follow-ups, dedupe contacts |
-| Documents | Generated only | metadata (category, uri, sha256, expiry) | file storage (uploads), expiry reminders, access by visibility |
-| Service requests | Partly | `internal/service/operations`: create (and the concierge's RequestService), `SummarizeServiceRequests` | state methods (Acknowledge, Start, Complete, Cancel answer Unimplemented), notifying staff (pantry, housekeeping), charges to a booking |
-| Channels | Not started | `Channel` enum, OTA types in the schema | Booking.com (OTA), Airbnb, MakeMyTrip adapters; rates and inventory push |
-| Server | Done | `main.go` on the HybridServer, every service on gRPC :50061, REST :8090 and MCP :8091 (108 tools); `internal/config`, `internal/telemetry`, `internal/server` as freebusy's | the cache wired, query tracing, background jobs |
-| Auth | Not started | -- | identity, staff roles, per-venue access; Hasura roles |
-| Deploy / CI | In progress | GitHub Actions: lint, proto, build, unit and live suites (Prisma-migrated Postgres), API lint | an image (freebusy builds its with Bazel), Compose for the whole stack, Helm, release |
-| Concierge / voice | In progress | `internal/service/concierge`: FindStay, HoldStay, ConfirmStay, FindBooking, CancelBooking, EnquireEvent (a lead, a draft quote, menus priced, halls free), RequestService (to the right department) over REST, gRPC and MCP; missing details and consent asked by elicitation; live tests | event bookings beyond the enquiry; the elicitation release (runtime-go, protoc-gen-mcp); payment link; a LiveKit demo (M9) |
-| Agents (MCP) | In progress | 107 tools at :8091/mcp; tools/list 0.9 MB (was 16.7 MB for booking alone). A task tool per service, each a few indexed reads: stay `SummarizeDay` (on the `StayNight` read model), guest `SummarizeContact`, event `SummarizeSessions`, sales `SummarizePipeline`, finance `SummarizeReceivables`, operations `SummarizeServiceRequests`; read models in Postgres with an optional OpenSearch copy, as freebusy's | documents last; reservation tools still ~250 KB |
+| Schema (protos) | Done | 11 packages, 42 files, lint-clean (buf, api-linter) | `Space` base price and tax (decision) |
+| Generated layer | Done | models, stores, repositories, caches, Hasura client, Prisma schema, AIP services, MCP tools, OpenSearch indices | Count / group-by on repositories; join tables for repeated references (see bugs) |
+| Database | Done | Prisma migrations (4), 20 tables in 7 schemas incl. the `stay_nights` read model; live round-trip tests (gorm + Hasura) | -- |
+| Hasura DDN | Done (dev) | metadata, local engine | role permissions (spec written, needs generator support -- M5) |
+| freebusy connection | Done | `internal/engine`: availability, book, cancel, notes, holds, lookups, webhook subscription; `internal/freebusysync`: webhooks in, reconciler | republishing freebusy's images in step |
+| Bookings | Done | stays and sessions with compensation; state methods; lead holds; an accepted event holds its hall; changes made in freebusy settled | -- |
+| Pricing and quotes | Done | seasons, rules, `CalculatePrice`; quotes through Send (with a ttl), Decline, Revise, Accept; expiry job | PDF proposal |
+| Invoices (GST) | Done | CGST/SGST/IGST, series, Issue / Cancel / Credit (credit notes settle and reduce their invoice); receipt vouchers on advances | raising from a quote, e-invoice IRN, refund vouchers |
+| Payments | Done | any currency; Razorpay: payment links (`RequestPayment`), refunds, signed webhook at `/webhooks/razorpay`; cheque clearing (`ClearPayment`); the money loop end to end in one test | Stripe for foreign cards (decision); pending bank transfers |
+| Guests and leads | Done | contacts by phone, `SummarizeContact`; leads, activities, `SummarizePipeline` | dedupe contacts; venue-scoped lead names |
+| Service requests | Done | state methods; department notifications (log, signed webhook, WhatsApp); charges posted to the booking's bill; `SummarizeServiceRequests` | push / email notifiers |
+| Documents | Generated only | metadata (category, uri, sha256, expiry) | uploads, expiry reminders -- waiting on the owner's design |
+| Channels | Built, not certified | `internal/channel`: the adapter interface; Booking.com OTA XML in (`/channels/bookingcom/reservations`), rates and availability messages out | a pull poller and an outbound sender for Booking.com; Airbnb / MakeMyTrip (decision) |
+| Server | Done | HybridServer on :50061 / :8090 / :8091; Redis list caches; query tracing; pool monitor; background jobs; webhooks beside the REST gateway | a `/metrics` endpoint (OTLP only today) |
+| Auth | Done | OIDC (any issuer), six roles with a rule for every RPC, per-venue access, guests' signed links; gRPC, REST and MCP | Hasura roles (generator support); off until `[auth] issuer` is set |
+| Read models and search | Done | `stay.v1.StayNight` in Postgres with an optional OpenSearch copy (`[search] provider`), rebuilt and reindexed when empty | more read models as reports need them |
+| Deploy / CI | Done (not yet released) | Dockerfile (runtime, migrate); Compose for the whole stack (`just stack up`); Helm chart verified on kind; CI: lint, build, unit, live (Postgres + Redis), generated-code drift, image, chart; release workflow (GHCR images and chart, signed); Dependabot | first tagged release; a production cluster |
+| Concierge / voice | In progress | the seven concierge methods with elicitation | event bookings beyond the enquiry; a LiveKit demo (M9) |
+| Agents (MCP) | Done | a task tool per service, each a few indexed reads: `SummarizeDay`, `SummarizeContact`, `SummarizeSessions`, `SummarizePipeline`, `SummarizeReceivables`, `SummarizeServiceRequests`; tools/list 0.9 MB | documents; reservation tools still ~250 KB |
 
 ## Milestones
 
@@ -116,7 +116,17 @@ before channels, a running server before anyone outside can use any of it.
   lines must become line discounts first); the e-invoice IRN; `paid` and
   `due` from payments (M2).
 
-### M2 -- Payments and the money loop (in progress)
+### M2 -- Payments and the money loop (done, 28 October 2026)
+
+- Done: Razorpay (`internal/gateway/razorpay`) -- payment links through
+  `RequestPayment`, refunds, its webhook at `/webhooks/razorpay` (signature
+  checked, idempotent); `ClearPayment` for a cheque; a receipt voucher for
+  each advance; credit notes settle on issue and reduce what their invoice
+  is due; a tax invoice supersedes its proformas. Exit met:
+  `TestLiveMoneyLoop` (quote, accept, advance paid by link, booking
+  confirmed, tax invoice issued and paid). Left: Stripe; pending bank
+  transfers; refund vouchers (rule 51); raising the invoice from the quote.
+
 
 - Done: recording payments in any currency (`base_amount` at
   `exchange_rate`); `paid`, `due` and PAID on the invoice, summed afresh
@@ -132,7 +142,15 @@ before channels, a running server before anyone outside can use any of it.
 - Exit: quote -> accept -> advance paid online -> booking confirmed ->
   invoice issued and paid, end to end in one test.
 
-### M3 -- A running server (in progress)
+### M3 -- A running server (done, 28 October 2026)
+
+- Done: Redis list caches over venues, the catalog and pricing, moved on
+  by every write; query tracing (the generated gorm plugin); the pool
+  monitor; background jobs (quote expiry, the freebusy reconciler); the
+  Dockerfile (runtime and migrate images) and Compose for the whole stack;
+  CI with a generated-code drift check. Exit met: `just stack up` gives an
+  aperio a frontend can call (health, REST, MCP, CORS checked).
+
 
 - Done (27 October 2026): the layout follows freebusy's; `main.go` serves
   every service on gRPC :50061 and REST :8090 through runtime-go's
@@ -152,7 +170,17 @@ before channels, a running server before anyone outside can use any of it.
   Hasura, Redis); a generated-code drift check in CI.
 - Exit: `docker compose up` gives a working aperio a frontend can call.
 
-### M4 -- Staying in step with freebusy
+### M4 -- Staying in step with freebusy (done, 28 October 2026)
+
+- Done (`internal/freebusysync`): freebusy's webhooks at
+  `/webhooks/freebusy` (signed, de-duplicated), settling a stay or event
+  whose reservation was cancelled or moved in freebusy; the subscription
+  ensured at startup; the reconciler (repairs or flags, with a guard
+  against the wrong freebusy); lead holds; an accepted event holds its
+  hall, so a second acceptance of the same hall and day fails. Exit met in
+  live tests. Left: a hall hold cancelled in freebusy is not seen
+  (`Event.freebusy_holds` would let the reconciler check it).
+
 
 - Subscribe to freebusy's WebhookService: a reservation cancelled or moved in
   freebusy (by an operator, or over CalDAV) updates the aperio booking.
@@ -165,7 +193,16 @@ before channels, a running server before anyone outside can use any of it.
 - Exit: cancelling in freebusy shows in aperio within a minute; a test that
   breaks the link is caught by the reconciler.
 
-### M5 -- Auth and access
+### M5 -- Auth and access (done, 28 October 2026; off until configured)
+
+- Done (`internal/auth`): OIDC from any issuer; six roles with a rule for
+  every RPC (a test fails on an unguarded one); per-venue access;
+  guests' signed links to one quote, stay or invoice; enforced on gRPC,
+  REST and MCP (the MCP token is carried by `auth.MCPService()`). Exit
+  met: the kitchen sees requests and diets, not invoices. Left: Hasura
+  role permissions (a spec is ready; needs generator support); lead names
+  scoped to a venue.
+
 
 - Staff identity (OIDC), roles (owner, front desk, sales, kitchen,
   housekeeping, accounts) and per-venue access, enforced in the service
@@ -176,7 +213,14 @@ before channels, a running server before anyone outside can use any of it.
 - Exit: a kitchen login sees service requests and dietary needs, not
   invoices.
 
-### M6 -- Operations inside the venue
+### M6 -- Operations inside the venue (done except documents)
+
+- Done: the request states; notifications through `internal/notify` (log,
+  signed webhook, WhatsApp Business); a completed request's charge posted
+  once to its booking's draft invoice; the daily views as task tools
+  (`SummarizeDay`, `SummarizeSessions`, `SummarizeServiceRequests`).
+  Left: documents (the owner's design to come); push and email.
+
 
 - Service requests: Acknowledge / Start / Complete / Cancel, with quantities
   ("3 black coffees to room 204"); notifications to the department (push,
@@ -186,7 +230,16 @@ before channels, a running server before anyone outside can use any of it.
 - Daily views: arrivals, departures, in-house guests, today's sessions with
   covers and dietary counts for the kitchen.
 
-### M7 -- Channels
+### M7 -- Channels (Booking.com built, not certified)
+
+- Done (`internal/channel`, `bookingcom`): OTA_HotelResNotif in --
+  new, modify (in place or rebooked), cancel, idempotent on the channel's
+  reference -- with basic auth at `/channels/bookingcom/reservations`;
+  OTA_HotelRateAmountNotif and OTA_HotelAvailNotif built from prices and
+  availability. Left for certification: Booking.com's pull model (a
+  poller), an outbound sender, restrictions, occupancy pricing, and the
+  availability push on every booking change.
+
 
 - Booking.com over OTA (the schema already speaks it): rates, availability
   and restrictions out (`OTA_HotelRateAmountNotif`, `OTA_HotelAvailNotif`),
@@ -266,15 +319,24 @@ before channels, a running server before anyone outside can use any of it.
 
 ## Decisions to make
 
+Taken on 28 October 2026 to finish the milestones, each easy to change:
+
+| Decision | Taken | Still open |
+|---|---|---|
+| Payment gateway | Razorpay (Indian cards, UPI), behind finance's `Gateway` | Stripe for foreign cards |
+| Identity provider | standard OIDC, any issuer (Google Workspace, Keycloak, Clerk) | which issuer |
+| Cache backend | Redis (Dragonfly works unchanged) | -- |
+| Notifications | a `Notifier`: log, signed webhook, WhatsApp Business Cloud API | push, email |
+| `SendQuoteRequest.ttl` | added; 14 days when unset | -- |
+| Channel strategy | Booking.com over OTA XML first; an `Adapter` interface for the rest | Airbnb / MakeMyTrip: direct APIs or a channel manager |
+
+Still to decide:
+
 | Decision | Options | Needed by |
 |---|---|---|
-| Payment gateway | Razorpay, Cashfree, Stripe (for foreign cards) | M2 |
 | `Space` base price and tax | add to the proto, or keep fixed-price rules | M1 |
-| `SendQuoteRequest.ttl` | add it, or keep 14 days | M3 |
-| Channel strategy for Airbnb / MakeMyTrip | direct APIs, or a channel manager | M7 |
-| Notifications | WhatsApp Business, push, email | M6 |
-| Identity provider | Google Workspace, Keycloak, Clerk | M5 |
-| Cache backend | Redis, Dragonfly | M3 |
+| Documents | storage and access design | M6 |
+| Pending bank transfers | how one is recorded before it clears | M2 |
 
 ## Definition of done
 

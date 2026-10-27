@@ -11,6 +11,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"github.com/shokki-engineering/aperio/internal/auth"
 	"os/signal"
 	"syscall"
 
@@ -81,6 +82,10 @@ func serviceOptions(s *Services) ([]grpc.Option, error) {
 		grpc.WithUnaryInterceptors(s.Interceptors()...),
 		// Every MCP service together, as one server an agent connects to once.
 		grpc.WithMCPEndpoint(cfg.MCP.Path),
+		// Carries each MCP call's Authorization to the interceptors; only the
+		// combined endpoint gets it, so the per-service paths are off.
+		grpc.WithMCPServices(auth.MCPService()),
+		grpc.WithoutMCPServicePaths(),
 		grpc.WithShutdownTimeout(cfg.ShutdownTimeout()),
 	}, s.Options()...)
 	if cfg.MCP.Stateless {
@@ -108,6 +113,7 @@ func (s *Server) Start() error {
 		return fmt.Errorf("failed to start hybrid server: %w", err)
 	}
 	go s.services.Prime(s.ctx)
+	s.services.Start(s.ctx, s.services.Background())
 	return nil
 }
 
@@ -122,6 +128,7 @@ func (s *Server) Stop() error {
 	if err := s.hybridServer.Close(); err != nil {
 		return fmt.Errorf("error closing hybrid server: %w", err)
 	}
+	s.services.waitNotify()
 	return errors.Join(s.services.CloseSearch(context.Background()), s.freebusy.Close(), s.services.Conn.Close())
 }
 

@@ -11,8 +11,8 @@ package finance
 // month's succeeded payments in another (the (state, receive_time) index),
 // and the debtors' contacts in one batched read.
 //
-// A credit note is left out: it is issued but never paid, and is what the
-// venue owes, not what it is owed.
+// A credit note is PAID as it is issued, bringing down the due of the
+// invoice it corrects (issue.go), so the ISSUED invoices are what is owed.
 
 import (
 	"context"
@@ -63,7 +63,7 @@ func (h *hooks) summarizeReceivables(ctx context.Context, req *financepbv1.Summa
 	cur, now := v.GetCurrencyCode(), h.today(v)
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 	invoices, err := listAll(func(token string) ([]*financepbv1.Invoice, string, error) {
-		return h.repos.Invoices.List(ctx, req.GetVenue(), listIn(`state = ISSUED AND kind != CREDIT_NOTE`, token))
+		return h.repos.Invoices.List(ctx, req.GetVenue(), listIn(`state = ISSUED`, token))
 	})
 	if err != nil {
 		return nil, err

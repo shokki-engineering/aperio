@@ -15,6 +15,7 @@ import (
 	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
@@ -927,7 +928,10 @@ type SendQuoteRequest struct {
 	// Format: venues/{venue}/quotes/{quote}
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The etag the caller last read; the call fails when it has changed.
-	Etag          string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
+	// How long the offer stands once sent: its expire_time is the send time
+	// plus this; 14 days when unset.
+	Ttl           *durationpb.Duration `protobuf:"bytes,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -974,6 +978,13 @@ func (x *SendQuoteRequest) GetEtag() string {
 		return x.Etag
 	}
 	return ""
+}
+
+func (x *SendQuoteRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
 }
 
 // Request message for AcceptQuote.
@@ -1544,7 +1555,7 @@ var File_aperio_sales_v1_sales_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\n" +
-	"$aperio/sales/v1/sales_messages.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1baperio/sales/v1/sales.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\"C\n" +
+	"$aperio/sales/v1/sales_messages.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1baperio/sales/v1/sales.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\"C\n" +
 	"\x0eGetLeadRequest\x121\n" +
 	"\x04name\x18\x01 \x01(\tB\x1d\xe2A\x01\x02\xfaA\x16\n" +
 	"\x14aperio.sales.v1/LeadR\x04name\"\xa3\x01\n" +
@@ -1609,11 +1620,12 @@ const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\x05quote\x18\x01 \x01(\v2\x16.aperio.sales.v1.QuoteB\x04\xe2A\x01\x02R\x05quote\x12A\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskB\x04\xe2A\x01\x01R\n" +
 	"updateMask\x12)\n" +
-	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"`\n" +
+	"\rvalidate_only\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\fvalidateOnly\"\xa5\x01\n" +
 	"\x10SendQuoteRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.sales.v1/QuoteR\x04name\x12\x18\n" +
-	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\"b\n" +
+	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12C\n" +
+	"\x03ttl\x18\x03 \x01(\v2\x19.google.protobuf.DurationB\x16\xe2A\x01\x01\xbaH\x0f\xaa\x01\f\"\x05\b\x80\xe7\x84\x0f2\x03\b\x90\x1cR\x03ttl\"b\n" +
 	"\x12AcceptQuoteRequest\x122\n" +
 	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.sales.v1/QuoteR\x04name\x12\x18\n" +
@@ -1705,9 +1717,10 @@ var file_aperio_sales_v1_sales_messages_proto_goTypes = []any{
 	(*fieldmaskpb.FieldMask)(nil),     // 24: google.protobuf.FieldMask
 	(*Activity)(nil),                  // 25: aperio.sales.v1.Activity
 	(*Quote)(nil),                     // 26: aperio.sales.v1.Quote
-	(Stage)(0),                        // 27: aperio.sales.v1.Stage
-	(*timestamppb.Timestamp)(nil),     // 28: google.protobuf.Timestamp
-	(*money.Money)(nil),               // 29: google.type.Money
+	(*durationpb.Duration)(nil),       // 27: google.protobuf.Duration
+	(Stage)(0),                        // 28: aperio.sales.v1.Stage
+	(*timestamppb.Timestamp)(nil),     // 29: google.protobuf.Timestamp
+	(*money.Money)(nil),               // 30: google.type.Money
 }
 var file_aperio_sales_v1_sales_messages_proto_depIdxs = []int32{
 	23, // 0: aperio.sales.v1.ListLeadsResponse.leads:type_name -> aperio.sales.v1.Lead
@@ -1720,21 +1733,22 @@ var file_aperio_sales_v1_sales_messages_proto_depIdxs = []int32{
 	26, // 7: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
 	26, // 8: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
 	24, // 9: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
-	20, // 10: aperio.sales.v1.SummarizePipelineResponse.stages:type_name -> aperio.sales.v1.StageCount
-	21, // 11: aperio.sales.v1.SummarizePipelineResponse.follow_ups:type_name -> aperio.sales.v1.LeadBrief
-	21, // 12: aperio.sales.v1.SummarizePipelineResponse.uncontacted:type_name -> aperio.sales.v1.LeadBrief
-	22, // 13: aperio.sales.v1.SummarizePipelineResponse.expiring:type_name -> aperio.sales.v1.QuoteBrief
-	27, // 14: aperio.sales.v1.StageCount.stage:type_name -> aperio.sales.v1.Stage
-	27, // 15: aperio.sales.v1.LeadBrief.stage:type_name -> aperio.sales.v1.Stage
-	28, // 16: aperio.sales.v1.LeadBrief.next_follow_up_time:type_name -> google.protobuf.Timestamp
-	28, // 17: aperio.sales.v1.LeadBrief.create_time:type_name -> google.protobuf.Timestamp
-	29, // 18: aperio.sales.v1.QuoteBrief.total:type_name -> google.type.Money
-	28, // 19: aperio.sales.v1.QuoteBrief.expire_time:type_name -> google.protobuf.Timestamp
-	20, // [20:20] is the sub-list for method output_type
-	20, // [20:20] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	27, // 10: aperio.sales.v1.SendQuoteRequest.ttl:type_name -> google.protobuf.Duration
+	20, // 11: aperio.sales.v1.SummarizePipelineResponse.stages:type_name -> aperio.sales.v1.StageCount
+	21, // 12: aperio.sales.v1.SummarizePipelineResponse.follow_ups:type_name -> aperio.sales.v1.LeadBrief
+	21, // 13: aperio.sales.v1.SummarizePipelineResponse.uncontacted:type_name -> aperio.sales.v1.LeadBrief
+	22, // 14: aperio.sales.v1.SummarizePipelineResponse.expiring:type_name -> aperio.sales.v1.QuoteBrief
+	28, // 15: aperio.sales.v1.StageCount.stage:type_name -> aperio.sales.v1.Stage
+	28, // 16: aperio.sales.v1.LeadBrief.stage:type_name -> aperio.sales.v1.Stage
+	29, // 17: aperio.sales.v1.LeadBrief.next_follow_up_time:type_name -> google.protobuf.Timestamp
+	29, // 18: aperio.sales.v1.LeadBrief.create_time:type_name -> google.protobuf.Timestamp
+	30, // 19: aperio.sales.v1.QuoteBrief.total:type_name -> google.type.Money
+	29, // 20: aperio.sales.v1.QuoteBrief.expire_time:type_name -> google.protobuf.Timestamp
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_aperio_sales_v1_sales_messages_proto_init() }

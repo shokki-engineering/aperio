@@ -16,7 +16,9 @@ import (
 	money "google.golang.org/genproto/googleapis/type/money"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -1300,11 +1302,224 @@ func (x *Debtor) GetOldestDueDate() *date.Date {
 	return nil
 }
 
+// Request message for ClearPayment.
+type ClearPaymentRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The name of the payment to clear.
+	// Format: venues/{venue}/payments/{payment}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// The etag the caller last read; the call fails when it has changed.
+	Etag          string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClearPaymentRequest) Reset() {
+	*x = ClearPaymentRequest{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClearPaymentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClearPaymentRequest) ProtoMessage() {}
+
+func (x *ClearPaymentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClearPaymentRequest.ProtoReflect.Descriptor instead.
+func (*ClearPaymentRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ClearPaymentRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ClearPaymentRequest) GetEtag() string {
+	if x != nil {
+		return x.Etag
+	}
+	return ""
+}
+
+// Request message for RequestPayment.
+type RequestPaymentRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The name of the issued invoice to be paid.
+	// Format: venues/{venue}/invoices/{invoice}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// What to ask for; the invoice's due amount when unset. Never more.
+	Amount *money.Money `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	// How long the link stands; 7 days when unset.
+	Ttl *durationpb.Duration `protobuf:"bytes,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	// A UUID for this request: a retry with the same one returns the same link
+	// rather than another (AIP-155).
+	RequestId     string `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestPaymentRequest) Reset() {
+	*x = RequestPaymentRequest{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestPaymentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestPaymentRequest) ProtoMessage() {}
+
+func (x *RequestPaymentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestPaymentRequest.ProtoReflect.Descriptor instead.
+func (*RequestPaymentRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *RequestPaymentRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *RequestPaymentRequest) GetAmount() *money.Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *RequestPaymentRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
+}
+
+func (x *RequestPaymentRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+// Response message for RequestPayment.
+type RequestPaymentResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The page the guest pays on.
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	// The gateway that issued it: "razorpay".
+	Gateway string `protobuf:"bytes,2,opt,name=gateway,proto3" json:"gateway,omitempty"`
+	// The gateway's id for the link, which its webhook names.
+	GatewayReference string `protobuf:"bytes,3,opt,name=gateway_reference,json=gatewayReference,proto3" json:"gateway_reference,omitempty"`
+	// What it asks for.
+	Amount *money.Money `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	// When it lapses.
+	ExpireTime    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestPaymentResponse) Reset() {
+	*x = RequestPaymentResponse{}
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestPaymentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestPaymentResponse) ProtoMessage() {}
+
+func (x *RequestPaymentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_finance_v1_finance_messages_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestPaymentResponse.ProtoReflect.Descriptor instead.
+func (*RequestPaymentResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_finance_v1_finance_messages_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *RequestPaymentResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *RequestPaymentResponse) GetGateway() string {
+	if x != nil {
+		return x.Gateway
+	}
+	return ""
+}
+
+func (x *RequestPaymentResponse) GetGatewayReference() string {
+	if x != nil {
+		return x.GatewayReference
+	}
+	return ""
+}
+
+func (x *RequestPaymentResponse) GetAmount() *money.Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *RequestPaymentResponse) GetExpireTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return nil
+}
+
 var File_aperio_finance_v1_finance_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_finance_v1_finance_messages_proto_rawDesc = "" +
 	"\n" +
-	"(aperio/finance/v1/finance_messages.proto\x12\x11aperio.finance.v1\x1a\x1faperio/finance/v1/finance.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"K\n" +
+	"(aperio/finance/v1/finance_messages.proto\x12\x11aperio.finance.v1\x1a\x1faperio/finance/v1/finance.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/api/field_info.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\"K\n" +
 	"\x11GetInvoiceRequest\x126\n" +
 	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
 	"\x19aperio.finance.v1/InvoiceR\x04name\"\xe2\x01\n" +
@@ -1399,7 +1614,25 @@ const file_aperio_finance_v1_finance_messages_proto_rawDesc = "" +
 	"\x05phone\x18\x03 \x01(\tR\x05phone\x12$\n" +
 	"\x03due\x18\x04 \x01(\v2\x12.google.type.MoneyR\x03due\x12\x1a\n" +
 	"\binvoices\x18\x05 \x01(\x05R\binvoices\x129\n" +
-	"\x0foldest_due_date\x18\x06 \x01(\v2\x11.google.type.DateR\roldestDueDateB\xf2\x01\n" +
+	"\x0foldest_due_date\x18\x06 \x01(\v2\x11.google.type.DateR\roldestDueDate\"g\n" +
+	"\x13ClearPaymentRequest\x126\n" +
+	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
+	"\x19aperio.finance.v1/PaymentR\x04name\x12\x18\n" +
+	"\x04etag\x18\x02 \x01(\tB\x04\xe2A\x01\x01R\x04etag\"\xfb\x01\n" +
+	"\x15RequestPaymentRequest\x126\n" +
+	"\x04name\x18\x01 \x01(\tB\"\xe2A\x01\x02\xfaA\x1b\n" +
+	"\x19aperio.finance.v1/InvoiceR\x04name\x120\n" +
+	"\x06amount\x18\x02 \x01(\v2\x12.google.type.MoneyB\x04\xe2A\x01\x01R\x06amount\x12C\n" +
+	"\x03ttl\x18\x03 \x01(\v2\x19.google.protobuf.DurationB\x16\xe2A\x01\x01\xbaH\x0f\xaa\x01\f\"\x05\b\x80\x9a\x9e\x012\x03\b\x84\aR\x03ttl\x123\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tB\x14\xe2A\x01\x01\xbaH\x05r\x03\xb0\x01\x01\xe2\x8c\xcf\xd7\b\x02\b\x01R\trequestId\"\xda\x01\n" +
+	"\x16RequestPaymentResponse\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x18\n" +
+	"\agateway\x18\x02 \x01(\tR\agateway\x12+\n" +
+	"\x11gateway_reference\x18\x03 \x01(\tR\x10gatewayReference\x12*\n" +
+	"\x06amount\x18\x04 \x01(\v2\x12.google.type.MoneyR\x06amount\x12;\n" +
+	"\vexpire_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"expireTimeB\xf2\x01\n" +
 	"\x15com.aperio.finance.v1B\x14FinanceMessagesProtoP\x01Z]github.com/shokki-engineering/aperio/protobuf/generated/go/finance/v1/financepbv1;financepbv1\xa2\x02\x03AFX\xaa\x02\x11Aperio.Finance.V1\xca\x02\x11Aperio\\Finance\\V1\xe2\x02\x1dAperio\\Finance\\V1\\GPBMetadata\xea\x02\x13Aperio::Finance::V1b\x06proto3"
 
 var (
@@ -1414,7 +1647,7 @@ func file_aperio_finance_v1_finance_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_finance_v1_finance_messages_proto_rawDescData
 }
 
-var file_aperio_finance_v1_finance_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_aperio_finance_v1_finance_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_aperio_finance_v1_finance_messages_proto_goTypes = []any{
 	(*GetInvoiceRequest)(nil),            // 0: aperio.finance.v1.GetInvoiceRequest
 	(*ListInvoicesRequest)(nil),          // 1: aperio.finance.v1.ListInvoicesRequest
@@ -1435,35 +1668,44 @@ var file_aperio_finance_v1_finance_messages_proto_goTypes = []any{
 	(*SummarizeReceivablesResponse)(nil), // 16: aperio.finance.v1.SummarizeReceivablesResponse
 	(*AgeBucket)(nil),                    // 17: aperio.finance.v1.AgeBucket
 	(*Debtor)(nil),                       // 18: aperio.finance.v1.Debtor
-	(*Invoice)(nil),                      // 19: aperio.finance.v1.Invoice
-	(*fieldmaskpb.FieldMask)(nil),        // 20: google.protobuf.FieldMask
-	(*Payment)(nil),                      // 21: aperio.finance.v1.Payment
-	(*date.Date)(nil),                    // 22: google.type.Date
-	(*money.Money)(nil),                  // 23: google.type.Money
+	(*ClearPaymentRequest)(nil),          // 19: aperio.finance.v1.ClearPaymentRequest
+	(*RequestPaymentRequest)(nil),        // 20: aperio.finance.v1.RequestPaymentRequest
+	(*RequestPaymentResponse)(nil),       // 21: aperio.finance.v1.RequestPaymentResponse
+	(*Invoice)(nil),                      // 22: aperio.finance.v1.Invoice
+	(*fieldmaskpb.FieldMask)(nil),        // 23: google.protobuf.FieldMask
+	(*Payment)(nil),                      // 24: aperio.finance.v1.Payment
+	(*date.Date)(nil),                    // 25: google.type.Date
+	(*money.Money)(nil),                  // 26: google.type.Money
+	(*durationpb.Duration)(nil),          // 27: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),        // 28: google.protobuf.Timestamp
 }
 var file_aperio_finance_v1_finance_messages_proto_depIdxs = []int32{
-	19, // 0: aperio.finance.v1.ListInvoicesResponse.invoices:type_name -> aperio.finance.v1.Invoice
-	19, // 1: aperio.finance.v1.CreateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
-	19, // 2: aperio.finance.v1.UpdateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
-	20, // 3: aperio.finance.v1.UpdateInvoiceRequest.update_mask:type_name -> google.protobuf.FieldMask
-	21, // 4: aperio.finance.v1.ListPaymentsResponse.payments:type_name -> aperio.finance.v1.Payment
-	21, // 5: aperio.finance.v1.CreatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
-	21, // 6: aperio.finance.v1.UpdatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
-	20, // 7: aperio.finance.v1.UpdatePaymentRequest.update_mask:type_name -> google.protobuf.FieldMask
-	22, // 8: aperio.finance.v1.SummarizeReceivablesResponse.date:type_name -> google.type.Date
-	23, // 9: aperio.finance.v1.SummarizeReceivablesResponse.outstanding:type_name -> google.type.Money
-	23, // 10: aperio.finance.v1.SummarizeReceivablesResponse.overdue:type_name -> google.type.Money
+	22, // 0: aperio.finance.v1.ListInvoicesResponse.invoices:type_name -> aperio.finance.v1.Invoice
+	22, // 1: aperio.finance.v1.CreateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
+	22, // 2: aperio.finance.v1.UpdateInvoiceRequest.invoice:type_name -> aperio.finance.v1.Invoice
+	23, // 3: aperio.finance.v1.UpdateInvoiceRequest.update_mask:type_name -> google.protobuf.FieldMask
+	24, // 4: aperio.finance.v1.ListPaymentsResponse.payments:type_name -> aperio.finance.v1.Payment
+	24, // 5: aperio.finance.v1.CreatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
+	24, // 6: aperio.finance.v1.UpdatePaymentRequest.payment:type_name -> aperio.finance.v1.Payment
+	23, // 7: aperio.finance.v1.UpdatePaymentRequest.update_mask:type_name -> google.protobuf.FieldMask
+	25, // 8: aperio.finance.v1.SummarizeReceivablesResponse.date:type_name -> google.type.Date
+	26, // 9: aperio.finance.v1.SummarizeReceivablesResponse.outstanding:type_name -> google.type.Money
+	26, // 10: aperio.finance.v1.SummarizeReceivablesResponse.overdue:type_name -> google.type.Money
 	17, // 11: aperio.finance.v1.SummarizeReceivablesResponse.aging:type_name -> aperio.finance.v1.AgeBucket
 	18, // 12: aperio.finance.v1.SummarizeReceivablesResponse.debtors:type_name -> aperio.finance.v1.Debtor
-	23, // 13: aperio.finance.v1.SummarizeReceivablesResponse.collected:type_name -> google.type.Money
-	23, // 14: aperio.finance.v1.AgeBucket.amount:type_name -> google.type.Money
-	23, // 15: aperio.finance.v1.Debtor.due:type_name -> google.type.Money
-	22, // 16: aperio.finance.v1.Debtor.oldest_due_date:type_name -> google.type.Date
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	26, // 13: aperio.finance.v1.SummarizeReceivablesResponse.collected:type_name -> google.type.Money
+	26, // 14: aperio.finance.v1.AgeBucket.amount:type_name -> google.type.Money
+	26, // 15: aperio.finance.v1.Debtor.due:type_name -> google.type.Money
+	25, // 16: aperio.finance.v1.Debtor.oldest_due_date:type_name -> google.type.Date
+	26, // 17: aperio.finance.v1.RequestPaymentRequest.amount:type_name -> google.type.Money
+	27, // 18: aperio.finance.v1.RequestPaymentRequest.ttl:type_name -> google.protobuf.Duration
+	26, // 19: aperio.finance.v1.RequestPaymentResponse.amount:type_name -> google.type.Money
+	28, // 20: aperio.finance.v1.RequestPaymentResponse.expire_time:type_name -> google.protobuf.Timestamp
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_aperio_finance_v1_finance_messages_proto_init() }
@@ -1478,7 +1720,7 @@ func file_aperio_finance_v1_finance_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_finance_v1_finance_messages_proto_rawDesc), len(file_aperio_finance_v1_finance_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   19,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1,0 +1,111 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The Prisma migrations, before every install and upgrade: a hook, so the new
+# pods start only once the schema they expect is there, and a failed
+# migration fails the release instead of a rollout. Hooks run before the
+# release's own resources exist, so with no existingSecret the Job reads its
+# database URL from a hook Secret of its own, gone once the hooks succeed.
+{{- if .Values.migrations.enabled }}
+{{- $m := .Values.migrations }}
+{{- $pg := .Values.database.postgres }}
+{{- $s := .Values.secrets }}
+{{- $name := printf "%s-migrate" (include "aperio.fullname" .) }}
+{{- $secret := $s.existingSecret | default $name }}
+{{- if not $s.existingSecret }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "aperio.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-10"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+type: Opaque
+stringData:
+  postgres-password: {{ required "secrets.postgresPassword (or secrets.existingSecret) is required" $s.postgresPassword | quote }}
+  {{- with $s.databaseUrl }}
+  database-url: {{ . | quote }}
+  {{- end }}
+---
+{{- end }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "aperio.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "0"
+    # The last run stays (for its logs) until the next one or its TTL.
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  backoffLimit: {{ $m.backoffLimit }}
+  activeDeadlineSeconds: {{ $m.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: {{ $m.ttlSecondsAfterFinished }}
+  template:
+    metadata:
+      labels:
+        {{- include "aperio.selector" . | nindent 8 }}
+        app.kubernetes.io/component: migrate
+    spec:
+      restartPolicy: Never
+      {{- with $m.serviceAccountName }}
+      serviceAccountName: {{ . }}
+      {{- end }}
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- include "aperio.podSecurityContext" . | nindent 8 }}
+      containers:
+        - name: migrate
+          image: {{ include "aperio.image" (dict "image" $m.image "root" .) }}
+          imagePullPolicy: {{ $m.image.pullPolicy }}
+          {{- with $m.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $m.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            # Node and Prisma write caches under HOME; the root is read-only.
+            - { name: HOME, value: /tmp }
+            {{- if or $s.databaseUrl $m.databaseUrlFromSecret }}
+            - name: APERIO_DATABASE_URL
+              valueFrom:
+                secretKeyRef: { name: {{ $secret }}, key: database-url }
+            {{- else }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef: { name: {{ $secret }}, key: postgres-password }
+            - name: APERIO_DATABASE_URL
+              value: "postgresql://{{ $pg.user }}:$(PGPASSWORD)@{{ required "database.postgres.host is required" $pg.host }}:{{ $pg.port }}/{{ $pg.dbname }}?sslmode={{ $pg.sslmode }}"
+            {{- end }}
+          resources:
+            {{- toYaml $m.resources | nindent 12 }}
+          securityContext:
+            {{- include "aperio.securityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        - name: tmp
+          emptyDir: { sizeLimit: 256Mi }
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

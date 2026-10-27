@@ -19,7 +19,10 @@
 //     counted in the venue's at its exchange rate; once it succeeds, its
 //     invoice's paid and due follow, and its booking is confirmed
 //     (settle.go). A gateway's webhook settles a gateway payment
-//     (gateway.go); RefundPayment and VoidPayment undo one (refunds.go).
+//     (gateway.go), RequestPayment asks for one by a link (requests.go),
+//     ClearPayment clears a cheque (clearing.go); RefundPayment and
+//     VoidPayment undo one (refunds.go). An advance before the tax invoice
+//     gets a receipt voucher (advances.go, vouchers.go).
 package finance
 
 import (
@@ -61,6 +64,7 @@ type hooks struct {
 	venues    venue.VenueRepository
 	confirmer Confirmer
 	gateways  map[string]Gateway
+	linker    PaymentLinker           // makes RequestPayment's links; nil: none
 	contacts  guest.ContactRepository // names debtors; nil: unnamed
 	now       func() time.Time
 }

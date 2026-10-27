@@ -3,16 +3,20 @@
 
 package database
 
-// open.go opens the configured backend: Postgres over GORM with a bounded
-// pool, or the Hasura DDN engine with the caller's trace propagated.
+// open.go opens the configured backend: Postgres over GORM, traced and with
+// a bounded pool, or the Hasura DDN engine with the caller's trace
+// propagated; and attaches the list caches when [cache] is enabled.
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"net/url"
 
 	"github.com/shokki-engineering/aperio/internal/config"
+	"github.com/shokki-engineering/aperio/internal/database/gorm/aperio"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql"
+	"github.com/shokki-engineering/aperio/internal/telemetry"
 	"github.com/the-protobuf-project/runtime-go/network/runtime"
 	"go.opentelemetry.io/otel/propagation"
 	"gorm.io/driver/postgres"
@@ -20,12 +24,23 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// Open connects to the backend the configuration selects.
+// Open connects to the backend the configuration selects, with the list
+// caches attached when [cache] is enabled.
 func Open() (*Connection, error) {
+	var (
+		conn *Connection
+		err  error
+	)
 	if providerFromConfig() == ProviderHasura {
-		return openHasura()
+		conn, err = openHasura()
+	} else {
+		conn, err = openGorm()
 	}
-	return openGorm()
+	if err != nil {
+		return nil, err
+	}
+	conn.attachCaches(context.Background())
+	return conn, nil
 }
 
 // openHasura connects to the configured Hasura endpoint (see OpenHasura). The
@@ -41,6 +56,9 @@ func openHasura() (*Connection, error) {
 	if pg := config.Get().Database.Postgres; pg.Host != "" {
 		db, err := gorm.Open(postgres.Open(pg.DSN()), &gorm.Config{TranslateError: true, Logger: logger.Default.LogMode(logger.Warn)})
 		if err == nil {
+			err = Instrument(db)
+		}
+		if err == nil {
 			err = BoundPool(db, pg.Pool())
 		}
 		if err != nil {
@@ -52,8 +70,8 @@ func openHasura() (*Connection, error) {
 	return conn, nil
 }
 
-// openGorm dials Postgres with the libpq DSN rendered from config and bounds
-// the connection pool. The pool cap is the process's backpressure point:
+// openGorm dials Postgres with the libpq DSN rendered from config, instruments
+// it, and bounds the connection pool. The pool cap is the process's backpressure point:
 // excess concurrent queries queue on the pool instead of piling onto
 // Postgres.
 func openGorm() (*Connection, error) {
@@ -62,10 +80,28 @@ func openGorm() (*Connection, error) {
 	if err != nil {
 		return nil, fmt.Errorf("open postgres: %w", err)
 	}
+	if err := Instrument(db); err != nil {
+		return nil, err
+	}
 	if err := BoundPool(db, pg.Pool()); err != nil {
 		return nil, err
 	}
 	return &Connection{PgSQLConn: db, Provider: ProviderGorm}, nil
+}
+
+// Instrument traces and measures every query on db through the process's
+// telemetry pipeline: a span per statement, nested under the calling RPC's,
+// and the ORM's metrics (the generated gorm plugin, aperio.Default's
+// Instrument). Without a pipeline it does nothing, so call it after
+// telemetry.Init.
+func Instrument(db *gorm.DB) error {
+	if telemetry.Telemetry == nil {
+		return nil
+	}
+	if err := aperio.Default.Instrument(db, telemetry.Telemetry); err != nil {
+		return fmt.Errorf("instrument postgres: %w", err)
+	}
+	return nil
 }
 
 // BoundPool applies pool to db's connection pool.

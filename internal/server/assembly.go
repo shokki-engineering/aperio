@@ -16,6 +16,7 @@ import (
 	"context"
 	"log/slog"
 
+	"github.com/shokki-engineering/aperio/internal/auth"
 	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
@@ -23,6 +24,8 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/engine"
+	"github.com/shokki-engineering/aperio/internal/freebusysync"
+	"github.com/shokki-engineering/aperio/internal/notify"
 	"github.com/shokki-engineering/aperio/internal/service/concierge"
 	"github.com/shokki-engineering/aperio/internal/service/event"
 	"github.com/shokki-engineering/aperio/internal/service/finance"
@@ -58,6 +61,20 @@ type Services struct {
 	// copies are the read models' OpenSearch copies, by read model; none
 	// unless [search] provider = "opensearch" (search.go).
 	copies map[string]searchIndex
+
+	// routes are the webhooks served beside the REST gateway (routes.go).
+	routes []route
+
+	// sender delivers notifications (notify.go); nil until useNotify.
+	sender *notify.Sender
+
+	// Auth signs staff in and guests' links (internal/auth); nil in tests
+	// that build Services directly.
+	Auth *auth.Authenticator
+
+	// FreebusySync settles what changes in freebusy outside aperio: its
+	// webhooks (freebusy.go) and the reconciler (background.go).
+	FreebusySync *freebusysync.Syncer
 }
 
 // New assembles the services on conn, booking through eng, sealing the
@@ -77,23 +94,29 @@ func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gatewa
 		}
 	}
 	rc := conn.Repox()
-	venues, catalogRepos, guestRepos := venue.New(rc), catalogRepositories(rc), guestRepositories(rc)
+	// Venues, the catalog and pricing list through the Redis caches when [cache]
+	// is on; every write moves a cached list on (internal/database caches).
+	venues, catalogRepos, guestRepos := conn.Caches.Venue(venue.New(rc)), catalogRepositories(rc, conn.Caches), guestRepositories(rc)
 	base := booking.NewBase(eng, venues, guestRepos.Contacts)
 	base.Search = conn.SearchConn()
 	stays, events := stay.New(stayRepositories(rc), base), event.New(eventRepositories(rc), base)
 	events.ReadMenusFrom(catalogRepos.Menus)
-	prices := pricing.New(pricingRepositories(rc), catalogRepos, venues.Venues)
+	prices := pricing.New(pricingRepositories(rc, conn.Caches), catalogRepos, venues.Venues)
 	guests := guest.New(guestRepos)
 	catalogSvc := catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{})
 	selling := sales.New(salesRepositories(rc), venues.Venues, catalogRepos.Menus, prices, events, stays)
 	selling.ReadContactsFrom(guestRepos.Contacts)
+	selling.HoldWith(base) // lead holds, and an accepted event's hall holds
 	ops := operations.New(operationsRepositories(rc), venues.Venues)
 	money := finance.New(financeRepositories(rc), venues.Venues, bookings{stays: stays, events: events}, gateways)
 	money.ReadContactsFrom(guestRepos.Contacts)
 	guests.ReadHistoryFrom(guest.History{Stays: stays, Events: events, Sales: selling, Finance: money, Spaces: venues.Spaces})
+	fbSync := freebusysync.New(eng, stays, events, selling)
+	ops.CallServices(operations.Services{Finance: money, Bookings: bookings{stays: stays, events: events}, Dishes: catalogSvc, Guests: guests})
 	return &Services{
-		Conn:   conn,
-		Engine: eng,
+		FreebusySync: fbSync,
+		Conn:         conn,
+		Engine:       eng,
 		Venues: venuepbv1svc.NewVenueServiceServer(
 			venuepbv1svc.VenueServiceRepositories{Venues: venues.Venues, Spaces: venues.Spaces}, venuepbv1svc.NopVenueServiceHooks{}),
 		Catalog: catalogSvc,
@@ -113,15 +136,19 @@ func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gatewa
 }
 
 // catalogRepositories are the CatalogService's repositories over conn.
-func catalogRepositories(conn repox.Conn) catalogpbv1svc.CatalogServiceRepositories {
-	r := catalog.New(conn)
+func catalogRepositories(conn repox.Conn, caches database.Caches) catalogpbv1svc.CatalogServiceRepositories {
+	r := caches.Catalog(catalog.New(conn))
 	return catalogpbv1svc.CatalogServiceRepositories{Dishes: r.Dishes, Menus: r.Menus, FixedPackages: r.FixedPackages}
 }
 
 // Interceptors are the unary interceptors every surface shares, after
 // validation: hints that turn an error into the next step to try.
 func (s *Services) Interceptors() []grpc.UnaryServerInterceptor {
-	return []grpc.UnaryServerInterceptor{
-		hints.New(hints.Options{Product: "aperio"}).Interceptor(),
+	var ics []grpc.UnaryServerInterceptor
+	if s.Auth != nil {
+		// Who may call what, on which venue (internal/auth); runtime-go runs
+		// validation first. MCP tools dispatch through this chain too.
+		ics = append(ics, s.Auth.Interceptor())
 	}
+	return append(ics, hints.New(hints.Options{Product: "aperio"}).Interceptor())
 }

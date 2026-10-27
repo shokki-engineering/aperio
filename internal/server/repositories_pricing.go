@@ -8,13 +8,15 @@ package server
 // assembly.go imports is.
 
 import (
+	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/pricing"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/pricing/v1/pricingpbv1svc"
 )
 
-// pricingRepositories are the PricingService's repositories over conn.
-func pricingRepositories(conn repox.Conn) pricingpbv1svc.PricingServiceRepositories {
-	r := pricing.New(conn)
+// pricingRepositories are the PricingService's repositories over conn, listing
+// through caches when they are on.
+func pricingRepositories(conn repox.Conn, caches database.Caches) pricingpbv1svc.PricingServiceRepositories {
+	r := caches.Pricing(pricing.New(conn))
 	return pricingpbv1svc.PricingServiceRepositories{Seasons: r.Seasons, PriceRules: r.PriceRules}
 }

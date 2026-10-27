@@ -1,9 +1,15 @@
 # Copyright 2026 Srikanth K.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# Lint, build, unit tests, and the live suites against a Postgres migrated by
-# Prisma -- freebusy's CI, without its Bazel, Helm and kind jobs, which aperio
-# does not have yet (docs/roadmap.md, M3).
+# Lint, build, unit tests, the live suites against a Postgres migrated by
+# Prisma, the generated code against its generators, both images, and the
+# Helm chart -- freebusy's CI, with a Dockerfile where freebusy has Bazel.
+#
+# Jobs are independent on purpose: a red lint should not hide a red test, and
+# a failed run shows everything wrong in one pass.
+#
+# Actions are pinned by commit; the comment names the release. Dependabot
+# (.github/dependabot.yml) moves both together.
 
 name: CI
 
@@ -24,18 +30,18 @@ jobs:
     name: Format, vet and buf lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
-      - uses: bufbuild/buf-action@v1
+      - uses: bufbuild/buf-action@85aebf73123b5c15fd5528aaecbf9129cddf7fa7 # v1.6.0
         with:
           setup_only: true
       # Generated code follows its generator, so only hand-written code --
       # every file without a "Code generated" header -- is format-checked.
       - name: gofmt
         run: |
-          out=$(gofmt -l $(grep -L '^// Code generated' $(git ls-files '*.go')))
+          out=$(git ls-files '*.go' | xargs grep -L '^// Code generated' | xargs gofmt -l)
           if [ -n "$out" ]; then echo "$out"; exit 1; fi
       - run: go vet ./...
       - run: buf format --diff --exit-code
@@ -45,40 +51,121 @@ jobs:
     name: Protobuf build and breaking changes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: bufbuild/buf-action@v1
+      - uses: bufbuild/buf-action@85aebf73123b5c15fd5528aaecbf9129cddf7fa7 # v1.6.0
         with:
           setup_only: true
       - run: buf build -o /dev/null
       - if: github.event_name == 'pull_request'
         run: buf breaking --against ".git#branch=origin/${{ github.base_ref }}"
 
+  # Everything that touches the database is generated (CLAUDE.md): what is
+  # committed must be what the generators write. The store target is left
+  # out -- its graphql output introspects a live DDN engine -- so this covers
+  # the Go stubs, the Prisma schema and the service layer. The plugins are
+  # the versions the committed headers name.
+  generated:
+    name: Generated code is up to date
+    runs-on: ubuntu-latest
+    env:
+      PROTOC_GEN_MCP: github.com/the-protobuf-project/mcp/plugin/cmd/protoc-gen-mcp@v1.7.7
+      PROTOC_GEN_STORE: github.com/the-protobuf-project/store/plugin/cmd/protoc-gen-store@v1.6.7
+      PROTOC_GEN_SERVICE: github.com/the-protobuf-project/service/plugin/cmd/protoc-gen-service@v0.2.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+      # The go template's remote plugins run on the BSR: a token, when the
+      # repository has one, lifts the anonymous rate limit.
+      - uses: bufbuild/buf-action@85aebf73123b5c15fd5528aaecbf9129cddf7fa7 # v1.6.0
+        with:
+          setup_only: true
+          token: ${{ secrets.BUF_TOKEN }}
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+      - name: Install the generators
+        # One module per go install: each plugin is its own module version.
+        run: |
+          for m in "$PROTOC_GEN_MCP" "$PROTOC_GEN_STORE" "$PROTOC_GEN_SERVICE"; do
+            go install "$m"
+          done
+      - run: just gen go
+      - run: just gen prisma
+      - run: just gen service
+      # The plugins' header lines (protoc-gen-x <version>, annotations:
+      # <versions>) are left out: a plugin built from a checkout prints its
+      # version without the v that a go install of the tag prints.
+      - name: No drift
+        run: |
+          git add -N .
+          ignore=(-I '^//[[:space:]]+protoc-gen-[a-z]+ v?[0-9]' -I '^//[[:space:]]+annotations: ')
+          if ! git diff --exit-code --stat "${ignore[@]}"; then
+            git diff "${ignore[@]}" | head -200
+            echo "::error::generated code differs from its generators; run just gen and commit the result"
+            exit 1
+          fi
+
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
       - run: go build ./...
       - run: go build -o aperio .
 
+  # Both Dockerfile targets, for the runner's platform, not pushed: the
+  # release workflow builds and pushes the multi-platform images.
+  image:
+    name: Images (server and migrate)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [runtime, migrate]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          target: ${{ matrix.target }}
+          push: false
+          build-args: |
+            VERSION=ci
+            COMMIT=${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.target }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.target }}
+
+  deploy:
+    name: Helm chart
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+      # helm lint --strict with the minimal and the full values, the values
+      # schema refusing bad values, and every rendered manifest checked
+      # against the Kubernetes schemas (kubeconform).
+      - run: just helm check
+
   test:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
-      - uses: extractions/setup-just@v4
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
       - run: just test
 
   live:
-    name: Live suites (Postgres)
+    name: Live suites (Postgres, Redis)
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -90,14 +177,20 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U postgres"
           --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7.4
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       APERIO_DATABASE_URL: postgresql://postgres:postgrespassword@127.0.0.1:5432/aperio
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: 22
       - name: Migrate with Prisma
@@ -111,4 +204,5 @@ jobs:
         env:
           APERIO_TEST_REQUIRE_LIVE: "1"
           APERIO_TEST_DATABASE_URL: host=127.0.0.1 port=5432 user=postgres password=postgrespassword dbname=aperio sslmode=disable
+          APERIO_TEST_REDIS_ADDR: 127.0.0.1:6379
         run: go test -count=1 -p 1 ./...

@@ -16,6 +16,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/catalog"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
@@ -26,9 +27,7 @@ import (
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
 )
 
-// offerTTL is how long a sent quote stands. Quote.ttl is INPUT_ONLY and not
-// stored, so it cannot reach SendQuote; until SendQuoteRequest carries one,
-// every offer stands this long.
+// offerTTL is how long a sent quote stands when SendQuote names no ttl.
 const offerTTL = 14 * 24 * time.Hour
 
 // Pricer prices an item for a date: the pricing service.
@@ -81,7 +80,14 @@ type hooks struct {
 	// contacts name the guests SummarizePipeline lists (pipeline.go); nil
 	// until ReadContactsFrom, and then it lists their resource names.
 	contacts guest.ContactRepository
+	// base holds a lead's dates and an accepted event's halls in freebusy
+	// (leads.go, halls.go); nil until HoldWith, and then nothing is held.
+	base *booking.Base
 }
+
+// HoldWith holds through base: a lead's dates while it is negotiated, and
+// an accepted event quote's halls until its sessions replace the hold.
+func (s *Server) HoldWith(base *booking.Base) { s.h.base = base }
 
 // The resource types errors name.
 const (

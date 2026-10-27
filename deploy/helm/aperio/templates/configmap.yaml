@@ -1,0 +1,141 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The server's non-secret settings, as APERIO_<SECTION>__<KEY> variables over
+# the embedded release defaults (internal/config/aperio.release.toml). The
+# secret ones come from the Secret, in deployment.yaml.
+{{- $pg := .Values.database.postgres }}
+{{- $grace := int .Values.terminationGracePeriodSeconds }}
+{{- $stop := max 1 (sub (sub $grace (int (default 0 .Values.preStopSleepSeconds))) 5) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aperio.fullname" . }}
+  labels:
+    {{- include "aperio.labels" . | nindent 4 }}
+data:
+  # The release defaults only: no development profile, even if one is found.
+  APERIO_PROFILE: release
+  APERIO_SERVER__ENVIRONMENT: {{ .Values.server.environment | quote }}
+  APERIO_SERVER__ENABLE_MCP: {{ .Values.server.enableMcp | quote }}
+  # Stop drains within the grace period, less the preStop sleep and 5 s to
+  # flush telemetry and close connections.
+  APERIO_SERVER__SHUTDOWN_TIMEOUT_SECONDS: {{ $stop | quote }}
+  APERIO_SERVER__GRPC__PORT: "50061"
+  APERIO_SERVER__HTTP__PORT: "8090"
+  APERIO_SERVER__MCP__PORT: "8091"
+  APERIO_DATABASE__PROVIDER: {{ .Values.database.provider | quote }}
+  APERIO_DATABASE__POSTGRES__HOST: {{ required "database.postgres.host is required" $pg.host | quote }}
+  APERIO_DATABASE__POSTGRES__PORT: {{ $pg.port | quote }}
+  APERIO_DATABASE__POSTGRES__USER: {{ $pg.user | quote }}
+  APERIO_DATABASE__POSTGRES__DBNAME: {{ $pg.dbname | quote }}
+  APERIO_DATABASE__POSTGRES__SSLMODE: {{ $pg.sslmode | quote }}
+  APERIO_DATABASE__POSTGRES__MAX_OPEN_CONNS: {{ $pg.maxOpenConns | quote }}
+  APERIO_DATABASE__POSTGRES__MAX_IDLE_CONNS: {{ $pg.maxIdleConns | quote }}
+  {{- if eq .Values.database.provider "hasura" }}
+  APERIO_DATABASE__HASURA__URL: {{ required "database.hasura.url is required when database.provider is hasura" .Values.database.hasura.url | quote }}
+  {{- end }}
+  {{- with .Values.freebusy }}
+  APERIO_FREEBUSY__ENDPOINT: {{ .endpoint | quote }}
+  APERIO_FREEBUSY__INSECURE: {{ .insecure | quote }}
+  APERIO_FREEBUSY__TIMEOUT_SECONDS: {{ .timeoutSeconds | int | quote }}
+  APERIO_FREEBUSY__PUBLIC_URL: {{ .publicUrl | quote }}
+  {{- if .ca.enabled }}
+  APERIO_FREEBUSY__CA_FILE: /etc/aperio/freebusy/ca.crt
+  {{- end }}
+  {{- end }}
+  {{- with .Values.search }}
+  APERIO_SEARCH__PROVIDER: {{ .provider | quote }}
+  APERIO_SEARCH__REBUILD_ON_START: {{ .rebuildOnStart | quote }}
+  {{- if eq .provider "opensearch" }}
+  APERIO_SEARCH__OPENSEARCH__URL: {{ required "search.opensearch.url is required when search.provider is opensearch" .opensearch.url | quote }}
+  APERIO_SEARCH__OPENSEARCH__TIMEOUT_MS: {{ .opensearch.timeoutMs | int | quote }}
+  APERIO_SEARCH__OPENSEARCH__REINDEX_ON_START: {{ .opensearch.reindexOnStart | quote }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.cache }}
+  {{- if .enabled }}
+  APERIO_CACHE__ENABLED: "true"
+  APERIO_CACHE__ADDRESS: {{ required "cache.address is required when cache.enabled" .address | quote }}
+  APERIO_CACHE__USERNAME: {{ .username | quote }}
+  APERIO_CACHE__DATABASE: {{ .database | int | quote }}
+  APERIO_CACHE__PREFIX: {{ .prefix | quote }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.auth }}
+  {{- with .issuer }}
+  APERIO_AUTH__ISSUER: {{ . | quote }}
+  {{- end }}
+  {{- with .audience }}
+  APERIO_AUTH__AUDIENCE: {{ . | quote }}
+  {{- end }}
+  {{- with .rolesClaim }}
+  APERIO_AUTH__ROLES_CLAIM: {{ . | quote }}
+  {{- end }}
+  {{- with .venuesClaim }}
+  APERIO_AUTH__VENUES_CLAIM: {{ . | quote }}
+  {{- end }}
+  {{- with .clockSkewSeconds }}
+  APERIO_AUTH__CLOCK_SKEW_SECONDS: {{ . | int | quote }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.notify }}
+  APERIO_NOTIFY__PROVIDER: {{ .provider | quote }}
+  {{- with .timeoutSeconds }}
+  APERIO_NOTIFY__TIMEOUT_SECONDS: {{ . | int | quote }}
+  {{- end }}
+  {{- range $dept, $to := .departments }}
+  APERIO_NOTIFY__DEPARTMENTS__{{ $dept | upper }}: {{ $to | quote }}
+  {{- end }}
+  {{- if eq .provider "webhook" }}
+  APERIO_NOTIFY__WEBHOOK__URL: {{ required "notify.webhook.url is required when notify.provider is webhook" .webhook.url | quote }}
+  {{- end }}
+  {{- if eq .provider "whatsapp" }}
+  {{- with .whatsapp }}
+  {{- with .apiUrl }}
+  APERIO_NOTIFY__WHATSAPP__API_URL: {{ . | quote }}
+  {{- end }}
+  APERIO_NOTIFY__WHATSAPP__PHONE_NUMBER_ID: {{ required "notify.whatsapp.phoneNumberId is required when notify.provider is whatsapp" .phoneNumberId | quote }}
+  {{- with .template }}
+  APERIO_NOTIFY__WHATSAPP__TEMPLATE: {{ . | quote }}
+  {{- end }}
+  {{- with .language }}
+  APERIO_NOTIFY__WHATSAPP__LANGUAGE: {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.cors }}
+  {{- if .enabled }}
+  {{- if and .allowCredentials (has "*" .allowedOrigins) }}
+  {{- fail "cors.allowCredentials cannot be combined with the \"*\" origin; list the origins" }}
+  {{- end }}
+  APERIO_SERVER__CORS__ENABLED: "true"
+  APERIO_SERVER__CORS__ALLOWED_ORIGINS: {{ required "cors.allowedOrigins is required when cors.enabled" (join "," .allowedOrigins) | quote }}
+  {{- with .allowedMethods }}
+  APERIO_SERVER__CORS__ALLOWED_METHODS: {{ join "," . | quote }}
+  {{- end }}
+  {{- with .allowedHeaders }}
+  APERIO_SERVER__CORS__ALLOWED_HEADERS: {{ join "," . | quote }}
+  {{- end }}
+  {{- with .exposedHeaders }}
+  APERIO_SERVER__CORS__EXPOSED_HEADERS: {{ join "," . | quote }}
+  {{- end }}
+  APERIO_SERVER__CORS__ALLOW_CREDENTIALS: {{ .allowCredentials | quote }}
+  APERIO_SERVER__CORS__MAX_AGE_SECONDS: {{ .maxAgeSeconds | int | quote }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.telemetry }}
+  APERIO_OTLP_ENDPOINT: {{ .otlpEndpoint | quote }}
+  APERIO_OTLP_SECURE: {{ .otlpSecure | quote }}
+  APERIO_TELEMETRY_ENVIRONMENT: {{ .environment | quote }}
+  {{- with .site }}
+  APERIO_SITE: {{ . | quote }}
+  {{- end }}
+  {{- with .siteName }}
+  APERIO_SITE_NAME: {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  {{- range $k, $v := .Values.extraEnv }}
+  {{ $k }}: {{ $v | quote }}
+  {{- end }}

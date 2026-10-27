@@ -40,5 +40,6 @@ func (s *Services) Options() []grpc.Option {
 	} {
 		opts = append(opts, o...)
 	}
-	return opts
+	// The webhooks, beside the gateway (routes.go).
+	return append(opts, grpc.WithHTTPGateways(s.mountRoutes))
 }

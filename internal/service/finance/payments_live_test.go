@@ -79,7 +79,7 @@ func TestLivePayments(t *testing.T) {
 	must(err, "create venue")
 	c, err := guest.New(conn).Contacts.Create(ctx, &guestpbv1.Contact{Kind: guestpbv1.ContactKind_CONTACT_KIND_PERSON, DisplayName: "John Doe"})
 	must(err, "create contact")
-	stay := v.GetName() + "/reservations/klein"
+	stay := v.GetName() + "/reservations/doe"
 
 	// ₹10,000 at 18%: ₹11,800.
 	inv, err := svc.CreateInvoice(ctx, &financepbv1.CreateInvoiceRequest{Parent: v.GetName(), Invoice: &financepbv1.Invoice{

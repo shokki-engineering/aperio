@@ -134,6 +134,12 @@ func load() (*AppConfig, error) {
 	if n := len(cfg.Concierge.HoldSecret); n > 0 && n < 32 {
 		return nil, fmt.Errorf("config invalid: concierge.hold_secret is %d bytes; it needs 32 or more", n)
 	}
+	if err := cfg.Notify.Validate(); err != nil {
+		return nil, err
+	}
+	if err := cfg.Razorpay.Validate(); err != nil {
+		return nil, err
+	}
 	if cfg.Server.ExperimentalHTTP3 && !cfg.Server.TLS.Enabled() {
 		return nil, errors.New("config invalid: server.experimental_http3 requires server.tls.cert_file and server.tls.key_file")
 	}

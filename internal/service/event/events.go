@@ -25,8 +25,9 @@ func (s *Server) ConfirmEvent(ctx context.Context, req *eventpbv1.ConfirmEventRe
 		})
 }
 
-// CancelEvent cancels an event and gives back every session's space. The
-// sessions are kept, as the record of what was planned.
+// CancelEvent cancels an event and gives back every session's space, and
+// the halls it kept since its quote was accepted. The sessions are kept, as
+// the record of what was planned.
 func (s *Server) CancelEvent(ctx context.Context, req *eventpbv1.CancelEventRequest) (*eventpbv1.Event, error) {
 	return s.moveEvent(ctx, "CancelEvent", req.GetName(), req.GetEtag(),
 		[]eventpbv1.Event_State{eventpbv1.Event_STATE_TENTATIVE, eventpbv1.Event_STATE_CONFIRMED},
@@ -40,6 +41,9 @@ func (s *Server) CancelEvent(ctx context.Context, req *eventpbv1.CancelEventRequ
 				reason = "cancelled"
 			}
 			if err := s.h.Release(context.WithoutCancel(ctx), booked, "aperio: "+reason); err != nil {
+				return nil, err
+			}
+			if err := s.h.ReleaseHalls(context.WithoutCancel(ctx), e.GetName(), "aperio: "+reason); err != nil {
 				return nil, err
 			}
 			e.State = eventpbv1.Event_STATE_CANCELLED

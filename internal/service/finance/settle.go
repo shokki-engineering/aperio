@@ -6,8 +6,11 @@ package finance
 // settle.go is what a payment's settling changes beyond itself:
 //
 //   - its invoice's paid -- the receipts against it, less their refunds, in
-//     the venue's currency -- and due; an invoice paid in full is PAID, and
-//     one a refund reopens is ISSUED again;
+//     the venue's currency -- and due: the total less what is paid and what
+//     its issued credit notes take off. An invoice with nothing left due is
+//     PAID, and one a refund reopens is ISSUED again;
+//   - a receipt for a booking before its tax invoice is an advance
+//     (advances.go): a receipt voucher records it;
 //   - its booking: a receipt confirms a PENDING stay or a TENTATIVE event,
 //     as the advance that holds it.
 //
@@ -44,18 +47,23 @@ func (h *hooks) settle(ctx context.Context, p *financepbv1.Payment) error {
 		}
 	}
 	if p.GetState() == financepbv1.Payment_STATE_SUCCEEDED && p.GetKind() == financepbv1.PaymentKind_PAYMENT_KIND_RECEIPT {
+		if err := h.advance(ctx, p); err != nil {
+			return err
+		}
 		return h.confirm(ctx, p.GetBooking())
 	}
 	return nil
 }
 
-// settleInvoice sets name's paid and due from its payments, and its state.
+// settleInvoice sets name's paid and due from its payments and credit
+// notes, and its state. A credit note or receipt voucher is settled as it is
+// issued (issue.go), and left as it is.
 func (h *hooks) settleInvoice(ctx context.Context, name string) error {
 	inv, err := h.repos.Invoices.Get(ctx, name)
 	if err != nil {
 		return err
 	}
-	if inv.GetState() != financepbv1.Invoice_STATE_ISSUED && inv.GetState() != financepbv1.Invoice_STATE_PAID {
+	if inv.GetState() != financepbv1.Invoice_STATE_ISSUED && inv.GetState() != financepbv1.Invoice_STATE_PAID || settledOnIssue[inv.GetKind()] {
 		return nil
 	}
 	payments, err := listAll(func(token string) ([]*financepbv1.Payment, string, error) {
@@ -72,8 +80,12 @@ func (h *hooks) settleInvoice(ctx context.Context, name string) error {
 			paid.Add(paid, pricing.Rat(p.GetBaseAmount()))
 		}
 	}
+	credited, err := h.credited(ctx, name)
+	if err != nil {
+		return err
+	}
 	cur := inv.GetTotal().GetCurrencyCode()
-	due := pricing.Sum(pricing.Rat(inv.GetTotal()), new(big.Rat).Neg(paid))
+	due := pricing.Sum(pricing.Rat(inv.GetTotal()), new(big.Rat).Neg(paid), new(big.Rat).Neg(credited))
 	inv.Paid, inv.Due = pricing.Money(paid, cur), pricing.Money(due, cur)
 	inv.State = financepbv1.Invoice_STATE_ISSUED
 	if due.Sign() <= 0 {
@@ -81,6 +93,23 @@ func (h *hooks) settleInvoice(ctx context.Context, name string) error {
 	}
 	_, err = h.repos.Invoices.UpdateOutputOnly(ctx, inv, []string{"paid", "due", "state"})
 	return err
+}
+
+// credited is what the issued credit notes correcting invoice name take off
+// it.
+func (h *hooks) credited(ctx context.Context, name string) (*big.Rat, error) {
+	notes, err := listAll(func(token string) ([]*financepbv1.Invoice, string, error) {
+		return h.repos.Invoices.List(ctx, servicex.ParentOf(name),
+			listIn(`corrects = "`+name+`" AND kind = CREDIT_NOTE AND state != DRAFT AND state != CANCELLED`, token))
+	})
+	if err != nil {
+		return nil, err
+	}
+	sum := new(big.Rat)
+	for _, n := range notes {
+		sum.Add(sum, pricing.Rat(n.GetTotal()))
+	}
+	return sum, nil
 }
 
 // confirm confirms booking, a reservation or an event, when it is waiting on

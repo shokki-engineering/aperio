@@ -4,8 +4,9 @@
 package sales
 
 // states.go moves a quote through its life: DRAFT -> SENT (prices fixed,
-// the offer's clock started) -> DECLINED, or SENT/DECLINED/EXPIRED ->
-// SUPERSEDED by a new draft ReviseQuote makes from it.
+// the offer's clock started) -> DECLINED, or EXPIRED once the clock runs
+// out (expiry.go), or SENT/DECLINED/EXPIRED -> SUPERSEDED by a new draft
+// ReviseQuote makes from it.
 
 import (
 	"context"
@@ -18,8 +19,15 @@ import (
 )
 
 // SendQuote prices a draft one last time and fixes it: what the guest is
-// sent is what they are held to, whatever the rules do after.
+// sent is what they are held to, whatever the rules do after. The offer
+// stands for the request's ttl, offerTTL when it names none.
 func (s *Server) SendQuote(ctx context.Context, req *salespbv1.SendQuoteRequest) (*salespbv1.Quote, error) {
+	ttl := offerTTL
+	if req.GetTtl() != nil {
+		if ttl = req.GetTtl().AsDuration(); ttl <= 0 {
+			return nil, s.Options().Status(servicex.BadField("INVALID_TTL", "ttl", "the offer's ttl is not positive", "Leave ttl unset for 14 days, or give a positive duration"))
+		}
+	}
 	return s.move(ctx, "SendQuote", req.GetName(), req.GetEtag(), []salespbv1.Quote_State{salespbv1.Quote_STATE_DRAFT},
 		func(ctx context.Context, q *salespbv1.Quote) (*salespbv1.Quote, error) {
 			if err := s.h.reprice(ctx, servicex.ParentOf(q.GetName()), q); err != nil {
@@ -28,7 +36,7 @@ func (s *Server) SendQuote(ctx context.Context, req *salespbv1.SendQuoteRequest)
 			now := s.h.now()
 			q.State = salespbv1.Quote_STATE_SENT
 			q.SendTime = timestamppb.New(now)
-			q.ExpireTime = timestamppb.New(now.Add(offerTTL))
+			q.ExpireTime = timestamppb.New(now.Add(ttl))
 			return s.Repositories().Quotes.UpdateWithOutputOnly(ctx, q, []string{"lines"},
 				append([]string{"state", "send_time", "expire_time"}, totals...))
 		})

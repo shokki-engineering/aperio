@@ -15,7 +15,7 @@ package finance
 //
 // The next number is the highest issued in the series plus one; the unique
 // index on number makes two issues racing for it fail one of them, which
-// IssueInvoice retries (states.go).
+// issue retries (issue.go).
 
 import (
 	"context"
@@ -53,9 +53,9 @@ func series(prefix string, kind financepbv1.InvoiceKind, day time.Time) (string,
 	return fmt.Sprintf("%s/%s%02d%02d/", prefix, code, y%100, (y+1)%100), nil
 }
 
-// number is the next number in stem at venueName: four digits at least,
+// next is the next number in stem at venueName: four digits at least,
 // more as the series grows, and never past 16 characters.
-func (h *hooks) number(ctx context.Context, venueName, stem string, kind financepbv1.InvoiceKind) (string, error) {
+func (h *hooks) next(ctx context.Context, venueName, stem string, kind financepbv1.InvoiceKind) (string, error) {
 	last, err := h.last(ctx, venueName, stem, kind)
 	if err != nil {
 		return "", err

@@ -1,0 +1,24 @@
+# Copyright 2026 Srikanth K.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The server's three ports: gRPC, the REST gateway (and /health), and MCP
+# (streamable HTTP at /mcp).
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aperio.fullname" . }}
+  labels:
+    {{- include "aperio.labels" . | nindent 4 }}
+    app.kubernetes.io/component: server
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "aperio.serverSelector" . | nindent 4 }}
+  ports:
+    - { name: grpc, port: {{ .Values.service.grpcPort }}, targetPort: grpc, protocol: TCP, appProtocol: grpc }
+    - { name: http, port: {{ .Values.service.httpPort }}, targetPort: http, protocol: TCP, appProtocol: http }
+    - { name: mcp, port: {{ .Values.service.mcpPort }}, targetPort: mcp, protocol: TCP, appProtocol: http }

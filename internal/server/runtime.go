@@ -10,6 +10,7 @@ package server
 import (
 	"context"
 	"crypto/rand"
+	"github.com/shokki-engineering/aperio/internal/auth"
 
 	"github.com/shokki-engineering/aperio/internal/config"
 	"github.com/shokki-engineering/aperio/internal/database"
@@ -36,10 +37,22 @@ func newServices(conn *database.Connection) (*Services, *engine.Client, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	services := New(conn, fb, secret)
+	authn, err := auth.New(context.Background(), config.Get().Auth)
+	if err != nil {
+		return nil, nil, err
+	}
+	pay, rzp := gateways(config.Get().Razorpay)
+	services := New(conn, fb, secret, pay...)
+	services.Auth = authn
+	services.useRazorpay(rzp, config.Get().Razorpay.WebhookSecret)
 	if err := services.useOpenSearch(context.Background(), config.Get().Search); err != nil {
 		return nil, nil, err
 	}
+	if err := services.useNotify(config.Get().Notify); err != nil {
+		return nil, nil, err
+	}
+	services.useChannels(config.Get().Channels)
+	services.useFreebusySync(context.Background(), fb, config.Get().FreebusySync)
 	return services, fb, nil
 }
 
