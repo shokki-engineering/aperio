@@ -142,14 +142,24 @@ func catalogRepositories(conn repox.Conn, caches database.Caches) catalogpbv1svc
 	return catalogpbv1svc.CatalogServiceRepositories{Dishes: r.Dishes, Menus: r.Menus, FixedPackages: r.FixedPackages}
 }
 
-// Interceptors are the unary interceptors every surface shares, after
-// validation: hints that turn an error into the next step to try.
+// Interceptors are the unary interceptors every surface shares, before
+// validation: who may call what, then hints that turn an error into the next
+// step to try.
 func (s *Services) Interceptors() []grpc.UnaryServerInterceptor {
 	var ics []grpc.UnaryServerInterceptor
 	if s.Auth != nil {
-		// Who may call what, on which venue (internal/auth); runtime-go runs
-		// validation first. MCP tools dispatch through this chain too.
+		// Who may call what, on which venue (internal/auth). MCP tools
+		// dispatch through this chain too.
 		ics = append(ics, s.Auth.Interceptor())
 	}
 	return append(ics, hints.New(hints.Options{Product: "aperio"}).Interceptor())
+}
+
+// StreamInterceptors guard the runtime's streams: gRPC reflection takes a
+// signed-in member of staff, health stays open (internal/auth stream.go).
+func (s *Services) StreamInterceptors() []grpc.StreamServerInterceptor {
+	if s.Auth == nil {
+		return nil
+	}
+	return []grpc.StreamServerInterceptor{s.Auth.StreamInterceptor()}
 }

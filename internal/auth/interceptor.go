@@ -5,8 +5,8 @@ package auth
 
 // interceptor.go applies the policy to every call. It reads the
 // "authorization" metadata -- gRPC's own, the REST gateway's (grpc-gateway
-// forwards the HTTP Authorization header under that key) or MCP's (mcp.go
-// lifts it there) -- as "Bearer <OIDC token>" for staff or "Link <token>"
+// forwards the HTTP Authorization header under that key) or MCP's (runtime-
+// go lifts it there) -- as "Bearer <OIDC token>" for staff or "Link <token>"
 // for a guest's link, and lets the call through only when the policy does.
 
 import (

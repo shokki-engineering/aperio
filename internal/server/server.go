@@ -79,6 +79,7 @@ func serviceOptions(s *Services) ([]grpc.Option, error) {
 	cfg := config.Get().Server
 	opts := append([]grpc.Option{
 		grpc.WithUnaryInterceptors(s.Interceptors()...),
+		grpc.WithStreamInterceptors(s.StreamInterceptors()...),
 		grpc.WithValidationLast(),
 		// Every MCP service together, as one server an agent connects to once.
 		// The runtime lifts each MCP request's Authorization header into the
