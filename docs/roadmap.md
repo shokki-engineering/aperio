@@ -195,7 +195,7 @@ before channels, a running server before anyone outside can use any of it.
 - Done (`internal/auth`): OIDC from any issuer; six roles with a rule for
   every RPC (a test fails on an unguarded one); per-venue access;
   guests' signed links to one quote, stay or invoice; enforced on gRPC,
-  REST and MCP (the MCP token is carried by `auth.MCPService()`). Exit
+  REST and MCP (runtime-go lifts the MCP token into the incoming metadata). Exit
   met: the kitchen sees requests and diets, not invoices. Left: Hasura
   role permissions (a spec is ready; needs generator support); lead names
   scoped to a venue.

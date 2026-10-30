@@ -22,20 +22,20 @@ require (
 	github.com/lib/pq v1.12.3
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/oh-tarnished/opensearch-go-sdk v0.1.1
-	github.com/prometheus/client_golang v1.24.1
+	github.com/prometheus/client_golang v1.25.0
 	github.com/shokki-engineering/freebusy-go v0.0.0-00010101000000-000000000000
 	github.com/the-protobuf-project/cache v0.3.2
 	github.com/the-protobuf-project/mcp v1.7.7
-	github.com/the-protobuf-project/runtime-go/agents v0.0.0-20261026204609-216a2112f43e
-	github.com/the-protobuf-project/runtime-go/cache v0.0.0-20261026204609-216a2112f43e
-	github.com/the-protobuf-project/runtime-go/events v0.0.0-20261026204609-216a2112f43e
-	github.com/the-protobuf-project/runtime-go/grpc v0.0.0-20261026204609-216a2112f43e
-	github.com/the-protobuf-project/runtime-go/network v0.0.0-20261026204609-216a2112f43e
-	github.com/the-protobuf-project/runtime-go/observability v0.0.0-20261026204609-216a2112f43e
-	github.com/the-protobuf-project/runtime-go/telemetry v0.0.0-20261026204609-216a2112f43e
+	github.com/the-protobuf-project/runtime-go/agents v0.0.0-20261029160324-bb3b424dbd45
+	github.com/the-protobuf-project/runtime-go/cache v0.0.0-20261029160324-bb3b424dbd45
+	github.com/the-protobuf-project/runtime-go/events v0.0.0-20261029160324-bb3b424dbd45
+	github.com/the-protobuf-project/runtime-go/grpc v0.0.0-20261029160324-bb3b424dbd45
+	github.com/the-protobuf-project/runtime-go/network v0.0.0-20261029160324-bb3b424dbd45
+	github.com/the-protobuf-project/runtime-go/observability v0.0.0-20261029160324-bb3b424dbd45
+	github.com/the-protobuf-project/runtime-go/telemetry v0.0.0-20261029160324-bb3b424dbd45
 	github.com/the-protobuf-project/service v0.2.3
 	github.com/the-protobuf-project/store v1.6.10
-	github.com/the-protobuf-project/telemetry/telemetry-go v0.0.0-20261023093202-d14384d7957b
+	github.com/the-protobuf-project/telemetry/telemetry-go v0.0.0-20261029160437-5b18b2cb02bb
 	go.opentelemetry.io/otel v1.47.0
 	go.opentelemetry.io/otel/exporters/prometheus v0.69.0
 	go.opentelemetry.io/otel/metric v1.47.0
@@ -131,7 +131,7 @@ require (
 	github.com/segmentio/encoding v0.5.4 // indirect
 	github.com/stretchr/testify v1.12.1 // indirect
 	github.com/the-protobuf-project/resourcename v0.0.0-20260616190751-3e187a5d3da5 // indirect
-	github.com/the-protobuf-project/runtime-go/ulid v0.0.0-20261021141431-6d4588022f2b // indirect
+	github.com/the-protobuf-project/runtime-go/ulid v0.0.0-20261029160324-bb3b424dbd45 // indirect
 	github.com/xo/terminfo v1.2.0 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
@@ -157,7 +157,7 @@ require (
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
-	google.golang.org/api v0.308.0 // indirect
+	google.golang.org/api v0.309.0 // indirect
 )
 
-replace github.com/shokki-engineering/freebusy-go => github.com/oh-tarnished/freebusy-go-sdk v0.0.0-20261026100031-51de17a5f1d2
+replace github.com/shokki-engineering/freebusy-go => github.com/oh-tarnished/freebusy-go-sdk v0.0.0-20261030051839-b8f09e767c19

@@ -11,7 +11,6 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-	"github.com/shokki-engineering/aperio/internal/auth"
 	"os/signal"
 	"syscall"
 
@@ -70,22 +69,22 @@ func NewServer(name, version string, opts ...options.Options) (*Server, error) {
 	}, nil
 }
 
-// serviceOptions builds the hybrid-server options: protovalidate request
-// validation (enforced by runtime-go across gRPC, the HTTP gateway and every
-// MCP tool call), the services' interceptors and registrations, and CORS and
+// serviceOptions builds the hybrid-server options: the services' interceptors,
+// then protovalidate request validation (enforced by runtime-go across gRPC,
+// the HTTP gateway and every MCP tool call; last, so a caller is
+// authenticated before a request is judged), the registrations, and CORS and
 // TLS when configured. The TLS pair is checked up front, so a bad path
 // returns a clear error instead of the panic grpc.WithCertificates raises.
 func serviceOptions(s *Services) ([]grpc.Option, error) {
 	cfg := config.Get().Server
 	opts := append([]grpc.Option{
-		grpc.WithValidation(),
 		grpc.WithUnaryInterceptors(s.Interceptors()...),
+		grpc.WithValidationLast(),
 		// Every MCP service together, as one server an agent connects to once.
+		// The runtime lifts each MCP request's Authorization header into the
+		// incoming metadata the interceptors read, there and on each service's
+		// own path (mcp.DefaultHeaderMappings).
 		grpc.WithMCPEndpoint(cfg.MCP.Path),
-		// Carries each MCP call's Authorization to the interceptors; only the
-		// combined endpoint gets it, so the per-service paths are off.
-		grpc.WithMCPServices(auth.MCPService()),
-		grpc.WithoutMCPServicePaths(),
 		grpc.WithShutdownTimeout(cfg.ShutdownTimeout()),
 	}, s.Options()...)
 	if cfg.MCP.Stateless {

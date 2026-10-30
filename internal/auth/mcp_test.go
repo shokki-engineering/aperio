@@ -5,9 +5,8 @@ package auth
 
 // mcp_test.go checks the MCP surface: a client's Authorization header, sent
 // with each HTTP request, reaches the interceptor for that call -- and only
-// that call, in a session that changes it -- once MCPService is combined
-// into the server; without it, no token arrives and staff tools are
-// refused.
+// that call, in a session that changes it -- through the runtime's header
+// mappings; without them, no token arrives and staff tools are refused.
 
 import (
 	"context"
@@ -86,14 +85,14 @@ func TestMCPCarriesTheToken(t *testing.T) {
 	}
 }
 
-// TestMCPWithoutLift shows why MCPService is needed: the header never
-// reaches the interceptor, so even a valid token is refused.
-func TestMCPWithoutLift(t *testing.T) {
+// TestMCPWithoutHeaderMappings shows what the mappings do: without them the
+// header never reaches the interceptor, so even a valid token is refused.
+func TestMCPWithoutHeaderMappings(t *testing.T) {
 	iss := newIssuer(t)
 	a := iss.authenticator(t)
 	value := "Bearer " + iss.staff(t, []string{"lakeside"}, "front_desk")
 	s := connect(t, mcpHandler(t, a, false), &value)
 	if text, failed := getVenue(t, s); !failed {
-		t.Errorf("without MCPService: %s, want refused", text)
+		t.Errorf("without header mappings: %s, want refused", text)
 	}
 }
