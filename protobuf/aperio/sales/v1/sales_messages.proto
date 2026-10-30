@@ -407,3 +407,32 @@ message QuoteBrief {
   // When it expires.
   google.protobuf.Timestamp expire_time = 5;
 }
+
+// Request message for ShareQuote.
+message ShareQuoteRequest {
+  // The quote to share.
+  // Format: venues/{venue}/quotes/{quote}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.sales.v1/Quote"
+  ];
+
+  // How long the link stands; 14 days when unset.
+  google.protobuf.Duration ttl = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).duration = {
+      gte: {seconds: 3600}
+      lte: {seconds: 7776000}
+    }
+  ];
+}
+
+// Response message for ShareQuote.
+message ShareQuoteResponse {
+  // The link to send the guest: the guest site's page for the quote, with
+  // its signed token.
+  string url = 1;
+
+  // When it lapses.
+  google.protobuf.Timestamp expire_time = 2;
+}

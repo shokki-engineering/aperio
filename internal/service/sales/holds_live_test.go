@@ -41,6 +41,7 @@ type holdFixture struct {
 	events  *event.Server
 	repos   salespbv1svc.SalesServiceRepositories
 	fb      *live.Freebusy
+	venues  venue.VenueRepository
 	venue   string
 	rooms   string
 	hall    string
@@ -80,7 +81,7 @@ func holdSetup(t *testing.T) *holdFixture {
 	svc := sales.New(repos, venues.Venues, catalogRepos.Menus, pricing.New(live.PricingRepositories(conn), catalogRepos, venues.Venues),
 		events, stay.New(live.StayRepositories(conn), base))
 	svc.HoldWith(base)
-	return &holdFixture{svc: svc, events: events, repos: repos, fb: fb, venue: v.GetName(), rooms: rooms.GetName(), hall: hall.GetName(), contact: c.GetName()}
+	return &holdFixture{svc: svc, events: events, repos: repos, fb: fb, venues: venues.Venues, venue: v.GetName(), rooms: rooms.GetName(), hall: hall.GetName(), contact: c.GetName()}
 }
 
 // wedding is a sent quote for the hall on 18 Dec 2027.

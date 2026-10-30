@@ -10,7 +10,8 @@ package finance
 //     its issued credit notes take off. An invoice with nothing left due is
 //     PAID, and one a refund reopens is ISSUED again;
 //   - a receipt for a booking before its tax invoice is an advance
-//     (advances.go): a receipt voucher records it;
+//     (advances.go): a receipt voucher records it, and a refund voucher
+//     its refund (refundvouchers.go);
 //   - its booking: a receipt confirms a PENDING stay or a TENTATIVE event,
 //     as the advance that holds it.
 //
@@ -51,6 +52,9 @@ func (h *hooks) settle(ctx context.Context, p *financepbv1.Payment) error {
 			return err
 		}
 		return h.confirm(ctx, p.GetBooking())
+	}
+	if p.GetState() == financepbv1.Payment_STATE_SUCCEEDED && p.GetKind() == financepbv1.PaymentKind_PAYMENT_KIND_REFUND {
+		return h.refundVoucher(ctx, p)
 	}
 	return nil
 }

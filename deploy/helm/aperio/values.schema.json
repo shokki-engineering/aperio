@@ -232,6 +232,9 @@
             "url": {
               "type": "string",
               "pattern": "^(|https?://.+)$"
+            },
+            "connectTimeoutSeconds": {
+              "type": "integer"
             }
           }
         }
@@ -313,6 +316,9 @@
         },
         "bookingcomPassword": {
           "type": "string"
+        },
+        "freebusyWebhookSecret": {
+          "type": "string"
         }
       }
     },
@@ -341,6 +347,91 @@
           "properties": {
             "enabled": {
               "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "freebusySync": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "webhookUrl": {
+          "type": "string",
+          "pattern": "^(|https?://.+)$"
+        },
+        "webhookId": {
+          "type": "string"
+        },
+        "reconcileIntervalSeconds": {
+          "type": "integer"
+        },
+        "quoteExpiryIntervalSeconds": {
+          "type": "integer"
+        }
+      }
+    },
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bookingcom": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "hotels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "hotel_code",
+                  "venue"
+                ],
+                "properties": {
+                  "hotel_code": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ],
+                    "minLength": 1
+                  },
+                  "venue": {
+                    "type": "string",
+                    "pattern": "^venues/[^/]+$"
+                  },
+                  "rooms": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "code",
+                        "space"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ],
+                          "minLength": 1
+                        },
+                        "space": {
+                          "type": "string",
+                          "pattern": "^venues/[^/]+/spaces/[^/]+$"
+                        },
+                        "rate_plan": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -420,6 +511,10 @@
         "clockSkewSeconds": {
           "type": "integer",
           "minimum": 0
+        },
+        "linkBaseUrl": {
+          "type": "string",
+          "pattern": "^(|https?://.+)$"
         }
       }
     },
@@ -436,6 +531,9 @@
           ]
         },
         "enableMcp": {
+          "type": "boolean"
+        },
+        "metrics": {
           "type": "boolean"
         }
       }
@@ -762,6 +860,17 @@
     },
     "global": {
       "type": "object"
+    },
+    "concierge": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "advancePercent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
     },
     "notify": {
       "type": "object",

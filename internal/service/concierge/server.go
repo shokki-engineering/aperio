@@ -12,7 +12,9 @@
 //   - HoldStay (hold.go) holds rooms in freebusy for the minutes a guest
 //     takes to decide, and seals what was held in a token (token.go).
 //   - ConfirmStay (confirm.go) books the hold for the guest the token names:
-//     the booking takes its rooms from that very hold.
+//     the booking takes its rooms from that very hold; then it raises the
+//     stay's proforma and asks for the advance by a payment link
+//     (advance.go).
 //   - FindBooking and CancelBooking (bookings.go) find and cancel a guest's
 //     stay by their phone and its reference -- never by a phone alone.
 //   - EnquireEvent (enquire.go) takes an event enquiry as a lead and a draft
@@ -29,6 +31,7 @@ import (
 
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/engine"
+	"github.com/shokki-engineering/aperio/internal/notify"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/catalog/v1/catalogpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/concierge/v1/conciergepbv1"
@@ -102,8 +105,13 @@ type Server struct {
 	menus  Catalog
 	ops    Operations
 	seal   []byte // HMAC key of the hold tokens
-	now    func() time.Time
-	opts   servicex.Options
+	// biller raises a booked stay's proforma and asks for advancePercent of
+	// it (advance.go); nil until BillWith, and then no advance is asked.
+	biller         Biller
+	advancePercent int
+	sender         *notify.Sender // sends the payment link; nil sends nothing
+	now            func() time.Time
+	opts           servicex.Options
 }
 
 // New returns the Server, reading venues and their spaces from venues,

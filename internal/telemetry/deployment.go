@@ -125,14 +125,26 @@ func splitHostPort(endpoint string) (host string, port int, ok bool) {
 	return h, p, true
 }
 
-// writeTelemetryConfig writes the embedded telemetry.toml to a temporary
-// file and returns its path. The caller is responsible for cleanup.
-func writeTelemetryConfig() (string, error) {
+// writeTelemetryConfig writes the embedded telemetry.toml, with version as
+// its service.version, to a temporary file and returns its path. The caller
+// is responsible for cleanup.
+func writeTelemetryConfig(version string) (string, error) {
+	k := koanf.New(".")
+	if err := k.Load(rawbytes.Provider(telemetryConfigData), toml.Parser()); err != nil {
+		return "", fmt.Errorf("read telemetry config: %w", err)
+	}
+	if err := k.Set("service.version", version); err != nil {
+		return "", fmt.Errorf("set the service version: %w", err)
+	}
+	data, err := k.Marshal(toml.Parser())
+	if err != nil {
+		return "", fmt.Errorf("render telemetry config: %w", err)
+	}
 	f, err := os.CreateTemp("", "telemetry-*.toml")
 	if err != nil {
 		return "", fmt.Errorf("create temp file: %w", err)
 	}
-	if _, err := f.Write(telemetryConfigData); err != nil {
+	if _, err := f.Write(data); err != nil {
 		_ = f.Close()
 		_ = os.Remove(f.Name())
 		return "", fmt.Errorf("write telemetry config: %w", err)

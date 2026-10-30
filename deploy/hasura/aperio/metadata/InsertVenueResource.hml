@@ -31,8 +31,8 @@ definition:
     - name: updateTime
       type: Timestamptz!
   graphql:
-    typeName: InsertVenueResourceObject
-    inputTypeName: InsertVenueResourceObjectInput
+    typeName: aperio_InsertVenueResourceObject
+    inputTypeName: aperio_InsertVenueResourceObjectInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_venue_resource_object
@@ -114,8 +114,8 @@ definition:
       type: "[VenueResource!]!"
       description: Data from rows affected by the mutation
   graphql:
-    typeName: InsertVenueResourceResponse
-    inputTypeName: InsertVenueResourceResponseInput
+    typeName: aperio_InsertVenueResourceResponse
+    inputTypeName: aperio_InsertVenueResourceResponseInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_venue_resource_response
@@ -159,7 +159,7 @@ definition:
       objects: objects
       postCheck: post_check
   graphql:
-    rootFieldName: insertVenueResource
+    rootFieldName: aperio_insertVenueResource
     rootFieldKind: Mutation
   description: Insert into the venue_resource table
 

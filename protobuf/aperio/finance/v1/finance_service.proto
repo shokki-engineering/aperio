@@ -160,4 +160,14 @@ service FinanceService {
     option (google.api.http) = {get: "/v1/{venue=venues/*}/invoices:summarizeReceivables"};
     option (google.api.method_signature) = "venue";
   }
+
+  // A link the guest opens to read this invoice without signing in: signed,
+  // read-only, for this invoice alone, lapsing after ttl.
+  rpc ShareInvoice(ShareInvoiceRequest) returns (ShareInvoiceResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/invoices/*}:share"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
 }

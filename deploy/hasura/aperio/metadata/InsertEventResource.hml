@@ -22,6 +22,8 @@ definition:
       type: String_1
     - name: eventType
       type: Enum
+    - name: freebusyHolds
+      type: "[String_1]"
     - name: guests
       type: Int32
     - name: id
@@ -43,8 +45,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: InsertEventResourceObject
-    inputTypeName: InsertEventResourceObjectInput
+    typeName: aperio_InsertEventResourceObject
+    inputTypeName: aperio_InsertEventResourceObjectInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_event_resource_object
@@ -76,6 +78,9 @@ definition:
         eventType:
           column:
             name: event_type
+        freebusyHolds:
+          column:
+            name: freebusy_holds
         guests:
           column:
             name: guests
@@ -125,6 +130,7 @@ definition:
           - displayName
           - etag
           - eventType
+          - freebusyHolds
           - guests
           - id
           - lead
@@ -150,8 +156,8 @@ definition:
       type: "[EventResource!]!"
       description: Data from rows affected by the mutation
   graphql:
-    typeName: InsertEventResourceResponse
-    inputTypeName: InsertEventResourceResponseInput
+    typeName: aperio_InsertEventResourceResponse
+    inputTypeName: aperio_InsertEventResourceResponseInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_event_resource_response
@@ -195,7 +201,7 @@ definition:
       objects: objects
       postCheck: post_check
   graphql:
-    rootFieldName: insertEventResource
+    rootFieldName: aperio_insertEventResource
     rootFieldKind: Mutation
   description: Insert into the event_resource table
 

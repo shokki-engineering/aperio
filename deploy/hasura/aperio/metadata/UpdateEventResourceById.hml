@@ -9,8 +9,8 @@ definition:
       type: String_1
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceCancelReason
-    inputTypeName: UpdateColumnEventResourceCancelReasonInput
+    typeName: aperio_UpdateColumnEventResourceCancelReason
+    inputTypeName: aperio_UpdateColumnEventResourceCancelReasonInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_cancel_reason
@@ -41,8 +41,8 @@ definition:
       type: Timestamptz
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceCancelTime
-    inputTypeName: UpdateColumnEventResourceCancelTimeInput
+    typeName: aperio_UpdateColumnEventResourceCancelTime
+    inputTypeName: aperio_UpdateColumnEventResourceCancelTimeInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_cancel_time
@@ -73,8 +73,8 @@ definition:
       type: String_1!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceContact
-    inputTypeName: UpdateColumnEventResourceContactInput
+    typeName: aperio_UpdateColumnEventResourceContact
+    inputTypeName: aperio_UpdateColumnEventResourceContactInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_contact
@@ -105,8 +105,8 @@ definition:
       type: String_1
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceCoordinator
-    inputTypeName: UpdateColumnEventResourceCoordinatorInput
+    typeName: aperio_UpdateColumnEventResourceCoordinator
+    inputTypeName: aperio_UpdateColumnEventResourceCoordinatorInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_coordinator
@@ -137,8 +137,8 @@ definition:
       type: Timestamptz!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceCreateTime
-    inputTypeName: UpdateColumnEventResourceCreateTimeInput
+    typeName: aperio_UpdateColumnEventResourceCreateTime
+    inputTypeName: aperio_UpdateColumnEventResourceCreateTimeInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_create_time
@@ -169,8 +169,8 @@ definition:
       type: Json!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceDates
-    inputTypeName: UpdateColumnEventResourceDatesInput
+    typeName: aperio_UpdateColumnEventResourceDates
+    inputTypeName: aperio_UpdateColumnEventResourceDatesInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_dates
@@ -201,8 +201,8 @@ definition:
       type: String_1!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceDisplayName
-    inputTypeName: UpdateColumnEventResourceDisplayNameInput
+    typeName: aperio_UpdateColumnEventResourceDisplayName
+    inputTypeName: aperio_UpdateColumnEventResourceDisplayNameInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_display_name
@@ -233,8 +233,8 @@ definition:
       type: String_1
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceEtag
-    inputTypeName: UpdateColumnEventResourceEtagInput
+    typeName: aperio_UpdateColumnEventResourceEtag
+    inputTypeName: aperio_UpdateColumnEventResourceEtagInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_etag
@@ -265,8 +265,8 @@ definition:
       type: Enum!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceEventType
-    inputTypeName: UpdateColumnEventResourceEventTypeInput
+    typeName: aperio_UpdateColumnEventResourceEventType
+    inputTypeName: aperio_UpdateColumnEventResourceEventTypeInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_event_type
@@ -290,6 +290,38 @@ definition:
 kind: ObjectType
 version: v1
 definition:
+  name: UpdateColumnEventResourceFreebusyHolds
+  description: Update the 'freebusy_holds' column in the 'event_resource' collection
+  fields:
+    - name: set
+      type: "[String_1]"
+      description: Set the column to this value
+  graphql:
+    typeName: aperio_UpdateColumnEventResourceFreebusyHolds
+    inputTypeName: aperio_UpdateColumnEventResourceFreebusyHoldsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: aperio_pgsql
+      dataConnectorObjectType: update_column_event_resource_freebusy_holds
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnEventResourceFreebusyHolds
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
   name: UpdateColumnEventResourceGuests
   description: Update the 'guests' column in the 'event_resource' collection
   fields:
@@ -297,8 +329,8 @@ definition:
       type: Int32
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceGuests
-    inputTypeName: UpdateColumnEventResourceGuestsInput
+    typeName: aperio_UpdateColumnEventResourceGuests
+    inputTypeName: aperio_UpdateColumnEventResourceGuestsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_guests
@@ -329,8 +361,8 @@ definition:
       type: String_1!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceId
-    inputTypeName: UpdateColumnEventResourceIdInput
+    typeName: aperio_UpdateColumnEventResourceId
+    inputTypeName: aperio_UpdateColumnEventResourceIdInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_id
@@ -361,8 +393,8 @@ definition:
       type: String_1
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceLead
-    inputTypeName: UpdateColumnEventResourceLeadInput
+    typeName: aperio_UpdateColumnEventResourceLead
+    inputTypeName: aperio_UpdateColumnEventResourceLeadInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_lead
@@ -393,8 +425,8 @@ definition:
       type: String_1!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceName
-    inputTypeName: UpdateColumnEventResourceNameInput
+    typeName: aperio_UpdateColumnEventResourceName
+    inputTypeName: aperio_UpdateColumnEventResourceNameInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_name
@@ -425,8 +457,8 @@ definition:
       type: String_1
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceNotes
-    inputTypeName: UpdateColumnEventResourceNotesInput
+    typeName: aperio_UpdateColumnEventResourceNotes
+    inputTypeName: aperio_UpdateColumnEventResourceNotesInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_notes
@@ -457,8 +489,8 @@ definition:
       type: String_1
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceQuote
-    inputTypeName: UpdateColumnEventResourceQuoteInput
+    typeName: aperio_UpdateColumnEventResourceQuote
+    inputTypeName: aperio_UpdateColumnEventResourceQuoteInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_quote
@@ -489,8 +521,8 @@ definition:
       type: Json
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceSpecialRequests
-    inputTypeName: UpdateColumnEventResourceSpecialRequestsInput
+    typeName: aperio_UpdateColumnEventResourceSpecialRequests
+    inputTypeName: aperio_UpdateColumnEventResourceSpecialRequestsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_special_requests
@@ -521,8 +553,8 @@ definition:
       type: Enum
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceState
-    inputTypeName: UpdateColumnEventResourceStateInput
+    typeName: aperio_UpdateColumnEventResourceState
+    inputTypeName: aperio_UpdateColumnEventResourceStateInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_state
@@ -553,8 +585,8 @@ definition:
       type: Timestamptz!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceUpdateTime
-    inputTypeName: UpdateColumnEventResourceUpdateTimeInput
+    typeName: aperio_UpdateColumnEventResourceUpdateTime
+    inputTypeName: aperio_UpdateColumnEventResourceUpdateTimeInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_update_time
@@ -585,8 +617,8 @@ definition:
       type: String_1!
       description: Set the column to this value
   graphql:
-    typeName: UpdateColumnEventResourceVenueId
-    inputTypeName: UpdateColumnEventResourceVenueIdInput
+    typeName: aperio_UpdateColumnEventResourceVenueId
+    inputTypeName: aperio_UpdateColumnEventResourceVenueIdInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_column_event_resource_venue_id
@@ -640,6 +672,9 @@ definition:
     - name: eventType
       type: UpdateColumnEventResourceEventType
       description: Update the 'event_type' column in the 'event_resource' collection.
+    - name: freebusyHolds
+      type: UpdateColumnEventResourceFreebusyHolds
+      description: Update the 'freebusy_holds' column in the 'event_resource' collection.
     - name: guests
       type: UpdateColumnEventResourceGuests
       description: Update the 'guests' column in the 'event_resource' collection.
@@ -671,8 +706,8 @@ definition:
       type: UpdateColumnEventResourceVenueId
       description: Update the 'venue_id' column in the 'event_resource' collection.
   graphql:
-    typeName: UpdateEventResourceByIdUpdateColumns
-    inputTypeName: UpdateEventResourceByIdUpdateColumnsInput
+    typeName: aperio_UpdateEventResourceByIdUpdateColumns
+    inputTypeName: aperio_UpdateEventResourceByIdUpdateColumnsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_event_resource_by_id_update_columns
@@ -704,6 +739,9 @@ definition:
         eventType:
           column:
             name: event_type
+        freebusyHolds:
+          column:
+            name: freebusy_holds
         guests:
           column:
             name: guests
@@ -753,6 +791,7 @@ definition:
           - displayName
           - etag
           - eventType
+          - freebusyHolds
           - guests
           - id
           - lead
@@ -778,8 +817,8 @@ definition:
       type: "[EventResource!]!"
       description: Data from rows affected by the mutation
   graphql:
-    typeName: UpdateEventResourceByIdResponse
-    inputTypeName: UpdateEventResourceByIdResponseInput
+    typeName: aperio_UpdateEventResourceByIdResponse
+    inputTypeName: aperio_UpdateEventResourceByIdResponseInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: update_event_resource_by_id_response
@@ -832,7 +871,7 @@ definition:
       preCheck: pre_check
       updateColumns: update_columns
   graphql:
-    rootFieldName: updateEventResourceById
+    rootFieldName: aperio_updateEventResourceById
     rootFieldKind: Mutation
   description: Update any row on the 'event_resource' collection using the 'id' key
 

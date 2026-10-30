@@ -91,3 +91,32 @@ holds what its owner put in it. Call with (dict "name" ... "secret" ... "key" ..
   valueFrom:
     secretKeyRef: { name: {{ .secret }}, key: {{ .key }}, optional: true }
 {{- end -}}
+
+{{/*
+Booking.com's hotels as JSON for APERIO_CHANNELS__BOOKINGCOM__HOTELS_JSON,
+with every hotel and room code a string: --set, or an unquoted code in a
+values file, makes "7777001" a number, which aperio's config refuses. A
+number is written whole (YAML reads 7777001 as 7.777001e+06); a code with
+leading zeros must still be quoted, or YAML drops them.
+*/}}
+{{- define "aperio.bookingcomHotels" -}}
+{{- $hotels := list -}}
+{{- range . -}}
+{{- $h := deepCopy . -}}
+{{- $_ := set $h "hotel_code" (include "aperio.code" $h.hotel_code) -}}
+{{- $rooms := list -}}
+{{- range ($h.rooms | default list) -}}
+{{- $r := deepCopy . -}}
+{{- $_ := set $r "code" (include "aperio.code" $r.code) -}}
+{{- $rooms = append $rooms $r -}}
+{{- end -}}
+{{- if $h.rooms }}{{ $_ := set $h "rooms" $rooms }}{{ end -}}
+{{- $hotels = append $hotels $h -}}
+{{- end -}}
+{{- toJson $hotels -}}
+{{- end -}}
+
+{{/* A code as a string: a number written without exponent or decimals. */}}
+{{- define "aperio.code" -}}
+{{- if kindIs "string" . }}{{ . }}{{ else }}{{ int64 . }}{{ end -}}
+{{- end -}}

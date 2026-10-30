@@ -7,6 +7,11 @@ package config
 // (internal/freebusysync): the webhook freebusy sends its changes to, and
 // how often the reconciler and the quote expiry job run.
 
+import (
+	"errors"
+	"net/url"
+)
+
 // FreebusySyncConfig is [freebusy_sync].
 type FreebusySyncConfig struct {
 	// WebhookURL is the public URL freebusy POSTs changes to: aperio's REST
@@ -26,4 +31,16 @@ type FreebusySyncConfig struct {
 	// QuoteExpiryIntervalSeconds is how often sent quotes past their
 	// expire_time are expired; 0 is a minute, below 0 turns it off.
 	QuoteExpiryIntervalSeconds int `koanf:"quote_expiry_interval_seconds"`
+}
+
+// Validate checks the webhook URL, when set, is an absolute http(s) URL. An
+// empty secret is allowed: the bootstrap has freebusy mint one (and warns).
+func (c FreebusySyncConfig) Validate() error {
+	if c.WebhookURL == "" {
+		return nil
+	}
+	if u, err := url.Parse(c.WebhookURL); err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+		return errors.New("config invalid: freebusy_sync.webhook_url must be an absolute http(s) URL")
+	}
+	return nil
 }

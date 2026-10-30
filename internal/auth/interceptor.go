@@ -37,15 +37,16 @@ func (a *Authenticator) Interceptor() grpc.UnaryServerInterceptor {
 			return nil, err
 		}
 		msg, _ := req.(proto.Message)
-		if err := a.authorize(p, rule, known, msg); err != nil {
+		if err := a.authorize(ctx, p, rule, known, msg); err != nil {
 			return nil, err
 		}
-		resp, err := handler(WithPrincipal(ctx, p), req)
+		ctx = WithPrincipal(ctx, p)
+		resp, err := handler(ctx, req)
 		if err != nil || !rule.Global || p.Unlimited() {
 			return resp, err
 		}
-		if out, ok := resp.(proto.Message); ok && !narrow(p, out) {
-			return nil, status.Error(codes.PermissionDenied, "auth: the result belongs to a venue you do not work at")
+		if out, ok := resp.(proto.Message); ok {
+			return a.narrowed(ctx, p, msg, out, handler)
 		}
 		return resp, nil
 	}
@@ -53,7 +54,7 @@ func (a *Authenticator) Interceptor() grpc.UnaryServerInterceptor {
 
 // authorize decides whether p may make a call under rule (known false when
 // the policy has none) with request msg.
-func (a *Authenticator) authorize(p Principal, rule Rule, known bool, msg proto.Message) error {
+func (a *Authenticator) authorize(ctx context.Context, p Principal, rule Rule, known bool, msg proto.Message) error {
 	if p.Link != "" {
 		if !known || !rule.Link || msg == nil || requestName(msg) != p.Link {
 			return status.Error(codes.PermissionDenied, "auth: a link reads only the one resource it was sent for")
@@ -79,6 +80,11 @@ func (a *Authenticator) authorize(p Principal, rule Rule, known bool, msg proto.
 	if msg != nil {
 		venues = Venues(msg)
 	}
+	leadVenues, err := a.leadVenues(ctx, msg)
+	if err != nil {
+		return err
+	}
+	venues = append(venues, leadVenues...)
 	if v, ok := reachesAll(p, venues); !ok {
 		if v == "venues/-" {
 			return status.Error(codes.PermissionDenied, "auth: you work at some venues only; ask venue by venue, not venues/-")

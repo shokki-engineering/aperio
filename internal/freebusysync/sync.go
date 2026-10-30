@@ -18,6 +18,9 @@
 //     flagged, as aperio's dates and prices are not moved with it;
 //   - one freebusy no longer has is booked again when the rooms are free,
 //     and flagged either way; a window or count that differs is flagged;
+//   - a hall an accepted event holds (Event.freebusy_holds) that freebusy
+//     cancelled or no longer has is flagged on the event (halls.go), and
+//     one it moved is followed and flagged;
 //   - a lead's hold that lapsed or was released is forgotten.
 //
 // A flag is a line on the booking's notes, "[freebusy <reservation>] ...",
@@ -46,6 +49,8 @@ type Stays interface {
 // Events is the event service, as the Syncer uses it.
 type Events interface {
 	GetEvent(context.Context, *eventpbv1.GetEventRequest) (*eventpbv1.Event, error)
+	ListEvents(context.Context, *eventpbv1.ListEventsRequest) (*eventpbv1.ListEventsResponse, error)
+	RelinkEvent(ctx context.Context, name, from, to, note string) (*eventpbv1.Event, error)
 	ListSessions(context.Context, *eventpbv1.ListSessionsRequest) (*eventpbv1.ListSessionsResponse, error)
 	CancelEvent(context.Context, *eventpbv1.CancelEventRequest) (*eventpbv1.Event, error)
 	RelinkSession(ctx context.Context, name, from, to, note string) (*eventpbv1.Session, error)
@@ -74,7 +79,7 @@ func New(eng engine.Engine, stays Stays, events Events, leads Leads) *Syncer {
 }
 
 // Reservation settles whatever freebusy did to reservation on the bookings
-// that name it: a stay, or a session.
+// that name it: a stay, a session, or an event's hall hold.
 func (s *Syncer) Reservation(ctx context.Context, reservation string) error {
 	stays, err := s.stays.ListReservations(ctx, &staypbv1.ListReservationsRequest{
 		Parent: "venues/-", PageSize: 10, Filter: "freebusy_reservations:" + quote(reservation),
@@ -91,7 +96,16 @@ func (s *Syncer) Reservation(ctx context.Context, reservation string) error {
 	if err != nil {
 		return err
 	}
-	return s.settleSessions(ctx, sessions.GetSessions())
+	if err := s.settleSessions(ctx, sessions.GetSessions()); err != nil {
+		return err
+	}
+	events, err := s.events.ListEvents(ctx, &eventpbv1.ListEventsRequest{
+		Parent: "venues/-", PageSize: 10, Filter: "freebusy_holds:" + quote(reservation),
+	})
+	if err != nil {
+		return err
+	}
+	return s.settleHalls(ctx, events.GetEvents())
 }
 
 // suspect is the error for a batch most of whose reservations freebusy does

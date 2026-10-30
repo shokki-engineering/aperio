@@ -246,6 +246,10 @@ message ConfirmStayResponse {
   // The booking's short reference, e.g. "7F3A9C": what the guest quotes to
   // find or cancel it with FindBooking and CancelBooking.
   string reference = 4;
+
+  // The page the guest pays the stay's advance on, when the venue takes
+  // payments online; empty otherwise, and staff send the details.
+  string payment_url = 5;
 }
 
 // Request message for FindBooking.

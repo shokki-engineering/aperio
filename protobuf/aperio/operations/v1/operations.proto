@@ -42,6 +42,13 @@ message ServiceRequest {
       },
       {
         columns: ["update_time"]
+      },
+      {
+        // The open list: requests not done, oldest first.
+        columns: [
+          "state",
+          "create_time"
+        ]
       }
     ]
   };

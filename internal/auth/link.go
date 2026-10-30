@@ -17,6 +17,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -57,18 +58,43 @@ type linked struct {
 // SignLink is a token granting read of resource -- a quote's, reservation's
 // or invoice's name -- for ttl.
 func (l *Links) SignLink(resource string, ttl time.Duration) (string, error) {
+	token, _, err := l.signFor(resource, ttl)
+	return token, err
+}
+
+// DefaultLinkTTL is how long a shared link stands when the request names no
+// ttl.
+const DefaultLinkTTL = 14 * 24 * time.Hour
+
+// ShareLink is the page a guest opens to read resource for ttl
+// (DefaultLinkTTL when not positive) -- base, the guest site's URL, then
+// "/<resource>?link=<token>" -- and when the link lapses.
+func (l *Links) ShareLink(base, resource string, ttl time.Duration) (string, time.Time, error) {
+	if ttl <= 0 {
+		ttl = DefaultLinkTTL
+	}
+	token, expire, err := l.signFor(resource, ttl)
+	if err != nil {
+		return "", time.Time{}, err
+	}
+	return strings.TrimRight(base, "/") + "/" + resource + "?link=" + url.QueryEscape(token), expire, nil
+}
+
+// signFor is SignLink's token, and when it lapses.
+func (l *Links) signFor(resource string, ttl time.Duration) (string, time.Time, error) {
 	if !linkable.MatchString(resource) {
-		return "", errors.New("auth: a link grants a quote, a reservation or an invoice, not " + resource)
+		return "", time.Time{}, errors.New("auth: a link grants a quote, a reservation or an invoice, not " + resource)
 	}
 	if ttl <= 0 {
-		return "", errors.New("auth: a link needs a positive lifetime")
+		return "", time.Time{}, errors.New("auth: a link needs a positive lifetime")
 	}
-	body, err := json.Marshal(linked{Resource: resource, Expire: l.now().Add(ttl).UTC()})
+	expire := l.now().Add(ttl).UTC()
+	body, err := json.Marshal(linked{Resource: resource, Expire: expire})
 	if err != nil {
-		return "", err
+		return "", time.Time{}, err
 	}
 	enc := base64.RawURLEncoding
-	return enc.EncodeToString(body) + "." + enc.EncodeToString(l.sign(body)), nil
+	return enc.EncodeToString(body) + "." + enc.EncodeToString(l.sign(body)), expire, nil
 }
 
 // VerifyLink is the resource token grants, when this server signed it and

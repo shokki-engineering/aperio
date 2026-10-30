@@ -28,6 +28,7 @@ var FinanceService_ListInvoicesSchemaJSON = `{"description":"Lists invoices.","p
 var FinanceService_ListPaymentsSchemaJSON = `{"description":"Lists payments.","properties":{"filter":{"description":"An AIP-160 filter, e.g. method = PAYMENT_METHOD_CASH.","type":"string"},"order_by":{"description":"An AIP-132 ordering, e.g. \"create_time desc\".","type":"string"},"page_size":{"description":"The maximum number of payments to return; the server may return fewer. Defaults to 50; at most 1000.","maximum":1000,"minimum":0,"type":"integer"},"page_token":{"description":"A page token from a previous ListPayments call.","type":"string"},"parent":{"description":"The parent whose payments to list. Format: venues/{venue}","type":"string"}},"required":["parent"],"type":"object"}`
 var FinanceService_RefundPaymentSchemaJSON = `{"description":"Makes a refund of a succeeded payment, as a payment of its own.","properties":{"etag":{"description":"The etag the caller last read; the call fails when it has changed.","type":"string"},"name":{"description":"The name of the payment to refund. Format: venues/{venue}/payments/{payment}","type":"string"},"reason":{"description":"Why, in the caller's words; kept on the payment.","maxLength":2000,"type":"string"}},"required":["name"],"type":"object"}`
 var FinanceService_RequestPaymentSchemaJSON = `{"description":"Asks the guest to pay an issued invoice online: a payment link from the venue's gateway, for its due amount or a part of it, which the gateway's webhook settles into a payment.","properties":{"amount":{"description":"What to ask for; the invoice's due amount when unset. Never more.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If ` + "`" + `units` + "`" + ` is positive, ` + "`" + `nanos` + "`" + ` must be positive or zero. If ` + "`" + `units` + "`" + ` is zero, ` + "`" + `nanos` + "`" + ` can be positive, zero, or negative. If ` + "`" + `units` + "`" + ` is negative, ` + "`" + `nanos` + "`" + ` must be negative or zero. For example $-1.75 is represented as ` + "`" + `units` + "`" + `=-1 and ` + "`" + `nanos` + "`" + `=-750,000,000.","type":"integer"},"units":{"description":"The whole units of the amount. For example if ` + "`" + `currencyCode` + "`" + ` is ` + "`" + `\"USD\"` + "`" + `, then 1 unit is one US dollar.","type":"string"}},"required":[],"type":"object"},"name":{"description":"The name of the issued invoice to be paid. Format: venues/{venue}/invoices/{invoice}","type":"string"},"request_id":{"description":"A UUID for this request: a retry with the same one returns the same link rather than another (AIP-155).","format":"uuid","type":"string"},"ttl":{"description":"How long the link stands; 7 days when unset.","pattern":"^-?[0-9]+(\\.[0-9]+)?s$","type":["string","null"]}},"required":["name"],"type":"object"}`
+var FinanceService_ShareInvoiceSchemaJSON = `{"description":"A link the guest opens to read this invoice without signing in: signed, read-only, for this invoice alone, lapsing after ttl.","properties":{"name":{"description":"The invoice to share. Format: venues/{venue}/invoices/{invoice}","type":"string"},"ttl":{"description":"How long the link stands; 14 days when unset.","pattern":"^-?[0-9]+(\\.[0-9]+)?s$","type":["string","null"]}},"required":["name"],"type":"object"}`
 var FinanceService_SummarizeReceivablesSchemaJSON = `{"description":"What a venue is owed, for the accounts team and their agents: what is outstanding and overdue, its age, who owes the most, and what came in this month.","properties":{"debtors":{"description":"How many debtors to list, most owed first; 10 when unset.","maximum":100,"minimum":0,"type":"integer"},"venue":{"description":"The venue. Format: venues/{venue}","type":"string"}},"required":["venue"],"type":"object"}`
 var FinanceService_UpdateInvoiceSchemaJSON = `{"$defs":{"google.type.Money":{"properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"}},"description":"Updates an invoice. Only the fields in update_mask are written.","properties":{"invoice":{"description":"The invoice to update, by its name.","properties":{"billing_address":{"description":"The address billed to.","properties":{"address_lines":{"items":{"description":"Unstructured address lines describing the lower levels of an address.","type":"string"},"type":"array"},"administrative_area":{"description":"Optional.","type":"string"},"language_code":{"description":"Optional.","type":"string"},"locality":{"description":"Optional.","type":"string"},"organization":{"description":"Optional.","type":"string"},"postal_code":{"description":"Optional.","type":"string"},"recipients":{"items":{"description":"Optional.","type":"string"},"type":"array"},"region_code":{"description":"Required.","type":"string"},"revision":{"description":"The schema revision of the ` + "`" + `PostalAddress` + "`" + `.","type":"integer"},"sorting_code":{"description":"Optional.","type":"string"},"sublocality":{"description":"Optional.","type":"string"}},"required":[],"type":"object"},"booking":{"description":"The reservation or event invoiced.","type":"string"},"buyer_gst":{"description":"The buyer's GST registration, for a B2B invoice; empty for a consumer.","properties":{"gst_state_code":{"description":"The two-digit GST state code of the registration, e.g. \"29\" for Karnataka.","pattern":"^[0-9]{2}$","type":"string"},"gstin":{"description":"The 15-character GSTIN, e.g. \"29ABCDE1234F1Z5\".","pattern":"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$","type":"string"},"legal_display_name":{"description":"The legal name the GSTIN is registered to.","minLength":1,"type":"string"}},"required":["gstin","legal_display_name","gst_state_code"],"type":"object"},"contact":{"description":"Who is billed. Format: contacts/{contact}","pattern":"^contacts/[^/]+$","type":"string"},"due_date":{"description":"The day payment is due.","properties":{"day":{"description":"Day of a month.","type":"integer"},"month":{"description":"Month of a year.","type":"integer"},"year":{"description":"Year of the date.","type":"integer"}},"required":[],"type":"object"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"irn":{"description":"The Invoice Reference Number the e-invoicing portal gave it, when the venue is required to e-invoice.","type":"string"},"kind":{"description":"What kind of GST document it is.","enum":["INVOICE_KIND_UNSPECIFIED","INVOICE_KIND_TAX_INVOICE","INVOICE_KIND_PROFORMA","INVOICE_KIND_RECEIPT_VOUCHER","INVOICE_KIND_CREDIT_NOTE"],"type":"string"},"lines":{"items":{"description":"The lines.","properties":{"description":{"description":"What was supplied, as the invoice prints it.","maxLength":500,"minLength":1,"type":"string"},"discount":{"$ref":"#/$defs/google.type.Money","description":"A discount on the line, before tax."},"item":{"description":"The menu, fixed package, space, room or dish it is, when it is one.","type":"string"},"quantity":{"description":"How many: plates, nights, hours, units.","minimum":1,"type":"integer"},"tax":{"description":"The HSN or SAC code and GST rate.","properties":{"gst_rate":{"description":"The GST rate as a percentage, e.g. \"18\" or \"5\".","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"hsn_sac_code":{"description":"The HSN code of goods or the SAC code of a service, as the venue's GST advisor classifies it.","pattern":"^[0-9]{4,8}$","type":"string"}},"required":["hsn_sac_code","gst_rate"],"type":"object"},"unit_price":{"$ref":"#/$defs/google.type.Money","description":"The price of one, before tax."}},"required":["description","tax","quantity","unit_price"],"type":"object"},"type":"array"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/invoices/[^/]+$"}],"description":"The invoice name. Format: venues/{venue}/invoices/{invoice}","type":"string"},"notes":{"description":"Notes printed on the invoice.","maxLength":5000,"type":"string"},"quote":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/quotes/[^/]+$"}],"description":"The quote it was raised from, if any. Format: venues/{venue}/quotes/{quote}","type":"string"},"supply_state_code":{"description":"The GST state code of the place of supply: the venue's, for services rendered at the venue.","pattern":"^[0-9]{2}$","type":"string"}},"required":["kind","contact","supply_state_code","lines"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["invoice"],"type":"object"}`
 var FinanceService_UpdatePaymentSchemaJSON = `{"description":"Updates a payment. Only the fields in update_mask are written.","properties":{"payment":{"description":"The payment to update, by its name.","properties":{"amount":{"description":"The amount, in the currency it was paid in.","properties":{"currency_code":{"description":"The three-letter currency code defined in ISO 4217.","type":"string"},"nanos":{"description":"Number of nano (10^-9) units of the amount.","type":"integer"},"units":{"description":"The whole units of the amount.","type":"string"}},"required":[],"type":"object"},"booking":{"description":"The reservation or event paid for.","type":"string"},"channel":{"description":"The channel that collected it, for a CHANNEL payment.","enum":["CHANNEL_UNSPECIFIED","CHANNEL_WEBSITE","CHANNEL_PHONE","CHANNEL_WALK_IN","CHANNEL_EMAIL","CHANNEL_WHATSAPP","CHANNEL_INSTAGRAM","CHANNEL_FACEBOOK","CHANNEL_REFERRAL","CHANNEL_BOOKING_COM","CHANNEL_AIRBNB","CHANNEL_MAKEMYTRIP","CHANNEL_GOIBIBO","CHANNEL_AGODA","CHANNEL_EXPEDIA","CHANNEL_CHANNEL_MANAGER","CHANNEL_RFP","CHANNEL_OTHER"],"type":"string"},"contact":{"description":"Who paid, or was refunded. Format: contacts/{contact}","pattern":"^contacts/[^/]+$","type":"string"},"etag":{"description":"Opaque version for optimistic concurrency (AIP-154).","type":"string"},"exchange_rate":{"description":"Units of the venue's currency to one of the payment's; one when they are the same.","properties":{"value":{"description":"The decimal value, as a string.","type":"string"}},"required":[],"type":"object"},"gateway":{"description":"The payment gateway it went through, e.g. \"razorpay\", for a GATEWAY payment.","type":"string"},"gateway_reference":{"description":"The gateway's id for it: what its webhook names, and what makes a retried webhook find this payment instead of recording a second.","type":"string"},"invoice":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/invoices/[^/]+$"}],"description":"The invoice paid against, if any. Format: venues/{venue}/invoices/{invoice}","type":"string"},"kind":{"description":"Whether money came in or went out.","enum":["PAYMENT_KIND_UNSPECIFIED","PAYMENT_KIND_RECEIPT","PAYMENT_KIND_REFUND"],"type":"string"},"method":{"description":"How it was paid.","enum":["PAYMENT_METHOD_UNSPECIFIED","PAYMENT_METHOD_GATEWAY","PAYMENT_METHOD_UPI","PAYMENT_METHOD_CARD","PAYMENT_METHOD_CASH","PAYMENT_METHOD_BANK_TRANSFER","PAYMENT_METHOD_CHEQUE","PAYMENT_METHOD_CHANNEL","PAYMENT_METHOD_OTHER"],"type":"string"},"name":{"anyOf":[{"const":""},{"pattern":"^venues/[^/]+/payments/[^/]+$"}],"description":"The payment name. Format: venues/{venue}/payments/{payment}","type":"string"},"notes":{"description":"Anything else worth knowing.","maxLength":5000,"type":"string"},"receive_time":{"description":"When the money was received, or paid out.","format":"date-time","type":["string","null"]},"recorder":{"anyOf":[{"const":""},{"pattern":"^users/[^/]+$"}],"description":"Who recorded it; empty for the gateway. Format: users/{user}","type":"string"},"reference":{"description":"The reference of a payment made another way: a UTR, a cheque number, a receipt number.","type":"string"}},"required":["contact","kind","method","amount"],"type":"object"},"update_mask":{"description":"The fields to update; all populated fields when empty.","type":"string"},"validate_only":{"description":"Validate the request without updating anything.","type":"boolean"}},"required":["payment"],"type":"object"}`
@@ -47,6 +48,7 @@ var FinanceService_ListInvoicesOutputSchemaJSON = ``
 var FinanceService_ListPaymentsOutputSchemaJSON = ``
 var FinanceService_RefundPaymentOutputSchemaJSON = ``
 var FinanceService_RequestPaymentOutputSchemaJSON = ``
+var FinanceService_ShareInvoiceOutputSchemaJSON = ``
 var FinanceService_SummarizeReceivablesOutputSchemaJSON = ``
 var FinanceService_UpdateInvoiceOutputSchemaJSON = ``
 var FinanceService_UpdatePaymentOutputSchemaJSON = ``
@@ -67,6 +69,7 @@ var (
 	FinanceService_ListPaymentsTool         = newTool("finance_service-list_payments_v1", `Lists payments.`, FinanceService_ListPaymentsSchemaJSON, FinanceService_ListPaymentsOutputSchemaJSON, nil, "", nil)
 	FinanceService_RefundPaymentTool        = newTool("finance_service-refund_payment_v1", `Makes a refund of a succeeded payment, as a payment of its own.`, FinanceService_RefundPaymentSchemaJSON, FinanceService_RefundPaymentOutputSchemaJSON, nil, "", nil)
 	FinanceService_RequestPaymentTool       = newTool("finance_service-request_payment_v1", `Asks the guest to pay an issued invoice online: a payment link from the venue's gateway, for its due amount or a part of it, which the gateway's webhook settles into a payment.`, FinanceService_RequestPaymentSchemaJSON, FinanceService_RequestPaymentOutputSchemaJSON, nil, "", nil)
+	FinanceService_ShareInvoiceTool         = newTool("finance_service-share_invoice_v1", `A link the guest opens to read this invoice without signing in: signed, read-only, for this invoice alone, lapsing after ttl.`, FinanceService_ShareInvoiceSchemaJSON, FinanceService_ShareInvoiceOutputSchemaJSON, nil, "", nil)
 	FinanceService_SummarizeReceivablesTool = newTool("finance_service-summarize_receivables_v1", `What a venue is owed, for the accounts team and their agents: what is outstanding and overdue, its age, who owes the most, and what came in this month.`, FinanceService_SummarizeReceivablesSchemaJSON, FinanceService_SummarizeReceivablesOutputSchemaJSON, nil, "", nil)
 	FinanceService_UpdateInvoiceTool        = newTool("finance_service-update_invoice_v1", `Updates an invoice. Only the fields in update_mask are written.`, FinanceService_UpdateInvoiceSchemaJSON, FinanceService_UpdateInvoiceOutputSchemaJSON, nil, "", nil)
 	FinanceService_UpdatePaymentTool        = newTool("finance_service-update_payment_v1", `Updates a payment. Only the fields in update_mask are written.`, FinanceService_UpdatePaymentSchemaJSON, FinanceService_UpdatePaymentOutputSchemaJSON, nil, "", nil)
@@ -91,6 +94,7 @@ type FinanceServiceMCPServer interface {
 	ListPayments(ctx context.Context, req *ListPaymentsRequest) (*ListPaymentsResponse, error)
 	RefundPayment(ctx context.Context, req *RefundPaymentRequest) (*Payment, error)
 	RequestPayment(ctx context.Context, req *RequestPaymentRequest) (*RequestPaymentResponse, error)
+	ShareInvoice(ctx context.Context, req *ShareInvoiceRequest) (*ShareInvoiceResponse, error)
 	SummarizeReceivables(ctx context.Context, req *SummarizeReceivablesRequest) (*SummarizeReceivablesResponse, error)
 	UpdateInvoice(ctx context.Context, req *UpdateInvoiceRequest) (*Invoice, error)
 	UpdatePayment(ctx context.Context, req *UpdatePaymentRequest) (*Payment, error)
@@ -112,6 +116,7 @@ type FinanceServiceMCPClient interface {
 	ListPayments(ctx context.Context, req *ListPaymentsRequest, opts ...grpc.CallOption) (*ListPaymentsResponse, error)
 	RefundPayment(ctx context.Context, req *RefundPaymentRequest, opts ...grpc.CallOption) (*Payment, error)
 	RequestPayment(ctx context.Context, req *RequestPaymentRequest, opts ...grpc.CallOption) (*RequestPaymentResponse, error)
+	ShareInvoice(ctx context.Context, req *ShareInvoiceRequest, opts ...grpc.CallOption) (*ShareInvoiceResponse, error)
 	SummarizeReceivables(ctx context.Context, req *SummarizeReceivablesRequest, opts ...grpc.CallOption) (*SummarizeReceivablesResponse, error)
 	UpdateInvoice(ctx context.Context, req *UpdateInvoiceRequest, opts ...grpc.CallOption) (*Invoice, error)
 	UpdatePayment(ctx context.Context, req *UpdatePaymentRequest, opts ...grpc.CallOption) (*Payment, error)
@@ -525,6 +530,40 @@ func RegisterFinanceServiceMCPHandler(s *mcp.Server, srv FinanceServiceMCPServer
 				return mcp.HandleError(err)
 			}
 			resp := rawResp.(*RequestPaymentResponse)
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
+		tool := mcp.PrepareToolWithExtras(FinanceService_ShareInvoiceTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq ShareInvoiceRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			// Answers to questions the service raised (mcp.Ask) on an earlier
+			// pass of this call.
+			args, declined := mcp.MergeAnswers(req, args)
+			if declined {
+				return mcp.TextResult("Cancelled by the user."), nil
+			}
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			// Dispatch through the unary interceptor chain (when configured) so
+			// middleware sees this call exactly as it would the wire RPC.
+			rawResp, err := mcp.InvokeUnary(ctx, cfg.UnaryInterceptor, "/aperio.finance.v1.FinanceService/ShareInvoice", srv, &pbReq, func(ctx context.Context, req any) (any, error) {
+				return srv.ShareInvoice(ctx, req.(*ShareInvoiceRequest))
+			})
+			if pending, asked := mcp.AskPending(req, err); asked {
+				return pending, nil // the service asked a question; put it to the client
+			}
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			resp := rawResp.(*ShareInvoiceResponse)
 			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
 			if err != nil {
 				return nil, err
@@ -1080,6 +1119,36 @@ func ForwardToFinanceServiceMCPClient(s *mcp.Server, client FinanceServiceMCPCli
 			}
 			ctx = mcp.ForwardMetadata(ctx)
 			resp, err := client.RequestPayment(ctx, &pbReq)
+			if pending, asked := mcp.AskPending(req, err); asked {
+				return pending, nil // the server asked a question; put it to the client
+			}
+			if err != nil {
+				return mcp.HandleError(err)
+			}
+			out, err := (protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}).Marshal(resp)
+			if err != nil {
+				return nil, err
+			}
+			return structuredResult(out)
+		})
+	}
+	{
+		tool := mcp.PrepareToolWithExtras(FinanceService_ShareInvoiceTool, cfg.ExtraProperties)
+		tool = mcp.SetToolAppMeta(tool, appResourceURI)
+		s.AddTool(tool, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			var pbReq ShareInvoiceRequest
+			args, ctx := mcp.ExtractExtras(ctx, req.Params.Arguments, cfg)
+			// Answers to questions the service raised (mcp.Ask) on an earlier
+			// pass of this call.
+			args, declined := mcp.MergeAnswers(req, args)
+			if declined {
+				return mcp.TextResult("Cancelled by the user."), nil
+			}
+			if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(args, &pbReq); err != nil {
+				return nil, err
+			}
+			ctx = mcp.ForwardMetadata(ctx)
+			resp, err := client.ShareInvoice(ctx, &pbReq)
 			if pending, asked := mcp.AskPending(req, err); asked {
 				return pending, nil // the server asked a question; put it to the client
 			}

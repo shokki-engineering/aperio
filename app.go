@@ -26,20 +26,21 @@ type App struct {
 	server *server.Server
 }
 
-// InitializeApp builds the process's telemetry pipeline, loads the
-// configuration, and creates an App from it. It validates that name and
+// InitializeApp loads the configuration, builds the process's telemetry
+// pipeline from it, and creates an App. It validates that name and
 // version are present, but does not start the server.
 func InitializeApp() *App {
-	// Telemetry first, then configuration: what used to happen as the
-	// packages initialised, now explicit, in the same order. Neither can be
-	// done without, so a failure stops the process as it always did.
-	if err := telemetry.Init(); err != nil {
-		fmt.Printf("ERROR: Failed to create Telemetry: %v\n", err)
-		panic(err)
-	}
+	// Configuration first, then telemetry: the pipeline reports the app's
+	// own version ([app] version) and serves /metrics when [server] metrics
+	// asks. Loading the configuration logs nothing, so it needs no pipeline.
+	// Neither can be done without, so a failure stops the process.
 	cfg, err := config.Load()
 	if err != nil {
 		panic(err.Error())
+	}
+	if err := telemetry.Init(telemetry.Settings{Version: cfg.Meta.Version, Prometheus: cfg.Server.Metrics}); err != nil {
+		fmt.Printf("ERROR: Failed to create Telemetry: %v\n", err)
+		panic(err)
 	}
 
 	if cfg.Meta.Name == "" || cfg.Meta.Version == "" {

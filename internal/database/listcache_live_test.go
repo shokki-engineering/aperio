@@ -10,7 +10,7 @@ package database_test
 //
 //	docker run -d --rm --name aperio-redis -p 127.0.0.1:6390:6379 redis:7
 //	APERIO_TEST_REDIS_ADDR=127.0.0.1:6390 APERIO_TEST_DATABASE_URL=... \
-//	APERIO_TEST_GRAPHQL_URL=http://localhost:3281/graphql \
+//	APERIO_TEST_GRAPHQL_URL=http://localhost:3280/graphql \
 //	  go test ./internal/database/ -run LiveListCache -v
 
 import (

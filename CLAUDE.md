@@ -61,6 +61,26 @@ they import.
   or setting goes into the chart's values, schema and templates too.
 - Every hand-written file stays under 200 lines and is documented.
 
+## Shared Postgres and Hasura
+
+- aperio and freebusy share one local Postgres and one Hasura DDN engine.
+  Postgres is aperio's dev server (127.0.0.1:5433), with a database per app:
+  `aperio` and `freebusydb`.
+- aperio owns the supergraph and the engine (127.0.0.1:3280): `globals`,
+  `aperio` and `freebusy`. freebusy's subgraph is never copied into this
+  repository or reached by a path into freebusy's: it comes from freebusy's
+  published `freebusy-subgraph` image through a Docker volume, mounted at
+  `deploy/hasura/freebusy` (gitignored) when the supergraph is built
+  (`just hasura build`). Both connectors run beside the engine.
+- Each subgraph prefixes its GraphQL names (`graphqlRootFieldPrefix` and
+  `graphqlTypeNamePrefix` in its `subgraph.yaml`): `aperio_` here,
+  `freebusy_` in freebusy's. The two schemas share names such as
+  `EventResource`. The prefixes go into
+  `tools/protobuf/buf/config/store.graphql.yaml` (`root_field_prefix`,
+  `type_name_prefix`), so aperioql keeps its Go names and speaks the
+  prefixed ones.
+- Never start a second engine or Postgres for one app.
+
 ## Go imports
 
 - Never alias an import. Refer to a package by the name it declares:

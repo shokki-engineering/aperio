@@ -11,7 +11,7 @@ package database_test
 // a field a converter drops fails the test rather than going quietly missing.
 //
 //	APERIO_TEST_DATABASE_URL="host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" \
-//	APERIO_TEST_GRAPHQL_URL=http://localhost:3281/graphql \
+//	APERIO_TEST_GRAPHQL_URL=http://localhost:3280/graphql \
 //	  go test ./internal/database/ -run LiveAperio -v
 //
 // Without APERIO_TEST_DATABASE_URL the tests skip; without
@@ -24,6 +24,7 @@ import (
 	"testing"
 
 	"buf.build/gen/go/shokki-engineering/protobuf-ota/protocolbuffers/go/protobuf/opentravel/hotel/booking/reservation/v1/types"
+	"github.com/shokki-engineering/aperio/internal/database"
 	"github.com/shokki-engineering/aperio/internal/database/hasura/aperioql"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/finance"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
@@ -42,7 +43,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
@@ -57,7 +57,7 @@ func liveConns(t *testing.T) map[string]repox.Conn {
 	if dsn == "" {
 		t.Skip("APERIO_TEST_DATABASE_URL is not set")
 	}
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: logger.Discard})
+	db, err := database.OpenGorm(dsn, &gorm.Config{Logger: logger.Discard})
 	if err != nil {
 		t.Fatal(err)
 	}

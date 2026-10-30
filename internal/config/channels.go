@@ -5,7 +5,15 @@ package config
 
 // channels.go configures the sales channels (internal/channel): which
 // venues each sells, by the channel's codes, and the credentials it logs in
-// with.
+// with. Booking.com's hotels are an array of tables, which no single
+// environment variable can set, so they can also be given as JSON
+// (hotels_json, APERIO_CHANNELS__BOOKINGCOM__HOTELS_JSON).
+
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+)
 
 // ChannelsConfig is the channels' settings.
 type ChannelsConfig struct {
@@ -26,24 +34,52 @@ type BookingComConfig struct {
 	Password string `koanf:"password"`
 	// Hotels are the venues sold on Booking.com.
 	Hotels []ChannelHotel `koanf:"hotels"`
+	// HotelsJSON is Hotels as a JSON array, with the same keys
+	// ([{"hotel_code": ..., "venue": ..., "rooms": [{"code": ..., "space":
+	// ..., "rate_plan": ...}]}]): how a deployment configured only through
+	// the environment sets them. Set, it replaces Hotels.
+	HotelsJSON string `koanf:"hotels_json"`
+}
+
+// resolve parses HotelsJSON into Hotels, when set, and checks every hotel
+// names its code and venue, and every room its code and space.
+func (b *BookingComConfig) resolve() error {
+	if raw := strings.TrimSpace(b.HotelsJSON); raw != "" {
+		var hotels []ChannelHotel
+		if err := json.Unmarshal([]byte(raw), &hotels); err != nil {
+			return fmt.Errorf("config invalid: channels.bookingcom.hotels_json: %w", err)
+		}
+		b.Hotels = hotels
+	}
+	for i, h := range b.Hotels {
+		if h.HotelCode == "" || !strings.HasPrefix(h.Venue, "venues/") {
+			return fmt.Errorf("config invalid: channels.bookingcom.hotels[%d] needs a hotel_code and a venue (venues/{venue})", i)
+		}
+		for j, r := range h.Rooms {
+			if r.Code == "" || !strings.HasPrefix(r.Space, h.Venue+"/spaces/") {
+				return fmt.Errorf("config invalid: channels.bookingcom.hotels[%d].rooms[%d] needs a code and a space of %s (%s/spaces/{space})", i, j, h.Venue, h.Venue)
+			}
+		}
+	}
+	return nil
 }
 
 // ChannelHotel is a venue as a channel knows it.
 type ChannelHotel struct {
 	// HotelCode is the channel's id for the venue.
-	HotelCode string `koanf:"hotel_code"`
+	HotelCode string `koanf:"hotel_code" json:"hotel_code"`
 	// Venue is the venue, venues/{venue}.
-	Venue string `koanf:"venue"`
+	Venue string `koanf:"venue" json:"venue"`
 	// Rooms are its room types the channel sells.
-	Rooms []ChannelRoom `koanf:"rooms"`
+	Rooms []ChannelRoom `koanf:"rooms" json:"rooms"`
 }
 
 // ChannelRoom is a room type as a channel sells it.
 type ChannelRoom struct {
 	// Code is the channel's room type code.
-	Code string `koanf:"code"`
+	Code string `koanf:"code" json:"code"`
 	// Space is the room type, venues/{venue}/spaces/{space}.
-	Space string `koanf:"space"`
+	Space string `koanf:"space" json:"space"`
 	// RatePlan is the channel's rate plan code its rates are sent on.
-	RatePlan string `koanf:"rate_plan"`
+	RatePlan string `koanf:"rate_plan" json:"rate_plan"`
 }

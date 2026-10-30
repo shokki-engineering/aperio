@@ -3,14 +3,15 @@
 
 package database
 
-// open.go opens the configured backend: Postgres over GORM, traced and with
-// a bounded pool, or the Hasura DDN engine with the caller's trace
-// propagated; and attaches the list caches when [cache] is enabled.
+// open.go opens the configured backend: Postgres over GORM (OpenGorm, with
+// constraint errors wrapped and the expected ones kept out of the log),
+// traced and with a bounded pool, or the Hasura DDN engine with the caller's
+// trace propagated, waited for while it starts (connect.go); and attaches the
+// list caches when [cache] is enabled.
 
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"net/url"
 
 	"github.com/shokki-engineering/aperio/internal/config"
@@ -19,9 +20,7 @@ import (
 	"github.com/shokki-engineering/aperio/internal/telemetry"
 	"github.com/the-protobuf-project/runtime-go/network/runtime"
 	"go.opentelemetry.io/otel/propagation"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 // Open connects to the backend the configuration selects, with the list
@@ -48,13 +47,12 @@ func Open() (*Connection, error) {
 // freebusy's are (see SearchConn); writes stay on Hasura. Without it they
 // are searched over GraphQL.
 func openHasura() (*Connection, error) {
-	h := config.Get().Database.Hasura
-	conn, err := OpenHasura(h.URL, h.AdminSecret)
+	conn, err := connectHasura(context.Background(), config.Get().Database.Hasura)
 	if err != nil {
 		return nil, err
 	}
 	if pg := config.Get().Database.Postgres; pg.Host != "" {
-		db, err := gorm.Open(postgres.Open(pg.DSN()), &gorm.Config{TranslateError: true, Logger: logger.Default.LogMode(logger.Warn)})
+		db, err := OpenGorm(pg.DSN(), &gorm.Config{})
 		if err == nil {
 			err = Instrument(db)
 		}
@@ -62,7 +60,7 @@ func openHasura() (*Connection, error) {
 			err = BoundPool(db, pg.Pool())
 		}
 		if err != nil {
-			slog.Warn("read models are searched over Hasura: Postgres could not be opened", "err", err)
+			telemetry.Warn("read models are searched over Hasura: Postgres could not be opened", "err", err)
 			return conn, nil
 		}
 		conn.PgSQLConn = db
@@ -76,7 +74,7 @@ func openHasura() (*Connection, error) {
 // Postgres.
 func openGorm() (*Connection, error) {
 	pg := config.Get().Database.Postgres
-	db, err := gorm.Open(postgres.Open(pg.DSN()), &gorm.Config{TranslateError: true, Logger: logger.Default.LogMode(logger.Warn)})
+	db, err := OpenGorm(pg.DSN(), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("open postgres: %w", err)
 	}

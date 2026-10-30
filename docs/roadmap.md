@@ -28,7 +28,7 @@ flowchart TB
 
     subgraph adb["aperio database"]
         pg[("Postgres: venue, catalog, pricing, guest,<br/>sales, stay, event, finance, document,<br/>operations · Prisma migrations")]
-        ddn["Hasura DDN :3281"]
+        ddn["Hasura DDN :3280"]
         ddn --- pg
     end
 
@@ -58,7 +58,7 @@ flowchart TB
   (`internal/service/stay`, `event`), and -- still to build -- webhooks and a
   reconciler for drift.
 - **Hasura DDN** puts a typed GraphQL API over aperio's database
-  (connector `aperio_pgsql`, engine `:3281`), which the generated
+  (connector `aperio_pgsql`, engine `:3280`), which the generated
   repositories read through (`aperioql`) and which reporting and the
   frontend can query directly. freebusy keeps its own Hasura over its own
   database.
@@ -81,7 +81,7 @@ gRPC, REST and MCP (109 tools at :8091/mcp).
 | Bookings | Done | stays and sessions with compensation; state methods; lead holds; an accepted event holds its hall; changes made in freebusy settled | -- |
 | Pricing and quotes | Done | seasons, rules, `CalculatePrice`; quotes through Send (with a ttl), Decline, Revise, Accept; expiry job | PDF proposal |
 | Invoices (GST) | Done | CGST/SGST/IGST, series, Issue / Cancel / Credit (credit notes settle and reduce their invoice); receipt vouchers on advances | raising from a quote, e-invoice IRN, refund vouchers |
-| Payments | Done | any currency; Razorpay: payment links (`RequestPayment`), refunds, signed webhook at `/webhooks/razorpay`; cheque clearing (`ClearPayment`); the money loop end to end in one test | Stripe for foreign cards (decision); pending bank transfers |
+| Payments | Done | any currency; Razorpay: payment links (`RequestPayment`), refunds, signed webhook at `/webhooks/razorpay`; cheques and bank transfers PENDING until cleared (`ClearPayment`); the money loop end to end in one test | Stripe for foreign cards (decision) |
 | Guests and leads | Done | contacts by phone, `SummarizeContact`; leads, activities, `SummarizePipeline` | dedupe contacts; venue-scoped lead names |
 | Service requests | Done | state methods; department notifications (log, signed webhook, WhatsApp); charges posted to the booking's bill; `SummarizeServiceRequests` | push / email notifiers |
 | Documents | Generated only | metadata (category, uri, sha256, expiry) | uploads, expiry reminders -- waiting on the owner's design |
@@ -220,8 +220,8 @@ before channels, a running server before anyone outside can use any of it.
 
 
 - Service requests: Acknowledge / Start / Complete / Cancel, with quantities
-  ("3 black coffees to room 204"); notifications to the department (push,
-  WhatsApp); charges posted to the booking.
+  ("3 black coffees to room 204"); notifications to the department (log,
+  signed webhook, WhatsApp Business); charges posted to the booking.
 - Documents: uploads to object storage (S3-compatible), signed download
   URLs, expiry reminders for licences and certificates.
 - Daily views: arrivals, departures, in-house guests, today's sessions with
@@ -339,7 +339,6 @@ Still to decide:
 |---|---|---|
 | `Space` base price and tax | add to the proto, or keep fixed-price rules | M1 |
 | Documents | storage and access design | M6 |
-| Pending bank transfers | how one is recorded before it clears | M2 |
 
 ## Definition of done
 

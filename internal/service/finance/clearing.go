@@ -3,8 +3,8 @@
 
 package finance
 
-// clearing.go is ClearPayment: a cheque (or a bank transfer recorded before
-// the bank credited it) is PENDING until the bank says the money is in;
+// clearing.go is ClearPayment: a cheque or a bank transfer is PENDING until
+// the bank says the money is in;
 // clearing it makes it SUCCEEDED, with what any receipt that succeeds
 // brings -- its invoice's paid and due, an advance's receipt voucher, its
 // booking confirmed (settle.go).

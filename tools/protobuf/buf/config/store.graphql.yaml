@@ -42,7 +42,12 @@ documents:
 # aperioql. After a schema change, rebuild the engine first (`just hasura
 # regen`), then regenerate.
 graphql:
-  endpoint: http://localhost:3281/graphql
+  endpoint: http://localhost:3280/graphql
+  # aperio's subgraph of the engine it shares with freebusy (CLAUDE.md,
+  # "Shared Postgres and Hasura"): deploy/hasura/aperio/subgraph.yaml's
+  # graphqlRootFieldPrefix and graphqlTypeNamePrefix.
+  root_field_prefix: aperio_
+  type_name_prefix: aperio_
   max_depth: 1 # relation inlining depth
 
 generate:

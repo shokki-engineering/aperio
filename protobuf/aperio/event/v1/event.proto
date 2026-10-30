@@ -143,6 +143,15 @@ message Event {
   // Opaque version for optimistic concurrency (AIP-154).
   string etag = 17 [(google.api.field_behavior) = OPTIONAL];
 
+  // The freebusy reservations holding the event's halls between its
+  // acceptance and its sessions: what ReleaseHalls gives back and the
+  // reconciler checks.
+  // Format: reservations/{reservation}
+  repeated string freebusy_holds = 18 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (store.v1.query) = {search: true}
+  ];
+
   // Where an event is in its life.
   enum State {
     // Default; never persisted.

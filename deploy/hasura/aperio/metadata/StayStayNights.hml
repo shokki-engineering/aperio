@@ -29,8 +29,8 @@ definition:
     - name: venue
       type: String_1!
   graphql:
-    typeName: StayStayNights
-    inputTypeName: StayStayNightsInput
+    typeName: aperio_StayStayNights
+    inputTypeName: aperio_StayStayNightsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: stay_stay_nights
@@ -131,7 +131,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: StayStayNightsBoolExp
+    typeName: aperio_StayStayNightsBoolExp
 
 ---
 kind: AggregateExpression
@@ -168,7 +168,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: StayStayNightsAggExp
+    selectTypeName: aperio_StayStayNightsAggExp
 
 ---
 kind: OrderByExpression
@@ -203,7 +203,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: StayStayNightsOrderByExp
+    expressionTypeName: aperio_StayStayNightsOrderByExp
 
 ---
 kind: Model
@@ -219,20 +219,20 @@ definition:
   orderByExpression: StayStayNightsOrderByExp
   graphql:
     selectMany:
-      queryRootField: stayStayNights
+      queryRootField: aperio_stayStayNights
       subscription:
-        rootField: stayStayNights
+        rootField: aperio_stayStayNights
     selectUniques:
-      - queryRootField: stayStayNightsById
+      - queryRootField: aperio_stayStayNightsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: stayStayNightsById
-    filterInputTypeName: StayStayNightsFilterInput
+          rootField: aperio_stayStayNightsById
+    filterInputTypeName: aperio_StayStayNightsFilterInput
     aggregate:
-      queryRootField: stayStayNightsAggregate
+      queryRootField: aperio_stayStayNightsAggregate
       subscription:
-        rootField: stayStayNightsAggregate
+        rootField: aperio_stayStayNightsAggregate
 
 ---
 kind: ModelPermissions

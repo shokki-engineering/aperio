@@ -65,8 +65,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: StayReservations
-    inputTypeName: StayReservationsInput
+    typeName: aperio_StayReservations
+    inputTypeName: aperio_StayReservationsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: stay_reservations
@@ -273,7 +273,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: StayReservationsBoolExp
+    typeName: aperio_StayReservationsBoolExp
 
 ---
 kind: AggregateExpression
@@ -344,7 +344,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: StayReservationsAggExp
+    selectTypeName: aperio_StayReservationsAggExp
 
 ---
 kind: OrderByExpression
@@ -413,7 +413,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: StayReservationsOrderByExp
+    expressionTypeName: aperio_StayReservationsOrderByExp
 
 ---
 kind: Model
@@ -429,20 +429,20 @@ definition:
   orderByExpression: StayReservationsOrderByExp
   graphql:
     selectMany:
-      queryRootField: stayReservations
+      queryRootField: aperio_stayReservations
       subscription:
-        rootField: stayReservations
+        rootField: aperio_stayReservations
     selectUniques:
-      - queryRootField: stayReservationsById
+      - queryRootField: aperio_stayReservationsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: stayReservationsById
-    filterInputTypeName: StayReservationsFilterInput
+          rootField: aperio_stayReservationsById
+    filterInputTypeName: aperio_StayReservationsFilterInput
     aggregate:
-      queryRootField: stayReservationsAggregate
+      queryRootField: aperio_stayReservationsAggregate
       subscription:
-        rootField: stayReservationsAggregate
+        rootField: aperio_stayReservationsAggregate
 
 ---
 kind: ModelPermissions

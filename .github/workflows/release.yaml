@@ -5,6 +5,8 @@
 #
 #   ghcr.io/shokki-engineering/aperio                the server (amd64 + arm64)
 #   ghcr.io/shokki-engineering/aperio-migrate        Prisma and the migrations
+#   ghcr.io/shokki-engineering/aperio-engine         the Hasura engine, committed build
+#   ghcr.io/shokki-engineering/aperio-connector      the Hasura Postgres connector
 #   oci://ghcr.io/shokki-engineering/charts/aperio   the Helm chart
 #
 # and a GitHub release whose notes are the tag's CHANGELOG.md section, with
@@ -99,6 +101,31 @@ jobs:
           echo "SERVER_DIGEST=$(crane digest "$REGISTRY/aperio:$VERSION")" >> "$GITHUB_ENV"
           echo "MIGRATE_DIGEST=$(crane digest "$REGISTRY/aperio-migrate:$VERSION")" >> "$GITHUB_ENV"
 
+      # Compose's hasura profile runs these (deploy/compose/compose.yaml):
+      # the DDN engine serving the committed build (deploy/hasura/engine/build)
+      # and the Postgres connector with its configuration. Both Dockerfiles
+      # only copy files onto Hasura's multi-platform images, so buildx makes
+      # both platforms without emulation.
+      - name: Hasura engine and connector images
+        run: |
+          docker buildx create --use --name aperio-release
+          for part in engine connector; do
+            case $part in
+              engine) ctx=deploy/hasura/engine; file=$ctx/Dockerfile.engine ;;
+              connector) ctx=deploy/hasura/aperio/connector/aperio_pgsql; file=$ctx/.hasura-connector/Dockerfile.aperio_pgsql ;;
+            esac
+            tags=(-t "$REGISTRY/aperio-$part:$VERSION")
+            if [ "$PRERELEASE" != true ]; then tags+=(-t "$REGISTRY/aperio-$part:latest"); fi
+            docker buildx build --platform linux/amd64,linux/arm64 --push \
+              --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+              --label "org.opencontainers.image.title=aperio-$part" \
+              --label "org.opencontainers.image.version=$VERSION" \
+              --label "org.opencontainers.image.licenses=AGPL-3.0-or-later" \
+              "${tags[@]}" -f "$file" "$ctx"
+          done
+          echo "ENGINE_DIGEST=$(crane digest "$REGISTRY/aperio-engine:$VERSION")" >> "$GITHUB_ENV"
+          echo "CONNECTOR_DIGEST=$(crane digest "$REGISTRY/aperio-connector:$VERSION")" >> "$GITHUB_ENV"
+
       - name: Server provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
@@ -146,6 +173,8 @@ jobs:
         run: |
           cosign sign --yes --recursive "$REGISTRY/aperio@$SERVER_DIGEST"
           cosign sign --yes --recursive "$REGISTRY/aperio-migrate@$MIGRATE_DIGEST"
+          cosign sign --yes --recursive "$REGISTRY/aperio-engine@$ENGINE_DIGEST"
+          cosign sign --yes --recursive "$REGISTRY/aperio-connector@$CONNECTOR_DIGEST"
           cosign sign --yes "$REGISTRY/charts/aperio@$CHART_DIGEST"
 
       - name: GitHub release

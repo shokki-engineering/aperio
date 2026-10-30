@@ -306,6 +306,7 @@ An Event is an occasion held at a venue: a wedding, a conference, a birthday. It
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `freebusy_holds` | `VARCHAR(255)[]` | nullable |
 | `venue_id` | `CHAR(26)` | not null |
 
 ### `Session` → `sessions`
@@ -569,6 +570,7 @@ A Lead is an enquiry that may become a booking: a couple asking about a December
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `spaces` | `VARCHAR(255)[]` | nullable |
 
 ### `Activity` → `activities`
 

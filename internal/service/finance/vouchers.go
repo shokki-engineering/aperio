@@ -36,6 +36,10 @@ const (
 	advanceRate = 18
 )
 
+// advanceNote starts a receipt voucher's notes, followed by the payment's
+// name: how its refund finds it (refundvouchers.go).
+const advanceNote = "Advance received: "
+
 // voucher issues a receipt voucher for the advance p, paid against proforma
 // (nil: against no invoice).
 func (h *hooks) voucher(ctx context.Context, p *financepbv1.Payment, proforma *financepbv1.Invoice) error {
@@ -50,7 +54,7 @@ func (h *hooks) voucher(ctx context.Context, p *financepbv1.Payment, proforma *f
 	cur, amount := v.GetCurrencyCode(), pricing.Rat(p.GetBaseAmount())
 	draft := &financepbv1.Invoice{
 		Kind: financepbv1.InvoiceKind_INVOICE_KIND_RECEIPT_VOUCHER, State: financepbv1.Invoice_STATE_DRAFT,
-		Contact: p.GetContact(), Booking: p.GetBooking(), Notes: "Advance received: " + p.GetName(),
+		Contact: p.GetContact(), Booking: p.GetBooking(), Notes: advanceNote + p.GetName(),
 	}
 	if total := pricing.Rat(proforma.GetTotal()); proforma != nil && total.Sign() > 0 {
 		draft.BuyerGst, draft.BillingAddress = proforma.GetBuyerGst(), proforma.GetBillingAddress()

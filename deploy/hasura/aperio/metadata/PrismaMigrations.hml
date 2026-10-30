@@ -21,8 +21,8 @@ definition:
     - name: startedAt
       type: Timestamptz!
   graphql:
-    typeName: PrismaMigrations
-    inputTypeName: PrismaMigrationsInput
+    typeName: aperio_PrismaMigrations
+    inputTypeName: aperio_PrismaMigrationsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: _prisma_migrations
@@ -101,7 +101,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: PrismaMigrationsBoolExp
+    typeName: aperio_PrismaMigrationsBoolExp
 
 ---
 kind: AggregateExpression
@@ -132,7 +132,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: PrismaMigrationsAggExp
+    selectTypeName: aperio_PrismaMigrationsAggExp
 
 ---
 kind: OrderByExpression
@@ -161,7 +161,7 @@ definition:
           orderByExpression: TimestamptzOrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: PrismaMigrationsOrderByExp
+    expressionTypeName: aperio_PrismaMigrationsOrderByExp
 
 ---
 kind: Model
@@ -177,20 +177,20 @@ definition:
   orderByExpression: PrismaMigrationsOrderByExp
   graphql:
     selectMany:
-      queryRootField: prismaMigrations
+      queryRootField: aperio_prismaMigrations
       subscription:
-        rootField: prismaMigrations
+        rootField: aperio_prismaMigrations
     selectUniques:
-      - queryRootField: prismaMigrationsById
+      - queryRootField: aperio_prismaMigrationsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: prismaMigrationsById
-    filterInputTypeName: PrismaMigrationsFilterInput
+          rootField: aperio_prismaMigrationsById
+    filterInputTypeName: aperio_PrismaMigrationsFilterInput
     aggregate:
-      queryRootField: prismaMigrationsAggregate
+      queryRootField: aperio_prismaMigrationsAggregate
       subscription:
-        rootField: prismaMigrationsAggregate
+        rootField: aperio_prismaMigrationsAggregate
 
 ---
 kind: ModelPermissions

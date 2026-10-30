@@ -7,7 +7,7 @@ package config
 // (internal/auth): the OIDC issuer whose tokens aperio accepts -- any
 // standard one, Google Workspace, Keycloak or Clerk, found from its
 // discovery document -- the claims that carry a person's roles and venues,
-// and the secret guests' links are signed with.
+// the secret guests' links are signed with, and the guest site they open.
 
 import "time"
 
@@ -43,6 +43,11 @@ type AuthConfig struct {
 	// neither a restart nor a move to another replica. A secret: set it
 	// through APERIO_AUTH__LINK_SECRET, not a file.
 	LinkSecret string `koanf:"link_secret"`
+	// LinkBaseURL is the guest site's URL, e.g. https://guest.example.com:
+	// a shared link (ShareQuote, ShareReservation, ShareInvoice) is
+	// <LinkBaseURL>/<resource name>?link=<token>. Empty, links are
+	// relative to the site that sends them ("/venues/...").
+	LinkBaseURL string `koanf:"link_base_url"`
 }
 
 // Enabled reports whether an issuer is configured, and so whether calls

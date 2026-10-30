@@ -41,8 +41,8 @@ definition:
     - name: updateTime
       type: Timestamptz!
   graphql:
-    typeName: GuestContacts
-    inputTypeName: GuestContactsInput
+    typeName: aperio_GuestContacts
+    inputTypeName: aperio_GuestContactsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: guest_contacts
@@ -175,7 +175,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: GuestContactsBoolExp
+    typeName: aperio_GuestContactsBoolExp
 
 ---
 kind: AggregateExpression
@@ -220,7 +220,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: GuestContactsAggExp
+    selectTypeName: aperio_GuestContactsAggExp
 
 ---
 kind: OrderByExpression
@@ -263,7 +263,7 @@ definition:
           orderByExpression: TimestamptzOrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: GuestContactsOrderByExp
+    expressionTypeName: aperio_GuestContactsOrderByExp
 
 ---
 kind: Model
@@ -279,20 +279,20 @@ definition:
   orderByExpression: GuestContactsOrderByExp
   graphql:
     selectMany:
-      queryRootField: guestContacts
+      queryRootField: aperio_guestContacts
       subscription:
-        rootField: guestContacts
+        rootField: aperio_guestContacts
     selectUniques:
-      - queryRootField: guestContactsById
+      - queryRootField: aperio_guestContactsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: guestContactsById
-    filterInputTypeName: GuestContactsFilterInput
+          rootField: aperio_guestContactsById
+    filterInputTypeName: aperio_GuestContactsFilterInput
     aggregate:
-      queryRootField: guestContactsAggregate
+      queryRootField: aperio_guestContactsAggregate
       subscription:
-        rootField: guestContactsAggregate
+        rootField: aperio_guestContactsAggregate
 
 ---
 kind: ModelPermissions

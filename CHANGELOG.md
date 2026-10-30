@@ -17,7 +17,8 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
 
 - Payments (M2): Razorpay payment links (`FinanceService.RequestPayment`),
   refunds and its signed webhook at `/webhooks/razorpay` (`[razorpay]`);
-  `ClearPayment` for cheques; a receipt voucher for every advance.
+  cheques and bank transfers are PENDING until `ClearPayment`; a receipt
+  voucher for every advance.
 - Staying in step with freebusy (M4): freebusy's webhooks at
   `/webhooks/freebusy` settle stays and events cancelled or moved there;
   the subscription is ensured at startup; a reconciler repairs or flags
@@ -104,6 +105,27 @@ and set `[app] version` in `internal/config/aperio.release.toml` to `vx.y.z`.
   them; receipt vouchers can't be paid against.
 - A second acceptance of the same hall on the same day fails instead of
   double-booking it.
+- Retrying `AcceptQuote` after a failed accept starts over instead of
+  carrying on with the cancelled event; an accepted quote raises its draft
+  tax invoice; leads hold the spaces they name (`Lead.spaces`), and an
+  event records its hall holds (`Event.freebusy_holds`), which the
+  reconciler checks.
+- A session replacing a hall hold no longer gets its event flagged as if
+  freebusy had cancelled the hall; an event's writes retry a concurrent
+  change instead of failing an accept; cancelling an event gives back a
+  hall hold that had dropped off its list.
+- A venue-limited user can't change another venue's leads; a page narrowed
+  to the caller's venues keeps its `next_page_token`.
+- Guests' links are issued (`ShareQuote`, `ShareReservation`,
+  `ShareInvoice`; `[auth] link_base_url`); `ConfirmStay` raises the stay's
+  proforma and sends its payment link (`[concierge] advance_percent`); a
+  refunded advance gets a refund voucher (CGST rule 51). Rooms at or under
+  ₹7,500 a night are taxed at 5%.
+- The server waits for Hasura's engine at startup; database errors are
+  translated as freebusy's are; telemetry reports the app's version;
+  `/metrics` serves Prometheus (`[server] metrics`); the chart covers
+  `[freebusy_sync]` and Booking.com hotels, and turns OTLP off without an
+  endpoint.
 
 ### Changed
 

@@ -9,7 +9,8 @@ package auth
 // works service requests, and sees no invoice; accounts runs finance and
 // reads the rest; the concierge is public. A new RPC needs a line here, or
 // TestEveryMethodHasAPolicy fails and the method is refused to all but no
-// one.
+// one. Sharing a guest's link (Share*) is the staff's who own the resource:
+// sales a quote, the front desk a reservation, accounts an invoice.
 
 // Role sets the table uses.
 var (
@@ -75,14 +76,14 @@ var policyTable = map[string]map[string]Rule{
 		"GetQuote": link(quotes), "ListQuotes": allow(quotes),
 		"CreateQuote": allow(selling), "UpdateQuote": allow(selling), "SendQuote": allow(selling),
 		"AcceptQuote": allow(selling), "DeclineQuote": allow(selling), "ReviseQuote": allow(selling),
-		"SummarizePipeline": allow(pipeline),
+		"SummarizePipeline": allow(pipeline), "ShareQuote": allow(selling),
 	},
 	"aperio.stay.v1.StayService": {
 		"GetReservation": link(stays), "ListReservations": allow(stays),
 		"CreateReservation": allow(desk), "UpdateReservation": allow(desk),
 		"ConfirmReservation": allow(desk), "CancelReservation": allow(desk),
 		"ArriveReservation": allow(desk), "DepartReservation": allow(desk),
-		"SummarizeDay": allow(day),
+		"SummarizeDay": allow(day), "ShareReservation": allow(desk),
 	},
 	"aperio.event.v1.EventService": {
 		"GetEvent": allow(events), "ListEvents": allow(events),
@@ -99,7 +100,7 @@ var policyTable = map[string]map[string]Rule{
 		"GetPayment": allow(bills), "ListPayments": allow(bills),
 		"CreatePayment": allow(bills), "UpdatePayment": allow(money), "RefundPayment": allow(money),
 		"VoidPayment": allow(money), "ClearPayment": allow(money), "RequestPayment": allow(bills),
-		"SummarizeReceivables": allow(money),
+		"SummarizeReceivables": allow(money), "ShareInvoice": allow(money),
 	},
 	"aperio.document.v1.DocumentService": {
 		"GetDocument": allow(money), "ListDocuments": allow(money),

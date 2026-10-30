@@ -138,7 +138,12 @@ type Event struct {
 	// Last-modification timestamp.
 	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,17,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag string `protobuf:"bytes,17,opt,name=etag,proto3" json:"etag,omitempty"`
+	// The freebusy reservations holding the event's halls between its
+	// acceptance and its sessions: what ReleaseHalls gives back and the
+	// reconciler checks.
+	// Format: reservations/{reservation}
+	FreebusyHolds []string `protobuf:"bytes,18,rep,name=freebusy_holds,json=freebusyHolds,proto3" json:"freebusy_holds,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -290,6 +295,13 @@ func (x *Event) GetEtag() string {
 		return x.Etag
 	}
 	return ""
+}
+
+func (x *Event) GetFreebusyHolds() []string {
+	if x != nil {
+		return x.FreebusyHolds
+	}
+	return nil
 }
 
 // A Session is one part of an event, in one space at one time -- what an
@@ -513,7 +525,7 @@ var File_aperio_event_v1_event_proto protoreflect.FileDescriptor
 
 const file_aperio_event_v1_event_proto_rawDesc = "" +
 	"\n" +
-	"\x1baperio/event/v1/event.proto\x12\x0faperio.event.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1baperio/venue/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1astore/v1/annotations.proto\"\xa0\n" +
+	"\x1baperio/event/v1/event.proto\x12\x0faperio.event.v1\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1baperio/venue/v1/enums.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1astore/v1/annotations.proto\"\xd3\n" +
 	"\n" +
 	"\x05Event\x12=\n" +
 	"\x04name\x18\x01 \x01(\tB)\xe2A\x01\b\xbaH\"\xd8\x01\x01r\x1d2\x1b^venues/[^/]+/events/[^/]+$R\x04name\x127\n" +
@@ -541,7 +553,9 @@ const file_aperio_event_v1_event_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x11 \x01(\tB\x04\xe2A\x01\x01R\x04etag\"r\n" +
+	"\x04etag\x18\x11 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x121\n" +
+	"\x0efreebusy_holds\x18\x12 \x03(\tB\n" +
+	"\xe2A\x01\x03\xe2\xb5\x18\x02\x18\x01R\rfreebusyHolds\"r\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fSTATE_TENTATIVE\x10\x01\x12\x13\n" +

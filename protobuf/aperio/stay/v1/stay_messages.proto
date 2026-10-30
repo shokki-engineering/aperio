@@ -9,7 +9,9 @@ import "aperio/stay/v1/stay.proto";
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 import "google/type/date.proto";
 
 option go_package = "github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1";
@@ -226,4 +228,33 @@ message StayBrief {
 
   // What the guests asked for and may not eat, as said: "a cot", "nut allergy".
   repeated string requests = 10;
+}
+
+// Request message for ShareReservation.
+message ShareReservationRequest {
+  // The reservation to share.
+  // Format: venues/{venue}/reservations/{reservation}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "aperio.stay.v1/Reservation"
+  ];
+
+  // How long the link stands; 14 days when unset.
+  google.protobuf.Duration ttl = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (buf.validate.field).duration = {
+      gte: {seconds: 3600}
+      lte: {seconds: 7776000}
+    }
+  ];
+}
+
+// Response message for ShareReservation.
+message ShareReservationResponse {
+  // The link to send the guest: the guest site's page for the reservation, with
+  // its signed token.
+  string url = 1;
+
+  // When it lapses.
+  google.protobuf.Timestamp expire_time = 2;
 }

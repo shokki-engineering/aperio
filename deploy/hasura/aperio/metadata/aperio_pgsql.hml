@@ -979,6 +979,16 @@ definition:
               type:
                 name: event_event_type
                 type: named
+            freebusy_holds:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             guests:
               type:
                 type: nullable
@@ -2164,6 +2174,16 @@ definition:
                 underlying_type:
                   name: event_event_type
                   type: named
+            freebusy_holds:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             guests:
               type:
                 type: nullable
@@ -3347,6 +3367,16 @@ definition:
                 underlying_type:
                   name: text
                   type: named
+            spaces:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             stage:
               type:
                 type: nullable
@@ -4445,6 +4475,16 @@ definition:
                 underlying_type:
                   name: text
                   type: named
+            spaces:
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
             stage:
               type:
                 type: nullable
@@ -6242,6 +6282,21 @@ definition:
               type:
                 name: event_event_type
                 type: named
+          foreign_keys: {}
+        update_column_event_resource_freebusy_holds:
+          description: Update the 'freebusy_holds' column in the 'event_resource' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
           foreign_keys: {}
         update_column_event_resource_guests:
           description: Update the 'guests' column in the 'event_resource' collection
@@ -8141,6 +8196,21 @@ definition:
                   name: text
                   type: named
           foreign_keys: {}
+        update_column_sales_leads_spaces:
+          description: Update the 'spaces' column in the 'sales_leads' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  element_type:
+                    type: nullable
+                    underlying_type:
+                      name: text
+                      type: named
+                  type: array
+          foreign_keys: {}
         update_column_sales_leads_stage:
           description: Update the 'stage' column in the 'sales_leads' collection
           fields:
@@ -9335,6 +9405,13 @@ definition:
                 type: nullable
                 underlying_type:
                   name: update_column_event_resource_event_type
+                  type: named
+            freebusy_holds:
+              description: Update the 'freebusy_holds' column in the 'event_resource' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_event_resource_freebusy_holds
                   type: named
             guests:
               description: Update the 'guests' column in the 'event_resource' collection.
@@ -10803,6 +10880,13 @@ definition:
                 type: nullable
                 underlying_type:
                   name: update_column_sales_leads_source_detail
+                  type: named
+            spaces:
+              description: Update the 'spaces' column in the 'sales_leads' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  name: update_column_sales_leads_spaces
                   type: named
             stage:
               description: Update the 'stage' column in the 'sales_leads' collection.

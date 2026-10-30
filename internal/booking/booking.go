@@ -21,6 +21,7 @@ import (
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
+	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 )
 
 // The resource types errors name.
@@ -65,6 +66,16 @@ func (b *Base) Zone(ctx context.Context, venueName string) (*time.Location, erro
 // venueName's and must have some: a space with none cannot be booked. field
 // names the request field space came in, for errors.
 func (b *Base) Resources(ctx context.Context, venueName, field, space string) ([]string, error) {
+	sp, err := b.Bookable(ctx, venueName, field, space)
+	if err != nil {
+		return nil, err
+	}
+	return sp.GetResources(), nil
+}
+
+// Bookable is space, which must be one of venueName's and name freebusy
+// resources, as Resources checks; its kind says what a hold of it takes.
+func (b *Base) Bookable(ctx context.Context, venueName, field, space string) (*venuepbv1.Space, error) {
 	if servicex.ParentOf(space) != venueName {
 		return nil, servicex.BadField("SPACE_OF_ANOTHER_VENUE", field,
 			space+" is not a space of "+venueName, "Name a space of the venue the booking is made at")
@@ -77,7 +88,7 @@ func (b *Base) Resources(ctx context.Context, venueName, field, space string) ([
 		return nil, servicex.Blocked("SPACE_NOT_BOOKABLE", SpaceType, space,
 			"the space names no freebusy resources", "Add the space's rooms or halls to its resources")
 	}
-	return sp.GetResources(), nil
+	return sp, nil
 }
 
 // Release cancels freebusy reservations.

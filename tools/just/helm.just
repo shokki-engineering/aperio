@@ -30,8 +30,9 @@ lint:
 template values="minimal":
     helm template aperio {{ chart }} -f {{ chart }}/ci/{{ values }}-values.yaml
 
-# Check the rendered manifests against the Kubernetes schemas (kubeconform,
-# in Docker), with both values files.
+# kubeconform runs in Docker, with both values files.
+#
+# Check the rendered manifests against the Kubernetes schemas.
 [group('helm')]
 validate:
     #!/usr/bin/env bash
@@ -49,7 +50,8 @@ schema:
     #!/usr/bin/env bash
     set -euo pipefail
     for bad in search.provider=elastic replicaCount=-1 secrets.conciergeHoldSecret=short \
-        database.postgres.sslmode=maybe unknownKey=1 notify.provider=sms; do
+        database.postgres.sslmode=maybe unknownKey=1 notify.provider=sms \
+        freebusySync.webhookUrl=ftp://aperio channels.bookingcom.hotels[0].hotel_code=H1,channels.bookingcom.hotels[0].venue=sea-breeze; do
       if helm template aperio {{ chart }} -f {{ chart }}/ci/minimal-values.yaml --set "$bad" >/dev/null 2>&1; then
         echo "values.schema.json accepted $bad" >&2; exit 1
       fi

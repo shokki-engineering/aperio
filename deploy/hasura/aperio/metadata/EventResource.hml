@@ -22,6 +22,8 @@ definition:
       type: String_1
     - name: eventType
       type: Enum!
+    - name: freebusyHolds
+      type: "[String_1]"
     - name: guests
       type: Int32
     - name: id
@@ -43,8 +45,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: EventResource
-    inputTypeName: EventResourceInput
+    typeName: aperio_EventResource
+    inputTypeName: aperio_EventResourceInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: event_resource
@@ -76,6 +78,9 @@ definition:
         eventType:
           column:
             name: event_type
+        freebusyHolds:
+          column:
+            name: freebusy_holds
         guests:
           column:
             name: guests
@@ -125,6 +130,7 @@ definition:
           - displayName
           - etag
           - eventType
+          - freebusyHolds
           - guests
           - id
           - lead
@@ -189,7 +195,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: EventResourceBoolExp
+    typeName: aperio_EventResourceBoolExp
 
 ---
 kind: AggregateExpression
@@ -242,7 +248,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: EventResourceAggExp
+    selectTypeName: aperio_EventResourceAggExp
 
 ---
 kind: OrderByExpression
@@ -293,7 +299,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: EventResourceOrderByExp
+    expressionTypeName: aperio_EventResourceOrderByExp
 
 ---
 kind: Model
@@ -309,20 +315,20 @@ definition:
   orderByExpression: EventResourceOrderByExp
   graphql:
     selectMany:
-      queryRootField: eventResource
+      queryRootField: aperio_eventResource
       subscription:
-        rootField: eventResource
+        rootField: aperio_eventResource
     selectUniques:
-      - queryRootField: eventResourceById
+      - queryRootField: aperio_eventResourceById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: eventResourceById
-    filterInputTypeName: EventResourceFilterInput
+          rootField: aperio_eventResourceById
+    filterInputTypeName: aperio_EventResourceFilterInput
     aggregate:
-      queryRootField: eventResourceAggregate
+      queryRootField: aperio_eventResourceAggregate
       subscription:
-        rootField: eventResourceAggregate
+        rootField: aperio_eventResourceAggregate
 
 ---
 kind: ModelPermissions

@@ -12,7 +12,11 @@ package auth
 // limited principal: narrowing it would mean rewriting each List's parent
 // and filter, so it is asked to list venue by venue instead. A request
 // naming no venue is refused too, unless its method is Global (contacts,
-// leads, the venue list), whose responses are narrowed instead.
+// leads, the venue list), whose responses are narrowed instead (pages.go).
+// A lead is named leads/{lead}, under no venue, so a request naming one is
+// held to the venue the lead is at (leads.go). Contacts stay business-wide
+// by design: a guest is the business's, not one venue's, so a contact is
+// read and written by staff of any venue, and nothing narrows them.
 
 import (
 	"strings"
@@ -36,6 +40,12 @@ func Venues(m proto.Message) []string {
 
 // collect adds the venues m's fields refer to, looking levels deep.
 func collect(m protoreflect.Message, levels int, out *[]string) {
+	walk(m, levels, func(s string) { add(s, out) })
+}
+
+// walk calls fn with every resource name m's fields refer to, looking
+// levels deep.
+func walk(m protoreflect.Message, levels int, fn func(string)) {
 	if levels == 0 || !m.IsValid() {
 		return
 	}
@@ -44,18 +54,18 @@ func collect(m protoreflect.Message, levels int, out *[]string) {
 		case fd.Kind() == protoreflect.StringKind && refers(fd):
 			if fd.IsList() {
 				for i := range v.List().Len() {
-					add(v.List().Get(i).String(), out)
+					fn(v.List().Get(i).String())
 				}
 			} else if !fd.IsMap() {
-				add(v.String(), out)
+				fn(v.String())
 			}
 		case fd.Kind() == protoreflect.MessageKind && own(fd.Message()):
 			if fd.IsList() {
 				for i := range v.List().Len() {
-					collect(v.List().Get(i).Message(), levels-1, out)
+					walk(v.List().Get(i).Message(), levels-1, fn)
 				}
 			} else if !fd.IsMap() {
-				collect(v.Message(), levels-1, out)
+				walk(v.Message(), levels-1, fn)
 			}
 		}
 		return true
@@ -101,11 +111,12 @@ func reachesAll(p Principal, venues []string) (string, bool) {
 
 // narrow is resp as a venue-limited p may see it: each item of a repeated
 // field of aperio messages that refers to a venue p does not reach is
-// dropped; any other field that does makes the whole response refused
-// (false).
-func narrow(p Principal, resp proto.Message) bool {
+// dropped, and how many were is returned; any other field that does makes
+// the whole response refused (false). Every other field -- a List's
+// next_page_token among them -- is kept as it is (pages.go).
+func narrow(p Principal, resp proto.Message) (allowed bool, dropped int) {
 	m := resp.ProtoReflect()
-	allowed := true
+	allowed = true
 	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
 		if fd.IsList() && fd.Kind() == protoreflect.MessageKind && own(fd.Message()) {
 			list, kept := v.List(), 0
@@ -117,6 +128,7 @@ func narrow(p Principal, resp proto.Message) bool {
 					kept++
 				}
 			}
+			dropped += list.Len() - kept
 			list.Truncate(kept)
 			return true
 		}
@@ -128,7 +140,7 @@ func narrow(p Principal, resp proto.Message) bool {
 		}
 		return true
 	})
-	return allowed
+	return allowed, dropped
 }
 
 // single is a message holding fd's value of m alone, so collect judges one

@@ -28,7 +28,7 @@ sslmode = "disable"
 timezone = "UTC"
 
 [database.hasura]
-url = "http://localhost:3281/graphql"
+url = "http://localhost:3280/graphql"
 
 [cache]
 enabled = false
@@ -49,3 +49,10 @@ feeds_secret = ""
 # Seals hold tokens; set through APERIO_CONCIERGE__HOLD_SECRET. Empty, each
 # process makes its own.
 hold_secret = ""
+# The share of a confirmed stay's proforma, taxes included, asked as its
+# advance through the payment link: 1 to 100 (anything else is 100).
+advance_percent = 100
+
+[auth]
+# The local guest site guests' links open.
+link_base_url = "http://localhost:3000"

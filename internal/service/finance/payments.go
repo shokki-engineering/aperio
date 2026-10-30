@@ -8,10 +8,11 @@ package finance
 // rupees over UPI -- and counted in the venue's at its exchange rate
 // (base_amount). Its state is the server's:
 //
-//   - cash, UPI, card, bank transfer and a channel's payout are recorded
-//     after the money moved: SUCCEEDED at once;
-//   - a gateway payment waits for the gateway's webhook, and a cheque for
-//     clearing (ClearPayment, clearing.go): PENDING.
+//   - cash, UPI, card and a channel's payout are recorded after the money
+//     moved: SUCCEEDED at once;
+//   - a gateway payment waits for the gateway's webhook, and a cheque or a
+//     bank transfer for the bank to credit it (ClearPayment, clearing.go):
+//     PENDING, counting towards nothing until then.
 //
 // A refund is made by RefundPayment, never created directly.
 
@@ -47,7 +48,8 @@ func (h *hooks) BeforeCreatePayment(ctx context.Context, parent string, m *finan
 		return err
 	}
 	switch m.GetMethod() {
-	case financepbv1.PaymentMethod_PAYMENT_METHOD_GATEWAY, financepbv1.PaymentMethod_PAYMENT_METHOD_CHEQUE:
+	case financepbv1.PaymentMethod_PAYMENT_METHOD_GATEWAY, financepbv1.PaymentMethod_PAYMENT_METHOD_CHEQUE,
+		financepbv1.PaymentMethod_PAYMENT_METHOD_BANK_TRANSFER:
 		m.State = financepbv1.Payment_STATE_PENDING
 	default:
 		m.State = financepbv1.Payment_STATE_SUCCEEDED

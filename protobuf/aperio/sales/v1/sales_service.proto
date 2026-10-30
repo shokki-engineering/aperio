@@ -151,4 +151,14 @@ service SalesService {
     option (google.api.http) = {get: "/v1/{venue=venues/*}:summarizePipeline"};
     option (google.api.method_signature) = "venue";
   }
+
+  // A link the guest opens to read this quote without signing in: signed,
+  // read-only, for this quote alone, lapsing after ttl.
+  rpc ShareQuote(ShareQuoteRequest) returns (ShareQuoteResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/quotes/*}:share"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
 }

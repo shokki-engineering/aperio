@@ -140,6 +140,12 @@ func load() (*AppConfig, error) {
 	if err := cfg.Razorpay.Validate(); err != nil {
 		return nil, err
 	}
+	if err := cfg.Channels.BookingCom.resolve(); err != nil {
+		return nil, err
+	}
+	if err := cfg.FreebusySync.Validate(); err != nil {
+		return nil, err
+	}
 	if cfg.Server.ExperimentalHTTP3 && !cfg.Server.TLS.Enabled() {
 		return nil, errors.New("config invalid: server.experimental_http3 requires server.tls.cert_file and server.tls.key_file")
 	}

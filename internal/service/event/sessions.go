@@ -7,7 +7,8 @@ package event
 // in freebusy for its window (setup to teardown) -- checked before create,
 // booked after, locked against edits, and given back on delete. The first
 // session in a hall the event kept since its quote was accepted
-// (booking.HoldHall) replaces that hold with its own booking.
+// (booking.HoldHall) replaces that hold with its own booking, taking it off
+// the event's freebusy_holds before cancelling it (halls.go).
 
 import (
 	"context"
@@ -52,33 +53,35 @@ func (h *hooks) BeforeCreateSession(ctx context.Context, parent string, m *event
 
 // AfterCreateSession books the stored session's space in freebusy and
 // records the freebusy reservation on it; should that fail, the session is
-// removed and anything booked given back.
+// removed and anything booked given back. A hold the event kept on the hall
+// is replaced first (replaceHold: forgotten, then cancelled); should the
+// session fail after that, the hold goes back on the event's list.
 func (h *hooks) AfterCreateSession(ctx context.Context, out *eventpbv1.Session) error {
+	event := servicex.ParentOf(out.GetName())
+	held, forgot := "", false
 	undo := func(booked string, cause error) error {
 		errs := []error{cause}
 		if booked != "" {
 			errs = append(errs, h.Engine.Cancel(ctx, booked, "aperio: the session could not be completed"))
 		}
-		errs = append(errs, h.repos.Sessions.Delete(ctx, out.GetName()))
+		errs = append(errs, h.repos.Sessions.Delete(ctx, out.GetName()), h.restoreHold(ctx, event, held, forgot))
 		return errors.Join(errs...)
 	}
 	w, err := sessionWindow(out)
 	if err != nil {
 		return undo("", err)
 	}
-	event := servicex.ParentOf(out.GetName())
 	res, err := h.Resources(ctx, servicex.ParentOf(event), "session.space", out.GetSpace())
 	if err != nil {
 		return undo("", err)
 	}
-	if held, _, err := h.HeldHall(ctx, event, out.GetSpace()); err != nil || held != "" {
-		// The session's own booking replaces the event's hold on the hall.
-		if err == nil {
-			err = h.Engine.Cancel(ctx, held, "aperio: replaced by the session "+out.GetName())
-		}
-		if err != nil {
-			return undo("", err)
-		}
+	if held, _, err = h.HeldHall(ctx, event, out.GetSpace()); err != nil {
+		return undo("", err)
+	}
+	// The session's own booking replaces the event's hold on the hall.
+	if forgot, err = h.replaceHold(ctx, event, held, out.GetName()); err != nil {
+		held = "" // replaceHold kept or put back the record itself
+		return undo("", err)
 	}
 	booked, err := h.Engine.Book(ctx, engine.Booking{
 		Key:       out.GetName(),

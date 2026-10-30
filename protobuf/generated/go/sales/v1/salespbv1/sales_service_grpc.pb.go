@@ -38,6 +38,7 @@ const (
 	SalesService_DeclineQuote_FullMethodName      = "/aperio.sales.v1.SalesService/DeclineQuote"
 	SalesService_ReviseQuote_FullMethodName       = "/aperio.sales.v1.SalesService/ReviseQuote"
 	SalesService_SummarizePipeline_FullMethodName = "/aperio.sales.v1.SalesService/SummarizePipeline"
+	SalesService_ShareQuote_FullMethodName        = "/aperio.sales.v1.SalesService/ShareQuote"
 )
 
 // SalesServiceClient is the client API for SalesService service.
@@ -80,6 +81,9 @@ type SalesServiceClient interface {
 	// leads by stage, what was won and lost lately, the follow-ups due, leads
 	// nobody has contacted, and sent quotes about to expire.
 	SummarizePipeline(ctx context.Context, in *SummarizePipelineRequest, opts ...grpc.CallOption) (*SummarizePipelineResponse, error)
+	// A link the guest opens to read this quote without signing in: signed,
+	// read-only, for this quote alone, lapsing after ttl.
+	ShareQuote(ctx context.Context, in *ShareQuoteRequest, opts ...grpc.CallOption) (*ShareQuoteResponse, error)
 }
 
 type salesServiceClient struct {
@@ -250,6 +254,16 @@ func (c *salesServiceClient) SummarizePipeline(ctx context.Context, in *Summariz
 	return out, nil
 }
 
+func (c *salesServiceClient) ShareQuote(ctx context.Context, in *ShareQuoteRequest, opts ...grpc.CallOption) (*ShareQuoteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShareQuoteResponse)
+	err := c.cc.Invoke(ctx, SalesService_ShareQuote_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SalesServiceServer is the server API for SalesService service.
 // All implementations must embed UnimplementedSalesServiceServer
 // for forward compatibility.
@@ -290,6 +304,9 @@ type SalesServiceServer interface {
 	// leads by stage, what was won and lost lately, the follow-ups due, leads
 	// nobody has contacted, and sent quotes about to expire.
 	SummarizePipeline(context.Context, *SummarizePipelineRequest) (*SummarizePipelineResponse, error)
+	// A link the guest opens to read this quote without signing in: signed,
+	// read-only, for this quote alone, lapsing after ttl.
+	ShareQuote(context.Context, *ShareQuoteRequest) (*ShareQuoteResponse, error)
 	mustEmbedUnimplementedSalesServiceServer()
 }
 
@@ -347,6 +364,9 @@ func (UnimplementedSalesServiceServer) ReviseQuote(context.Context, *ReviseQuote
 }
 func (UnimplementedSalesServiceServer) SummarizePipeline(context.Context, *SummarizePipelineRequest) (*SummarizePipelineResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SummarizePipeline not implemented")
+}
+func (UnimplementedSalesServiceServer) ShareQuote(context.Context, *ShareQuoteRequest) (*ShareQuoteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ShareQuote not implemented")
 }
 func (UnimplementedSalesServiceServer) mustEmbedUnimplementedSalesServiceServer() {}
 func (UnimplementedSalesServiceServer) testEmbeddedByValue()                      {}
@@ -657,6 +677,24 @@ func _SalesService_SummarizePipeline_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SalesService_ShareQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShareQuoteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SalesServiceServer).ShareQuote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SalesService_ShareQuote_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SalesServiceServer).ShareQuote(ctx, req.(*ShareQuoteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SalesService_ServiceDesc is the grpc.ServiceDesc for SalesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -727,6 +765,10 @@ var SalesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SummarizePipeline",
 			Handler:    _SalesService_SummarizePipeline_Handler,
+		},
+		{
+			MethodName: "ShareQuote",
+			Handler:    _SalesService_ShareQuote_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

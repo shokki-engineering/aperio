@@ -27,8 +27,8 @@ definition:
     - name: updateTime
       type: Timestamptz!
   graphql:
-    typeName: SalesActivities
-    inputTypeName: SalesActivitiesInput
+    typeName: aperio_SalesActivities
+    inputTypeName: aperio_SalesActivitiesInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: sales_activities
@@ -125,7 +125,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: SalesActivitiesBoolExp
+    typeName: aperio_SalesActivitiesBoolExp
 
 ---
 kind: AggregateExpression
@@ -162,7 +162,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: SalesActivitiesAggExp
+    selectTypeName: aperio_SalesActivitiesAggExp
 
 ---
 kind: OrderByExpression
@@ -197,7 +197,7 @@ definition:
           orderByExpression: TimestamptzOrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: SalesActivitiesOrderByExp
+    expressionTypeName: aperio_SalesActivitiesOrderByExp
 
 ---
 kind: Model
@@ -213,20 +213,20 @@ definition:
   orderByExpression: SalesActivitiesOrderByExp
   graphql:
     selectMany:
-      queryRootField: salesActivities
+      queryRootField: aperio_salesActivities
       subscription:
-        rootField: salesActivities
+        rootField: aperio_salesActivities
     selectUniques:
-      - queryRootField: salesActivitiesById
+      - queryRootField: aperio_salesActivitiesById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: salesActivitiesById
-    filterInputTypeName: SalesActivitiesFilterInput
+          rootField: aperio_salesActivitiesById
+    filterInputTypeName: aperio_SalesActivitiesFilterInput
     aggregate:
-      queryRootField: salesActivitiesAggregate
+      queryRootField: aperio_salesActivitiesAggregate
       subscription:
-        rootField: salesActivitiesAggregate
+        rootField: aperio_salesActivitiesAggregate
 
 ---
 kind: ModelPermissions

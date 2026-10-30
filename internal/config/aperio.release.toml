@@ -17,6 +17,8 @@ environment = "production"
 enable_http = true
 enable_health = true
 enable_mcp = true
+# GET /metrics on the HTTP port, for Prometheus to scrape (beside OTLP).
+metrics = true
 experimental_http3 = false
 # How long Stop waits for HTTP and gRPC to drain; 0 takes runtime-go's default.
 shutdown_timeout_seconds = 20
@@ -73,6 +75,9 @@ plan_cache_mode = "force_custom_plan"
 [database.hasura]
 url = ""
 admin_secret = ""
+# How long startup waits for an engine that is still starting, retrying with
+# backoff: 0 is a minute, below 0 tries once.
+connect_timeout_seconds = 60
 
 [cache]
 enabled = false
@@ -95,6 +100,9 @@ feeds_secret = ""
 # Seals hold tokens; set through APERIO_CONCIERGE__HOLD_SECRET. Empty, each
 # process makes its own.
 hold_secret = ""
+# The share of a confirmed stay's proforma, taxes included, asked as its
+# advance through the payment link: 1 to 100 (anything else is 100).
+advance_percent = 100
 
 [search]
 # The read models -- one row per night of every stay (stay.v1.StayNight), and
@@ -167,6 +175,9 @@ clock_skew_seconds = 60
 # Signs guests' read-only links to a quote, stay or invoice: 32+ random
 # bytes, the same on every replica; APERIO_AUTH__LINK_SECRET.
 link_secret = ""
+# The guest site those links open: <link_base_url>/<resource name>?link=<token>.
+# APERIO_AUTH__LINK_BASE_URL.
+link_base_url = "https://guest.example.com"
 
 [auth.role_map]
 # The issuer's group names to aperio's roles, e.g. "aperio-kitchen" = "kitchen".
@@ -187,6 +198,10 @@ password = ""
 # code = "SV-DLX"
 # space = "venues/<id>/spaces/<id>"
 # rate_plan = "BAR"
+# Or, where only the environment configures it, the same as a JSON array
+# (it replaces the tables): APERIO_CHANNELS__BOOKINGCOM__HOTELS_JSON=
+# '[{"hotel_code":"7777001","venue":"venues/<id>","rooms":[{"code":"SV-DLX","space":"venues/<id>/spaces/<id>","rate_plan":"BAR"}]}]'
+hotels_json = ""
 
 [razorpay]
 # The payment gateway for Indian cards and UPI: refunds, payment links

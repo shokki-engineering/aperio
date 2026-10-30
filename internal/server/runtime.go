@@ -44,6 +44,8 @@ func newServices(conn *database.Connection) (*Services, *engine.Client, error) {
 	pay, rzp := gateways(config.Get().Razorpay)
 	services := New(conn, fb, secret, pay...)
 	services.Auth = authn
+	authn.ResolveLeadsWith(services.Sales)
+	services.useLinks(authn.Links(), config.Get().Auth, config.Get().Concierge)
 	services.useRazorpay(rzp, config.Get().Razorpay.WebhookSecret)
 	if err := services.useOpenSearch(context.Background(), config.Get().Search); err != nil {
 		return nil, nil, err
@@ -52,6 +54,7 @@ func newServices(conn *database.Connection) (*Services, *engine.Client, error) {
 		return nil, nil, err
 	}
 	services.useChannels(config.Get().Channels)
+	services.useMetrics(config.Get().Server.Metrics)
 	services.useFreebusySync(context.Background(), fb, config.Get().FreebusySync)
 	return services, fb, nil
 }

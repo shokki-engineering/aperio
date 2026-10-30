@@ -25,8 +25,8 @@ definition:
     - name: weekdays
       type: String_1
   graphql:
-    typeName: PricingSeasons
-    inputTypeName: PricingSeasonsInput
+    typeName: aperio_PricingSeasons
+    inputTypeName: aperio_PricingSeasonsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: pricing_seasons
@@ -117,7 +117,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: PricingSeasonsBoolExp
+    typeName: aperio_PricingSeasonsBoolExp
 
 ---
 kind: AggregateExpression
@@ -152,7 +152,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: PricingSeasonsAggExp
+    selectTypeName: aperio_PricingSeasonsAggExp
 
 ---
 kind: OrderByExpression
@@ -185,7 +185,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: PricingSeasonsOrderByExp
+    expressionTypeName: aperio_PricingSeasonsOrderByExp
 
 ---
 kind: Model
@@ -201,20 +201,20 @@ definition:
   orderByExpression: PricingSeasonsOrderByExp
   graphql:
     selectMany:
-      queryRootField: pricingSeasons
+      queryRootField: aperio_pricingSeasons
       subscription:
-        rootField: pricingSeasons
+        rootField: aperio_pricingSeasons
     selectUniques:
-      - queryRootField: pricingSeasonsById
+      - queryRootField: aperio_pricingSeasonsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: pricingSeasonsById
-    filterInputTypeName: PricingSeasonsFilterInput
+          rootField: aperio_pricingSeasonsById
+    filterInputTypeName: aperio_PricingSeasonsFilterInput
     aggregate:
-      queryRootField: pricingSeasonsAggregate
+      queryRootField: aperio_pricingSeasonsAggregate
       subscription:
-        rootField: pricingSeasonsAggregate
+        rootField: aperio_pricingSeasonsAggregate
 
 ---
 kind: ModelPermissions

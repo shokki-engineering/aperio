@@ -184,6 +184,14 @@ message Lead {
 
   // Opaque version for optimistic concurrency (AIP-154).
   string etag = 25 [(google.api.field_behavior) = OPTIONAL];
+
+  // The halls or room types the lead asks for: what its hold takes, as many
+  // of each as rooms says (a hall, one). Searched as spaces:"venues/x/spaces/y".
+  // Format: venues/{venue}/spaces/{space}
+  repeated string spaces = 26 [
+    (google.api.field_behavior) = OPTIONAL,
+    (store.v1.query) = {search: true}
+  ];
 }
 
 // An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a

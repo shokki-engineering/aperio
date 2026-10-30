@@ -5,7 +5,12 @@ go_library(
     srcs = [
         "config.go",
         "deployment.go",
+        "fanout.go",
+        "fanout_async.go",
+        "fanout_sync.go",
         "meter.go",
+        "prometheus.go",
+        "registry.go",
         "telemetry.go",
     ],
     embedsrcs = ["telemetry.toml"],
@@ -16,15 +21,34 @@ go_library(
         "@com_github_knadh_koanf_providers_env_v2//:env",
         "@com_github_knadh_koanf_providers_rawbytes//:rawbytes",
         "@com_github_knadh_koanf_v2//:koanf",
+        "@com_github_prometheus_client_golang//prometheus",
+        "@com_github_prometheus_client_golang//prometheus/collectors",
+        "@com_github_prometheus_client_golang//prometheus/promhttp",
         "@com_github_the_protobuf_project_runtime_go_observability//:observability",
         "@com_github_the_protobuf_project_runtime_go_telemetry//:telemetry",
         "@com_github_the_protobuf_project_telemetry_telemetry_go//:telemetry-go",
         "@com_github_the_protobuf_project_telemetry_telemetry_go//options",
+        "@io_opentelemetry_go_otel//:otel",
+        "@io_opentelemetry_go_otel//attribute",
+        "@io_opentelemetry_go_otel_exporters_prometheus//:prometheus",
+        "@io_opentelemetry_go_otel_metric//:metric",
+        "@io_opentelemetry_go_otel_metric//embedded",
+        "@io_opentelemetry_go_otel_sdk//resource",
+        "@io_opentelemetry_go_otel_sdk_metric//:metric",
     ],
 )
 
 go_test(
     name = "telemetry_test",
-    srcs = ["telemetry_test.go"],
+    srcs = [
+        "fanout_test.go",
+        "readers_test.go",
+        "telemetry_test.go",
+    ],
     embed = [":telemetry"],
+    deps = [
+        "@io_opentelemetry_go_otel_metric//:metric",
+        "@io_opentelemetry_go_otel_sdk_metric//:metric",
+        "@io_opentelemetry_go_otel_sdk_metric//metricdata",
+    ],
 )

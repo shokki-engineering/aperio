@@ -106,10 +106,11 @@ func New(conn *database.Connection, eng engine.Engine, holdSecret []byte, gatewa
 	catalogSvc := catalogpbv1svc.NewCatalogServiceServer(catalogRepos, catalogpbv1svc.NopCatalogServiceHooks{})
 	selling := sales.New(salesRepositories(rc), venues.Venues, catalogRepos.Menus, prices, events, stays)
 	selling.ReadContactsFrom(guestRepos.Contacts)
-	selling.HoldWith(base) // lead holds, and an accepted event's hall holds
+	selling.HoldWith(base) // lead holds; an accepted event's halls are the event service's (HoldHalls)
 	ops := operations.New(operationsRepositories(rc), venues.Venues)
 	money := finance.New(financeRepositories(rc), venues.Venues, bookings{stays: stays, events: events}, gateways)
 	money.ReadContactsFrom(guestRepos.Contacts)
+	selling.InvoiceWith(money) // an accepted quote's draft tax invoice
 	guests.ReadHistoryFrom(guest.History{Stays: stays, Events: events, Sales: selling, Finance: money, Spaces: venues.Spaces})
 	fbSync := freebusysync.New(eng, stays, events, selling)
 	ops.CallServices(operations.Services{Finance: money, Bookings: bookings{stays: stays, events: events}, Dishes: catalogSvc, Guests: guests})

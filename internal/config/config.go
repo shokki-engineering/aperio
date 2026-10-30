@@ -80,6 +80,9 @@ type ServerConfig struct {
 	EnableHealth bool `koanf:"enable_health"`
 	// EnableMCP starts the Model Context Protocol server.
 	EnableMCP bool `koanf:"enable_mcp"`
+	// Metrics serves the process's metrics for Prometheus at GET /metrics on
+	// the HTTP port, beside the OTLP export.
+	Metrics bool `koanf:"metrics"`
 	// ExperimentalHTTP3 enables experimental HTTP/3 on the HTTP port + 1. It
 	// requires TLS (see TLS below).
 	ExperimentalHTTP3 bool `koanf:"experimental_http3"`

@@ -71,8 +71,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PROTOC_GEN_MCP: github.com/the-protobuf-project/mcp/plugin/cmd/protoc-gen-mcp@v1.7.7
-      PROTOC_GEN_STORE: github.com/the-protobuf-project/store/plugin/cmd/protoc-gen-store@v1.6.7
-      PROTOC_GEN_SERVICE: github.com/the-protobuf-project/service/plugin/cmd/protoc-gen-service@v0.2.1
+      PROTOC_GEN_STORE: github.com/the-protobuf-project/store/plugin/cmd/protoc-gen-store@v1.6.10
+      PROTOC_GEN_SERVICE: github.com/the-protobuf-project/service/plugin/cmd/protoc-gen-service@v0.2.3
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -84,6 +84,12 @@ jobs:
         with:
           setup_only: true
           token: ${{ secrets.BUF_TOKEN }}
+      # The gen recipes end with Gazelle: the templates clean BUILD.bazel
+      # files out with the rest of their output.
+      - uses: bazel-contrib/setup-bazel@104e3eea9447cdaa4b00d0fb46191a3985d26ab3 # 0.19.1
+        with:
+          bazelisk-cache: true
+          repository-cache: true
       - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
       - name: Install the generators
         # One module per go install: each plugin is its own module version.

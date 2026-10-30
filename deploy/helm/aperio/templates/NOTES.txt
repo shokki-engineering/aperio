@@ -7,7 +7,7 @@ The Prisma migrations ran first, in the Job {{ include "aperio.fullname" . }}-mi
 
 In the cluster:
   gRPC  {{ include "aperio.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.grpcPort }}
-  REST  http://{{ include "aperio.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.httpPort }}  (GET /health)
+  REST  http://{{ include "aperio.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.httpPort }}  (GET /health{{ if .Values.server.metrics }}, GET /metrics{{ end }})
   MCP   http://{{ include "aperio.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.mcpPort }}/mcp
 
 From your machine:
@@ -22,6 +22,23 @@ Check it through the Service:
 
 WARNING: freebusy.endpoint is empty, so bookings cannot be held. Point it at
 freebusy's gRPC Service (host:port).
+{{- end }}
+{{- with .Values.freebusySync }}
+{{- if .webhookUrl }}
+
+freebusy delivers its changes to {{ .webhookUrl }}{{ if not (or $.Values.secrets.freebusyWebhookSecret $.Values.secrets.existingSecret) }}.
+WARNING: secrets.freebusyWebhookSecret is empty: each start has freebusy mint
+a new signing secret. Read it with RotateWebhookSecret and set it{{ end }}.
+{{- else }}
+
+freebusySync.webhookUrl is empty: freebusy's changes reach aperio only through
+the reconciler. Set it to http://{{ include "aperio.fullname" $ }}.{{ $.Release.Namespace }}.svc:{{ $.Values.service.httpPort }}/webhooks/freebusy.
+{{- end }}
+{{- end }}
+{{- if and .Values.channels.bookingcom.enabled (not .Values.channels.bookingcom.hotels) }}
+
+WARNING: channels.bookingcom is enabled with no hotels: every reservation
+Booking.com sends is refused until channels.bookingcom.hotels maps them.
 {{- end }}
 {{- if and (gt (int (include "aperio.minReplicas" .)) 1) (not (or .Values.secrets.conciergeHoldSecret .Values.secrets.existingSecret)) }}
 

@@ -29,7 +29,7 @@ var File_aperio_sales_v1_sales_service_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_service_proto_rawDesc = "" +
 	"\n" +
-	"#aperio/sales/v1/sales_service.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a$aperio/sales/v1/sales_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xed\x11\n" +
+	"#aperio/sales/v1/sales_service.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/sales.proto\x1a$aperio/sales/v1/sales_messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x18mcp/v1/annotations.proto2\xfb\x12\n" +
 	"\fSalesService\x12d\n" +
 	"\aGetLead\x12\x1f.aperio.sales.v1.GetLeadRequest\x1a\x15.aperio.sales.v1.Lead\"!\xdaA\x04name\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/{name=leads/*}\x12h\n" +
 	"\tListLeads\x12!.aperio.sales.v1.ListLeadsRequest\x1a\".aperio.sales.v1.ListLeadsResponse\"\x14\xdaA\x00\x82\xd3\xe4\x93\x02\v\x12\t/v1/leads\x12o\n" +
@@ -49,7 +49,9 @@ const file_aperio_sales_v1_sales_service_proto_rawDesc = "" +
 	"\vAcceptQuote\x12#.aperio.sales.v1.AcceptQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/quotes/*}:accept\x12\x84\x01\n" +
 	"\fDeclineQuote\x12$.aperio.sales.v1.DeclineQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"6\xdaA\x04name\x82\xd3\xe4\x93\x02):\x01*\"$/v1/{name=venues/*/quotes/*}:decline\x12\x81\x01\n" +
 	"\vReviseQuote\x12#.aperio.sales.v1.ReviseQuoteRequest\x1a\x16.aperio.sales.v1.Quote\"5\xdaA\x04name\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/{name=venues/*/quotes/*}:revise\x12\xa2\x01\n" +
-	"\x11SummarizePipeline\x12).aperio.sales.v1.SummarizePipelineRequest\x1a*.aperio.sales.v1.SummarizePipelineResponse\"6\xdaA\x05venue\x82\xd3\xe4\x93\x02(\x12&/v1/{venue=venues/*}:summarizePipeline\x1a\x8a\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18j\n" +
+	"\x11SummarizePipeline\x12).aperio.sales.v1.SummarizePipelineRequest\x1a*.aperio.sales.v1.SummarizePipelineResponse\"6\xdaA\x05venue\x82\xd3\xe4\x93\x02(\x12&/v1/{venue=venues/*}:summarizePipeline\x12\x8b\x01\n" +
+	"\n" +
+	"ShareQuote\x12\".aperio.sales.v1.ShareQuoteRequest\x1a#.aperio.sales.v1.ShareQuoteResponse\"4\xdaA\x04name\x82\xd3\xe4\x93\x02':\x01*\"\"/v1/{name=venues/*/quotes/*}:share\x1a\x8a\x01\xcaA\x19aperio.shokki.engineering\xc2\xf3\x18j\n" +
 	"h\n" +
 	"\x05Sales\x12\x051.0.0\x1aXLeads, what was done about them, and the quotes sent to guests: from enquiry to booking.B\xdf\x01\n" +
 	"\x13com.aperio.sales.v1B\x11SalesServiceProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1\xa2\x02\x03ASX\xaa\x02\x0fAperio.Sales.V1\xca\x02\x0fAperio\\Sales\\V1\xe2\x02\x1bAperio\\Sales\\V1\\GPBMetadata\xea\x02\x11Aperio::Sales::V1b\x06proto3"
@@ -71,13 +73,15 @@ var file_aperio_sales_v1_sales_service_proto_goTypes = []any{
 	(*DeclineQuoteRequest)(nil),       // 13: aperio.sales.v1.DeclineQuoteRequest
 	(*ReviseQuoteRequest)(nil),        // 14: aperio.sales.v1.ReviseQuoteRequest
 	(*SummarizePipelineRequest)(nil),  // 15: aperio.sales.v1.SummarizePipelineRequest
-	(*Lead)(nil),                      // 16: aperio.sales.v1.Lead
-	(*ListLeadsResponse)(nil),         // 17: aperio.sales.v1.ListLeadsResponse
-	(*Activity)(nil),                  // 18: aperio.sales.v1.Activity
-	(*ListActivitiesResponse)(nil),    // 19: aperio.sales.v1.ListActivitiesResponse
-	(*Quote)(nil),                     // 20: aperio.sales.v1.Quote
-	(*ListQuotesResponse)(nil),        // 21: aperio.sales.v1.ListQuotesResponse
-	(*SummarizePipelineResponse)(nil), // 22: aperio.sales.v1.SummarizePipelineResponse
+	(*ShareQuoteRequest)(nil),         // 16: aperio.sales.v1.ShareQuoteRequest
+	(*Lead)(nil),                      // 17: aperio.sales.v1.Lead
+	(*ListLeadsResponse)(nil),         // 18: aperio.sales.v1.ListLeadsResponse
+	(*Activity)(nil),                  // 19: aperio.sales.v1.Activity
+	(*ListActivitiesResponse)(nil),    // 20: aperio.sales.v1.ListActivitiesResponse
+	(*Quote)(nil),                     // 21: aperio.sales.v1.Quote
+	(*ListQuotesResponse)(nil),        // 22: aperio.sales.v1.ListQuotesResponse
+	(*SummarizePipelineResponse)(nil), // 23: aperio.sales.v1.SummarizePipelineResponse
+	(*ShareQuoteResponse)(nil),        // 24: aperio.sales.v1.ShareQuoteResponse
 }
 var file_aperio_sales_v1_sales_service_proto_depIdxs = []int32{
 	0,  // 0: aperio.sales.v1.SalesService.GetLead:input_type -> aperio.sales.v1.GetLeadRequest
@@ -96,24 +100,26 @@ var file_aperio_sales_v1_sales_service_proto_depIdxs = []int32{
 	13, // 13: aperio.sales.v1.SalesService.DeclineQuote:input_type -> aperio.sales.v1.DeclineQuoteRequest
 	14, // 14: aperio.sales.v1.SalesService.ReviseQuote:input_type -> aperio.sales.v1.ReviseQuoteRequest
 	15, // 15: aperio.sales.v1.SalesService.SummarizePipeline:input_type -> aperio.sales.v1.SummarizePipelineRequest
-	16, // 16: aperio.sales.v1.SalesService.GetLead:output_type -> aperio.sales.v1.Lead
-	17, // 17: aperio.sales.v1.SalesService.ListLeads:output_type -> aperio.sales.v1.ListLeadsResponse
-	16, // 18: aperio.sales.v1.SalesService.CreateLead:output_type -> aperio.sales.v1.Lead
-	16, // 19: aperio.sales.v1.SalesService.UpdateLead:output_type -> aperio.sales.v1.Lead
-	18, // 20: aperio.sales.v1.SalesService.GetActivity:output_type -> aperio.sales.v1.Activity
-	19, // 21: aperio.sales.v1.SalesService.ListActivities:output_type -> aperio.sales.v1.ListActivitiesResponse
-	18, // 22: aperio.sales.v1.SalesService.CreateActivity:output_type -> aperio.sales.v1.Activity
-	20, // 23: aperio.sales.v1.SalesService.GetQuote:output_type -> aperio.sales.v1.Quote
-	21, // 24: aperio.sales.v1.SalesService.ListQuotes:output_type -> aperio.sales.v1.ListQuotesResponse
-	20, // 25: aperio.sales.v1.SalesService.CreateQuote:output_type -> aperio.sales.v1.Quote
-	20, // 26: aperio.sales.v1.SalesService.UpdateQuote:output_type -> aperio.sales.v1.Quote
-	20, // 27: aperio.sales.v1.SalesService.SendQuote:output_type -> aperio.sales.v1.Quote
-	20, // 28: aperio.sales.v1.SalesService.AcceptQuote:output_type -> aperio.sales.v1.Quote
-	20, // 29: aperio.sales.v1.SalesService.DeclineQuote:output_type -> aperio.sales.v1.Quote
-	20, // 30: aperio.sales.v1.SalesService.ReviseQuote:output_type -> aperio.sales.v1.Quote
-	22, // 31: aperio.sales.v1.SalesService.SummarizePipeline:output_type -> aperio.sales.v1.SummarizePipelineResponse
-	16, // [16:32] is the sub-list for method output_type
-	0,  // [0:16] is the sub-list for method input_type
+	16, // 16: aperio.sales.v1.SalesService.ShareQuote:input_type -> aperio.sales.v1.ShareQuoteRequest
+	17, // 17: aperio.sales.v1.SalesService.GetLead:output_type -> aperio.sales.v1.Lead
+	18, // 18: aperio.sales.v1.SalesService.ListLeads:output_type -> aperio.sales.v1.ListLeadsResponse
+	17, // 19: aperio.sales.v1.SalesService.CreateLead:output_type -> aperio.sales.v1.Lead
+	17, // 20: aperio.sales.v1.SalesService.UpdateLead:output_type -> aperio.sales.v1.Lead
+	19, // 21: aperio.sales.v1.SalesService.GetActivity:output_type -> aperio.sales.v1.Activity
+	20, // 22: aperio.sales.v1.SalesService.ListActivities:output_type -> aperio.sales.v1.ListActivitiesResponse
+	19, // 23: aperio.sales.v1.SalesService.CreateActivity:output_type -> aperio.sales.v1.Activity
+	21, // 24: aperio.sales.v1.SalesService.GetQuote:output_type -> aperio.sales.v1.Quote
+	22, // 25: aperio.sales.v1.SalesService.ListQuotes:output_type -> aperio.sales.v1.ListQuotesResponse
+	21, // 26: aperio.sales.v1.SalesService.CreateQuote:output_type -> aperio.sales.v1.Quote
+	21, // 27: aperio.sales.v1.SalesService.UpdateQuote:output_type -> aperio.sales.v1.Quote
+	21, // 28: aperio.sales.v1.SalesService.SendQuote:output_type -> aperio.sales.v1.Quote
+	21, // 29: aperio.sales.v1.SalesService.AcceptQuote:output_type -> aperio.sales.v1.Quote
+	21, // 30: aperio.sales.v1.SalesService.DeclineQuote:output_type -> aperio.sales.v1.Quote
+	21, // 31: aperio.sales.v1.SalesService.ReviseQuote:output_type -> aperio.sales.v1.Quote
+	23, // 32: aperio.sales.v1.SalesService.SummarizePipeline:output_type -> aperio.sales.v1.SummarizePipelineResponse
+	24, // 33: aperio.sales.v1.SalesService.ShareQuote:output_type -> aperio.sales.v1.ShareQuoteResponse
+	17, // [17:34] is the sub-list for method output_type
+	0,  // [0:17] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

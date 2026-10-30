@@ -102,7 +102,7 @@ const (
 	// Default; never persisted.
 	Payment_STATE_UNSPECIFIED Payment_State = 0
 	// Started, not yet settled: a gateway payment awaiting its webhook, a
-	// cheque not yet cleared.
+	// cheque or bank transfer the bank has not yet credited.
 	Payment_STATE_PENDING Payment_State = 1
 	// The money moved.
 	Payment_STATE_SUCCEEDED Payment_State = 2

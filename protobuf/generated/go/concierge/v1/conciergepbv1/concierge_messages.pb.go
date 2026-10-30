@@ -566,7 +566,10 @@ type ConfirmStayResponse struct {
 	Spoken string `protobuf:"bytes,3,opt,name=spoken,proto3" json:"spoken,omitempty"`
 	// The booking's short reference, e.g. "7F3A9C": what the guest quotes to
 	// find or cancel it with FindBooking and CancelBooking.
-	Reference     string `protobuf:"bytes,4,opt,name=reference,proto3" json:"reference,omitempty"`
+	Reference string `protobuf:"bytes,4,opt,name=reference,proto3" json:"reference,omitempty"`
+	// The page the guest pays the stay's advance on, when the venue takes
+	// payments online; empty otherwise, and staff send the details.
+	PaymentUrl    string `protobuf:"bytes,5,opt,name=payment_url,json=paymentUrl,proto3" json:"payment_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -625,6 +628,13 @@ func (x *ConfirmStayResponse) GetSpoken() string {
 func (x *ConfirmStayResponse) GetReference() string {
 	if x != nil {
 		return x.Reference
+	}
+	return ""
+}
+
+func (x *ConfirmStayResponse) GetPaymentUrl() string {
+	if x != nil {
+		return x.PaymentUrl
 	}
 	return ""
 }
@@ -1520,13 +1530,15 @@ const file_aperio_concierge_v1_concierge_messages_proto_rawDesc = "" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12*\n" +
 	"\n" +
 	"hold_token\x18\x02 \x01(\tB\v\xe2A\x01\x02\xbaH\x04r\x02\x10\x01R\tholdToken\x12\"\n" +
-	"\tconfirmed\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\tconfirmed\"\xb8\x01\n" +
+	"\tconfirmed\x18\x03 \x01(\bB\x04\xe2A\x01\x01R\tconfirmed\"\xd9\x01\n" +
 	"\x13ConfirmStayResponse\x12A\n" +
 	"\vreservation\x18\x01 \x01(\tB\x1f\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\vreservation\x12(\n" +
 	"\x05total\x18\x02 \x01(\v2\x12.google.type.MoneyR\x05total\x12\x16\n" +
 	"\x06spoken\x18\x03 \x01(\tR\x06spoken\x12\x1c\n" +
-	"\treference\x18\x04 \x01(\tR\treference\"\xd6\x01\n" +
+	"\treference\x18\x04 \x01(\tR\treference\x12\x1f\n" +
+	"\vpayment_url\x18\x05 \x01(\tR\n" +
+	"paymentUrl\"\xd6\x01\n" +
 	"\x12FindBookingRequest\x124\n" +
 	"\x05venue\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
 	"\x15aperio.venue.v1/VenueR\x05venue\x12#\n" +

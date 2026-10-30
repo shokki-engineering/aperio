@@ -13,7 +13,7 @@
 // pass by testing nothing.
 //
 //	APERIO_TEST_DATABASE_URL="host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" \
-//	APERIO_TEST_GRAPHQL_URL=http://localhost:3281/graphql \
+//	APERIO_TEST_GRAPHQL_URL=http://localhost:3280/graphql \
 //	  go test ./...
 package live
 

@@ -15,7 +15,9 @@ import (
 	date "google.golang.org/genproto/googleapis/type/date"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -862,11 +864,123 @@ func (x *StayBrief) GetRequests() []string {
 	return nil
 }
 
+// Request message for ShareReservation.
+type ShareReservationRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The reservation to share.
+	// Format: venues/{venue}/reservations/{reservation}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// How long the link stands; 14 days when unset.
+	Ttl           *durationpb.Duration `protobuf:"bytes,2,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ShareReservationRequest) Reset() {
+	*x = ShareReservationRequest{}
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShareReservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShareReservationRequest) ProtoMessage() {}
+
+func (x *ShareReservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShareReservationRequest.ProtoReflect.Descriptor instead.
+func (*ShareReservationRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_stay_v1_stay_messages_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ShareReservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ShareReservationRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
+}
+
+// Response message for ShareReservation.
+type ShareReservationResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The link to send the guest: the guest site's page for the reservation, with
+	// its signed token.
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	// When it lapses.
+	ExpireTime    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ShareReservationResponse) Reset() {
+	*x = ShareReservationResponse{}
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShareReservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShareReservationResponse) ProtoMessage() {}
+
+func (x *ShareReservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_stay_v1_stay_messages_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShareReservationResponse.ProtoReflect.Descriptor instead.
+func (*ShareReservationResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_stay_v1_stay_messages_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ShareReservationResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *ShareReservationResponse) GetExpireTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return nil
+}
+
 var File_aperio_stay_v1_stay_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_stay_v1_stay_messages_proto_rawDesc = "" +
 	"\n" +
-	"\"aperio/stay/v1/stay_messages.proto\x12\x0eaperio.stay.v1\x1a\x19aperio/stay/v1/stay.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x16google/type/date.proto\"P\n" +
+	"\"aperio/stay/v1/stay_messages.proto\x12\x0eaperio.stay.v1\x1a\x19aperio/stay/v1/stay.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\"P\n" +
 	"\x15GetReservationRequest\x127\n" +
 	"\x04name\x18\x01 \x01(\tB#\xe2A\x01\x02\xfaA\x1c\n" +
 	"\x1aaperio.stay.v1/ReservationR\x04name\"\xe7\x01\n" +
@@ -933,7 +1047,15 @@ const file_aperio_stay_v1_stay_messages_proto_rawDesc = "" +
 	"\bchildren\x18\b \x01(\x05R\bchildren\x12=\n" +
 	"\x05state\x18\t \x01(\x0e2!.aperio.stay.v1.Reservation.StateB\x04\xe2A\x01\x03R\x05state\x12\x1a\n" +
 	"\brequests\x18\n" +
-	" \x03(\tR\brequestsB\xd7\x01\n" +
+	" \x03(\tR\brequests\"\x97\x01\n" +
+	"\x17ShareReservationRequest\x127\n" +
+	"\x04name\x18\x01 \x01(\tB#\xe2A\x01\x02\xfaA\x1c\n" +
+	"\x1aaperio.stay.v1/ReservationR\x04name\x12C\n" +
+	"\x03ttl\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x16\xe2A\x01\x01\xbaH\x0f\xaa\x01\f\"\x05\b\x80\xce\xda\x032\x03\b\x90\x1cR\x03ttl\"i\n" +
+	"\x18ShareReservationResponse\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12;\n" +
+	"\vexpire_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"expireTimeB\xd7\x01\n" +
 	"\x12com.aperio.stay.v1B\x11StayMessagesProtoP\x01ZTgithub.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1;staypbv1\xa2\x02\x03ASX\xaa\x02\x0eAperio.Stay.V1\xca\x02\x0eAperio\\Stay\\V1\xe2\x02\x1aAperio\\Stay\\V1\\GPBMetadata\xea\x02\x10Aperio::Stay::V1b\x06proto3"
 
 var (
@@ -948,7 +1070,7 @@ func file_aperio_stay_v1_stay_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_stay_v1_stay_messages_proto_rawDescData
 }
 
-var file_aperio_stay_v1_stay_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_aperio_stay_v1_stay_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_aperio_stay_v1_stay_messages_proto_goTypes = []any{
 	(*GetReservationRequest)(nil),     // 0: aperio.stay.v1.GetReservationRequest
 	(*ListReservationsRequest)(nil),   // 1: aperio.stay.v1.ListReservationsRequest
@@ -962,27 +1084,33 @@ var file_aperio_stay_v1_stay_messages_proto_goTypes = []any{
 	(*SummarizeDayRequest)(nil),       // 9: aperio.stay.v1.SummarizeDayRequest
 	(*SummarizeDayResponse)(nil),      // 10: aperio.stay.v1.SummarizeDayResponse
 	(*StayBrief)(nil),                 // 11: aperio.stay.v1.StayBrief
-	(*Reservation)(nil),               // 12: aperio.stay.v1.Reservation
-	(*fieldmaskpb.FieldMask)(nil),     // 13: google.protobuf.FieldMask
-	(*date.Date)(nil),                 // 14: google.type.Date
-	(Reservation_State)(0),            // 15: aperio.stay.v1.Reservation.State
+	(*ShareReservationRequest)(nil),   // 12: aperio.stay.v1.ShareReservationRequest
+	(*ShareReservationResponse)(nil),  // 13: aperio.stay.v1.ShareReservationResponse
+	(*Reservation)(nil),               // 14: aperio.stay.v1.Reservation
+	(*fieldmaskpb.FieldMask)(nil),     // 15: google.protobuf.FieldMask
+	(*date.Date)(nil),                 // 16: google.type.Date
+	(Reservation_State)(0),            // 17: aperio.stay.v1.Reservation.State
+	(*durationpb.Duration)(nil),       // 18: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),     // 19: google.protobuf.Timestamp
 }
 var file_aperio_stay_v1_stay_messages_proto_depIdxs = []int32{
-	12, // 0: aperio.stay.v1.ListReservationsResponse.reservations:type_name -> aperio.stay.v1.Reservation
-	12, // 1: aperio.stay.v1.CreateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
-	12, // 2: aperio.stay.v1.UpdateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
-	13, // 3: aperio.stay.v1.UpdateReservationRequest.update_mask:type_name -> google.protobuf.FieldMask
-	14, // 4: aperio.stay.v1.SummarizeDayRequest.date:type_name -> google.type.Date
-	14, // 5: aperio.stay.v1.SummarizeDayResponse.date:type_name -> google.type.Date
+	14, // 0: aperio.stay.v1.ListReservationsResponse.reservations:type_name -> aperio.stay.v1.Reservation
+	14, // 1: aperio.stay.v1.CreateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
+	14, // 2: aperio.stay.v1.UpdateReservationRequest.reservation:type_name -> aperio.stay.v1.Reservation
+	15, // 3: aperio.stay.v1.UpdateReservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	16, // 4: aperio.stay.v1.SummarizeDayRequest.date:type_name -> google.type.Date
+	16, // 5: aperio.stay.v1.SummarizeDayResponse.date:type_name -> google.type.Date
 	11, // 6: aperio.stay.v1.SummarizeDayResponse.arrivals:type_name -> aperio.stay.v1.StayBrief
 	11, // 7: aperio.stay.v1.SummarizeDayResponse.departures:type_name -> aperio.stay.v1.StayBrief
 	11, // 8: aperio.stay.v1.SummarizeDayResponse.staying:type_name -> aperio.stay.v1.StayBrief
-	15, // 9: aperio.stay.v1.StayBrief.state:type_name -> aperio.stay.v1.Reservation.State
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	17, // 9: aperio.stay.v1.StayBrief.state:type_name -> aperio.stay.v1.Reservation.State
+	18, // 10: aperio.stay.v1.ShareReservationRequest.ttl:type_name -> google.protobuf.Duration
+	19, // 11: aperio.stay.v1.ShareReservationResponse.expire_time:type_name -> google.protobuf.Timestamp
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_aperio_stay_v1_stay_messages_proto_init() }
@@ -997,7 +1125,7 @@ func file_aperio_stay_v1_stay_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_stay_v1_stay_messages_proto_rawDesc), len(file_aperio_stay_v1_stay_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

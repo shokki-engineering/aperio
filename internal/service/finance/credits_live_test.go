@@ -53,7 +53,8 @@ func TestLiveCreditsAndClearing(t *testing.T) {
 		return inv
 	}
 
-	// ₹10,000 at 18% = ₹11,800, ₹1,000 of it paid by cheque.
+	// ₹10,000 at 18% = ₹11,800, ₹1,000 of it paid: ₹500 by cheque and ₹500 by
+	// bank transfer, each PENDING until cleared.
 	inv, err := svc.CreateInvoice(ctx, &financepbv1.CreateInvoiceRequest{Parent: v.GetName(), Invoice: &financepbv1.Invoice{
 		Kind: financepbv1.InvoiceKind_INVOICE_KIND_TAX_INVOICE, Contact: c.GetName(), SupplyStateCode: "29",
 		Lines: []*financepbv1.InvoiceLine{
@@ -64,20 +65,28 @@ func TestLiveCreditsAndClearing(t *testing.T) {
 	must(err, "create invoice")
 	inv, err = svc.IssueInvoice(ctx, &financepbv1.IssueInvoiceRequest{Name: inv.GetName()})
 	must(err, "issue")
-	cheque, err := svc.CreatePayment(ctx, &financepbv1.CreatePaymentRequest{Parent: v.GetName(), Payment: &financepbv1.Payment{
-		Contact: c.GetName(), Invoice: inv.GetName(), Kind: financepbv1.PaymentKind_PAYMENT_KIND_RECEIPT,
-		Method: financepbv1.PaymentMethod_PAYMENT_METHOD_CHEQUE, Amount: inr(1000, 0), Reference: "000123"}})
-	must(err, "record cheque")
-	if cheque.GetState() != financepbv1.Payment_STATE_PENDING || rupees(get(inv.GetName()).GetDue()) != "11800.00" {
-		t.Errorf("uncleared cheque: %v, due %s; want PENDING, 11800.00", cheque.GetState(), rupees(get(inv.GetName()).GetDue()))
-	}
-	cleared, err := svc.ClearPayment(ctx, &financepbv1.ClearPaymentRequest{Name: cheque.GetName()})
-	must(err, "clear")
-	if cleared.GetState() != financepbv1.Payment_STATE_SUCCEEDED || cleared.GetReceiveTime() == nil || rupees(get(inv.GetName()).GetDue()) != "10800.00" {
-		t.Errorf("cleared: %v at %v, due %s; want SUCCEEDED, 10800.00", cleared.GetState(), cleared.GetReceiveTime(), rupees(get(inv.GetName()).GetDue()))
-	}
-	if _, err := svc.ClearPayment(ctx, &financepbv1.ClearPaymentRequest{Name: cheque.GetName()}); err == nil {
-		t.Error("a cleared cheque was cleared again")
+	for _, p := range []struct {
+		method          financepbv1.PaymentMethod
+		ref, before, at string
+	}{
+		{financepbv1.PaymentMethod_PAYMENT_METHOD_CHEQUE, "000123", "11800.00", "11300.00"},
+		{financepbv1.PaymentMethod_PAYMENT_METHOD_BANK_TRANSFER, "UTR000123", "11300.00", "10800.00"},
+	} {
+		pay, err := svc.CreatePayment(ctx, &financepbv1.CreatePaymentRequest{Parent: v.GetName(), Payment: &financepbv1.Payment{
+			Contact: c.GetName(), Invoice: inv.GetName(), Kind: financepbv1.PaymentKind_PAYMENT_KIND_RECEIPT,
+			Method: p.method, Amount: inr(500, 0), Reference: p.ref}})
+		must(err, "record "+p.method.String())
+		if pay.GetState() != financepbv1.Payment_STATE_PENDING || rupees(get(inv.GetName()).GetDue()) != p.before {
+			t.Errorf("uncleared %v: %v, due %s; want PENDING, %s", p.method, pay.GetState(), rupees(get(inv.GetName()).GetDue()), p.before)
+		}
+		cleared, err := svc.ClearPayment(ctx, &financepbv1.ClearPaymentRequest{Name: pay.GetName()})
+		must(err, "clear")
+		if cleared.GetState() != financepbv1.Payment_STATE_SUCCEEDED || cleared.GetReceiveTime() == nil || rupees(get(inv.GetName()).GetDue()) != p.at {
+			t.Errorf("cleared %v: %v at %v, due %s; want SUCCEEDED, %s", p.method, cleared.GetState(), cleared.GetReceiveTime(), rupees(get(inv.GetName()).GetDue()), p.at)
+		}
+		if _, err := svc.ClearPayment(ctx, &financepbv1.ClearPaymentRequest{Name: pay.GetName()}); err == nil {
+			t.Errorf("a cleared %v was cleared again", p.method)
+		}
 	}
 
 	// A credit note for one night: ₹5,900 off what is due, settled at issue.

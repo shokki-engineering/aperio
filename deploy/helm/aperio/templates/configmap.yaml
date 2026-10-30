@@ -18,6 +18,7 @@ data:
   APERIO_PROFILE: release
   APERIO_SERVER__ENVIRONMENT: {{ .Values.server.environment | quote }}
   APERIO_SERVER__ENABLE_MCP: {{ .Values.server.enableMcp | quote }}
+  APERIO_SERVER__METRICS: {{ .Values.server.metrics | quote }}
   # Stop drains within the grace period, less the preStop sleep and 5 s to
   # flush telemetry and close connections.
   APERIO_SERVER__SHUTDOWN_TIMEOUT_SECONDS: {{ $stop | quote }}
@@ -34,6 +35,7 @@ data:
   APERIO_DATABASE__POSTGRES__MAX_IDLE_CONNS: {{ $pg.maxIdleConns | quote }}
   {{- if eq .Values.database.provider "hasura" }}
   APERIO_DATABASE__HASURA__URL: {{ required "database.hasura.url is required when database.provider is hasura" .Values.database.hasura.url | quote }}
+  APERIO_DATABASE__HASURA__CONNECT_TIMEOUT_SECONDS: {{ .Values.database.hasura.connectTimeoutSeconds | int | quote }}
   {{- end }}
   {{- with .Values.freebusy }}
   APERIO_FREEBUSY__ENDPOINT: {{ .endpoint | quote }}
@@ -42,6 +44,24 @@ data:
   APERIO_FREEBUSY__PUBLIC_URL: {{ .publicUrl | quote }}
   {{- if .ca.enabled }}
   APERIO_FREEBUSY__CA_FILE: /etc/aperio/freebusy/ca.crt
+  {{- end }}
+  {{- end }}
+  {{- with .Values.freebusySync }}
+  {{- with .webhookUrl }}
+  APERIO_FREEBUSY_SYNC__WEBHOOK_URL: {{ . | quote }}
+  {{- end }}
+  {{- with .webhookId }}
+  APERIO_FREEBUSY_SYNC__WEBHOOK_ID: {{ . | quote }}
+  {{- end }}
+  APERIO_FREEBUSY_SYNC__RECONCILE_INTERVAL_SECONDS: {{ .reconcileIntervalSeconds | int | quote }}
+  APERIO_FREEBUSY_SYNC__QUOTE_EXPIRY_INTERVAL_SECONDS: {{ .quoteExpiryIntervalSeconds | int | quote }}
+  {{- end }}
+  {{- with .Values.channels.bookingcom }}
+  {{- if .enabled }}
+  APERIO_CHANNELS__BOOKINGCOM__ENABLED: "true"
+  {{- end }}
+  {{- with .hotels }}
+  APERIO_CHANNELS__BOOKINGCOM__HOTELS_JSON: {{ include "aperio.bookingcomHotels" . | quote }}
   {{- end }}
   {{- end }}
   {{- with .Values.search }}
@@ -78,6 +98,12 @@ data:
   {{- with .clockSkewSeconds }}
   APERIO_AUTH__CLOCK_SKEW_SECONDS: {{ . | int | quote }}
   {{- end }}
+  {{- with .linkBaseUrl }}
+  APERIO_AUTH__LINK_BASE_URL: {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.concierge.advancePercent }}
+  APERIO_CONCIERGE__ADVANCE_PERCENT: {{ . | int | quote }}
   {{- end }}
   {{- with .Values.notify }}
   APERIO_NOTIFY__PROVIDER: {{ .provider | quote }}
@@ -127,6 +153,11 @@ data:
   {{- end }}
   {{- with .Values.telemetry }}
   APERIO_OTLP_ENDPOINT: {{ .otlpEndpoint | quote }}
+  {{- if not .otlpEndpoint }}
+  # No collector: the embedded telemetry.toml's local-dev endpoint would
+  # otherwise apply (telemetry writes its config to the writable /tmp).
+  OTEL_EXPORTER_OTLP_ENABLED: "false"
+  {{- end }}
   APERIO_OTLP_SECURE: {{ .otlpSecure | quote }}
   APERIO_TELEMETRY_ENVIRONMENT: {{ .environment | quote }}
   {{- with .site }}

@@ -76,6 +76,7 @@ A Lead is an enquiry that may become a booking: a couple asking about a December
 | `create_time` | `TIMESTAMPTZ` | not null |
 | `update_time` | `TIMESTAMPTZ` | not null |
 | `etag` | `VARCHAR(255)` | nullable |
+| `spaces` | `VARCHAR(255)[]` | nullable |
 
 ### `Activity` → `activities`
 

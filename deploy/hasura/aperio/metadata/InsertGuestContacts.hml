@@ -41,8 +41,8 @@ definition:
     - name: updateTime
       type: Timestamptz!
   graphql:
-    typeName: InsertGuestContactsObject
-    inputTypeName: InsertGuestContactsObjectInput
+    typeName: aperio_InsertGuestContactsObject
+    inputTypeName: aperio_InsertGuestContactsObjectInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_guest_contacts_object
@@ -144,8 +144,8 @@ definition:
       type: "[GuestContacts!]!"
       description: Data from rows affected by the mutation
   graphql:
-    typeName: InsertGuestContactsResponse
-    inputTypeName: InsertGuestContactsResponseInput
+    typeName: aperio_InsertGuestContactsResponse
+    inputTypeName: aperio_InsertGuestContactsResponseInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_guest_contacts_response
@@ -189,7 +189,7 @@ definition:
       objects: objects
       postCheck: post_check
   graphql:
-    rootFieldName: insertGuestContacts
+    rootFieldName: aperio_insertGuestContacts
     rootFieldKind: Mutation
   description: Insert into the guest_contacts table
 

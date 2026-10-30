@@ -9,7 +9,9 @@
 //     draft follows the rules as they change; its totals are the server's.
 //   - SendQuote fixes the prices and starts the offer's clock; DeclineQuote
 //     and ReviseQuote move it on (states.go); AcceptQuote makes its event and
-//     stay through the event and stay services and wins its lead (accept.go).
+//     stay through the event and stay services and wins its lead (accept.go),
+//     and raises its draft tax invoice through the finance service
+//     (invoice.go).
 package sales
 
 import (
@@ -35,12 +37,14 @@ type Pricer interface {
 	CalculatePrice(context.Context, *pricingpbv1.CalculatePriceRequest) (*pricingpbv1.CalculatePriceResponse, error)
 }
 
-// Events makes, finds and cancels the event an accepted quote becomes: the
-// event service.
+// Events makes, finds and cancels the event an accepted quote becomes, and
+// holds its halls: the event service. HoldHalls is its custom method (not an
+// RPC) recording the holds on the event's output-only freebusy_holds.
 type Events interface {
 	CreateEvent(context.Context, *eventpbv1.CreateEventRequest) (*eventpbv1.Event, error)
 	GetEvent(context.Context, *eventpbv1.GetEventRequest) (*eventpbv1.Event, error)
 	CancelEvent(context.Context, *eventpbv1.CancelEventRequest) (*eventpbv1.Event, error)
+	HoldHalls(ctx context.Context, name string, halls []booking.Hall) (*eventpbv1.Event, error)
 }
 
 // Stays makes and finds the stay an accepted quote becomes: the stay
@@ -57,6 +61,11 @@ type Server struct {
 	h      *hooks
 	events Events // nil, with stays: AcceptQuote is Unimplemented
 	stays  Stays
+	// invoices raises an accepted quote's draft tax invoice (invoice.go);
+	// nil until InvoiceWith, and then none is raised.
+	invoices Invoices
+	// share signs ShareQuote's links (share.go); unset until ShareLinksWith.
+	share sharer
 }
 
 // New returns the Server over repos, reading each venue's currency from
@@ -80,13 +89,14 @@ type hooks struct {
 	// contacts name the guests SummarizePipeline lists (pipeline.go); nil
 	// until ReadContactsFrom, and then it lists their resource names.
 	contacts guest.ContactRepository
-	// base holds a lead's dates and an accepted event's halls in freebusy
-	// (leads.go, halls.go); nil until HoldWith, and then nothing is held.
+	// base holds a lead's dates in freebusy (leads.go, lead_spaces.go); nil
+	// until HoldWith, and then no lead is held. An accepted event's halls
+	// are the event service's to hold (Events.HoldHalls).
 	base *booking.Base
 }
 
-// HoldWith holds through base: a lead's dates while it is negotiated, and
-// an accepted event quote's halls until its sessions replace the hold.
+// HoldWith holds through base a lead's dates -- its spaces, or any of the
+// venue's rooms -- while it is negotiated.
 func (s *Server) HoldWith(base *booking.Base) { s.h.base = base }
 
 // The resource types errors name.

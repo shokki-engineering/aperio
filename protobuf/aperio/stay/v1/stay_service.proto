@@ -99,4 +99,14 @@ service StayService {
     option (google.api.http) = {get: "/v1/{venue=venues/*}/reservations:summarizeDay"};
     option (google.api.method_signature) = "venue,date";
   }
+
+  // A link the guest opens to read this reservation without signing in: signed,
+  // read-only, for this reservation alone, lapsing after ttl.
+  rpc ShareReservation(ShareReservationRequest) returns (ShareReservationResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=venues/*/reservations/*}:share"
+      body: "*"
+    };
+    option (google.api.method_signature) = "name";
+  }
 }

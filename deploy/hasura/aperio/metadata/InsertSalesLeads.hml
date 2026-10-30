@@ -50,6 +50,8 @@ definition:
       type: Enum
     - name: sourceDetail
       type: String_1
+    - name: spaces
+      type: "[String_1]"
     - name: stage
       type: Enum
     - name: updateTime
@@ -57,8 +59,8 @@ definition:
     - name: venue
       type: String_1
   graphql:
-    typeName: InsertSalesLeadsObject
-    inputTypeName: InsertSalesLeadsObjectInput
+    typeName: aperio_InsertSalesLeadsObject
+    inputTypeName: aperio_InsertSalesLeadsObjectInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_sales_leads_object
@@ -132,6 +134,9 @@ definition:
         sourceDetail:
           column:
             name: source_detail
+        spaces:
+          column:
+            name: spaces
         stage:
           column:
             name: stage
@@ -174,6 +179,7 @@ definition:
           - rooms
           - source
           - sourceDetail
+          - spaces
           - stage
           - updateTime
           - venue
@@ -192,8 +198,8 @@ definition:
       type: "[SalesLeads!]!"
       description: Data from rows affected by the mutation
   graphql:
-    typeName: InsertSalesLeadsResponse
-    inputTypeName: InsertSalesLeadsResponseInput
+    typeName: aperio_InsertSalesLeadsResponse
+    inputTypeName: aperio_InsertSalesLeadsResponseInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_sales_leads_response
@@ -237,7 +243,7 @@ definition:
       objects: objects
       postCheck: post_check
   graphql:
-    rootFieldName: insertSalesLeads
+    rootFieldName: aperio_insertSalesLeads
     rootFieldKind: Mutation
   description: Insert into the sales_leads table
 

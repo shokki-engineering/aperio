@@ -29,6 +29,7 @@ import (
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/freebusysync"
 	"github.com/shokki-engineering/aperio/internal/service/event"
+	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/event/v1/eventpbv1svc"
 	"github.com/shokki-engineering/aperio/internal/service/stay"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/guest/v1/guestpbv1"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/stay/v1/staypbv1"
@@ -52,6 +53,10 @@ type fixture struct {
 	hall    string
 	contact string
 	run     string
+	// base and repos are what events was built from, for a test building
+	// another event service over them.
+	base  *booking.Base
+	repos eventpbv1svc.EventServiceRepositories
 }
 
 func setup(t *testing.T) *fixture {
@@ -84,8 +89,9 @@ func setup(t *testing.T) *fixture {
 	fb := live.NewFreebusy()
 	base := booking.NewBase(fb, venues, people.Contacts)
 	base.Search = conn
+	repos := live.EventRepositories(conn)
 	f := &fixture{fb: fb, venue: v.GetName(), rooms: rooms.GetName(), hall: hall.GetName(), contact: c.GetName(), run: run,
-		stays: stay.New(live.StayRepositories(conn), base), events: event.New(live.EventRepositories(conn), base)}
+		stays: stay.New(live.StayRepositories(conn), base), events: event.New(repos, base), base: base, repos: repos}
 	f.sync = freebusysync.New(fb, f.stays, f.events, nil)
 	return f
 }

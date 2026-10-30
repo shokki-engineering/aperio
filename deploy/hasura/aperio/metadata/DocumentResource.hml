@@ -39,8 +39,8 @@ definition:
     - name: visibility
       type: Enum
   graphql:
-    typeName: DocumentResource
-    inputTypeName: DocumentResourceInput
+    typeName: aperio_DocumentResource
+    inputTypeName: aperio_DocumentResourceInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: document_resource
@@ -171,7 +171,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: DocumentResourceBoolExp
+    typeName: aperio_DocumentResourceBoolExp
 
 ---
 kind: AggregateExpression
@@ -218,7 +218,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: DocumentResourceAggExp
+    selectTypeName: aperio_DocumentResourceAggExp
 
 ---
 kind: OrderByExpression
@@ -263,7 +263,7 @@ definition:
           orderByExpression: EnumOrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: DocumentResourceOrderByExp
+    expressionTypeName: aperio_DocumentResourceOrderByExp
 
 ---
 kind: Model
@@ -279,20 +279,20 @@ definition:
   orderByExpression: DocumentResourceOrderByExp
   graphql:
     selectMany:
-      queryRootField: documentResource
+      queryRootField: aperio_documentResource
       subscription:
-        rootField: documentResource
+        rootField: aperio_documentResource
     selectUniques:
-      - queryRootField: documentResourceById
+      - queryRootField: aperio_documentResourceById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: documentResourceById
-    filterInputTypeName: DocumentResourceFilterInput
+          rootField: aperio_documentResourceById
+    filterInputTypeName: aperio_DocumentResourceFilterInput
     aggregate:
-      queryRootField: documentResourceAggregate
+      queryRootField: aperio_documentResourceAggregate
       subscription:
-        rootField: documentResourceAggregate
+        rootField: aperio_documentResourceAggregate
 
 ---
 kind: ModelPermissions

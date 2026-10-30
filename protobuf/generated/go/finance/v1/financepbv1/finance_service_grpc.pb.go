@@ -38,6 +38,7 @@ const (
 	FinanceService_ClearPayment_FullMethodName         = "/aperio.finance.v1.FinanceService/ClearPayment"
 	FinanceService_RequestPayment_FullMethodName       = "/aperio.finance.v1.FinanceService/RequestPayment"
 	FinanceService_SummarizeReceivables_FullMethodName = "/aperio.finance.v1.FinanceService/SummarizeReceivables"
+	FinanceService_ShareInvoice_FullMethodName         = "/aperio.finance.v1.FinanceService/ShareInvoice"
 )
 
 // FinanceServiceClient is the client API for FinanceService service.
@@ -83,6 +84,9 @@ type FinanceServiceClient interface {
 	// outstanding and overdue, its age, who owes the most, and what came in
 	// this month.
 	SummarizeReceivables(ctx context.Context, in *SummarizeReceivablesRequest, opts ...grpc.CallOption) (*SummarizeReceivablesResponse, error)
+	// A link the guest opens to read this invoice without signing in: signed,
+	// read-only, for this invoice alone, lapsing after ttl.
+	ShareInvoice(ctx context.Context, in *ShareInvoiceRequest, opts ...grpc.CallOption) (*ShareInvoiceResponse, error)
 }
 
 type financeServiceClient struct {
@@ -253,6 +257,16 @@ func (c *financeServiceClient) SummarizeReceivables(ctx context.Context, in *Sum
 	return out, nil
 }
 
+func (c *financeServiceClient) ShareInvoice(ctx context.Context, in *ShareInvoiceRequest, opts ...grpc.CallOption) (*ShareInvoiceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShareInvoiceResponse)
+	err := c.cc.Invoke(ctx, FinanceService_ShareInvoice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinanceServiceServer is the server API for FinanceService service.
 // All implementations must embed UnimplementedFinanceServiceServer
 // for forward compatibility.
@@ -296,6 +310,9 @@ type FinanceServiceServer interface {
 	// outstanding and overdue, its age, who owes the most, and what came in
 	// this month.
 	SummarizeReceivables(context.Context, *SummarizeReceivablesRequest) (*SummarizeReceivablesResponse, error)
+	// A link the guest opens to read this invoice without signing in: signed,
+	// read-only, for this invoice alone, lapsing after ttl.
+	ShareInvoice(context.Context, *ShareInvoiceRequest) (*ShareInvoiceResponse, error)
 	mustEmbedUnimplementedFinanceServiceServer()
 }
 
@@ -353,6 +370,9 @@ func (UnimplementedFinanceServiceServer) RequestPayment(context.Context, *Reques
 }
 func (UnimplementedFinanceServiceServer) SummarizeReceivables(context.Context, *SummarizeReceivablesRequest) (*SummarizeReceivablesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SummarizeReceivables not implemented")
+}
+func (UnimplementedFinanceServiceServer) ShareInvoice(context.Context, *ShareInvoiceRequest) (*ShareInvoiceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ShareInvoice not implemented")
 }
 func (UnimplementedFinanceServiceServer) mustEmbedUnimplementedFinanceServiceServer() {}
 func (UnimplementedFinanceServiceServer) testEmbeddedByValue()                        {}
@@ -663,6 +683,24 @@ func _FinanceService_SummarizeReceivables_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinanceService_ShareInvoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShareInvoiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinanceServiceServer).ShareInvoice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinanceService_ShareInvoice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinanceServiceServer).ShareInvoice(ctx, req.(*ShareInvoiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinanceService_ServiceDesc is the grpc.ServiceDesc for FinanceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -733,6 +771,10 @@ var FinanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SummarizeReceivables",
 			Handler:    _FinanceService_SummarizeReceivables_Handler,
+		},
+		{
+			MethodName: "ShareInvoice",
+			Handler:    _FinanceService_ShareInvoice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

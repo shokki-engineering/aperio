@@ -1551,6 +1551,118 @@ func (x *QuoteBrief) GetExpireTime() *timestamppb.Timestamp {
 	return nil
 }
 
+// Request message for ShareQuote.
+type ShareQuoteRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The quote to share.
+	// Format: venues/{venue}/quotes/{quote}
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// How long the link stands; 14 days when unset.
+	Ttl           *durationpb.Duration `protobuf:"bytes,2,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ShareQuoteRequest) Reset() {
+	*x = ShareQuoteRequest{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShareQuoteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShareQuoteRequest) ProtoMessage() {}
+
+func (x *ShareQuoteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShareQuoteRequest.ProtoReflect.Descriptor instead.
+func (*ShareQuoteRequest) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ShareQuoteRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ShareQuoteRequest) GetTtl() *durationpb.Duration {
+	if x != nil {
+		return x.Ttl
+	}
+	return nil
+}
+
+// Response message for ShareQuote.
+type ShareQuoteResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The link to send the guest: the guest site's page for the quote, with
+	// its signed token.
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	// When it lapses.
+	ExpireTime    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ShareQuoteResponse) Reset() {
+	*x = ShareQuoteResponse{}
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShareQuoteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShareQuoteResponse) ProtoMessage() {}
+
+func (x *ShareQuoteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_aperio_sales_v1_sales_messages_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShareQuoteResponse.ProtoReflect.Descriptor instead.
+func (*ShareQuoteResponse) Descriptor() ([]byte, []int) {
+	return file_aperio_sales_v1_sales_messages_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ShareQuoteResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *ShareQuoteResponse) GetExpireTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return nil
+}
+
 var File_aperio_sales_v1_sales_messages_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
@@ -1673,6 +1785,14 @@ const file_aperio_sales_v1_sales_messages_proto_rawDesc = "" +
 	"\acontact\x18\x03 \x01(\tR\acontact\x12(\n" +
 	"\x05total\x18\x04 \x01(\v2\x12.google.type.MoneyR\x05total\x12;\n" +
 	"\vexpire_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"expireTime\"\x8c\x01\n" +
+	"\x11ShareQuoteRequest\x122\n" +
+	"\x04name\x18\x01 \x01(\tB\x1e\xe2A\x01\x02\xfaA\x17\n" +
+	"\x15aperio.sales.v1/QuoteR\x04name\x12C\n" +
+	"\x03ttl\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x16\xe2A\x01\x01\xbaH\x0f\xaa\x01\f\"\x05\b\x80\xce\xda\x032\x03\b\x90\x1cR\x03ttl\"c\n" +
+	"\x12ShareQuoteResponse\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12;\n" +
+	"\vexpire_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"expireTimeB\xe0\x01\n" +
 	"\x13com.aperio.sales.v1B\x12SalesMessagesProtoP\x01ZWgithub.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1;salespbv1\xa2\x02\x03ASX\xaa\x02\x0fAperio.Sales.V1\xca\x02\x0fAperio\\Sales\\V1\xe2\x02\x1bAperio\\Sales\\V1\\GPBMetadata\xea\x02\x11Aperio::Sales::V1b\x06proto3"
 
@@ -1688,7 +1808,7 @@ func file_aperio_sales_v1_sales_messages_proto_rawDescGZIP() []byte {
 	return file_aperio_sales_v1_sales_messages_proto_rawDescData
 }
 
-var file_aperio_sales_v1_sales_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_aperio_sales_v1_sales_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_aperio_sales_v1_sales_messages_proto_goTypes = []any{
 	(*GetLeadRequest)(nil),            // 0: aperio.sales.v1.GetLeadRequest
 	(*ListLeadsRequest)(nil),          // 1: aperio.sales.v1.ListLeadsRequest
@@ -1713,42 +1833,46 @@ var file_aperio_sales_v1_sales_messages_proto_goTypes = []any{
 	(*StageCount)(nil),                // 20: aperio.sales.v1.StageCount
 	(*LeadBrief)(nil),                 // 21: aperio.sales.v1.LeadBrief
 	(*QuoteBrief)(nil),                // 22: aperio.sales.v1.QuoteBrief
-	(*Lead)(nil),                      // 23: aperio.sales.v1.Lead
-	(*fieldmaskpb.FieldMask)(nil),     // 24: google.protobuf.FieldMask
-	(*Activity)(nil),                  // 25: aperio.sales.v1.Activity
-	(*Quote)(nil),                     // 26: aperio.sales.v1.Quote
-	(*durationpb.Duration)(nil),       // 27: google.protobuf.Duration
-	(Stage)(0),                        // 28: aperio.sales.v1.Stage
-	(*timestamppb.Timestamp)(nil),     // 29: google.protobuf.Timestamp
-	(*money.Money)(nil),               // 30: google.type.Money
+	(*ShareQuoteRequest)(nil),         // 23: aperio.sales.v1.ShareQuoteRequest
+	(*ShareQuoteResponse)(nil),        // 24: aperio.sales.v1.ShareQuoteResponse
+	(*Lead)(nil),                      // 25: aperio.sales.v1.Lead
+	(*fieldmaskpb.FieldMask)(nil),     // 26: google.protobuf.FieldMask
+	(*Activity)(nil),                  // 27: aperio.sales.v1.Activity
+	(*Quote)(nil),                     // 28: aperio.sales.v1.Quote
+	(*durationpb.Duration)(nil),       // 29: google.protobuf.Duration
+	(Stage)(0),                        // 30: aperio.sales.v1.Stage
+	(*timestamppb.Timestamp)(nil),     // 31: google.protobuf.Timestamp
+	(*money.Money)(nil),               // 32: google.type.Money
 }
 var file_aperio_sales_v1_sales_messages_proto_depIdxs = []int32{
-	23, // 0: aperio.sales.v1.ListLeadsResponse.leads:type_name -> aperio.sales.v1.Lead
-	23, // 1: aperio.sales.v1.CreateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
-	23, // 2: aperio.sales.v1.UpdateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
-	24, // 3: aperio.sales.v1.UpdateLeadRequest.update_mask:type_name -> google.protobuf.FieldMask
-	25, // 4: aperio.sales.v1.ListActivitiesResponse.activities:type_name -> aperio.sales.v1.Activity
-	25, // 5: aperio.sales.v1.CreateActivityRequest.activity:type_name -> aperio.sales.v1.Activity
-	26, // 6: aperio.sales.v1.ListQuotesResponse.quotes:type_name -> aperio.sales.v1.Quote
-	26, // 7: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
-	26, // 8: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
-	24, // 9: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
-	27, // 10: aperio.sales.v1.SendQuoteRequest.ttl:type_name -> google.protobuf.Duration
+	25, // 0: aperio.sales.v1.ListLeadsResponse.leads:type_name -> aperio.sales.v1.Lead
+	25, // 1: aperio.sales.v1.CreateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
+	25, // 2: aperio.sales.v1.UpdateLeadRequest.lead:type_name -> aperio.sales.v1.Lead
+	26, // 3: aperio.sales.v1.UpdateLeadRequest.update_mask:type_name -> google.protobuf.FieldMask
+	27, // 4: aperio.sales.v1.ListActivitiesResponse.activities:type_name -> aperio.sales.v1.Activity
+	27, // 5: aperio.sales.v1.CreateActivityRequest.activity:type_name -> aperio.sales.v1.Activity
+	28, // 6: aperio.sales.v1.ListQuotesResponse.quotes:type_name -> aperio.sales.v1.Quote
+	28, // 7: aperio.sales.v1.CreateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
+	28, // 8: aperio.sales.v1.UpdateQuoteRequest.quote:type_name -> aperio.sales.v1.Quote
+	26, // 9: aperio.sales.v1.UpdateQuoteRequest.update_mask:type_name -> google.protobuf.FieldMask
+	29, // 10: aperio.sales.v1.SendQuoteRequest.ttl:type_name -> google.protobuf.Duration
 	20, // 11: aperio.sales.v1.SummarizePipelineResponse.stages:type_name -> aperio.sales.v1.StageCount
 	21, // 12: aperio.sales.v1.SummarizePipelineResponse.follow_ups:type_name -> aperio.sales.v1.LeadBrief
 	21, // 13: aperio.sales.v1.SummarizePipelineResponse.uncontacted:type_name -> aperio.sales.v1.LeadBrief
 	22, // 14: aperio.sales.v1.SummarizePipelineResponse.expiring:type_name -> aperio.sales.v1.QuoteBrief
-	28, // 15: aperio.sales.v1.StageCount.stage:type_name -> aperio.sales.v1.Stage
-	28, // 16: aperio.sales.v1.LeadBrief.stage:type_name -> aperio.sales.v1.Stage
-	29, // 17: aperio.sales.v1.LeadBrief.next_follow_up_time:type_name -> google.protobuf.Timestamp
-	29, // 18: aperio.sales.v1.LeadBrief.create_time:type_name -> google.protobuf.Timestamp
-	30, // 19: aperio.sales.v1.QuoteBrief.total:type_name -> google.type.Money
-	29, // 20: aperio.sales.v1.QuoteBrief.expire_time:type_name -> google.protobuf.Timestamp
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	30, // 15: aperio.sales.v1.StageCount.stage:type_name -> aperio.sales.v1.Stage
+	30, // 16: aperio.sales.v1.LeadBrief.stage:type_name -> aperio.sales.v1.Stage
+	31, // 17: aperio.sales.v1.LeadBrief.next_follow_up_time:type_name -> google.protobuf.Timestamp
+	31, // 18: aperio.sales.v1.LeadBrief.create_time:type_name -> google.protobuf.Timestamp
+	32, // 19: aperio.sales.v1.QuoteBrief.total:type_name -> google.type.Money
+	31, // 20: aperio.sales.v1.QuoteBrief.expire_time:type_name -> google.protobuf.Timestamp
+	29, // 21: aperio.sales.v1.ShareQuoteRequest.ttl:type_name -> google.protobuf.Duration
+	31, // 22: aperio.sales.v1.ShareQuoteResponse.expire_time:type_name -> google.protobuf.Timestamp
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_aperio_sales_v1_sales_messages_proto_init() }
@@ -1764,7 +1888,7 @@ func file_aperio_sales_v1_sales_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aperio_sales_v1_sales_messages_proto_rawDesc), len(file_aperio_sales_v1_sales_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

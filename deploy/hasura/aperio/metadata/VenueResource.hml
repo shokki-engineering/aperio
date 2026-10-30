@@ -31,8 +31,8 @@ definition:
     - name: updateTime
       type: Timestamptz!
   graphql:
-    typeName: VenueResource
-    inputTypeName: VenueResourceInput
+    typeName: aperio_VenueResource
+    inputTypeName: aperio_VenueResourceInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: venue_resource
@@ -141,7 +141,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: VenueResourceBoolExp
+    typeName: aperio_VenueResourceBoolExp
 
 ---
 kind: AggregateExpression
@@ -182,7 +182,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: VenueResourceAggExp
+    selectTypeName: aperio_VenueResourceAggExp
 
 ---
 kind: OrderByExpression
@@ -221,7 +221,7 @@ definition:
           orderByExpression: TimestamptzOrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: VenueResourceOrderByExp
+    expressionTypeName: aperio_VenueResourceOrderByExp
 
 ---
 kind: Model
@@ -237,20 +237,20 @@ definition:
   orderByExpression: VenueResourceOrderByExp
   graphql:
     selectMany:
-      queryRootField: venueResource
+      queryRootField: aperio_venueResource
       subscription:
-        rootField: venueResource
+        rootField: aperio_venueResource
     selectUniques:
-      - queryRootField: venueResourceById
+      - queryRootField: aperio_venueResourceById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: venueResourceById
-    filterInputTypeName: VenueResourceFilterInput
+          rootField: aperio_venueResourceById
+    filterInputTypeName: aperio_VenueResourceFilterInput
     aggregate:
-      queryRootField: venueResourceAggregate
+      queryRootField: aperio_venueResourceAggregate
       subscription:
-        rootField: venueResourceAggregate
+        rootField: aperio_venueResourceAggregate
 
 ---
 kind: ModelPermissions

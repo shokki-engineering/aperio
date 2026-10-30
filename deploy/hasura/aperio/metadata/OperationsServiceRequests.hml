@@ -47,8 +47,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: OperationsServiceRequests
-    inputTypeName: OperationsServiceRequestsInput
+    typeName: aperio_OperationsServiceRequests
+    inputTypeName: aperio_OperationsServiceRequestsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: operations_service_requests
@@ -205,7 +205,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: OperationsServiceRequestsBoolExp
+    typeName: aperio_OperationsServiceRequestsBoolExp
 
 ---
 kind: AggregateExpression
@@ -262,7 +262,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: OperationsServiceRequestsAggExp
+    selectTypeName: aperio_OperationsServiceRequestsAggExp
 
 ---
 kind: OrderByExpression
@@ -317,7 +317,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: OperationsServiceRequestsOrderByExp
+    expressionTypeName: aperio_OperationsServiceRequestsOrderByExp
 
 ---
 kind: Model
@@ -333,20 +333,20 @@ definition:
   orderByExpression: OperationsServiceRequestsOrderByExp
   graphql:
     selectMany:
-      queryRootField: operationsServiceRequests
+      queryRootField: aperio_operationsServiceRequests
       subscription:
-        rootField: operationsServiceRequests
+        rootField: aperio_operationsServiceRequests
     selectUniques:
-      - queryRootField: operationsServiceRequestsById
+      - queryRootField: aperio_operationsServiceRequestsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: operationsServiceRequestsById
-    filterInputTypeName: OperationsServiceRequestsFilterInput
+          rootField: aperio_operationsServiceRequestsById
+    filterInputTypeName: aperio_OperationsServiceRequestsFilterInput
     aggregate:
-      queryRootField: operationsServiceRequestsAggregate
+      queryRootField: aperio_operationsServiceRequestsAggregate
       subscription:
-        rootField: operationsServiceRequestsAggregate
+        rootField: aperio_operationsServiceRequestsAggregate
 
 ---
 kind: ModelPermissions

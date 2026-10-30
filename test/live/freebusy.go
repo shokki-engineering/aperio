@@ -31,6 +31,9 @@ type Freebusy struct {
 
 	// FailOn makes Book fail as unavailable for keys ending in it.
 	FailOn string
+	// OnCancel, when set, runs before Cancel returns, as freebusy's webhook
+	// for the cancel can arrive before the caller moves on.
+	OnCancel func(reservation string)
 }
 
 // claim is what one hold or reservation takes.
@@ -119,12 +122,15 @@ func (f *Freebusy) Book(_ context.Context, b engine.Booking) (string, error) {
 
 func (f *Freebusy) Cancel(_ context.Context, reservation, _ string) error {
 	f.mu.Lock()
-	defer f.mu.Unlock()
 	if _, live := f.claims[reservation]; live {
 		f.ended[reservation] = true
 	}
 	delete(f.claims, reservation)
 	delete(f.notes, reservation)
+	f.mu.Unlock()
+	if f.OnCancel != nil {
+		f.OnCancel(reservation)
+	}
 	return nil
 }
 

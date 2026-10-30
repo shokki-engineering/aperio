@@ -529,7 +529,7 @@ var File_aperio_operations_v1_operations_proto protoreflect.FileDescriptor
 
 const file_aperio_operations_v1_operations_proto_rawDesc = "" +
 	"\n" +
-	"%aperio/operations/v1/operations.proto\x12\x14aperio.operations.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\x1a\x1cservice/v1/annotations.proto\x1a\x1astore/v1/annotations.proto\"\xeb\x0e\n" +
+	"%aperio/operations/v1/operations.proto\x12\x14aperio.operations.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto\x1a\x1cservice/v1/annotations.proto\x1a\x1astore/v1/annotations.proto\"\x81\x0f\n" +
 	"\x0eServiceRequest\x12F\n" +
 	"\x04name\x18\x01 \x01(\tB2\xe2A\x01\b\xbaH+\xd8\x01\x01r&2$^venues/[^/]+/serviceRequests/[^/]+$R\x04name\x12.\n" +
 	"\asummary\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xf4\x03\xe2\xb5\x18\x02\x18\x01R\asummary\x12U\n" +
@@ -585,13 +585,15 @@ const file_aperio_operations_v1_operations_proto_rawDesc = "" +
 	"\x14PRIORITY_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPRIORITY_LOW\x10\x01\x12\x13\n" +
 	"\x0fPRIORITY_NORMAL\x10\x02\x12\x13\n" +
-	"\x0fPRIORITY_URGENT\x10\x03:\xd6\x01\xeaAx\n" +
-	"#aperio.operations.v1/ServiceRequest\x120venues/{venue}/serviceRequests/{service_request}*\x0fserviceRequests2\x0eserviceRequest\xca\xf3\x180\x18\x01*\x1d\n" +
+	"\x0fPRIORITY_URGENT\x10\x03:\xec\x01\xeaAx\n" +
+	"#aperio.operations.v1/ServiceRequest\x120venues/{venue}/serviceRequests/{service_request}*\x0fserviceRequests2\x0eserviceRequest\xca\xf3\x18F\x18\x01*\x1d\n" +
 	"\n" +
 	"department\n" +
 	"\x05state\n" +
 	"\bdue_time*\r\n" +
-	"\vupdate_time\xd2\xf0\x19#\n" +
+	"\vupdate_time*\x14\n" +
+	"\x05state\n" +
+	"\vcreate_time\xd2\xf0\x19#\n" +
 	"!aperio.operations.service_request\"\xc0\x01\n" +
 	"\vRequestItem\x123\n" +
 	"\x04dish\x18\x01 \x01(\tB\x1f\xe2A\x01\x01\xfaA\x18\n" +

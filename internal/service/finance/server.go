@@ -22,13 +22,17 @@
 //     (gateway.go), RequestPayment asks for one by a link (requests.go),
 //     ClearPayment clears a cheque (clearing.go); RefundPayment and
 //     VoidPayment undo one (refunds.go). An advance before the tax invoice
-//     gets a receipt voucher (advances.go, vouchers.go).
+//     gets a receipt voucher (advances.go, vouchers.go), and its refund a
+//     refund voucher (refundvouchers.go).
+//
+//   - ShareInvoice signs a guest's read-only link to one invoice (share.go).
 package finance
 
 import (
 	"context"
 	"time"
 
+	"github.com/shokki-engineering/aperio/internal/auth"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/guest"
 	"github.com/shokki-engineering/aperio/internal/database/repository/aperio/venue"
 	"github.com/shokki-engineering/aperio/internal/service/generated/aperio/finance/v1/financepbv1svc"
@@ -66,6 +70,8 @@ type hooks struct {
 	gateways  map[string]Gateway
 	linker    PaymentLinker           // makes RequestPayment's links; nil: none
 	contacts  guest.ContactRepository // names debtors; nil: unnamed
+	links     *auth.Links             // signs ShareInvoice's links; nil: none
+	linkBase  string                  // the guest site those links open
 	now       func() time.Time
 }
 

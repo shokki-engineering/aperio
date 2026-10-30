@@ -39,8 +39,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: PricingPriceRules
-    inputTypeName: PricingPriceRulesInput
+    typeName: aperio_PricingPriceRules
+    inputTypeName: aperio_PricingPriceRulesInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: pricing_price_rules
@@ -171,7 +171,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: PricingPriceRulesBoolExp
+    typeName: aperio_PricingPriceRulesBoolExp
 
 ---
 kind: AggregateExpression
@@ -218,7 +218,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: PricingPriceRulesAggExp
+    selectTypeName: aperio_PricingPriceRulesAggExp
 
 ---
 kind: OrderByExpression
@@ -263,7 +263,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: PricingPriceRulesOrderByExp
+    expressionTypeName: aperio_PricingPriceRulesOrderByExp
 
 ---
 kind: Model
@@ -279,20 +279,20 @@ definition:
   orderByExpression: PricingPriceRulesOrderByExp
   graphql:
     selectMany:
-      queryRootField: pricingPriceRules
+      queryRootField: aperio_pricingPriceRules
       subscription:
-        rootField: pricingPriceRules
+        rootField: aperio_pricingPriceRules
     selectUniques:
-      - queryRootField: pricingPriceRulesById
+      - queryRootField: aperio_pricingPriceRulesById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: pricingPriceRulesById
-    filterInputTypeName: PricingPriceRulesFilterInput
+          rootField: aperio_pricingPriceRulesById
+    filterInputTypeName: aperio_PricingPriceRulesFilterInput
     aggregate:
-      queryRootField: pricingPriceRulesAggregate
+      queryRootField: aperio_pricingPriceRulesAggregate
       subscription:
-        rootField: pricingPriceRulesAggregate
+        rootField: aperio_pricingPriceRulesAggregate
 
 ---
 kind: ModelPermissions

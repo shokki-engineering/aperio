@@ -14,9 +14,9 @@ package sales
 // new ones). Holding is best effort: a lead whose rooms are taken is stored
 // without a hold, as the interest is real whether or not they are free.
 //
-// A lead names how many rooms but not which, nor a hall, so the hold takes
-// any of the venue's rooms and an event lead holds no hall; holding a named
-// space needs a field the Lead does not have.
+// What is held is what the lead asks for (lead_spaces.go): the halls or room
+// types it names (Lead.spaces), as many as rooms of a room type and one of
+// a hall; a lead naming none holds rooms of any of the venue's room types.
 
 import (
 	"context"
@@ -26,11 +26,9 @@ import (
 	"time"
 
 	"github.com/shokki-engineering/aperio/internal/booking"
-	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/internal/engine"
 	"github.com/shokki-engineering/aperio/internal/service/generated/servicex"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
-	"github.com/shokki-engineering/aperio/protobuf/generated/go/venue/v1/venuepbv1"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -44,11 +42,11 @@ func (h *hooks) AfterCreateLead(ctx context.Context, out *salespbv1.Lead) error 
 	return nil
 }
 
-// BeforeUpdateLead releases the hold of a lead whose dates, rooms or venue
-// change, or that is won or lost: AfterUpdateLead takes one for what it
+// BeforeUpdateLead releases the hold of a lead whose dates, rooms, spaces or
+// venue change, or that is won or lost: AfterUpdateLead takes one for what it
 // asks now, if anything.
 func (h *hooks) BeforeUpdateLead(ctx context.Context, m *salespbv1.Lead, paths []string) error {
-	asks := servicex.TouchesAny(paths, []string{"venue", "dates", "rooms"})
+	asks := servicex.TouchesAny(paths, []string{"venue", "dates", "rooms", "spaces"})
 	closes := servicex.TouchesAny(paths, []string{"stage"}) &&
 		(m.GetStage() == salespbv1.Stage_STAGE_WON || m.GetStage() == salespbv1.Stage_STAGE_LOST)
 	if h.base == nil || (!asks && !closes) {
@@ -68,10 +66,10 @@ func (h *hooks) AfterUpdateLead(ctx context.Context, out *salespbv1.Lead) error 
 }
 
 // holds reports whether l asks for a hold: open, at a venue, with dates and
-// rooms.
+// rooms or spaces.
 func holds(l *salespbv1.Lead) bool {
 	open := l.GetStage() != salespbv1.Stage_STAGE_WON && l.GetStage() != salespbv1.Stage_STAGE_LOST
-	return open && l.GetVenue() != "" && len(l.GetDates()) > 0 && l.GetRooms() > 0
+	return open && l.GetVenue() != "" && len(l.GetDates()) > 0 && (l.GetRooms() > 0 || len(l.GetSpaces()) > 0)
 }
 
 // keepHold makes l's hold what l asks: none, the one it has a day longer, or
@@ -115,26 +113,19 @@ func (h *hooks) keepHold(ctx context.Context, l *salespbv1.Lead) {
 	proto.Merge(l, updated)
 }
 
-// takeHold holds l.rooms of its venue's rooms for the nights of its first
-// dates, for leadHoldTTL.
+// takeHold holds what l asks for (wants) for its first dates, for
+// leadHoldTTL.
 func (h *hooks) takeHold(ctx context.Context, l *salespbv1.Lead) (string, error) {
 	loc, err := h.base.Zone(ctx, l.GetVenue())
 	if err != nil {
 		return "", err
 	}
-	rooms, err := h.roomsOf(ctx, l.GetVenue())
-	if err != nil || len(rooms) == 0 {
+	want, err := h.wants(ctx, l, loc)
+	if err != nil || len(want.Resources) == 0 {
 		return "", err
 	}
-	d := l.GetDates()[0]
-	depart := d.GetEndDate()
-	if days(d.GetStartDate(), depart) < 1 {
-		depart = addDays(d.GetStartDate(), 1)
-	}
-	held, err := h.base.Engine.Hold(ctx, engine.Booking{
-		Key: booking.LeadKey(l.GetName(), h.now()), Resources: rooms,
-		Window: engine.Stay(d.GetStartDate(), depart, loc), Quantity: l.GetRooms(),
-	})
+	want.Key = booking.LeadKey(l.GetName(), h.now())
+	held, err := h.base.Engine.Hold(ctx, want)
 	if err != nil {
 		return "", err
 	}
@@ -142,27 +133,6 @@ func (h *hooks) takeHold(ctx context.Context, l *salespbv1.Lead) (string, error)
 		return held.Name, fmt.Errorf("held for minutes only: %w", err)
 	}
 	return held.Name, nil
-}
-
-// roomsOf is the freebusy resources of every room of venueName.
-func (h *hooks) roomsOf(ctx context.Context, venueName string) ([]string, error) {
-	var out []string
-	in := repox.ListInput{PageSize: 200}
-	for {
-		spaces, next, err := h.base.Spaces.List(ctx, venueName, in)
-		if err != nil {
-			return nil, err
-		}
-		for _, sp := range spaces {
-			if k := sp.GetKind(); k == venuepbv1.SpaceKind_SPACE_KIND_ROOM_TYPE || k == venuepbv1.SpaceKind_SPACE_KIND_UNIT {
-				out = append(out, sp.GetResources()...)
-			}
-		}
-		if next == "" {
-			return out, nil
-		}
-		in.PageToken = next
-	}
 }
 
 // letGo releases lead's hold, logging a failure: freebusy lapses it within a

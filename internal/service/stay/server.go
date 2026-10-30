@@ -26,6 +26,9 @@ import (
 type Server struct {
 	*staypbv1svc.StayServiceServer
 	h *hooks
+	// share signs ShareReservation's links (share.go); unset until
+	// ShareLinksWith.
+	share sharer
 }
 
 // New returns the Server over repos, taking rooms through base.

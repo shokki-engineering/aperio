@@ -74,7 +74,7 @@ flowchart LR
     end
 
     gen -->|"GORM"| pg[("aperio Postgres<br/>Prisma migrations")]
-    gen -.->|"aperioql (optional)"| ddn["Hasura DDN :3281"]
+    gen -.->|"aperioql (optional)"| ddn["Hasura DDN :3280"]
     ddn --- pg
     gen -.->|"list caches (optional)"| redis[("Redis")]
     gen -.->|"read-model copy (optional)"| os[("OpenSearch")]
@@ -109,7 +109,7 @@ taking it.
   stored whole, as JSONB documents. Anything that's searched or reported on
   gets a column of its own.
 - **Hasura DDN** puts a typed GraphQL API over that database (connector
-  `aperio_pgsql`, engine `:3281`). Set `[database] provider = "hasura"` to
+  `aperio_pgsql`, engine `:3280`). Set `[database] provider = "hasura"` to
   make the generated repositories read through it (`aperioql`). Reporting
   and frontends can query it directly. The default, `gorm`, talks to
   Postgres directly.
@@ -565,7 +565,7 @@ or run the DDN project in `deploy/hasura` with the ddn CLI:
 
 ```sh
 cd deploy/hasura && cp .env.example .env
-ddn supergraph build local && ddn run docker-start -- -d   # engine on :3281
+ddn supergraph build local && ddn run docker-start -- -d   # engine on :3280
 ```
 
 After a migration that adds or renames tables, regenerate the metadata and
@@ -638,13 +638,13 @@ just test-live   # every suite against Postgres, Hasura and Redis
 ```
 
 `just test-live` needs the dev Postgres with migrations applied
-(`just db up`, `just db deploy`), the Hasura engine on `:3281`, and Redis on
+(`just db up`, `just db deploy`), the Hasura engine on `:3280`, and Redis on
 `127.0.0.1:6379` (`just stack up cache`, or any Redis). Any suite that can't
 reach its backend fails instead of skipping. The defaults can be overridden:
 
 ```sh
 just test-live "host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" \
-  http://localhost:3281/graphql 127.0.0.1:6379
+  http://localhost:3280/graphql 127.0.0.1:6379
 ```
 
 The OpenSearch suite runs only when `APERIO_TEST_OPENSEARCH_URL` is set:

@@ -7,12 +7,56 @@ set working-directory := '../..'
 
 # Connector link name + endpoint to poll/verify. Override via env or CLI.
 connector := env_var_or_default("HASURA_CONNECTOR", "aperio_pgsql")
-graphql_url := env_var_or_default("GRAPHQL_URL", "http://localhost:3281/graphql")
+graphql_url := env_var_or_default("GRAPHQL_URL", "http://localhost:3280/graphql")
 
 # List recipes (avoids a bare `just hasura` firing a destructive full regen).
 [group('hasura')]
 default:
     @just --list hasura
+
+# The engine and connectors start (or restart) on their own: the committed
+# supergraph build (deploy/hasura/engine/build) on 127.0.0.1:3280, aperio's
+# connector on :9795 and freebusy's on :9794, then the engine is waited for. Needs the dev Postgres
+# (`just db up`); deploy/hasura/.env, else .env.example, names it. No metadata is regenerated.
+#
+# Start only the local Hasura engine and its connectors.
+[group('hasura')]
+engine:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd deploy/hasura
+    # .env, or the committed defaults a fresh checkout has.
+    env=.env; [[ -f "$env" ]] || env=.env.example
+    docker compose --env-file "$env" -f compose.yaml up -d --build
+    for i in $(seq 1 60); do
+      if curl -fsS -X POST "{{ graphql_url }}" -H 'content-type: application/json' \
+           -d '{"query":"{ __typename }"}' >/dev/null 2>&1; then
+        echo "engine is up at {{ graphql_url }}"; exit 0
+      fi
+      sleep 1
+    done
+    echo "error: engine did not come up at {{ graphql_url }} after 60s" >&2; exit 1
+
+# Build the supergraph -- aperio's subgraph and freebusy's, which comes from
+# freebusy's subgraph image through a Docker volume (deploy/hasura/
+# compose.yaml) -- into deploy/hasura/engine/build, then restart the engine
+# and both connectors on it. FREEBUSY_SUBGRAPH_TAG picks freebusy's release
+# (latest: a local `just hasura subgraph-image` in freebusy).
+#
+# Build the shared supergraph and restart the engine on it.
+[group('hasura')]
+build:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd deploy/hasura
+    env=.env; [[ -f "$env" ]] || env=.env.example
+    docker compose --env-file "$env" -f compose.yaml --profile build run --rm --build supergraph
+    cd ../.. && just hasura engine
+
+# Stop the local Hasura engine and its connectors.
+[group('hasura')]
+engine-down:
+    cd deploy/hasura && docker compose --env-file "$([ -f .env ] && echo .env || echo .env.example)" -f compose.yaml down
 
 # Regenerate the Hasura DDN metadata after the Postgres schema changes (a
 # `just db migrate` that added or renamed tables), then refresh the aperioql Go
@@ -113,12 +157,11 @@ regen domain="":
       exit 0
     fi
 
-    # 4. Rebuild the supergraph and (re)start the local engine.
-    log "building supergraph (local)"
-    ddn supergraph build local
-
-    log "restarting local engine"
-    ddn run docker-start -- -d
+    # 4. Rebuild the supergraph -- in a container, with freebusy's subgraph
+    #    from its volume (`just hasura build`) -- and restart the engine.
+    log "building supergraph (aperio + freebusy)"
+    cd "$REPO_ROOT"
+    just hasura build
 
     # 5. Wait for the engine to serve the new schema.
     log "waiting for $GRAPHQL_URL to come up"

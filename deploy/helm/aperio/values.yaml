@@ -75,13 +75,22 @@ database:
     port: 5432
     user: aperio
     dbname: aperio
-    # disable | allow | prefer | require | verify-ca | verify-full
+    # disable | allow | prefer | require | verify-ca | verify-full. Used by
+    # the server and by the migration Job's database URL alike. require (the
+    # default) refuses a server without TLS: an in-cluster Postgres that
+    # serves plain connections (the stock postgres image, most operators'
+    # defaults) needs disable here, or both the server and the migrations
+    # fail with "server does not support SSL".
     sslmode: require
     maxOpenConns: 25
     maxIdleConns: 25
   hasura:
     # The engine's GraphQL endpoint, required when provider is hasura.
     url: ""
+    # How long a starting pod retries an engine that does not answer yet
+    # (one starting beside it), with backoff, before it exits: 0 is a minute,
+    # below 0 tries once.
+    connectTimeoutSeconds: 60
 
 # Secrets. Name an existing Secret (recommended: from your secret store), or
 # let the chart make one from the values below; it holds only those set.
@@ -116,10 +125,14 @@ database:
 #   razorpay-key-secret          APERIO_RAZORPAY__KEY_SECRET
 #   razorpay-webhook-secret      APERIO_RAZORPAY__WEBHOOK_SECRET
 # Booking.com's basic-auth login for POST /channels/bookingcom/reservations
-# (enable it with extraEnv APERIO_CHANNELS__BOOKINGCOM__ENABLED=true and its
-# hotels mapping):
+# (enable it, and set its hotels, under channels.bookingcom):
 #   bookingcom-username          APERIO_CHANNELS__BOOKINGCOM__USERNAME
 #   bookingcom-password          APERIO_CHANNELS__BOOKINGCOM__PASSWORD
+# freebusy's webhook to aperio ([freebusy_sync], see freebusySync):
+#   freebusy-webhook-secret      APERIO_FREEBUSY_SYNC__WEBHOOK_SECRET: the
+#                                subscription's whsec_ signing secret, as
+#                                freebusy's CreateWebhook or
+#                                RotateWebhookSecret returned it
 secrets:
   existingSecret: ""
   postgresPassword: ""
@@ -139,6 +152,7 @@ secrets:
   razorpayWebhookSecret: ""
   bookingcomUsername: ""
   bookingcomPassword: ""
+  freebusyWebhookSecret: ""
 
 # The freebusy server aperio books through.
 freebusy:
@@ -155,6 +169,38 @@ freebusy:
   ca:
     enabled: false
 
+# How aperio stays in step with freebusy ([freebusy_sync]): the webhook
+# freebusy sends its changes to, and the background jobs. The signing secret
+# is the Secret's freebusy-webhook-secret.
+freebusySync:
+  # The public URL freebusy POSTs to: this Service's http port and
+  # /webhooks/freebusy, e.g.
+  # http://aperio.aperio.svc:8090/webhooks/freebusy. Empty, no subscription
+  # is made (the reconciler still runs).
+  webhookUrl: ""
+  # The subscription's id in freebusy (webhooks/{id}); empty is "aperio".
+  webhookId: ""
+  # How often the reconciler walks the live bookings (0 is five minutes) and
+  # sent quotes past their expiry are expired (0 is a minute); below 0 turns
+  # a job off.
+  reconcileIntervalSeconds: 0
+  quoteExpiryIntervalSeconds: 0
+
+# The sales channels ([channels]).
+channels:
+  bookingcom:
+    # Serves POST /channels/bookingcom/reservations; the basic-auth login is
+    # the Secret's bookingcom-username and bookingcom-password.
+    enabled: false
+    # Each hotel code Booking.com sends, the venue it is, and its room types,
+    # passed as APERIO_CHANNELS__BOOKINGCOM__HOTELS_JSON (a numeric code is
+    # made a string; quote one with leading zeros):
+    #   - hotel_code: "7777001"
+    #     venue: venues/<id>
+    #     rooms:
+    #       - { code: SV-DLX, space: venues/<id>/spaces/<id>, rate_plan: BAR }
+    hotels: []
+
 # The read models summaries and agents read.
 search:
   # postgres or opensearch (a copy kept by the server's indexer; errors and
@@ -169,8 +215,9 @@ search:
     # empty | always | never: when an index is reloaded as a pod starts.
     reindexOnStart: empty
 
-# The Redis or Dragonfly behind the generated caches (roadmap M3: the server
-# does not use it yet). The password is the Secret's redis-password.
+# The Redis or Dragonfly behind the generated read-through caches: venues,
+# the catalog and pricing are read through it when enabled. The password is
+# the Secret's redis-password.
 cache:
   enabled: false
   # host:port
@@ -192,6 +239,15 @@ auth:
   rolesClaim: ""
   venuesClaim: ""
   clockSkewSeconds: 0
+  # The guest site guests' share links open (<url>/<resource>?link=<token>),
+  # e.g. https://guest.example.com; the links are signed with the Secret's
+  # auth-link-secret.
+  linkBaseUrl: ""
+
+# The concierge ([concierge]): the share of a confirmed stay's proforma,
+# taxes included, asked as its advance through the payment link. 0: 100.
+concierge:
+  advancePercent: 0
 
 # Notifications to a venue's departments and its guests ([notify]).
 notify:
@@ -219,6 +275,9 @@ server:
   # development | debug | staging | production
   environment: production
   enableMcp: true
+  # GET /metrics on the http port, for Prometheus (serviceMonitor), beside
+  # the OTLP export.
+  metrics: true
 
 telemetry:
   # OTLP collector, host:port (gRPC). Empty exports nothing.
@@ -343,9 +402,10 @@ networkPolicy:
   # restricted. Set, egress is limited to these plus DNS.
   egress: []
 
-# A Prometheus Operator ServiceMonitor. aperio exports its metrics over OTLP
-# (telemetry.otlpEndpoint) and serves no /metrics yet: turn this on for a
-# release that does, or point path at an exporter sidecar's.
+# A Prometheus Operator ServiceMonitor, scraping GET /metrics on the http
+# port: the gRPC server's metrics, those aperio records itself, and the Go
+# runtime's and the process's. It needs server.metrics on. The same metrics
+# go over OTLP too when telemetry.otlpEndpoint is set.
 serviceMonitor:
   enabled: false
   port: http

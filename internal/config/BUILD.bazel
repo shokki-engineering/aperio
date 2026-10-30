@@ -10,6 +10,7 @@ go_library(
         "database.go",
         "freebusy.go",
         "freebusy_sync.go",
+        "hasura.go",
         "load.go",
         "notify.go",
         "options.go",
@@ -30,6 +31,9 @@ go_library(
 
 go_test(
     name = "config_test",
-    srcs = ["config_test.go"],
+    srcs = [
+        "channels_test.go",
+        "config_test.go",
+    ],
     embed = [":config"],
 )

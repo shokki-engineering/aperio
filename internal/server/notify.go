@@ -5,7 +5,8 @@ package server
 
 // notify.go tells departments and guests about service requests through the
 // notifier [notify] names (internal/notify): the department when a request is
-// raised, the guest when it is done. Deliveries run in the background and
+// raised, the guest when it is done, and the guest a confirmed stay's
+// payment link. Deliveries run in the background and
 // never fail a request; Stop waits for those already started.
 
 import (
@@ -21,6 +22,7 @@ func (s *Services) useNotify(cfg config.NotifyConfig) error {
 		return err
 	}
 	s.sender = notify.NewSender(notifier, cfg.Timeout(), telemetry.Meter(), telemetry.Warn)
+	s.Concierge.SendLinksThrough(s.sender)
 	return s.Operations.NotifyThrough(s.sender, cfg.Departments)
 }
 

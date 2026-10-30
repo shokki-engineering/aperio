@@ -123,14 +123,19 @@ test:
     go test -race -count=1 ./...
 
 # Needs the dev Postgres and Hasura DDN engine (`just db up`, `just db deploy`,
-# and the engine in deploy/hasura). A suite that cannot reach its backend
-# fails rather than skips. One package at a time (-p 1): they share the database.
-# Every test, live suites included, against Postgres, Hasura and Redis (the
-# cache suites; `just stack up cache`, or any Redis on the address given).
+# `just hasura engine`), and Redis for the cache suites (`just stack up
+# cache`, or any Redis on the address given). A suite that cannot reach its
+# backend fails rather than skips. One package at a time (-p 1): they share
+# the database. The OpenSearch suites run too when APERIO_TEST_OPENSEARCH_URL
+# is set (passed through as it is).
+#
+# Every test, live suites included, against Postgres, Hasura and Redis.
 [group('test')]
-test-live dsn="host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" url="http://localhost:3281/graphql" redis="127.0.0.1:6379":
+test-live dsn="host=127.0.0.1 port=5433 user=postgres password=postgrespassword dbname=aperio sslmode=disable" url="http://localhost:3280/graphql" redis="127.0.0.1:6379":
     APERIO_TEST_REQUIRE_LIVE=1 APERIO_TEST_DATABASE_URL="{{ dsn }}" APERIO_TEST_GRAPHQL_URL="{{ url }}" \
-        APERIO_TEST_REDIS_ADDR="{{ redis }}" go test -count=1 -p 1 ./...
+        APERIO_TEST_REDIS_ADDR="{{ redis }}" \
+        {{ if env_var_or_default("APERIO_TEST_OPENSEARCH_URL", "") != "" { "APERIO_TEST_OPENSEARCH_URL=" + quote(env_var("APERIO_TEST_OPENSEARCH_URL")) } else { "" } }} \
+        go test -count=1 -p 1 ./...
 
 # Build, vet and test: what CI runs without a database.
 [group('test')]

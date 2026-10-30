@@ -7,8 +7,10 @@ package concierge
 // yes to it (ask.go) -- for the guest the hold
 // names -- found by their phone, or added -- through the stay service,
 // whose booking takes its rooms from the hold. The stay is PENDING until its
-// advance is paid (finance confirms it then). A retried ConfirmStay finds the
-// stay the first one made.
+// advance is paid (finance confirms it then): ConfirmStay asks for it by a
+// payment link on the stay's proforma (advance.go), and says so -- or, with
+// no link to give, that the team will send the details. A retried
+// ConfirmStay finds the stay, the proforma and the link the first one made.
 
 import (
 	"context"
@@ -72,11 +74,19 @@ func (s *Server) confirmStay(ctx context.Context, req *conciergepbv1.ConfirmStay
 	if err != nil {
 		return nil, err
 	}
+	url := s.requestAdvance(ctx, h, contact, out.GetName(), total)
+	pay := fmt.Sprintf("Our team will send you the payment details at %s", h.Phone)
+	switch {
+	case url != "" && s.sender != nil:
+		pay = fmt.Sprintf("I've sent a link to pay the advance to your phone, %s", h.Phone)
+	case url != "":
+		pay = "You can pay the advance on the payment link"
+	}
 	return &conciergepbv1.ConfirmStayResponse{
-		Reservation: out.GetName(), Total: total, Reference: booking.Reference(out.GetName()),
-		Spoken: fmt.Sprintf("Done, %s: %s from %s is booked, %s plus taxes; your reference is %s. We'll send the payment "+
-			"details to %s; the booking is confirmed once the advance is paid.",
-			h.Guest, count(h.Nights, "night"), day(arrive), amount(total), spell(booking.Reference(out.GetName())), h.Phone),
+		Reservation: out.GetName(), Total: total, Reference: booking.Reference(out.GetName()), PaymentUrl: url,
+		Spoken: fmt.Sprintf("Done, %s: %s from %s is booked, %s plus taxes; your reference is %s. %s; "+
+			"the booking is confirmed once the advance is paid.",
+			h.Guest, count(h.Nights, "night"), day(arrive), amount(total), spell(booking.Reference(out.GetName())), pay),
 	}, nil
 }
 

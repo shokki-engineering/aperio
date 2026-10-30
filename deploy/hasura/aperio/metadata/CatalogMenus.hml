@@ -35,8 +35,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: CatalogMenus
-    inputTypeName: CatalogMenusInput
+    typeName: aperio_CatalogMenus
+    inputTypeName: aperio_CatalogMenusInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: catalog_menus
@@ -157,7 +157,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: CatalogMenusBoolExp
+    typeName: aperio_CatalogMenusBoolExp
 
 ---
 kind: AggregateExpression
@@ -202,7 +202,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: CatalogMenusAggExp
+    selectTypeName: aperio_CatalogMenusAggExp
 
 ---
 kind: OrderByExpression
@@ -245,7 +245,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: CatalogMenusOrderByExp
+    expressionTypeName: aperio_CatalogMenusOrderByExp
 
 ---
 kind: Model
@@ -261,20 +261,20 @@ definition:
   orderByExpression: CatalogMenusOrderByExp
   graphql:
     selectMany:
-      queryRootField: catalogMenus
+      queryRootField: aperio_catalogMenus
       subscription:
-        rootField: catalogMenus
+        rootField: aperio_catalogMenus
     selectUniques:
-      - queryRootField: catalogMenusById
+      - queryRootField: aperio_catalogMenusById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: catalogMenusById
-    filterInputTypeName: CatalogMenusFilterInput
+          rootField: aperio_catalogMenusById
+    filterInputTypeName: aperio_CatalogMenusFilterInput
     aggregate:
-      queryRootField: catalogMenusAggregate
+      queryRootField: aperio_catalogMenusAggregate
       subscription:
-        rootField: catalogMenusAggregate
+        rootField: aperio_catalogMenusAggregate
 
 ---
 kind: ModelPermissions

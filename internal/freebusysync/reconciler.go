@@ -5,7 +5,8 @@ package freebusysync
 
 // reconciler.go is the Reconciler: the webhook's safety net. Every round it
 // walks the live bookings -- stays not cancelled and not yet departed,
-// sessions not yet over -- a page at a time, reads each page's freebusy
+// sessions not yet over, the hall holds of events not cancelled -- a page
+// at a time, reads each page's freebusy
 // reservations in batches (engine.Lookup), and settles what differs, as the
 // webhook would have. A round costs a read per page of aperio and a call per
 // fifty reservations of freebusy, whatever the bookings.
@@ -69,6 +70,18 @@ func (r *Reconciler) Round(ctx context.Context) error {
 		}
 		errs = append(errs, r.s.settleSessions(ctx, page.GetSessions()))
 		if sessions.PageToken = page.GetNextPageToken(); sessions.PageToken == "" {
+			break
+		}
+	}
+	events := &eventpbv1.ListEventsRequest{Parent: r.venue, PageSize: reconcilePage,
+		Filter: "state = TENTATIVE OR state = CONFIRMED"}
+	for {
+		page, err := r.s.events.ListEvents(ctx, events)
+		if err != nil {
+			return errors.Join(append(errs, err)...)
+		}
+		errs = append(errs, r.s.settleHalls(ctx, page.GetEvents()))
+		if events.PageToken = page.GetNextPageToken(); events.PageToken == "" {
 			break
 		}
 	}

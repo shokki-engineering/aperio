@@ -9,6 +9,7 @@ package telemetry
 
 import (
 	_ "embed"
+	"errors"
 	"fmt"
 	"os"
 	"sync"
@@ -30,16 +31,42 @@ var (
 	initErr   error
 )
 
+// Settings are what Init takes from the server's configuration, which is
+// loaded before the pipeline is built.
+type Settings struct {
+	// Version is the service.version every span, metric and log line
+	// carries: the app's own ([app] version), not telemetry.toml's
+	// placeholder. Empty keeps the placeholder.
+	Version string
+	// Prometheus serves the metrics for scraping too ([server] metrics):
+	// MetricsHandler, mounted at /metrics.
+	Prometheus bool
+}
+
+// serviceName is the pipeline's service.name, set by Init: the scope of the
+// meter Meter hands out.
+var serviceName = "aperio"
+
 // Init builds the server's telemetry pipeline from the embedded
-// telemetry.toml and the APERIO_ deployment overrides, makes it the
+// telemetry.toml, s and the APERIO_ deployment overrides, makes it the
 // process's (Telemetry), and has runtime-go's modules -- the gRPC server, its
 // otelgrpc spans and gRPC metrics, the cache -- log, trace and measure through
 // it instead of each standing up an exporter of its own. The server calls it
-// first thing at startup; later calls return the first result.
-func Init() error {
+// at startup, after loading its configuration; later calls return the first
+// result.
+func Init(s Settings) error {
 	once.Do(func() {
+		name, version, description, err := telemetryService()
+		if err != nil {
+			initErr = fmt.Errorf("read embedded telemetry config: %w", err)
+			return
+		}
+		if s.Version != "" {
+			version = s.Version
+		}
+		serviceName = name
 		b := telemetry.New()
-		if tmpPath, err := writeTelemetryConfig(); err == nil {
+		if tmpPath, err := writeTelemetryConfig(version); err == nil {
 			defer os.Remove(tmpPath) //nolint:errcheck
 			b.WithConfig(tmpPath)
 		} else {
@@ -48,11 +75,6 @@ func Init() error {
 			// service is named in code, from the same embedded file, and the
 			// rest is the library's defaults -- OTLP export included, which
 			// APERIO_OTLP_ENDPOINT turns on.
-			name, version, description, err := telemetryService()
-			if err != nil {
-				initErr = fmt.Errorf("read embedded telemetry config: %w", err)
-				return
-			}
 			b.WithService(name, version).WithDescription(description)
 		}
 		b.WithTracing()
@@ -65,6 +87,9 @@ func Init() error {
 		}
 		Use(o)
 		observability.Adopt(o)
+		if s.Prometheus {
+			initErr = startPrometheus(name, version)
+		}
 	})
 	return initErr
 }
@@ -135,8 +160,9 @@ func fields(kv []any) []any {
 // It is safe to call even when Telemetry was never initialised.
 // The caller (typically main) should invoke this on application shutdown.
 func Close() error {
+	err := stopPrometheus()
 	if Telemetry != nil {
-		return Telemetry.Close()
+		return errors.Join(err, Telemetry.Close())
 	}
-	return nil
+	return err
 }

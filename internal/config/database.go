@@ -151,14 +151,6 @@ func (p PostgresConfig) URL(dbname string) string {
 	return u.String()
 }
 
-// HasuraConfig is the Hasura GraphQL backend connection and admin auth.
-type HasuraConfig struct {
-	// URL is the GraphQL endpoint, e.g. "http://localhost:8080/v1/graphql".
-	URL string `koanf:"url"`
-	// AdminSecret is sent as the x-hasura-admin-secret header (empty to omit).
-	AdminSecret string `koanf:"admin_secret"`
-}
-
 // CacheConfig is the backend behind protoc-gen-cache's generated decorators.
 //
 // The backend is deliberately absent from the protos: cache.v1 names strategies,

@@ -6,12 +6,14 @@ package sales
 // holds.go is what AcceptQuote and freebusy's webhook do with the holds a
 // lead and an accepted quote keep (leads.go has why): the lead's rooms are
 // let go before the quote's bookings take them, the quote's halls are held
-// for its event's days, and a lead whose hold lapsed in freebusy forgets it.
+// for its event's days (by the event service, which records them on the
+// event), and a lead whose hold lapsed in freebusy forgets it.
 
 import (
 	"context"
 	"fmt"
 
+	"github.com/shokki-engineering/aperio/internal/booking"
 	"github.com/shokki-engineering/aperio/internal/database/repository/repox"
 	"github.com/shokki-engineering/aperio/protobuf/generated/go/sales/v1/salespbv1"
 )
@@ -60,19 +62,20 @@ func (s *Server) holdAgain(ctx context.Context, l *salespbv1.Lead) {
 	}
 }
 
-// holdHalls holds every space q sells for event's days, the quote's dates:
-// a hall another accepted event has for a day of them fails the accept.
-func (s *Server) holdHalls(ctx context.Context, venueName, event string, q *salespbv1.Quote) error {
-	if s.h.base == nil || event == "" {
+// holdHalls holds every space q sells for event's days, the quote's dates,
+// through the event service, which records each hold on the event
+// (freebusy_holds): a hall another accepted event has for a day of them
+// fails the accept.
+func (s *Server) holdHalls(ctx context.Context, event string, q *salespbv1.Quote) error {
+	var halls []booking.Hall
+	for i, l := range q.GetLines() {
+		if l.GetKind() == salespbv1.LineKind_LINE_KIND_SPACE && l.GetItem() != "" {
+			halls = append(halls, booking.Hall{Field: fmt.Sprintf("quote.lines[%d].item", i), Space: l.GetItem()})
+		}
+	}
+	if event == "" || len(halls) == 0 {
 		return nil
 	}
-	for i, l := range q.GetLines() {
-		if l.GetKind() != salespbv1.LineKind_LINE_KIND_SPACE || l.GetItem() == "" {
-			continue
-		}
-		if _, err := s.h.base.HoldHall(ctx, venueName, event, fmt.Sprintf("quote.lines[%d].item", i), l.GetItem(), q.GetDates()); err != nil {
-			return err
-		}
-	}
-	return nil
+	_, err := s.events.HoldHalls(ctx, event, halls)
+	return err
 }

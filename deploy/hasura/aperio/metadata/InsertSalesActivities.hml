@@ -27,8 +27,8 @@ definition:
     - name: updateTime
       type: Timestamptz!
   graphql:
-    typeName: InsertSalesActivitiesObject
-    inputTypeName: InsertSalesActivitiesObjectInput
+    typeName: aperio_InsertSalesActivitiesObject
+    inputTypeName: aperio_InsertSalesActivitiesObjectInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_sales_activities_object
@@ -102,8 +102,8 @@ definition:
       type: "[SalesActivities!]!"
       description: Data from rows affected by the mutation
   graphql:
-    typeName: InsertSalesActivitiesResponse
-    inputTypeName: InsertSalesActivitiesResponseInput
+    typeName: aperio_InsertSalesActivitiesResponse
+    inputTypeName: aperio_InsertSalesActivitiesResponseInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: insert_sales_activities_response
@@ -147,7 +147,7 @@ definition:
       objects: objects
       postCheck: post_check
   graphql:
-    rootFieldName: insertSalesActivities
+    rootFieldName: aperio_insertSalesActivities
     rootFieldKind: Mutation
   description: Insert into the sales_activities table
 

@@ -169,7 +169,11 @@ type Lead struct {
 	// Last-modification timestamp.
 	UpdateTime *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Opaque version for optimistic concurrency (AIP-154).
-	Etag          string `protobuf:"bytes,25,opt,name=etag,proto3" json:"etag,omitempty"`
+	Etag string `protobuf:"bytes,25,opt,name=etag,proto3" json:"etag,omitempty"`
+	// The halls or room types the lead asks for: what its hold takes, as many
+	// of each as rooms says (a hall, one). Searched as spaces:"venues/x/spaces/y".
+	// Format: venues/{venue}/spaces/{space}
+	Spaces        []string `protobuf:"bytes,26,rep,name=spaces,proto3" json:"spaces,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -377,6 +381,13 @@ func (x *Lead) GetEtag() string {
 		return x.Etag
 	}
 	return ""
+}
+
+func (x *Lead) GetSpaces() []string {
+	if x != nil {
+		return x.Spaces
+	}
+	return nil
 }
 
 // An Activity is one touch on a lead: a call, a WhatsApp, a site visit, a
@@ -921,7 +932,7 @@ var File_aperio_sales_v1_sales_proto protoreflect.FileDescriptor
 
 const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"\n" +
-	"\x1baperio/sales/v1/sales.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\x1a\x1astore/v1/annotations.proto\"\x82\f\n" +
+	"\x1baperio/sales/v1/sales.proto\x12\x0faperio.sales.v1\x1a\x1baperio/sales/v1/enums.proto\x1a\x1aaperio/type/v1/enums.proto\x1a\x1aaperio/type/v1/types.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1bentity/v1/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a\x17google/type/money.proto\x1a\x1astore/v1/annotations.proto\"\xa6\f\n" +
 	"\x04Lead\x12/\n" +
 	"\x04name\x18\x01 \x01(\tB\x1b\xe2A\x01\b\xbaH\x14\xd8\x01\x01r\x0f2\r^leads/[^/]+$R\x04name\x127\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\x14\xe2A\x01\x02\xbaH\ar\x05\x10\x01\x18\xc8\x01\xe2\xb5\x18\x02\x18\x01R\vdisplayName\x12Q\n" +
@@ -958,7 +969,9 @@ const file_aperio_sales_v1_sales_proto_rawDesc = "" +
 	"createTime\x12A\n" +
 	"\vupdate_time\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"updateTime\x12\x18\n" +
-	"\x04etag\x18\x19 \x01(\tB\x04\xe2A\x01\x01R\x04etag:w\xeaA1\n" +
+	"\x04etag\x18\x19 \x01(\tB\x04\xe2A\x01\x01R\x04etag\x12\"\n" +
+	"\x06spaces\x18\x1a \x03(\tB\n" +
+	"\xe2A\x01\x01\xe2\xb5\x18\x02\x18\x01R\x06spaces:w\xeaA1\n" +
 	"\x14aperio.sales.v1/Lead\x12\fleads/{lead}*\x05leads2\x04lead\xca\xf3\x18?\x18\x01*\x1c\n" +
 	"\x05stage\n" +
 	"\x13next_follow_up_time*\x0e\n" +

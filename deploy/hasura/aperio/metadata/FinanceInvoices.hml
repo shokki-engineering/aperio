@@ -63,8 +63,8 @@ definition:
     - name: venueId
       type: String_1!
   graphql:
-    typeName: FinanceInvoices
-    inputTypeName: FinanceInvoicesInput
+    typeName: aperio_FinanceInvoices
+    inputTypeName: aperio_FinanceInvoicesInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: finance_invoices
@@ -269,7 +269,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: FinanceInvoicesBoolExp
+    typeName: aperio_FinanceInvoicesBoolExp
 
 ---
 kind: AggregateExpression
@@ -342,7 +342,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: FinanceInvoicesAggExp
+    selectTypeName: aperio_FinanceInvoicesAggExp
 
 ---
 kind: OrderByExpression
@@ -413,7 +413,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: FinanceInvoicesOrderByExp
+    expressionTypeName: aperio_FinanceInvoicesOrderByExp
 
 ---
 kind: Model
@@ -429,20 +429,20 @@ definition:
   orderByExpression: FinanceInvoicesOrderByExp
   graphql:
     selectMany:
-      queryRootField: financeInvoices
+      queryRootField: aperio_financeInvoices
       subscription:
-        rootField: financeInvoices
+        rootField: aperio_financeInvoices
     selectUniques:
-      - queryRootField: financeInvoicesById
+      - queryRootField: aperio_financeInvoicesById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: financeInvoicesById
-    filterInputTypeName: FinanceInvoicesFilterInput
+          rootField: aperio_financeInvoicesById
+    filterInputTypeName: aperio_FinanceInvoicesFilterInput
     aggregate:
-      queryRootField: financeInvoicesAggregate
+      queryRootField: aperio_financeInvoicesAggregate
       subscription:
-        rootField: financeInvoicesAggregate
+        rootField: aperio_financeInvoicesAggregate
 
 ---
 kind: ModelPermissions

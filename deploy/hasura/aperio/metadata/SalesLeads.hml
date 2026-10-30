@@ -50,6 +50,8 @@ definition:
       type: Enum
     - name: sourceDetail
       type: String_1
+    - name: spaces
+      type: "[String_1]"
     - name: stage
       type: Enum
     - name: updateTime
@@ -57,8 +59,8 @@ definition:
     - name: venue
       type: String_1
   graphql:
-    typeName: SalesLeads
-    inputTypeName: SalesLeadsInput
+    typeName: aperio_SalesLeads
+    inputTypeName: aperio_SalesLeadsInput
   dataConnectorTypeMapping:
     - dataConnectorName: aperio_pgsql
       dataConnectorObjectType: sales_leads
@@ -132,6 +134,9 @@ definition:
         sourceDetail:
           column:
             name: source_detail
+        spaces:
+          column:
+            name: spaces
         stage:
           column:
             name: stage
@@ -174,6 +179,7 @@ definition:
           - rooms
           - source
           - sourceDetail
+          - spaces
           - stage
           - updateTime
           - venue
@@ -243,7 +249,7 @@ definition:
   isNull:
     enable: true
   graphql:
-    typeName: SalesLeadsBoolExp
+    typeName: aperio_SalesLeadsBoolExp
 
 ---
 kind: AggregateExpression
@@ -308,7 +314,7 @@ definition:
     enable: true
     returnType: Int64
   graphql:
-    selectTypeName: SalesLeadsAggExp
+    selectTypeName: aperio_SalesLeadsAggExp
 
 ---
 kind: OrderByExpression
@@ -371,7 +377,7 @@ definition:
           orderByExpression: String1OrderByExp
       orderableRelationships: []
   graphql:
-    expressionTypeName: SalesLeadsOrderByExp
+    expressionTypeName: aperio_SalesLeadsOrderByExp
 
 ---
 kind: Model
@@ -387,20 +393,20 @@ definition:
   orderByExpression: SalesLeadsOrderByExp
   graphql:
     selectMany:
-      queryRootField: salesLeads
+      queryRootField: aperio_salesLeads
       subscription:
-        rootField: salesLeads
+        rootField: aperio_salesLeads
     selectUniques:
-      - queryRootField: salesLeadsById
+      - queryRootField: aperio_salesLeadsById
         uniqueIdentifier:
           - id
         subscription:
-          rootField: salesLeadsById
-    filterInputTypeName: SalesLeadsFilterInput
+          rootField: aperio_salesLeadsById
+    filterInputTypeName: aperio_SalesLeadsFilterInput
     aggregate:
-      queryRootField: salesLeadsAggregate
+      queryRootField: aperio_salesLeadsAggregate
       subscription:
-        rootField: salesLeadsAggregate
+        rootField: aperio_salesLeadsAggregate
 
 ---
 kind: ModelPermissions

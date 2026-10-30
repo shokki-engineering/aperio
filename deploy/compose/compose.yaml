@@ -12,7 +12,12 @@
 #   docker compose --profile hasura up -d    # + set APERIO_DATABASE_PROVIDER=hasura
 #
 # aperio's images are the registry's, or this checkout's from `just image`
-# (Bazel, deploy/image), which tags them :latest; Compose never builds them.
+# (Bazel, deploy/image), which tags them :latest; Compose never builds those.
+# The hasura profile's aperio-engine and aperio-connector are published by
+# each release too (.github/workflows/release.yaml); Compose pulls them, and
+# builds them from deploy/hasura when the tag is not in the registry -- or
+# always, from this checkout's committed build, with
+# `docker compose --profile hasura build engine connector`.
 #
 # aperio answers on 127.0.0.1:8090 (REST, /health), :50061 (gRPC) and :8091
 # (MCP, /mcp); freebusy on :8080, :50051 and :8081. Every port is published
@@ -57,6 +62,7 @@ services:
       APERIO_CONCIERGE__HOLD_SECRET: ${APERIO_HOLD_SECRET:?set APERIO_HOLD_SECRET in .env}
       APERIO_AUTH__ISSUER: ${APERIO_AUTH_ISSUER:-}
       APERIO_AUTH__AUDIENCE: ${APERIO_AUTH_AUDIENCE:-}
+      APERIO_AUTH__LINK_BASE_URL: ${APERIO_LINK_BASE_URL:-http://localhost:3000}
       APERIO_AUTH__LINK_SECRET: ${APERIO_LINK_SECRET:?set APERIO_LINK_SECRET in .env}
       APERIO_SEARCH__PROVIDER: ${APERIO_SEARCH_PROVIDER:-postgres}
       APERIO_SEARCH__OPENSEARCH__URL: ${OPENSEARCH_URL:-http://opensearch:9200}
@@ -68,13 +74,18 @@ services:
       APERIO_OTLP_ENDPOINT: ${OTLP_ENDPOINT:-}
       APERIO_TELEMETRY_ENVIRONMENT: ${TELEMETRY_ENVIRONMENT:-production}
       APERIO_SITE: ${SITE:-}
+      APERIO_SERVER__METRICS: ${APERIO_METRICS:-true}
+      APERIO_FREEBUSY_SYNC__WEBHOOK_URL: ${APERIO_FREEBUSY_WEBHOOK_URL:-}
+      APERIO_FREEBUSY_SYNC__WEBHOOK_SECRET: ${APERIO_FREEBUSY_WEBHOOK_SECRET:-}
+      APERIO_CHANNELS__BOOKINGCOM__ENABLED: ${APERIO_BOOKINGCOM_ENABLED:-false}
+      APERIO_CHANNELS__BOOKINGCOM__HOTELS_JSON: ${APERIO_BOOKINGCOM_HOTELS_JSON:-}
     depends_on:
       migrate:
         condition: service_completed_successfully
       freebusy:
         condition: service_started
-      # With the hasura profile only; the server exits while the engine is
-      # still starting and is restarted, so it may take a second try.
+      # With the hasura profile only; the server waits for the engine while
+      # it starts ([database.hasura] connect_timeout_seconds, a minute).
       engine:
         condition: service_started
         required: false

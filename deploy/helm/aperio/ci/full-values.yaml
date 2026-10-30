@@ -28,11 +28,23 @@ secrets:
   razorpayKeySecret: ci-razorpay
   razorpayWebhookSecret: ci-razorpay-webhook
   whatsappToken: ci-whatsapp
+  freebusyWebhookSecret: whsec_ci
 freebusy:
   endpoint: freebusy.freebusy.svc:50051
   publicUrl: https://freebusy.example.com
   ca:
     enabled: true
+freebusySync:
+  webhookUrl: http://aperio.aperio.svc:8090/webhooks/freebusy
+  reconcileIntervalSeconds: 600
+channels:
+  bookingcom:
+    enabled: true
+    hotels:
+      - hotel_code: "7777001"
+        venue: venues/sea-breeze
+        rooms:
+          - { code: SV-DLX, space: venues/sea-breeze/spaces/deluxe, rate_plan: BAR }
 search:
   provider: opensearch
   opensearch:
@@ -44,6 +56,9 @@ auth:
   issuer: https://id.example.com
   audience: aperio
   rolesClaim: realm_access.roles
+  linkBaseUrl: https://guest.example.com
+concierge:
+  advancePercent: 30
 notify:
   provider: whatsapp
   departments:

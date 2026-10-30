@@ -25,6 +25,9 @@ type Authenticator struct {
 	verifier *Verifier // nil when auth is off
 	policy   Policy
 	links    *Links
+	// leads reads the venue of a lead a request names (leads.go); nil until
+	// ResolveLeadsWith, and then only the request's own venues are judged.
+	leads LeadReader
 }
 
 // New is the authenticator cfg describes. It discovers the issuer, so it
