@@ -3,7 +3,7 @@
 
 module github.com/shokki-engineering/aperio
 
-go 1.26.10
+go 1.26.11
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.12-20260825204119-511051f7f437.2
@@ -160,4 +160,4 @@ require (
 	google.golang.org/api v0.309.0 // indirect
 )
 
-replace github.com/shokki-engineering/freebusy-go => github.com/oh-tarnished/freebusy-go-sdk v0.0.0-20261114131901-ac24268df444
+replace github.com/shokki-engineering/freebusy-go => github.com/oh-tarnished/freebusy-go-sdk v0.0.0-20261114140112-d75d66ea7c51
