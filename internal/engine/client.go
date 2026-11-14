@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/shokki-engineering/freebusy-go"
 	"github.com/shokki-engineering/freebusy-go/option"
 	"github.com/shokki-engineering/freebusy-go/pb/allocationpb"
@@ -74,18 +75,27 @@ func (c *Client) Held(ctx context.Context, key string) (bool, error) {
 }
 
 // hold is freebusy's CreateHold for b: a retry, or Book after Hold, with
-// the same key gets the first hold back.
+// the same key gets the first hold back. The key's request_id makes freebusy
+// replay the first call; once it no longer remembers that call, the hold is
+// still found by its id.
 func (c *Client) hold(ctx context.Context, b Booking) (*allocationpb.Hold, error) {
+	id := reservationID(b.Key)
 	hold, err := c.fb.Holds.New(ctx, &allocationpb.CreateHoldRequest{
 		Hold: &allocationpb.Hold{
 			Window:             freebusy.Window(b.Window.Start, b.Window.End),
 			Quantity:           b.Quantity,
 			CandidateResources: b.Resources,
-			IdempotencyKey:     b.Key,
 		},
-		HoldId: reservationID(b.Key), // so Held finds it by the key
+		HoldId:    id, // so Held finds it by the key
+		RequestId: requestID(b.Key),
 	})
 	switch {
+	case errors.Is(err, freebusy.ErrAlreadyExists):
+		hold, err = c.fb.Holds.Get(ctx, &allocationpb.GetHoldRequest{Name: "holds/" + id})
+		if err != nil {
+			return nil, fmt.Errorf("engine: hold: %w", err)
+		}
+		return hold, nil
 	case errors.Is(err, freebusy.ErrCapacityExhausted):
 		return nil, ErrUnavailable
 	case err != nil:
@@ -95,7 +105,7 @@ func (c *Client) hold(ctx context.Context, b Booking) (*allocationpb.Hold, error
 }
 
 // Book holds quantity of b.Resources for b.Window and makes the hold a
-// reservation. Both carry b.Key: the hold as its idempotency key, the
+// reservation. Both carry b.Key: the hold as its id and request_id, the
 // reservation as its id, so a retry gets the first call's reservation back.
 func (c *Client) Book(ctx context.Context, b Booking) (string, error) {
 	id := reservationID(b.Key)
@@ -157,4 +167,10 @@ func (c *Client) Cancel(ctx context.Context, reservation, reason string) error {
 func reservationID(key string) string {
 	sum := sha256.Sum256([]byte(key))
 	return "aperio-" + hex.EncodeToString(sum[:])[:32]
+}
+
+// requestID is the request_id (AIP-155) of key's CreateHold: a UUID derived
+// from the key, so every retry of it sends the same one.
+func requestID(key string) string {
+	return uuid.NewSHA1(uuid.NameSpaceURL, []byte("aperio:hold:"+key)).String()
 }

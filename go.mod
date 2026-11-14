@@ -160,4 +160,4 @@ require (
 	google.golang.org/api v0.309.0 // indirect
 )
 
-replace github.com/shokki-engineering/freebusy-go => github.com/oh-tarnished/freebusy-go-sdk v0.0.0-20261030051839-b8f09e767c19
+replace github.com/shokki-engineering/freebusy-go => github.com/oh-tarnished/freebusy-go-sdk v0.0.0-20261114131901-ac24268df444
